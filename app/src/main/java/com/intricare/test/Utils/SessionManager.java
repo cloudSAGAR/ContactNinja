@@ -6,12 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.intricare.test.Auth.LoginActivity;
 import com.intricare.test.MainActivity;
 
 import java.util.HashMap;
 
 public class SessionManager {
-    private static final String PREF_NAME = "jainaPref";
+    private static final String PREF_NAME = "ContactNinjaPref";
     private static final String IS_LOGIN = "IsLoggedIn";
     private final SharedPreferences pref;
     private final SharedPreferences.Editor editor;
@@ -74,14 +75,13 @@ public class SessionManager {
      * Clear session details
      */
     public void logoutUser() {
-        NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
 
         // After logout redirect user to Loing Activity
-        Intent i = new Intent(_context, MainActivity.class);
+        Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
