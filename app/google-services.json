@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "798777205930",
+    "project_id": "iosdemo-b4765",
+    "storage_bucket": "iosdemo-b4765.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798777205930:android:8ae247de67a2ea12da5cd3",
+        "android_client_info": {
+          "package_name": "com.intricare.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798777205930-v9u8s4o149ure23jevtumklf1fpn09h8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVDvl0SnyuIPpo0OwwUMRfUO93pSMC6BA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798777205930-v9u8s4o149ure23jevtumklf1fpn09h8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "798777205930-ag6grsd4i514iq89mjubgc4evrlcv0uf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.intricare.ios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ContactNinja</string>
+
+
+    <string name="noInternet">Please connect to internet!!!</string>
+    <string name="tryAgain">Try Again</string>
+    <string name="back_button">Please click BACK again to exit.</string>
+    <string name="appUpdate">Contact Ninja has downloaded an update</string>
+    <string name="install">Install</string>
+</resources>
