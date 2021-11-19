@@ -3,13 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/drawable/default_dot.xml" value="0.13914473684210527" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/drawable/ic_home_selected_light.xml" value="0.2203125" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/drawable/selected_dot.xml" value="0.13914473684210527" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/drawable/tab_selector.xml" value="0.13914473684210527" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_app_intro.xml" value="0.18" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_splash.xml" value="0.12" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/custom_dialog_progess.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/invite_user_details.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/plus_footer_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/selected_dot.xml" value="0.12894736842105264" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/welcome_slide_1.xml" value="0.12894736842105264" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/welcome_slide_2.xml" value="0.12894736842105264" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/welcome_slide_3.xml" value="0.12894736842105264" />
       </map>
     </option>
   </component>
