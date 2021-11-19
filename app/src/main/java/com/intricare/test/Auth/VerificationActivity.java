@@ -33,7 +33,8 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                startActivity(new Intent(getApplicationContext(), Phone_email_verificationActivity.class));
+                finish();
             }
         });
         new OTP_Receiver().setEditText(otp_pinview);

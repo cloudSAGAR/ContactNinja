@@ -3,8 +3,6 @@ package com.intricare.test.Auth;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -37,7 +35,7 @@ import io.michaelrocks.libphonenumber.android.Phonenumber;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "Login1Activity";
     TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP;
-    boolean lay_PhoneShow = true;
+    boolean is_PhoneShow = true;
     LinearLayout layout_email, layout_phonenumber;
     CountryCodePicker ccp_id;
 
@@ -57,7 +55,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loadingDialog = new LoadingDialog(LoginActivity.this);
         initUI();
 
-        enterPhoneNumber();
         firebase();
     }
 
@@ -109,46 +106,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
                 Log.e(TAG, "onCodeSent:" + verificationId);
+                startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
                 // Save verification ID and resending token so we can use them later
 
             }
         };
     }
 
-    private void enterPhoneNumber() {
-        edit_Mobile.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
-                String phoneNumber = edit_Mobile.getText().toString().trim();
-                if (countryCode.length() > 0 && phoneNumber.length() > 0) {
-                    if (Global.isValidPhoneNumber(phoneNumber)) {
-                        boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
-                        if (status) {
-                            iv_invalid.setText("");
-                        } else {
-                            iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                        }
-                    } else {
-                        iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                    }
-                } else {
-                    //Toast.makeText(getApplicationContext(), "Country Code and Phone Number is required", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
 
     private boolean validateUsing_libphonenumber(String countryCode, String phNumber) {
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.createInstance(getApplicationContext());
@@ -193,23 +158,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_chnage_phone_email:
-                if (lay_PhoneShow) {
+                if (is_PhoneShow) {
                     layout_email.setVisibility(View.VISIBLE);
                     layout_phonenumber.setVisibility(View.GONE);
-                    lay_PhoneShow = false;
+                    is_PhoneShow = false;
                     btn_chnage_phone_email.setText(getResources().getString(R.string.or_phone));
                 } else {
                     layout_phonenumber.setVisibility(View.VISIBLE);
                     layout_email.setVisibility(View.GONE);
-                    lay_PhoneShow = true;
+                    is_PhoneShow = true;
                     btn_chnage_phone_email.setText(getResources().getString(R.string.or_email));
                 }
                 break;
             case R.id.btn_login:
                 if (checkVelidaction()) {
-                    // VerifyPhone(edit_Mobile.getText().toString().trim());
-                    // loadingDialog.showLoadingDialog();
-                    startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
+                     loadingDialog.showLoadingDialog();
+                     if(is_PhoneShow){
+                         VerifyPhone(edit_Mobile.getText().toString().trim());
+                     }else {
+
+                     }
                 }
 
 
@@ -236,18 +204,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean checkVelidaction() {
-        if (lay_PhoneShow) {
+        if (is_PhoneShow) {
             if (edit_Mobile.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
             } else {
-                return true;
-
+                String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
+                String phoneNumber = edit_Mobile.getText().toString().trim();
+                if (countryCode.length() > 0 && phoneNumber.length() > 0) {
+                    if (Global.isValidPhoneNumber(phoneNumber)) {
+                        boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
+                        if (status) {
+                            iv_invalid.setText("");
+                            return true;
+                        } else {
+                            iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                        }
+                    } else {
+                        iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                    }
+                }
             }
         } else {
             if (edit_email.getText().toString().trim().equals("")) {
-                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                iv_invalid.setText(getResources().getString(R.string.invalid_email));
             } else {
-                return true;
+                if(Global.emailValidator(edit_email.getText().toString().trim())){
+                    return true;
+                }else {
+                    iv_invalid.setText(getResources().getString(R.string.invalid_email));
+                }
 
             }
         }

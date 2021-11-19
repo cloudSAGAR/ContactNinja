@@ -72,6 +72,10 @@
     <string name="plan_deatil_header_text">Ninja Free Card</string>
     <string name="plan_deatil_button_text">Start your free trial</string>
 
-
-
+    <!---phone_email-->
+    <string name="get_started">Get Started !</string>
+    <string name="welcome_phone">Connect your Phone
+Number</string>
+    <string name="phone_dis">Adding phone number gives an additional
+ security layer for your Contact Ninja Account.</string>
 </resources>

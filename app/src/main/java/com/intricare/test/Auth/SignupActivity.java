@@ -177,7 +177,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edit_Mobile = findViewById(R.id.edit_Mobile);
         btn_signup = findViewById(R.id.btn_signup);
         iv_invalid = findViewById(R.id.iv_invalid);
-        tv_Login = findViewById(R.id.tv_signUP);
+        tv_Login = findViewById(R.id.tv_Login);
 
         layout_phonenumber = findViewById(R.id.layout_phonenumber);
         layout_email = findViewById(R.id.layout_email);
