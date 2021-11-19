@@ -1,8 +1,7 @@
 package com.intricare.test.Auth;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,9 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,27 +34,28 @@ import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 
-public class Login1Activity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "Login1Activity";
-    TextView btn_chnage_phone_email,btn_login,iv_invalid;
-    boolean lay_PhoneShow=true;
-    LinearLayout layout_email,layout_phonenumber;
+    TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP;
+    boolean lay_PhoneShow = true;
+    LinearLayout layout_email, layout_phonenumber;
     CountryCodePicker ccp_id;
 
-    EditText edit_email,edit_Mobile;
+    EditText edit_email, edit_Mobile;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
     public String fcmToken = "";
 
     LoadingDialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login1);
+        setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        loadingDialog=new LoadingDialog(Login1Activity.this);
-    initUI();
+        loadingDialog = new LoadingDialog(LoginActivity.this);
+        initUI();
 
         enterPhoneNumber();
         firebase();
@@ -124,16 +126,15 @@ public class Login1Activity extends AppCompatActivity implements View.OnClickLis
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
                 String phoneNumber = edit_Mobile.getText().toString().trim();
-                if(countryCode.length() > 0 && phoneNumber.length() > 0){
-                    if(Global.isValidPhoneNumber(phoneNumber)){
+                if (countryCode.length() > 0 && phoneNumber.length() > 0) {
+                    if (Global.isValidPhoneNumber(phoneNumber)) {
                         boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
-                        if(status){
+                        if (status) {
                             iv_invalid.setText("");
                         } else {
                             iv_invalid.setText(getResources().getString(R.string.invalid_phone));
                         }
-                    }
-                    else {
+                    } else {
                         iv_invalid.setText(getResources().getString(R.string.invalid_phone));
                     }
                 } else {
@@ -148,6 +149,7 @@ public class Login1Activity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+
     private boolean validateUsing_libphonenumber(String countryCode, String phNumber) {
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.createInstance(getApplicationContext());
         String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
@@ -162,53 +164,65 @@ public class Login1Activity extends AppCompatActivity implements View.OnClickLis
         boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
         if (isValid) {
             String internationalFormat = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
-           // Toast.makeText(this, "Phone Number is Valid " + internationalFormat, Toast.LENGTH_LONG).show();
+            // Toast.makeText(this, "Phone Number is Valid " + internationalFormat, Toast.LENGTH_LONG).show();
             return true;
         } else {
             //Toast.makeText(this, "Phone Number is Invalid " + phoneNumber, Toast.LENGTH_LONG).show();
             return false;
         }
     }
+
     private void initUI() {
         ccp_id = findViewById(R.id.ccp_id);
-        edit_email=findViewById(R.id.edit_email);
-        edit_Mobile=findViewById(R.id.edit_Mobile);
-        btn_login=findViewById(R.id.btn_login);
-        iv_invalid=findViewById(R.id.iv_invalid);
+        edit_email = findViewById(R.id.edit_email);
+        edit_Mobile = findViewById(R.id.edit_Mobile);
+        btn_login = findViewById(R.id.btn_login);
+        iv_invalid = findViewById(R.id.iv_invalid);
+        tv_signUP = findViewById(R.id.tv_signUP);
 
-        layout_phonenumber=findViewById(R.id.layout_phonenumber);
-        layout_email=findViewById(R.id.layout_email);
-        btn_chnage_phone_email=findViewById(R.id.btn_chnage_phone_email);
+        layout_phonenumber = findViewById(R.id.layout_phonenumber);
+        layout_email = findViewById(R.id.layout_email);
+        btn_chnage_phone_email = findViewById(R.id.btn_chnage_phone_email);
         btn_chnage_phone_email.setOnClickListener(this);
         btn_login.setOnClickListener(this);
+        tv_signUP.setOnClickListener(this);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_chnage_phone_email:
-                    if(lay_PhoneShow){
-                        layout_email.setVisibility(View.VISIBLE);
-                        layout_phonenumber.setVisibility(View.GONE);
-                        lay_PhoneShow=false;
-                        btn_chnage_phone_email.setText(getResources().getString(R.string.or_phone));
-                    }else {
-                        layout_phonenumber.setVisibility(View.VISIBLE);
-                        layout_email.setVisibility(View.GONE);
-                        lay_PhoneShow=true;
-                        btn_chnage_phone_email.setText(getResources().getString(R.string.or_email));
-                    }
+                if (lay_PhoneShow) {
+                    layout_email.setVisibility(View.VISIBLE);
+                    layout_phonenumber.setVisibility(View.GONE);
+                    lay_PhoneShow = false;
+                    btn_chnage_phone_email.setText(getResources().getString(R.string.or_phone));
+                } else {
+                    layout_phonenumber.setVisibility(View.VISIBLE);
+                    layout_email.setVisibility(View.GONE);
+                    lay_PhoneShow = true;
+                    btn_chnage_phone_email.setText(getResources().getString(R.string.or_email));
+                }
                 break;
             case R.id.btn_login:
-                if(checkVelidaction()){
-                   // VerifyPhone(edit_Mobile.getText().toString().trim());
-                    loadingDialog.showLoadingDialog();
+                if (checkVelidaction()) {
+                    // VerifyPhone(edit_Mobile.getText().toString().trim());
+                    // loadingDialog.showLoadingDialog();
+                    startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
                 }
 
 
                 break;
+            case R.id.tv_signUP:
+
+                startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                finish();
+
+                break;
         }
     }
+
     public void VerifyPhone(String phoneNumber) {
         String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
@@ -222,17 +236,17 @@ public class Login1Activity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean checkVelidaction() {
-        if(lay_PhoneShow){
-            if(edit_Mobile.getText().toString().trim().equals("")){
+        if (lay_PhoneShow) {
+            if (edit_Mobile.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-            }else {
+            } else {
                 return true;
 
             }
-        }else {
-            if(edit_email.getText().toString().trim().equals("")){
+        } else {
+            if (edit_email.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-            }else {
+            } else {
                 return true;
 
             }

@@ -26,7 +26,7 @@
             android:name=".Auth.SignupActivity"
             android:exported="true" />
         <activity
-            android:name=".Auth.Login1Activity"
+            android:name=".Auth.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".Auth.PlanTyep.Plan_Detail_Screen"

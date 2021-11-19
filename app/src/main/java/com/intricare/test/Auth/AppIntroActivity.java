@@ -72,7 +72,7 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.tv_skip:
                 sessionManager.appIntro();
-                startActivity(new Intent(getApplicationContext(),Login1Activity.class));
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
                 break;
         }

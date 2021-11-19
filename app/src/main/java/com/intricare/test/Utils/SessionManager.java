@@ -5,10 +5,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.intricare.test.Auth.AppIntroActivity;
-import com.intricare.test.Auth.Login1Activity;
+import com.intricare.test.Auth.LoginActivity;
 import com.intricare.test.MainActivity;
 
 import java.util.HashMap;
@@ -62,7 +61,7 @@ public class SessionManager {
               Intent i = new Intent(_context, AppIntroActivity.class);
               _context.startActivity(i);
            }else {
-              Intent i = new Intent(_context, Login1Activity.class);
+              Intent i = new Intent(_context, LoginActivity.class);
               _context.startActivity(i);
           }
 

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_100sdp"
-        android:background="@drawable/otp_botom_shape"
+        android:background="@drawable/shape_white_top_left_right_30"
         android:orientation="vertical">
 
         <ScrollView
@@ -244,7 +244,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/btn_login"
+                    android:id="@+id/btn_signup"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_below="@+id/layout_phone"
@@ -252,11 +252,11 @@
                     android:layout_marginStart="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_40sdp"
                     android:layout_marginEnd="@dimen/_25sdp"
-                    android:background="@drawable/otp_button_shape"
+                    android:background="@drawable/shape_primary_back"
                     android:gravity="center"
                     android:letterSpacing="0.05"
                     android:text="@string/SignUp"
-                    android:textColor="@color/otp_background"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
 
@@ -264,7 +264,7 @@
                     android:id="@+id/lay_signup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/btn_login"
+                    android:layout_below="@+id/btn_signup"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_50sdp"
                     android:gravity="center"
@@ -283,6 +283,7 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/tv_Login"
                         style="@style/tv_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"

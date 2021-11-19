@@ -8,7 +8,7 @@
     android:background="@color/otp_background"
     >
     <LinearLayout
-        android:background="@drawable/shape_border_primary_white"
+        android:background="@drawable/shape_white_top_left_right_30"
         android:layout_marginTop="@dimen/_100sdp"
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -81,7 +81,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/_13sdp"
             android:textColor="@color/otp_background"
-            android:background="@drawable/shape_ffffff_top_left_right_corner"
+            android:background="@drawable/shape_white_25_corner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"></TextView>
 
