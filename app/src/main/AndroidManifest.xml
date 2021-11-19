@@ -23,6 +23,9 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Auth.SignupActivity"
+            android:exported="true" />
+        <activity
             android:name=".Auth.Login1Activity"
             android:exported="true" />
         <activity

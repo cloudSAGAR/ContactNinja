@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/otp_background"
     android:orientation="vertical"
-    tools:context=".Auth.Login1Activity">
+    tools:context=".Auth.SignupActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,14 +50,85 @@
                     android:text="@string/welcome_dis"
                     android:textColor="@color/otp_header_text_color" />
 
-
                 <LinearLayout
-                    android:id="@+id/layout_phone"
+                    android:id="@+id/layout_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_dis"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/edit_First"
+                            style="@style/tv_regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@null"
+                            android:gravity="center|left"
+                            android:hint="@string/enter_firstname"
+                            android:imeOptions="actionDone"
+                            android:inputType="textEmailAddress"
+                            android:padding="10dp"
+                            android:textColor="@color/otp_header_text_color"
+                            android:textColorHint="@color/otp_header_text_color"
+                            tools:ignore="Autofill,RtlHardcoded" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#A7A0A0" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/edit_Last"
+                            style="@style/tv_regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@null"
+                            android:gravity="center|left"
+                            android:hint="@string/enter_lastname"
+                            android:imeOptions="actionDone"
+                            android:inputType="textEmailAddress"
+                            android:padding="10dp"
+                            android:textColor="@color/otp_header_text_color"
+                            android:textColorHint="@color/otp_header_text_color"
+                            tools:ignore="Autofill,RtlHardcoded" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#A7A0A0" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_name"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:orientation="vertical"
                     android:padding="10dp">
@@ -104,8 +175,7 @@
                             android:textColor="@color/otp_header_text_color"
                             android:textColorHighlight="@color/purple_200"
                             android:textColorHint="@color/otp_header_text_color"
-                            android:textStyle="bold"
-                            tools:ignore="Autofill" />
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -131,8 +201,7 @@
                             android:inputType="textEmailAddress"
                             android:padding="10dp"
                             android:textColor="@color/otp_header_text_color"
-                            android:textColorHint="@color/otp_header_text_color"
-                            tools:ignore="Autofill,RtlHardcoded" />
+                            android:textColorHint="@color/otp_header_text_color" />
                     </LinearLayout>
 
                     <View
@@ -162,14 +231,13 @@
                             style="@style/tv_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
                             android:layout_gravity="end"
                             android:gravity="end"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/or_email"
                             android:textColor="@color/purple_200"
-                            android:textStyle="bold"
-                            tools:ignore="RelativeOverlap" />
+                            android:textStyle="bold" />
 
                     </RelativeLayout>
 
@@ -187,7 +255,7 @@
                     android:background="@drawable/otp_button_shape"
                     android:gravity="center"
                     android:letterSpacing="0.05"
-                    android:text="@string/signIn"
+                    android:text="@string/SignUp"
                     android:textColor="@color/otp_background"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
@@ -209,7 +277,7 @@
                         android:layout_gravity="center|end"
                         android:gravity="end|center"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/account_no"
+                        android:text="@string/account_yes"
                         android:textColor="@color/otp_header_text_color">
 
                     </TextView>
@@ -219,7 +287,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/signup"
+                        android:text="@string/login"
                         android:textColor="@color/otp_background"
                         android:textStyle="bold" />
                 </LinearLayout>

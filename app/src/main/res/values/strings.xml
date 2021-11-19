@@ -31,4 +31,11 @@
     <string name="invalid_email">Invalid Email</string>
     <string name="invalid_phone">Invalid Number</string>
 
+    <!--SignUp-->
+    <string name="SignUp">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="account_yes">Already have an account ?</string>
+    <string name="enter_firstname">First Name</string>
+    <string name="enter_lastname">Last Name</string>
+
 </resources>
