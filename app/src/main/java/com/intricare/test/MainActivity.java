@@ -3,12 +3,15 @@ package com.intricare.test;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +35,13 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.intricare.test.Model.InviteListData;
 import com.intricare.test.Utils.Global;
+import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
+import com.reddit.indicatorfastscroll.FastScrollerThumbView;
+import com.reddit.indicatorfastscroll.FastScrollerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +53,7 @@ public class MainActivity extends AppCompatActivity {
     InstallStateUpdatedListener installStateUpdatedListener;
     private AppUpdateManager mAppUpdateManager;
     private static int RC_APP_UPDATE = 0;
-
     ConstraintLayout mMainLayout;
-
-
     public static final int RequestPermissionCode = 1;
     Context mCtx;
     Cursor cursor;
@@ -56,31 +61,71 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<InviteListData> inviteListData=new ArrayList<>();
     RecyclerView rvinviteuserdetails;
     String userName, user_phone_number;
-
+    FastScrollerView fastscroller;
+    FastScrollerThumbView fastscroller_thumb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         IntentUI();
         UpdateManageCheck();
-
-
         EnableRuntimePermission();
-
         rvinviteuserdetails.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.VERTICAL, false));
         rvinviteuserdetails.setHasFixedSize(true);
         inviteListData.clear();
         userListDataAdapter = new UserListDataAdapter(this, mCtx, inviteListData);
         rvinviteuserdetails.setAdapter(userListDataAdapter);
         userListDataAdapter.notifyDataSetChanged();
+        //Faste View Code
+        fastscroller_thumb.setupWithFastScroller(fastscroller);
+        fastscroller.setUseDefaultScroller(false);
+        fastscroller.getItemIndicatorSelectedCallbacks().add(
+                new FastScrollerView.ItemIndicatorSelectedCallback() {
+                    @Override
+                    public void onItemIndicatorSelected(
+                            FastScrollItemIndicator indicator,
+                            int indicatorCenterY,
+                            int itemPosition
+                    ) {
+                        //Log.e("On Top ","Yes");
+                    }
+                }
+        );
+        fastscroller.setupWithRecyclerView(
+                rvinviteuserdetails,
+                (position) -> {
+                    // ItemModel item = data.get(position);
+                    return new FastScrollItemIndicator.Text(
+                            inviteListData.get(position).getUserName()                              .substring(0, 1)
+                                    .substring(0, 1)
+                                    .toUpperCase()// Grab the first letter and capitalize it
+                    );
+                }
+        );
     }
     public void EnableRuntimePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_CONTACTS)) {
-            // Toast.makeText(InviteActivity.this, "CONTACTS permission allows us to Access CONTACTS app", Toast.LENGTH_LONG).show();
-        } else {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, RequestPermissionCode);
-        }
-    }
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                GetContactsIntoArrayList();
+               // Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                //Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+
+        };
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.READ_CONTACTS)
+                .check();
+
+     }
 
     @Override
     public void onRequestPermissionsResult(int RC, String[] per, int[] PResult) {
@@ -93,28 +138,31 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             } else {
-                Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
+                Global.Messageshow(getApplicationContext(),mMainLayout,"Permission Canceled, Now your application cannot access CONTACTS",false);
+                startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts("package", getPackageName(), null)));
+               // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
             }
         }
     }
 
     public void GetContactsIntoArrayList() {
         cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-        while (cursor.moveToNext()) {
+         while (cursor.moveToNext()) {
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             inviteListData.add(new InviteListData( userName, user_phone_number));
             userListDataAdapter.notifyDataSetChanged();
-        }
+         }
         cursor.close();
     }
 
     private void IntentUI() {
         mMainLayout=findViewById(R.id.mMainLayout);
-        rvinviteuserdetails=findViewById(R.id.rvinviteuserdetails);
+        rvinviteuserdetails=findViewById(R.id.contect_list);
+        fastscroller=findViewById(R.id.fastscroller);
+        fastscroller_thumb=findViewById(R.id.fastscroller_thumb);
     }
 
     private void UpdateManageCheck() {
@@ -281,7 +329,14 @@ public class MainActivity extends AppCompatActivity {
                 userNumber = itemView.findViewById(R.id.user_number);
             }
 
-            }
-
         }
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        EnableRuntimePermission();
+        super.onBackPressed();
+    }
 }

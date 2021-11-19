@@ -10,6 +10,10 @@
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/custom_dialog_progess.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/invite_user_details.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/plus_footer_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/otp_botom_shape.xml" value="0.34933605720122574" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/otp_button_shape.xml" value="0.3703125" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_main.xml" value="0.3359375" />
       </map>
     </option>
   </component>

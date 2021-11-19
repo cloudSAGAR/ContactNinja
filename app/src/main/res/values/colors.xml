@@ -10,4 +10,7 @@
 
     <color name="red">#FF1100</color>
     <color name="green">#08910D</color>
+    <color name="otp_background">#5495EC</color>
+    <color name="otp_header_text_color">#777777</color>
+
 </resources>
