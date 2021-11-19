@@ -10,6 +10,10 @@
 
 
     <!--Intro screen-->
-    <string name="Skip">Skip</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="in_1">ContactNinja is a “Multi-Function CRM Tool” providing contact management, outreach support, lead and follow-up tracking, and flexible communications management.</string>
+    <string name="in_2">Use the most effective form of communication marketing to outperform your competition with contactninja Broadcasts</string>
+    <string name="in_3">Share your mission when you bring your business contact info to life on a virtual BZcard</string>
 
 </resources>

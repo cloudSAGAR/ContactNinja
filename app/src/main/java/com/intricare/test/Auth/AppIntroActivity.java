@@ -5,6 +5,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.intricare.test.R;
 
 
-public class AppIntroActivity extends AppCompatActivity {
+public class AppIntroActivity extends AppCompatActivity implements View.OnClickListener {
     ViewPager viewPager;
     int[] layouts;
     private MyViewPagerAdapter myViewPagerAdapter;
-    TextView slider_Text;
+    TextView slider_Text,tv_skip;
     TabLayout tab_layout;
 
     @Override
@@ -33,12 +34,12 @@ public class AppIntroActivity extends AppCompatActivity {
             }
 
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == 0) {
-                    slider_Text.setText("ContactNinja is a “Multi-Function CRM Tool” providing contact management, outreach support, lead and follow-up tracking, and flexible communications management.");
-                } else if (position == 1) {
-                    slider_Text.setText("Use the most effective form of communication marketing to outperform your competition with contactninja Broadcasts");
+                if (position == 0 || position == 1) {
+                    tv_skip.setText(getResources().getString(R.string.skip));
+                 //   slider_Text.setText(getResources().getString(R.string.in_1));
                 } else {
-                    slider_Text.setText("Share your mission when you bring your business contact info to life on a virtual BZcard");
+                    tv_skip.setText(getResources().getString(R.string.next));
+                    //slider_Text.setText(getResources().getString(R.string.in_3));
                 }
             }
 
@@ -52,6 +53,7 @@ public class AppIntroActivity extends AppCompatActivity {
         layouts = new int[]{R.layout.welcome_slide_1, R.layout.welcome_slide_2, R.layout.welcome_slide_3};
 
         slider_Text = findViewById(R.id.tv_dis);
+        tv_skip = findViewById(R.id.tv_skip);
         viewPager = findViewById(R.id.viewPager);
         tab_layout = findViewById(R.id.tab_layout);
         myViewPagerAdapter = new MyViewPagerAdapter(slider_Text);
@@ -59,7 +61,19 @@ public class AppIntroActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(layouts.length);
         tab_layout.setupWithViewPager(viewPager);
 
+        tv_skip.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_skip:
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
+                break;
+        }
+    }
+
     class MyViewPagerAdapter extends PagerAdapter {
 
         private LayoutInflater layoutInflater;
