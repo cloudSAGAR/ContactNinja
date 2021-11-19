@@ -1,9 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".test.Auth.LoginActivity">
+    android:orientation="vertical"
+    android:background="@color/otp_background"
+    >
+    <LinearLayout
+        android:background="@drawable/otp_botom_shape"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_gravity="center|top"
+            android:gravity="center|top"
+            android:textSize="@dimen/_16sdp"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter The Code We just \n Texted you "
+            android:textColor="@color/otp_header_text_color">
+        </TextView>
+        <LinearLayout
+            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <com.chaos.view.PinView
+                android:id="@+id/firstPinView"
+                style="@style/PinWidget.PinView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cursorVisible="true"
+                android:hint="123456"
+                android:inputType="text"
+                android:textColor="@color/otp_header_text_color"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                app:cursorWidth="2dp"
+                app:hideLineWhenFilled="true"
+                app:itemCount="6"
+                app:itemHeight="48dp"
+                app:itemSpacing="10dp"
+                app:itemWidth="48dp"
+                app:lineColor="@color/otp_header_text_color"
+                app:viewType="line" />
+        </LinearLayout>
+        <TextView
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:text="Verfiy"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/_13sdp"
+            android:letterSpacing="0.05"
+            android:textColor="@color/otp_background"
+            android:background="@drawable/otp_button_shape"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"></TextView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="center|end"
+                android:gravity="end|center"
+                android:text="Didn't get code ?"
+                android:textColor="@color/otp_header_text_color"
+                android:textSize="@dimen/_12sdp"
+                android:letterSpacing="0.05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:layout_marginStart="@dimen/_5sdp"
+                android:textColor="@color/otp_background"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                android:text="Resend"
+                android:letterSpacing="0.05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_55sdp"
+        android:src="@drawable/ic_group_otp_logo"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp">
+
+    </ImageView>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

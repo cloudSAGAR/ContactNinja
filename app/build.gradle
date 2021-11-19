@@ -75,4 +75,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     implementation "androidx.multidex:multidex:2.0.1"
 
+    //Permission Lib
+    implementation 'gun0912.ted:tedpermission:2.1.1'
+
+    //Faste Scroll View Lib
+    implementation 'com.reddit:indicator-fast-scroll:1.4.0'
+    implementation 'com.mindorks:placeholderview:0.7.2'
+    //Pin View Use For Otp
+    implementation 'io.github.chaosleung:pinview:1.4.4'
+
 }
