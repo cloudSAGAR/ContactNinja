@@ -7,4 +7,9 @@
     <string name="back_button">Please click BACK again to exit.</string>
     <string name="appUpdate">Contact Ninja has downloaded an update</string>
     <string name="install">Install</string>
+
+
+    <!--Intro screen-->
+    <string name="Skip">Skip</string>
+
 </resources>

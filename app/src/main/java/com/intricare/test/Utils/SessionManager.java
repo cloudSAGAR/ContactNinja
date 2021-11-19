@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.intricare.test.Auth.AppIntroActivity;
 import com.intricare.test.MainActivity;
 
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class SessionManager {
     public void checkLogin() {
         // Check login status
         if (!this.isLoggedIn()) {
-            Intent i = new Intent(_context, MainActivity.class);
+            Intent i = new Intent(_context, AppIntroActivity.class);
             _context.startActivity(i);
         } else {
             Intent i = new Intent(_context, MainActivity.class);
