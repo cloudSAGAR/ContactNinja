@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,10 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +34,7 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.intricare.test.Auth.VerificationActivity;
 import com.intricare.test.Model.InviteListData;
 import com.intricare.test.Utils.Global;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
@@ -124,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.READ_CONTACTS)
                 .check();
+
+        startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
 
      }
 
@@ -250,13 +250,13 @@ public class MainActivity extends AppCompatActivity {
             implements Filterable {
 
         public Activity mCtx;
-        private final Context mcntx;
-        private List<InviteListData> userDetails;
-        private List<InviteListData> userDetailsfull;
-        private Filter exampleFilter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                List<InviteListData> filteredList = new ArrayList<>();
+           private final Context mcntx;
+                private List<InviteListData> userDetails;
+                private List<InviteListData> userDetailsfull;
+                private Filter exampleFilter = new Filter() {
+                    @Override
+                    protected FilterResults performFiltering(CharSequence constraint) {
+                        List<InviteListData> filteredList = new ArrayList<>();
                 if (constraint == null || constraint.length() == 0) {
                     filteredList.addAll(userDetailsfull);
                 } else {

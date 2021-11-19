@@ -29,10 +29,19 @@
             android:name=".Auth.Login1Activity"
             android:exported="true" />
         <activity
+            android:name=".Auth.PlanTyep.Plan_Detail_Screen"
+            android:exported="false" />
+        <activity
+            android:name=".Auth.PlanTyep.PlanType_Screen"
+            android:exported="false" />
+        <activity
+            android:name=".Auth.Thankyou_Screen"
+            android:exported="false" />
+        <activity
             android:name=".Auth.AppIntroActivity"
             android:exported="true" />
         <activity
-            android:name=".Auth.LoginActivity"
+            android:name=".Auth.VerificationActivity"
             android:exported="true" />
         <activity
             android:name=".Auth.SplashActivity"

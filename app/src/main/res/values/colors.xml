@@ -17,5 +17,8 @@
     <color name="text_welcome">#484848</color>
     <color name="tv_medium">#4A4A4A</color>
     <color name="tv_regular">#828282</color>
+    <color name="tv_otp_validation">#F64F50</color>
+    <color name="plan_shpe_border">#D9DCE1</color>
+    <color name="plan_price_text_color">#484848</color>
 
 </resources>

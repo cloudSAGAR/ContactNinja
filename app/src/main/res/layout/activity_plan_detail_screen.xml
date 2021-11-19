@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Auth.Thankyou_Screen">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_above="@+id/start_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
+                        android:layout_marginStart="-27dp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:src="@drawable/ic_group_otp_logo"></ImageView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_main_text"
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:gravity="center|left"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:textStyle="bold"
+                    android:text="@string/plan_deatil_header_text"
+                    android:textColor="@color/tv_medium"></TextView>
+
+                <TextView
+                    android:id="@+id/tv_sub_titale"
+                    style="@style/tv_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:gravity="center|left"
+                    android:text="@string/thanks_info_text"
+                    android:textColor="@color/tv_regular"></TextView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/plan_condition"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+
+
+
+
+
+            </LinearLayout>
+
+        <TextView
+            android:id="@+id/start_button"
+            style="@style/tv_regular"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="top"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:background="@drawable/shape_primary_back"
+            android:gravity="center"
+            android:text="@string/plan_deatil_button_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"></TextView>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/selected_layout"
+        android:layout_width="fill_parent"
+        android:layout_gravity="center|left"
+        android:gravity="center|left"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <ImageView
+            android:id="@+id/plan_selected_or_not"
+            android:src="@drawable/ic_planselected"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"></ImageView>
+        <TextView
+
+            android:layout_marginStart="@dimen/_12sdp"
+            android:id="@+id/check_text"
+            android:textColor="@color/tv_medium"
+            style="@style/tv_regular"
+            android:text=""
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/unselected_layout"
+        android:layout_width="fill_parent"
+        android:layout_gravity="center|left"
+        android:gravity="center|left"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <ImageView
+            android:id="@+id/plan_selected_or_not1"
+            android:src="@drawable/ic_planuncheck"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"></ImageView>
+        <TextView
+
+            android:layout_marginStart="@dimen/_12sdp"
+            android:id="@+id/check_text1"
+            android:textColor="@color/tv_medium"
+            style="@style/tv_regular"
+            android:text=""
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
+
+    </LinearLayout>
+
+</LinearLayout>

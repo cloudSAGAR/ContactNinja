@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.intricare.test.Auth.AppIntroActivity;
 import com.intricare.test.Auth.Login1Activity;
@@ -16,7 +17,7 @@ public class SessionManager {
     private static final String PREF_NAME = "jainaPref";
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String IS_APPITRO = "Isintro";
-    private final SharedPreferences pref;
+    private  SharedPreferences pref;
     private final SharedPreferences.Editor editor;
     private final Context _context;
 
@@ -26,6 +27,7 @@ public class SessionManager {
      * */
     public static final String KEY_User = "User";
     public static final String KEY_Token = "token";
+    public static final String Plan_type ="plan_type";
 
 
     // Constructor
@@ -115,5 +117,22 @@ public class SessionManager {
     public boolean isAppIntroIn() {
         return pref.getBoolean(IS_APPITRO, true);
     }
+
+
+
+
+
+
+    /*public  String getplan_type(Context context) {
+
+        String type= pref.getString(Plan_type, "");
+        return  type;
+
+    }
+
+    public  void setplan_type(String plantype) {
+        editor.putString(Plan_type, plantype);
+        editor.commit();
+    }*/
 
 }
