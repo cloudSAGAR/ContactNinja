@@ -36,6 +36,8 @@ public class Plan_Detail_Screen extends AppCompatActivity {
     int flag=0;
     Plandetail plandetail;
     List<Plandetail.Plansublist> plansublists;
+    ImageView tv_back;
+
 
 
 
@@ -54,6 +56,12 @@ public class Plan_Detail_Screen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Thankyou_Screen.class));
+            }
+        });
+        tv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -425,6 +433,7 @@ public class Plan_Detail_Screen extends AppCompatActivity {
         plandetailslist=new ArrayList<>();
         plansublists=new ArrayList<>();
         start_button=findViewById(R.id.start_button);
+        tv_back=findViewById(R.id.tv_back);
 
        }
 

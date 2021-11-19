@@ -57,7 +57,7 @@
     <!--Plan Type-->
     <string name="plan_type_text">Plan Type</string>
     <string name="plan_text_free_card">Ninja Free Card</string>
-    <string name="plan_text_free">Free</string>
+    <string name="plan_text_free">Free  </string>
     <string name="plan_text_bz_card">Ninja BZcard</string>
     <string name="plan_text_bz">$9.95</string>
     <string name="plan_text_master">$39.95</string>

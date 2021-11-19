@@ -32,7 +32,7 @@
                 android:layout_height="@dimen/_135sdp"
                 android:layout_marginStart="-27dp"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:src="@drawable/ic_group_otp_logo"></ImageView>
+                android:src="@drawable/ic_group_otp_logo" />
         </LinearLayout>
 
         <TextView
@@ -44,7 +44,7 @@
             android:gravity="center|left"
             android:paddingStart="@dimen/_25sdp"
             android:text="@string/plan_type_text"
-            android:textColor="@color/tv_medium"></TextView>
+            android:textColor="@color/tv_medium" />
 
        <LinearLayout
            android:id="@+id/layout_free_card"
@@ -55,6 +55,7 @@
            android:layout_height="@dimen/_47sdp"
            android:layout_marginEnd="@dimen/_18sdp"
            android:layout_marginStart="@dimen/_18sdp">
+
            <TextView
                android:layout_weight="1"
                style="@style/tv_regular"
@@ -67,7 +68,8 @@
                android:textColor="@color/purple_200"
                android:textSize="@dimen/_13sdp"
                android:textStyle="bold"
-               app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+               app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
            <TextView
                android:layout_weight="1"
                style="@style/tv_regular"
@@ -80,7 +82,7 @@
                android:textColor="@color/purple_200"
                android:textSize="@dimen/_13sdp"
                android:textStyle="bold"
-               app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+               app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
        </LinearLayout>
 
@@ -93,6 +95,7 @@
             android:layout_height="@dimen/_47sdp"
             android:layout_marginEnd="@dimen/_18sdp"
             android:layout_marginStart="@dimen/_18sdp">
+
             <TextView
                 android:layout_weight="1"
                 style="@style/tv_regular"
@@ -105,7 +108,8 @@
                 android:textColor="@color/purple_200"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
             <TextView
                 android:layout_weight="1"
                 style="@style/tv_regular"
@@ -118,7 +122,7 @@
                 android:textColor="@color/plan_price_text_color"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         </LinearLayout>
 
@@ -131,6 +135,7 @@
             android:layout_height="@dimen/_47sdp"
             android:layout_marginEnd="@dimen/_18sdp"
             android:layout_marginStart="@dimen/_18sdp">
+
             <TextView
                 android:layout_weight="1"
                 style="@style/tv_regular"
@@ -143,7 +148,8 @@
                 android:textColor="@color/purple_200"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
             <TextView
                 android:layout_weight="1"
                 style="@style/tv_regular"
@@ -156,7 +162,7 @@
                 android:textColor="@color/plan_price_text_color"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         </LinearLayout>
 
@@ -170,6 +176,7 @@
             android:layout_height="@dimen/_47sdp"
             android:layout_marginEnd="@dimen/_18sdp"
             android:layout_marginStart="@dimen/_18sdp">
+
             <TextView
                 android:layout_weight="1"
                 style="@style/tv_regular"
@@ -182,7 +189,8 @@
                 android:textColor="@color/purple_200"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
             <TextView
                 android:layout_weight="1"
                 style="@style/tv_regular"
@@ -195,7 +203,7 @@
                 android:textColor="@color/plan_price_text_color"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         </LinearLayout>
 

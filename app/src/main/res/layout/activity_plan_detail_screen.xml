@@ -22,15 +22,22 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
+                    <ImageView
+                        android:id="@+id/tv_back"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:src="@drawable/ic_back" />
                     <ImageView
                         android:layout_width="@dimen/_70sdp"
                         android:layout_height="@dimen/_70sdp"
                         android:layout_marginStart="-27dp"
-                        android:layout_marginTop="@dimen/_30sdp"
-                        android:src="@drawable/ic_group_otp_logo"></ImageView>
+                        android:layout_marginTop="@dimen/_25sdp"
+                        android:src="@drawable/ic_group_otp_logo" />
                 </LinearLayout>
 
                 <TextView
@@ -44,7 +51,7 @@
                     android:paddingStart="@dimen/_20sdp"
                     android:textStyle="bold"
                     android:text="@string/plan_deatil_header_text"
-                    android:textColor="@color/tv_medium"></TextView>
+                    android:textColor="@color/tv_medium" />
 
                 <TextView
                     android:id="@+id/tv_sub_titale"
@@ -57,7 +64,7 @@
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:gravity="center|left"
                     android:text="@string/thanks_info_text"
-                    android:textColor="@color/tv_regular"></TextView>
+                    android:textColor="@color/tv_regular" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/plan_condition"
@@ -65,7 +72,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="match_parent" />
 
 
 
@@ -88,7 +95,7 @@
             android:text="@string/plan_deatil_button_text"
             android:textColor="@color/white"
             android:textSize="@dimen/_13sdp"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
