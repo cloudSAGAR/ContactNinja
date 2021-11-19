@@ -16,4 +16,19 @@
     <string name="in_2">Use the most effective form of communication marketing to outperform your competition with contactninja Broadcasts</string>
     <string name="in_3">Share your mission when you bring your business contact info to life on a virtual BZcard</string>
 
+
+    <!--Login-->
+    <string name="welcome">Welcome to \n Contact Ninja!</string>
+    <string name="welcome_dis">Helping you keep your contacts informed in the easiest and fastest way possible.</string>
+    <string name="account_no">Don\'t have an account?</string>
+    <string name="signup">Signup</string>
+    <string name="signIn">Sign In</string>
+    <string name="enter_phone">Enter your phone</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="or_email">or use email-id</string>
+    <string name="or_phone">or use phone number</string>
+    <string name="terms">I have read and agree to <br>\nContact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="invalid_phone">Invalid Number</string>
+
 </resources>

@@ -14,6 +14,7 @@
     <color name="otp_background">#5495EC</color>
     <color name="otp_header_text_color">#777777</color>
     <color name="gray_C4C4C4">#C4C4C4</color>
+    <color name="text_welcome">#484848</color>
     <color name="tv_medium">#4A4A4A</color>
     <color name="tv_regular">#828282</color>
 

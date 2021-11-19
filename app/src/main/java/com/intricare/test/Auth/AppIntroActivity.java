@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.intricare.test.R;
+import com.intricare.test.Utils.SessionManager;
 
 
 public class AppIntroActivity extends AppCompatActivity implements View.OnClickListener {
@@ -22,11 +23,13 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
     private MyViewPagerAdapter myViewPagerAdapter;
     TextView slider_Text,tv_skip;
     TabLayout tab_layout;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_intro);
+        sessionManager=new SessionManager(AppIntroActivity.this);
         initUI();
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             public void onPageScrollStateChanged(int state) {
@@ -68,7 +71,8 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_skip:
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                sessionManager.appIntro();
+                startActivity(new Intent(getApplicationContext(),Login1Activity.class));
                 finish();
                 break;
         }

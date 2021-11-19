@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "798777205930-71ervpkmvpompjpv3eg76485ok3rnsl4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intricare.test",
+            "certificate_hash": "bb8fae4357286119a87c4847df0abd926d0f1b4c"
+          }
+        },
+        {
           "client_id": "798777205930-v9u8s4o149ure23jevtumklf1fpn09h8.apps.googleusercontent.com",
           "client_type": 3
         }

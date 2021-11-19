@@ -6,6 +6,8 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.SystemClock;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -133,6 +135,11 @@ public class Global extends Application   {
     return click;
     }
 
-
+    public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            return Patterns.PHONE.matcher(phoneNumber).matches();
+        }
+        return false;
+    }
 
 }

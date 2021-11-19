@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.intricare.test.Auth.AppIntroActivity;
+import com.intricare.test.Auth.Login1Activity;
 import com.intricare.test.MainActivity;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 public class SessionManager {
     private static final String PREF_NAME = "jainaPref";
     private static final String IS_LOGIN = "IsLoggedIn";
+    private static final String IS_APPITRO = "Isintro";
     private final SharedPreferences pref;
     private final SharedPreferences.Editor editor;
     private final Context _context;
@@ -40,6 +42,10 @@ public class SessionManager {
         editor.putBoolean(IS_LOGIN, true);
         editor.commit();
     }
+    public void appIntro() {
+        editor.putBoolean(IS_APPITRO, false);
+        editor.commit();
+    }
 
 
     /**
@@ -50,8 +56,14 @@ public class SessionManager {
     public void checkLogin() {
         // Check login status
         if (!this.isLoggedIn()) {
-            Intent i = new Intent(_context, AppIntroActivity.class);
-            _context.startActivity(i);
+          if (this.isAppIntroIn()) {
+              Intent i = new Intent(_context, AppIntroActivity.class);
+              _context.startActivity(i);
+           }else {
+              Intent i = new Intent(_context, Login1Activity.class);
+              _context.startActivity(i);
+          }
+
         } else {
             Intent i = new Intent(_context, MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -99,6 +111,9 @@ public class SessionManager {
     // Get Login State
     public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
+    }
+    public boolean isAppIntroIn() {
+        return pref.getBoolean(IS_APPITRO, true);
     }
 
 }
