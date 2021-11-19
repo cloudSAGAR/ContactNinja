@@ -172,12 +172,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_login:
                 if (checkVelidaction()) {
-                     loadingDialog.showLoadingDialog();
-                     if(is_PhoneShow){
+                     startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
+                     //loadingDialog.showLoadingDialog();
+                    /* if(is_PhoneShow){
                          VerifyPhone(edit_Mobile.getText().toString().trim());
                      }else {
 
-                     }
+                     }*/
                 }
 
 

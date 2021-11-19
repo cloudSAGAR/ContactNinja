@@ -27,8 +27,9 @@ public class VerificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
-        EnableRuntimePermission();
+
         IntentUI();
+        EnableRuntimePermission();
         verfiy_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +70,7 @@ public class VerificationActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.RECEIVE_SMS)
                 .check();
 
-        startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
+        //startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
 
     }
 

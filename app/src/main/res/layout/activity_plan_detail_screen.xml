@@ -27,16 +27,16 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/tv_back"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_15sdp"
-                        android:layout_marginTop="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:src="@drawable/ic_back" />
                     <ImageView
                         android:layout_width="@dimen/_70sdp"
                         android:layout_height="@dimen/_70sdp"
                         android:layout_marginStart="-27dp"
-                        android:layout_marginTop="@dimen/_25sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:src="@drawable/ic_group_otp_logo" />
                 </LinearLayout>
 
@@ -89,7 +89,7 @@
             android:layout_gravity="top"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
             android:background="@drawable/shape_primary_back"
             android:gravity="center"
             android:text="@string/plan_deatil_button_text"

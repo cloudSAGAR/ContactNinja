@@ -21,6 +21,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
     private void initUI() {
         btn_getStarted=findViewById(R.id.btn_getStarted);
+        btn_getStarted.setOnClickListener(this);
     }
 
     @Override
