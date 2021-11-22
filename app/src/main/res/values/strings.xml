@@ -78,4 +78,6 @@
 Number</string>
     <string name="phone_dis">Adding phone number gives an additional
  security layer for your Contact Ninja Account.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

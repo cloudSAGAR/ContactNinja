@@ -31,6 +31,7 @@ import com.intricare.test.Auth.PlanTyep.PlanType_Screen;
 import com.intricare.test.R;
 import com.intricare.test.Utils.LoadingDialog;
 import com.intricare.test.Utils.OTP_Receiver;
+import com.intricare.test.Utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -50,13 +51,14 @@ public class VerificationActivity extends AppCompatActivity {
     int second;
     private long mLastClickTime = 0;
     LoadingDialog loadingDialog;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
         mAuth = FirebaseAuth.getInstance();
-
+        sessionManager =new SessionManager(this);
         IntentUI();
         EnableRuntimePermission();
 
@@ -129,7 +131,7 @@ public class VerificationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             tc_wrong.setVisibility(View.GONE);
-
+                            sessionManager.login();
                             loadingDialog.cancelLoading();
                             Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
                             startActivity(i);

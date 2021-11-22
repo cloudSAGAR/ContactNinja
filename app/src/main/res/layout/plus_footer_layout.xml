@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="@dimen/_80sdp"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
+        android:background="@drawable/shape_bouttom_sheet_bg_all_right_30"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/_10sdp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -20,10 +22,11 @@
             android:orientation="vertical">
 
             <ImageView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/llHome"
                 style="@style/home_select"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
         </LinearLayout>
@@ -38,10 +41,11 @@
             android:orientation="vertical">
 
             <ImageView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/llsend"
                 style="@style/send_"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
         </LinearLayout>
@@ -57,10 +61,11 @@
             android:orientation="vertical">
 
             <ImageView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/llContact"
                 style="@style/contact_"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
 
@@ -75,10 +80,11 @@
             android:orientation="vertical">
 
             <ImageView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/llUser"
                 style="@style/user_"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
 
@@ -87,8 +93,8 @@
 
     <LinearLayout
         android:id="@+id/llCreate"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginStart="5dp"
@@ -103,9 +109,10 @@
 
         <ImageView
             android:id="@+id/iv_create_room"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center" />
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_plus" />
 
     </LinearLayout>
 

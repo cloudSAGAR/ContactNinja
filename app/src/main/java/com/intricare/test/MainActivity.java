@@ -1,6 +1,7 @@
 package com.intricare.test;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,19 +11,27 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +46,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.intricare.test.Auth.VerificationActivity;
 import com.intricare.test.Model.InviteListData;
+import com.intricare.test.Utils.App;
 import com.intricare.test.Utils.Global;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
@@ -45,7 +55,7 @@ import com.reddit.indicatorfastscroll.FastScrollerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /*
      * in-app update
      * */
@@ -54,12 +64,22 @@ public class MainActivity extends AppCompatActivity {
     private static int RC_APP_UPDATE = 0;
     RelativeLayout mMainLayout;
     public static final int RequestPermissionCode = 1;
-    Context mCtx;
-    Cursor cursor;
-    public static UserListDataAdapter userListDataAdapter;
-    public static ArrayList<InviteListData> inviteListData=new ArrayList<>();
-    RecyclerView rvinviteuserdetails;
-    String userName, user_phone_number;
+    ImageView llHome, llsend, llContact, llUser;
+    FrameLayout frameLayout;
+    private long mLastClickTime = 0;
+
+
+    //Declare Variabls for fragment
+    public static int navItemIndex = 0;
+    private boolean shouldLoadHomeFragOnBackPress = true;
+    private static final String TAG_HOME = "home";
+    private static final String TAG_SEND = "send";
+    private static final String TAG_Contact = "contact";
+    private static final String TAG_USER = "user";
+    public static String CURRENT_TAG = TAG_HOME;
+    boolean doubleBackToExitPressedOnce = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,21 +87,19 @@ public class MainActivity extends AppCompatActivity {
         IntentUI();
         UpdateManageCheck();
         EnableRuntimePermission();
-        rvinviteuserdetails.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.VERTICAL, false));
-        rvinviteuserdetails.setHasFixedSize(true);
-        inviteListData.clear();
-        userListDataAdapter = new UserListDataAdapter(this, mCtx, inviteListData);
-        rvinviteuserdetails.setAdapter(userListDataAdapter);
-        userListDataAdapter.notifyDataSetChanged();
 
+        navItemIndex = 0;
+        CURRENT_TAG = TAG_HOME;
+        displayView();
+        ImageSetLight("Home");
     }
+
     public void EnableRuntimePermission() {
 
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                GetContactsIntoArrayList();
-               // Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -97,9 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.READ_CONTACTS)
                 .check();
 
-        startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
 
-     }
+    }
 
     @Override
     public void onRequestPermissionsResult(int RC, String[] per, int[] PResult) {
@@ -108,33 +125,33 @@ public class MainActivity extends AppCompatActivity {
         if (RC == RequestPermissionCode) {
             if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
                 try {
-                    GetContactsIntoArrayList();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
-                Global.Messageshow(getApplicationContext(),mMainLayout,"Permission Canceled, Now your application cannot access CONTACTS",false);
+                Global.Messageshow(getApplicationContext(), mMainLayout, "Permission Canceled, Now your application cannot access CONTACTS", false);
                 startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                         Uri.fromParts("package", getPackageName(), null)));
-               // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
+                // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    public void GetContactsIntoArrayList() {
-        cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-         while (cursor.moveToNext()) {
-            userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            inviteListData.add(new InviteListData( userName, user_phone_number));
-            userListDataAdapter.notifyDataSetChanged();
-         }
-        cursor.close();
-    }
 
     private void IntentUI() {
-        mMainLayout=findViewById(R.id.mMainLayout);
+        mMainLayout = findViewById(R.id.mMainLayout);
 
+        llHome = findViewById(R.id.llHome);
+        llContact = findViewById(R.id.llContact);
+        llsend = findViewById(R.id.llsend);
+        llUser = findViewById(R.id.llUser);
+        frameLayout = findViewById(R.id.frameContainer);
+
+
+        llHome.setOnClickListener(this);
+        llContact.setOnClickListener(this);
+        llsend.setOnClickListener(this);
+        llUser.setOnClickListener(this);
     }
 
     private void UpdateManageCheck() {
@@ -146,17 +163,17 @@ public class MainActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        if(Global.IsNotNull(info)){
+        if (Global.IsNotNull(info)) {
             RC_APP_UPDATE = info.versionCode;
         }
 
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
     }
-
 
 
     @Override
@@ -173,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
 
 
         mAppUpdateManager.registerListener(installStateUpdatedListener);
@@ -196,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void popupSnackbarForCompleteUpdate() {
 
         Snackbar snackbar =
@@ -215,100 +232,133 @@ public class MainActivity extends AppCompatActivity {
         snackbar.show();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void ImageSetLight(String imageName) {
+        switch (imageName) {
+            case "Home":
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_home));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_contacts));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_user));
+                break;
+            case "Send":
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_home));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_contacts));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_user));
+                break;
+            case "Contact":
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_home));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_contacts));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_user));
+                break;
+            case "User":
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_home));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_contacts));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_user));
+        }
+    }
 
-
-
-    public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
-            implements Filterable {
-
-        public Activity mCtx;
-           private final Context mcntx;
-                private List<InviteListData> userDetails;
-                private List<InviteListData> userDetailsfull;
-                private Filter exampleFilter = new Filter() {
-                    @Override
-                    protected FilterResults performFiltering(CharSequence constraint) {
-                        List<InviteListData> filteredList = new ArrayList<>();
-                if (constraint == null || constraint.length() == 0) {
-                    filteredList.addAll(userDetailsfull);
-                } else {
-                    String userName = constraint.toString().toLowerCase().trim();
-                    String userNumber = constraint.toString().toLowerCase().trim();
-                    for (InviteListData item : userDetailsfull) {
-                        if (item.getUserName().toLowerCase().contains(userName)
-                                || item.getUserPhoneNumber().toLowerCase().contains(userNumber)) {
-                            filteredList.add(item);
-                        }
-                    }
+    @Override
+    public void onBackPressed() {
+        if (shouldLoadHomeFragOnBackPress) {
+                if (navItemIndex != 0) {
+                    navItemIndex = 0;
+                    CURRENT_TAG = TAG_HOME;
+                    displayView();
+                    ImageSetLight("Home");
+                    return;
                 }
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                userDetails.clear();
-                userDetails.addAll((List<InviteListData>) results.values);
-                notifyDataSetChanged();
-            }
-        };
-
-        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<InviteListData> userDetails) {
-            this.mcntx = mCtx;
-            this.mCtx = Ctx;
-            this.userDetails = userDetails;
-            userDetailsfull = new ArrayList<>(userDetails);
-        }
-
-        @NonNull
-        @Override
-        public InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.invite_user_details, parent, false);
-            return new InviteListDataclass(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
-            InviteListData inviteUserDetails = userDetails.get(position);
-
-            holder.userName.setText(inviteUserDetails.getUserName());
-
-            holder.userNumber.setText(inviteUserDetails.getUserPhoneNumber());
 
         }
+        if (doubleBackToExitPressedOnce) {
+            App.isFirstTime = true;
+            super.onBackPressed();
+            return;
+        } else {
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
-        @Override
-        public int getItemCount() {
-            return userDetails.size();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         }
+    }
 
-        @Override
-        public Filter getFilter() {
-            return exampleFilter;
+    @Override
+    public void onClick(View v) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+            return;
         }
+        mLastClickTime = SystemClock.elapsedRealtime();
+        switch (v.getId()) {
+            case R.id.llHome:
+                navItemIndex = 0;
+                CURRENT_TAG = TAG_HOME;
+                displayView();
 
-        public  class InviteListDataclass extends RecyclerView.ViewHolder {
+                ImageSetLight("Home");
 
-            ImageView userImage;
-            TextView userName, userNumber;
 
-            public InviteListDataclass(@NonNull View itemView) {
-                super(itemView);
+                break;
+            case R.id.llsend:
+                navItemIndex = 1;
+                CURRENT_TAG = TAG_Contact;
+                displayView();
 
-                userName = itemView.findViewById(R.id.username);
-                userNumber = itemView.findViewById(R.id.user_number);
-            }
+                ImageSetLight("Send");
+
+
+                break;
+            case R.id.llContact:
+                navItemIndex = 2;
+                CURRENT_TAG = TAG_SEND;
+                displayView();
+
+                ImageSetLight("Contact");
+
+
+                break;
+            case R.id.llUser:
+                navItemIndex = 3;
+                CURRENT_TAG = TAG_USER;
+                displayView();
+
+                ImageSetLight("User");
+
+                break;
 
         }
 
     }
 
+    public void displayView() {
+        Fragment fragment = null;
+        switch (navItemIndex) {
+            case 0:
+                fragment = new HomeFragment();
+                break;
+            case 1:
+                fragment = new SendFragment();
+                break;
+            case 2:
+                //fragment = new ExploreFragment();
+                break;
+            case 3:
+                fragment = new UsetProgileFragment();
+                break;
+        }
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer, fragment, CURRENT_TAG);
+            fragmentTransaction.commitAllowingStateLoss();
+        }
 
-    @Override
-    public void onBackPressed() {
-        EnableRuntimePermission();
-        super.onBackPressed();
     }
 }

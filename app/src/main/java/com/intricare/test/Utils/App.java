@@ -11,6 +11,7 @@ import com.intricare.test.R;
 
 public class App extends MultiDexApplication {
     Activity activity;
+    public static boolean isFirstTime = true;
 
     @SuppressLint("MissingPermission")
     @Override
