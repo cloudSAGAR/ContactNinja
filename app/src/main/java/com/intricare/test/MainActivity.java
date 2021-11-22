@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     InstallStateUpdatedListener installStateUpdatedListener;
     private AppUpdateManager mAppUpdateManager;
     private static int RC_APP_UPDATE = 0;
-    ConstraintLayout mMainLayout;
+    RelativeLayout mMainLayout;
     public static final int RequestPermissionCode = 1;
     Context mCtx;
     Cursor cursor;
@@ -59,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<InviteListData> inviteListData=new ArrayList<>();
     RecyclerView rvinviteuserdetails;
     String userName, user_phone_number;
-    FastScrollerView fastscroller;
-    FastScrollerThumbView fastscroller_thumb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,32 +73,7 @@ public class MainActivity extends AppCompatActivity {
         userListDataAdapter = new UserListDataAdapter(this, mCtx, inviteListData);
         rvinviteuserdetails.setAdapter(userListDataAdapter);
         userListDataAdapter.notifyDataSetChanged();
-        //Faste View Code
-        fastscroller_thumb.setupWithFastScroller(fastscroller);
-        fastscroller.setUseDefaultScroller(false);
-        fastscroller.getItemIndicatorSelectedCallbacks().add(
-                new FastScrollerView.ItemIndicatorSelectedCallback() {
-                    @Override
-                    public void onItemIndicatorSelected(
-                            FastScrollItemIndicator indicator,
-                            int indicatorCenterY,
-                            int itemPosition
-                    ) {
-                        //Log.e("On Top ","Yes");
-                    }
-                }
-        );
-        fastscroller.setupWithRecyclerView(
-                rvinviteuserdetails,
-                (position) -> {
-                    // ItemModel item = data.get(position);
-                    return new FastScrollItemIndicator.Text(
-                            inviteListData.get(position).getUserName().substring(0, 1)
-                                    .substring(0, 1)
-                                    .toUpperCase()// Grab the first letter and capitalize it
-                    );
-                }
-        );
+
     }
     public void EnableRuntimePermission() {
 
@@ -160,9 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void IntentUI() {
         mMainLayout=findViewById(R.id.mMainLayout);
-        rvinviteuserdetails=findViewById(R.id.contect_list);
-        fastscroller=findViewById(R.id.fastscroller);
-        fastscroller_thumb=findViewById(R.id.fastscroller_thumb);
+
     }
 
     private void UpdateManageCheck() {
