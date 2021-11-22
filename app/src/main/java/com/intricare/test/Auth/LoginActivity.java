@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
                 Log.e(TAG, "onVerificationFailed", e);
+                loadingDialog.cancelLoading();
 
                 Toast.makeText(getApplicationContext(), "VERIFY FAILED", Toast.LENGTH_LONG).show();
 
@@ -105,13 +106,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                loadingDialog.cancelLoading();
+                String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
 
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
-                Log.e(TAG, "onCodeSent:" + verificationId);
-                startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
-                // Save verification ID and resending token so we can use them later
+                Intent intent=new Intent(getApplicationContext(),VerificationActivity.class);
+                intent.putExtra("v_id",verificationId);
+                intent.putExtra("mobile",edit_Mobile.getText().toString());
+                intent.putExtra("countrycode",countryCode);
+                startActivity(intent);
+
 
             }
         };
@@ -177,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:
                 if (checkVelidaction()) {
                     // startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
-                     //loadingDialog.showLoadingDialog();
+                     loadingDialog.showLoadingDialog();
                      if(is_PhoneShow){
                          VerifyPhone(edit_Mobile.getText().toString().trim());
                      }else {

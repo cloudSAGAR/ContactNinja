@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 (position) -> {
                     // ItemModel item = data.get(position);
                     return new FastScrollItemIndicator.Text(
-                            inviteListData.get(position).getUserName()                              .substring(0, 1)
+                            inviteListData.get(position).getUserName().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
