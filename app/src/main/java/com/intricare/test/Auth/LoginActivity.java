@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +35,7 @@ import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "Login1Activity";
+    private static final String TAG = "LoginActivity";
     TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP;
     boolean is_PhoneShow = true;
     LinearLayout layout_email, layout_phonenumber;
@@ -54,6 +56,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
         loadingDialog = new LoadingDialog(LoginActivity.this);
         initUI();
+
+
 
         firebase();
     }
@@ -172,13 +176,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_login:
                 if (checkVelidaction()) {
-                     startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
+                    // startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
                      //loadingDialog.showLoadingDialog();
-                    /* if(is_PhoneShow){
+                     if(is_PhoneShow){
                          VerifyPhone(edit_Mobile.getText().toString().trim());
                      }else {
 
-                     }*/
+                     }
                 }
 
 
