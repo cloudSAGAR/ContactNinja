@@ -2,38 +2,25 @@ package com.intricare.test;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.provider.ContactsContract;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -44,18 +31,18 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-import com.intricare.test.Auth.VerificationActivity;
-import com.intricare.test.Model.InviteListData;
+import com.intricare.test.Fragment.Contect_main_Fragment;
+import com.intricare.test.Fragment.HomeFragment;
+import com.intricare.test.Fragment.SendFragment;
+import com.intricare.test.Fragment.UsetProgileFragment;
 import com.intricare.test.Utils.App;
 import com.intricare.test.Utils.Global;
-import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
-import com.reddit.indicatorfastscroll.FastScrollerThumbView;
-import com.reddit.indicatorfastscroll.FastScrollerView;
+import com.intricare.test.Utils.OnButtonPressListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,OnButtonPressListener {
     /*
      * in-app update
      * */
@@ -140,14 +127,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void IntentUI() {
         mMainLayout = findViewById(R.id.mMainLayout);
-
         llHome = findViewById(R.id.llHome);
         llContact = findViewById(R.id.llContact);
         llsend = findViewById(R.id.llsend);
         llUser = findViewById(R.id.llUser);
         frameLayout = findViewById(R.id.frameContainer);
-
-
         llHome.setOnClickListener(this);
         llContact.setOnClickListener(this);
         llsend.setOnClickListener(this);
@@ -338,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void displayView() {
+
         Fragment fragment = null;
         switch (navItemIndex) {
             case 0:
@@ -347,7 +332,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragment = new SendFragment();
                 break;
             case 2:
-                //fragment = new ExploreFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("data", "");
+                fragment = new Contect_main_Fragment();
+                fragment.setArguments(bundle);
                 break;
             case 3:
                 fragment = new UsetProgileFragment();
@@ -360,5 +348,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentTransaction.commitAllowingStateLoss();
         }
 
+    }
+
+    @Override
+    public void onButtonPressed(String msg) {
+        Bundle bundle = new Bundle();
+        bundle.putString("data", msg);
+        Fragment fragment1 = null;
+        fragment1 = new Contect_main_Fragment();
+        fragment1.setArguments(bundle);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameContainer, fragment1, CURRENT_TAG);
+        fragmentTransaction.commitAllowingStateLoss();
+        Log.e("Message is",msg);
     }
 }

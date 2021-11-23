@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/frameContainer1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/contect_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/shape_border_eee"
+        >
+
+    </androidx.appcompat.widget.SearchView>
+    <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/tabLayout"
+        style="@style/tv_bold"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabSelectedTextColor="@color/tv_medium"
+        android:layout_width="match_parent"
+        app:tabIndicatorHeight="2dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <androidx.viewpager.widget.ViewPager
+        android:layout_marginTop="@dimen/_3sdp"
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        android:layout_centerInParent="true"
+
+        tools:layout_editor_absoluteX="8dp" />
+</LinearLayout>

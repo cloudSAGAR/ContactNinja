@@ -22,4 +22,13 @@
     <color name="plan_price_text_color">#484848</color>
     <color name="bouttom_sheet_bg">#F4F4F4</color>
 
+
+    //Home Contect
+    <color name="home_list_latter">#F2F2F2</color>
+    <color name="home_list_sub_data">#ABABAB</color>
+    <color name="home_list_back_line">#F1F1F1</color>
+    <color name="home_list_search_border">#E3E3E3</color>
+    <color name="home_list_tab_bg">#FFDE22</color>
+    <color name="home_list_atoz">#4E90CD</color>
+
 </resources>

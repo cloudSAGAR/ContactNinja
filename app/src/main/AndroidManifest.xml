@@ -78,6 +78,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+
         <receiver android:name=".Utils.OTP_Receiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
