@@ -21,6 +21,7 @@
     <color name="plan_shpe_border">#D9DCE1</color>
     <color name="plan_price_text_color">#484848</color>
     <color name="bouttom_sheet_bg">#F4F4F4</color>
+    <color name="add_contect_transpernt">#00000000</color>
 
 
     //Home Contect
@@ -30,5 +31,14 @@
     <color name="home_list_search_border">#E3E3E3</color>
     <color name="home_list_tab_bg">#FFDE22</color>
     <color name="home_list_atoz">#4E90CD</color>
+    <color name="home_list_add_contect_border">#C2C6CB</color>
+    <color name="home_list_add_contect_view">#EEEEEE</color>
+
+
+
+    <color name="home_list_add_contect__bottom_text">#007AFF</color>
+    <color name="contect_bottom_sheet_color">#4848484D</color>
+
+
 
 </resources>

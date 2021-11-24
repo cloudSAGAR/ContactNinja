@@ -3,6 +3,7 @@ package com.intricare.test.Fragment;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,6 +35,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.common.data.DataHolder;
 import com.google.gson.Gson;
+import com.intricare.test.Auth.AddContect.Addnewcontect_Activity;
 import com.intricare.test.MainActivity;
 import com.intricare.test.Model.InviteListData;
 import com.intricare.test.R;
@@ -154,6 +156,13 @@ public class ContectFragment extends Fragment {
             mHandler.postDelayed(mRunnable, SPLASH_DISPLAY_LENGTH);
 
         }*/
+        add_new_contect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addnewcontect=new Intent(getActivity(), Addnewcontect_Activity.class);
+                startActivity(addnewcontect);
+            }
+        });
 
         return content_view;
 

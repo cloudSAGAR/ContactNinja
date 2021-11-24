@@ -37,8 +37,6 @@ public class Contect_main_Fragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_contect_main_, container, false);
         IntentUI(view);
         onButtonPressListener = (OnButtonPressListener) getActivity();
-
-
         strtext = ""+getArguments().getString("data");
         if (strtext.equals(""))
         {

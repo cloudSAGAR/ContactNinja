@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/frameContainer1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
+    <LinearLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="@drawable/shape_oval_border_10_blue"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/_15sdp">
+            <ImageView
+                android:id="@+id/pulse_icon"
+                android:src="@drawable/ic_plus"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"></ImageView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:orientation="vertical"
+            android:layout_gravity="center|left"
+            android:gravity="center|left"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/tv_bold"
+                android:textSize="@dimen/_15sdp"
+                android:text="Type Name"
+                android:textColor="@color/tv_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_marginTop="@dimen/_5sdp"
+                style="@style/tv_regular"
+                android:text="Job Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/tabLayout"
+        style="@style/tv_bold"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabSelectedTextColor="@color/tv_medium"
+        android:layout_width="match_parent"
+        app:tabIndicatorHeight="2dp"
+
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <androidx.viewpager.widget.ViewPager
+        android:layout_marginTop="@dimen/_3sdp"
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        android:layout_centerInParent="true"
+
+        tools:layout_editor_absoluteX="8dp" />
+</LinearLayout>

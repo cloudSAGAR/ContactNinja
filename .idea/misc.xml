@@ -13,6 +13,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/contect_tab_bg.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_back.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_group_otp_logo.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_note.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_plus.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_plus1.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_user.xml" value="0.35625" />
@@ -20,16 +21,24 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/otp_button_shape.xml" value="0.3703125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/plan_check_box_background.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_border_10_white.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_border_20_white.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_border_ccc.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_border_ddce.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_border_eee.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_border_primary_D9DCE1.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_border_primary_white.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_bouttom_sheet_bg_all_right_30.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_ffffff_top_left_right_corner.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_oval_border_10_blue.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_oval_border_10_white.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_plase_button_white_50_corner.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_primary_back.xml" value="0.2671875" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_primary_circle.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_white_25_corner.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_white_top_left_right_20.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_white_top_left_right_30.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/shape_yallow_circle.xml" value="0.35625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_addnewcontect.xml" value="0.3359375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_app_intro.xml" value="0.251953125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_main.xml" value="0.3359375" />
@@ -39,13 +48,19 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_splash.xml" value="0.251953125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_thankyou_screen.xml" value="0.251953125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_verification.xml" value="0.3359375" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/bottom_sheet_dialog_for_home.xml" value="0.3359375" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/custom_add_work_layout.xml" value="0.3359375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_contect.xml" value="0.25" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_contect_main_.xml" value="0.3359375" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_edit_contect.xml" value="0.2" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_exposures.xml" value="0.3359375" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_information.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/invite_user_details.xml" value="0.3359375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/plandetail_layout.xml" value="0.3359375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/plus_footer_layout.xml" value="0.3359375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/toolbar.xml" value="0.3359375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/welcome_slide_1.xml" value="0.3359375" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/work_type_selecte.xml" value="0.3359375" />
       </map>
     </option>
   </component>

@@ -81,4 +81,32 @@ Number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_contect">Add New Contact</string>
+
+
+    //Add Contect
+    <string name="add_phone">Phone</string>
+    <string name="add_number">Add Number</string>
+    <string name="add_home">Home</string>
+    <string name="add_email">Email</string>
+    <string name="add_email_a">Add Email</string>
+    <string name="add_address">Address</string>
+    <string name="add_address_a">Add Address</string>
+
+
+    <string name="add_city">City</string>
+    <string name="add_city_a">Add city</string>
+    <string name="add_state">State</string>
+    <string name="add_state_a">Select your state</string>
+    <string name="add_zip">Zip Code</string>
+    <string name="add_zip_a">Add  Zip Code</string>
+    <string name="add_zoom">Zoom Id</string>
+    <string name="add_zoom_a">Add Zoom ID </string>
+    <string name="add_note">Note</string>
+    <string name="add_note_a">Add your note</string>
+
+    <string name="add_mobile_a">Add phone</string>
+    <string name="add_email_address">Add email</string>
+
+    <string name="edit_text">Edit Contact</string>
+    <string name="save_text">Save Contact</string>
 </resources>

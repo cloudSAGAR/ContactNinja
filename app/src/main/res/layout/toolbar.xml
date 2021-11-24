@@ -14,6 +14,20 @@
             android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_back"
             tools:ignore="ContentDescription" />
+        <TextView
+            style="@style/tv_regular"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_gravity="center|end"
+            android:gravity="end|center"
+            android:id="@+id/save_button"
+            android:textStyle="bold"
+            android:textSize="@dimen/_14sdp"
+            android:visibility="gone"
+            android:textColor="@color/purple_200"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
         <ImageView
             android:layout_gravity="end"
             android:id="@+id/iv_more"
