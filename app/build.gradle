@@ -97,8 +97,10 @@ dependencies {
     //CircelImage View
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    //Swipe Layyout
-    implementation 'io.sulek.ssml:simpleswipemenulayout:1.0.3'
+    //Swipe Layout
+    implementation 'ru.rambler.android:swipe-layout:1.1.0'
+
+
 
 
 

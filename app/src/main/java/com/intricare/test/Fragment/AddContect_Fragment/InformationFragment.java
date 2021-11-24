@@ -1,10 +1,7 @@
 package com.intricare.test.Fragment.AddContect_Fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,26 +16,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.database.util.JsonMapper;
-import com.google.gson.Gson;
-import com.intricare.test.Fragment.ContectFragment;
-import com.intricare.test.Model.InviteListData;
+import com.intricare.test.Auth.AddContect.Addnewcontect_Activity;
 import com.intricare.test.Model.WorkTypeData;
 import com.intricare.test.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 
 public class InformationFragment extends Fragment {
@@ -49,9 +40,12 @@ public class InformationFragment extends Fragment {
         // Required empty public constructor
     }
     EditText tv_mobile_no,ev_email,ev_address,ev_city,ev_zip,ev_zoom,ev_note;
-    LinearLayout select_label,select_email_label,select_state,add_mobile_Number,layout_phone,layout_email;
+    LinearLayout select_label,select_email_label,select_state,add_mobile_Number,
+            layout_phone,layout_email,layout_mobile,delete_layout;
     TextView tv_phone;
     ImageView pulse_icon,pulse_icon1;
+    SwipeLayout swipe_layout;
+
 
 
     @Override
@@ -100,7 +94,36 @@ public class InformationFragment extends Fragment {
 
             }
         });
+        swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
+            @Override
+            public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
+               // Log.e("Swipe Call ","MOveto right");
+                if (delete_layout.getVisibility()==View.GONE)
+                {
+                    delete_layout.setVisibility(View.VISIBLE);
+                }
+                else {
+                    delete_layout.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
+                Log.e("Swipe Call ","MOveto right1");
+
+            }
+
+            @Override
+            public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
+                Log.e("Swipe Call ","Left");
+            }
+
+            @Override
+            public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
+                Log.e("Swipe Call ","Right");
+
+            }
+        });
         return view;
     }
 
@@ -123,6 +146,9 @@ public class InformationFragment extends Fragment {
         pulse_icon1=view.findViewById(R.id.pulse_icon1);
         pulse_icon1.setColorFilter(getActivity().getColor(R.color.purple_200));
         layout_email=view.findViewById(R.id.layout_email);
+        layout_mobile=view.findViewById(R.id.layout_mobile);
+        swipe_layout=view.findViewById(R.id.swipe_layout);
+        delete_layout=view.findViewById(R.id.delete_layout);
 
     }
 

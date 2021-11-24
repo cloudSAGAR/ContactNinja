@@ -10,10 +10,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.intricare.test.MainActivity;
@@ -21,40 +25,26 @@ import com.intricare.test.R;
 import com.intricare.test.Utils.OnButtonPressListener;
 
 
-public class Contect_main_Fragment extends Fragment {
+public class Contect_main_Fragment extends Fragment implements ViewPager.OnPageChangeListener {
 
     TabLayout tabLayout;
     ViewPager viewPager;
-    SearchView contect_search;
-    OnButtonPressListener onButtonPressListener;
+    EditText contect_search;
     String strtext="";
+    ViewpaggerAdapter adapter;
+    ImageView search_icon;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
         View view=inflater.inflate(R.layout.fragment_contect_main_, container, false);
         IntentUI(view);
-        onButtonPressListener = (OnButtonPressListener) getActivity();
-        strtext = ""+getArguments().getString("data");
-        if (strtext.equals(""))
-        {
-
-            strtext="";
-        }
-        else {
-            //Log.e("Data IS",strtext);
-            strtext=""+getArguments().getString("data");
-
-            //filter(strtext.trim());
-
-        }
+        Log.e("Contect Main ","Call");
 
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-         ViewpaggerAdapter adapter = new ViewpaggerAdapter(getActivity(),getActivity().getSupportFragmentManager(),
+          adapter = new ViewpaggerAdapter(getActivity(),getActivity().getSupportFragmentManager(),
                 tabLayout.getTabCount(),strtext);
 
         viewPager.setAdapter(adapter);
@@ -74,36 +64,31 @@ public class Contect_main_Fragment extends Fragment {
 
             }
         });
-
-        contect_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        viewPager.addOnPageChangeListener(this);
+        search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                onButtonPressListener.onButtonPressed(query.trim());
-
-
-              /*  Bundle bundle = new Bundle();
-                bundle.putString("data", query);
-                Fragment fragment = null;
-                fragment = new ContectFragment();
-                fragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameContainer, fragment, MainActivity.CURRENT_TAG);
-                fragmentTransaction.commitAllowingStateLoss();
-*/
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public void onClick(View v) {
+              contect_search.requestFocus();
             }
         });
+        contect_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                strtext=s.toString().trim();
+                onPageSelected(1);
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
 
+            }
+        });
         return view;
     }
 
@@ -111,6 +96,25 @@ public class Contect_main_Fragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager = view.findViewById(R.id.viewPager);
         contect_search=view.findViewById(R.id.contect_search);
+        search_icon=view.findViewById(R.id.search_icon);
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Fragment fragment= adapter.getItem(position);
+        if(fragment instanceof ContectFragment ){
+            ((ContectFragment)fragment).update(strtext,getView(),getActivity());
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
 
     }
 

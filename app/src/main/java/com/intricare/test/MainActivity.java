@@ -42,7 +42,7 @@ import com.intricare.test.Utils.OnButtonPressListener;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,OnButtonPressListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /*
      * in-app update
      * */
@@ -94,12 +94,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             }
 
-
         };
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setDeniedTitle("Contactninja would like to access your contacts")
+                .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
+                .setGotoSettingButtonText("setting")
                 .setPermissions(Manifest.permission.READ_CONTACTS)
+                .setRationaleConfirmText("OK")
                 .check();
 
 
@@ -326,16 +328,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Fragment fragment = null;
         switch (navItemIndex) {
             case 0:
+
                 fragment = new HomeFragment();
                 break;
             case 1:
                 fragment = new SendFragment();
                 break;
             case 2:
-                Bundle bundle = new Bundle();
-                bundle.putString("data", "");
+                Log.e("Contect Frgment Click","Yes");
                 fragment = new Contect_main_Fragment();
-                fragment.setArguments(bundle);
                 break;
             case 3:
                 fragment = new UsetProgileFragment();
@@ -350,17 +351,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onButtonPressed(String msg) {
-        Bundle bundle = new Bundle();
-        bundle.putString("data", msg);
-        Fragment fragment1 = null;
-        fragment1 = new Contect_main_Fragment();
-        fragment1.setArguments(bundle);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameContainer, fragment1, CURRENT_TAG);
-        fragmentTransaction.commitAllowingStateLoss();
-        Log.e("Message is",msg);
-    }
 }

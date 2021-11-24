@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.intricare.test.Fragment.AddContect_Fragment.BzcardFragment;
+import com.intricare.test.Fragment.AddContect_Fragment.EditContectFragment;
 import com.intricare.test.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.intricare.test.Fragment.AddContect_Fragment.InformationFragment;
 import com.intricare.test.Fragment.ContectFragment;
@@ -35,6 +36,7 @@ public class Addnewcontect_Activity extends AppCompatActivity {
     TextView save_button,tv_title,tv_name;
     TabLayout tabLayout;
     ViewPager viewPager;
+    String fragment_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class Addnewcontect_Activity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
         tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
+        fragment_name="Info";
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         ContectAdapter adapter = new ContectAdapter(this,getSupportFragmentManager(),
@@ -72,13 +75,23 @@ public class Addnewcontect_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 if (save_button.getText().equals("Save Contact"))
                 {
+                    fragment_name="Edit";
                     save_button.setText(getString(R.string.edit_text));
+                    //viewPager.setCurrentItem(1);
+
                 }
                 else {
+                    fragment_name="Info";
                     save_button.setText(getString(R.string.save_text));
+                    //viewPager.setCurrentItem(1);
                 }
             }
         });
+
+
+
+
+
 
     }
 
@@ -118,8 +131,16 @@ public class Addnewcontect_Activity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    InformationFragment informationFragment = new InformationFragment();
-                    return informationFragment;
+                   /* if (fragment_name.equals("Info"))
+                    {*/
+                        InformationFragment informationFragment = new InformationFragment();
+                        return informationFragment;
+                   /*}
+                    else {
+                        EditContectFragment informationFragment = new EditContectFragment();
+                        return informationFragment;
+                    }
+*/
                 case 1:
                     BzcardFragment bzcardFragment = new BzcardFragment();
                     return bzcardFragment;

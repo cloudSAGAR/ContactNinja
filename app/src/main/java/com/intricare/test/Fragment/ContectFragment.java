@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,6 +67,7 @@ public class ContectFragment extends Fragment {
     SearchView contect_search;
     TextView add_new_contect,num_count;
     Handler mHandler=new Handler();
+    ImageView add_new_contect_icon;
 
     public ContectFragment(String strtext) {
 
@@ -118,30 +120,16 @@ public class ContectFragment extends Fragment {
 
         GetContactsIntoArrayList();
 
-
-        contect_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filter(newText.toString());
-                return false;
-            }
-        });
-
         num_count.setText(inviteListData.size()+" Contacts");
 
-       if (strtext.equals(""))
+     /*  if (strtext.equals(""))
        {
 
        }
        else {
            filter(strtext.trim());
        }
-        /*strtext = ""+getArguments().getString("data");
+     */   /*strtext = ""+getArguments().getString("data");
         if (strtext.equals(""))
         {
 
@@ -163,23 +151,44 @@ public class ContectFragment extends Fragment {
                 startActivity(addnewcontect);
             }
         });
+        add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addnewcontect=new Intent(getActivity(), Addnewcontect_Activity.class);
+                startActivity(addnewcontect);
+            }
+        });
 
         return content_view;
 
     }
 
-    void filter(String text){
-       // Log.e("Data is Size",String.valueOf(inviteListData.size()));
-        List<InviteListData> temp = new ArrayList();
-        for(InviteListData d: inviteListData){
-            //or use .equal(text) with you want equal match
-            //use .toLowerCase() for better matches
-            if(d.getUserName().contains(text)){
-                temp.add(d);
+    void filter(String text, View view, FragmentActivity activity){
+
+
+
+        if (!text.equals(""))
+        {
+            List<InviteListData> temp = new ArrayList();
+            for(InviteListData d: inviteListData){
+                if(d.getUserName().contains(text)){
+                    temp.add(d);
+                   // Log.e("Same Data ",d.getUserName());
+                }
             }
+            rvinviteuserdetails=view.findViewById(R.id.contect_list);
+            userListDataAdapter = new UserListDataAdapter(activity, activity, inviteListData);
+            rvinviteuserdetails.setAdapter(userListDataAdapter);
+            userListDataAdapter.notifyDataSetChanged();
+            userListDataAdapter.updateList(temp);
         }
-        //update recyclerview
-        userListDataAdapter.updateList(temp);
+        else {
+            rvinviteuserdetails=view.findViewById(R.id.contect_list);
+            userListDataAdapter = new UserListDataAdapter(activity, activity, inviteListData);
+            rvinviteuserdetails.setAdapter(userListDataAdapter);
+            userListDataAdapter.notifyDataSetChanged();
+        }
+
     }
 
 
@@ -193,6 +202,7 @@ public class ContectFragment extends Fragment {
         contect_search=content_view.findViewById(R.id.contect_search);
         add_new_contect=content_view.findViewById(R.id.add_new_contect);
         num_count=content_view.findViewById(R.id.num_count);
+        add_new_contect_icon=content_view.findViewById(R.id.add_new_contect_icon);
     }
     public void GetContactsIntoArrayList() {
         cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
@@ -370,19 +380,8 @@ public class ContectFragment extends Fragment {
                 //Log.e("Image Url Is ",image_url);
                 if (!image_url.equals(""))
                 {
-                    Log.e("No Image","NO"+ " "+position);
-                    Log.e("Image Url is ",image_url);
 
-/*
-                    Uri uri = Uri.parse(image_url);
-                    InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(getContext().getContentResolver(), uri);
-                    Bitmap bm = BitmapFactory.decodeStream(input);
-                    Drawable d = new BitmapDrawable(bm);
-                    holder.profile_image.setImageBitmap(bm);
-*/
-
-
-                    Glide.with(getContext()).
+                    Glide.with(mCtx).
                             load(inviteUserDetails.getUserImageURL()).
                             apply(new RequestOptions().placeholder(R.drawable.shape_primary_circle)).
                             error(R.drawable.shape_primary_circle).
@@ -421,19 +420,7 @@ public class ContectFragment extends Fragment {
 
             }
             holder.userName.setText(inviteUserDetails.getUserName());
-
-
-
-
-          /*  String unik_key=inviteListData.get(position).getUserName().substring(0, 1)
-                    .substring(0, 1)
-                    .toUpperCase();
-
-
-
-            Log.e("Unik Code",unik_key);*/
-
-            holder.userNumber.setText(inviteUserDetails.getUserDescription());
+             holder.userNumber.setText(inviteUserDetails.getUserDescription());
 
         }
 
@@ -449,7 +436,7 @@ public class ContectFragment extends Fragment {
         }
 
         public void updateList(List<InviteListData> list){
-            userDetails = list;
+            userDetails=list;
             notifyDataSetChanged();
         }
 
@@ -475,6 +462,10 @@ public class ContectFragment extends Fragment {
 
     }
 
+    public void update(String strtext1, View view, FragmentActivity activity){
+        Log.e("Text is",strtext1);
+        filter(strtext1,view,activity);
 
+    }
 
 }
