@@ -227,9 +227,8 @@ public class ContectFragment extends Fragment {
 
             }
             else {
-                inviteListData.add(new InviteListData( userName.toString().trim(), user_phone_number.toString().trim(),user_image.toString().trim(),user_des.toString().trim(),old_latter.toString().trim()));
-                getTasks(new InviteListData( userName.trim(), user_phone_number.trim(),user_image.trim(),user_des.trim(),old_latter.trim()));
-
+                inviteListData.add(new InviteListData( ""+userName.toString().trim(), user_phone_number.toString().trim(),user_image,user_des,old_latter.toString().trim()));
+                getTasks(new InviteListData( userName, user_phone_number,user_image,user_des,old_latter));
                 userListDataAdapter.notifyDataSetChanged();
 
             }
@@ -497,6 +496,7 @@ public class ContectFragment extends Fragment {
 
             @Override
             protected void onPostExecute(List<InviteListData> tasks) {
+
                 boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
                 if (found)
                 {
@@ -512,7 +512,7 @@ public class ContectFragment extends Fragment {
 
                             }
                             else {
-                                delete((InviteListData) tasks);
+                                delete(new InviteListData( tasks.get(i).getUserName(), tasks.get(i).getUserPhoneNumber(),tasks.get(i).getUserImageURL(),tasks.get(i).getUserDescription(),tasks.get(i).getF_latter()));
                             }
 
                         }
