@@ -25,8 +25,8 @@
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/llHome"
                 style="@style/home_select"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
         </LinearLayout>
@@ -44,8 +44,8 @@
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/llsend"
                 style="@style/send_"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
         </LinearLayout>
@@ -64,8 +64,8 @@
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/llContact"
                 style="@style/contact_"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
 
@@ -83,8 +83,8 @@
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/llUser"
                 style="@style/user_"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
 

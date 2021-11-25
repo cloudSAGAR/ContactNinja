@@ -37,7 +37,6 @@ import com.intricare.test.Fragment.SendFragment;
 import com.intricare.test.Fragment.UsetProgileFragment;
 import com.intricare.test.Utils.App;
 import com.intricare.test.Utils.Global;
-import com.intricare.test.Utils.OnButtonPressListener;
 
 import java.util.ArrayList;
 
@@ -220,28 +219,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void ImageSetLight(String imageName) {
         switch (imageName) {
             case "Home":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_home));
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home_select));
                 llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_contacts));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_user));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Send":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_contacts));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_user));
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon_select));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Contact":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_home));
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
                 llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_contacts));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_user));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts_selece));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "User":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_home));
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
                 llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_contacts));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_user));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user_select));
         }
     }
 

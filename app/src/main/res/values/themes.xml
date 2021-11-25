@@ -40,19 +40,19 @@
         <item name="android:fontFamily">@font/sf_bold</item>
     </style>
     <style name="home_select">
-        <item name="android:src">@drawable/ic_home</item>
+        <item name="android:src">@drawable/ic_nav_home_select</item>
     </style>
     <style name="home_">
-        <item name="android:src">@drawable/ic_home</item>
+        <item name="android:src">@drawable/ic_nav_home</item>
     </style>
     <style name="send_">
         <item name="android:src">@drawable/ic_blitz_icon</item>
     </style>
     <style name="contact_">
-        <item name="android:src">@drawable/ic_contacts</item>
+        <item name="android:src">@drawable/ic_nav_contacts</item>
     </style>
     <style name="user_">
-        <item name="android:src">@drawable/ic_user</item>
+        <item name="android:src">@drawable/ic_nav_user</item>
     </style>
 
 
