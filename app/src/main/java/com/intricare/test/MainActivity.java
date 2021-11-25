@@ -176,8 +176,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         };
-
-
         mAppUpdateManager.registerListener(installStateUpdatedListener);
 
         mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {

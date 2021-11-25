@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -40,6 +42,7 @@ import com.intricare.test.Auth.AddContect.Addnewcontect_Activity;
 import com.intricare.test.MainActivity;
 import com.intricare.test.Model.InviteListData;
 import com.intricare.test.R;
+import com.intricare.test.Utils.DatabaseClient;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
@@ -84,7 +87,6 @@ public class ContectFragment extends Fragment {
 
         IntentUI(content_view);
         mCtx=getContext();
-        Log.e("frgamebt Call","Yse0");
         rvinviteuserdetails.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.VERTICAL, false));
         rvinviteuserdetails.setHasFixedSize(true);
         inviteListData.clear();
@@ -119,31 +121,12 @@ public class ContectFragment extends Fragment {
         );
 
         GetContactsIntoArrayList();
+        //gettContectList();
+
 
         num_count.setText(inviteListData.size()+" Contacts");
 
-     /*  if (strtext.equals(""))
-       {
 
-       }
-       else {
-           filter(strtext.trim());
-       }
-     */   /*strtext = ""+getArguments().getString("data");
-        if (strtext.equals(""))
-        {
-
-        }
-        else {
-            Log.e("Data IS aaa",strtext);
-
-            Runnable mRunnable = () -> {
-                filter(strtext.trim());
-            };
-            int SPLASH_DISPLAY_LENGTH = 1000;
-            mHandler.postDelayed(mRunnable, SPLASH_DISPLAY_LENGTH);
-
-        }*/
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,9 +142,18 @@ public class ContectFragment extends Fragment {
             }
         });
 
+
+
         return content_view;
 
     }
+
+   /* private void gettContectList() {
+        getTasks();
+    }*/
+
+
+
 
     void filter(String text, View view, FragmentActivity activity){
 
@@ -228,12 +220,34 @@ public class ContectFragment extends Fragment {
             else if (!old_latter.equals(unik_key)){
                 old_latter=unik_key;
             }
+            boolean found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
+
+            if (found)
+            {
+
+            }
+            else {
+                inviteListData.add(new InviteListData( userName.toString().trim(), user_phone_number.toString().trim(),user_image.toString().trim(),user_des.toString().trim(),old_latter.toString().trim()));
+                getTasks(new InviteListData( userName.trim(), user_phone_number.trim(),user_image.trim(),user_des.trim(),old_latter.trim()));
+
+                userListDataAdapter.notifyDataSetChanged();
+
+            }
 
 
-            inviteListData.add(new InviteListData( userName, user_phone_number,user_image,user_des,old_latter));
-            userListDataAdapter.notifyDataSetChanged();
+
+         /*   try {
+                getTasks(new InviteListData( userName.trim(), user_phone_number.trim(),user_image.trim(),user_des.trim(),old_latter.trim()));
+            }
+            catch (Exception e)
+            {
+
+            }*/
         }
+
+
         cursor.close();
+
     }
     public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
             implements Filterable {
@@ -468,4 +482,141 @@ public class ContectFragment extends Fragment {
 
     }
 
+    private void getTasks(InviteListData inser_data) {
+        class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
+            @Override
+            protected List<InviteListData> doInBackground(Void... voids) {
+                List<InviteListData> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getvalue();
+
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<InviteListData> tasks) {
+                boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
+                if (found)
+                {
+                    if (tasks.size()==1)
+                    {
+
+                    }
+                    else {
+                        for (int i=0;i<tasks.size();i++)
+                        {
+                            if (tasks.size()==1)
+                            {
+
+                            }
+                            else {
+                                delete((InviteListData) tasks);
+                            }
+
+                        }
+
+                    }
+
+                }
+                else {
+                    if (tasks.size()==0)
+                    {
+                        SetDatainDatabase(inser_data);
+                    }
+                }
+
+                super.onPostExecute(tasks);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
+    }
+
+
+    public void updatedata(InviteListData inviteListData)
+    {
+
+        class UpdateTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                DatabaseClient.getInstance(getContext()).getAppDatabase()
+                        .taskDao()
+                        .updatevalue(inviteListData.getUserName(),inviteListData.getUserPhoneNumber());
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Log.e("Update Task","CAll");
+                /*Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_LONG).show();
+                finish();
+                startActivity(new Intent(UpdateTaskActivity.this, MainActivity.class));*/
+            }
+        }
+
+        UpdateTask ut = new UpdateTask();
+        ut.execute();
+    }
+
+
+    public void delete(InviteListData inviteListData)
+    {
+
+        class DeleteTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                DatabaseClient.getInstance(getContext()).getAppDatabase()
+                        .taskDao()
+                        .delete(inviteListData);
+                     return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Log.e("Delete Task","Yes");
+            }
+        }
+
+        DeleteTask ut = new DeleteTask();
+        ut.execute();
+    }
+
+
+    private void SetDatainDatabase(InviteListData inviteListData) {
+
+
+        class SaveTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                DatabaseClient.getInstance(getActivity()).getAppDatabase()
+                        .taskDao()
+                        .insert(inviteListData);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                // startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                // Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        SaveTask st = new SaveTask();
+        st.execute();
+    }
+
 }
+

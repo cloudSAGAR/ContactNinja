@@ -110,7 +110,7 @@ Number</string>
     <string name="edit_text">Edit Contact</string>
     <string name="save_text">Save Contact</string>
     <string name="add_defult_text">Set as \n default</string>
-    <string name="add_bz_text">This ContactNinja \n hasn’t shared a BZcardSet as  default</string>
+    <string name="add_bz_text">This ContactNinja \n hasn’t shared a BZcardSet</string>
     <string name="add_exposures_text">This ContactNinja \n has no exposures</string>
 
 </resources>
