@@ -62,21 +62,25 @@ public class VerificationActivity extends AppCompatActivity {
         IntentUI();
         EnableRuntimePermission();
 
-        Intent getdata=getIntent();
+       /* Intent getdata=getIntent();
         Bundle bundle=getdata.getExtras();
         v_id=bundle.getString("v_id");
         mobile_number=bundle.getString("mobile");
         countrycode=bundle.getString("countrycode");
         loadingDialog = new LoadingDialog(VerificationActivity.this);
 
-
+*/
 
         firebase();
 
         verfiy_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String pin_text=otp_pinview.getText().toString();
+                Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
+                startActivity(i);
+                finish();
+
+               /* String pin_text=otp_pinview.getText().toString();
                 if (pin_text.equals(""))
                 {
                     tc_wrong.setVisibility(View.VISIBLE);
@@ -88,7 +92,7 @@ public class VerificationActivity extends AppCompatActivity {
                     signInWithCredential(credential);
 
 
-                }
+                }*/
 
             }
         });

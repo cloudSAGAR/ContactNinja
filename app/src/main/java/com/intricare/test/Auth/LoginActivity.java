@@ -180,8 +180,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_login:
                 if (checkVelidaction()) {
-                    // startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
-                     loadingDialog.showLoadingDialog();
+                     startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
+                    // loadingDialog.showLoadingDialog();
                      LoginApicall();
                     /* if(is_PhoneShow){
                          VerifyPhone(edit_Mobile.getText().toString().trim());
@@ -204,7 +204,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void LoginApicall() {
 
-        //retrofitCalls.login_user();
+       //retrofitCalls.login_user();
     }
 
     public void VerifyPhone(String phoneNumber) {

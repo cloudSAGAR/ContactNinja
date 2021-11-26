@@ -47,7 +47,9 @@ public class SignModel {
         {
 
         }
-
+        @SerializedName("password")
+        @Expose
+        private String password;
        /* public Data(String firstName, String last_name, String email, String contact_number, String otp, String login_type, String referred_by)
         {
             this.firstName=firstName;
@@ -114,6 +116,14 @@ public class SignModel {
 
         public void setContact_number(String contact_number) {
             this.contact_number = contact_number;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
         }
     }
 

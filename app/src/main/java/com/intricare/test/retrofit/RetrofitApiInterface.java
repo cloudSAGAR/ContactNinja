@@ -12,9 +12,8 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface RetrofitApiInterface {
-    @Headers({"Accept : application/json", "Authorization : Bearer access_token"})
-    @POST("auth/login/otp")
-    Call<ApiResponse> loginUser (@Field("user_name") String email_address);
+    @POST("login")
+    Call<ApiResponse> loginUser (@Body SignModel signModel);
 
 
 

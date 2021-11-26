@@ -227,9 +227,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 if (checkVelidaction()) {
                     //VerifyPhone(edit_Mobile.getText().toString().trim());
 
-                    SignAPI();
+                   // SignAPI();
 
-                   // startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
+                   startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
                 }
 
 
@@ -286,18 +286,20 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onResponse(Call<SignResponseModel> call, Response<SignResponseModel> response) {
 
-                     //status=response.body().getHttpStatus();
+
                      Log.e("Response is",new Gson().toJson(response.body()));
                    //  Log.e("Message is",response.body().getMessage());
-                     loadingDialog.cancelLoading();
-                    /* if (status==200)
+                    status=response.body().getHttpStatus();
+                    loadingDialog.cancelLoading();
+                     if (status==200)
                      {
+                         VerifyPhone(edit_Mobile.getText().toString().trim());
                          Log.e("Message is","Done");
                      }
                      else {
                          Log.e("Message is","Not");
 
-                     }*/
+                     }
 
                 }
 

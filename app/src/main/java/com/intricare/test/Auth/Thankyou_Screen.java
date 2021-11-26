@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.intricare.test.Auth.PlanTyep.PlanType_Screen;
+import com.intricare.test.MainActivity;
 import com.intricare.test.R;
 
 public class Thankyou_Screen extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class Thankyou_Screen extends AppCompatActivity {
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+               startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
 

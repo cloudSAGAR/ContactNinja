@@ -32,7 +32,7 @@ public class RetrofitCalls {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE"); }
 
     public void login_user(String email_address, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.loginUser(email_address);
+       // call = retrofitApiInterface.loginUser(email_address);
         this.retrofitCallback = retrofitCallback;
         call_api(retrofitCallback, loadingDialog);
     }
