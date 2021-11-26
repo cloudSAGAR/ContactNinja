@@ -1,19 +1,21 @@
 package com.intricare.test.Fragment;
 
 import android.app.Activity;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -32,14 +34,15 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.common.data.DataHolder;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.intricare.test.Auth.AddContect.Addnewcontect_Activity;
-import com.intricare.test.MainActivity;
 import com.intricare.test.Model.InviteListData;
 import com.intricare.test.R;
 import com.intricare.test.Utils.DatabaseClient;
@@ -47,7 +50,11 @@ import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,11 +78,16 @@ public class ContectFragment extends Fragment {
     TextView add_new_contect,num_count;
     Handler mHandler=new Handler();
     ImageView add_new_contect_icon;
-
-    public ContectFragment(String strtext) {
+    View view1;
+    FragmentActivity fragmentActivity;
+    LinearLayout add_new_contect_layout;
+    int c=0;
+    public ContectFragment(String strtext, View view, FragmentActivity activity) {
 
         this.strtext=strtext;
-        Log.e("String is",strtext);
+        this.view1=view;
+        this.fragmentActivity=activity;
+       // Log.e("View is ", String.valueOf(view1.getVisibility()));
     }
 
 
@@ -84,12 +96,11 @@ public class ContectFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View content_view=inflater.inflate(R.layout.fragment_contect, container, false);
-
         IntentUI(content_view);
         mCtx=getContext();
         rvinviteuserdetails.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.VERTICAL, false));
         rvinviteuserdetails.setHasFixedSize(true);
-        inviteListData.clear();
+        //inviteListData.clear();
         userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
         rvinviteuserdetails.setAdapter(userListDataAdapter);
         userListDataAdapter.notifyDataSetChanged();
@@ -141,19 +152,19 @@ public class ContectFragment extends Fragment {
                 startActivity(addnewcontect);
             }
         });
+        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addnewcontect=new Intent(getActivity(), Addnewcontect_Activity.class);
+                startActivity(addnewcontect);
+            }
+        });
 
 
 
         return content_view;
 
     }
-
-   /* private void gettContectList() {
-        getTasks();
-    }*/
-
-
-
 
     void filter(String text, View view, FragmentActivity activity){
 
@@ -195,6 +206,7 @@ public class ContectFragment extends Fragment {
         add_new_contect=content_view.findViewById(R.id.add_new_contect);
         num_count=content_view.findViewById(R.id.num_count);
         add_new_contect_icon=content_view.findViewById(R.id.add_new_contect_icon);
+        add_new_contect_layout=content_view.findViewById(R.id.add_new_contect_layout);
     }
     public void GetContactsIntoArrayList() {
         cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
@@ -204,7 +216,6 @@ public class ContectFragment extends Fragment {
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
             user_des=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.DATA)));
-
             String unik_key=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                     .substring(0, 1)
                     .toUpperCase();
@@ -227,21 +238,17 @@ public class ContectFragment extends Fragment {
 
             }
             else {
-                inviteListData.add(new InviteListData( ""+userName.toString().trim(), user_phone_number.toString().trim(),user_image,user_des,old_latter.toString().trim()));
-                getTasks(new InviteListData( userName, user_phone_number,user_image,user_des,old_latter));
+                //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getId())));
+                String contactID= String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
+                inviteListData.add(new InviteListData( ""+userName.toString().trim(), user_phone_number.toString().trim(),user_image,user_des,old_latter.toString().trim(),""));
+                getTasks(new InviteListData( userName, user_phone_number,user_image,contactID,old_latter,""));
                 userListDataAdapter.notifyDataSetChanged();
 
+
+
             }
 
-
-
-         /*   try {
-                getTasks(new InviteListData( userName.trim(), user_phone_number.trim(),user_image.trim(),user_des.trim(),old_latter.trim()));
-            }
-            catch (Exception e)
-            {
-
-            }*/
         }
 
 
@@ -393,21 +400,52 @@ public class ContectFragment extends Fragment {
                 //Log.e("Image Url Is ",image_url);
                 if (!image_url.equals(""))
                 {
+                    Log.e("Url is ", String.valueOf(Uri.parse(inviteUserDetails.getUserImageURL())));
 
-                    Glide.with(mCtx).
-                            load(inviteUserDetails.getUserImageURL()).
+                        /*    Glide.with(mCtx).
+                            load(Uri.parse(inviteUserDetails.getUserImageURL())).
                             apply(new RequestOptions().placeholder(R.drawable.shape_primary_circle)).
                             error(R.drawable.shape_primary_circle).
-                            error(R.drawable.shape_primary_circle).
-                            into(holder.profile_image);
+                                    dontAnimate().
+                            into(holder.profile_image);*/
+
+                    Glide.with(mCtx).
+                            load(inviteUserDetails.getUserImageURL())
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                  Log.e("Error ","yes");
+                                    holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
+                                    return true;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    Log.e("Error ","No");
+                                    holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
+                                    return false;
+                                }
+                            })
+                            .into(holder.profile_image);
+
                     holder.no_image.setVisibility(View.GONE);
+                    try {
+                        int drawableId = (Integer)holder.profile_image.getTag();
+                        //Log.e("ID IS", String.valueOf(drawableId));
+                    }
+                    catch (Exception e)
+                    {
+                        holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
+                        holder.no_image.setVisibility(View.VISIBLE);
+                    }
+
 
 
 
                 }
                 else {
 
-                    Log.e("No Image","Yes"+ " "+position);
+                 //   Log.e("No Image","Yes"+ " "+position);
 
                     holder.profile_image.setVisibility(View.GONE);
                     String name =inviteUserDetails.getUserName();
@@ -476,12 +514,14 @@ public class ContectFragment extends Fragment {
     }
 
     public void update(String strtext1, View view, FragmentActivity activity){
-        Log.e("Text is",strtext1);
         filter(strtext1,view,activity);
 
     }
 
     private void getTasks(InviteListData inser_data) {
+
+
+
         class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
             @Override
             protected List<InviteListData> doInBackground(Void... voids) {
@@ -497,36 +537,34 @@ public class ContectFragment extends Fragment {
             @Override
             protected void onPostExecute(List<InviteListData> tasks) {
 
-                boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
-                if (found)
-                {
-                    if (tasks.size()==1)
-                    {
+               // if (tasks.size()==inviteListData.size()) {
+                   // Log.e("Size is Same ","Yse");
+                    boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
+                    if (found) {
+                        if (tasks.size() == 1) {
 
-                    }
-                    else {
-                        for (int i=0;i<tasks.size();i++)
-                        {
-                            if (tasks.size()==1)
-                            {
-
-                            }
-                            else {
-                                delete(new InviteListData( tasks.get(i).getUserName(), tasks.get(i).getUserPhoneNumber(),tasks.get(i).getUserImageURL(),tasks.get(i).getUserDescription(),tasks.get(i).getF_latter()));
-                            }
-
+                        } else {
+                            getdataanme_mobile(inser_data);
                         }
 
+                    } else {
+                        inser_data.setFlag("Add");
+                        getTasks1(inser_data);
+
+
+                    }
+               // }
+             /*   else {
+                    boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
+                    if (found) {
+                        delete();
+                    }
+                    else {
+                        getTasks1(inser_data);
                     }
 
-                }
-                else {
-                    if (tasks.size()==0)
-                    {
-                        SetDatainDatabase(inser_data);
-                    }
-                }
 
+                }*/
                 super.onPostExecute(tasks);
             }
         }
@@ -538,25 +576,20 @@ public class ContectFragment extends Fragment {
 
     public void updatedata(InviteListData inviteListData)
     {
-
         class UpdateTask extends AsyncTask<Void, Void, Void> {
 
             @Override
             protected Void doInBackground(Void... voids) {
-
-                DatabaseClient.getInstance(getContext()).getAppDatabase()
+              DatabaseClient.getInstance(getContext()).getAppDatabase()
                         .taskDao()
-                        .updatevalue(inviteListData.getUserName(),inviteListData.getUserPhoneNumber());
+                        .updatevalue(inviteListData.getUserName(),inviteListData.getUserPhoneNumber(),inviteListData.getFlag());
+
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                Log.e("Update Task","CAll");
-                /*Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_LONG).show();
-                finish();
-                startActivity(new Intent(UpdateTaskActivity.this, MainActivity.class));*/
             }
         }
 
@@ -565,9 +598,8 @@ public class ContectFragment extends Fragment {
     }
 
 
-    public void delete(InviteListData inviteListData)
+    public void delete()
     {
-
         class DeleteTask extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -575,14 +607,18 @@ public class ContectFragment extends Fragment {
 
                 DatabaseClient.getInstance(getContext()).getAppDatabase()
                         .taskDao()
-                        .delete(inviteListData);
+                        .deleteDuplicates();
+            //.DeleteData(inviteListData.getUserPhoneNumber());
+                      // .RemoveData();
+
                      return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
+                Log.e("Delete Task","Yes"+c);
                 super.onPostExecute(aVoid);
-                Log.e("Delete Task","Yes");
+
             }
         }
 
@@ -592,6 +628,7 @@ public class ContectFragment extends Fragment {
 
 
     private void SetDatainDatabase(InviteListData inviteListData) {
+
 
 
         class SaveTask extends AsyncTask<Void, Void, Void> {
@@ -608,14 +645,220 @@ public class ContectFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-
-                // startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                // Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
             }
         }
 
         SaveTask st = new SaveTask();
         st.execute();
+    }
+
+
+
+    private void getTasks1(InviteListData inser_data) {
+        class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
+            @Override
+            protected List<InviteListData> doInBackground(Void... voids) {
+                List<InviteListData> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getTask(inser_data.getUserPhoneNumber());
+
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<InviteListData> tasks) {
+               // Log.e("Insert Task list Size ", String.valueOf(tasks.size()));
+                if (tasks.size()==0)
+                {
+                    SetDatainDatabase(inser_data);
+                }
+
+                super.onPostExecute(tasks);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
+    }
+
+
+
+
+
+    private final static String[] DATA_COLS = {
+
+            ContactsContract.Data.MIMETYPE,
+            ContactsContract.Data.DATA1,//phone number
+            ContactsContract.Data.CONTACT_ID
+    };
+
+//Update Contect Number Direct
+    public static boolean updateNameAndNumber(final Context context, String number, String newName, String newNumber) {
+
+        if (context == null || number == null || number.trim().isEmpty()) return false;
+
+        if (newNumber != null && newNumber.trim().isEmpty()) newNumber = null;
+
+        if (newNumber == null) return false;
+
+
+        String contactId = getContactId(context, number);
+
+        if (contactId == null) return false;
+
+        //selection for name
+        String where = String.format(
+                "%s = '%s' AND %s = ?",
+                DATA_COLS[0], //mimetype
+                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE,
+                DATA_COLS[2]/*contactId*/);
+
+        String[] args = {contactId};
+
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+
+        operations.add(
+                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                        .withSelection(where, args)
+                        .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, newName)
+                        .build()
+        );
+
+        //change selection for number
+        where = String.format(
+                "%s = '%s' AND %s = ?",
+                DATA_COLS[0],//mimetype
+                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
+                DATA_COLS[1]/*number*/);
+
+        //change args for number
+        args[0] = number;
+
+        operations.add(
+                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                        .withSelection(where, args)
+                        .withValue(DATA_COLS[1]/*number*/, newNumber)
+                        .build()
+        );
+
+        try {
+
+            ContentProviderResult[] results = context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
+
+            for (ContentProviderResult result : results) {
+                Log.e("Upadte Contect",result.toString());
+
+                Log.d("Update Result", result.toString());
+            }
+
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+    public static String getContactId(Context context, String number) {
+
+        if (context == null) return null;
+
+        Cursor cursor = context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER},
+                ContactsContract.CommonDataKinds.Phone.NUMBER + "=?",
+                new String[]{number},
+                null
+        );
+
+        if (cursor == null || cursor.getCount() == 0) return null;
+
+        cursor.moveToFirst();
+
+        String id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+
+        cursor.close();
+        return id;
+    }
+
+
+
+    private void getdataanme_mobile(InviteListData inser_data) {
+       // c=c+1;
+       // Log.e("C is ", String.valueOf(c));
+
+        class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
+            @Override
+            protected List<InviteListData> doInBackground(Void... voids) {
+                List<InviteListData> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getTaskUpdate(inser_data.getUserPhoneNumber(),inser_data.getUserName());
+
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<InviteListData> tasks) {
+                if (tasks.size()==0)
+                {
+
+                        inser_data.setFlag("Update");
+                        getdataanme_mobile1(inser_data);
+                        Log.e("Event Update ","Call");
+
+                }
+
+
+
+                super.onPostExecute(tasks);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
+    }
+
+    private void getdataanme_mobile1(InviteListData inser_data) {
+
+        class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
+            @Override
+            protected List<InviteListData> doInBackground(Void... voids) {
+                List<InviteListData> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getTaskUpdate1(inser_data.getUserPhoneNumber(),inser_data.getUserName());
+
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<InviteListData> tasks) {
+                    Log.e("Update Data Event ","CAll"+tasks.size());
+                    if (tasks.size()==0)
+                    {
+                        inser_data.setFlag("Add");
+                        Log.e("Insert Flag",inser_data.getFlag());
+                        SetDatainDatabase(inser_data);
+                    }
+                    else {
+                        inser_data.setFlag("Update");
+                        updatedata(inser_data);
+                    }
+
+
+                super.onPostExecute(tasks);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
     }
 
 }

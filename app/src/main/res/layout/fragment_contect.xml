@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:id="@+id/mMainLayout"
-    android:background="?android:windowBackground">
+    android:background="@color/white">
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
         <LinearLayout
+            android:id="@+id/add_new_contect_layout"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:orientation="horizontal"
@@ -95,25 +97,40 @@
                 android:clipToPadding="false" />
 
 
-            <com.reddit.indicatorfastscroll.FastScrollerThumbView
-                android:id="@+id/fastscroller_thumb"
-                android:layout_width="40dp"
-                android:layout_marginStart="-30dp"
-                android:layout_height="match_parent"
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
                 app:layout_constraintBottom_toBottomOf="@+id/fastscroller"
                 app:layout_constraintEnd_toStartOf="@+id/fastscroller"
-                app:layout_constraintTop_toTopOf="@+id/fastscroller" />
-            <com.reddit.indicatorfastscroll.FastScrollerView
-                android:id="@+id/fastscroller"
-                android:overScrollMode="always"
-                android:layout_width="32dp"
-                android:textColor="@color/home_list_atoz"
-                android:layout_height="match_parent"
-                style="@style/tv_regular"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/fastscroller"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+               >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                    <com.reddit.indicatorfastscroll.FastScrollerThumbView
+                        android:id="@+id/fastscroller_thumb"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/fastscroller"
+                        app:layout_constraintEnd_toStartOf="@+id/fastscroller"
+                        app:layout_constraintTop_toTopOf="@+id/fastscroller" />
+                    <com.reddit.indicatorfastscroll.FastScrollerView
+                        android:id="@+id/fastscroller"
+                        android:overScrollMode="never"
+                        android:layout_width="32dp"
+                        android:textColor="@color/home_list_atoz"
+                        android:layout_height="match_parent"
+                        style="@style/tv_regular"
+                        app:fastScrollerTextPadding="1dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
 
+            </androidx.core.widget.NestedScrollView>
         </LinearLayout>
 
     </LinearLayout>

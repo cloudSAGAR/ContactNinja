@@ -25,12 +25,13 @@ public class InviteListData implements Serializable {
     @ColumnInfo(name = "flag")
     private String  flag;
 
-    public InviteListData( String userName, String userPhoneNumber,String userImageURL,String userDescription,String f_latter) {
+    public InviteListData( String userName, String userPhoneNumber,String userImageURL,String userDescription,String f_latter,String flag) {
         this.userImageURL = userImageURL;
         this.userName = userName;
         this.userPhoneNumber = userPhoneNumber;
         this.userDescription=userDescription;
         this.f_latter=f_latter;
+        this.flag=flag;
     }
 
     public String getUserImageURL() {

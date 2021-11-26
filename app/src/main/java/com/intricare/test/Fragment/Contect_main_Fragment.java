@@ -39,12 +39,12 @@ public class Contect_main_Fragment extends Fragment implements ViewPager.OnPageC
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_contect_main_, container, false);
         IntentUI(view);
-        Log.e("Contect Main ","Call");
+
 
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-          adapter = new ViewpaggerAdapter(getActivity(),getActivity().getSupportFragmentManager(),
+          adapter = new ViewpaggerAdapter(getActivity(),getChildFragmentManager(),
                 tabLayout.getTabCount(),strtext);
 
         viewPager.setAdapter(adapter);
@@ -64,6 +64,7 @@ public class Contect_main_Fragment extends Fragment implements ViewPager.OnPageC
 
             }
         });
+
         viewPager.addOnPageChangeListener(this);
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,11 +135,11 @@ public class Contect_main_Fragment extends Fragment implements ViewPager.OnPageC
 
             switch (position) {
                 case 0:
-                    ContectFragment contectFragment = new ContectFragment(strtext1);
+                    ContectFragment contectFragment = new ContectFragment(strtext1,getView(),getActivity());
                     return contectFragment;
                 case 1:
 
-                    ContectFragment c_Fragment = new ContectFragment(strtext1);
+                    ContectFragment c_Fragment = new ContectFragment(strtext1,getView(),getActivity());
 
                     return c_Fragment;
                 default:

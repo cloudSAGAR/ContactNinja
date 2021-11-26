@@ -2,16 +2,25 @@ package com.intricare.test;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -39,6 +48,7 @@ import com.intricare.test.Utils.App;
 import com.intricare.test.Utils.Global;
 
 import java.util.ArrayList;
+import java.util.function.LongFunction;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -78,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CURRENT_TAG = TAG_HOME;
         displayView();
         ImageSetLight("Home");
+
     }
 
     public void EnableRuntimePermission() {
@@ -332,7 +343,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragment = new SendFragment();
                 break;
             case 2:
-                Log.e("Contect Frgment Click","Yes");
                 fragment = new Contect_main_Fragment();
                 break;
             case 3:
@@ -340,6 +350,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         if (fragment != null) {
+
+
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frameContainer, fragment, CURRENT_TAG);
@@ -347,5 +360,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+
+
+
+
 
 }
