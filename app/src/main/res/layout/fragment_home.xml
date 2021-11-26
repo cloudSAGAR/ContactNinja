@@ -19,7 +19,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Under mentions "
+        android:text="Under development"
         android:layout_width="match_parent"
         style="@style/tv_regular"
         android:textColor="@color/bz_text"

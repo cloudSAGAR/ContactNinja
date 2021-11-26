@@ -30,6 +30,7 @@
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/drawable/shape_white_all_right_30.xml" value="0.2203125" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/drawable/shape_white_top_left_right_30.xml" value="0.2203125" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/drawable/tab_selector.xml" value="0.13914473684210527" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_addnewcontect.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_app_intro.xml" value="0.18" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_login1.xml" value="0.25" />
@@ -40,8 +41,13 @@
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_signup.xml" value="0.19010416666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_splash.xml" value="0.12" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/activity_thankyou_screen.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/custom_add_work_layout.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/custom_dialog_progess.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/fragment_bzcard.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/fragment_contect.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/fragment_contect_main_.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/fragment_home.xml" value="0.19010416666666666" />
+        <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/fragment_information.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/fragment_send.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/fragment_uset_progile.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/layout/invite_user_details.xml" value="0.20416666666666666" />
@@ -56,14 +62,6 @@
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/mipmap-anydpi-v26/ic_logo.xml" value="0.2203125" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/mipmap-anydpi-v26/ic_logo_round.xml" value="0.2203125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_back.xml" value="0.35625" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_login.xml" value="0.16271442986881937" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_plan_type_screen.xml" value="0.16271442986881937" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_signup.xml" value="0.3359375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_contect.xml" value="0.2817028985507246" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_contect_main_.xml" value="0.16271442986881937" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_home.xml" value="0.3359375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_send.xml" value="0.3359375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/fragment_uset_progile.xml" value="0.3359375" />
       </map>
     </option>
   </component>

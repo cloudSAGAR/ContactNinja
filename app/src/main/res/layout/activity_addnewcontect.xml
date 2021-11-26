@@ -39,7 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <EditText
+                android:background="@color/add_contect_transpernt"
                 android:id="@+id/tv_name"
                 style="@style/tv_bold"
                 android:textSize="@dimen/_15sdp"
@@ -48,9 +49,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            </TextView>
+            </EditText>
 
-            <TextView
+            <EditText
+                android:background="@color/add_contect_transpernt"
                 android:id="@+id/tv_title"
                 android:layout_marginTop="@dimen/_5sdp"
                 style="@style/tv_regular"
@@ -59,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            </TextView>
+            </EditText>
         </LinearLayout>
 
 

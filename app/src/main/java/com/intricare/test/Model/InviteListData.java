@@ -89,4 +89,8 @@ public class InviteListData implements Serializable {
     public void setFlag(String flag) {
         this.flag = flag;
     }
+
+    public int compareTo(InviteListData lhs) {
+        return 0;
+    }
 }

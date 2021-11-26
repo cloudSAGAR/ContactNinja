@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         UpdateManageCheck();
         EnableRuntimePermission();
 
-        navItemIndex = 2;
+        navItemIndex = 0;
         CURRENT_TAG = TAG_HOME;
         displayView();
-        ImageSetLight("Contact");
+        ImageSetLight("Home");
 
     }
 

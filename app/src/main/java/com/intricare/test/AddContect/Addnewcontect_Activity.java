@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,10 +23,11 @@ public class Addnewcontect_Activity extends AppCompatActivity {
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
     ImageView iv_back,iv_more,pulse_icon;
-    TextView save_button,tv_title,tv_name;
+    TextView save_button;
     TabLayout tabLayout;
     ViewPager viewPager;
     String fragment_name;
+    EditText tv_name,tv_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

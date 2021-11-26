@@ -48,6 +48,8 @@ import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -201,7 +203,7 @@ public class ContectFragment extends Fragment {
         add_new_contect_layout=content_view.findViewById(R.id.add_new_contect_layout);
     }
     public void GetContactsIntoArrayList() {
-        cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         while (cursor.moveToNext()) {
 
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
@@ -236,7 +238,6 @@ public class ContectFragment extends Fragment {
                 inviteListData.add(new InviteListData( ""+userName.toString().trim(), user_phone_number.toString().trim(),user_image,user_des,old_latter.toString().trim(),""));
                 getTasks(new InviteListData( userName, user_phone_number,user_image,contactID,old_latter,""));
                 userListDataAdapter.notifyDataSetChanged();
-
 
 
             }
@@ -407,14 +408,14 @@ public class ContectFragment extends Fragment {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                   Log.e("Error ","yes");
-                                    holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
+                                 //   holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
                                     return true;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                     Log.e("Error ","No");
-                                    holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
+                                  //  holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
                                     return false;
                                 }
                             })
@@ -428,7 +429,7 @@ public class ContectFragment extends Fragment {
                     catch (Exception e)
                     {
                         holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
-                        holder.no_image.setVisibility(View.VISIBLE);
+                     //   holder.no_image.setVisibility(View.VISIBLE);
                     }
 
 
