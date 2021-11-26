@@ -1,32 +1,21 @@
-package com.intricare.test.Auth.AddContect;
+package com.intricare.test.AddContect;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.intricare.test.Fragment.AddContect_Fragment.BzcardFragment;
-import com.intricare.test.Fragment.AddContect_Fragment.EditContectFragment;
 import com.intricare.test.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.intricare.test.Fragment.AddContect_Fragment.InformationFragment;
-import com.intricare.test.Fragment.ContectFragment;
-import com.intricare.test.Fragment.Contect_main_Fragment;
-import com.intricare.test.Fragment.UsetProgileFragment;
 import com.intricare.test.R;
 
 public class Addnewcontect_Activity extends AppCompatActivity {

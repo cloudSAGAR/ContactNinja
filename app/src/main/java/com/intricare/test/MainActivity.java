@@ -46,6 +46,7 @@ import com.intricare.test.Fragment.SendFragment;
 import com.intricare.test.Fragment.UsetProgileFragment;
 import com.intricare.test.Utils.App;
 import com.intricare.test.Utils.Global;
+import com.intricare.test.Utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.function.LongFunction;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView llHome, llsend, llContact, llUser;
     FrameLayout frameLayout;
     private long mLastClickTime = 0;
+    SessionManager sessionManager;
 
 
     //Declare Variabls for fragment
@@ -80,14 +82,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sessionManager=new SessionManager(this);
+        sessionManager.login();
         IntentUI();
         UpdateManageCheck();
         EnableRuntimePermission();
 
-        navItemIndex = 0;
+        navItemIndex = 2;
         CURRENT_TAG = TAG_HOME;
         displayView();
-        ImageSetLight("Home");
+        ImageSetLight("Contact");
 
     }
 

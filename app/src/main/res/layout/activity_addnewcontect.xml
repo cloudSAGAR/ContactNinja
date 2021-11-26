@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity"
     android:id="@+id/frameContainer1"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -53,6 +54,7 @@
                 android:id="@+id/tv_title"
                 android:layout_marginTop="@dimen/_5sdp"
                 style="@style/tv_regular"
+                android:textColor="@color/otp_header_text_color"
                 android:text="Job Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -72,7 +74,7 @@
         app:tabSelectedTextColor="@color/tv_medium"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
-
+        app:tabTextColor="@color/tv_medium"
         android:layout_height="wrap_content"
         android:background="@color/white">
     </com.google.android.material.tabs.TabLayout>
