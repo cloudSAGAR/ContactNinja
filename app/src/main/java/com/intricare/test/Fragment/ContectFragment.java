@@ -805,12 +805,17 @@ public class ContectFragment extends Fragment {
 
             @Override
             protected void onPostExecute(List<InviteListData> tasks) {
+
                 if (tasks.size()==0)
                 {
-
                         inser_data.setFlag("Update");
                         getdataanme_mobile1(inser_data);
                         Log.e("Event Update ","Call");
+                }
+                //One more then Remove Contect
+                else if (tasks.size()<2){
+
+                    delete();
 
                 }
 

@@ -27,6 +27,7 @@ import com.hbb20.CountryCodePicker;
 import com.intricare.test.R;
 import com.intricare.test.Utils.Global;
 import com.intricare.test.Utils.LoadingDialog;
+import com.intricare.test.retrofit.RetrofitCalls;
 
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +49,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public String fcmToken = "";
 
     LoadingDialog loadingDialog;
+    RetrofitCalls retrofitCalls;
+    String Login_type="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
         loadingDialog = new LoadingDialog(LoginActivity.this);
         initUI();
-
-
-
+        retrofitCalls=new RetrofitCalls(this);
         firebase();
     }
 
@@ -181,11 +182,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (checkVelidaction()) {
                     // startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
                      loadingDialog.showLoadingDialog();
-                     if(is_PhoneShow){
+                     LoginApicall();
+                    /* if(is_PhoneShow){
                          VerifyPhone(edit_Mobile.getText().toString().trim());
                      }else {
 
-                     }
+
+                     }*/
                 }
 
 
@@ -197,6 +200,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
         }
+    }
+
+    private void LoginApicall() {
+
+        //retrofitCalls.login_user();
     }
 
     public void VerifyPhone(String phoneNumber) {
@@ -215,6 +223,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (is_PhoneShow) {
             if (edit_Mobile.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                Login_type="PHONE";
             } else {
                 String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
                 String phoneNumber = edit_Mobile.getText().toString().trim();
@@ -233,8 +242,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         } else {
+            Login_type="EMAIL";
             if (edit_email.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_email));
+
             } else {
                 if(Global.emailValidator(edit_email.getText().toString().trim())){
                     return true;

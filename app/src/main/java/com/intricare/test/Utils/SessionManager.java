@@ -58,10 +58,10 @@ public class SessionManager {
         // Check login status
         if (!this.isLoggedIn()) {
           if (this.isAppIntroIn()) {
-              Intent i = new Intent(_context, MainActivity.class);
+              Intent i = new Intent(_context, AppIntroActivity.class);
               _context.startActivity(i);
            }else {
-              Intent i = new Intent(_context, MainActivity.class);
+              Intent i = new Intent(_context, LoginActivity.class);
               _context.startActivity(i);
           }
 

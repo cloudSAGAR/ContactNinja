@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitApiClient {
 
 
-   public static final String baseUrl = "";
+   public static final String baseUrl = "https://app.contactninja.org/api/";
 
     private static Retrofit retrofit;
 
