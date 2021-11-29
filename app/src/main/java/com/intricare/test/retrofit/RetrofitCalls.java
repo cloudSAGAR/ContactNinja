@@ -2,14 +2,20 @@ package com.intricare.test.retrofit;
 
 import android.content.Context;
 import android.content.IntentFilter;
+import android.util.Log;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.intricare.test.Utils.LoadingDialog;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,17 +38,23 @@ public class RetrofitCalls {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE"); }
 
     public void login_user(String email_address, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
-       // call = retrofitApiInterface.loginUser(email_address);
+        // call = retrofitApiInterface.loginUser(email_address);
         this.retrofitCallback = retrofitCallback;
         call_api(retrofitCallback, loadingDialog);
     }
+    public void SignUp_user(JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Register(RetrofitApiClient.API_Header,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
 
+    }
 
 
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(@NotNull Call<ApiResponse> call, @NotNull Response<ApiResponse> response) {
+                Log.e("ok",new Gson().toJson(call.request()));
                 if (response.code() != 200) {
                     retrofitCallback.error(response);
                 } else {
@@ -57,4 +69,6 @@ public class RetrofitCalls {
             }
         });
     }
+
+
 }

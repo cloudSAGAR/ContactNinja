@@ -1,6 +1,8 @@
 package com.intricare.test.retrofit;
 
 
+import com.google.gson.JsonObject;
+
 import retrofit2.Response;
 
 public interface RetrofitCallback {

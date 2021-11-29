@@ -24,24 +24,33 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
 import com.intricare.test.Model.SignModel;
 import com.intricare.test.Model.SignResponseModel;
 import com.intricare.test.R;
 import com.intricare.test.Utils.Global;
 import com.intricare.test.Utils.LoadingDialog;
+import com.intricare.test.retrofit.ApiResponse;
 import com.intricare.test.retrofit.RetrofitApiClient;
 import com.intricare.test.retrofit.RetrofitApiInterface;
+import com.intricare.test.retrofit.RetrofitCallback;
 import com.intricare.test.retrofit.RetrofitCalls;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,7 +67,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
     public String fcmToken = "";
-
+    RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     public static RetrofitApiInterface apiService;
     String first_name,last_name,mobile_number,email_address,login_type="PHONE",referred_by="",Otp="";
@@ -67,6 +76,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        retrofitCalls = new RetrofitCalls();
+
         mAuth = FirebaseAuth.getInstance();
         loadingDialog = new LoadingDialog(SignupActivity.this);
         initUI();
@@ -227,9 +238,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 if (checkVelidaction()) {
                     //VerifyPhone(edit_Mobile.getText().toString().trim());
 
-                    SignAPI();
+                    try {
+                        SignAPI();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                  // startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
+                    // startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
                 }
 
 
@@ -243,7 +258,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void SignAPI() {
+    private void SignAPI() throws JSONException {
 
         loadingDialog.showLoadingDialog();
         first_name=edit_First.getText().toString().trim();
@@ -261,52 +276,39 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             iv_invalid.setText(getResources().getString(R.string.invalid_last_name));
         }
         else {
-            SignModel signModel=new SignModel();
-            SignModel.Data data=new SignModel.Data();
-            data.setFirstName(first_name);
-            data.setLastName(last_name);
-            if (login_type.equals("EMAIL"))
-            {
-                data.setEmail(email_address);
-            }
-            else {
-                data.setContact_number(mobile_number);
-            }
-            data.setOtp(Otp);
-           // data.setReferredBy(referred_by);
-            data.setLoginType(login_type);
-            signModel.setData(data);
-            Log.e("Data is ",new Gson().toJson(signModel));
-            Call<SignResponseModel> getUsers = apiService.Register(signModel);
-            getUsers.enqueue(new Callback<SignResponseModel>() {
+            JsonObject obj = new JsonObject();
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("first_name", first_name);
+            paramObject.addProperty("last_name", last_name);
+            paramObject.addProperty("email", email_address);
+            paramObject.addProperty("Contact_number", mobile_number);
+            paramObject.addProperty("login_type", "EMAIL");
+            paramObject.addProperty("otp", "1231220");
+            obj.add("data",paramObject);
+
+
+            retrofitCalls.SignUp_user(obj, loadingDialog, new RetrofitCallback() {
                 @Override
-                public void onResponse(Call<SignResponseModel> call, Response<SignResponseModel> response) {
+                public void success(Response<ApiResponse> response) {
 
-                    Log.e("Request  Parmater is", new Gson().toJson(call.request()));
-                    Log.e("Response is",new Gson().toJson(response.body()));
-                   /* Log.e("Message is",response.body().getMessage());
-                    status=response.body().getHttpStatus();
-                    loadingDialog.cancelLoading();
-                     if (status==200)
-                     {
-                         VerifyPhone(edit_Mobile.getText().toString().trim());
-                         Log.e("Message is","Done");
-                     }
-                     else {
-                         Log.e("Message is","Not");
+                    if(response.isSuccessful()) {
 
-                     }*/
-
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Type listType = new TypeToken<SignResponseModel>() {
+                        }.getType();
+                        SignResponseModel user_model=new Gson().fromJson(headerString, listType);
+                        Log.e("getAccessToken", user_model.getAccessToken());
+                    }
                 }
 
                 @Override
-                public void onFailure(Call<SignResponseModel> call, Throwable t) {
-                    Log.e("Error is",t.getMessage());
-                    loadingDialog.cancelLoading();
+                public void error(Response<ApiResponse> response) {
+
+
                 }
             });
         }
-
     }
 
     public static String getRandomNumberString() {
@@ -360,7 +362,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
         return false;
     }
-
 
 
 

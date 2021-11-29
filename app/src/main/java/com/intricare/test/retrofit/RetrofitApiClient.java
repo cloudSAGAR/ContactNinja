@@ -14,6 +14,7 @@ public class RetrofitApiClient {
 
 
    public static final String baseUrl = "https://app.contactninja.org/api/";
+    public static String API_Header = "application/json";
 
     private static Retrofit retrofit;
 

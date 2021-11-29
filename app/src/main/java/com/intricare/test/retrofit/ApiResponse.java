@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ApiResponse {
 
-    @SerializedName("status")
+    @SerializedName("http_status")
     @Expose
     private Integer status;
     @SerializedName("message")
