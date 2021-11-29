@@ -25,6 +25,7 @@
     <string name="signIn">Sign In</string>
     <string name="enter_phone">Enter your phone</string>
     <string name="enter_email">Enter your email</string>
+    <string name="enter_password">Enter your Password</string>
     <string name="or_email">or use email-id</string>
     <string name="or_phone">or use phone number</string>
     <string name="terms">I have read and agree to <br>\nContact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
