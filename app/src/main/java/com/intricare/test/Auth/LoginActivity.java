@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,36 +24,47 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
+import com.intricare.test.Model.SignModel;
+import com.intricare.test.Model.UservalidateModel;
 import com.intricare.test.R;
 import com.intricare.test.Utils.Global;
 import com.intricare.test.Utils.LoadingDialog;
 import com.intricare.test.Utils.SessionManager;
+import com.intricare.test.retrofit.ApiResponse;
+import com.intricare.test.retrofit.RetrofitCallback;
 import com.intricare.test.retrofit.RetrofitCalls;
 
+import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "LoginActivity";
     TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP;
     boolean is_PhoneShow = true;
+
     LinearLayout layout_email, layout_phonenumber;
     CountryCodePicker ccp_id;
 
-    EditText edit_email, edit_Mobile;
+    EditText edit_email, edit_Mobile,edit_password;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
     public String fcmToken = "";
-
+    CoordinatorLayout mMainLayout;
     LoadingDialog loadingDialog;
     RetrofitCalls retrofitCalls;
-    String Login_type="PHONE";
+    String Login_type="PHONE",password="";
     SessionManager sessionManager;
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,11 +124,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
                 loadingDialog.cancelLoading();
                 String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
-
                 Intent intent=new Intent(getApplicationContext(),VerificationActivity.class);
                 intent.putExtra("v_id",verificationId);
                 intent.putExtra("mobile",edit_Mobile.getText().toString());
                 intent.putExtra("countrycode",countryCode);
+                intent.putExtra("f_name","");
+
+                intent.putExtra("l_name","");
+                intent.putExtra("email",edit_email.getText().toString());
+                intent.putExtra("login_type",Login_type);
+                intent.putExtra("activity_flag","login");
                 startActivity(intent);
 
 
@@ -156,7 +173,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_login = findViewById(R.id.btn_login);
         iv_invalid = findViewById(R.id.iv_invalid);
         tv_signUP = findViewById(R.id.tv_signUP);
-
+        mMainLayout=findViewById(R.id.mMainLayout);
+        edit_password=findViewById(R.id.edit_password);
         layout_phonenumber = findViewById(R.id.layout_phonenumber);
         layout_email = findViewById(R.id.layout_email);
         btn_chnage_phone_email = findViewById(R.id.btn_chnage_phone_email);
@@ -185,7 +203,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:
                 if (checkVelidaction()) {
                      sessionManager.setlogin_type(Login_type);
-                     startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
+                     if (Login_type.equals("EMAIL"))
+                     {
+                         LoginData();
+                     }
+                     else {
+                         loadingDialog.showLoadingDialog();
+                         VerifyPhone(edit_Mobile.getText().toString().trim());
+
+                     }
+                  //  LoginData();
+                     //startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
                      //loadingDialog.showLoadingDialog();
                     // LoginApicall();
                     /* if(is_PhoneShow){
@@ -230,7 +258,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Login_type="PHONE";
             if (edit_Mobile.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-            } else {
+            }
+            else if (edit_Mobile.getText().length()!=10)
+            {
+                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+            }
+            else {
                 String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
                 String phoneNumber = edit_Mobile.getText().toString().trim();
                 if (countryCode.length() > 0 && phoneNumber.length() > 0) {
@@ -252,7 +285,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (edit_email.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_email));
 
-            } else {
+            }
+            else if (!edit_email.getText().toString().matches(emailPattern))
+            {
+                iv_invalid.setText(getResources().getString(R.string.invalid_email));
+
+            }
+            else if (edit_password.getText().equals(""))
+            {
+                iv_invalid.setText(getResources().getString(R.string.invalid_password));
+            }
+            else {
                 if(Global.emailValidator(edit_email.getText().toString().trim())){
                     return true;
                 }else {
@@ -263,4 +306,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         return false;
     }
+
+
+
+
+    public void LoginData()
+    {
+        password=edit_password.getText().toString();
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("email", edit_email.getText().toString());
+        paramObject.addProperty("login_type", Login_type);
+        paramObject.addProperty("otp", "123456");
+        obj.add("data",paramObject);
+        retrofitCalls.LoginUser(obj, loadingDialog, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+
+
+                if(response.body().getStatus()==200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<SignModel>() {
+                    }.getType();
+                    SignModel user_model=new Gson().fromJson(headerString, listType);
+                    sessionManager.setUserdata(getApplicationContext(),user_model);
+                    Intent i = new Intent(LoginActivity.this, Phone_email_verificationActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
 }

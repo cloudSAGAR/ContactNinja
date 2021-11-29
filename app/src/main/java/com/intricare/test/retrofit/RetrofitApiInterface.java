@@ -32,4 +32,12 @@ public interface RetrofitApiInterface {
 
     @POST("register")
     Call<ApiResponse> Register(@Header("Accept") String api, @Body JsonObject body);
+
+
+    @POST("uservalidate")
+    Call<ApiResponse> Uservalidate(@Header("Accept") String api, @Body JsonObject body);
+
+
+    @POST("login")
+    Call<ApiResponse> Userlogin(@Header("Accept") String api, @Body JsonObject body);
 }

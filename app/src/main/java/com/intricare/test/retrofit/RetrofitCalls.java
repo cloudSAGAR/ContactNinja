@@ -49,6 +49,20 @@ public class RetrofitCalls {
 
     }
 
+    public void Uservalidate(JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Uservalidate(RetrofitApiClient.API_Header,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void LoginUser(JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Userlogin(RetrofitApiClient.API_Header,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
 
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {

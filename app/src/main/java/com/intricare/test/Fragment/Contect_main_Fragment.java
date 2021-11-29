@@ -44,7 +44,7 @@ public class Contect_main_Fragment extends Fragment implements ViewPager.OnPageC
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-          adapter = new ViewpaggerAdapter(getActivity(),getChildFragmentManager(),
+        adapter = new ViewpaggerAdapter(getActivity(),getChildFragmentManager(),
                 tabLayout.getTabCount(),strtext);
 
         viewPager.setAdapter(adapter);

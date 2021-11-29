@@ -6,17 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.intricare.test.Auth.AppIntroActivity;
 import com.intricare.test.Auth.LoginActivity;
 import com.intricare.test.MainActivity;
+import com.intricare.test.Model.SignModel;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public class SessionManager {
     private static final String PREF_NAME = "jainaPref";
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String IS_APPITRO = "Isintro";
-    private  SharedPreferences pref;
+    public static   SharedPreferences pref;
     private final SharedPreferences.Editor editor;
     private final Context _context;
 
@@ -28,6 +32,7 @@ public class SessionManager {
     public static final String KEY_Token = "token";
     public static final String Plan_type ="plan_type";
     public static final String Login_type ="login_type";
+    public static final String Sign_Model ="sign_model";
 
 
     // Constructor
@@ -118,13 +123,6 @@ public class SessionManager {
         return pref.getBoolean(IS_APPITRO, true);
     }
 
-
-
-
-
-
-
-
     public  String getlogin_type(Context context) {
 
         String type= pref.getString(Login_type, "");
@@ -136,16 +134,25 @@ public class SessionManager {
         editor.putString(Login_type, plantype);
         editor.commit();
     }
-    /*public  String getplan_type(Context context) {
 
-        String type= pref.getString(Plan_type, "");
-        return  type;
-
+    public static SignModel getGetUserdata(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Sign_Model, "");
+        Type type = new TypeToken<SignModel>() {
+        }.getType();
+        SignModel signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new SignModel();
+        }
+        return signModel;
     }
 
-    public  void setplan_type(String plantype) {
-        editor.putString(Plan_type, plantype);
-        editor.commit();
-    }*/
+    public static void setUserdata(Context context, SignModel signModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(signModel);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Sign_Model, json);
+        editor.apply();
+    }
 
 }

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/otp_background"
     android:orientation="vertical"
+    android:id="@+id/mMainLayout"
     tools:context=".Auth.SignupActivity">
 
     <RelativeLayout

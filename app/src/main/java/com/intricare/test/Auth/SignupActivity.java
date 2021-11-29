@@ -2,6 +2,7 @@ package com.intricare.test.Auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -29,9 +30,11 @@ import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
 import com.intricare.test.Model.SignModel;
 import com.intricare.test.Model.SignResponseModel;
+import com.intricare.test.Model.UservalidateModel;
 import com.intricare.test.R;
 import com.intricare.test.Utils.Global;
 import com.intricare.test.Utils.LoadingDialog;
+import com.intricare.test.Utils.SessionManager;
 import com.intricare.test.retrofit.ApiResponse;
 import com.intricare.test.retrofit.RetrofitApiClient;
 import com.intricare.test.retrofit.RetrofitApiInterface;
@@ -66,12 +69,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
+    CoordinatorLayout mMainLayout;
     public String fcmToken = "";
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     public static RetrofitApiInterface apiService;
     String first_name,last_name,mobile_number,email_address,login_type="PHONE",referred_by="",Otp="";
     Integer status=0;
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +111,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
+                loadingDialog.cancelLoading();
                 // This callback will be invoked in two situations:
                 // 1 - Instant verification. In some cases the phone number can be instantly
                 //     verified without needing to send or enter a verification code.
@@ -122,6 +129,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             public void onVerificationFailed(FirebaseException e) {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
+                loadingDialog.cancelLoading();
                 Log.e(TAG, "onVerificationFailed", e);
 
                 Toast.makeText(getApplicationContext(), "VERIFY FAILED", Toast.LENGTH_LONG).show();
@@ -131,11 +139,36 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
 
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
-                Log.e(TAG, "onCodeSent:" + verificationId);
-                // Save verification ID and resending token so we can use them later
+                //loadingDialog.showLoadingDialog();
+                first_name=edit_First.getText().toString().trim();
+                last_name=edit_Last.getText().toString().trim();
+                mobile_number=edit_Mobile.getText().toString().trim();
+                email_address=edit_email.getText().toString();
+                referred_by="t2q2";
+                Otp= getRandomNumberString();
+                if (first_name.equals(""))
+                {
+                    iv_invalid.setText(getResources().getString(R.string.invalid_first_name));
+                }
+                else if (last_name.equals(""))
+                {
+                    iv_invalid.setText(getResources().getString(R.string.invalid_last_name));
+                }
+                else {
+                    loadingDialog.cancelLoading();
+                    String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
+                    Intent intent=new Intent(getApplicationContext(),VerificationActivity.class);
+                    intent.putExtra("v_id",verificationId);
+                    intent.putExtra("mobile",mobile_number);
+                    intent.putExtra("countrycode",countryCode);
+                    intent.putExtra("f_name",first_name);
+                    intent.putExtra("l_name",last_name);
+                    intent.putExtra("email",email_address);
+                    intent.putExtra("login_type",login_type);
+                    intent.putExtra("activity_flag","signup");
+                    startActivity(intent);
+                }
+
 
             }
         };
@@ -199,6 +232,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initUI() {
+        sessionManager=new SessionManager(this);
         ccp_id = findViewById(R.id.ccp_id);
         edit_email = findViewById(R.id.edit_email);
         edit_Mobile = findViewById(R.id.edit_Mobile);
@@ -211,6 +245,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         layout_phonenumber = findViewById(R.id.layout_phonenumber);
         layout_email = findViewById(R.id.layout_email);
         btn_chnage_phone_email = findViewById(R.id.btn_chnage_phone_email);
+        mMainLayout = findViewById(R.id.mMainLayout);
         btn_chnage_phone_email.setOnClickListener(this);
         btn_signup.setOnClickListener(this);
         tv_Login.setOnClickListener(this);
@@ -236,14 +271,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.btn_signup:
                 if (checkVelidaction()) {
-                    //VerifyPhone(edit_Mobile.getText().toString().trim());
 
                     try {
-                        SignAPI();
+                        Uservalidate();
+                        sessionManager.setlogin_type(login_type);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                     // startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
                 }
 
@@ -258,7 +292,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void SignAPI() throws JSONException {
+    private void Uservalidate() throws JSONException {
 
         loadingDialog.showLoadingDialog();
         first_name=edit_First.getText().toString().trim();
@@ -281,31 +315,35 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             paramObject.addProperty("first_name", first_name);
             paramObject.addProperty("last_name", last_name);
             paramObject.addProperty("email", email_address);
-            paramObject.addProperty("Contact_number", mobile_number);
-            paramObject.addProperty("login_type", "EMAIL");
+            paramObject.addProperty("contact_number", mobile_number);
+            paramObject.addProperty("login_type", login_type);
             paramObject.addProperty("otp", "1231220");
             obj.add("data",paramObject);
-
-
-            retrofitCalls.SignUp_user(obj, loadingDialog, new RetrofitCallback() {
+            retrofitCalls.Uservalidate(obj, loadingDialog, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
+                    //Log.e("Response is",new Gson().toJson(response));
 
-                    if(response.isSuccessful()) {
 
+                    if(response.body().getStatus()==200) {
+                        VerifyPhone(edit_Mobile.getText().toString());
+                    }
+                    else {
+                        loadingDialog.cancelLoading();
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        Type listType = new TypeToken<SignResponseModel>() {
+                        Type listType = new TypeToken<UservalidateModel>() {
                         }.getType();
-                        SignResponseModel user_model=new Gson().fromJson(headerString, listType);
-                        Log.e("getAccessToken", user_model.getAccessToken());
+                        UservalidateModel user_model=new Gson().fromJson(headerString, listType);
+                        /*Log.e("getAccessToken", user_model.getAccessToken());*/
+                        Global.Messageshow(getApplicationContext(),mMainLayout,user_model.getContactNumber().get(0).toString(),false);
+
                     }
                 }
 
                 @Override
                 public void error(Response<ApiResponse> response) {
-
-
+                    loadingDialog.cancelLoading();
                 }
             });
         }
@@ -344,7 +382,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (lay_PhoneShow) {
             if (edit_Mobile.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-            } else {
+            }
+            else if (edit_Mobile.getText().length()!=10)
+            {
+                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+            }
+            else {
                 login_type="PHONE";
 
                 return true;
@@ -353,7 +396,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             if (edit_email.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-            } else {
+            }
+            else if (!edit_email.getText().toString().matches(emailPattern))
+            {
+                iv_invalid.setText(getResources().getString(R.string.invalid_email));
+
+            }
+            else {
                 login_type="EMAIL";
 
                 return true;

@@ -25,16 +25,29 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.intricare.test.Auth.PlanTyep.PlanType_Screen;
+import com.intricare.test.Model.SignModel;
+import com.intricare.test.Model.SignResponseModel;
 import com.intricare.test.R;
 import com.intricare.test.Utils.LoadingDialog;
 import com.intricare.test.Utils.OTP_Receiver;
 import com.intricare.test.Utils.SessionManager;
+import com.intricare.test.retrofit.ApiResponse;
+import com.intricare.test.retrofit.RetrofitCallback;
+import com.intricare.test.retrofit.RetrofitCalls;
 
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import retrofit2.Response;
 
 
 public class VerificationActivity extends AppCompatActivity {
@@ -45,13 +58,15 @@ public class VerificationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     String phoneAuthCredential;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    String mobile_number,countrycode,v_id;
+    String mobile_number="",countrycode,v_id;
     public String fcmToken = "";
     public static CountDownTimer countDownTimer;
     int second;
     private long mLastClickTime = 0;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
+    RetrofitCalls retrofitCalls;
+    String first_name="",last_name="",email_address="",login_type="",activity_flag="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,27 +75,25 @@ public class VerificationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         sessionManager =new SessionManager(this);
         IntentUI();
+
+        Intent getIntent=getIntent();
+        Bundle getbunBundle=getIntent.getExtras();
+        first_name=getbunBundle.getString("f_name");
+        last_name=getbunBundle.getString("l_name");
+         email_address=getbunBundle.getString("email");
+        login_type=getbunBundle.getString("login_type");
+        mobile_number=getbunBundle.getString("mobile");
+        v_id=getbunBundle.getString("v_id");
+        activity_flag=getbunBundle.getString("activity_flag");
+        retrofitCalls = new RetrofitCalls();
         EnableRuntimePermission();
-
-       /* Intent getdata=getIntent();
-        Bundle bundle=getdata.getExtras();
-        v_id=bundle.getString("v_id");
-        mobile_number=bundle.getString("mobile");
-        countrycode=bundle.getString("countrycode");
-        loadingDialog = new LoadingDialog(VerificationActivity.this);
-
-*/
-
         firebase();
-
+        loadingDialog=new LoadingDialog(this);
         verfiy_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
-                startActivity(i);
-                finish();
 
-               /* String pin_text=otp_pinview.getText().toString();
+               String pin_text=otp_pinview.getText().toString();
                 if (pin_text.equals(""))
                 {
                     tc_wrong.setVisibility(View.VISIBLE);
@@ -92,7 +105,7 @@ public class VerificationActivity extends AppCompatActivity {
                     signInWithCredential(credential);
 
 
-                }*/
+                }
 
             }
         });
@@ -137,9 +150,19 @@ public class VerificationActivity extends AppCompatActivity {
                             tc_wrong.setVisibility(View.GONE);
                             sessionManager.login();
                             loadingDialog.cancelLoading();
-                            Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
-                            startActivity(i);
-                            finish();
+                            if (activity_flag.equals("login"))
+                            {
+                                LoginData();
+                            }
+                            else {
+                                try {
+                                    SignAPI();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
                         } else {
                             tc_wrong.setVisibility(View.VISIBLE);
                             loadingDialog.cancelLoading();
@@ -287,6 +310,84 @@ public class VerificationActivity extends AppCompatActivity {
         };
         countDownTimer.start();
     }
+    private void SignAPI() throws JSONException {
 
+            loadingDialog.showLoadingDialog();
+            String otp= otp_pinview.getText().toString();
+
+            JsonObject obj = new JsonObject();
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("first_name", first_name);
+            paramObject.addProperty("last_name", last_name);
+            paramObject.addProperty("email", email_address);
+            paramObject.addProperty("contact_number", mobile_number);
+            paramObject.addProperty("login_type", login_type);
+            paramObject.addProperty("otp", otp);
+            obj.add("data",paramObject);
+            retrofitCalls.SignUp_user(obj, loadingDialog, new RetrofitCallback() {
+                @Override
+                public void success(Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
+                    if(response.isSuccessful()) {
+
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Type listType = new TypeToken<SignModel>() {
+                        }.getType();
+                        SignModel user_model=new Gson().fromJson(headerString, listType);
+                        sessionManager.setUserdata(getApplicationContext(),user_model);
+                        Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
+                        startActivity(i);
+                        finish();
+
+                    }
+                }
+
+                @Override
+                public void error(Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
+
+                }
+            });
+
+    }
+    public void LoginData()
+    {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("email", email_address);
+        paramObject.addProperty("contact_number", mobile_number);
+        paramObject.addProperty("login_type", login_type);
+        paramObject.addProperty("otp", otp_pinview.getText().toString());
+        obj.add("data",paramObject);
+        retrofitCalls.LoginUser(obj, loadingDialog, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+
+
+                if(response.body().getStatus()==200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<SignModel>() {
+                    }.getType();
+                    SignModel user_model=new Gson().fromJson(headerString, listType);
+                    sessionManager.setUserdata(getApplicationContext(),user_model);
+                    Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
 
 }
