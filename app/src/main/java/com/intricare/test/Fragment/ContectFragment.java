@@ -10,10 +10,12 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -25,6 +27,7 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -34,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -85,6 +89,7 @@ public class ContectFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,6 +103,7 @@ public class ContectFragment extends Fragment {
         userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
         rvinviteuserdetails.setAdapter(userListDataAdapter);
         userListDataAdapter.notifyDataSetChanged();
+
         //Faste View Code
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
@@ -109,10 +115,12 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
-                        //Log.e("On Top ","Yes");
+
                     }
                 }
         );
+
+
         fastscroller.setupWithRecyclerView(
                 rvinviteuserdetails,
                 (position) -> {
@@ -124,6 +132,7 @@ public class ContectFragment extends Fragment {
                     );
                 }
         );
+
 
         GetContactsIntoArrayList();
         //gettContectList();
@@ -356,7 +365,6 @@ public class ContectFragment extends Fragment {
             String file=""+inviteUserDetails.getUserImageURL();
             if (file.equals("null"))
             {
-
                 holder.no_image.setVisibility(View.VISIBLE);
                 holder.profile_image.setVisibility(View.GONE);
                 String name =inviteUserDetails.getUserName();
@@ -381,69 +389,40 @@ public class ContectFragment extends Fragment {
 
                }
 
-                //Log.e("NEW Text ",add_text);
+
                 holder.no_image.setText(add_text);
                 holder.no_image.setVisibility(View.VISIBLE);
 
-
-                // Log.e("User Name",name);
             }
             else {
                 image_url=inviteUserDetails.getUserImageURL().toString();
-                //Log.e("Image Url Is ",image_url);
                 if (!image_url.equals(""))
                 {
-                    Log.e("Url is ", String.valueOf(Uri.parse(inviteUserDetails.getUserImageURL())));
-
-                        /*    Glide.with(mCtx).
-                            load(Uri.parse(inviteUserDetails.getUserImageURL())).
-                            apply(new RequestOptions().placeholder(R.drawable.shape_primary_circle)).
-                            error(R.drawable.shape_primary_circle).
-                                    dontAnimate().
-                            into(holder.profile_image);*/
-
                     Glide.with(mCtx).
                             load(inviteUserDetails.getUserImageURL())
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                  Log.e("Error ","yes");
-                                 //   holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
-                                    return true;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    Log.e("Error ","No");
-                                  //  holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
-                                    return false;
-                                }
-                            })
+                            .placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle)
                             .into(holder.profile_image);
 
                     holder.no_image.setVisibility(View.GONE);
-                    try {
-                        int drawableId = (Integer)holder.profile_image.getTag();
-                        //Log.e("ID IS", String.valueOf(drawableId));
-                    }
-                    catch (Exception e)
+
+                    if ((Integer)holder.profile_image.getTag()==null)
                     {
-                        holder.profile_image.setImageDrawable(mCtx.getDrawable(R.drawable.shape_primary_circle));
-                     //   holder.no_image.setVisibility(View.VISIBLE);
+                        holder.no_image.setVisibility(View.VISIBLE);
+                        holder.profile_image.setVisibility(View.GONE);
                     }
-
-
+                    else {
+                        int drawableId = (Integer)holder.profile_image.getTag();
+                        //Log.e("Drawable id", String.valueOf(drawableId));
+                        holder.no_image.setVisibility(View.GONE);
+                        holder.profile_image.setVisibility(View.VISIBLE);
+                    }
 
 
                 }
                 else {
-
-                 //   Log.e("No Image","Yes"+ " "+position);
-
                     holder.profile_image.setVisibility(View.GONE);
                     String name =inviteUserDetails.getUserName();
-
-                   // Log.e("User Name",name);
                     String add_text="";
                     String[] split_data=name.split(" ");
                     for (int i=0;i<split_data.length;i++)
@@ -456,7 +435,6 @@ public class ContectFragment extends Fragment {
                             add_text=add_text+split_data[i].substring(0,1);
                         }
                     }
-                    //Log.e("NEW Text ",add_text);
                     holder.no_image.setText(add_text);
                     holder.no_image.setVisibility(View.VISIBLE);
 

@@ -15,9 +15,7 @@ public interface RetrofitApiInterface {
     @POST("login")
     Call<ApiResponse> loginUser (@Body SignModel signModel);
 
-
-
-    @POST("register")
+    @POST("/register")
     Call<SignResponseModel> Register(@Body SignModel signModel);
 
 

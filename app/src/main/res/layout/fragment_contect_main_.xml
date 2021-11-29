@@ -48,7 +48,7 @@
         style="@style/tv_bold"
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabSelectedTextColor="@color/tv_medium"
-        app:tabTextColor="@color/tv_medium"
+        app:tabTextColor="@color/bz_text"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
         android:layout_height="wrap_content"

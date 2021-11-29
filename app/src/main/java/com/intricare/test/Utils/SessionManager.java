@@ -27,6 +27,7 @@ public class SessionManager {
     public static final String KEY_User = "User";
     public static final String KEY_Token = "token";
     public static final String Plan_type ="plan_type";
+    public static final String Login_type ="login_type";
 
 
     // Constructor
@@ -122,6 +123,19 @@ public class SessionManager {
 
 
 
+
+
+    public  String getlogin_type(Context context) {
+
+        String type= pref.getString(Login_type, "");
+        return  type;
+
+    }
+
+    public  void setlogin_type(String plantype) {
+        editor.putString(Login_type, plantype);
+        editor.commit();
+    }
     /*public  String getplan_type(Context context) {
 
         String type= pref.getString(Plan_type, "");

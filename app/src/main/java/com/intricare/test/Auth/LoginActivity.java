@@ -27,6 +27,7 @@ import com.hbb20.CountryCodePicker;
 import com.intricare.test.R;
 import com.intricare.test.Utils.Global;
 import com.intricare.test.Utils.LoadingDialog;
+import com.intricare.test.Utils.SessionManager;
 import com.intricare.test.retrofit.RetrofitCalls;
 
 import java.util.concurrent.TimeUnit;
@@ -50,7 +51,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     LoadingDialog loadingDialog;
     RetrofitCalls retrofitCalls;
-    String Login_type="";
+    String Login_type="PHONE";
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initUI();
         retrofitCalls=new RetrofitCalls(this);
         firebase();
+
     }
 
     private void firebase() {
@@ -146,6 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initUI() {
+        sessionManager=new SessionManager(this);
         ccp_id = findViewById(R.id.ccp_id);
         edit_email = findViewById(R.id.edit_email);
         edit_Mobile = findViewById(R.id.edit_Mobile);
@@ -180,9 +184,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_login:
                 if (checkVelidaction()) {
+                     sessionManager.setlogin_type(Login_type);
                      startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
-                    // loadingDialog.showLoadingDialog();
-                     LoginApicall();
+                     //loadingDialog.showLoadingDialog();
+                    // LoginApicall();
                     /* if(is_PhoneShow){
                          VerifyPhone(edit_Mobile.getText().toString().trim());
                      }else {
@@ -220,10 +225,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean checkVelidaction() {
+
         if (is_PhoneShow) {
+            Login_type="PHONE";
             if (edit_Mobile.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                Login_type="PHONE";
             } else {
                 String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
                 String phoneNumber = edit_Mobile.getText().toString().trim();

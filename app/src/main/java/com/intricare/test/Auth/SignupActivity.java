@@ -61,7 +61,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     LoadingDialog loadingDialog;
     public static RetrofitApiInterface apiService;
-    String first_name,last_name,mobile_number,email_address,login_type="",referred_by="",Otp="";
+    String first_name,last_name,mobile_number,email_address,login_type="PHONE",referred_by="",Otp="";
     Integer status=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,9 +227,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 if (checkVelidaction()) {
                     //VerifyPhone(edit_Mobile.getText().toString().trim());
 
-                   // SignAPI();
+                    SignAPI();
 
-                   startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
+                  // startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
                 }
 
 
@@ -272,23 +272,19 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             else {
                 data.setContact_number(mobile_number);
             }
-           // data.setOtp(Otp);
+            data.setOtp(Otp);
            // data.setReferredBy(referred_by);
             data.setLoginType(login_type);
             signModel.setData(data);
-
-
-
-           // signModel.setData(new SignModel.Data(first_name,last_name,email_address,mobile_number,Otp,login_type,referred_by));
             Log.e("Data is ",new Gson().toJson(signModel));
             Call<SignResponseModel> getUsers = apiService.Register(signModel);
             getUsers.enqueue(new Callback<SignResponseModel>() {
                 @Override
                 public void onResponse(Call<SignResponseModel> call, Response<SignResponseModel> response) {
 
-
-                     Log.e("Response is",new Gson().toJson(response.body()));
-                   //  Log.e("Message is",response.body().getMessage());
+                    Log.e("Request  Parmater is", new Gson().toJson(call.request()));
+                    Log.e("Response is",new Gson().toJson(response.body()));
+                   /* Log.e("Message is",response.body().getMessage());
                     status=response.body().getHttpStatus();
                     loadingDialog.cancelLoading();
                      if (status==200)
@@ -299,7 +295,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                      else {
                          Log.e("Message is","Not");
 
-                     }
+                     }*/
 
                 }
 

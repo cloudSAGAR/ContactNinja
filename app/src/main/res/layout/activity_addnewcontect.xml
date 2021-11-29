@@ -45,7 +45,7 @@
                 style="@style/tv_bold"
                 android:textSize="@dimen/_15sdp"
                 android:hint="Type Name"
-                android:textColorHint="@color/otp_header_text_color"
+                android:textColorHint="@color/home_list_sub_data"
                 android:textColor="@color/tv_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -59,7 +59,7 @@
                 style="@style/tv_regular"
                 android:textColor="@color/otp_header_text_color"
                 android:hint="Job Title"
-                android:textColorHint="@color/otp_header_text_color"
+                android:textColorHint="@color/home_list_sub_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -78,7 +78,7 @@
         app:tabSelectedTextColor="@color/tv_medium"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
-        app:tabTextColor="@color/tv_medium"
+        app:tabTextColor="@color/bz_text"
         android:layout_height="wrap_content"
         android:background="@color/white">
     </com.google.android.material.tabs.TabLayout>
