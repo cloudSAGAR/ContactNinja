@@ -34,6 +34,7 @@ public class Global extends Application   {
         super.onCreate();
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+
     }
 
     /*
