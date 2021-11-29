@@ -4,17 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
 import com.intricare.test.R;
+import com.intricare.test.Utils.SessionManager;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link UsetProgileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UsetProgileFragment extends Fragment {
+public class UsetProgileFragment extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +26,8 @@ public class UsetProgileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    Button btn_logout;
+    SessionManager sessionManager;
 
     public UsetProgileFragment() {
         // Required empty public constructor
@@ -60,6 +64,21 @@ public class UsetProgileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_uset_progile, container, false);
+        View view= inflater.inflate(R.layout.fragment_uset_progile, container, false);
+        sessionManager= new SessionManager(getActivity());
+        btn_logout=view.findViewById(R.id.btn_logout);
+        btn_logout.setOnClickListener(this);
+        return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_logout:
+
+                sessionManager.logoutUser();
+
+                break;
+        }
     }
 }
