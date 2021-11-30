@@ -114,10 +114,12 @@
                         android:id="@+id/fastscroller"
                         android:overScrollMode="never"
                         android:layout_width="32dp"
+
                         android:textColor="@color/home_list_atoz"
                         android:layout_height="match_parent"
-                        style="@style/tv_regular"
-                        app:fastScrollerTextPadding="1dp"
+                        style="@style/tv_regular1"
+                        android:scrollbars="vertical"
+                        app:fastScrollerTextPadding="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

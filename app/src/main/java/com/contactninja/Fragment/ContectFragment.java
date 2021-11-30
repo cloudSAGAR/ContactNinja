@@ -34,13 +34,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.R;
+import com.contactninja.Utils.LoadingDialog;
 import com.google.gson.Gson;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Utils.DatabaseClient;
+
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +72,8 @@ public class ContectFragment extends Fragment {
     FragmentActivity fragmentActivity;
     LinearLayout add_new_contect_layout;
     int c=0;
+    LoadingDialog loadingDialog;
+
     public ContectFragment(String strtext, View view, FragmentActivity activity) {
 
         this.strtext=strtext;
@@ -86,12 +91,11 @@ public class ContectFragment extends Fragment {
         View content_view=inflater.inflate(R.layout.fragment_contect, container, false);
         IntentUI(content_view);
         mCtx=getContext();
+        loadingDialog=new LoadingDialog(getActivity());
         rvinviteuserdetails.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.VERTICAL, false));
         rvinviteuserdetails.setHasFixedSize(true);
         //inviteListData.clear();
-        userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
-        rvinviteuserdetails.setAdapter(userListDataAdapter);
-        userListDataAdapter.notifyDataSetChanged();
+
 
         //Faste View Code
         fastscroller_thumb.setupWithFastScroller(fastscroller);
@@ -122,12 +126,11 @@ public class ContectFragment extends Fragment {
                 }
         );
 
-
         GetContactsIntoArrayList();
-        //gettContectList();
+        getAllContect();
 
 
-        num_count.setText(inviteListData.size()+" Contacts");
+
 
 
         add_new_contect.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +154,7 @@ public class ContectFragment extends Fragment {
                 startActivity(addnewcontect);
             }
         });
+
 
 
 
@@ -234,9 +238,8 @@ public class ContectFragment extends Fragment {
                 Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getId())));
                 String contactID= String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
                 inviteListData.add(new InviteListData( ""+userName.toString().trim(), user_phone_number.toString().trim(),user_image,user_des,old_latter.toString().trim(),""));
-                getTasks(new InviteListData( userName, user_phone_number,user_image,contactID,old_latter,""));
-                userListDataAdapter.notifyDataSetChanged();
-
+              //  userListDataAdapter.notifyDataSetChanged();
+                getTasks(new InviteListData( userName, user_phone_number,user_image,user_des,old_latter,""));
 
             }
 
@@ -478,6 +481,46 @@ public class ContectFragment extends Fragment {
 
     }
 
+    private void getAllContect() {
+        loadingDialog.showLoadingDialog();
+        class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
+            @Override
+            protected List<InviteListData> doInBackground(Void... voids) {
+                List<InviteListData> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getvalue();
+
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<InviteListData> tasks) {
+                if (tasks.size()==0)
+                {
+                    loadingDialog.cancelLoading();
+                    getAllContect();
+                }
+                else {
+                    loadingDialog.cancelLoading();
+                    num_count.setText(tasks.size()+" Contacts");
+                    userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), (ArrayList<InviteListData>) tasks);
+                    rvinviteuserdetails.setAdapter(userListDataAdapter);
+                    userListDataAdapter.notifyDataSetChanged();
+                    super.onPostExecute(tasks);
+                }
+
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
+    }
+
+
+
+
     private void getTasks(InviteListData inser_data) {
 
 
@@ -497,23 +540,22 @@ public class ContectFragment extends Fragment {
             @Override
             protected void onPostExecute(List<InviteListData> tasks) {
 
-               // if (tasks.size()==inviteListData.size()) {
-                   // Log.e("Size is Same ","Yse");
-                    boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
-                    if (found) {
-                        if (tasks.size() == 1) {
-
-                        } else {
-                            getdataanme_mobile(inser_data);
-                        }
+                // if (tasks.size()==inviteListData.size()) {
+                // Log.e("Size is Same ","Yse");
+                boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
+                if (found) {
+                    if (tasks.size() == 1) {
 
                     } else {
-                        inser_data.setFlag("Add");
-                        getTasks1(inser_data);
-
-
+                        getdataanme_mobile(inser_data);
                     }
-               // }
+
+                } else {
+                    inser_data.setFlag("Add");
+                    getTasks1(inser_data);
+
+                }
+                // }
              /*   else {
                     boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
                     if (found) {
@@ -532,8 +574,6 @@ public class ContectFragment extends Fragment {
         GetTasks gt = new GetTasks();
         gt.execute();
     }
-
-
     public void updatedata(InviteListData inviteListData)
     {
         class UpdateTask extends AsyncTask<Void, Void, Void> {
@@ -576,7 +616,7 @@ public class ContectFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                Log.e("Delete Task","Yes"+c);
+             //   Log.e("Delete Task","Yes"+c);
                 super.onPostExecute(aVoid);
 
             }
@@ -774,7 +814,11 @@ public class ContectFragment extends Fragment {
                 }
                 //One more then Remove Contect
                 else if (tasks.size()<2){
+                   /* boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
+                    if (found)
+                    {
 
+                    }*/
                     delete();
 
                 }
