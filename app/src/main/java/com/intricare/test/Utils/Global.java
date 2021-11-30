@@ -28,15 +28,19 @@ import java.util.regex.Pattern;
 public class Global extends Application   {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     private static long lastClickTime = 0;
+    private static Global mInstance;
 
     @Override
     public void onCreate() {
         super.onCreate();
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        mInstance = this;
 
     }
-
+    public static synchronized Global getInstance () {
+        return mInstance;
+    }
     /*
      * any value not null or blank check
      * */
@@ -141,6 +145,34 @@ public class Global extends Application   {
             return Patterns.PHONE.matcher(phoneNumber).matches();
         }
         return false;
+    }
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
+    }
+    public static void checkConnectivity (Activity activity, View mMainLayout) {
+        boolean Connectivity = false;
+        Snackbar snackbar;
+        snackbar =
+                Snackbar.make(
+                        mMainLayout,
+                        activity.getString(R.string.noInternet),
+                        Snackbar.LENGTH_INDEFINITE);
+        snackbar.setActionTextColor(activity.getResources().getColor(R.color.red));
+
+        boolean finalConnectivity = Connectivity;
+        snackbar.setAction(activity.getString(R.string.tryAgain), view -> {
+            if (finalConnectivity) {
+                snackbar.dismiss();
+            } else {
+                checkConnectivity(activity,mMainLayout);
+            }
+        });
+        if (ConnectivityReceiver.isConnected()) {
+            Connectivity = true;
+            snackbar.dismiss();
+        } else {
+            snackbar.show();
+        }
     }
 
 

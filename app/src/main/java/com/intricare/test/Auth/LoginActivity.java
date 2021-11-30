@@ -2,11 +2,12 @@ package com.intricare.test.Auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,11 +29,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
+import com.intricare.test.MainActivity;
 import com.intricare.test.Model.SignModel;
-import com.intricare.test.Model.UservalidateModel;
 import com.intricare.test.R;
 import com.intricare.test.Utils.Global;
 import com.intricare.test.Utils.LoadingDialog;
+import com.intricare.test.Utils.ConnectivityReceiver;
 import com.intricare.test.Utils.SessionManager;
 import com.intricare.test.retrofit.ApiResponse;
 import com.intricare.test.retrofit.RetrofitCallback;
@@ -46,7 +48,7 @@ import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "LoginActivity";
     TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP;
     boolean is_PhoneShow = true;
@@ -66,16 +68,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     SessionManager sessionManager;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+
         loadingDialog = new LoadingDialog(LoginActivity.this);
         initUI();
         retrofitCalls=new RetrofitCalls(this);
         firebase();
+        Global.checkConnectivity(LoginActivity.this,mMainLayout);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Global.getInstance().setConnectivityListener(this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void firebase() {
@@ -350,4 +368,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(LoginActivity.this,mMainLayout);
+    }
 }
