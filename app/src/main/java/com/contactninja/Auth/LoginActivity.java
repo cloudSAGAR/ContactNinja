@@ -75,9 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-
-
-
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         loadingDialog = new LoadingDialog(LoginActivity.this);
         initUI();
         retrofitCalls=new RetrofitCalls(this);
@@ -88,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onResume() {
+
         super.onResume();
         Global.getInstance().setConnectivityListener(this);
 
