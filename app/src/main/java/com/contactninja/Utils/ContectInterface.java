@@ -58,5 +58,11 @@ public interface ContectInterface {
 
         @Query("SELECT * FROM InviteListData WHERE userPhoneNumber =:taskId OR userName =:username")
         List<InviteListData> getTaskUpdate1(String taskId,String username);
-    }
+
+
+
+        @Query("SELECT * FROM InviteListData ORDER BY userName")
+        List<InviteListData> getvalue1();
+
+}
 

@@ -54,7 +54,7 @@
                 style="@style/tv_regular"
                 android:textStyle="bold"
                 android:singleLine="true"
-                android:text="250 Contacts"
+                android:text=""
                 />
         </LinearLayout>
         <View

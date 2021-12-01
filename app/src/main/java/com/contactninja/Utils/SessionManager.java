@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 
 import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.SignModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -15,6 +16,7 @@ import com.contactninja.MainActivity;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 
 public class SessionManager {
     private static final String PREF_NAME = "jainaPref";
@@ -33,8 +35,10 @@ public class SessionManager {
     public static final String Plan_type ="plan_type";
     public static final String Login_type ="login_type";
     public static final String Sign_Model ="sign_model";
+    public static final String Contect_Name="contect_name";
+    public static final String Contect_Type="contect_type";
 
-
+    public static final String Add_Contect_Detail="contect_detail";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -55,11 +59,33 @@ public class SessionManager {
     }
 
 
-    /**
-     * Check login method wil check user login status
-     * If false it will redirect user to login page
-     * Else won't do anything
-     */
+    public  String getContect_Name(Context context) {
+
+        String type= pref.getString(Contect_Name, "");
+        return  type;
+
+    }
+
+    public  void setContect_Name(String plantype) {
+        editor.putString(Contect_Name, plantype);
+        editor.commit();
+    }
+
+
+
+    public  String getContect_Type(Context context) {
+
+        String type= pref.getString(Contect_Type, "");
+        return  type;
+
+    }
+
+    public  void setContect_Type(String plantype) {
+        editor.putString(Contect_Type, plantype);
+        editor.commit();
+    }
+
+
     public void checkLogin() {
         // Check login status
         if (!this.isLoggedIn()) {
@@ -154,5 +180,26 @@ public class SessionManager {
         editor.putString(Sign_Model, json);
         editor.apply();
     }
+
+    public static AddcontectModel getAdd_Contect_Detail(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Add_Contect_Detail, "");
+        Type type = new TypeToken<AddcontectModel>() {
+        }.getType();
+        AddcontectModel signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new AddcontectModel();
+        }
+        return signModel;
+    }
+
+    public static void setAdd_Contect_Detail(Context context,AddcontectModel add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Add_Contect_Detail, json);
+        editor.apply();
+    }
+
 
 }

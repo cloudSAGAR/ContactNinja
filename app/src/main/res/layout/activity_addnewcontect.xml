@@ -45,6 +45,7 @@
                 style="@style/tv_bold"
                 android:textSize="@dimen/_15sdp"
                 android:hint="Type Name"
+                android:inputType="text|textCapSentences"
                 android:textColorHint="@color/home_list_sub_data"
                 android:textColor="@color/tv_medium"
                 android:layout_width="match_parent"
@@ -59,6 +60,7 @@
                 style="@style/tv_regular"
                 android:textColor="@color/otp_header_text_color"
                 android:hint="Job Title"
+                android:inputType="text|textCapSentences"
                 android:textColorHint="@color/home_list_sub_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

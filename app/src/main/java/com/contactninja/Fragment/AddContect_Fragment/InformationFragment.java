@@ -19,7 +19,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Model.AddcontectModel;
 import com.contactninja.R;
+import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.contactninja.Model.WorkTypeData;
 
@@ -29,7 +31,7 @@ import java.util.List;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 
-public class InformationFragment extends Fragment {
+public class InformationFragment extends Fragment implements View.OnClickListener {
 
 
 
@@ -39,9 +41,15 @@ public class InformationFragment extends Fragment {
     EditText tv_mobile_no,ev_email,ev_address,ev_city,ev_zip,ev_zoom,ev_note;
     LinearLayout select_label,select_email_label,select_state,add_mobile_Number,
             layout_phone,layout_email,layout_mobile,delete_layout;
-    TextView tv_phone;
+    TextView tv_phone,phone_txt,email_txt;
     ImageView pulse_icon,pulse_icon1;
     SwipeLayout swipe_layout;
+    String Name="",job_titel="";
+    SessionManager sessionManager;
+    AddcontectModel addcontectModel;
+    BottomSheetDialog bottomSheetDialog;
+
+
 
 
 
@@ -51,46 +59,15 @@ public class InformationFragment extends Fragment {
 
         View view=inflater.inflate(R.layout.fragment_information, container, false);
         IntentUI(view);
+        addcontectModel=new AddcontectModel();
+
+        sessionManager=new SessionManager(getActivity());
+        select_email_label.setOnClickListener(this);
+        select_label.setOnClickListener(this);
 
 
-        select_label.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomSheetDialog_For_Home();
-            }
-        });
-        tv_mobile_no.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        TextSet();
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                layout_phone.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        ev_email.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                layout_email.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
         swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
             @Override
             public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
@@ -124,6 +101,152 @@ public class InformationFragment extends Fragment {
         return view;
     }
 
+    private void TextSet() {
+
+        tv_mobile_no.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                layout_phone.setVisibility(View.VISIBLE);
+                addcontectModel.setMobile(s.toString());
+                sessionManager.setAdd_Contect_Detail(getActivity(),addcontectModel);
+                addcontectModel.setMobile_type(phone_txt.getText().toString());
+                addcontectModel.setEmail_type(email_txt.getText().toString());
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        ev_email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                layout_email.setVisibility(View.VISIBLE);
+                addcontectModel.setEmail(s.toString());
+                sessionManager.setAdd_Contect_Detail(getActivity(),addcontectModel);
+                addcontectModel.setMobile_type(phone_txt.getText().toString());
+                addcontectModel.setEmail_type(email_txt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        ev_address.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                addcontectModel.setAddress(charSequence.toString());
+                sessionManager.setAdd_Contect_Detail(getActivity(),addcontectModel);
+                addcontectModel.setMobile_type(phone_txt.getText().toString());
+                addcontectModel.setEmail_type(email_txt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_city.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                addcontectModel.setCity(charSequence.toString());
+                sessionManager.setAdd_Contect_Detail(getActivity(),addcontectModel);
+                addcontectModel.setMobile_type(phone_txt.getText().toString());
+                addcontectModel.setEmail_type(email_txt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_zip.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                addcontectModel.setZip_code(charSequence.toString());
+                sessionManager.setAdd_Contect_Detail(getActivity(),addcontectModel);
+                addcontectModel.setMobile_type(phone_txt.getText().toString());
+                addcontectModel.setEmail_type(email_txt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_zoom.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                addcontectModel.setZoom_id(charSequence.toString());
+                sessionManager.setAdd_Contect_Detail(getActivity(),addcontectModel);
+                addcontectModel.setMobile_type(phone_txt.getText().toString());
+                addcontectModel.setEmail_type(email_txt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_note.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                addcontectModel.setNote(charSequence.toString());
+                sessionManager.setAdd_Contect_Detail(getActivity(),addcontectModel);
+                addcontectModel.setMobile_type(phone_txt.getText().toString());
+                addcontectModel.setEmail_type(email_txt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+    }
+
     private void IntentUI(View view) {
         tv_phone=view.findViewById(R.id.tv_phone);
         tv_mobile_no=view.findViewById(R.id.tv_mobile_no);
@@ -146,12 +269,14 @@ public class InformationFragment extends Fragment {
         layout_mobile=view.findViewById(R.id.layout_mobile);
         swipe_layout=view.findViewById(R.id.swipe_layout);
         delete_layout=view.findViewById(R.id.delete_layout);
+        phone_txt=view.findViewById(R.id.phone_txt);
+        email_txt=view.findViewById(R.id.email_txt);
 
     }
 
 
-    private void showBottomSheetDialog_For_Home() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(),R.style.BottomSheetDialog);
+    private void showBottomSheetDialog_For_Home(String moble) {
+        bottomSheetDialog = new BottomSheetDialog(getActivity(),R.style.BottomSheetDialog);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_for_home);
         RecyclerView home_type_list=bottomSheetDialog.findViewById(R.id.home_type_list);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity());
@@ -169,13 +294,27 @@ public class InformationFragment extends Fragment {
         workTypeData.add(2,nameList2);
         workTypeData.add(3,nameList3);
         workTypeData.add(4,nameList4);
-
-
-
-        WorkAdapter workAdapter=new WorkAdapter(getActivity(),workTypeData);
+        WorkAdapter workAdapter=new WorkAdapter(getActivity(),workTypeData,moble);
         home_type_list.setAdapter(workAdapter);
 
         bottomSheetDialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.select_label:
+                showBottomSheetDialog_For_Home("mobile");
+
+                break;
+
+            case R.id.select_email_label:
+                showBottomSheetDialog_For_Home("email");
+                break;
+
+
+        }
     }
 
 
@@ -184,10 +323,11 @@ public class InformationFragment extends Fragment {
         public Context mCtx;
 
         private List<WorkTypeData> worklist;
-        public WorkAdapter(Context context, List<WorkTypeData> worklist) {
+        String type;
+        public WorkAdapter(Context context, List<WorkTypeData> worklist, String type) {
             this.mCtx = context;
             this.worklist = worklist;
-
+            this.type=type;
         }
         @NonNull
         @Override
@@ -208,6 +348,20 @@ public class InformationFragment extends Fragment {
                         showAlertDialogButtonClicked(v);
                     }
                     else {
+                        if (type.equals("mobile"))
+                        {
+                            bottomSheetDialog.cancel();
+                            phone_txt.setText(holder.tv_item.getText().toString());
+
+                        }
+                        else if (type.equals("email"))
+                        {
+                            bottomSheetDialog.cancel();
+                            email_txt.setText(holder.tv_item.getText().toString());
+                        }
+                        else {
+
+                        }
 
                     }
 

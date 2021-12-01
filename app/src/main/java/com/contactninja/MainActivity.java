@@ -37,7 +37,7 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.firebase.crashlytics.CustomKeysAndValues;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sessionManager=new SessionManager(this);
         sessionManager.login();
         IntentUI();
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
         UpdateManageCheck();
         EnableRuntimePermission();
 
@@ -85,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CURRENT_TAG = TAG_HOME;
         displayView();
         ImageSetLight("Home");
-
-
 
 
     }
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setDeniedTitle("Contactninja would like to access your contacts")
                 .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
                 .setGotoSettingButtonText("setting")
-                .setPermissions(Manifest.permission.READ_CONTACTS)
+                .setPermissions(Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS)
                 .setRationaleConfirmText("OK")
                 .check();
 

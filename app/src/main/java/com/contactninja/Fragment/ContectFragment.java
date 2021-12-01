@@ -211,7 +211,7 @@ public class ContectFragment extends Fragment {
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
-            user_des=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.DATA)));
+            user_des=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE)));
             String unik_key=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                     .substring(0, 1)
                     .toUpperCase();
@@ -490,7 +490,7 @@ public class ContectFragment extends Fragment {
                         .getInstance(getActivity())
                         .getAppDatabase()
                         .taskDao()
-                        .getvalue();
+                        .getvalue1();
 
                 return taskList;
             }
@@ -869,6 +869,8 @@ public class ContectFragment extends Fragment {
         GetTasks gt = new GetTasks();
         gt.execute();
     }
+
+
 
 }
 
