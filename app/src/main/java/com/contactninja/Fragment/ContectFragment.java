@@ -1,16 +1,19 @@
 package com.contactninja.Fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -22,11 +25,15 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,18 +41,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.google.gson.Gson;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Utils.DatabaseClient;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -73,6 +86,8 @@ public class ContectFragment extends Fragment {
     LinearLayout add_new_contect_layout;
     int c=0;
     LoadingDialog loadingDialog;
+    private static final int PERMISSION_REQUEST_CODE = 100;
+    StringBuilder data;
 
     public ContectFragment(String strtext, View view, FragmentActivity activity) {
 
@@ -95,6 +110,8 @@ public class ContectFragment extends Fragment {
         rvinviteuserdetails.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.VERTICAL, false));
         rvinviteuserdetails.setHasFixedSize(true);
         //inviteListData.clear();
+
+        EnableRuntimePermission();
 
 
         //Faste View Code
@@ -156,6 +173,7 @@ public class ContectFragment extends Fragment {
             public void onClick(View v) {
                 Intent addnewcontect=new Intent(getActivity(), Addnewcontect_Activity.class);
                 startActivity(addnewcontect);
+               // splitdata(inviteListData);
             }
         });
 
@@ -245,6 +263,7 @@ public class ContectFragment extends Fragment {
                 //  userListDataAdapter.notifyDataSetChanged();
                 getTasks(new InviteListData( userName, user_phone_number,user_image,user_des,old_latter,""));
 
+
             }
 
         }
@@ -252,6 +271,108 @@ public class ContectFragment extends Fragment {
 
         cursor.close();
 
+    }
+
+
+
+    private void splitdata(ArrayList<InviteListData> response) {
+        System.out.println("GET DATA IS "+response);
+
+        // response will have a @ symbol so that we can split individual user data
+      //  String res_data[] = response.split("@");
+        //StringBuilder  to store the data
+        data = new StringBuilder();
+
+        data.append("id,firstname,phone");
+
+        for(int i = 0; i<response.size();i++){
+          //  Log.e("MObile Number is",response.get(i).getUserPhoneNumber());
+            data.append("\n"+ response.get(i).getId()+","+ response.get(i).getUserName().toString()+","+ response.get(i).getUserPhoneNumber().toString());
+        }
+        CreateCSV(data);
+    }
+    private void CreateCSV(StringBuilder data) {
+        Calendar calendar = Calendar.getInstance();
+        long time= calendar.getTimeInMillis();
+        try {
+            //
+            FileOutputStream out = getActivity().openFileOutput("CSV_Data_"+time+".csv", Context.MODE_PRIVATE);
+
+            //store the data in CSV file by passing String Builder data
+            out.write(data.toString().getBytes());
+            out.close();
+            Context context = getActivity();
+            final File newFile = new File(Environment.getExternalStorageDirectory(),"SimpleCVS");
+            if(!newFile.exists())
+            {
+                newFile.mkdir();
+            }
+            File file = new File(context.getFilesDir(),"CSV_Data_"+time+".csv");
+            Uri path = FileProvider.getUriForFile(context,"com.contactninja",file);
+            //once the file is ready a share option will pop up using which you can share
+            // the same CSV from via Gmail or store in Google Drive
+
+            Log.e("File Pathe is ", String.valueOf(path));
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/csv");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Data");
+            intent.putExtra(Intent.EXTRA_STREAM, path);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(intent,"Excel Data"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+    public void EnableRuntimePermission() {
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                // Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                //Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        };
+        TedPermission.with(getActivity())
+                .setPermissionListener(permissionlistener)
+                .setDeniedTitle("Contactninja would like to access your contacts")
+                .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
+                .setGotoSettingButtonText("setting")
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                .setRationaleConfirmText("OK")
+                .check();
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int RC, String[] per, int[] PResult) {
+
+        super.onRequestPermissionsResult(RC, per, PResult);
+        if (RC == RequestPermissionCode) {
+            if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
+                try {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Global.Messageshow(getActivity(), mMainLayout, "Permission Canceled, Now your application cannot access CONTACTS", false);
+                startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts("package", getActivity().getPackageName(), null)));
+                // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
     public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
             implements Filterable {
