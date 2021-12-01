@@ -23,12 +23,7 @@ public class OTP_Receiver extends BroadcastReceiver {
         {
 
             String msg = sms.getMessageBody();
-            //Log.e("Message is",msg);
-            // here we are spliting the sms using " : " symbol
-            //String otp = msg.split("")[0];
             String otp =msg.substring(0,6);
-
-           // Log.e("Otp Is a",otp);
             pinview.setText(otp);
         }
     }

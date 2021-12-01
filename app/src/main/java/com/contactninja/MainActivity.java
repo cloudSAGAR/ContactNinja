@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sessionManager=new SessionManager(this);
         sessionManager.login();
         IntentUI();
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-        FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
+      //  FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+       // FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
         UpdateManageCheck();
         EnableRuntimePermission();
 

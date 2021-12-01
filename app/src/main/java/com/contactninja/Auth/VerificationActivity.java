@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -12,9 +14,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.chaos.view.PinView;
 import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -65,6 +69,7 @@ public class VerificationActivity extends AppCompatActivity {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     String first_name="",last_name="",email_address="",login_type="",activity_flag="";
+    CoordinatorLayout mMainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +121,31 @@ public class VerificationActivity extends AppCompatActivity {
             }
         });
         new OTP_Receiver().setEditText(otp_pinview);
+        otp_pinview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if (charSequence.toString().length()==6)
+                {
+                    tc_wrong.setVisibility(View.GONE);
+                    loadingDialog.showLoadingDialog();
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
+                    signInWithCredential(credential);
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
     }
 
@@ -214,6 +244,7 @@ public class VerificationActivity extends AppCompatActivity {
         resend_txt=findViewById(R.id.resend_txt);
         tc_wrong=findViewById(R.id.tc_wrong);
         tvTimer=findViewById(R.id.tvTimer);
+        mMainLayout=findViewById(R.id.mMainLayout);
     }
 
     public void EnableRuntimePermission() {
@@ -375,9 +406,12 @@ public class VerificationActivity extends AppCompatActivity {
                     Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
                     startActivity(i);
                     finish();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),true);
+
                 }
                 else {
-
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                    finish();
                 }
             }
 

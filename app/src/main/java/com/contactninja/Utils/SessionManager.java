@@ -26,10 +26,6 @@ public class SessionManager {
     private final SharedPreferences.Editor editor;
     private final Context _context;
 
-    /*
-     *
-     * user login to get data
-     * */
     public static final String KEY_User = "User";
     public static final String KEY_Token = "token";
     public static final String Plan_type ="plan_type";
@@ -127,7 +123,7 @@ public class SessionManager {
         editor.commit();
 
         // After logout redirect user to Loing Activity
-        Intent i = new Intent(_context, MainActivity.class);
+        Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

@@ -63,7 +63,7 @@ public class ContectFragment extends Fragment {
 
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
-   // ImageView iv_back,iv_more;
+    // ImageView iv_back,iv_more;
     SearchView contect_search;
     TextView add_new_contect,num_count;
     Handler mHandler=new Handler();
@@ -79,7 +79,7 @@ public class ContectFragment extends Fragment {
         this.strtext=strtext;
         this.view1=view;
         this.fragmentActivity=activity;
-       // Log.e("View is ", String.valueOf(view1.getVisibility()));
+        // Log.e("View is ", String.valueOf(view1.getVisibility()));
     }
 
 
@@ -114,17 +114,21 @@ public class ContectFragment extends Fragment {
         );
 
 
+
         fastscroller.setupWithRecyclerView(
                 rvinviteuserdetails,
                 (position) -> {
                     // ItemModel item = data.get(position);
                     return new FastScrollItemIndicator.Text(
+
                             inviteListData.get(position).getUserName().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
                 }
         );
+
+
 
         GetContactsIntoArrayList();
         getAllContect();
@@ -172,7 +176,7 @@ public class ContectFragment extends Fragment {
             for(InviteListData d: inviteListData){
                 if(d.getUserName().contains(text)){
                     temp.add(d);
-                   // Log.e("Same Data ",d.getUserName());
+                    // Log.e("Same Data ",d.getUserName());
                 }
             }
             rvinviteuserdetails=view.findViewById(R.id.contect_list);
@@ -196,7 +200,7 @@ public class ContectFragment extends Fragment {
         rvinviteuserdetails=content_view.findViewById(R.id.contect_list);
         fastscroller=content_view.findViewById(R.id.fastscroller);
         fastscroller_thumb=content_view.findViewById(R.id.fastscroller_thumb);
-       // iv_back=content_view.findViewById(R.id.iv_back);
+        // iv_back=content_view.findViewById(R.id.iv_back);
         //iv_more=content_view.findViewById(R.id.iv_more);
         contect_search=content_view.findViewById(R.id.contect_search);
         add_new_contect=content_view.findViewById(R.id.add_new_contect);
@@ -238,7 +242,7 @@ public class ContectFragment extends Fragment {
                 Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getId())));
                 String contactID= String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
                 inviteListData.add(new InviteListData( ""+userName.toString().trim(), user_phone_number.toString().trim(),user_image,user_des,old_latter.toString().trim(),""));
-              //  userListDataAdapter.notifyDataSetChanged();
+                //  userListDataAdapter.notifyDataSetChanged();
                 getTasks(new InviteListData( userName, user_phone_number,user_image,user_des,old_latter,""));
 
             }
@@ -307,47 +311,47 @@ public class ContectFragment extends Fragment {
         public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
             InviteListData inviteUserDetails = userDetails.get(position);
 
-                last_postion=position;
+            last_postion=position;
 
 
-                if (inviteUserDetails.getF_latter().equals(""))
+            if (inviteUserDetails.getF_latter().equals(""))
+            {
+                holder.first_latter.setVisibility(View.GONE);
+                holder.top_layout.setVisibility(View.GONE);
+            }
+            else {
+
+                holder.first_latter.setVisibility(View.VISIBLE);
+                holder.first_latter.setText(inviteUserDetails.getF_latter());
+                holder.top_layout.setVisibility(View.VISIBLE);
+                String first_latter=inviteUserDetails.getUserName().substring(0,1).toUpperCase();
+
+                if (second_latter.equals(""))
                 {
+                    current_latter=first_latter;
+                    second_latter=first_latter;
+                    holder.first_latter.setVisibility(View.VISIBLE);
+                    holder.top_layout.setVisibility(View.VISIBLE);
+
+                }
+                else if (second_latter.equals(first_latter))
+                {
+                    current_latter=second_latter;
+                    inviteUserDetails.setF_latter("");
                     holder.first_latter.setVisibility(View.GONE);
                     holder.top_layout.setVisibility(View.GONE);
+
                 }
                 else {
 
+                    current_latter=first_latter;
+                    second_latter=first_latter;
                     holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.first_latter.setText(inviteUserDetails.getF_latter());
                     holder.top_layout.setVisibility(View.VISIBLE);
-                    String first_latter=inviteUserDetails.getUserName().substring(0,1).toUpperCase();
-
-                    if (second_latter.equals(""))
-                    {
-                        current_latter=first_latter;
-                        second_latter=first_latter;
-                        holder.first_latter.setVisibility(View.VISIBLE);
-                        holder.top_layout.setVisibility(View.VISIBLE);
-
-                    }
-                    else if (second_latter.equals(first_latter))
-                    {
-                        current_latter=second_latter;
-                        inviteUserDetails.setF_latter("");
-                        holder.first_latter.setVisibility(View.GONE);
-                        holder.top_layout.setVisibility(View.GONE);
-
-                    }
-                    else {
-
-                        current_latter=first_latter;
-                        second_latter=first_latter;
-                        holder.first_latter.setVisibility(View.VISIBLE);
-                        holder.top_layout.setVisibility(View.VISIBLE);
 
 
-                    }
                 }
+            }
 
 
 
@@ -363,23 +367,23 @@ public class ContectFragment extends Fragment {
                 holder.profile_image.setVisibility(View.GONE);
                 String add_text="";
                 String[] split_data=name.split(" ");
-               try {
-                   for (int i=0;i<split_data.length;i++)
-                   {
-                       if (i==0)
-                       {
-                           add_text=split_data[i].substring(0,1);
-                       }
-                       else {
-                           add_text=add_text+split_data[i].substring(0,1);
-                           break;
-                       }
-                   }
-               }
-               catch (Exception e)
-               {
+                try {
+                    for (int i=0;i<split_data.length;i++)
+                    {
+                        if (i==0)
+                        {
+                            add_text=split_data[i].substring(0,1);
+                        }
+                        else {
+                            add_text=add_text+split_data[i].substring(0,1);
+                            break;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
 
-               }
+                }
 
 
                 holder.no_image.setText(add_text);
@@ -434,7 +438,7 @@ public class ContectFragment extends Fragment {
 
             }
             holder.userName.setText(inviteUserDetails.getUserName());
-             holder.userNumber.setText(inviteUserDetails.getUserDescription());
+            holder.userNumber.setText(inviteUserDetails.getUserDescription());
 
         }
 
@@ -580,7 +584,7 @@ public class ContectFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... voids) {
-              DatabaseClient.getInstance(getContext()).getAppDatabase()
+                DatabaseClient.getInstance(getContext()).getAppDatabase()
                         .taskDao()
                         .updatevalue(inviteListData.getUserName(),inviteListData.getUserPhoneNumber(),inviteListData.getFlag());
 
@@ -608,15 +612,15 @@ public class ContectFragment extends Fragment {
                 DatabaseClient.getInstance(getContext()).getAppDatabase()
                         .taskDao()
                         .deleteDuplicates();
-            //.DeleteData(inviteListData.getUserPhoneNumber());
-                      // .RemoveData();
+                //.DeleteData(inviteListData.getUserPhoneNumber());
+                // .RemoveData();
 
-                     return null;
+                return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
-             //   Log.e("Delete Task","Yes"+c);
+                //   Log.e("Delete Task","Yes"+c);
                 super.onPostExecute(aVoid);
 
             }
@@ -669,7 +673,7 @@ public class ContectFragment extends Fragment {
 
             @Override
             protected void onPostExecute(List<InviteListData> tasks) {
-               // Log.e("Insert Task list Size ", String.valueOf(tasks.size()));
+                // Log.e("Insert Task list Size ", String.valueOf(tasks.size()));
                 if (tasks.size()==0)
                 {
                     SetDatainDatabase(inser_data);
@@ -694,7 +698,7 @@ public class ContectFragment extends Fragment {
             ContactsContract.Data.CONTACT_ID
     };
 
-//Update Contect Number Direct
+    //Update Contect Number Direct
     public static boolean updateNameAndNumber(final Context context, String number, String newName, String newNumber) {
 
         if (context == null || number == null || number.trim().isEmpty()) return false;
@@ -788,8 +792,8 @@ public class ContectFragment extends Fragment {
 
 
     private void getdataanme_mobile(InviteListData inser_data) {
-       // c=c+1;
-       // Log.e("C is ", String.valueOf(c));
+        // c=c+1;
+        // Log.e("C is ", String.valueOf(c));
 
         class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
             @Override
@@ -808,9 +812,9 @@ public class ContectFragment extends Fragment {
 
                 if (tasks.size()==0)
                 {
-                        inser_data.setFlag("Update");
-                        getdataanme_mobile1(inser_data);
-                        Log.e("Event Update ","Call");
+                    inser_data.setFlag("Update");
+                    getdataanme_mobile1(inser_data);
+                    Log.e("Event Update ","Call");
                 }
                 //One more then Remove Contect
                 else if (tasks.size()<2){
@@ -849,17 +853,17 @@ public class ContectFragment extends Fragment {
 
             @Override
             protected void onPostExecute(List<InviteListData> tasks) {
-                    Log.e("Update Data Event ","CAll"+tasks.size());
-                    if (tasks.size()==0)
-                    {
-                        inser_data.setFlag("Add");
-                        Log.e("Insert Flag",inser_data.getFlag());
-                        SetDatainDatabase(inser_data);
-                    }
-                    else {
-                        inser_data.setFlag("Update");
-                        updatedata(inser_data);
-                    }
+                Log.e("Update Data Event ","CAll"+tasks.size());
+                if (tasks.size()==0)
+                {
+                    inser_data.setFlag("Add");
+                    Log.e("Insert Flag",inser_data.getFlag());
+                    SetDatainDatabase(inser_data);
+                }
+                else {
+                    inser_data.setFlag("Update");
+                    updatedata(inser_data);
+                }
 
 
                 super.onPostExecute(tasks);

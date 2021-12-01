@@ -77,6 +77,7 @@ public class UsetProgileFragment extends Fragment implements View.OnClickListene
             case R.id.btn_logout:
 
                 sessionManager.logoutUser();
+                getActivity().finish();
 
                 break;
         }
