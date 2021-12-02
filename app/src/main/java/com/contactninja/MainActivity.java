@@ -46,9 +46,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    /*
-     * in-app update
-     * */
+
     InstallStateUpdatedListener installStateUpdatedListener;
     private AppUpdateManager mAppUpdateManager;
     private static int RC_APP_UPDATE = 0;
@@ -58,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FrameLayout frameLayout;
     private long mLastClickTime = 0;
     SessionManager sessionManager;
-
-
     //Declare Variabls for fragment
     public static int navItemIndex = 0;
     private boolean shouldLoadHomeFragOnBackPress = true;
@@ -69,8 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG_USER = "user";
     public static String CURRENT_TAG = TAG_HOME;
     boolean doubleBackToExitPressedOnce = false;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
