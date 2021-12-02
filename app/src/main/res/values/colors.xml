@@ -41,6 +41,11 @@
     <color name="bz_text">#4A4A4A</color>
 
 
+    <color name="alert_color">#040404</color>
+    <color name="alert_line">#929292</color>
+    <color name="alert_button">#2B72C1</color>
+    <color name="black_trans">#4D464646</color>
+
 
 
 </resources>

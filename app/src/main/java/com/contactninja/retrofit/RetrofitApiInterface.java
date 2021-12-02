@@ -30,4 +30,9 @@ public interface RetrofitApiInterface {
 
     @POST("login")
     Call<ApiResponse> Userlogin(@Header("Accept") String api, @Body JsonObject body);
+
+
+    @POST("emailNumberUpdate")
+    Call<ApiResponse> EmailNumberUpdate(@Header("Accept") String api,@Header("Authorization") String auth, @Body JsonObject body);
+
 }

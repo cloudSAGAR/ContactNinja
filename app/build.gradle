@@ -6,12 +6,12 @@ plugins {
 /*apply plugin: 'com.google.firebase.crashlytics'*/
 
 android {
-    compileSdk 30
+    compileSdk 29
 
     defaultConfig {
         applicationId "com.contactninja"
         minSdk 24
-        targetSdk 30
+        targetSdk 29
         versionCode 1
         versionName "1.0"
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/otp_background"
+    android:id="@+id/mMainLayout"
     tools:context=".Auth.Phone_email_verificationActivity">
 
     <RelativeLayout
@@ -109,12 +110,13 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/layout_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:visibility="gone">
+                        >
 
 
                         <EditText
@@ -141,6 +143,16 @@
 
 
 
+                    <TextView
+                        android:id="@+id/iv_invalid"
+                        style="@style/tv_regular"
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/red"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <TextView

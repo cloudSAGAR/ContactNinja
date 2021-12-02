@@ -9,6 +9,7 @@
     android:id="@+id/frameContainer1"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
+
         android:id="@+id/include2"
         layout="@layout/toolbar" />
     <LinearLayout

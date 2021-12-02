@@ -2,6 +2,7 @@ package com.contactninja;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
@@ -12,12 +13,16 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -82,7 +87,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         displayView();
         ImageSetLight("Home");
 
+      //  showAlertDialogButtonClicked();
+    }
 
+
+
+
+    public void showAlertDialogButtonClicked()
+    {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this);
+
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.permision_dialog, null);
+        builder.setView(customLayout);
+        TextView tv_not=customLayout.findViewById(R.id.tv_not);
+        TextView tv_ok=customLayout.findViewById(R.id.tv_ok);
+
+
+        AlertDialog dialog
+                = builder.create();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        dialog.show();
     }
 
     public void EnableRuntimePermission() {
@@ -90,12 +119,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                // Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                //Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             }
 
         };
@@ -107,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setPermissions(Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS)
                 .setRationaleConfirmText("OK")
                 .check();
+
+
 
 
     }

@@ -5,6 +5,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.chaos.view.PinView;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -104,9 +108,12 @@ public class VerificationActivity extends AppCompatActivity {
                 else {
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
+
+                    //Show Code
+
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                     signInWithCredential(credential);
-
+                    //LoginData();
 
                 }
 
@@ -134,8 +141,11 @@ public class VerificationActivity extends AppCompatActivity {
                 {
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
-                    signInWithCredential(credential);
+                   // PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
+                   // signInWithCredential(credential);
+
+                        LoginData();
+
                 }
 
 
@@ -211,7 +221,9 @@ public class VerificationActivity extends AppCompatActivity {
                             Log.i(TAG, "signInWithCredential:success");
 
                             FirebaseUser user = task.getResult().getUser();
-                            startActivity(new Intent(getApplicationContext(), Phone_email_verificationActivity.class));
+                            Intent intent=new Intent(getApplicationContext(),Phone_email_verificationActivity.class);
+                            intent.putExtra("login_type",login_type);
+                            startActivity(intent);
 
 
 
@@ -361,11 +373,12 @@ public class VerificationActivity extends AppCompatActivity {
 
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        Type listType = new TypeToken<SignModel>() {
+                        Type listType = new TypeToken<SignResponseModel>() {
                         }.getType();
-                        SignModel user_model=new Gson().fromJson(headerString, listType);
+                        SignResponseModel user_model=new Gson().fromJson(headerString, listType);
                         sessionManager.setUserdata(getApplicationContext(),user_model);
                         Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
+                        i.putExtra("login_type",login_type);
                         startActivity(i);
                         finish();
 
@@ -392,26 +405,39 @@ public class VerificationActivity extends AppCompatActivity {
         retrofitCalls.LoginUser(obj, loadingDialog, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                //Log.e("Response is",new Gson().toJson(response));
+               // Log.e("Response is",new Gson().toJson(response));
+                loadingDialog.cancelLoading();
 
 
                 if(response.body().getStatus()==200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<SignModel>() {
+                    Type listType = new TypeToken<SignResponseModel>() {
                     }.getType();
-                    SignModel user_model=new Gson().fromJson(headerString, listType);
-                    sessionManager.setUserdata(getApplicationContext(),user_model);
-                    Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
-                    startActivity(i);
-                    finish();
-                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),true);
+
+
+                       // Log.e("Reponse is",gson.toJson(response.body().getData()));
+                         SignResponseModel user_model=new Gson().fromJson(headerString, listType);
+                         sessionManager.setUserdata(getApplicationContext(),user_model);
+                         Intent intent=new Intent(getApplicationContext(),Phone_email_verificationActivity.class);
+                         intent.putExtra("login_type",login_type);
+                         startActivity(intent);
+                         finish();
+                         Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),true);
+
 
                 }
                 else {
                     Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
-                    finish();
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 200);
+
                 }
             }
 

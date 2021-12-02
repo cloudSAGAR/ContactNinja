@@ -5,18 +5,18 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.SignModel;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.contactninja.MainActivity;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
 
 public class SessionManager {
     private static final String PREF_NAME = "jainaPref";
@@ -35,6 +35,7 @@ public class SessionManager {
     public static final String Contect_Type="contect_type";
 
     public static final String Add_Contect_Detail="contect_detail";
+
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -105,11 +106,11 @@ public class SessionManager {
     /**
      * Get stored session data
      */
-    public HashMap<String, String> getUserDetails() {
+ /*   public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<>();
         user.put(KEY_Token, pref.getString(KEY_Token, ""));
         return user;
-    }
+    }*/
 
 
     /**
@@ -157,23 +158,24 @@ public class SessionManager {
         editor.commit();
     }
 
-    public static SignModel getGetUserdata(Context context) {
+    public static SignResponseModel getGetUserdata(Context context) {
         Gson gson = new Gson();
         String json = pref.getString(Sign_Model, "");
-        Type type = new TypeToken<SignModel>() {
+        Type type = new TypeToken<SignResponseModel>() {
         }.getType();
-        SignModel signModel = gson.fromJson(json, type);
+        SignResponseModel signModel = gson.fromJson(json, type);
         if (signModel == null) {
-            signModel = new SignModel();
+            signModel = new SignResponseModel();
         }
         return signModel;
     }
 
-    public static void setUserdata(Context context, SignModel signModel) {
+    public static void setUserdata(Context context, SignResponseModel signModel) {
         Gson gson = new Gson();
         String json = gson.toJson(signModel);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Sign_Model, json);
+        Log.e("Sessioin data",new Gson().toJson(signModel));
         editor.apply();
     }
 

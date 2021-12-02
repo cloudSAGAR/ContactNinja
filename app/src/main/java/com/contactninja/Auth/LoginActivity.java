@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,10 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -228,8 +226,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                      }
                      else {
                          loadingDialog.showLoadingDialog();
-                         VerifyPhone(edit_Mobile.getText().toString().trim());
 
+                         //Show Code
+
+                         VerifyPhone(edit_Mobile.getText().toString().trim());
+                        /* String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
+                         Intent intent=new Intent(getApplicationContext(), VerificationActivity.class);
+                         intent.putExtra("v_id","");
+                         intent.putExtra("mobile",edit_Mobile.getText().toString());
+                         intent.putExtra("countrycode",countryCode);
+                         intent.putExtra("f_name","");
+
+                         intent.putExtra("l_name","");
+                         intent.putExtra("email",edit_email.getText().toString());
+                         intent.putExtra("login_type",Login_type);
+                         intent.putExtra("activity_flag","login");
+                         startActivity(intent);*/
                      }
                   //  LoginData();
                      //startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
@@ -349,9 +361,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<SignModel>() {
+                    Type listType = new TypeToken<SignResponseModel>() {
                     }.getType();
-                    SignModel user_model=new Gson().fromJson(headerString, listType);
+                    SignResponseModel user_model=new Gson().fromJson(headerString, listType);
                     sessionManager.setUserdata(getApplicationContext(),user_model);
                     Intent i = new Intent(LoginActivity.this, Phone_email_verificationActivity.class);
                     startActivity(i);

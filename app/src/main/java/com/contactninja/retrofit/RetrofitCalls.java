@@ -60,11 +60,20 @@ public class RetrofitCalls {
 
     }
 
+
+
+    public void EmailNumberUpdate(JsonObject registerinfo, LoadingDialog loadingDialog,String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.EmailNumberUpdate(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(@NotNull Call<ApiResponse> call, @NotNull Response<ApiResponse> response) {
-                Log.e("ok",new Gson().toJson(call.request()));
+
                 if (response.code() != 200) {
                     retrofitCallback.error(response);
                 } else {
