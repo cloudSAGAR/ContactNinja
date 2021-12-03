@@ -131,13 +131,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onPermissionGranted() {
 
-                Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
 
-                Toast.makeText(MainActivity.this, "Permission Denied" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                EnableRuntimePermission();
             }
 
         };
@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+/*
 
     @Override
     public void onRequestPermissionsResult(int RC, String[] per, int[] PResult) {
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+*/
 
 
     private void IntentUI() {
