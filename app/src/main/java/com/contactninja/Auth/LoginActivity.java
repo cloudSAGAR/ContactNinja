@@ -229,7 +229,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                          //Show Code
 
-                         VerifyPhone(edit_Mobile.getText().toString().trim());
+                        VerifyPhone(edit_Mobile.getText().toString().trim());
                         /* String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
                          Intent intent=new Intent(getApplicationContext(), VerificationActivity.class);
                          intent.putExtra("v_id","");
@@ -243,16 +243,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                          intent.putExtra("activity_flag","login");
                          startActivity(intent);*/
                      }
-                  //  LoginData();
-                     //startActivity(new Intent(getApplicationContext(),VerificationActivity.class));
-                     //loadingDialog.showLoadingDialog();
-                    // LoginApicall();
-                    /* if(is_PhoneShow){
-                         VerifyPhone(edit_Mobile.getText().toString().trim());
-                     }else {
 
-
-                     }*/
                 }
 
 

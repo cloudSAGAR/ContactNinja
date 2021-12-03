@@ -169,7 +169,8 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             loadingDialog.showLoadingDialog();
             SignResponseModel user_data=sessionManager.getGetUserdata(this);
 
-            Log.e("User Data is",new Gson().toJson(user_data));
+           // Log.e("User Data is",new Gson().toJson(user_data));
+          //  Log.e("Size is ", String.valueOf(user_data.getUser().getUserOrganizations().size()));
             String user_id= String.valueOf(user_data.getUser().getId());
             String o_id= String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
             String  team_id=String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
@@ -201,7 +202,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                 @Override
                 public void success(Response<ApiResponse> response) {
 
-                    Log.e("Response is",new Gson().toJson(response));
+                    //Log.e("Response is",new Gson().toJson(response));
 
 
                     if(response.body().getStatus()==200) {
@@ -213,6 +214,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                         loadingDialog.cancelLoading();
 
                     }
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),true);
                 }
 
                 @Override

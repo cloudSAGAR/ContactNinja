@@ -111,9 +111,9 @@ public class VerificationActivity extends AppCompatActivity {
 
                     //Show Code
 
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
-                    signInWithCredential(credential);
-                    //LoginData();
+                  //  PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
+                    //signInWithCredential(credential);
+                    LoginData();
 
                 }
 
@@ -141,10 +141,10 @@ public class VerificationActivity extends AppCompatActivity {
                 {
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
-                   // PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
-                   // signInWithCredential(credential);
+                   PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
+                   signInWithCredential(credential);
 
-                        LoginData();
+                        //LoginData();
 
                 }
 
