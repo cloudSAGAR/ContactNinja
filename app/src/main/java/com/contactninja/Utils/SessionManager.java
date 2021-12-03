@@ -35,6 +35,7 @@ public class SessionManager {
     public static final String Contect_Type="contect_type";
 
     public static final String Add_Contect_Detail="contect_detail";
+    public static final String Fcm_Token="fcm_token";
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -83,6 +84,21 @@ public class SessionManager {
     }
 
 
+
+
+
+    public  String getFcm_Token(Context context) {
+
+        String type= pref.getString(Fcm_Token, "");
+        return  type;
+
+    }
+
+    public  void setFcm_Token(String fcm_token) {
+        editor.putString(Fcm_Token, fcm_token);
+        editor.commit();
+    }
+
     public void checkLogin() {
         // Check login status
         if (!this.isLoggedIn()) {
@@ -102,10 +118,6 @@ public class SessionManager {
         }
     }
 
-
-    /**
-     * Get stored session data
-     */
  /*   public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<>();
         user.put(KEY_Token, pref.getString(KEY_Token, ""));
@@ -113,9 +125,7 @@ public class SessionManager {
     }*/
 
 
-    /**
-     * Clear session details
-     */
+
     public void logoutUser() {
         NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
@@ -135,15 +145,12 @@ public class SessionManager {
         _context.startActivity(i);
     }
 
-    /**
-     * Quick check for login
-     **/
     // Get Login State
     public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }
     public boolean isAppIntroIn() {
-        return pref.getBoolean(IS_APPITRO, true);
+        return pref.getBoolean(IS_APPITRO, false);
     }
 
     public  String getlogin_type(Context context) {

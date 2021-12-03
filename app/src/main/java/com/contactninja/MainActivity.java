@@ -2,15 +2,20 @@ package com.contactninja;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,11 +29,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.contactninja.Utils.App;
+import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Fragment.Contect_main_Fragment;
@@ -46,7 +54,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-
 import java.util.ArrayList;
 
 
@@ -87,9 +94,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         displayView();
         ImageSetLight("Home");
 
-      //  showAlertDialogButtonClicked();
-    }
 
+      //  showAlertDialogButtonClicked();
+
+
+
+
+    }
 
 
 
@@ -126,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
 
-                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Permission Denied" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             }
 
         };
@@ -151,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (RC == RequestPermissionCode) {
             if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
                 try {
+                   // delete();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -391,6 +403,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+    public void delete()
+    {
+        class DeleteTask extends AsyncTask<Void, Void, Void> {
 
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        //.deleteDuplicates();
+                //.DeleteData(inviteListData.getUserPhoneNumber());
+                .RemoveData();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                //   Log.e("Delete Task","Yes"+c);
+                super.onPostExecute(aVoid);
+
+            }
+        }
+
+        DeleteTask ut = new DeleteTask();
+        ut.execute();
+    }
 
 }

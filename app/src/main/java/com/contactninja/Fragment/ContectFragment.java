@@ -111,7 +111,7 @@ public class ContectFragment extends Fragment {
         rvinviteuserdetails.setHasFixedSize(true);
         //inviteListData.clear();
 
-        EnableRuntimePermission();
+       // EnableRuntimePermission();
 
 
         //Faste View Code
@@ -130,18 +130,18 @@ public class ContectFragment extends Fragment {
                 }
         );
 
-
-
         fastscroller.setupWithRecyclerView(
                 rvinviteuserdetails,
                 (position) -> {
                     // ItemModel item = data.get(position);
-                    return new FastScrollItemIndicator.Text(
+                    FastScrollItemIndicator fastScrollItemIndicator= new FastScrollItemIndicator.Text(
+
 
                             inviteListData.get(position).getUserName().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
+                    return  fastScrollItemIndicator;
                 }
         );
 
@@ -513,7 +513,36 @@ public class ContectFragment extends Fragment {
             }
             else {
                 image_url=inviteUserDetails.getUserImageURL().toString();
-                if (!image_url.equals(""))
+
+                if (holder.profile_image.getDrawable()== null)
+                {
+                    Glide.with(mCtx).
+                            load(inviteUserDetails.getUserImageURL())
+                            .placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle)
+                            .into(holder.profile_image);
+                    //Log.e("Image ","View "+position);
+                }
+                else {
+                    holder.profile_image.setVisibility(View.GONE);
+                    String name =inviteUserDetails.getUserName();
+                    String add_text="";
+                    String[] split_data=name.split(" ");
+                    for (int i=0;i<split_data.length;i++)
+                    {
+                        if (i==0)
+                        {
+                            add_text=split_data[i].substring(0,1);
+                        }
+                        else {
+                            add_text=add_text+split_data[i].substring(0,1);
+                        }
+                    }
+                    holder.no_image.setText(add_text);
+                    holder.no_image.setVisibility(View.VISIBLE);
+                }
+
+              /*  if (!image_url.equals(""))
                 {
                     Glide.with(mCtx).
                             load(inviteUserDetails.getUserImageURL())
@@ -555,7 +584,7 @@ public class ContectFragment extends Fragment {
                     holder.no_image.setText(add_text);
                     holder.no_image.setVisibility(View.VISIBLE);
 
-                }
+                }*/
 
             }
             holder.userName.setText(inviteUserDetails.getUserName());
