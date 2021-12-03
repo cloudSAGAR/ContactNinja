@@ -2,7 +2,6 @@ package com.contactninja.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -68,7 +67,6 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             u_email = edit_email.getText().toString();
 
 
-
         } else {
             layout_email.setVisibility(View.GONE);
             layout_phonenumber.setVisibility(View.VISIBLE);
@@ -84,39 +82,39 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         String login_type = bundle.getString("login_type");
         if (login_type.equals("PHONE")) {
             u_email = edit_email.getText().toString();
-                if (u_email.equals("")) {
-                    iv_invalid.setText(getResources().getString(R.string.invalid_email));
-                } else if (!u_email.matches(emailPattern)) {
-                    iv_invalid.setText(getResources().getString(R.string.invalid_email));
+            if (u_email.equals("")) {
+                iv_invalid.setText(getResources().getString(R.string.invalid_email));
+            } else if (!u_email.matches(emailPattern)) {
+                iv_invalid.setText(getResources().getString(R.string.invalid_email));
 
-                } else {
-                    // login_type="EMAIL";
-                    try {
-                        EmailUpdate();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            } else {
+                // login_type="EMAIL";
+                try {
+                    EmailUpdate();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }
 
         } else {
-                layout_email.setVisibility(View.GONE);
-                layout_phonenumber.setVisibility(View.VISIBLE);
-                u_mobile = edit_Mobile.getText().toString();
-                if (u_mobile.trim().equals("")) {
-                    iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                } else if (u_mobile.length() != 10) {
-                    iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                } else {
-                    // login_type="PHONE";
-                    try {
-                        PhoneUpdate();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
+            layout_email.setVisibility(View.GONE);
+            layout_phonenumber.setVisibility(View.VISIBLE);
+            u_mobile = edit_Mobile.getText().toString();
+            if (u_mobile.trim().equals("")) {
+                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+            } else if (u_mobile.length() != 10) {
+                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+            } else {
+                // login_type="PHONE";
+                try {
+                    PhoneUpdate();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-          }
+
+
+            }
+        }
     }
 
     private void initUI() {
@@ -148,7 +146,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
-        String o_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         Intent intent = getIntent();
@@ -166,7 +164,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("email", edit_email.getText().toString());
-        paramObject.addProperty("organization_id", o_id);
+        paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", team_id);
         paramObject.addProperty("update_type", type);
         paramObject.addProperty("user_id", user_id);
@@ -176,14 +174,17 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
+                    sessionManager.Email_Update();
                     loadingDialog.cancelLoading();
                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                     finish();
+                    //Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
+
                 } else {
                     loadingDialog.cancelLoading();
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
 
                 }
-                Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
             }
 
             @Override
@@ -201,7 +202,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
 
         String user_id = String.valueOf(user_data.getUser().getId());
-        String o_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         Intent intent = getIntent();
@@ -211,7 +212,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("contact_number", edit_Mobile.toString());
-        paramObject.addProperty("organization_id", o_id);
+        paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", team_id);
         paramObject.addProperty("update_type", type);
         paramObject.addProperty("user_id", user_id);
@@ -222,6 +223,8 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
                     loadingDialog.cancelLoading();
+
+                    sessionManager.Email_Update();
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                     finish();

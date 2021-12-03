@@ -33,9 +33,11 @@ public class SessionManager {
     public static final String Sign_Model ="sign_model";
     public static final String Contect_Name="contect_name";
     public static final String Contect_Type="contect_type";
-
     public static final String Add_Contect_Detail="contect_detail";
     public static final String Fcm_Token="fcm_token";
+    private static final String IS_Email_Update = "IsEmailUpdate";
+    private static final String IS_Payment_Type_Select= "Ispaymenttypeselect";
+
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -51,6 +53,28 @@ public class SessionManager {
         editor.putBoolean(IS_LOGIN, true);
         editor.commit();
     }
+
+
+    public void Payment_Type_Select() {
+        editor.putBoolean(IS_Payment_Type_Select, true);
+        editor.commit();
+    }
+
+    public void Email_Update() {
+        editor.putBoolean(IS_Email_Update, true);
+        editor.commit();
+    }
+
+
+    public boolean isEmail_Update() {
+        return pref.getBoolean(IS_Email_Update, false);
+    }
+
+    public boolean isPayment_Type_Select() {
+        return pref.getBoolean(IS_Payment_Type_Select, false);
+    }
+
+
     public void appIntro() {
         editor.putBoolean(IS_APPITRO, false);
         editor.commit();
@@ -98,6 +122,9 @@ public class SessionManager {
         editor.putString(Fcm_Token, fcm_token);
         editor.commit();
     }
+
+
+
 
     public void checkLogin() {
         // Check login status

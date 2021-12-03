@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,9 +19,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.chaos.view.PinView;
+import com.contactninja.Auth.PlanTyep.PlanType_Screen;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.OTP_Receiver;
+import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -39,13 +46,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-import com.contactninja.Model.SignModel;
-import com.contactninja.Utils.LoadingDialog;
-import com.contactninja.Utils.OTP_Receiver;
-import com.contactninja.Utils.SessionManager;
-import com.contactninja.retrofit.ApiResponse;
-import com.contactninja.retrofit.RetrofitCallback;
-import com.contactninja.retrofit.RetrofitCalls;
 
 import org.json.JSONException;
 
@@ -58,62 +58,63 @@ import retrofit2.Response;
 
 public class VerificationActivity extends AppCompatActivity {
     private static final String TAG = "VerificationActivity";
-
-    PinView otp_pinview;
-    TextView verfiy_button,resend_txt,tc_wrong,tvTimer;
-    private FirebaseAuth mAuth;
-    String phoneAuthCredential;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    String mobile_number="",countrycode,v_id;
-    public String fcmToken = "";
     public static CountDownTimer countDownTimer;
+    public String fcmToken = "";
+    PinView otp_pinview;
+    TextView verfiy_button, resend_txt, tc_wrong, tvTimer;
+    String phoneAuthCredential;
+    String mobile_number = "", countrycode, v_id;
     int second;
-    private long mLastClickTime = 0;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-    String first_name="",last_name="",email_address="",login_type="",activity_flag="";
+    String first_name = "", last_name = "", email_address = "", login_type = "", activity_flag = "";
     CoordinatorLayout mMainLayout;
+    private FirebaseAuth mAuth;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private final long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
         mAuth = FirebaseAuth.getInstance();
-        sessionManager =new SessionManager(this);
+        sessionManager = new SessionManager(this);
         IntentUI();
 
-        Intent getIntent=getIntent();
-        Bundle getbunBundle=getIntent.getExtras();
-        first_name=getbunBundle.getString("f_name");
-        last_name=getbunBundle.getString("l_name");
-         email_address=getbunBundle.getString("email");
-        login_type=getbunBundle.getString("login_type");
-        mobile_number=getbunBundle.getString("mobile");
-        v_id=getbunBundle.getString("v_id");
-        activity_flag=getbunBundle.getString("activity_flag");
+        Intent getIntent = getIntent();
+        Bundle getbunBundle = getIntent.getExtras();
+        first_name = getbunBundle.getString("f_name");
+        last_name = getbunBundle.getString("l_name");
+        email_address = getbunBundle.getString("email");
+        login_type = getbunBundle.getString("login_type");
+        mobile_number = getbunBundle.getString("mobile");
+        v_id = getbunBundle.getString("v_id");
+        activity_flag = getbunBundle.getString("activity_flag");
         retrofitCalls = new RetrofitCalls();
         EnableRuntimePermission();
         firebase();
-        loadingDialog=new LoadingDialog(this);
+        loadingDialog = new LoadingDialog(this);
         verfiy_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-               String pin_text=otp_pinview.getText().toString();
-                if (pin_text.equals(""))
-                {
+                String pin_text = otp_pinview.getText().toString();
+                if (pin_text.equals("")) {
                     tc_wrong.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
 
                     //Show Code
 
-                  //  PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
+                    //  PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                     //signInWithCredential(credential);
-                    LoginData();
+                    try {
+                        LoginData();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 }
 
@@ -122,9 +123,9 @@ public class VerificationActivity extends AppCompatActivity {
         resend_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("On Resend ","call");
+                Log.e("On Resend ", "call");
                 VerifyPhone(mobile_number.trim());
-              //  firebase();
+                //  firebase();
             }
         });
         new OTP_Receiver().setEditText(otp_pinview);
@@ -137,14 +138,13 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                if (charSequence.toString().length()==6)
-                {
+                if (charSequence.toString().length() == 6) {
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
-                   PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
-                   signInWithCredential(credential);
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
+                    signInWithCredential(credential);
 
-                        //LoginData();
+                    //LoginData();
 
                 }
 
@@ -173,10 +173,6 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     private void signInWithCredential(PhoneAuthCredential credential) {
         // inside this method we are checking if
         // the code entered is correct or not.
@@ -186,13 +182,15 @@ public class VerificationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             tc_wrong.setVisibility(View.GONE);
-                            sessionManager.login();
+                            // sessionManager.login();
                             loadingDialog.cancelLoading();
-                            if (activity_flag.equals("login"))
-                            {
-                                LoginData();
-                            }
-                            else {
+                            if (activity_flag.equals("login")) {
+                                try {
+                                    LoginData();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
                                 try {
                                     SignAPI();
                                 } catch (JSONException e) {
@@ -221,19 +219,27 @@ public class VerificationActivity extends AppCompatActivity {
                             Log.i(TAG, "signInWithCredential:success");
 
                             FirebaseUser user = task.getResult().getUser();
-                            Intent intent=new Intent(getApplicationContext(),Phone_email_verificationActivity.class);
-                            intent.putExtra("login_type",login_type);
-                            startActivity(intent);
 
+                            if (!sessionManager.isEmail_Update()) {
+                                Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                                intent.putExtra("login_type", login_type);
+                                startActivity(intent);
+                            } else if (!sessionManager.isPayment_Type_Select()) {
+                                startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                                finish();
+                            } else {
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                finish();
+                            }
 
 
                         } else {
                             try {
-                           //     iosDialog.dismiss();
+                                //     iosDialog.dismiss();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                         //   Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_otp), Toast.LENGTH_LONG).show();
+                            //   Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_otp), Toast.LENGTH_LONG).show();
                         }
                     }
                 })
@@ -241,7 +247,7 @@ public class VerificationActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         try {
-                        //    iosDialog.dismiss();
+                            //    iosDialog.dismiss();
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
@@ -251,12 +257,12 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
     private void IntentUI() {
-        otp_pinview=findViewById(R.id.otp_pinview);
-        verfiy_button=findViewById(R.id.verfiy_button);
-        resend_txt=findViewById(R.id.resend_txt);
-        tc_wrong=findViewById(R.id.tc_wrong);
-        tvTimer=findViewById(R.id.tvTimer);
-        mMainLayout=findViewById(R.id.mMainLayout);
+        otp_pinview = findViewById(R.id.otp_pinview);
+        verfiy_button = findViewById(R.id.verfiy_button);
+        resend_txt = findViewById(R.id.resend_txt);
+        tc_wrong = findViewById(R.id.tc_wrong);
+        tvTimer = findViewById(R.id.tvTimer);
+        mMainLayout = findViewById(R.id.mMainLayout);
     }
 
     public void EnableRuntimePermission() {
@@ -285,7 +291,6 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
 
-
     private void firebase() {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -304,7 +309,7 @@ public class VerificationActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
-                Log.e("FCM registration failed",credential + "");
+                Log.e("FCM registration failed", credential + "");
 
             }
 
@@ -318,9 +323,9 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
 
-                Log.e("Code is Send","Yes");
+                Log.e("Code is Send", "Yes");
 
-                v_id=verificationId;
+                v_id = verificationId;
                 second = -1;
                 showTimer();
             }
@@ -351,65 +356,73 @@ public class VerificationActivity extends AppCompatActivity {
         };
         countDownTimer.start();
     }
+
     private void SignAPI() throws JSONException {
 
-            loadingDialog.showLoadingDialog();
-            String otp= otp_pinview.getText().toString();
+        loadingDialog.showLoadingDialog();
+        String otp = otp_pinview.getText().toString();
 
-            JsonObject obj = new JsonObject();
-            JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("first_name", first_name);
-            paramObject.addProperty("last_name", last_name);
-            paramObject.addProperty("email", email_address);
-            paramObject.addProperty("contact_number", mobile_number);
-            paramObject.addProperty("login_type", login_type);
-            paramObject.addProperty("otp", otp);
-            obj.add("data",paramObject);
-            retrofitCalls.SignUp_user(obj, loadingDialog, new RetrofitCallback() {
-                @Override
-                public void success(Response<ApiResponse> response) {
-                    loadingDialog.cancelLoading();
-                    if(response.isSuccessful()) {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("first_name", first_name);
+        paramObject.addProperty("last_name", last_name);
+        paramObject.addProperty("email", email_address);
+        paramObject.addProperty("contact_number", mobile_number);
+        paramObject.addProperty("login_type", login_type);
+        paramObject.addProperty("otp", otp);
+        obj.add("data", paramObject);
+        retrofitCalls.SignUp_user(obj, loadingDialog, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.isSuccessful()) {
 
-                        Gson gson = new Gson();
-                        String headerString = gson.toJson(response.body().getData());
-                        Type listType = new TypeToken<SignResponseModel>() {
-                        }.getType();
-                        SignResponseModel user_model=new Gson().fromJson(headerString, listType);
-                        sessionManager.setUserdata(getApplicationContext(),user_model);
-                        Intent i = new Intent(VerificationActivity.this, Phone_email_verificationActivity.class);
-                        i.putExtra("login_type",login_type);
-                        startActivity(i);
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<SignResponseModel>() {
+                    }.getType();
+                    SignResponseModel user_model = new Gson().fromJson(headerString, listType);
+                    SessionManager.setUserdata(getApplicationContext(), user_model);
+                    if (!sessionManager.isEmail_Update()) {
+                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                        intent.putExtra("login_type", login_type);
+                        startActivity(intent);
+                    } else if (!sessionManager.isPayment_Type_Select()) {
+                        startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                         finish();
-
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
                     }
-                }
-
-                @Override
-                public void error(Response<ApiResponse> response) {
-                    loadingDialog.cancelLoading();
 
                 }
-            });
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+
+            }
+        });
 
     }
-    public void LoginData()
-    {
+
+    public void LoginData() throws JSONException {
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("email", email_address);
         paramObject.addProperty("contact_number", mobile_number);
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp_pinview.getText().toString());
-        obj.add("data",paramObject);
+        obj.add("data", paramObject);
         retrofitCalls.LoginUser(obj, loadingDialog, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-               // Log.e("Response is",new Gson().toJson(response));
+                // Log.e("Response is",new Gson().toJson(response));
                 loadingDialog.cancelLoading();
 
 
-                if(response.body().getStatus()==200) {
+                if (response.body().getStatus() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -417,19 +430,28 @@ public class VerificationActivity extends AppCompatActivity {
                     }.getType();
 
 
-                       // Log.e("Reponse is",gson.toJson(response.body().getData()));
-                         SignResponseModel user_model=new Gson().fromJson(headerString, listType);
-                         sessionManager.setUserdata(getApplicationContext(),user_model);
-                         Intent intent=new Intent(getApplicationContext(),Phone_email_verificationActivity.class);
-                         intent.putExtra("login_type",login_type);
-                         startActivity(intent);
-                         finish();
-                         Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),true);
+                    // Log.e("Reponse is",gson.toJson(response.body().getData()));
+                    SignResponseModel user_model = new Gson().fromJson(headerString, listType);
+                    SessionManager.setUserdata(getApplicationContext(), user_model);
+
+                    if (!sessionManager.isEmail_Update()) {
+                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                        intent.putExtra("login_type", login_type);
+                        startActivity(intent);
+                        finish();
+                    } else if (!sessionManager.isPayment_Type_Select()) {
+                        startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                        finish();
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                    }
+
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
 
 
-                }
-                else {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                } else {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                     final Handler handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(new Runnable() {
                         @Override

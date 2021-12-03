@@ -588,7 +588,7 @@ public class ContectFragment extends Fragment {
 
             }
             holder.userName.setText(inviteUserDetails.getUserName());
-            holder.userNumber.setText(inviteUserDetails.getUserDescription());
+            holder.userNumber.setText(inviteUserDetails.getUserPhoneNumber());
 
         }
 

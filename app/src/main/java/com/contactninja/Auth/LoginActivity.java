@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.contactninja.Auth.PlanTyep.PlanType_Screen;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -298,9 +300,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }.getType();
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
-                    Intent i = new Intent(LoginActivity.this, Phone_email_verificationActivity.class);
-                    startActivity(i);
-                    finish();
+                    if (!sessionManager.isEmail_Update())
+                    {
+                        Intent i = new Intent(LoginActivity.this, Phone_email_verificationActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                    else if (!sessionManager.isPayment_Type_Select())
+                    {
+                        startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                        finish();
+                    }
+                    else {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                    }
+
+
                 } else {
 
                 }

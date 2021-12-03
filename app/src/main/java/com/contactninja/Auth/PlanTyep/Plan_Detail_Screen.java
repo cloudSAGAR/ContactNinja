@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Auth.Thankyou_Screen;
 import com.contactninja.Model.Plandetail;
 import com.contactninja.R;
+import com.contactninja.Utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Plan_Detail_Screen extends AppCompatActivity {
     Plandetail plandetail;
     List<Plandetail.Plansublist> plansublists;
     ImageView tv_back;
+    SessionManager sessionManager;
 
 
 
@@ -42,6 +44,7 @@ public class Plan_Detail_Screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_detail_screen);
         IntentUI();
+        sessionManager=new SessionManager(getApplicationContext());
         plan_condition.setLayoutManager(layoutManager);
         Intent pre_data=getIntent();
         Bundle pre_bundle=pre_data.getExtras();
@@ -50,6 +53,7 @@ public class Plan_Detail_Screen extends AppCompatActivity {
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sessionManager.login();
                 startActivity(new Intent(getApplicationContext(), Thankyou_Screen.class));
             }
         });
@@ -59,7 +63,6 @@ public class Plan_Detail_Screen extends AppCompatActivity {
                 finish();
             }
         });
-
 
     }
 
