@@ -55,6 +55,8 @@ import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -72,7 +74,9 @@ public class ContectFragment extends Fragment {
     public static UserListDataAdapter userListDataAdapter;
     public static ArrayList<InviteListData> inviteListData=new ArrayList<>();
     RecyclerView rvinviteuserdetails;
-    String userName, user_phone_number,user_image,user_des,strtext="",old_latter="";
+    String userName, user_phone_number,user_image,user_des,strtext="",old_latter="",contect_type="",contect_email,
+    contect_type_work="",email_type_home="",email_type_work="",country="",city="",region="",street="",
+            postcode="",postType="",note="";
 
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
@@ -145,15 +149,8 @@ public class ContectFragment extends Fragment {
                 }
         );
 
-
-
         GetContactsIntoArrayList();
         getAllContect();
-
-
-
-
-
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,7 +230,44 @@ public class ContectFragment extends Fragment {
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
-            user_des=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE)));
+            user_des=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.DATA2)));
+
+            try {
+                contect_type=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
+                contect_type_work=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
+                contect_email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                email_type_home=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
+                email_type_work=cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
+
+
+
+                country = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+                // StructuredPostal.CITY == data7
+                city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+                // StructuredPostal.REGION == data8
+                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                // StructuredPostal.STREET == data4
+                street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+                // StructuredPostal.POSTCODE == data9
+                postcode = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
+                // StructuredPostal.TYPE == data2
+                postType = String.valueOf(cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE)));
+                note = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
+
+                Log.e("country",country);
+                Log.e("city",city);
+                Log.e("region",region);
+                Log.e("street",street);
+                Log.e("postcode",postcode);
+                Log.e("posttype",postType);
+                Log.e("note",note);
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
             String unik_key=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                     .substring(0, 1)
                     .toUpperCase();
@@ -256,10 +290,18 @@ public class ContectFragment extends Fragment {
 
             }
             else {
+
+
+
+
                 //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getId())));
                 String contactID= String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
-                inviteListData.add(new InviteListData( ""+userName.toString().trim(), user_phone_number.toString().trim(),user_image,user_des,old_latter.toString().trim(),""));
+                inviteListData.add(new InviteListData( ""+userName.toString().trim(),
+                        user_phone_number.toString().trim(),
+                        user_image,
+                        user_des,
+                        old_latter.toString().trim(),""));
                 //  userListDataAdapter.notifyDataSetChanged();
                 getTasks(new InviteListData( userName, user_phone_number,user_image,user_des,old_latter,""));
 
@@ -374,7 +416,7 @@ public class ContectFragment extends Fragment {
             }
         }
     }
-    public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
+    public static class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
             implements Filterable {
 
         int last_postion=0;

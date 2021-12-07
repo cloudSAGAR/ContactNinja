@@ -447,7 +447,7 @@ public class VerificationActivity extends AppCompatActivity {
                         finish();
                     }
 
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
+                  //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
 
 
                 } else {

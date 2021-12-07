@@ -111,15 +111,16 @@
                         app:layout_constraintBottom_toBottomOf="@+id/fastscroller"
                         app:layout_constraintEnd_toStartOf="@+id/fastscroller"
                         app:layout_constraintTop_toTopOf="@+id/fastscroller" />
+
                     <com.reddit.indicatorfastscroll.FastScrollerView
                         android:id="@+id/fastscroller"
-                        android:overScrollMode="never"
+                        style="@style/tv_regular1"
                         android:layout_width="32dp"
 
-                        android:textColor="@color/home_list_atoz"
                         android:layout_height="match_parent"
-                        style="@style/tv_regular1"
+                        android:overScrollMode="never"
                         android:scrollbars="vertical"
+                        android:textColor="@color/home_list_atoz"
                         app:fastScrollerTextPadding="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

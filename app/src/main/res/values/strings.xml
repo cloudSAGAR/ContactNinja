@@ -85,7 +85,7 @@ Number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_contect">Add New Contact</string>
-
+    <string name="add_new_contect1">Add all contacts</string>
 
     //Add Contect
     <string name="add_phone">Phone</string>
@@ -95,6 +95,14 @@ Number</string>
     <string name="add_email_a">Add Email</string>
     <string name="add_address">Address</string>
     <string name="add_address_a">Add Address</string>
+    <string name="add_company">Company</string>
+    <string name="add_company_a">Add Company</string>
+    <string name="add_company_url">Company URL</string>
+    <string name="add_company_url_a">Add company url</string>
+
+
+    <string name="add_job">Job Title</string>
+    <string name="add_job_a">Add job title</string>
 
 
     <string name="add_city">City</string>
@@ -110,11 +118,28 @@ Number</string>
 
     <string name="add_mobile_a">Add phone</string>
     <string name="add_email_address">Add email</string>
+    <string name="add_more_field">More Fields</string>
+    <string name="add_social_link">Add social media links</string>
+
+    <string name="add_timezone">Timezone</string>
+    <string name="add_bod">Birthday</string>
+    <string name="add_bob_a">Add Birthday</string>
+    <string name="add_fb">Facebook </string>
+    <string name="add_fb_a">URL</string>
+    <string name="add_twitter">Twitter</string>
+    <string name="add_breactout">Breakout</string>
+    <string name="add_linkedin">Linkedin</string>
+    <string name="add_group">Create a \n new group</string>
+
 
     <string name="edit_text">Edit Contact</string>
     <string name="save_text">Save Contact</string>
     <string name="add_defult_text">Set as \n default</string>
     <string name="add_bz_text">This ContactNinja \n hasn’t shared a BZcardSet</string>
     <string name="add_exposures_text">This ContactNinja \n has no exposures</string>
+
+    //Group
+
+    <string name="group_to">To</string>
 
 </resources>

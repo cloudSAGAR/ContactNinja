@@ -27,19 +27,42 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Auth.Phone_email_verificationActivity;
+import com.contactninja.Auth.PlanTyep.PlanType_Screen;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.Contactdetail;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
 import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Response;
 
 public class Addnewcontect_Activity extends AppCompatActivity {
     private static final String TAG_HOME = "Addcontect";
@@ -51,9 +74,11 @@ public class Addnewcontect_Activity extends AppCompatActivity {
     String fragment_name;
     EditText tv_name,tv_title;
     SessionManager sessionManager;
-    String phone,phone_type,email,email_type,address,zip_code,zoom_id,note;
+    String phone,phone_type,email,email_type,address,zip_code,zoom_id,note,f_name,l_name,city,state;
     public static final int RequestPermissionCode = 1;
     LinearLayout mMainLayout;
+    RetrofitCalls retrofitCalls;
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +87,10 @@ public class Addnewcontect_Activity extends AppCompatActivity {
         IntentUI();
 
         EnableRuntimePermission();
+
         sessionManager=new SessionManager(this);
+        retrofitCalls = new RetrofitCalls(this);
+        loadingDialog=new LoadingDialog(this);
         //Set Viewpagger
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
@@ -74,6 +102,8 @@ public class Addnewcontect_Activity extends AppCompatActivity {
                 tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.beginFakeDrag();
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -110,16 +140,39 @@ public class Addnewcontect_Activity extends AppCompatActivity {
                 zoom_id = addcontectModel.getZoom_id();
                 address = addcontectModel.getAddress();
                 note = addcontectModel.getNote();
+                f_name=tv_name.getText().toString();
+                l_name=tv_title.getText().toString();
 
                 if (save_button.getText().toString().equals("Save Contact")) {
-                    //Add Contect
-                    save_button.setText("Edit Contact");
-                    Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
-                    long rowContactId = getRawContactId();
+                    //Add Contect.
+                    if (!Global.isValidPhoneNumber(phone))
+                    {
 
-                    insertContactDisplayName(addContactsUri, rowContactId, tv_name.getText().toString());
+                        Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.invalid_phone),false);
+                    }
+                    else if (f_name.equals(""))
+                    {
+                        Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.invalid_first_name),false);
 
-                    insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
+                    }
+                    else if (l_name.equals(""))
+                    {
+                        Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.invalid_last_name),false);
+
+                    }
+                    else {
+
+
+
+                       /* try {
+                            AddContect_Api();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+*/
+                    }
+
+
                 }
                 else {
                     //Update Contect
@@ -432,5 +485,129 @@ public class Addnewcontect_Activity extends AppCompatActivity {
 
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
+
+
+
+    public void AddContect_Api() throws JSONException {
+
+
+        /*JsonObject gsonObject = new JsonObject();
+        try {
+            JSONObject jsonObj_ = new JSONObject();
+            jsonObj_.put("key", "value1");
+            jsonObj_.put("key", "value2");
+            jsonObj_.put("key", "value3");
+
+
+            JsonParser jsonParser = new JsonParser();
+            gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
+
+            //print parameter
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("MY gson.JSON:  ", "AS PARAMETER  " + gsonObject);
+*/
+        f_name=tv_name.getText().toString().trim();
+        l_name=tv_title.getText().toString().trim();
+        AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
+        phone = addcontectModel.getMobile();
+        phone_type = addcontectModel.getMobile_type();
+        email = addcontectModel.getEmail();
+        email_type = addcontectModel.getEmail_type();
+        zip_code = addcontectModel.getZip_code();
+        zoom_id = addcontectModel.getZoom_id();
+        address = addcontectModel.getAddress();
+        note = addcontectModel.getNote();
+        city=addcontectModel.getCity();
+        state=addcontectModel.getState();
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+
+
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+
+
+
+
+      /*  List<Contactdetail> contactdetails=new ArrayList<>();
+        Contactdetail contactdetail=new Contactdetail();
+        contactdetail.setId("0");
+        contactdetail.setEmail_number("shirish@intericare.net");
+        contactdetail.setIs_default("");
+        contactdetail.setLabel("Shirish");
+        contactdetail.setType("Homme");
+        contactdetails.add(contactdetail);*/
+
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+
+        paramObject.addProperty("address", address);
+        paramObject.addProperty("breakout_link", "");
+        paramObject.addProperty("city", city);
+        paramObject.addProperty("company_id", "");
+        paramObject.addProperty("company_name", "");
+        paramObject.addProperty("company_url", "");
+        paramObject.addProperty("dob", "");
+        paramObject.addProperty("dynamic_fields_value", "");
+        paramObject.addProperty("facebook_link", "");
+        paramObject.addProperty("firstname", f_name);
+        paramObject.addProperty("job_title", "");
+        paramObject.addProperty("lastname", l_name);
+        paramObject.addProperty("linkedin_link", "");
+        paramObject.addProperty("organization_id", organization_id);
+        paramObject.addProperty("state", state);
+        paramObject.addProperty("team_id", team_id);
+        paramObject.addProperty("timezone_id", "");
+        paramObject.addProperty("twitter_link", "");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("zipcode", zoom_id);
+        paramObject.addProperty("zoom_id", zoom_id);
+        JsonObject paramObject1 = new JsonObject();
+        paramObject1.addProperty("email_number", "");
+        paramObject1.addProperty("id", "");
+        paramObject1.addProperty("is_default", "");
+        paramObject1.addProperty("label", "");
+        paramObject1.addProperty("type", "");
+        paramObject.add("contact_detail",paramObject1);
+        obj.add("data", paramObject);
+        retrofitCalls.Addcontect(obj, loadingDialog,Global.getToken(this), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
+                    long rowContactId = getRawContactId();
+                    insertContactDisplayName(addContactsUri, rowContactId, tv_name.getText().toString());
+                    insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
+                    save_button.setText("Edit Contact");
+                    finish();
+                } else {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
     }
 }

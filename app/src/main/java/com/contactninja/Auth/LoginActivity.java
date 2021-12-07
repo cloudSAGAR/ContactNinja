@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         retrofitCalls = new RetrofitCalls(this);
         firebase();
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
+
     }
 
     @Override

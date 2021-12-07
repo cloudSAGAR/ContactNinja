@@ -1,6 +1,7 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +28,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.contactninja.Model.WorkTypeData;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ru.rambler.libs.swipe_layout.SwipeLayout;
@@ -38,16 +41,24 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     public InformationFragment() {
         // Required empty public constructor
     }
-    EditText tv_mobile_no,ev_email,ev_address,ev_city,ev_zip,ev_zoom,ev_note;
+    EditText tv_mobile_no,ev_email,ev_address,ev_city,ev_zip,ev_zoom,ev_note,
+            ev_company_url,ev_state,ev_job,ev_bob,ev_fb,ev_twitter,ev_breakout,
+            ev_linkedin;
     LinearLayout select_label,select_email_label,select_state,add_mobile_Number,
-            layout_phone,layout_email,layout_mobile,delete_layout;
-    TextView tv_phone,phone_txt,email_txt;
+            layout_phone,layout_email,layout_mobile,delete_layout,fb_layout;
+    TextView tv_phone,phone_txt,email_txt,tv_more_field,tv_company_url,tv_job,
+            zone_txt,add_social_link;
     ImageView pulse_icon,pulse_icon1;
     SwipeLayout swipe_layout;
     String Name="",job_titel="";
     SessionManager sessionManager;
     AddcontectModel addcontectModel;
     BottomSheetDialog bottomSheetDialog;
+    LinearLayout city_layout,zoom_layout,note_layout,company_url_layout,job_layout,
+            layout_time_zone,select_label_zone,layout_bod,twitter_layout,breakout_layout,
+            linkedin_layout,state_layout,time_layout,media_layout;
+    private int mYear, mMonth, mDay, mHour, mMinute;
+    String show="0";
 
 
 
@@ -95,6 +106,71 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             @Override
             public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
                 Log.e("Swipe Call ","Right");
+
+            }
+        });
+        layout_bod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenBob();
+            }
+        });
+
+        tv_more_field.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (media_layout.getVisibility()==View.VISIBLE)
+                {
+                    media_layout.setVisibility(View.GONE);
+                }
+                else {
+                    if (show.equals("0"))
+                    {
+                        company_url_layout.setVisibility(View.VISIBLE);
+                        job_layout.setVisibility(View.VISIBLE);
+                        zoom_layout.setVisibility(View.VISIBLE);
+                        city_layout.setVisibility(View.VISIBLE);
+                        state_layout.setVisibility(View.VISIBLE);
+                        time_layout.setVisibility(View.VISIBLE);
+                        layout_bod.setVisibility(View.VISIBLE);
+                        note_layout.setVisibility(View.VISIBLE);
+                        show="1";
+                        add_social_link.setVisibility(View.VISIBLE);
+                        tv_more_field.setText("Show less");
+                    }
+                    else {
+                        company_url_layout.setVisibility(View.GONE);
+                        job_layout.setVisibility(View.GONE);
+                        zoom_layout.setVisibility(View.GONE);
+                        city_layout.setVisibility(View.GONE);
+                        state_layout.setVisibility(View.GONE);
+                        time_layout.setVisibility(View.GONE);
+                        layout_bod.setVisibility(View.GONE);
+                        note_layout.setVisibility(View.GONE);
+                        show="0";
+                        add_social_link.setVisibility(View.GONE);
+                        tv_more_field.setText("More Fields");
+                    }
+
+                }
+
+
+
+            }
+        });
+        add_social_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                media_layout.setVisibility(View.GONE);
+                if (add_social_link.getVisibility()==View.VISIBLE)
+                {
+                    media_layout.setVisibility(View.VISIBLE);
+                    tv_more_field.setText("Show less");
+                }
+                else {
+
+                    tv_more_field.setText("Show less");
+                }
 
             }
         });
@@ -245,6 +321,28 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
         });
 
+
+
+
+        ev_state.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                addcontectModel.setNote(charSequence.toString());
+                sessionManager.setAdd_Contect_Detail(getActivity(),addcontectModel);
+                addcontectModel.setState(phone_txt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void IntentUI(View view) {
@@ -271,6 +369,34 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         delete_layout=view.findViewById(R.id.delete_layout);
         phone_txt=view.findViewById(R.id.phone_txt);
         email_txt=view.findViewById(R.id.email_txt);
+        ev_state=view.findViewById(R.id.ev_state);
+        city_layout=view.findViewById(R.id.city_layout);
+        zoom_layout=view.findViewById(R.id.zoom_layout);
+        note_layout=view.findViewById(R.id.note_layout);
+        tv_more_field=view.findViewById(R.id.tv_more_field);
+        company_url_layout=view.findViewById(R.id.company_url_layout);
+        tv_company_url=view.findViewById(R.id.tv_company_url);
+        ev_company_url=view.findViewById(R.id.ev_company_url);
+        job_layout=view.findViewById(R.id.job_layout);
+        tv_job=view.findViewById(R.id.tv_job);
+        ev_job=view.findViewById(R.id.ev_job);
+        layout_time_zone=view.findViewById(R.id.layout_time_zone);
+        select_label_zone=view.findViewById(R.id.select_label_zone);
+        zone_txt=view.findViewById(R.id.zone_txt);
+        layout_bod=view.findViewById(R.id.layout_bod);
+        ev_bob=view.findViewById(R.id.ev_bob);
+        add_social_link=view.findViewById(R.id.add_social_link);
+        fb_layout=view.findViewById(R.id.fb_layout);
+        ev_fb=view.findViewById(R.id.ev_fb);
+        twitter_layout=view.findViewById(R.id.twitter_layout);
+        ev_twitter=view.findViewById(R.id.ev_twitter);
+        breakout_layout=view.findViewById(R.id.breakout_layout);
+        ev_breakout=view.findViewById(R.id.ev_breakout);
+        linkedin_layout=view.findViewById(R.id.linkedin_layout);
+        ev_linkedin=view.findViewById(R.id.ev_linkedin);
+        state_layout=view.findViewById(R.id.state_layout);
+        time_layout=view.findViewById(R.id.time_layout);
+        media_layout=view.findViewById(R.id.media_layout);
 
     }
 
@@ -423,6 +549,35 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 dialog.dismiss();
             }
         });
+
+    }
+
+
+    public void OpenBob()
+    {
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        ev_bob.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                     /*   mYear = c.get(Calendar.YEAR);
+                        mMonth = c.get(Calendar.MONTH);
+                        mDay = c.get(Calendar.DAY_OF_MONTH);
+*/
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() + (1000 * 60 * 60));
+
+        datePickerDialog.show();
 
     }
 }

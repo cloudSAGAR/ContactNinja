@@ -69,6 +69,14 @@ public class RetrofitCalls {
 
     }
 
+
+
+    public void Addcontect(JsonObject registerinfo, LoadingDialog loadingDialog,String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Addcontect(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {
             @Override

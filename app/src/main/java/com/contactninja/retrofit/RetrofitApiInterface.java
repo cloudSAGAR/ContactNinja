@@ -35,4 +35,9 @@ public interface RetrofitApiInterface {
     @POST("emailNumberUpdate")
     Call<ApiResponse> EmailNumberUpdate(@Header("Accept") String api,@Header("Authorization") String auth, @Body JsonObject body);
 
+
+
+    @POST("contact/add")
+    Call<ApiResponse> Addcontect(@Header("Accept") String api,@Header("Authorization") String auth, @Body JsonObject body);
+
 }

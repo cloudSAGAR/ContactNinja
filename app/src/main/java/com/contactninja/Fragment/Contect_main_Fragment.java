@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -131,9 +132,9 @@ public class Contect_main_Fragment extends Fragment implements ViewPager.OnPageC
                 case 0:
                     ContectFragment contectFragment = new ContectFragment(strtext1,getView(),getActivity());
                     return contectFragment;
-                case 1:
 
-                    ContectFragment c_Fragment = new ContectFragment(strtext1,getView(),getActivity());
+                case 1:
+                    GroupFragment  c_Fragment = new GroupFragment();
 
                     return c_Fragment;
                 default:
