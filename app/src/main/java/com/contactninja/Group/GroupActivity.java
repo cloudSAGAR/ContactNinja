@@ -109,6 +109,12 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 }
         );
 
+     //   userListDataAdapter.notifyDataSetChanged();
+
+
+        topUserListDataAdapter=new TopUserListDataAdapter(this,getApplicationContext(),select_inviteListData);
+        add_contect_list.setAdapter(topUserListDataAdapter);
+        topUserListDataAdapter.notifyDataSetChanged();
         GetContactsIntoArrayList();
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,14 +139,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        userListDataAdapter = new UserListDataAdapter(this, getApplicationContext(), inviteListData);
-        contect_list_unselect.setAdapter(userListDataAdapter);
-        userListDataAdapter.notifyDataSetChanged();
 
-
-        topUserListDataAdapter=new TopUserListDataAdapter(this,getApplicationContext(),select_inviteListData);
-        add_contect_list.setAdapter(topUserListDataAdapter);
-        userListDataAdapter.notifyDataSetChanged();
 
 
 
@@ -253,12 +252,13 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         user_image,
                         user_des,
                         old_latter.trim(), ""));
-                //userListDataAdapter.notifyDataSetChanged();
+               // userListDataAdapter.notifyDataSetChanged();
 
             }
 
         }
-
+        userListDataAdapter = new UserListDataAdapter(this, getApplicationContext(), inviteListData);
+        contect_list_unselect.setAdapter(userListDataAdapter);
 
         cursor.close();
 
@@ -337,10 +337,51 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         @Override
         public void onBindViewHolder(@NonNull UserListDataAdapter.InviteListDataclass holder, int position) {
-            InviteListData inviteUserDetails = userDetails.get(position);
-
+            InviteListData inviteUserDetails = userDetailsfull.get(position);
             last_postion = position;
 
+            if (userDetailsfull.get(position).getFlag().equals("false"))
+            {
+                holder.remove_contect_icon.setVisibility(View.VISIBLE);
+                holder.add_new_contect_icon.setVisibility(View.GONE);
+            }
+            else {
+                holder.remove_contect_icon.setVisibility(View.GONE);
+                holder.add_new_contect_icon.setVisibility(View.VISIBLE);
+
+
+            }
+
+
+            holder.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                        holder.remove_contect_icon.setVisibility(View.VISIBLE);
+                        holder.add_new_contect_icon.setVisibility(View.GONE);
+                        select_inviteListData.add(userDetailsfull.get(position));
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        userDetailsfull.get(position).setFlag("false");
+
+
+
+
+
+                }
+            });
+            holder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                        holder.remove_contect_icon.setVisibility(View.GONE);
+                        holder.add_new_contect_icon.setVisibility(View.VISIBLE);
+                        select_inviteListData.remove(userDetailsfull.get(position));
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        userDetailsfull.get(position).setFlag("true");
+
+                }
+            });
 
             if (inviteUserDetails.getF_latter().equals("")) {
                 holder.first_latter.setVisibility(View.GONE);
@@ -431,26 +472,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             holder.userName.setText(inviteUserDetails.getUserName());
             holder.userNumber.setText(inviteUserDetails.getUserPhoneNumber());
 
-           holder.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    holder.remove_contect_icon.setVisibility(View.VISIBLE);
-                    holder.add_new_contect_icon.setVisibility(View.GONE);
-                    select_inviteListData.add(userDetails.get(position));
-                    topUserListDataAdapter.notifyDataSetChanged();
-                }
-            });
-           holder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-
-                   holder.remove_contect_icon.setVisibility(View.GONE);
-                   holder.add_new_contect_icon.setVisibility(View.VISIBLE);
-                   select_inviteListData.remove(userDetails.get(position));
-                   topUserListDataAdapter.notifyDataSetChanged();
-               }
-           });
 
         }
 
