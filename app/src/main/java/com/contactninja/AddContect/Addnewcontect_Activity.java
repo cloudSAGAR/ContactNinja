@@ -14,8 +14,10 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,11 +27,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Auth.Phone_email_verificationActivity;
 import com.contactninja.Auth.PlanTyep.PlanType_Screen;
+import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
@@ -70,7 +74,6 @@ public class Addnewcontect_Activity extends AppCompatActivity {
     ImageView iv_back,iv_more,pulse_icon;
     TextView save_button;
     TabLayout tabLayout;
-    ViewPager viewPager;
     String fragment_name;
     EditText tv_name,tv_title;
     SessionManager sessionManager;
@@ -79,6 +82,7 @@ public class Addnewcontect_Activity extends AppCompatActivity {
     LinearLayout mMainLayout;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
+    FrameLayout frameContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,26 +102,46 @@ public class Addnewcontect_Activity extends AppCompatActivity {
         fragment_name="Info";
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        ContectAdapter adapter = new ContectAdapter(this,getSupportFragmentManager(),
-                tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        viewPager.beginFakeDrag();
-
+        Fragment fragment = new InformationFragment();;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+            fragmentTransaction.commitAllowingStateLoss();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                Fragment fragment = null;
+                switch (tab.getPosition()) {
+                    case 0:
+                        fragment = new InformationFragment();
+                        break;
+                    case 1:
+                        fragment = new BzcardFragment();
+                        break;
+                    case 2:
+                        fragment = new ExposuresFragment();
+                        break;
+
+                }
+                if (fragment != null) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
+
         pulse_icon.setColorFilter(getColor(R.color.purple_200));
         save_button.setText("Save Contact");
         iv_back.setOnClickListener(new View.OnClickListener() {
@@ -234,62 +258,13 @@ public class Addnewcontect_Activity extends AppCompatActivity {
         iv_more=findViewById(R.id.iv_more);
         iv_more.setVisibility(View.GONE);
         tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPager);
+        frameContainer = findViewById(R.id.frameContainer);
         pulse_icon=findViewById(R.id.pulse_icon);
         tv_title=findViewById(R.id.tv_title);
         tv_name=findViewById(R.id.tv_name);
         mMainLayout=findViewById(R.id.frameContainer1);
 
     }
-
-
-    //Set Adapter
-
-
-    class ContectAdapter extends FragmentPagerAdapter {
-
-        Context context;
-        int totalTabs;
-        String strtext1;
-        public ContectAdapter(Context c, FragmentManager fm, int totalTabs) {
-            super(fm);
-            context = c;
-            this.totalTabs = totalTabs;
-            this.strtext1=strtext1;
-        }
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0:
-                   /* if (fragment_name.equals("Info"))
-                    {*/
-                        InformationFragment informationFragment = new InformationFragment();
-                        return informationFragment;
-                   /*}
-                    else {
-                        EditContectFragment informationFragment = new EditContectFragment();
-                        return informationFragment;
-                    }
-*/
-                case 1:
-                    BzcardFragment bzcardFragment = new BzcardFragment();
-                    return bzcardFragment;
-                case 2:
-                    ExposuresFragment exposuresFragment = new ExposuresFragment();
-                    return exposuresFragment;
-                default:
-                    return null;
-            }
-        }
-        @Override
-        public int getCount() {
-            return totalTabs;
-        }
-    }
-
-
-
     public void EnableRuntimePermission() {
 
         PermissionListener permissionlistener = new PermissionListener() {

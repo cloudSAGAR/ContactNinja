@@ -89,14 +89,12 @@
     <View
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"></View>
-    <androidx.viewpager.widget.ViewPager
-        android:layout_marginTop="@dimen/_3sdp"
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tabLayout"
-        android:layout_centerInParent="true"
+        android:layout_height="1dp" />
 
-        tools:layout_editor_absoluteX="8dp" />
+    <FrameLayout
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llFooter" />
+
 </LinearLayout>
