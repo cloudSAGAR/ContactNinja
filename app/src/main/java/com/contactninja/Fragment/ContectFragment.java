@@ -516,18 +516,9 @@ public class ContectFragment extends Fragment {
                 }
             }
 
-
-
-
-
-
-            String file=""+inviteUserDetails.getUserImageURL();
-            if (file.equals("null"))
+            if (inviteUserDetails.getUserImageURL()==null)
             {
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
                 String name =inviteUserDetails.getUserName();
-                holder.profile_image.setVisibility(View.GONE);
                 String add_text="";
                 String[] split_data=name.split(" ");
                 try {
@@ -551,83 +542,16 @@ public class ContectFragment extends Fragment {
 
                 holder.no_image.setText(add_text);
                 holder.no_image.setVisibility(View.VISIBLE);
-
+                holder.profile_image.setVisibility(View.GONE);
             }
             else {
-                image_url=inviteUserDetails.getUserImageURL().toString();
-
-                if (holder.profile_image.getDrawable()== null)
-                {
-                    Glide.with(mCtx).
-                            load(inviteUserDetails.getUserImageURL())
-                            .placeholder(R.drawable.shape_primary_circle)
-                            .error(R.drawable.shape_primary_circle)
-                            .into(holder.profile_image);
-                    //Log.e("Image ","View "+position);
-                }
-                else {
-                    holder.profile_image.setVisibility(View.GONE);
-                    String name =inviteUserDetails.getUserName();
-                    String add_text="";
-                    String[] split_data=name.split(" ");
-                    for (int i=0;i<split_data.length;i++)
-                    {
-                        if (i==0)
-                        {
-                            add_text=split_data[i].substring(0,1);
-                        }
-                        else {
-                            add_text=add_text+split_data[i].substring(0,1);
-                        }
-                    }
-                    holder.no_image.setText(add_text);
-                    holder.no_image.setVisibility(View.VISIBLE);
-                }
-
-              /*  if (!image_url.equals(""))
-                {
-                    Glide.with(mCtx).
-                            load(inviteUserDetails.getUserImageURL())
-                            .placeholder(R.drawable.shape_primary_circle)
-                            .error(R.drawable.shape_primary_circle)
-                            .into(holder.profile_image);
-
-                    holder.no_image.setVisibility(View.GONE);
-
-                    if ((Integer)holder.profile_image.getTag()==null)
-                    {
-                        holder.no_image.setVisibility(View.VISIBLE);
-                        holder.profile_image.setVisibility(View.GONE);
-                    }
-                    else {
-                        int drawableId = (Integer)holder.profile_image.getTag();
-                        //Log.e("Drawable id", String.valueOf(drawableId));
-                        holder.no_image.setVisibility(View.GONE);
-                        holder.profile_image.setVisibility(View.VISIBLE);
-                    }
-
-
-                }
-                else {
-                    holder.profile_image.setVisibility(View.GONE);
-                    String name =inviteUserDetails.getUserName();
-                    String add_text="";
-                    String[] split_data=name.split(" ");
-                    for (int i=0;i<split_data.length;i++)
-                    {
-                        if (i==0)
-                        {
-                            add_text=split_data[i].substring(0,1);
-                        }
-                        else {
-                            add_text=add_text+split_data[i].substring(0,1);
-                        }
-                    }
-                    holder.no_image.setText(add_text);
-                    holder.no_image.setVisibility(View.VISIBLE);
-
-                }*/
-
+                Glide.with(mCtx).
+                        load(inviteUserDetails.getUserImageURL())
+                        .placeholder(R.drawable.shape_primary_circle)
+                        .error(R.drawable.shape_primary_circle)
+                        .into(holder.profile_image);
+                holder.no_image.setVisibility(View.GONE);
+                holder.profile_image.setVisibility(View.VISIBLE);
             }
             holder.userName.setText(inviteUserDetails.getUserName());
             holder.userNumber.setText(inviteUserDetails.getUserPhoneNumber());

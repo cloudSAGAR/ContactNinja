@@ -88,6 +88,7 @@ Number</string>
     <string name="add_new_contect1">Add all contacts</string>
 
     //Add Contect
+    <string name="f_name">First name </string>
     <string name="add_phone">Phone</string>
     <string name="add_number">Add Number</string>
     <string name="add_home">Home</string>

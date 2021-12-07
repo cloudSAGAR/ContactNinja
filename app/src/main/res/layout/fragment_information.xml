@@ -1588,25 +1588,6 @@
 
         </LinearLayout>
 
-
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/add_social_link"
-            style="@style/tv_regular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:text="@string/add_social_link"
-            android:textColor="@color/purple_200"
-            android:textStyle="bold">
-
-        </TextView>
-
-
         <TextView
             android:id="@+id/tv_more_field"
             style="@style/tv_regular"

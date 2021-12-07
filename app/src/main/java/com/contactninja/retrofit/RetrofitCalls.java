@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.contactninja.Utils.LoadingDialog;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -71,7 +72,7 @@ public class RetrofitCalls {
 
 
 
-    public void Addcontect(JsonObject registerinfo, LoadingDialog loadingDialog,String token, RetrofitCallback retrofitCallback) {
+    public void Addcontect(JSONObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Addcontect(RetrofitApiClient.API_Header,token,registerinfo);
         this.retrofitCallback = retrofitCallback;
         call_api(retrofitCallback, loadingDialog);

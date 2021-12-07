@@ -25,10 +25,12 @@
             android:gravity="center"
             android:layout_marginStart="@dimen/_15sdp">
             <ImageView
+                android:padding="@dimen/_18sdp"
                 android:id="@+id/pulse_icon"
                 android:src="@drawable/ic_plus"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"></ImageView>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="UseAppTint"/>
 
         </LinearLayout>
         <LinearLayout
@@ -42,10 +44,10 @@
 
             <EditText
                 android:background="@color/add_contect_transpernt"
-                android:id="@+id/tv_name"
+                android:id="@+id/edt_FirstName"
                 style="@style/tv_bold"
                 android:textSize="@dimen/_15sdp"
-                android:hint="Type Name"
+                android:hint="@string/f_name"
                 android:inputType="text|textCapSentences"
                 android:textColorHint="@color/home_list_sub_data"
                 android:textColor="@color/tv_medium"
@@ -56,7 +58,7 @@
 
             <EditText
                 android:background="@color/add_contect_transpernt"
-                android:id="@+id/tv_title"
+                android:id="@+id/edt_lastname"
                 android:layout_marginTop="@dimen/_5sdp"
                 style="@style/tv_regular"
                 android:textColor="@color/otp_header_text_color"

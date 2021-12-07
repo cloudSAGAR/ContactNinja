@@ -75,7 +75,7 @@ public class Addnewcontect_Activity extends AppCompatActivity {
     TextView save_button;
     TabLayout tabLayout;
     String fragment_name;
-    EditText tv_name,tv_title;
+    EditText edt_FirstName,edt_lastname;
     SessionManager sessionManager;
     String phone,phone_type,email,email_type,address,zip_code,zoom_id,note,f_name,l_name,city,state;
     public static final int RequestPermissionCode = 1;
@@ -164,8 +164,8 @@ public class Addnewcontect_Activity extends AppCompatActivity {
                 zoom_id = addcontectModel.getZoom_id();
                 address = addcontectModel.getAddress();
                 note = addcontectModel.getNote();
-                f_name=tv_name.getText().toString();
-                l_name=tv_title.getText().toString();
+                f_name=edt_FirstName.getText().toString();
+                l_name=edt_lastname.getText().toString();
 
                 if (save_button.getText().toString().equals("Save Contact")) {
                     //Add Contect.
@@ -188,12 +188,12 @@ public class Addnewcontect_Activity extends AppCompatActivity {
 
 
 
-                       /* try {
+                        try {
                             AddContect_Api();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-*/
+
                     }
 
 
@@ -207,7 +207,7 @@ public class Addnewcontect_Activity extends AppCompatActivity {
             }
         });
 
-        tv_name.addTextChangedListener(new TextWatcher() {
+        edt_FirstName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -227,7 +227,7 @@ public class Addnewcontect_Activity extends AppCompatActivity {
             }
         });
 
-        tv_title.addTextChangedListener(new TextWatcher() {
+        edt_lastname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -260,8 +260,8 @@ public class Addnewcontect_Activity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         frameContainer = findViewById(R.id.frameContainer);
         pulse_icon=findViewById(R.id.pulse_icon);
-        tv_title=findViewById(R.id.tv_title);
-        tv_name=findViewById(R.id.tv_name);
+        edt_lastname=findViewById(R.id.edt_lastname);
+        edt_FirstName=findViewById(R.id.edt_FirstName);
         mMainLayout=findViewById(R.id.frameContainer1);
 
     }
@@ -493,8 +493,8 @@ public class Addnewcontect_Activity extends AppCompatActivity {
 
         Log.e("MY gson.JSON:  ", "AS PARAMETER  " + gsonObject);
 */
-        f_name=tv_name.getText().toString().trim();
-        l_name=tv_title.getText().toString().trim();
+        f_name=edt_FirstName.getText().toString().trim();
+        l_name=edt_lastname.getText().toString().trim();
         AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
         phone = addcontectModel.getMobile();
         phone_type = addcontectModel.getMobile_type();
@@ -519,48 +519,57 @@ public class Addnewcontect_Activity extends AppCompatActivity {
 
 
 
-      /*  List<Contactdetail> contactdetails=new ArrayList<>();
-        Contactdetail contactdetail=new Contactdetail();
-        contactdetail.setId("0");
-        contactdetail.setEmail_number("shirish@intericare.net");
-        contactdetail.setIs_default("");
-        contactdetail.setLabel("Shirish");
-        contactdetail.setType("Homme");
-        contactdetails.add(contactdetail);*/
+       List<Contactdetail> contactdetails=new ArrayList<>();
+       for(int j=0;j<2;j++){
+           Contactdetail contactdetail=new Contactdetail();
+           contactdetail.setId("0");
+           contactdetail.setEmail_number("shirish@intericare.net");
+           contactdetail.setIs_default("");
+           contactdetail.setLabel("Shirish");
+           contactdetail.setType("Homme");
+           contactdetails.add(j,contactdetail);
+       }
 
+        JSONObject obj = new JSONObject();
 
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
+        JSONObject paramObject = new JSONObject();
 
-        paramObject.addProperty("address", address);
-        paramObject.addProperty("breakout_link", "");
-        paramObject.addProperty("city", city);
-        paramObject.addProperty("company_id", "");
-        paramObject.addProperty("company_name", "");
-        paramObject.addProperty("company_url", "");
-        paramObject.addProperty("dob", "");
-        paramObject.addProperty("dynamic_fields_value", "");
-        paramObject.addProperty("facebook_link", "");
-        paramObject.addProperty("firstname", f_name);
-        paramObject.addProperty("job_title", "");
-        paramObject.addProperty("lastname", l_name);
-        paramObject.addProperty("linkedin_link", "");
-        paramObject.addProperty("organization_id", organization_id);
-        paramObject.addProperty("state", state);
-        paramObject.addProperty("team_id", team_id);
-        paramObject.addProperty("timezone_id", "");
-        paramObject.addProperty("twitter_link", "");
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("zipcode", zoom_id);
-        paramObject.addProperty("zoom_id", zoom_id);
-        JsonObject paramObject1 = new JsonObject();
-        paramObject1.addProperty("email_number", "");
-        paramObject1.addProperty("id", "");
-        paramObject1.addProperty("is_default", "");
-        paramObject1.addProperty("label", "");
-        paramObject1.addProperty("type", "");
-        paramObject.add("contact_detail",paramObject1);
-        obj.add("data", paramObject);
+        paramObject.put("address", address);
+        paramObject.put("breakout_link", "");
+        paramObject.put("city", city);
+        paramObject.put("company_id", "");
+        paramObject.put("company_name", "");
+        paramObject.put("company_url", "");
+        paramObject.put("dob", "");
+        paramObject.put("dynamic_fields_value", "");
+        paramObject.put("facebook_link", "");
+        paramObject.put("firstname", f_name);
+        paramObject.put("job_title", "");
+        paramObject.put("lastname", l_name);
+        paramObject.put("linkedin_link", "");
+        paramObject.put("organization_id", organization_id);
+        paramObject.put("state", state);
+        paramObject.put("team_id", team_id);
+        paramObject.put("timezone_id", "");
+        paramObject.put("twitter_link", "");
+        paramObject.put("user_id", user_id);
+        paramObject.put("zipcode", zoom_id);
+        paramObject.put("zoom_id", zoom_id);
+
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0;i<contactdetails.size();i++){
+            JSONObject paramObject1 = new JSONObject();
+            paramObject1.put("email_number", contactdetails.get(i).getEmail_number());
+            paramObject1.put("id",  contactdetails.get(i).getId());
+            paramObject1.put("is_default",  contactdetails.get(i).getIs_default());
+            paramObject1.put("label",  contactdetails.get(i).getLabel());
+            paramObject1.put("type",  contactdetails.get(i).getType());
+            jsonArray.put(paramObject1);
+        }
+
+        paramObject.put("contact_detail", jsonArray);
+
+        obj.put("data", paramObject);
         retrofitCalls.Addcontect(obj, loadingDialog,Global.getToken(this), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
@@ -569,7 +578,7 @@ public class Addnewcontect_Activity extends AppCompatActivity {
                 if (response.body().getStatus() == 200) {
                     Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
                     long rowContactId = getRawContactId();
-                    insertContactDisplayName(addContactsUri, rowContactId, tv_name.getText().toString());
+                    insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
                     insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
                     save_button.setText("Edit Contact");
                     finish();

@@ -4,6 +4,8 @@ package com.contactninja.retrofit;
 import com.google.gson.JsonObject;
 import com.contactninja.Model.SignModel;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
@@ -38,6 +40,6 @@ public interface RetrofitApiInterface {
 
 
     @POST("contact/add")
-    Call<ApiResponse> Addcontect(@Header("Accept") String api,@Header("Authorization") String auth, @Body JsonObject body);
+    Call<ApiResponse> Addcontect(@Header("Accept") String api,@Header("Authorization") String auth, @Body JSONObject body);
 
 }

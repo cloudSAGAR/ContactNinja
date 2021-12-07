@@ -1,5 +1,8 @@
 package com.contactninja.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddcontectModel {
     String mobile="";
     String email="";
@@ -11,6 +14,9 @@ public class AddcontectModel {
     String zip_code="";
     String zoom_id="";
     String note="";
+
+    List<Contactdetail> contactdetails =new ArrayList<>();
+
     public AddcontectModel()
     {
 
@@ -94,5 +100,13 @@ public class AddcontectModel {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public List<Contactdetail> getContactdetails() {
+        return contactdetails;
+    }
+
+    public void setContactdetails(List<Contactdetail> contactdetails) {
+        this.contactdetails = contactdetails;
     }
 }
