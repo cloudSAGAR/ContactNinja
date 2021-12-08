@@ -167,8 +167,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
                 //  AddcontectModel addcontectModel=new AddcontectModel();
                 Log.e("Data is ", new Gson().toJson(addcontectModel));
-                phone_type = addcontectModel.getMobile_type();
-                email_type = addcontectModel.getEmail_type();
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
                 address = addcontectModel.getAddress();
@@ -526,8 +524,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         f_name=edt_FirstName.getText().toString().trim();
         l_name=edt_lastname.getText().toString().trim();
         AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
-        phone_type = addcontectModel.getMobile_type();
-        email_type = addcontectModel.getEmail_type();
         zip_code = addcontectModel.getZip_code();
         zoom_id = addcontectModel.getZoom_id();
         address = addcontectModel.getAddress();

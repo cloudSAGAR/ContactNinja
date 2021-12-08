@@ -15,235 +15,15 @@
         tools:context=".Fragment.AddContect_Fragment.InformationFragment">
 
 
-        <ru.rambler.libs.swipe_layout.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/swipe_layout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_phone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:left_swipe_enabled="true"
-            app:right_swipe_enabled="true">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-
-                <LinearLayout
-                    android:id="@+id/layout_mobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_weight="2"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:layout_weight="3"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <TextView
-                                    android:id="@+id/tv_phone"
-                                    style="@style/tv_regular"
-                                    android:textStyle="bold"
-                                    android:text="@string/add_phone"
-                                    android:textColor="@color/tv_medium"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                </TextView>
-                                <ImageView
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/shape_yallow_circle"
-                                    android:layout_width="@dimen/_8sdp"
-                                    android:layout_height="@dimen/_8sdp">
-
-                                </ImageView>
-                            </LinearLayout>
-
-
-                            <EditText
-                                android:id="@+id/tv_mobile_no"
-                                style="@style/tv_regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_7sdp"
-                                android:background="@color/add_contect_transpernt"
-                                android:hint="@string/add_number"
-                                android:inputType="number"
-                                android:maxLength="10"
-                                android:textColor="@color/home_list_sub_data"
-                                android:textColorHint="@color/home_list_sub_data"
-                                android:textStyle="bold">
-
-                            </EditText>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/select_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_27sdp"
-                            android:background="@drawable/shape_border_ccc"
-                            android:paddingStart="@dimen/_20sdp"
-                            android:paddingEnd="@dimen/_20sdp">
-
-                            <TextView
-                                android:id="@+id/phone_txt"
-                                style="@style/tv_regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/add_home"
-                                android:textColor="@color/home_list_sub_data"
-                                android:textStyle="bold">
-
-                            </TextView>
-
-                            <ImageView
-                                android:layout_width="@dimen/_12sdp"
-                                android:layout_height="@dimen/_12sdp"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="@dimen/_20sdp"
-                                android:layout_marginTop="@dimen/_1sdp"
-                                android:src="@drawable/ic_down">
-
-                            </ImageView>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:visibility="gone"
-                            android:layout_weight="2"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <LinearLayout
-                                android:id="@+id/layout_icon_call"
-                                android:background="@drawable/shape_oval_border_10_blue"
-                                android:layout_width="@dimen/_25sdp"
-                                android:layout_height="@dimen/_25sdp"
-                                android:layout_gravity="center"
-                                android:gravity="center">
-                                <ImageView
-                                    android:layout_gravity="center"
-
-                                    android:src="@drawable/ic_dial"
-                                    android:layout_width="@dimen/_13sdp"
-                                    android:layout_height="@dimen/_13sdp">
-
-                                </ImageView>
-
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/layout_icon_message"
-                                android:layout_marginStart="@dimen/_20sdp"
-                                android:background="@drawable/shape_oval_border_10_blue"
-                                android:layout_width="@dimen/_25sdp"
-                                android:layout_height="@dimen/_25sdp"
-
-                                android:layout_gravity="center"
-                                android:gravity="center">
-                                <ImageView
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_message"
-                                    android:layout_width="@dimen/_13sdp"
-                                    android:layout_height="@dimen/_13sdp">
-
-                                </ImageView>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:background="@color/home_list_add_contect_view" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/delete_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center|top"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:gravity="center|top"
-                    android:visibility="gone"
-                    app:bring_to_clamp="150dp"
-                    app:clamp="self"
-                    app:gravity="right"
-                    app:sticky="100dp">
-
-                    <LinearLayout
-                        android:id="@+id/layout_remove"
-                        android:layout_width="@dimen/_60sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_gravity="center|top"
-                        android:background="@drawable/shape_red_back"
-                        android:gravity="center|top">
-
-                        <ImageView
-                            android:layout_width="@dimen/_15sdp"
-                            android:layout_height="@dimen/_15sdp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_remove" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layout_defult"
-                        android:layout_width="@dimen/_60sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_gravity="center|top"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:background="@drawable/shape_blue_back"
-                        android:gravity="center|top">
-
-                        <TextView
-                            style="@style/tv_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/add_defult_text"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_10sdp"
-                            android:textStyle="bold"></TextView>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </ru.rambler.libs.swipe_layout.SwipeLayout>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
-            android:id="@+id/layout_phone"
+            android:id="@+id/layout_Add_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -261,7 +41,6 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/add_mobile_Number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -291,8 +70,10 @@
                     <ImageView
                         android:id="@+id/pulse_icon"
                         android:layout_width="@dimen/_10sdp"
+                        android:tint="@color/purple_200"
                         android:layout_height="@dimen/_10sdp"
-                        android:src="@drawable/ic_plus" />
+                        android:src="@drawable/ic_plus"
+                        tools:ignore="UseAppTint" />
 
                 </LinearLayout>
 
@@ -307,121 +88,15 @@
                 android:background="@color/home_list_add_contect_view" />
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_weight="3"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_email"
-                        style="@style/tv_regular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/add_email"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
-
-                    </TextView>
-
-                    <EditText
-                        android:id="@+id/ev_email"
-                        style="@style/tv_regular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_7sdp"
-
-                        android:background="@color/add_contect_transpernt"
-                        android:hint="@string/add_email_a"
-                        android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
-
-                    </EditText>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/select_email_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_27sdp"
-                    android:background="@drawable/shape_border_ccc"
-                    android:paddingStart="@dimen/_20sdp"
-                    android:paddingEnd="@dimen/_20sdp">
-
-                    <TextView
-                        android:id="@+id/email_txt"
-                        style="@style/tv_regular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/add_home"
-                        android:textColor="@color/home_list_sub_data"
-                        android:textStyle="bold">
-
-                    </TextView>
-
-                    <ImageView
-                        android:layout_width="@dimen/_12sdp"
-                        android:layout_height="@dimen/_12sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_1sdp"
-                        android:src="@drawable/ic_down">
-
-                    </ImageView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/layout_icon_email"
-                    android:background="@drawable/shape_oval_border_10_blue"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_10sdp"
-                        android:src="@drawable/ic_email" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:background="@color/home_list_add_contect_view" />
-        </LinearLayout>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
-            android:id="@+id/layout_email"
+            android:id="@+id/layout_Add_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -470,7 +145,9 @@
                         android:id="@+id/pulse_icon1"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_10sdp"
-                        android:src="@drawable/ic_plus" />
+                        android:tint="@color/purple_200"
+                        android:src="@drawable/ic_plus"
+                        tools:ignore="UseAppTint" />
 
                 </LinearLayout>
 

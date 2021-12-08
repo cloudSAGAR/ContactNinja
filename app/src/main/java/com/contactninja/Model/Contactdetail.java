@@ -2,15 +2,14 @@ package com.contactninja.Model;
 
 public class Contactdetail {
     String email_number;
-    String id;
-    String is_default;
+    int id;
+    int is_default;
     String label;
     String type;
     public Contactdetail()
     {
 
     }
-
     public String getEmail_number() {
         return email_number;
     }
@@ -19,19 +18,19 @@ public class Contactdetail {
         this.email_number = email_number;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getIs_default() {
+    public int getIs_default() {
         return is_default;
     }
 
-    public void setIs_default(String is_default) {
+    public void setIs_default(int is_default) {
         this.is_default = is_default;
     }
 

@@ -4,16 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddcontectModel {
-    String mobile="";
-    String email="";
+
+    String company="";
+    String company_url="";
+    String job_title="";
+    String zoom_id="";
     String address="";
     String city="";
     String state="";
-    String email_type="";
-    String mobile_type="";
     String zip_code="";
-    String zoom_id="";
+    String time="";
+    String birthday="";
     String note="";
+    String facebook="";
+    String twitter="";
+    String Linkedin="";
+    String breakoutu="";
 
     List<Contactdetail> contactdetails =new ArrayList<>();
 
@@ -22,21 +28,7 @@ public class AddcontectModel {
 
     }
 
-    public String getMobile() {
-        return mobile;
-    }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getAddress() {
         return address;
@@ -62,21 +54,6 @@ public class AddcontectModel {
         this.state = state;
     }
 
-    public String getEmail_type() {
-        return email_type;
-    }
-
-    public void setEmail_type(String email_type) {
-        this.email_type = email_type;
-    }
-
-    public String getMobile_type() {
-        return mobile_type;
-    }
-
-    public void setMobile_type(String mobile_type) {
-        this.mobile_type = mobile_type;
-    }
 
     public String getZip_code() {
         return zip_code;
