@@ -602,7 +602,7 @@ public class ContectFragment extends Fragment {
     }
 
     private void getAllContect() {
-        loadingDialog.showLoadingDialog();
+       // loadingDialog.showLoadingDialog();
         class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
             @Override
             protected List<InviteListData> doInBackground(Void... voids) {

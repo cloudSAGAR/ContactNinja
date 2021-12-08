@@ -138,6 +138,11 @@ Number</string>
     <string name="add_defult_text">Set as \n default</string>
     <string name="add_bz_text">This ContactNinja \n hasn’t shared a BZcardSet</string>
     <string name="add_exposures_text">This ContactNinja \n has no exposures</string>
+    <string name="add_group_txt">Add your group name</string>
+    <string name="add_group_description">Add your group description</string>
+    <string name="add_group_description_min_txt">100 Character Remaining</string>
+    <string name="add_group_all_member">All Members</string>
+    <string name="add_group_all_more">Add More Members</string>
 
     //Group
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.SignModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.google.gson.Gson;
@@ -17,13 +18,15 @@ import com.google.gson.reflect.TypeToken;
 import com.contactninja.MainActivity;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SessionManager {
     private static final String PREF_NAME = "jainaPref";
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String IS_APPITRO = "Isintro";
     public static   SharedPreferences pref;
-    private final SharedPreferences.Editor editor;
+    private static SharedPreferences.Editor editor;
     private final Context _context;
 
     public static final String KEY_User = "User";
@@ -37,6 +40,8 @@ public class SessionManager {
     public static final String Fcm_Token="fcm_token";
     private static final String IS_Email_Update = "IsEmailUpdate";
     private static final String IS_Payment_Type_Select= "Ispaymenttypeselect";
+
+    public static final String GroupListData ="grouplistdata";
 
 
     // Constructor
@@ -212,6 +217,40 @@ public class SessionManager {
         Log.e("Sessioin data",new Gson().toJson(signModel));
         editor.apply();
     }
+
+
+    public static List<GroupListData> getGroupList(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(GroupListData, null);
+        Type type = new TypeToken<ArrayList<GroupListData>>() {
+        }.getType();
+        List<GroupListData> GroupList = gson.fromJson(json, type);
+        if (GroupList == null) {
+            GroupList = new ArrayList<>();
+        }
+        return GroupList;
+
+    }
+
+    public static void setGroupList(Context context, List<GroupListData> groupModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(groupModel);
+        editor.putString(GroupListData, json);
+        Log.e("Sessioin data",new Gson().toJson(groupModel));
+        editor.apply();
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public static AddcontectModel getAdd_Contect_Detail(Context context) {
         Gson gson = new Gson();

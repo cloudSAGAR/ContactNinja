@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -26,19 +27,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Fragment.ContectFragment;
+import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.R;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
 import com.google.gson.Gson;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,9 +50,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     public static UserListDataAdapter userListDataAdapter;
     public static TopUserListDataAdapter  topUserListDataAdapter;
-    public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
+    public static ArrayList<GroupListData> inviteListData = new ArrayList<>();
+    List<GroupListData> pre_seleact=new ArrayList<>();
 
-    public static ArrayList<InviteListData> select_inviteListData = new ArrayList<>();
+    public static List<GroupListData> select_inviteListData = new ArrayList<>();
     TextView save_button;
     ImageView iv_more, iv_back;
     RecyclerView add_contect_list, contect_list_unselect;
@@ -65,6 +69,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
             contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
             postcode = "", postType = "", note = "";
+    SessionManager sessionManager;
 
 
     @Override
@@ -72,6 +77,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         IntentUI();
+        sessionManager=new SessionManager(this);
+
         iv_more.setVisibility(View.GONE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
@@ -152,8 +159,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                List<InviteListData> temp = new ArrayList();
-                for(InviteListData d: inviteListData){
+                List<GroupListData> temp = new ArrayList();
+                for(GroupListData d: inviteListData){
                     if(d.getUserName().contains(s.toString())){
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
@@ -171,6 +178,23 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+
+        call_updatedata();
+
+    }
+    public void call_updatedata()
+    {
+        if (sessionManager.getGroupList(this).size()!=0)
+        {
+            select_inviteListData.clear();
+            pre_seleact.clear();
+            pre_seleact.addAll(sessionManager.getGroupList(this));
+            select_inviteListData.addAll(pre_seleact);
+            topUserListDataAdapter.notifyDataSetChanged();
+
+
+
+        }
 
     }
 
@@ -247,7 +271,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             } else {
 
 
-               inviteListData.add(new InviteListData("" + userName.trim(),
+               inviteListData.add(new GroupListData("" + userName.trim(),
                         user_phone_number.trim(),
                         user_image,
                         user_des,
@@ -271,7 +295,13 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.save_button:
+               // Log.e("Main Data ",new Gson().toJson(select_inviteListData));
 
+                sessionManager.setGroupList(this,new ArrayList<>());
+                Intent intent=new Intent(getApplicationContext(),Final_Group.class);
+
+                startActivity(intent);
+                sessionManager.setGroupList(getApplicationContext(), select_inviteListData);
                 break;
             default:
 
@@ -289,18 +319,18 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         int last_postion = 0;
         String second_latter = "";
         String current_latter = "", image_url = "";
-        private List<InviteListData> userDetails;
-        private final List<InviteListData> userDetailsfull;
+        private List<GroupListData> userDetails;
+        private final List<GroupListData> userDetailsfull;
         private final Filter exampleFilter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<InviteListData> filteredList = new ArrayList<>();
+                List<GroupListData> filteredList = new ArrayList<>();
                 if (constraint == null || constraint.length() == 0) {
                     filteredList.addAll(userDetailsfull);
                 } else {
                     String userName = constraint.toString().toLowerCase().trim();
                     String userNumber = constraint.toString().toLowerCase().trim();
-                    for (InviteListData item : userDetailsfull) {
+                    for (GroupListData item : userDetailsfull) {
                         if (item.getUserName().toLowerCase().contains(userName)
                                 || item.getUserPhoneNumber().toLowerCase().contains(userNumber)) {
                             filteredList.add(item);
@@ -315,12 +345,12 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 userDetails.clear();
-                userDetails.addAll((List<InviteListData>) results.values);
+                userDetails.addAll((List<GroupListData>) results.values);
                 notifyDataSetChanged();
             }
         };
 
-        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<InviteListData> userDetails) {
+        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<GroupListData> userDetails) {
             this.mcntx = mCtx;
             this.mCtx = Ctx;
             this.userDetails = userDetails;
@@ -337,8 +367,14 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         @Override
         public void onBindViewHolder(@NonNull UserListDataAdapter.InviteListDataclass holder, int position) {
-            InviteListData inviteUserDetails = userDetailsfull.get(position);
+
+
+            GroupListData inviteUserDetails = userDetailsfull.get(position);
             last_postion = position;
+            Log.e("Size is", String.valueOf(select_inviteListData.size()));
+
+
+
 
             if (userDetailsfull.get(position).getFlag().equals("false"))
             {
@@ -348,21 +384,41 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             else {
                 holder.remove_contect_icon.setVisibility(View.GONE);
                 holder.add_new_contect_icon.setVisibility(View.VISIBLE);
+            }
+
+            for (int i=0;i<select_inviteListData.size();i++)
+            {
+
+                if (inviteListData.get(select_inviteListData.get(i).getId()).getFlag().equals(select_inviteListData.get(i).getFlag()))
+                {
+                    Log.e("i is false",String.valueOf(i));
+
+                    inviteListData.get(select_inviteListData.get(i).getId()).setFlag("false");
+
+
+                }
+                else {
+                    Log.e("i is true",String.valueOf(i));
+                    inviteListData.get(select_inviteListData.get(i).getId()).setFlag("true");
+                    select_inviteListData.remove(select_inviteListData.get(i).getId());
+                    topUserListDataAdapter.notifyDataSetChanged();
+                }
 
 
             }
-
-
             holder.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-
+                       userDetailsfull.get(position).setId(position);
                         holder.remove_contect_icon.setVisibility(View.VISIBLE);
                         holder.add_new_contect_icon.setVisibility(View.GONE);
                         select_inviteListData.add(userDetailsfull.get(position));
+                        userDetailsfull.get(position).setId(position);
                         topUserListDataAdapter.notifyDataSetChanged();
+                        num_count.setText(select_inviteListData.size()+" Contact Selcted");
                         userDetailsfull.get(position).setFlag("false");
+                        save_button.setTextColor(getColor(R.color.purple_200));
 
 
 
@@ -373,12 +429,23 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             holder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                        userDetailsfull.get(position).setId(0);
                         holder.remove_contect_icon.setVisibility(View.GONE);
                         holder.add_new_contect_icon.setVisibility(View.VISIBLE);
                         select_inviteListData.remove(userDetailsfull.get(position));
+
                         topUserListDataAdapter.notifyDataSetChanged();
+                        num_count.setText(select_inviteListData.size()+" Contact Selcted");
                         userDetailsfull.get(position).setFlag("true");
+
+                        if (select_inviteListData.size()==0)
+                        {
+                            save_button.setTextColor(getColor(R.color.black));
+                        }
+                        else {
+                            save_button.setTextColor(getColor(R.color.purple_200));
+
+                        }
 
                 }
             });
@@ -474,6 +541,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
 
 
+
+
         }
 
         @Override
@@ -487,7 +556,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             return exampleFilter;
         }
 
-        public void updateList(List<InviteListData> list) {
+        public void updateList(List<GroupListData> list) {
             userDetails = list;
             notifyDataSetChanged();
         }
@@ -535,18 +604,18 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         int last_postion = 0;
         String second_latter = "";
         String current_latter = "", image_url = "";
-        private List<InviteListData> userDetails;
-        private final List<InviteListData> userDetailsfull;
+        private List<GroupListData> userDetails;
+        private final List<GroupListData> userDetailsfull;
         private final Filter exampleFilter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<InviteListData> filteredList = new ArrayList<>();
+                List<GroupListData> filteredList = new ArrayList<>();
                 if (constraint == null || constraint.length() == 0) {
                     filteredList.addAll(userDetailsfull);
                 } else {
                     String userName = constraint.toString().toLowerCase().trim();
                     String userNumber = constraint.toString().toLowerCase().trim();
-                    for (InviteListData item : userDetailsfull) {
+                    for (GroupListData item : userDetailsfull) {
                         if (item.getUserName().toLowerCase().contains(userName)
                                 || item.getUserPhoneNumber().toLowerCase().contains(userNumber)) {
                             filteredList.add(item);
@@ -561,12 +630,12 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 userDetails.clear();
-                userDetails.addAll((List<InviteListData>) results.values);
+                userDetails.addAll((List<GroupListData>) results.values);
                 notifyDataSetChanged();
             }
         };
 
-        public TopUserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<InviteListData> userDetails) {
+        public TopUserListDataAdapter(Activity Ctx, Context mCtx, List<GroupListData> userDetails) {
             this.mcntx = mCtx;
             this.mCtx = Ctx;
             this.userDetails = userDetails;
@@ -583,8 +652,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         @Override
         public void onBindViewHolder(@NonNull TopUserListDataAdapter.InviteListDataclass holder, int position) {
-            InviteListData inviteUserDetails = userDetails.get(position);
-            Log.e("Data is",new Gson().toJson(userDetails));
+            GroupListData inviteUserDetails = userDetails.get(position);
+
+            Log.e("Data is ",userDetails.get(position).getFlag());
 
             last_postion = position;
             holder.userName.setText(inviteUserDetails.getUserName());
@@ -679,8 +749,21 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 public void onClick(View v) {
                     userDetails.remove(position);
                     topUserListDataAdapter.notifyDataSetChanged();
+
                 }
             });
+
+            if (userDetails.get(position).getFlag().equals("true"))
+            {
+                Log.e("Call","Yes");
+                holder.top_layout.setVisibility(View.GONE);
+
+
+            }
+            else {
+                holder.top_layout.setVisibility(View.VISIBLE);
+
+            }
 
         }
 
@@ -695,7 +778,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             return exampleFilter;
         }
 
-        public void updateList(List<InviteListData> list) {
+        public void updateList(List<GroupListData> list) {
             userDetails = list;
             notifyDataSetChanged();
         }
@@ -724,4 +807,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
