@@ -20,6 +20,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -62,6 +63,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +83,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     ImageView iv_back,iv_more,pulse_icon;
     TextView save_button;
     TabLayout tabLayout;
-    String fragment_name;
+    String fragment_name,user_image_Url;
     EditText edt_FirstName,edt_lastname;
     SessionManager sessionManager;
     String phone,phone_type,email,email_type,address,zip_code,zoom_id,note,f_name,l_name,city,state;
@@ -160,9 +167,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
                 //  AddcontectModel addcontectModel=new AddcontectModel();
                 Log.e("Data is ", new Gson().toJson(addcontectModel));
-                phone = addcontectModel.getMobile();
                 phone_type = addcontectModel.getMobile_type();
-                email = addcontectModel.getEmail();
                 email_type = addcontectModel.getEmail_type();
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
@@ -521,9 +526,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         f_name=edt_FirstName.getText().toString().trim();
         l_name=edt_lastname.getText().toString().trim();
         AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
-        phone = addcontectModel.getMobile();
         phone_type = addcontectModel.getMobile_type();
-        email = addcontectModel.getEmail();
         email_type = addcontectModel.getEmail_type();
         zip_code = addcontectModel.getZip_code();
         zoom_id = addcontectModel.getZoom_id();
@@ -547,9 +550,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
        List<Contactdetail> contactdetails=new ArrayList<>();
        for(int j=0;j<2;j++){
            Contactdetail contactdetail=new Contactdetail();
-           contactdetail.setId("0");
+           contactdetail.setId(0);
            contactdetail.setEmail_number("shirish@intericare.net");
-           contactdetail.setIs_default("");
+           contactdetail.setIs_default(0);
            contactdetail.setLabel("Shirish");
            contactdetail.setType("Homme");
            contactdetails.add(j,contactdetail);
@@ -722,10 +725,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        iv_user.setImageBitmap(selectedImage);
-                        iv_user.setVisibility(View.VISIBLE);
-                        layout_pulse.setVisibility(View.GONE);
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+                                user_image_Url = encodeFileToBase64Binary(picturePath);
+                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                iv_user.setVisibility(View.VISIBLE);
+                                layout_pulse.setVisibility(View.GONE);
+                            }
+                        }
                     }
                     break;
                 case 1:
@@ -738,6 +751,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                                 cursor.moveToFirst();
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
+                                user_image_Url = encodeFileToBase64Binary(picturePath);
 
                                 iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                                 cursor.close();
@@ -748,6 +762,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
                     break;
             }
+        }
+    }
+    public static String encodeFileToBase64Binary(String str) {
+        try {
+            return new String(Base64.decode(str, 0), "UTF-8");
+        } catch (UnsupportedEncodingException | IllegalArgumentException unused) {
+            return "";
         }
     }
 }
