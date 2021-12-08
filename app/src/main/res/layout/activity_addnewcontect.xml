@@ -18,10 +18,11 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:background="@drawable/shape_oval_border_10_blue"
+            android:id="@+id/layout_pulse"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="center"
+            android:background="@drawable/shape_oval_border_10_blue"
             android:gravity="center"
             android:layout_marginStart="@dimen/_15sdp">
             <ImageView
@@ -33,6 +34,22 @@
                 tools:ignore="UseAppTint"/>
 
         </LinearLayout>
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:layout_marginStart="@dimen/_15sdp"
+            android:id="@+id/iv_user"
+            android:visibility="gone"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="right"
+            android:padding="1dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/deafult_predefine_cover"
+            app:riv_border_color="@color/purple_200"
+            app:riv_border_width="0dp"
+            app:riv_corner_radius="@dimen/_50sdp"
+            app:riv_oval="false" />
+
+
         <LinearLayout
             android:layout_marginEnd="@dimen/_10sdp"
             android:orientation="vertical"

@@ -1,20 +1,26 @@
 package com.contactninja.AddContect;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -23,17 +29,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
-import com.contactninja.Auth.LoginActivity;
-import com.contactninja.Auth.Phone_email_verificationActivity;
-import com.contactninja.Auth.PlanTyep.PlanType_Screen;
-import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
@@ -45,30 +48,29 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
 
-public class Addnewcontect_Activity extends AppCompatActivity {
+public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener {
+
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
+
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
     ImageView iv_back,iv_more,pulse_icon;
@@ -83,6 +85,8 @@ public class Addnewcontect_Activity extends AppCompatActivity {
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     FrameLayout frameContainer;
+    RoundedImageView iv_user;
+    LinearLayout layout_pulse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +146,7 @@ public class Addnewcontect_Activity extends AppCompatActivity {
             }
         });
 
-        pulse_icon.setColorFilter(getColor(R.color.purple_200));
+        pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
         save_button.setText("Save Contact");
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,7 +269,11 @@ public class Addnewcontect_Activity extends AppCompatActivity {
         edt_lastname=findViewById(R.id.edt_lastname);
         edt_FirstName=findViewById(R.id.edt_FirstName);
         mMainLayout=findViewById(R.id.frameContainer1);
+        layout_pulse=findViewById(R.id.layout_pulse);
 
+        iv_user=findViewById(R.id.iv_user);
+        pulse_icon.setOnClickListener(this);
+        iv_user.setOnClickListener(this);
     }
     public void EnableRuntimePermission() {
 
@@ -309,6 +317,21 @@ public class Addnewcontect_Activity extends AppCompatActivity {
                         Uri.fromParts("package", getPackageName(), null)));
                 // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
             }
+        }
+        switch (RC) {
+            case REQUEST_ID_MULTIPLE_PERMISSIONS:
+                if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(),
+                            "Requires Access to Camara.", Toast.LENGTH_SHORT)
+                            .show();
+                } else if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(),
+                            "Requires Access to Your Storage.",
+                            Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
@@ -595,5 +618,136 @@ public class Addnewcontect_Activity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.pulse_icon:
+
+
+                if(checkAndRequestPermissions(Addnewcontect_Activity.this)){
+                    captureimageDialog(false);
+
+                }
+                break;
+
+                case R.id.iv_user:
+
+
+                if(checkAndRequestPermissions(Addnewcontect_Activity.this)){
+                    captureimageDialog(true);
+
+                }
+
+                break;
+        }
+    }
+
+
+    private void captureimageDialog(boolean remove) {
+        final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Addnewcontect_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+
+        TextView cameraId = bottomSheetDialog.findViewById(R.id.cameraId);
+        TextView tv_remove = bottomSheetDialog.findViewById(R.id.tv_remove);
+        if(remove){
+            tv_remove.setVisibility(View.VISIBLE);
+        }else {
+            tv_remove.setVisibility(View.GONE);
+        }
+        tv_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                iv_user.setVisibility(View.GONE);
+                layout_pulse.setVisibility(View.VISIBLE);
+                bottomSheetDialog.dismiss();
+
+            }
+        });
+        cameraId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePicture, 0);
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+        TextView galleryId = bottomSheetDialog.findViewById(R.id.galleryId);
+        galleryId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , 1);
+                bottomSheetDialog.dismiss();
+
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
+    // function to check permission
+    public static boolean checkAndRequestPermissions(final Activity context) {
+        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int cameraPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded
+                    .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(context, listPermissionsNeeded
+                            .toArray(new String[listPermissionsNeeded.size()]),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+    // Handled permission Result
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        iv_user.setImageBitmap(selectedImage);
+                        iv_user.setVisibility(View.VISIBLE);
+                        layout_pulse.setVisibility(View.GONE);
+                    }
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+
+                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                cursor.close();
+                                iv_user.setVisibility(View.VISIBLE);
+                                layout_pulse.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
     }
 }

@@ -6,12 +6,12 @@ plugins {
 /*apply plugin: 'com.google.firebase.crashlytics'*/
 
 android {
-    compileSdk 29
+    compileSdk 30
 
     defaultConfig {
         applicationId "com.contactninja"
-        minSdk 24
-        targetSdk 29
+        minSdk 21
+        targetSdk 30
         versionCode 1
         versionName "1.0"
 
@@ -51,7 +51,6 @@ dependencies {
 
     //noinspection GradleCompatible
     implementation 'com.google.android.material:material:1.0.0'
-
 
 
     implementation 'androidx.viewpager:viewpager:1.0.0'
@@ -105,9 +104,7 @@ dependencies {
     implementation 'androidx.browser:browser:1.2.0'
     implementation 'com.google.android.gms:play-services-safetynet:17.0.1'
 
-
-
-
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
 
 }
