@@ -59,6 +59,7 @@
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/mipmap-anydpi-v26/ic_logo_round.xml" value="0.2203125" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/breakout.xml" value="0.35208333333333336" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/facebook.xml" value="0.35625" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/ic_group_22.xml" value="0.35625" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/ic_planuncheck.xml" value="0.35208333333333336" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/ic_plus.xml" value="0.35208333333333336" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/ic_plus1.xml" value="0.35208333333333336" />
@@ -75,14 +76,17 @@
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_group.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_main.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_main2.xml" value="0.3145833333333333" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_send_broadcast.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_thankyou_screen.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/common_dialog.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/custom_add_work_layout.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_contect.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_contect_main_.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_edit_contect.xml" value="0.3359375" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_exposures2.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_group.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_information.xml" value="0.22" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_members.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/invite_user_details.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/toolbar.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/top_user_details.xml" value="0.3359375" />

@@ -27,8 +27,11 @@ import com.contactninja.R;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import ru.rambler.libs.swipe_layout.SwipeLayout;
@@ -73,9 +76,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         select_email_label.setOnClickListener(this);
         select_label.setOnClickListener(this);
 
-
         TextSet();
-
         swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
             @Override
             public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
