@@ -59,24 +59,25 @@
 
 
     </LinearLayout>
+
     <EditText
         android:id="@+id/add_detail"
         style="@style/tv_regular"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_70sdp"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_5sdp"
-        android:paddingTop="@dimen/_5sdp"
         android:layout_gravity="center|left"
         android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:gravity="top|left"
         android:background="@drawable/shape_border_ccc"
-        android:singleLine="true"
+        android:gravity="top|left"
         android:hint="@string/add_group_description"
-        android:textColor="@color/tv_medium"
-        />
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:singleLine="true"
+        android:textColor="@color/tv_medium" />
+
     <TextView
         android:layout_marginTop="@dimen/_10sdp"
         style="@style/tv_regular"
