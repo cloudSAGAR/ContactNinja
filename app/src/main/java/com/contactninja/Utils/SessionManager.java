@@ -11,6 +11,7 @@ import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.GroupListData;
+import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.SignModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.google.gson.Gson;
@@ -42,6 +43,9 @@ public class SessionManager {
     private static final String IS_Payment_Type_Select= "Ispaymenttypeselect";
 
     public static final String GroupListData ="grouplistdata";
+
+    public static final String Group_Model ="group_model";
+
 
 
     // Constructor
@@ -215,6 +219,33 @@ public class SessionManager {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Sign_Model, json);
         Log.e("Sessioin data",new Gson().toJson(signModel));
+        editor.apply();
+    }
+
+
+
+
+
+
+
+    public static Grouplist.Group getGroupData(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Group_Model, "");
+        Type type = new TypeToken<Grouplist.Group>() {
+        }.getType();
+        Grouplist.Group  group= gson.fromJson(json, type);
+        if (group == null) {
+            group = new Grouplist.Group();
+        }
+        return group;
+    }
+
+    public static void setGroupData(Context context,  Grouplist.Group group) {
+        Gson gson = new Gson();
+        String json = gson.toJson(group);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Group_Model, json);
+        Log.e("Sessioin data",new Gson().toJson(group));
         editor.apply();
     }
 

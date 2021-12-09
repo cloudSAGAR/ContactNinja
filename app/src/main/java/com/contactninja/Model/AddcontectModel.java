@@ -22,6 +22,7 @@ public class AddcontectModel {
     String breakoutu="";
 
     List<Contactdetail> contactdetails =new ArrayList<>();
+    List<Contactdetail> contactdetails_email =new ArrayList<>();
 
     public AddcontectModel()
     {
@@ -85,5 +86,85 @@ public class AddcontectModel {
 
     public void setContactdetails(List<Contactdetail> contactdetails) {
         this.contactdetails = contactdetails;
+    }
+
+    public List<Contactdetail> getContactdetails_email() {
+        return contactdetails_email;
+    }
+
+    public void setContactdetails_email(List<Contactdetail> contactdetails_email) {
+        this.contactdetails_email = contactdetails_email;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getCompany_url() {
+        return company_url;
+    }
+
+    public void setCompany_url(String company_url) {
+        this.company_url = company_url;
+    }
+
+    public String getJob_title() {
+        return job_title;
+    }
+
+    public void setJob_title(String job_title) {
+        this.job_title = job_title;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getLinkedin() {
+        return Linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        Linkedin = linkedin;
+    }
+
+    public String getBreakoutu() {
+        return breakoutu;
+    }
+
+    public void setBreakoutu(String breakoutu) {
+        this.breakoutu = breakoutu;
     }
 }

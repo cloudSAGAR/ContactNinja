@@ -22,13 +22,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/add_new_contect_icon"
-                android:src="@drawable/ic_plus_blue"
-                android:padding="@dimen/_10sdp"
-                android:background="@drawable/shape_primary_back"
+                android:padding="1dp"
+                android:scaleType="fitXY"
+                app:riv_corner_radius="@dimen/_35sdp"
+                android:src="@drawable/deafult_predefine_cover"
+                app:riv_border_color="@color/purple_200"
+                app:riv_border_width="0dp"
                 android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"></ImageView>
+                android:layout_height="@dimen/_50sdp"></com.makeramen.roundedimageview.RoundedImageView>
+
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_gravity="center|left"

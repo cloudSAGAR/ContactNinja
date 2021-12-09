@@ -6,6 +6,7 @@ public class Contactdetail {
     int is_default;
     String label;
     String type;
+    String country_code;
     public Contactdetail()
     {
 
@@ -48,5 +49,13 @@ public class Contactdetail {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getCountry_code() {
+        return country_code;
+    }
+
+    public void setCountry_code(String country_code) {
+        this.country_code = country_code;
     }
 }

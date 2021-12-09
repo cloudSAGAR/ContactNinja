@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface RetrofitApiInterface {
@@ -40,6 +41,13 @@ public interface RetrofitApiInterface {
 
 
     @POST("contact/add")
-    Call<ApiResponse> Addcontect(@Header("Accept") String api,@Header("Authorization") String auth, @Body JSONObject body);
+    Call<ApiResponse> Addcontect(@Header("Accept") String api,@Header("Authorization") String auth, @Body JsonObject body);
+
+    @POST("contact/group/add")
+    Call<ApiResponse> Addgroup(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
+
+
+    @POST("contact/group/list")
+    Call<ApiResponse> Group_List(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
 
 }

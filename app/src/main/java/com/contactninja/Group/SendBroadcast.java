@@ -14,35 +14,50 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.Fragment.GroupFragment.ExposuresFragment;
 import com.contactninja.Fragment.GroupFragment.MembersFragment;
+import com.contactninja.Model.Grouplist;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     TextView save_button;
     ImageView iv_more, iv_back;
-    EditText add_detail;
+    EditText add_detail,add_new_contect;
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewpaggerAdapter adapter;
+    SessionManager sessionManager;
+    RoundedImageView add_new_contect_icon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_broadcast);
         IntentUI();
+        sessionManager=new SessionManager(this);
+        Grouplist.Group group_data = SessionManager.getGroupData(this);
+        Glide.with(getApplicationContext()).
+                load(group_data.getGroupImage()).
+                placeholder(R.drawable.shape_primary_back).
+                error(R.drawable.shape_primary_back).into(add_new_contect_icon);
+        add_new_contect.setText(group_data.getGroupName());
+        add_detail.setText(group_data.getDescription());
+
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Edit");
         save_button.setVisibility(View.VISIBLE);
-
+        iv_more.setVisibility(View.GONE);
         tabLayout.addTab(tabLayout.newTab().setText("Members"));
         tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         adapter = new ViewpaggerAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount());
-
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -70,7 +85,8 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         add_detail=findViewById(R.id.add_detail);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
-
+        add_new_contect_icon=findViewById(R.id.add_new_contect_icon);
+        add_new_contect=findViewById(R.id.add_new_contect);
         }
 
     @Override
@@ -80,7 +96,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.save_button:
-                finish();
+                startActivity(new Intent(getApplicationContext(),Final_Group.class));
                 break;
             default:
 
@@ -136,4 +152,9 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }

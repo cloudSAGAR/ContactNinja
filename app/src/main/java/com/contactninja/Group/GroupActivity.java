@@ -299,8 +299,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
                 sessionManager.setGroupList(this,new ArrayList<>());
                 Intent intent=new Intent(getApplicationContext(),Final_Group.class);
-
                 startActivity(intent);
+                finish();
                 sessionManager.setGroupList(getApplicationContext(), select_inviteListData);
                 break;
             default:

@@ -72,12 +72,34 @@ public class RetrofitCalls {
 
 
 
-    public void Addcontect(JSONObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+    public void Addcontect(JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Addcontect(RetrofitApiClient.API_Header,token,registerinfo);
         this.retrofitCallback = retrofitCallback;
         call_api(retrofitCallback, loadingDialog);
 
     }
+
+
+
+
+
+
+    public void AddGroup(JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Addgroup(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+    public void Group_List(JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Group_List(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {
             @Override

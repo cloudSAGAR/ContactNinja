@@ -38,11 +38,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.R;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
 import com.google.gson.Gson;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -90,6 +92,7 @@ public class ContectFragment extends Fragment {
     int c = 0;
     LoadingDialog loadingDialog;
     StringBuilder data;
+   SessionManager sessionManager;
 
 
     public ContectFragment(String strtext, View view, FragmentActivity activity) {
@@ -197,6 +200,7 @@ public class ContectFragment extends Fragment {
         View content_view = inflater.inflate(R.layout.fragment_contect, container, false);
         IntentUI(content_view);
         mCtx = getContext();
+        sessionManager=new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         rvinviteuserdetails.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.VERTICAL, false));
         rvinviteuserdetails.setHasFixedSize(true);
@@ -255,6 +259,7 @@ public class ContectFragment extends Fragment {
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sessionManager.setAdd_Contect_Detail(getActivity(),new AddcontectModel());
                 Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                 startActivity(addnewcontect);
                 // splitdata(inviteListData);
@@ -305,6 +310,7 @@ public class ContectFragment extends Fragment {
         add_new_contect_layout = content_view.findViewById(R.id.add_new_contect_layout);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void GetContactsIntoArrayList() {
         cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         while (cursor.moveToNext()) {
@@ -358,7 +364,15 @@ public class ContectFragment extends Fragment {
             } else if (!old_latter.equals(unik_key)) {
                 old_latter = unik_key;
             }
-            boolean found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
+            boolean found=false;
+            try {
+                 found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
+
+            }
+            catch (Exception e)
+            {
+
+            }
 
             if (found) {
 
@@ -369,7 +383,7 @@ public class ContectFragment extends Fragment {
                 Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getId())));
                 String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
                 inviteListData.add(new InviteListData("" + userName.trim(),
-                        user_phone_number.trim(),
+                        user_phone_number,
                         user_image,
                         user_des,
                         old_latter.trim(), ""));
@@ -535,12 +549,21 @@ public class ContectFragment extends Fragment {
                 return taskList;
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             protected void onPostExecute(List<InviteListData> tasks) {
 
                 // if (tasks.size()==inviteListData.size()) {
                 // Log.e("Size is Same ","Yse");
-                boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
+                boolean found=false;
+                try {
+                     found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
+
+                }
+                catch (Exception e)
+                {
+
+                }
                 if (found) {
                     if (tasks.size() == 1) {
 

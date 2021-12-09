@@ -2,15 +2,26 @@ package com.contactninja.Group;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,27 +35,51 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Model.AddGroup;
+import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.GroupListData;
+import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Response;
 
 public class Final_Group extends AppCompatActivity implements View.OnClickListener {
-
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     GroupListData groupListData;
     TextView save_button;
     ImageView iv_more, iv_back;
+    String fragment_name,user_image_Url;
     EditText add_new_contect,add_detail,contect_search;
     LinearLayout add_new_member;
     public static UserListDataAdapter userListDataAdapter;
@@ -55,12 +90,39 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     FastScrollerThumbView fastscroller_thumb;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
+    RoundedImageView iv_user;
+    ImageView iv_dummy;
+    String group_name,group_description, File_name,File_extension;
+    LinearLayout mMainLayout;
+    RetrofitCalls retrofitCalls;
+    String old_image="",group_id="";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_group);
         IntentUI();
         sessionManager=new SessionManager(this);
+        retrofitCalls = new RetrofitCalls(this);
+        if (SessionManager.getGroupData(this)!=null)
+        {
+            Grouplist.Group group_data = SessionManager.getGroupData(this);
+            add_new_contect.setText(group_data.getGroupName());
+            add_detail.setText(group_data.getDescription());
+            iv_user.setVisibility(View.VISIBLE);
+            Glide.with(getApplicationContext()).
+                    load(group_data.getGroupImage()).
+                    placeholder(R.drawable.shape_primary_back).
+                    error(R.drawable.shape_primary_back).into(iv_user);
+            iv_dummy.setVisibility(View.GONE);
+            old_image=group_data.getGroupImage();
+            group_id= String.valueOf(group_data.getId());
+
+
+        }
+
         iv_more.setVisibility(View.GONE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
@@ -146,6 +208,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
         contect_search=findViewById(R.id.contect_search);
+        iv_user=findViewById(R.id.iv_user);
+        iv_dummy=findViewById(R.id.iv_dummy);
+        iv_dummy.setOnClickListener(this);
+        mMainLayout=findViewById(R.id.mMainLayout);
     }
 
     @Override
@@ -155,13 +221,24 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.save_button:
-                finish();
+                try {
+                    SaveEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.add_new_member:
 
                 sessionManager.setGroupList(getApplicationContext(), inviteListData);
                 startActivity(new Intent(getApplicationContext(), GroupActivity.class));
                 finish();
+
+                break;
+            case R.id.iv_dummy:
+                if(checkAndRequestPermissions(Final_Group.this)){
+                    captureimageDialog(true);
+
+                }
 
                 break;
 
@@ -171,6 +248,238 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    private void SaveEvent() throws JSONException {
+
+        group_name=add_new_contect.getText().toString();
+        group_description=add_detail.getText().toString();
+        if (group_name.equals(""))
+        {
+            Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.add_group_txt),false);
+        }
+        else if (group_description.equals(""))
+        {
+            Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.add_group_description),false);
+        }
+        else {
+
+            SignResponseModel user_data = sessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+            JSONArray contect_array = new JSONArray();
+            contect_array.put(1);
+            contect_array.put(3);
+            String token=Global.getToken(this);
+            JSONObject obj = new JSONObject();
+            JSONObject paramObject = new JSONObject();
+            if (!group_id.equals(""))
+            {
+                paramObject.put("id", group_id);
+            }
+
+            paramObject.put("group_name", group_name);
+            paramObject.put("oldImage", old_image);
+            paramObject.put("image_extension", File_extension);
+            paramObject.put("group_image_name", File_name);
+            paramObject.put("group_image", user_image_Url);
+            paramObject.put("organization_id", "1");
+            paramObject.put("team_id", "1");
+            paramObject.put("user_id", user_id);
+            paramObject.put("contact_ids",contect_array);
+            paramObject.put("description", group_description);
+            obj.put("data", paramObject);
+           // Log.e("Data IS ",new Gson().toJson(obj));
+
+            JsonParser jsonParser = new JsonParser();
+            JsonObject gsonObject = (JsonObject)jsonParser.parse(obj.toString());
+            Log.e("Obbject data",new Gson().toJson(gsonObject));
+            retrofitCalls.AddGroup(gsonObject, loadingDialog,token, new RetrofitCallback() {
+                @Override
+                public void success(Response<ApiResponse> response) {
+
+                    loadingDialog.cancelLoading();
+                    if (response.body().getStatus() == 200) {
+                        Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),true);
+                        finish();
+                    } else {
+                        Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                    }
+                }
+
+                @Override
+                public void error(Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
+                }
+            });
+
+
+        }
+
+
+    }
+
+    // function to check permission
+    public static boolean checkAndRequestPermissions(final Activity context) {
+        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int cameraPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded
+                    .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(context, listPermissionsNeeded
+                            .toArray(new String[listPermissionsNeeded.size()]),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+    // Handled permission Result
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        Log.e("Uri is ", String.valueOf(selectedImage));
+                      //  filePath.substring(filePath.lastIndexOf(".") + 1); // Without dot jpg, png
+
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+
+                                //user_image_Url = encodeFileToBase64Binary(picturePath);
+                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                iv_user.setVisibility(View.VISIBLE);
+                                iv_dummy.setVisibility(View.GONE);
+                                File file= new File(selectedImage.getPath());
+                                File_name=file.getName();
+
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                                String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                                user_image_Url="data:image/JPEG;base64,"+imageString;
+                                File_extension="JPEG";
+                                Log.e("url is",user_image_Url);
+                            }
+                        }
+                    }
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        Log.e("Uri is ", String.valueOf(selectedImage));
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+
+                                //user_image_Url = encodeFileToBase64Binary(picturePath);
+                               // Log.e("Image Url is ",user_image_Url);
+
+                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                cursor.close();
+
+
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+
+                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                                String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                                user_image_Url="data:image/JPEG;base64,"+imageString;
+                                Log.e("url is",user_image_Url);
+                                File_extension="JPEG";
+
+
+                                iv_user.setVisibility(View.VISIBLE);
+                                iv_dummy.setVisibility(View.GONE);
+
+                                File file= new File(selectedImage.getPath());
+                                File_name=file.getName();
+
+
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+
+    private void captureimageDialog(boolean remove) {
+        final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Final_Group.this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+
+        TextView cameraId = bottomSheetDialog.findViewById(R.id.cameraId);
+        TextView tv_remove = bottomSheetDialog.findViewById(R.id.tv_remove);
+        if(remove){
+            tv_remove.setVisibility(View.VISIBLE);
+        }else {
+            tv_remove.setVisibility(View.GONE);
+        }
+        tv_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                iv_user.setVisibility(View.GONE);
+                iv_dummy.setVisibility(View.VISIBLE);
+                bottomSheetDialog.dismiss();
+
+            }
+        });
+        cameraId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePicture, 0);
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+        TextView galleryId = bottomSheetDialog.findViewById(R.id.galleryId);
+        galleryId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , 1);
+                bottomSheetDialog.dismiss();
+
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
+
+    public static String encodeFileToBase64Binary(String str) {
+        try {
+            return new String(Base64.decode(str, 0), "UTF-8");
+        } catch (UnsupportedEncodingException | IllegalArgumentException unused) {
+            return "";
+        }
+    }
 
     public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
             implements Filterable {
@@ -251,11 +560,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 else */if (userDetailsfull.get(position).getFlag().equals("false"))
                 {
                     holder.remove_contect_icon.setVisibility(View.VISIBLE);
-                    holder.add_new_contect_icon.setVisibility(View.GONE);
+                    holder.add_new_contect_icon1.setVisibility(View.GONE);
                 }
                 else {
                     holder.remove_contect_icon.setVisibility(View.GONE);
-                    holder.add_new_contect_icon.setVisibility(View.VISIBLE);
+                    holder.add_new_contect_icon1.setVisibility(View.VISIBLE);
 
 
                 }
@@ -401,7 +710,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             TextView userName, userNumber, first_latter;
             CircleImageView profile_image;
             LinearLayout top_layout;
-            ImageView add_new_contect_icon,remove_contect_icon;
+            ImageView add_new_contect_icon1,remove_contect_icon;
             RelativeLayout main_layout;
 
 
@@ -413,9 +722,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 profile_image = itemView.findViewById(R.id.profile_image);
                 no_image = itemView.findViewById(R.id.no_image);
                 top_layout = itemView.findViewById(R.id.top_layout);
-                add_new_contect_icon=itemView.findViewById(R.id.add_new_contect_icon);
+                add_new_contect_icon1=itemView.findViewById(R.id.add_new_contect_icon);
                 remove_contect_icon=itemView.findViewById(R.id.remove_contect_icon);
-                add_new_contect_icon.setVisibility(View.VISIBLE);
+                add_new_contect_icon1.setVisibility(View.VISIBLE);
                 main_layout=itemView.findViewById(R.id.main_layout);
 
             }
@@ -423,4 +732,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
 
     }
+
+
 }
