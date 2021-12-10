@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -38,9 +39,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -88,7 +91,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     String fragment_name,user_image_Url,File_name="",File_extension="";
     EditText edt_FirstName,edt_lastname;
     SessionManager sessionManager;
-    String phone,phone_type,email,email_type,address,zip_code,zoom_id,note,f_name,l_name,city,state;
+    String phone,phone_type,email,email_type,
+            address,zip_code,zoom_id,note,f_name,l_name,
+            city,state,olld_image="";
     public static final int RequestPermissionCode = 1;
     LinearLayout mMainLayout;
     RetrofitCalls retrofitCalls;
@@ -96,6 +101,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     FrameLayout frameContainer;
     RoundedImageView iv_user;
     LinearLayout layout_pulse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +109,31 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         IntentUI();
         EnableRuntimePermission();
         sessionManager=new SessionManager(this);
+        save_button.setText("Save Contact");
+        String flag= sessionManager.getContect_flag(this);
+        if (flag.equals("edit"))
+        {
+            Log.e("Null","Call");
+            ContectListData.Contact Contect_data=sessionManager.getOneCotect_deatil(this);
+            edt_FirstName.setText(Contect_data.getFirstname());
+            edt_lastname.setText(Contect_data.getLastname());
+            f_name=Contect_data.getFirstname();
+            l_name=Contect_data.getLastname();
+            Glide.with(getApplicationContext()).
+                    load(Contect_data.getContactImage())
+                    .placeholder(R.drawable.shape_primary_back)
+                    .error(R.drawable.shape_primary_back).
+                    into(iv_user);
+            olld_image=Contect_data.getContactImage();
+
+            save_button.setText("Edit Contact");
+            layout_pulse.setVisibility(View.GONE);
+            iv_user.setVisibility(View.VISIBLE);
+
+        }
+        else {
+            Log.e("Null","No Call");
+         }
         retrofitCalls = new RetrofitCalls(this);
         loadingDialog=new LoadingDialog(this);
         //Set Viewpagger
@@ -153,7 +184,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         });
 
         pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
-        save_button.setText("Save Contact");
+
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,11 +217,14 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.invalid_last_name),false);
 
                     }
-                    else if (addcontectModel.getContactdetails().get(0).getEmail_number().equals(""))
+                    else if (addcontectModel.getContactdetails().size()==0)
                     {
-                        Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.invalid_phone),false);
+
+                            Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.enter_phone),false);
+
                     }
                     else {
+
                         try {
                             AddContect_Api();
                         } catch (JSONException e) {
@@ -203,8 +237,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 }
                 else {
                     //Update Contect
-                    save_button.setText("Save Contact");
-                    updateContect(email,phone,phone_type);
+
+                    try {
+                        AddContect_Api1();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
 
                 }
             }
@@ -219,8 +258,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
                 sessionManager.setContect_Name(charSequence.toString());
             }
 
@@ -238,7 +275,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 sessionManager.setContect_Type(charSequence.toString());
             }
 
@@ -247,9 +283,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
             }
         });
-
-
-
 
 
     }
@@ -453,38 +486,12 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     public static void start(Context context)
     {
         Intent intent = new Intent(context, Addnewcontect_Activity.class);
+        SessionManager.setContect_flag("save");
         context.startActivity(intent);
     }
 
 
-    public void updateContect(String email,String phone ,String type)
-    {
 
-        Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
-        intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-        int phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
-        if("home".equalsIgnoreCase(type))
-        {
-            phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
-        }else if("mobile".equalsIgnoreCase(type))
-        {
-            phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
-        }else if("work".equalsIgnoreCase(type))
-        {
-            phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_WORK;
-        }
-        intent.putExtra(ContactsContract.Intents.Insert.EMAIL, email)
-
-                .putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE,
-                        ContactsContract.CommonDataKinds.Email.TYPE_WORK)
-                .putExtra(ContactsContract.Intents.Insert.PHONE, phone)
-                .putExtra(ContactsContract.Intents.Insert.PHONE_TYPE,
-                        ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
-                    .putExtra(ContactsContract.CommonDataKinds.Phone.TYPE, phoneContactType);
-
-
-        startActivity(intent);
-    }
 
     @Override
     public void onBackPressed() {
@@ -563,7 +570,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("contact_image",user_image_Url);
         paramObject.put("image_extension",File_extension);
         paramObject.put("contact_image_name",File_name);
-        paramObject.put("oldImage","");
+        paramObject.put("oldImage",olld_image);
 
         JSONArray jsonArray = new JSONArray();
         for(int i=0;i<contactdetails.size();i++){
@@ -616,7 +623,92 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         });
 
     }
+    public void AddContect_Api1() throws JSONException {
 
+        loadingDialog.showLoadingDialog();
+        ContectListData.Contact Contect_data=sessionManager.getOneCotect_deatil(this);
+        f_name=edt_FirstName.getText().toString().trim();
+        l_name=edt_lastname.getText().toString().trim();
+        AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
+        zip_code = addcontectModel.getZip_code();
+        zoom_id = addcontectModel.getZoom_id();
+        address = addcontectModel.getAddress();
+        note = addcontectModel.getNote();
+        city=addcontectModel.getCity();
+        state=addcontectModel.getState();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        List<Contactdetail> contactdetails=new ArrayList<>();
+        contactdetails.addAll(addcontectModel.getContactdetails());
+
+
+        List<Contactdetail> contactdetails_email=new ArrayList<>();
+        contactdetails_email.addAll(addcontectModel.getContactdetails_email());
+        contactdetails.addAll(contactdetails_email);
+
+
+        JSONObject obj = new JSONObject();
+
+        JSONObject paramObject = new JSONObject();
+
+        paramObject.put("id",Contect_data.getId());
+        paramObject.put("address", address);
+        paramObject.put("breakout_link", addcontectModel.getBreakoutu());
+        paramObject.put("city", city);
+        paramObject.put("company_id", "");
+        paramObject.put("company_name", addcontectModel.getCompany());
+        paramObject.put("company_url", "");
+        paramObject.put("dob", addcontectModel.getBirthday());
+        paramObject.put("dynamic_fields_value", "");
+        paramObject.put("facebook_link", addcontectModel.getFacebook());
+        paramObject.put("firstname",edt_FirstName.getText().toString().trim());
+        paramObject.put("lastname",l_name);
+        paramObject.put("job_title", addcontectModel.getJob_title());
+        paramObject.put("lastname", edt_lastname.getText().toString().trim());
+        paramObject.put("linkedin_link", addcontectModel.getLinkedin());
+        paramObject.put("organization_id", Contect_data.getOrganizationId());
+        paramObject.put("state", state);
+        paramObject.put("team_id", Contect_data.getTeamId());
+        // addcontectModel.getTime()
+        paramObject.put("timezone_id","2");
+        paramObject.put("twitter_link", addcontectModel.getTwitter());
+        paramObject.put("user_id", user_id);
+        paramObject.put("zipcode", zip_code);
+        paramObject.put("zoom_id", zoom_id);
+        paramObject.put("contact_image",user_image_Url);
+        paramObject.put("image_extension",File_extension);
+        paramObject.put("contact_image_name",File_name);
+        paramObject.put("oldImage",olld_image);
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject)jsonParser.parse(obj.toString());
+
+        Log.e("Final Data is",new Gson().toJson(gsonObject));
+        retrofitCalls.Addcontect(gsonObject, loadingDialog,Global.getToken(this), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
+                    long rowContactId = getRawContactId();
+                    save_button.setText("Save Contact");
+         /*           updateContect(edt_FirstName.getText().toString(),phone,phone_type);*/
+
+                    updateContactPhoneByName(edt_FirstName.getText().toString(),edt_lastname.getText().toString(),phone,phone_type);
+                    finish();
+                } else {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -791,5 +883,132 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         } catch (UnsupportedEncodingException | IllegalArgumentException unused) {
             return "";
         }
+    }
+
+
+
+    private long getRawContactIdByName(String givenName, String familyName)
+    {
+        ContentResolver contentResolver = getContentResolver();
+
+        // Query raw_contacts table by display name field ( given_name family_name ) to get raw contact id.
+
+        // Create query column array.
+        String queryColumnArr[] = {ContactsContract.RawContacts._ID};
+
+        // Create where condition clause.
+        String displayName = givenName + " " + familyName;
+        String whereClause = ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY + " = '" + displayName + "'";
+
+        // Query raw contact id through RawContacts uri.
+        Uri rawContactUri = ContactsContract.RawContacts.CONTENT_URI;
+
+        // Return the query cursor.
+        Cursor cursor = contentResolver.query(rawContactUri, queryColumnArr, whereClause, null, null);
+
+        long rawContactId = -1;
+
+        if(cursor!=null)
+        {
+            // Get contact count that has same display name, generally it should be one.
+            int queryResultCount = cursor.getCount();
+            // This check is used to avoid cursor index out of bounds exception. android.database.CursorIndexOutOfBoundsException
+            if(queryResultCount > 0)
+            {
+                // Move to the first row in the result cursor.
+                cursor.moveToFirst();
+                // Get raw_contact_id.
+                rawContactId = cursor.getLong(cursor.getColumnIndex(ContactsContract.RawContacts._ID));
+            }
+        }
+
+        return rawContactId;
+    }
+
+    private int  updateContactPhoneByName(String givenName, String familyName,String phone,String type)
+    {
+        int ret = 0;
+
+        ContentResolver contentResolver = getContentResolver();
+
+        // Get raw contact id by display name.
+        long rawContactId = getRawContactIdByName(givenName, familyName);
+
+        // Update data table phone number use contact raw contact id.
+        if(rawContactId > -1) {
+            // Update mobile phone number.
+            updatePhoneNumber(contentResolver, rawContactId, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,phone,type);
+
+            // Update work mobile phone number.
+            //updatePhoneNumber(contentResolver, rawContactId, ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE, phone);
+
+            // Update home phone number.
+           // updatePhoneNumber(contentResolver, rawContactId, ContactsContract.CommonDataKinds.Phone.TYPE_HOME, phone);
+
+            ret = 1;
+        }else
+        {
+            ret = 0;
+        }
+
+        return ret;
+    }
+
+
+    private void updatePhoneNumber(ContentResolver contentResolver, long rawContactId, int phoneType, String newPhoneNumber,String phoneTypeStr)
+    {
+        // Create content values object.
+        ContentValues contentValues = new ContentValues();
+
+        // Put new phone number value.
+        contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, newPhoneNumber);
+        int phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
+        if("home".equalsIgnoreCase(phoneTypeStr))
+        {
+            phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
+        }else if("mobile".equalsIgnoreCase(phoneTypeStr))
+        {
+            phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
+        }else if("work".equalsIgnoreCase(phoneTypeStr))
+        {
+            phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_WORK;
+        }
+        // Put phone type value.
+        contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, phoneContactType);
+
+        // Create query condition, query with the raw contact id.
+        StringBuffer whereClauseBuf = new StringBuffer();
+
+        // Specify the update contact id.
+        whereClauseBuf.append(ContactsContract.Data.RAW_CONTACT_ID);
+        whereClauseBuf.append("=");
+        whereClauseBuf.append(rawContactId);
+
+        // Specify the row data mimetype to phone mimetype( vnd.android.cursor.item/phone_v2 )
+        whereClauseBuf.append(" and ");
+        whereClauseBuf.append(ContactsContract.Data.MIMETYPE);
+        whereClauseBuf.append(" = '");
+        String mimetype = ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE;
+        whereClauseBuf.append(mimetype);
+        whereClauseBuf.append("'");
+
+        // Specify phone type.
+        whereClauseBuf.append(" and ");
+        whereClauseBuf.append(ContactsContract.CommonDataKinds.Phone.TYPE);
+        whereClauseBuf.append(" = ");
+        whereClauseBuf.append(phoneType);
+
+        // Update phone info through Data uri.Otherwise it may throw java.lang.UnsupportedOperationException.
+        Uri dataUri = ContactsContract.Data.CONTENT_URI;
+
+        // Get update data count.
+        int updateCount = contentResolver.update(dataUri, contentValues, whereClauseBuf.toString(), null);
+        Log.e("Count is", String.valueOf(updateCount));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

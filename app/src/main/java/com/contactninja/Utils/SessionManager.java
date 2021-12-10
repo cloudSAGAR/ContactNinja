@@ -10,6 +10,7 @@ import android.util.Log;
 import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.SignModel;
@@ -46,6 +47,9 @@ public class SessionManager {
 
     public static final String Group_Model ="group_model";
 
+    public static final String Contect_Model ="contect_model";
+
+    public static final String Contect_flag="contect_flag";
 
 
     // Constructor
@@ -90,6 +94,8 @@ public class SessionManager {
     }
 
 
+
+
     public  String getContect_Name(Context context) {
 
         String type= pref.getString(Contect_Name, "");
@@ -99,6 +105,18 @@ public class SessionManager {
 
     public  void setContect_Name(String plantype) {
         editor.putString(Contect_Name, plantype);
+        editor.commit();
+    }
+
+    public  String getContect_flag(Context context) {
+
+        String type= pref.getString(Contect_flag, "");
+        return  type;
+
+    }
+
+    public static void setContect_flag(String plantype) {
+        editor.putString(Contect_flag, plantype);
         editor.commit();
     }
 
@@ -226,6 +244,31 @@ public class SessionManager {
 
 
 
+
+
+
+
+
+    public static ContectListData.Contact getOneCotect_deatil(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Contect_Model, "");
+        Type type = new TypeToken<ContectListData.Contact>() {
+        }.getType();
+        ContectListData.Contact  contect= gson.fromJson(json, type);
+        if (contect == null) {
+            contect = new ContectListData.Contact();
+        }
+        return contect;
+    }
+
+    public static void setOneCotect_deatil(Context context, ContectListData.Contact contact) {
+        Gson gson = new Gson();
+        String json = gson.toJson(contact);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Contect_Model, json);
+        /*Log.e("Sessioin data",new Gson().toJson(contact));*/
+        editor.apply();
+    }
 
 
     public static Grouplist.Group getGroupData(Context context) {

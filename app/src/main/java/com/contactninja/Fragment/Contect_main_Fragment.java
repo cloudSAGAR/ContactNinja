@@ -146,4 +146,6 @@ public class Contect_main_Fragment extends Fragment implements ViewPager.OnPageC
             return totalTabs;
         }
     }
+
+
 }

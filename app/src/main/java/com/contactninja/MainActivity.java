@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Utils.App;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
@@ -210,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        sessionManager.setOneCotect_deatil(getApplicationContext(),new ContectListData.Contact());
     }
 
 
@@ -432,5 +434,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DeleteTask ut = new DeleteTask();
         ut.execute();
     }
+
+
 
 }

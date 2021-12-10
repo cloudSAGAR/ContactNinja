@@ -31,6 +31,7 @@
     <string name="terms">I have read and agree to <br>\nContact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
     <string name="invalid_email">Invalid Email</string>
     <string name="invalid_phone">Invalid Number</string>
+    <string name="add_phone_number">Invalid Number</string>
     <string name="invalid_password">Invalid Password</string>
     <string name="invalid_first_name">Add First Name</string>
     <string name="invalid_last_name">Add Last Name</string>

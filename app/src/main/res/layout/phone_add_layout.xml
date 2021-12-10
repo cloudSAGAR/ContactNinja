@@ -110,7 +110,6 @@
                                 android:background="@color/add_contect_transpernt"
                                 android:hint="@string/add_number"
                                 android:inputType="number"
-                                android:maxLength="10"
                                 android:textSize="@dimen/_12sdp"
                                 android:textColor="@color/home_list_sub_data"
                                 android:textColorHint="@color/home_list_sub_data"

@@ -127,6 +127,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
+                SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
             }
         });
@@ -134,6 +135,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
+                SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
             }
         });
@@ -141,6 +143,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
+                SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
                 // splitdata(inviteListData);
             }

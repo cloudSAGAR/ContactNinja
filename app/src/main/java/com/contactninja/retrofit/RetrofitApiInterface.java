@@ -50,4 +50,20 @@ public interface RetrofitApiInterface {
     @POST("contact/group/list")
     Call<ApiResponse> Group_List(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
 
+
+
+
+    @POST("contact/details/update")
+    Call<ApiResponse> Contect_delete(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
+
+
+    @POST("contact/list")
+    Call<ApiResponse> Contect_List(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
+
+
+
+
+    @POST("contact/details/update")
+    Call<ApiResponse> update_contect(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
+
 }
