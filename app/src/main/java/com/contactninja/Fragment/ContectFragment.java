@@ -42,6 +42,7 @@ import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Csv_InviteListData;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -94,9 +95,9 @@ public class ContectFragment extends Fragment {
     Context mCtx;
     Cursor cursor;
     RecyclerView rvinviteuserdetails;
-    String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
-            contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
-            postcode = "", postType = "", note = "";
+    String userName=null, user_phone_number=null, user_image=null, user_des=null, strtext =null, old_latter = null, contect_type =null, contect_email=null,
+            contect_type_work = null, email_type_home = null, email_type_work = null, country = null, city = null, region = null, street =null,
+            postcode = null, postType = null, note = null;
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
     // ImageView iv_back,iv_more;
@@ -119,6 +120,7 @@ public class ContectFragment extends Fragment {
     boolean isLastPage = false;
     LinearLayoutManager layoutManager;
     private List<ContectListData.Contact> contectListData;
+    List<Csv_InviteListData> csv_inviteListData;
 
 
     public ContectFragment(String strtext, View view, FragmentActivity activity) {
@@ -229,6 +231,7 @@ public class ContectFragment extends Fragment {
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
+        csv_inviteListData=new ArrayList<>();
 
         layoutManager = new LinearLayoutManager(getActivity());
         rvinviteuserdetails.setLayoutManager(layoutManager);
@@ -280,7 +283,7 @@ public class ContectFragment extends Fragment {
                 }
         );
 
-        // GetContactsIntoArrayList();
+         GetContactsIntoArrayList();
         //  getAllContect();
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,11 +304,11 @@ public class ContectFragment extends Fragment {
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
+             /*   SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
                 SessionManager.setContect_flag("save");
                 Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                startActivity(addnewcontect);
-                // splitdata(inviteListData);
+                startActivity(addnewcontect);*/
+                 splitdata(csv_inviteListData);
             }
         });
 
@@ -378,6 +381,7 @@ public class ContectFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void GetContactsIntoArrayList() {
+        String firstname = null,lastname = null;
         cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         while (cursor.moveToNext()) {
 
@@ -407,6 +411,9 @@ public class ContectFragment extends Fragment {
                 postType = String.valueOf(cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE)));
                 note = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
 
+
+                firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
+                 lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
                 Log.e("country", country);
                 Log.e("city", city);
                 Log.e("region", region);
@@ -422,14 +429,7 @@ public class ContectFragment extends Fragment {
             String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                     .substring(0, 1)
                     .toUpperCase();
-            if (old_latter.equals("")) {
-                old_latter = unik_key;
 
-            } else if (old_latter.equals(unik_key)) {
-                old_latter = "";
-            } else if (!old_latter.equals(unik_key)) {
-                old_latter = unik_key;
-            }
             boolean found = false;
             try {
                 found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
@@ -450,8 +450,26 @@ public class ContectFragment extends Fragment {
                         user_phone_number,
                         user_image,
                         user_des,
-                        old_latter.trim(), ""));
+                        "", ""));
                 //  userListDataAdapter.notifyDataSetChanged();
+
+                try {
+                    csv_inviteListData.add(new Csv_InviteListData("" + userName.toString(),user_phone_number,""+lastname));
+
+               /*     csv_inviteListData.add(new Csv_InviteListData("" + userName.toString(),user_phone_number,
+                            ""+user_image.toString(),""+user_des.toString(),
+                            ""+country.toString(),""+city.toString(),
+                            ""+region.toString(),""+street.toString(),
+                            ""+postcode.toString(),""+postType.toString(),
+                            ""+note.toString().trim(),""+contect_email.toString().trim(),
+                            ""+email_type_home.toString(),""+email_type_work.toString(),""+lastname));
+*/
+                }
+                catch (Exception e)
+                {
+
+                }
+
                 getTasks(new InviteListData(userName, user_phone_number, user_image, user_des, old_latter, ""));
 
 
@@ -464,7 +482,7 @@ public class ContectFragment extends Fragment {
 
     }
 
-    private void splitdata(ArrayList<InviteListData> response) {
+    private void splitdata(List<Csv_InviteListData> response) {
         System.out.println("GET DATA IS " + response);
 
         // response will have a @ symbol so that we can split individual user data
@@ -472,11 +490,56 @@ public class ContectFragment extends Fragment {
         //StringBuilder  to store the data
         data = new StringBuilder();
 
-        data.append("id,firstname,phone");
+        data.append("Firstname,Lastname," +
+                "Company Name,Company URL," +
+                "Job Title,Notes," +
+                "DOB,Address," +
+                "City,State," +
+                "Zipcode,Zoomid," +
+                "Facebook Link,Twitter Link," +
+                "Breakout Link,Linkedin Link," +
+                "Email,Phone," +
+                "Fax");
 
         for (int i = 0; i < response.size(); i++) {
-            //  Log.e("MObile Number is",response.get(i).getUserPhoneNumber());
-            data.append("\n" + response.get(i).getId() + "," + response.get(i).getUserName() + "," + response.get(i).getUserPhoneNumber());
+
+            data.append("\n" + response.get(i).getUserName() +
+                    "," + response.get(i).getLast_name() +
+                    "," + "Company Name" +
+                    "," + "Company URL" +
+                    "," + "Job Title" +
+                    "," + " Notes"+
+                    "," + "DOB" +
+                    "," + "Address" +
+                    "," + "City"+
+                    "," + "State"+
+                    "," + "Zipcode"+
+                    "," +"Zoomid" +
+                    "," + "Facebook Link" +
+                    "," + "Twitter Link" +
+                    "," + "Breakout Link" +
+                    "," + "Linkedin Link"+
+                    "," + "Email" +
+                    "," + response.get(i).getUserPhoneNumber() +
+                    "," + "Fax"
+            );
+
+            Log.e("Phone Number is",response.get(i).getUserPhoneNumber());
+
+
+        /*    data.append("\n" + response.get(i).getUserName() + "," + response.get(i).getLast_name() + "," + ""
+                    + "" + "," + ""
+                    + response.get(i).getNote() + "," + ""
+                    + response.get(i).getStreet()+" "+ response.get(i).getCity()+ "," + response.get(i).getCity()
+                    + "" + "," + ""
+                    + "" + "," +""
+                    + "" + "," + ""
+                    + "" + "," + ""
+                    + response.get(i).getContect_email() + "," + response.get(i).getUserPhoneNumber()
+                    + ""
+            );*/
+
+
         }
         CreateCSV(data);
     }
