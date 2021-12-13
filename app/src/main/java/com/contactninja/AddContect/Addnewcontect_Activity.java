@@ -2,14 +2,12 @@ package com.contactninja.AddContect;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -31,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -40,7 +37,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.MainActivity;
+import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
+import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
+import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -54,9 +53,6 @@ import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
-import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
-import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -64,18 +60,14 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,18 +75,18 @@ import retrofit2.Response;
 
 public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
+    public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
-    ImageView iv_back,iv_more,pulse_icon;
+    ImageView iv_back, iv_more, pulse_icon;
     TextView save_button;
     TabLayout tabLayout;
-    String fragment_name,user_image_Url,File_name="",File_extension="";
-    EditText edt_FirstName,edt_lastname;
+    String fragment_name, user_image_Url, File_name = "", File_extension = "";
+    EditText edt_FirstName, edt_lastname;
     SessionManager sessionManager;
-    String phone,phone_type,email,email_type,
-            address,zip_code,zoom_id,note,f_name,l_name,
-            city,state,olld_image="";
-    public static final int RequestPermissionCode = 1;
+    String phone, phone_type, email, email_type,
+            address, zip_code, zoom_id, note, f_name, l_name,
+            city, state, olld_image = "";
     LinearLayout mMainLayout;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -102,52 +94,88 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     RoundedImageView iv_user;
     LinearLayout layout_pulse;
 
+    // ListPhoneContactsActivity use this method to start this activity.
+    public static void start(Context context) {
+        Intent intent = new Intent(context, Addnewcontect_Activity.class);
+        SessionManager.setContect_flag("save");
+        context.startActivity(intent);
+    }
+
+    // function to check permission
+    public static boolean checkAndRequestPermissions(final Activity context) {
+        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int cameraPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded
+                    .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(context, listPermissionsNeeded
+                            .toArray(new String[listPermissionsNeeded.size()]),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+
+    public static String encodeFileToBase64Binary(String str) {
+        try {
+            return new String(Base64.decode(str, 0), StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException unused) {
+            return "";
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnewcontect);
         IntentUI();
         EnableRuntimePermission();
-        sessionManager=new SessionManager(this);
+        sessionManager = new SessionManager(this);
         save_button.setText("Save Contact");
-        String flag= sessionManager.getContect_flag(this);
-        if (flag.equals("edit"))
-        {
-            Log.e("Null","Call");
-            ContectListData.Contact Contect_data=sessionManager.getOneCotect_deatil(this);
+        String flag = sessionManager.getContect_flag(this);
+        if (flag.equals("edit")) {
+            Log.e("Null", "Call");
+            ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
             edt_FirstName.setText(Contect_data.getFirstname());
             edt_lastname.setText(Contect_data.getLastname());
-            f_name=Contect_data.getFirstname();
-            l_name=Contect_data.getLastname();
+            f_name = Contect_data.getFirstname();
+            l_name = Contect_data.getLastname();
             Glide.with(getApplicationContext()).
                     load(Contect_data.getContactImage())
                     .placeholder(R.drawable.shape_primary_back)
                     .error(R.drawable.shape_primary_back).
                     into(iv_user);
-            olld_image=Contect_data.getContactImage();
+            olld_image = Contect_data.getContactImage();
 
             save_button.setText("Edit Contact");
             layout_pulse.setVisibility(View.GONE);
             iv_user.setVisibility(View.VISIBLE);
 
+        } else {
+            Log.e("Null", "No Call");
         }
-        else {
-            Log.e("Null","No Call");
-         }
         retrofitCalls = new RetrofitCalls(this);
-        loadingDialog=new LoadingDialog(this);
+        loadingDialog = new LoadingDialog(this);
         //Set Viewpagger
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
         tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
-        fragment_name="Info";
+        fragment_name = "Info";
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        Fragment fragment = new InformationFragment();;
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
-            fragmentTransaction.commitAllowingStateLoss();
+        Fragment fragment = new InformationFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+        fragmentTransaction.commitAllowingStateLoss();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -194,36 +222,30 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
+                AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
                 //  AddcontectModel addcontectModel=new AddcontectModel();
-            //    Log.e("Data is ", new Gson().toJson(addcontectModel));
+                //    Log.e("Data is ", new Gson().toJson(addcontectModel));
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
                 address = addcontectModel.getAddress();
                 note = addcontectModel.getNote();
-                f_name=edt_FirstName.getText().toString();
-                l_name=edt_lastname.getText().toString();
+                f_name = edt_FirstName.getText().toString();
+                l_name = edt_lastname.getText().toString();
 
 
                 if (save_button.getText().toString().equals("Save Contact")) {
                     //Add Contect.
-                    if (f_name.equals(""))
-                    {
-                        Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.invalid_first_name),false);
+                    if (f_name.equals("")) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
 
-                    }
-                    else if (l_name.equals(""))
-                    {
-                        Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.invalid_last_name),false);
+                    } else if (l_name.equals("")) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_last_name), false);
 
-                    }
-                    else if (addcontectModel.getContactdetails().size()==0)
-                    {
+                    } else if (addcontectModel.getContactdetails().size() == 0) {
 
-                            Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.enter_phone),false);
+                        Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.enter_phone), false);
 
-                    }
-                    else {
+                    } else {
 
                         try {
                             AddContect_Api();
@@ -234,8 +256,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
 
 
-                }
-                else {
+                } else {
                     //Update Contect
 
                     try {
@@ -287,26 +308,25 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     }
 
-
-
     private void IntentUI() {
-        iv_back=findViewById(R.id.iv_back);
-        save_button=findViewById(R.id.save_button);
+        iv_back = findViewById(R.id.iv_back);
+        save_button = findViewById(R.id.save_button);
         save_button.setVisibility(View.VISIBLE);
-        iv_more=findViewById(R.id.iv_more);
+        iv_more = findViewById(R.id.iv_more);
         iv_more.setVisibility(View.GONE);
         tabLayout = findViewById(R.id.tabLayout);
         frameContainer = findViewById(R.id.frameContainer);
-        pulse_icon=findViewById(R.id.pulse_icon);
-        edt_lastname=findViewById(R.id.edt_lastname);
-        edt_FirstName=findViewById(R.id.edt_FirstName);
-        mMainLayout=findViewById(R.id.frameContainer1);
-        layout_pulse=findViewById(R.id.layout_pulse);
+        pulse_icon = findViewById(R.id.pulse_icon);
+        edt_lastname = findViewById(R.id.edt_lastname);
+        edt_FirstName = findViewById(R.id.edt_FirstName);
+        mMainLayout = findViewById(R.id.frameContainer1);
+        layout_pulse = findViewById(R.id.layout_pulse);
 
-        iv_user=findViewById(R.id.iv_user);
+        iv_user = findViewById(R.id.iv_user);
         pulse_icon.setOnClickListener(this);
         iv_user.setOnClickListener(this);
     }
+
     public void EnableRuntimePermission() {
 
         PermissionListener permissionlistener = new PermissionListener() {
@@ -367,14 +387,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         }
     }
 
+    private void addContact(String given_name, String name, String mobile, String home, String email, String note) {
 
-    private void addContact(String given_name, String name, String mobile, String home, String email,String note) {
-
-      Log.e("Name",name);
-      Log.e("mobile",mobile);
-      Log.e("home",home);
-      Log.e("email",email);
-      Log.e("Note",note);
+        Log.e("Name", name);
+        Log.e("mobile", mobile);
+        Log.e("home", home);
+        Log.e("email", email);
+        Log.e("Note", note);
 
         ArrayList<ContentProviderOperation> contact = new ArrayList<ContentProviderOperation>();
         contact.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
@@ -427,14 +446,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         try {
             ContentProviderResult[] results = getContentResolver().applyBatch(ContactsContract.AUTHORITY, contact);
-            Log.e("Contect Result",new Gson().toJson(results));
+            Log.e("Contect Result", new Gson().toJson(results));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private long getRawContactId()
-    {
+    private long getRawContactId() {
         // Inser an empty contact.
         ContentValues contentValues = new ContentValues();
         Uri rawContactUri = getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, contentValues);
@@ -442,8 +460,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         long ret = ContentUris.parseId(rawContactUri);
         return ret;
     }
-    private void insertContactDisplayName(Uri addContactsUri, long rawContactId, String displayName)
-    {
+
+    private void insertContactDisplayName(Uri addContactsUri, long rawContactId, String displayName) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
         // Each contact must has an mime type to avoid java.lang.IllegalArgumentException: mimetype is required error.
@@ -453,10 +471,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         getContentResolver().insert(addContactsUri, contentValues);
     }
 
-
-
-    private void insertContactPhoneNumber(Uri addContactsUri, long rawContactId, String phoneNumber, String phoneTypeStr)
-    {
+    private void insertContactPhoneNumber(Uri addContactsUri, long rawContactId, String phoneNumber, String phoneTypeStr) {
         // Create a ContentValues object.
         ContentValues contentValues = new ContentValues();
         // Each contact must has an id to avoid java.lang.IllegalArgumentException: raw_contact_id is required error.
@@ -467,14 +482,11 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber);
         // Calculate phone type by user selection.
         int phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
-        if("home".equalsIgnoreCase(phoneTypeStr))
-        {
+        if ("home".equalsIgnoreCase(phoneTypeStr)) {
             phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
-        }else if("mobile".equalsIgnoreCase(phoneTypeStr))
-        {
+        } else if ("mobile".equalsIgnoreCase(phoneTypeStr)) {
             phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
-        }else if("work".equalsIgnoreCase(phoneTypeStr))
-        {
+        } else if ("work".equalsIgnoreCase(phoneTypeStr)) {
             phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_WORK;
         }
         // Put phone type value.
@@ -482,16 +494,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         // Insert new contact data into phone contact list.
         getContentResolver().insert(addContactsUri, contentValues);
     }
-    // ListPhoneContactsActivity use this method to start this activity.
-    public static void start(Context context)
-    {
-        Intent intent = new Intent(context, Addnewcontect_Activity.class);
-        SessionManager.setContect_flag("save");
-        context.startActivity(intent);
-    }
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -499,35 +501,29 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         super.onBackPressed();
     }
 
-
-
     public void AddContect_Api() throws JSONException {
 
 
-        f_name=edt_FirstName.getText().toString().trim();
-        l_name=edt_lastname.getText().toString().trim();
-        AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
+        f_name = edt_FirstName.getText().toString().trim();
+        l_name = edt_lastname.getText().toString().trim();
+        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
         zip_code = addcontectModel.getZip_code();
         zoom_id = addcontectModel.getZoom_id();
         address = addcontectModel.getAddress();
         note = addcontectModel.getNote();
-        city=addcontectModel.getCity();
-        state=addcontectModel.getState();
+        city = addcontectModel.getCity();
+        state = addcontectModel.getState();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
-
-
-
-
-        List<Contactdetail> contactdetails=new ArrayList<>();
+        List<Contactdetail> contactdetails = new ArrayList<>();
         contactdetails.addAll(addcontectModel.getContactdetails());
 
 
-        List<Contactdetail> contactdetails_email=new ArrayList<>();
+        List<Contactdetail> contactdetails_email = new ArrayList<>();
         contactdetails_email.addAll(addcontectModel.getContactdetails_email());
         contactdetails.addAll(contactdetails_email);
       /* for(int j=0;j<2;j++){
@@ -553,42 +549,40 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("dob", addcontectModel.getBirthday());
         paramObject.put("dynamic_fields_value", "");
         paramObject.put("facebook_link", addcontectModel.getFacebook());
-        paramObject.put("firstname",edt_FirstName.getText().toString().trim());
-        paramObject.put("lastname",l_name);
+        paramObject.put("firstname", edt_FirstName.getText().toString().trim());
+        paramObject.put("lastname", l_name);
         paramObject.put("job_title", addcontectModel.getJob_title());
         paramObject.put("lastname", edt_lastname.getText().toString().trim());
         paramObject.put("linkedin_link", addcontectModel.getLinkedin());
         paramObject.put("organization_id", "1");
         paramObject.put("state", state);
         paramObject.put("team_id", "1");
-       // addcontectModel.getTime()
-        paramObject.put("timezone_id","2");
+        // addcontectModel.getTime()
+        paramObject.put("timezone_id", "2");
         paramObject.put("twitter_link", addcontectModel.getTwitter());
         paramObject.put("user_id", user_id);
         paramObject.put("zipcode", zip_code);
         paramObject.put("zoom_id", zoom_id);
-        paramObject.put("contact_image",user_image_Url);
-        paramObject.put("image_extension",File_extension);
-        paramObject.put("contact_image_name",File_name);
-        paramObject.put("oldImage",olld_image);
+        paramObject.put("contact_image", user_image_Url);
+        paramObject.put("image_extension", File_extension);
+        paramObject.put("contact_image_name", File_name);
+        paramObject.put("oldImage", olld_image);
 
         JSONArray jsonArray = new JSONArray();
-        for(int i=0;i<contactdetails.size();i++){
+        for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
-            if (contactdetails.get(i).getEmail_number().equals(""))
-            {
+            if (contactdetails.get(i).getEmail_number().equals("")) {
 
-            }
-            else {
-                phone=contactdetails.get(i).getEmail_number();
-                phone_type=contactdetails.get(i).getLabel();
+            } else {
+                phone = contactdetails.get(i).getEmail_number();
+                phone_type = contactdetails.get(i).getLabel();
                 paramObject1.put("email_number", contactdetails.get(i).getEmail_number());
                 paramObject1.put("id", contactdetails.get(i).getId());
                 paramObject1.put("is_default", contactdetails.get(i).getIs_default());
                 paramObject1.put("label", contactdetails.get(i).getLabel());
                 paramObject1.put("type", contactdetails.get(i).getType());
             }
-                jsonArray.put(paramObject1);
+            jsonArray.put(paramObject1);
         }
 
         paramObject.put("contact_detail", jsonArray);
@@ -596,10 +590,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject)jsonParser.parse(obj.toString());
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
-       Log.e("Final Data is",new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(gsonObject, loadingDialog,Global.getToken(this), new RetrofitCallback() {
+        Log.e("Final Data is", new Gson().toJson(gsonObject));
+        retrofitCalls.Addcontect(gsonObject, loadingDialog, Global.getToken(this), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -612,7 +606,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     save_button.setText("Edit Contact");
                     finish();
                 } else {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
 
@@ -623,26 +617,27 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         });
 
     }
+
     public void AddContect_Api1() throws JSONException {
 
         loadingDialog.showLoadingDialog();
-        ContectListData.Contact Contect_data=sessionManager.getOneCotect_deatil(this);
-        f_name=edt_FirstName.getText().toString().trim();
-        l_name=edt_lastname.getText().toString().trim();
-        AddcontectModel addcontectModel = sessionManager.getAdd_Contect_Detail(getApplicationContext());
+        ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
+        f_name = edt_FirstName.getText().toString().trim();
+        l_name = edt_lastname.getText().toString().trim();
+        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
         zip_code = addcontectModel.getZip_code();
         zoom_id = addcontectModel.getZoom_id();
         address = addcontectModel.getAddress();
         note = addcontectModel.getNote();
-        city=addcontectModel.getCity();
-        state=addcontectModel.getState();
+        city = addcontectModel.getCity();
+        state = addcontectModel.getState();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
-        List<Contactdetail> contactdetails=new ArrayList<>();
+        List<Contactdetail> contactdetails = new ArrayList<>();
         contactdetails.addAll(addcontectModel.getContactdetails());
 
 
-        List<Contactdetail> contactdetails_email=new ArrayList<>();
+        List<Contactdetail> contactdetails_email = new ArrayList<>();
         contactdetails_email.addAll(addcontectModel.getContactdetails_email());
         contactdetails.addAll(contactdetails_email);
 
@@ -651,7 +646,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         JSONObject paramObject = new JSONObject();
 
-        paramObject.put("id",Contect_data.getId());
+        paramObject.put("id", Contect_data.getId());
         paramObject.put("address", address);
         paramObject.put("breakout_link", addcontectModel.getBreakoutu());
         paramObject.put("city", city);
@@ -661,8 +656,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("dob", addcontectModel.getBirthday());
         paramObject.put("dynamic_fields_value", "");
         paramObject.put("facebook_link", addcontectModel.getFacebook());
-        paramObject.put("firstname",edt_FirstName.getText().toString().trim());
-        paramObject.put("lastname",l_name);
+        paramObject.put("firstname", edt_FirstName.getText().toString().trim());
+        paramObject.put("lastname", l_name);
         paramObject.put("job_title", addcontectModel.getJob_title());
         paramObject.put("lastname", edt_lastname.getText().toString().trim());
         paramObject.put("linkedin_link", addcontectModel.getLinkedin());
@@ -670,21 +665,21 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("state", state);
         paramObject.put("team_id", Contect_data.getTeamId());
         // addcontectModel.getTime()
-        paramObject.put("timezone_id","2");
+        paramObject.put("timezone_id", "2");
         paramObject.put("twitter_link", addcontectModel.getTwitter());
         paramObject.put("user_id", user_id);
         paramObject.put("zipcode", zip_code);
         paramObject.put("zoom_id", zoom_id);
-        paramObject.put("contact_image",user_image_Url);
-        paramObject.put("image_extension",File_extension);
-        paramObject.put("contact_image_name",File_name);
-        paramObject.put("oldImage",olld_image);
+        paramObject.put("contact_image", user_image_Url);
+        paramObject.put("image_extension", File_extension);
+        paramObject.put("contact_image_name", File_name);
+        paramObject.put("oldImage", olld_image);
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject)jsonParser.parse(obj.toString());
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
-        Log.e("Final Data is",new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(gsonObject, loadingDialog,Global.getToken(this), new RetrofitCallback() {
+        Log.e("Final Data is", new Gson().toJson(gsonObject));
+        retrofitCalls.Addcontect(gsonObject, loadingDialog, Global.getToken(this), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -693,12 +688,12 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
                     long rowContactId = getRawContactId();
                     save_button.setText("Save Contact");
-         /*           updateContect(edt_FirstName.getText().toString(),phone,phone_type);*/
+                    /*           updateContect(edt_FirstName.getText().toString(),phone,phone_type);*/
 
-                    updateContactPhoneByName(edt_FirstName.getText().toString(),edt_lastname.getText().toString(),phone,phone_type);
+                    updateContactPhoneByName(edt_FirstName.getText().toString(), edt_lastname.getText().toString(), phone, phone_type);
                     finish();
                 } else {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
 
@@ -709,22 +704,23 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         });
 
     }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.pulse_icon:
 
 
-                if(checkAndRequestPermissions(Addnewcontect_Activity.this)){
+                if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
                     captureimageDialog(false);
 
                 }
                 break;
 
-                case R.id.iv_user:
+            case R.id.iv_user:
 
 
-                if(checkAndRequestPermissions(Addnewcontect_Activity.this)){
+                if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
                     captureimageDialog(true);
 
                 }
@@ -732,7 +728,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 break;
         }
     }
-
+    // Handled permission Result
 
     private void captureimageDialog(boolean remove) {
         final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
@@ -741,9 +737,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         TextView cameraId = bottomSheetDialog.findViewById(R.id.cameraId);
         TextView tv_remove = bottomSheetDialog.findViewById(R.id.tv_remove);
-        if(remove){
+        if (remove) {
             tv_remove.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tv_remove.setVisibility(View.GONE);
         }
         tv_remove.setOnClickListener(new View.OnClickListener() {
@@ -771,7 +767,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , 1);
+                startActivityForResult(pickPhoto, 1);
                 bottomSheetDialog.dismiss();
 
             }
@@ -780,29 +776,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         bottomSheetDialog.show();
 
     }
-    // function to check permission
-    public static boolean checkAndRequestPermissions(final Activity context) {
-        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int cameraPermission = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.CAMERA);
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CAMERA);
-        }
-        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded
-                    .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(context, listPermissionsNeeded
-                            .toArray(new String[listPermissionsNeeded.size()]),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS);
-            return false;
-        }
-        return true;
-    }
-    // Handled permission Result
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -823,17 +796,17 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                                 iv_user.setVisibility(View.VISIBLE);
                                 layout_pulse.setVisibility(View.GONE);
 
-                                File file= new File(selectedImage.getPath());
-                                File_name=file.getName();
+                                File file = new File(selectedImage.getPath());
+                                File_name = file.getName();
 
                                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                                 Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
                                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url="data:image/JPEG;base64,"+imageString;
-                                File_extension="JPEG";
-                                Log.e("url is",user_image_Url);
+                                user_image_Url = "data:image/JPEG;base64," + imageString;
+                                File_extension = "JPEG";
+                                Log.e("url is", user_image_Url);
                             }
                         }
                     }
@@ -861,15 +834,15 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
                                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
                                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url="data:image/JPEG;base64,"+imageString;
-                                Log.e("url is",user_image_Url);
-                                File_extension="JPEG";
+                                user_image_Url = "data:image/JPEG;base64," + imageString;
+                                Log.e("url is", user_image_Url);
+                                File_extension = "JPEG";
 
 
                                 iv_user.setVisibility(View.VISIBLE);
 
-                                File file= new File(selectedImage.getPath());
-                                File_name=file.getName();
+                                File file = new File(selectedImage.getPath());
+                                File_name = file.getName();
                             }
                         }
                     }
@@ -877,24 +850,14 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             }
         }
     }
-    public static String encodeFileToBase64Binary(String str) {
-        try {
-            return new String(Base64.decode(str, 0), "UTF-8");
-        } catch (UnsupportedEncodingException | IllegalArgumentException unused) {
-            return "";
-        }
-    }
 
-
-
-    private long getRawContactIdByName(String givenName, String familyName)
-    {
+    private long getRawContactIdByName(String givenName, String familyName) {
         ContentResolver contentResolver = getContentResolver();
 
         // Query raw_contacts table by display name field ( given_name family_name ) to get raw contact id.
 
         // Create query column array.
-        String queryColumnArr[] = {ContactsContract.RawContacts._ID};
+        String[] queryColumnArr = {ContactsContract.RawContacts._ID};
 
         // Create where condition clause.
         String displayName = givenName + " " + familyName;
@@ -908,13 +871,11 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         long rawContactId = -1;
 
-        if(cursor!=null)
-        {
+        if (cursor != null) {
             // Get contact count that has same display name, generally it should be one.
             int queryResultCount = cursor.getCount();
             // This check is used to avoid cursor index out of bounds exception. android.database.CursorIndexOutOfBoundsException
-            if(queryResultCount > 0)
-            {
+            if (queryResultCount > 0) {
                 // Move to the first row in the result cursor.
                 cursor.moveToFirst();
                 // Get raw_contact_id.
@@ -925,8 +886,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         return rawContactId;
     }
 
-    private int  updateContactPhoneByName(String givenName, String familyName,String phone,String type)
-    {
+    private int updateContactPhoneByName(String givenName, String familyName, String phone, String type) {
         int ret = 0;
 
         ContentResolver contentResolver = getContentResolver();
@@ -935,19 +895,18 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         long rawContactId = getRawContactIdByName(givenName, familyName);
 
         // Update data table phone number use contact raw contact id.
-        if(rawContactId > -1) {
+        if (rawContactId > -1) {
             // Update mobile phone number.
-            updatePhoneNumber(contentResolver, rawContactId, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,phone,type);
+            updatePhoneNumber(contentResolver, rawContactId, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE, phone, type);
 
             // Update work mobile phone number.
             //updatePhoneNumber(contentResolver, rawContactId, ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE, phone);
 
             // Update home phone number.
-           // updatePhoneNumber(contentResolver, rawContactId, ContactsContract.CommonDataKinds.Phone.TYPE_HOME, phone);
+            // updatePhoneNumber(contentResolver, rawContactId, ContactsContract.CommonDataKinds.Phone.TYPE_HOME, phone);
 
             ret = 1;
-        }else
-        {
+        } else {
             ret = 0;
         }
 
@@ -955,22 +914,18 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     }
 
 
-    private void updatePhoneNumber(ContentResolver contentResolver, long rawContactId, int phoneType, String newPhoneNumber,String phoneTypeStr)
-    {
+    private void updatePhoneNumber(ContentResolver contentResolver, long rawContactId, int phoneType, String newPhoneNumber, String phoneTypeStr) {
         // Create content values object.
         ContentValues contentValues = new ContentValues();
 
         // Put new phone number value.
         contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, newPhoneNumber);
         int phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
-        if("home".equalsIgnoreCase(phoneTypeStr))
-        {
+        if ("home".equalsIgnoreCase(phoneTypeStr)) {
             phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
-        }else if("mobile".equalsIgnoreCase(phoneTypeStr))
-        {
+        } else if ("mobile".equalsIgnoreCase(phoneTypeStr)) {
             phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
-        }else if("work".equalsIgnoreCase(phoneTypeStr))
-        {
+        } else if ("work".equalsIgnoreCase(phoneTypeStr)) {
             phoneContactType = ContactsContract.CommonDataKinds.Phone.TYPE_WORK;
         }
         // Put phone type value.

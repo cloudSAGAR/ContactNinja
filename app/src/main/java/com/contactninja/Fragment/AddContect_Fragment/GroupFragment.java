@@ -65,6 +65,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private List<Grouplist.Group> grouplists;
     // private GroupAdapter groupAdapter;
     private ProgressBar loadingPB;
+
     public GroupFragment() {
         // Required empty public constructor
     }
@@ -77,7 +78,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         IntentUI(view);
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
-        sessionManager.setGroupList(getActivity(),new ArrayList<>());
+        SessionManager.setGroupList(getActivity(), new ArrayList<>());
         try {
             GroupEvent();
         } catch (JSONException e) {
@@ -386,9 +387,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
         public class MovieViewHolder extends RecyclerView.ViewHolder {
-            LinearLayout group_layout;
             private final TextView group_name;
             private final RoundedImageView group_image;
+            LinearLayout group_layout;
 
             public MovieViewHolder(View itemView) {
                 super(itemView);

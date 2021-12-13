@@ -36,14 +36,22 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Grouplist;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Utils.App;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.Fragment.SendFragment;
 import com.contactninja.Fragment.UsetProgileFragment;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitApiClient;
+import com.contactninja.retrofit.RetrofitApiInterface;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -53,9 +61,20 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -78,12 +97,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG_USER = "user";
     public static String CURRENT_TAG = TAG_HOME;
     boolean doubleBackToExitPressedOnce = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sessionManager=new SessionManager(this);
         sessionManager.login();
+
         IntentUI();
       //  FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
        // FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
@@ -95,8 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         displayView();
         ImageSetLight("Home");
 
-
-      //  showAlertDialogButtonClicked();
+        //  showAlertDialogButtonClicked();
 
 
 
@@ -434,6 +454,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DeleteTask ut = new DeleteTask();
         ut.execute();
     }
+
+
+
+
 
 
 

@@ -51,6 +51,8 @@ public class SessionManager {
 
     public static final String Contect_flag="contect_flag";
 
+    public static final String Refresh_token="refresh_token";
+
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -107,6 +109,22 @@ public class SessionManager {
         editor.putString(Contect_Name, plantype);
         editor.commit();
     }
+
+
+
+
+    public  String getRefresh_token(Context context) {
+
+        String type= pref.getString(Refresh_token, "");
+        return  type;
+
+    }
+
+    public  void setRefresh_token(String efresh_token) {
+        editor.putString(Refresh_token, efresh_token);
+        editor.commit();
+    }
+
 
     public  String getContect_flag(Context context) {
 

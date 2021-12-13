@@ -1,20 +1,17 @@
 package com.contactninja.retrofit;
 
 
-import com.google.gson.JsonObject;
 import com.contactninja.Model.SignModel;
-
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface RetrofitApiInterface {
     @POST("login")
-    Call<ApiResponse> loginUser (@Body SignModel signModel);
+    Call<ApiResponse> loginUser(@Body SignModel signModel);
 
 /*    @Headers("Content-Type: application/json")
     @POST("register")
@@ -36,34 +33,34 @@ public interface RetrofitApiInterface {
 
 
     @POST("emailNumberUpdate")
-    Call<ApiResponse> EmailNumberUpdate(@Header("Accept") String api,@Header("Authorization") String auth, @Body JsonObject body);
-
+    Call<ApiResponse> EmailNumberUpdate(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject body);
 
 
     @POST("contact/add")
-    Call<ApiResponse> Addcontect(@Header("Accept") String api,@Header("Authorization") String auth, @Body JsonObject body);
+    Call<ApiResponse> Addcontect(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject body);
 
     @POST("contact/group/add")
-    Call<ApiResponse> Addgroup(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
+    Call<ApiResponse> Addgroup(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
 
     @POST("contact/group/list")
-    Call<ApiResponse> Group_List(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
-
-
+    Call<ApiResponse> Group_List(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
 
     @POST("contact/details/update")
-    Call<ApiResponse> Contect_delete(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
+    Call<ApiResponse> Contect_delete(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
 
     @POST("contact/list")
-    Call<ApiResponse> Contect_List(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
-
-
+    Call<ApiResponse> Contect_List(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
 
     @POST("contact/details/update")
-    Call<ApiResponse> update_contect(@Header("Accept") String api,@Header("Authorization") String auth,@Body JsonObject jsonObject);
+    Call<ApiResponse> update_contect(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+    @POST("refreshToken")
+    Call<ApiResponse> RefressToken(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
 
 }

@@ -383,6 +383,7 @@ public class VerificationActivity extends AppCompatActivity {
                     }.getType();
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
+                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
                     if (!sessionManager.isEmail_Update()) {
                         Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                         intent.putExtra("login_type", login_type);
@@ -433,7 +434,7 @@ public class VerificationActivity extends AppCompatActivity {
                     // Log.e("Reponse is",gson.toJson(response.body().getData()));
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
-
+                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
                     if (!sessionManager.isEmail_Update()) {
                         Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                         intent.putExtra("login_type", login_type);

@@ -301,6 +301,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }.getType();
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
+                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
                     if (!sessionManager.isEmail_Update())
                     {
                         Intent i = new Intent(LoginActivity.this, Phone_email_verificationActivity.class);

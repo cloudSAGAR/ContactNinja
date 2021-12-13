@@ -119,6 +119,13 @@ public class RetrofitCalls {
     }
 
 
+    public void Refress_Token(JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.RefressToken(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
 
 
     public void update_contect(JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
