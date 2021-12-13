@@ -1283,5 +1283,66 @@
             android:textStyle="bold">
 
         </TextView>
+
+
+
+        <TextView
+            android:id="@+id/tv_add_social"
+            style="@style/tv_regular"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:text="@string/add_social"
+            android:textColor="@color/purple_200"
+            android:textStyle="bold">
+
+        </TextView>
+        <LinearLayout
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:id="@+id/media_link"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_fb"
+                android:src="@drawable/facebook"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp">
+
+            </ImageView>
+            <ImageView
+                android:layout_marginStart="@dimen/_5sdp"
+                android:id="@+id/img_twitter"
+                android:src="@drawable/twitter"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp">
+
+            </ImageView>
+
+            <ImageView
+                android:layout_marginStart="@dimen/_5sdp"
+                android:id="@+id/img_linkdin"
+                android:src="@drawable/linkdin"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp">
+
+            </ImageView>
+            <ImageView
+                android:layout_marginStart="@dimen/_5sdp"
+                android:id="@+id/img_breakout"
+                android:src="@drawable/breakout"
+                android:padding="@dimen/_5sdp"
+                android:background="@drawable/shape_primary_back"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp">
+
+            </ImageView>
+
+        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

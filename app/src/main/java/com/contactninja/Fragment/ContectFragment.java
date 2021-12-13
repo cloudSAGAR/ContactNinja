@@ -998,7 +998,9 @@ public class ContectFragment extends Fragment {
 
     @Override
     public void onResume() {
+        SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
+
         super.onResume();
 
     }
@@ -1283,7 +1285,7 @@ public class ContectFragment extends Fragment {
                             SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
                             SessionManager.setOneCotect_deatil(getActivity(), Contact_data);
                             Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                            SessionManager.setContect_flag("edit");
+                            SessionManager.setContect_flag("read");
                             startActivity(addnewcontect);
                         }
                     });

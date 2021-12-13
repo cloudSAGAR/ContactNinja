@@ -122,6 +122,7 @@ Number</string>
     <string name="add_email_address">Add email</string>
     <string name="add_more_field">More Fields</string>
     <string name="add_social_link">Add social media links</string>
+    <string name="add_social">Social Media</string>
 
     <string name="add_timezone">Timezone</string>
     <string name="add_bod">Birthday</string>

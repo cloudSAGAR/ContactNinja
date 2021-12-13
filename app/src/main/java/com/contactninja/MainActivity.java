@@ -2,25 +2,15 @@ package com.contactninja;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,29 +19,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.contactninja.Model.ContectListData;
-import com.contactninja.Model.Grouplist;
-import com.contactninja.Model.UserData.SignResponseModel;
-import com.contactninja.Utils.App;
-import com.contactninja.Utils.DatabaseClient;
-import com.contactninja.Utils.Global;
-import com.contactninja.Utils.LoadingDialog;
-import com.contactninja.Utils.SessionManager;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.Fragment.SendFragment;
 import com.contactninja.Fragment.UsetProgileFragment;
-import com.contactninja.retrofit.ApiResponse;
-import com.contactninja.retrofit.RetrofitApiClient;
-import com.contactninja.retrofit.RetrofitApiInterface;
-import com.contactninja.retrofit.RetrofitCallback;
-import com.contactninja.retrofit.RetrofitCalls;
+import com.contactninja.Model.ContectListData;
+import com.contactninja.Utils.App;
+import com.contactninja.Utils.DatabaseClient;
+import com.contactninja.Utils.Global;
+import com.contactninja.Utils.SessionManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -59,55 +39,43 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
-
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import org.json.JSONException;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    InstallStateUpdatedListener installStateUpdatedListener;
-    private AppUpdateManager mAppUpdateManager;
-    private static int RC_APP_UPDATE = 0;
-    RelativeLayout mMainLayout;
     public static final int RequestPermissionCode = 1;
-    ImageView llHome, llsend, llContact, llUser;
-    FrameLayout frameLayout;
-    private long mLastClickTime = 0;
-    SessionManager sessionManager;
-    //Declare Variabls for fragment
-    public static int navItemIndex = 0;
-    private boolean shouldLoadHomeFragOnBackPress = true;
     private static final String TAG_HOME = "home";
     private static final String TAG_SEND = "send";
     private static final String TAG_Contact = "contact";
     private static final String TAG_USER = "user";
+    //Declare Variabls for fragment
+    public static int navItemIndex = 0;
     public static String CURRENT_TAG = TAG_HOME;
+    private static int RC_APP_UPDATE = 0;
+    InstallStateUpdatedListener installStateUpdatedListener;
+    RelativeLayout mMainLayout;
+    ImageView llHome, llsend, llContact, llUser;
+    FrameLayout frameLayout;
+    SessionManager sessionManager;
     boolean doubleBackToExitPressedOnce = false;
+    private AppUpdateManager mAppUpdateManager;
+    private long mLastClickTime = 0;
+    private final boolean shouldLoadHomeFragOnBackPress = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sessionManager=new SessionManager(this);
+        sessionManager = new SessionManager(this);
         sessionManager.login();
 
         IntentUI();
-      //  FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-       // FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
+        //  FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        // FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
         UpdateManageCheck();
         EnableRuntimePermission();
 
@@ -119,14 +87,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //  showAlertDialogButtonClicked();
 
 
-
-
     }
 
 
-
-    public void showAlertDialogButtonClicked()
-    {
+    public void showAlertDialogButtonClicked() {
 
         // Create an alert builder
         AlertDialog.Builder builder
@@ -135,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set the custom layout
         final View customLayout = getLayoutInflater().inflate(R.layout.permision_dialog, null);
         builder.setView(customLayout);
-        TextView tv_not=customLayout.findViewById(R.id.tv_not);
-        TextView tv_ok=customLayout.findViewById(R.id.tv_ok);
+        TextView tv_not = customLayout.findViewById(R.id.tv_not);
+        TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
 
 
         AlertDialog dialog
@@ -167,11 +131,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setDeniedTitle("Contactninja would like to access your contacts")
                 .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
                 .setGotoSettingButtonText("setting")
-                .setPermissions(Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS)
+                .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
                 .setRationaleConfirmText("OK")
                 .check();
-
-
 
 
     }
@@ -231,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        sessionManager.setOneCotect_deatil(getApplicationContext(),new ContectListData.Contact());
+        SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
     }
 
 
@@ -321,13 +283,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         if (shouldLoadHomeFragOnBackPress) {
-                if (navItemIndex != 0) {
-                    navItemIndex = 0;
-                    CURRENT_TAG = TAG_HOME;
-                    displayView();
-                    ImageSetLight("Home");
-                    return;
-                }
+            if (navItemIndex != 0) {
+                navItemIndex = 0;
+                CURRENT_TAG = TAG_HOME;
+                displayView();
+                ImageSetLight("Home");
+                return;
+            }
 
         }
         if (doubleBackToExitPressedOnce) {
@@ -415,7 +377,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (fragment != null) {
 
 
-
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frameContainer, fragment, CURRENT_TAG);
@@ -425,10 +386,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
-    public void delete()
-    {
+    public void delete() {
         class DeleteTask extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -437,8 +395,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
                         .taskDao()
                         //.deleteDuplicates();
-                //.DeleteData(inviteListData.getUserPhoneNumber());
-                .RemoveData();
+                        //.DeleteData(inviteListData.getUserPhoneNumber());
+                        .RemoveData();
 
                 return null;
             }
@@ -454,11 +412,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DeleteTask ut = new DeleteTask();
         ut.execute();
     }
-
-
-
-
-
 
 
 }

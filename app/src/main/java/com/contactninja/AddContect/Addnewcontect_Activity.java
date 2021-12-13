@@ -66,7 +66,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +92,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     FrameLayout frameContainer;
     RoundedImageView iv_user;
     LinearLayout layout_pulse;
+    String option_type = "";
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
@@ -140,6 +140,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         EnableRuntimePermission();
         sessionManager = new SessionManager(this);
         save_button.setText("Save Contact");
+        option_type = "save";
         String flag = sessionManager.getContect_flag(this);
         if (flag.equals("edit")) {
             Log.e("Null", "Call");
@@ -159,6 +160,27 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             layout_pulse.setVisibility(View.GONE);
             iv_user.setVisibility(View.VISIBLE);
 
+
+        } else if (flag.equals("read")) {
+            edt_FirstName.setEnabled(false);
+            edt_lastname.setEnabled(false);
+
+            ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
+            edt_FirstName.setText(Contect_data.getFirstname());
+            edt_lastname.setText(Contect_data.getLastname());
+            f_name = Contect_data.getFirstname();
+            l_name = Contect_data.getLastname();
+            Glide.with(getApplicationContext()).
+                    load(Contect_data.getContactImage())
+                    .placeholder(R.drawable.shape_primary_back)
+                    .error(R.drawable.shape_primary_back).
+                    into(iv_user);
+            olld_image = Contect_data.getContactImage();
+
+            save_button.setText("Edit Contact");
+            layout_pulse.setVisibility(View.GONE);
+            iv_user.setVisibility(View.VISIBLE);
+            save_button.setText("Edit Contact");
         } else {
             Log.e("Null", "No Call");
         }
@@ -257,12 +279,25 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
 
                 } else {
-                    //Update Contect
 
-                    try {
-                        AddContect_Api1();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+                    String flag = sessionManager.getContect_flag(getApplicationContext());
+                    if (flag.equals("read")) {
+                        SessionManager.setContect_flag("edit");
+                        Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
+                        SessionManager.setContect_flag("edit");
+                        startActivity(addnewcontect);
+                        finish();
+                    } else {
+                        SessionManager.setContect_flag("edit");
+                        save_button.setText("Save Contact");
+                        edt_FirstName.setEnabled(true);
+                        edt_lastname.setEnabled(true);
+                        try {
+                            AddContect_Api1();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
 
@@ -966,4 +1001,5 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     protected void onResume() {
         super.onResume();
     }
+
 }
