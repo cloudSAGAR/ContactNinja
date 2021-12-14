@@ -72,81 +72,90 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (getItemViewType(position)) {
             case ITEM:
                 ContectListAdapter.MovieViewHolder holder1 = (ContectListAdapter.MovieViewHolder) holder;
-                holder1.userName.setText(Contact_data.getFirstname());
-                holder1.userNumber.setVisibility(View.GONE);
+              try {
+                  holder1.userName.setText(Contact_data.getFirstname());
+                  holder1.userNumber.setVisibility(View.GONE);
 
-                holder1.first_latter.setVisibility(View.VISIBLE);
-                holder1.top_layout.setVisibility(View.VISIBLE);
-
-
-
-                String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
-                holder1.first_latter.setText(first_latter);
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder1.first_latter.setVisibility(View.VISIBLE);
-                    holder1.top_layout.setVisibility(View.VISIBLE);
-
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                    // inviteUserDetails.setF_latter("");
-                    holder1.first_latter.setVisibility(View.GONE);
-                    holder1.top_layout.setVisibility(View.GONE);
-
-                } else {
-
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder1.first_latter.setVisibility(View.VISIBLE);
-                    holder1.top_layout.setVisibility(View.VISIBLE);
+                  holder1.first_latter.setVisibility(View.VISIBLE);
+                  holder1.top_layout.setVisibility(View.VISIBLE);
 
 
-                }
+
+                  String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
+                  holder1.first_latter.setText(first_latter);
+                  if (second_latter.equals("")) {
+                      current_latter = first_latter;
+                      second_latter = first_latter;
+                      holder1.first_latter.setVisibility(View.VISIBLE);
+                      holder1.top_layout.setVisibility(View.VISIBLE);
+
+                  } else if (second_latter.equals(first_latter)) {
+                      current_latter = second_latter;
+                      // inviteUserDetails.setF_latter("");
+                      holder1.first_latter.setVisibility(View.GONE);
+                      holder1.top_layout.setVisibility(View.GONE);
+
+                  } else {
+
+                      current_latter = first_latter;
+                      second_latter = first_latter;
+                      holder1.first_latter.setVisibility(View.VISIBLE);
+                      holder1.top_layout.setVisibility(View.VISIBLE);
 
 
-                if (Contact_data.getContactImage() == null) {
-                    String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
-                    String add_text = "";
-                    String[] split_data = name.split(" ");
-                    try {
-                        for (int i = 0; i < split_data.length; i++) {
-                            if (i == 0) {
-                                add_text = split_data[i].substring(0, 1);
-                            } else {
-                                add_text = add_text + split_data[i].charAt(0);
-                                break;
-                            }
-                        }
-                    } catch (Exception e) {
-
-                    }
+                  }
 
 
-                    holder1.no_image.setText(add_text);
-                    holder1.no_image.setVisibility(View.VISIBLE);
-                    holder1.profile_image.setVisibility(View.GONE);
-                } else {
-                    Glide.with(context).
-                            load(Contact_data.getContactImage())
-                            .placeholder(R.drawable.shape_primary_circle)
-                            .error(R.drawable.shape_primary_circle)
-                            .into(holder1.profile_image);
-                    holder1.no_image.setVisibility(View.GONE);
-                    holder1.profile_image.setVisibility(View.VISIBLE);
-                }
+                  if (Contact_data.getContactImage() == null) {
+                      String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
+                      String add_text = "";
+                      String[] split_data = name.split(" ");
+                      try {
+                          for (int i = 0; i < split_data.length; i++) {
+                              if (i == 0) {
+                                  add_text = split_data[i].substring(0, 1);
+                              } else {
+                                  add_text = add_text + split_data[i].charAt(0);
+                                  break;
+                              }
+                          }
+                      } catch (Exception e) {
+
+                      }
 
 
-                holder1.main_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
-                        SessionManager.setOneCotect_deatil(context, Contact_data);
-                        Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
-                        SessionManager.setContect_flag("read");
-                        context.startActivity(addnewcontect);
-                    }
-                });
+                      holder1.no_image.setText(add_text);
+                      holder1.no_image.setVisibility(View.VISIBLE);
+                      holder1.profile_image.setVisibility(View.GONE);
+                  } else {
+                      Glide.with(context).
+                              load(Contact_data.getContactImage())
+                              .placeholder(R.drawable.shape_primary_circle)
+                              .error(R.drawable.shape_primary_circle)
+                              .into(holder1.profile_image);
+                      holder1.no_image.setVisibility(View.GONE);
+                      holder1.profile_image.setVisibility(View.VISIBLE);
+                  }
+
+
+                  holder1.main_layout.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                          SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
+                          SessionManager.setOneCotect_deatil(context, Contact_data);
+                          Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
+                          SessionManager.setContect_flag("read");
+                          context.startActivity(addnewcontect);
+                      }
+                  });
+              }
+              catch (Exception e)
+              {
+                  contacts.remove(position);
+           /*       notifyDataSetChanged();*/
+
+              }
+
 
                 break;
 
@@ -159,7 +168,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        Log.e("Size is :: ",contacts.size()+"");
+       // Log.e("Size is :: ",contacts.size()+"");
         return contacts == null ? 0 : contacts.size();
     }
 

@@ -52,7 +52,7 @@ public class SessionManager {
     public static final String Contect_flag="contect_flag";
 
     public static final String Refresh_token="refresh_token";
-
+    public static final String csv_token="csv_token";
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -122,6 +122,16 @@ public class SessionManager {
 
     public  void setRefresh_token(String efresh_token) {
         editor.putString(Refresh_token, efresh_token);
+        editor.commit();
+    }
+
+
+    public  boolean getCsv_token() {
+        return  pref.getBoolean(csv_token, false);
+    }
+
+    public  void setCsv_token() {
+        editor.putBoolean(csv_token, true);
         editor.commit();
     }
 
