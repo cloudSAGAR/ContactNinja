@@ -375,6 +375,7 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
+
                 if (response.isSuccessful()) {
 
                     Gson gson = new Gson();
