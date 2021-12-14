@@ -6,12 +6,12 @@ plugins {
 /*apply plugin: 'com.google.firebase.crashlytics'*/
 
 android {
-    compileSdk 29
+    compileSdk 30
 
     defaultConfig {
         applicationId "com.contactninja"
         minSdk 21
-        targetSdk 29
+        targetSdk 30
         versionCode 1
         versionName "1.0"
 
@@ -65,8 +65,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+
     implementation 'gun0912.ted:tedpermission:2.1.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     //implementation 'com.google.firebase:firebase-crashlytics:18.2.4'
     //refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
@@ -106,6 +107,7 @@ dependencies {
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
 
 
 }

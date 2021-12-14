@@ -69,23 +69,25 @@ public interface RetrofitApiInterface {
     @POST("refreshToken")
     Call<ApiResponse> RefressToken(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
-    @Multipart
+ /*   @Multipart
     @POST("contact/import")
     Call<ApiResponse> Upload_csv(@Header("Accept") String api,
                                  @Header("Authorization") String auth,
                                  @Part("items") RequestBody organization_id,
                                  @Field("team_id") String team_id,
                                  @Field("user_id") String user_id,
-                                 @Field("import_file") String import_file);
+                                 @Field("import_file") String import_file);*/
 
 
     @Multipart
     @POST("contact/import")
-    Call<ApiResponse>Upload_csv1(
-            @Header("Cookie") String sessionIdAndRz,
+    Call<ApiResponse>Upload_csv(
+            @Header("Accept") String api,
+    @Header("Authorization") String auth,
             @Part MultipartBody.Part file,
-            @Part("items") RequestBody items,
-            @Part("isAny") RequestBody isAny
+            @Part("team_id") RequestBody team_id,
+            @Part("user_id") RequestBody user_id,
+            @Part("organization_id") RequestBody organization_id
     );
 
 

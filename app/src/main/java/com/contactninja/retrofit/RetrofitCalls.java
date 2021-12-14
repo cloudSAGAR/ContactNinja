@@ -3,7 +3,9 @@ package com.contactninja.retrofit;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.util.Log;
+import okhttp3.RequestBody;
 
+import okhttp3.MultipartBody;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.contactninja.Utils.LoadingDialog;
@@ -136,8 +138,8 @@ public class RetrofitCalls {
     }
 
 
-    public void Upload_csv(LoadingDialog loadingDialog, String token,String organization_id,String team_id,String user_id,String import_file,RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Upload_csv(RetrofitApiClient.API_Header,token,organization_id,team_id,user_id,import_file);
+    public void Upload_csv(LoadingDialog loadingDialog, String token, RequestBody organization_id, RequestBody team_id, RequestBody user_id, MultipartBody.Part import_file, RetrofitCallback retrofitCallback) {
+       call = retrofitApiInterface.Upload_csv(RetrofitApiClient.API_Header,token,import_file,team_id,user_id,organization_id);
         this.retrofitCallback = retrofitCallback;
         call_api(retrofitCallback, loadingDialog);
 

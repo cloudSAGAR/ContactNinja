@@ -39,11 +39,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Adapter.ContectAdapter;
 import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.ContectListAdapter;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Csv_InviteListData;
-import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -66,8 +67,8 @@ import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -78,6 +79,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,9 +102,9 @@ public class ContectFragment extends Fragment {
     Context mCtx;
     Cursor cursor;
     RecyclerView rvinviteuserdetails;
-    String userName=null, user_phone_number=null, user_image=null, user_des=null, strtext =null, old_latter = null, contect_type =null, contect_email=null,
-            contect_type_work = null, email_type_home = null, email_type_work = null, country = null, city = null, region = null, street =null,
-            postcode = null, postType = null, note = null;
+    String userName = "", user_phone_number = "", user_image = "", user_des = "", strtext = "", old_latter = "", contect_type = "", contect_email = "",
+            contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
+            postcode = "", postType = "", note = "";
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
     // ImageView iv_back,iv_more;
@@ -116,16 +120,16 @@ public class ContectFragment extends Fragment {
     StringBuilder data;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-    int page = 1, limit = 10, totale_group;
+    int page = 1, limit = 50, totale_group;
     ContectListAdapter paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
     boolean isLastPage = false;
     LinearLayoutManager layoutManager;
-    private List<ContectListData.Contact> contectListData;
     List<Csv_InviteListData> csv_inviteListData;
+    private List<ContectListData.Contact> contectListData;
 
-
+    ContectAdapter contectAdapter;
     public ContectFragment(String strtext, View view, FragmentActivity activity) {
 
         this.strtext = strtext;
@@ -234,8 +238,7 @@ public class ContectFragment extends Fragment {
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
-        csv_inviteListData=new ArrayList<>();
-
+        csv_inviteListData = new ArrayList<>();
         layoutManager = new LinearLayoutManager(getActivity());
         rvinviteuserdetails.setLayoutManager(layoutManager);
         rvinviteuserdetails.setHasFixedSize(true);
@@ -248,11 +251,11 @@ public class ContectFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        paginationAdapter = new ContectListAdapter(getActivity());
-        rvinviteuserdetails.setAdapter(paginationAdapter);
+       // paginationAdapter = new ContectListAdapter(getActivity());
+       // rvinviteuserdetails.setAdapter(paginationAdapter);
         //inviteListData.clear();
 
-        // EnableRuntimePermission();
+
 
 
         //Faste View Code
@@ -274,11 +277,8 @@ public class ContectFragment extends Fragment {
         fastscroller.setupWithRecyclerView(
                 rvinviteuserdetails,
                 (position) -> {
-                    // ItemModel item = data.get(position);
                     FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-
-
-                            contectListData.get(position).getFirstname().substring(0, 1)
+                            inviteListData.get(position).getUserName().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
@@ -286,7 +286,7 @@ public class ContectFragment extends Fragment {
                 }
         );
 
-         GetContactsIntoArrayList();
+        GetContactsIntoArrayList();
         //  getAllContect();
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,14 +307,15 @@ public class ContectFragment extends Fragment {
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             /*   SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
+                SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
                 SessionManager.setContect_flag("save");
                 Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                startActivity(addnewcontect);*/
-                 splitdata(csv_inviteListData);
+                startActivity(addnewcontect);
+
             }
         });
 
+/*
 
         rvinviteuserdetails.addOnScrollListener(new PaginationScrollListener(layoutManager) {
             @Override
@@ -322,6 +323,7 @@ public class ContectFragment extends Fragment {
                 Log.e("Load More Call", "yes" + currentPage);
                 isLoading = true;
                 currentPage += 1;
+                page +=1;
                 try {
                     ContectEventnext();
                 } catch (JSONException e) {
@@ -339,6 +341,38 @@ public class ContectFragment extends Fragment {
                 return isLoading;
             }
         });
+
+*/
+
+
+        contectAdapter = new ContectAdapter(getActivity(), contectListData);
+        rvinviteuserdetails.setAdapter(contectAdapter);
+        rvinviteuserdetails.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItem = layoutManager.getChildCount();
+                int totalItem = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
+
+                        loadingDialog.showLoadingDialog();
+                        try {
+                            ContectEventnext();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        EnableRuntimePermission();
         return content_view;
 
     }
@@ -384,7 +418,7 @@ public class ContectFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void GetContactsIntoArrayList() {
-        String firstname = null,lastname = null;
+        String firstname = "", lastname = "";
         cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         while (cursor.moveToNext()) {
 
@@ -396,7 +430,7 @@ public class ContectFragment extends Fragment {
             try {
                 contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
                 contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
-                contect_email =cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                contect_email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
                 email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
                 email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
 
@@ -416,14 +450,7 @@ public class ContectFragment extends Fragment {
 
 
                 firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                 lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-                Log.e("country", country);
-                Log.e("city", city);
-                Log.e("region", region);
-                Log.e("street", street);
-                Log.e("postcode", postcode);
-                Log.e("posttype", postType);
-                Log.e("note", note);
+                lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
 
             } catch (Exception e) {
 
@@ -457,19 +484,10 @@ public class ContectFragment extends Fragment {
                 //  userListDataAdapter.notifyDataSetChanged();
 
                 try {
-                    csv_inviteListData.add(new Csv_InviteListData("" + userName.toString(),user_phone_number,contect_email,note,country,city,region,street,""+lastname));
+                    csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
 
-               /*     csv_inviteListData.add(new Csv_InviteListData("" + userName.toString(),user_phone_number,
-                            ""+user_image.toString(),""+user_des.toString(),
-                            ""+country.toString(),""+city.toString(),
-                            ""+region.toString(),""+street.toString(),
-                            ""+postcode.toString(),""+postType.toString(),
-                            ""+note.toString().trim(),""+contect_email.toString().trim(),
-                            ""+email_type_home.toString(),""+email_type_work.toString(),""+lastname));
-*/
-                }
-                catch (Exception e)
-                {
+
+                } catch (Exception e) {
 
                 }
 
@@ -479,7 +497,7 @@ public class ContectFragment extends Fragment {
             }
 
         }
-
+        splitdata(csv_inviteListData);
 
         cursor.close();
 
@@ -506,33 +524,34 @@ public class ContectFragment extends Fragment {
 
         for (int i = 0; i < response.size(); i++) {
 
+
+
+
             data.append("\n" + response.get(i).getUserName() +
                     "," + response.get(i).getLast_name() +
                     "," + "" +
                     "," + "" +
                     "," + "" +
-                    "," + response.get(i).getNote()+
+                    "," + response.get(i).getNote() +
                     "," + "" +
-                    "," + region+""+response.get(i).getStreet()+" "+response.get(i).getCity()+
-                    "," + response.get(i).getCity()+
-                    "," + ""+
-                    "," + ""+
-                    "," +"" +
+                    "," + region + "" + response.get(i).getStreet() + " " + response.get(i).getCity() +
+                    "," + response.get(i).getCity() +
                     "," + "" +
                     "," + "" +
                     "," + "" +
-                    "," + ""+
+                    "," + "" +
+                    "," + "" +
+                    "," + "" +
+                    "," + "" +
                     "," + response.get(i).getContect_email() +
                     "," + response.get(i).getUserPhoneNumber() +
                     "," + ""
             );
 
             try {
-                Log.e("Phone Number is",response.get(i).getUserPhoneNumber());
-                Log.e("Email is ",response.get(i).getContect_email());
-            }
-            catch (Exception e)
-            {
+                Log.e("Phone Number is", response.get(i).getUserPhoneNumber());
+                Log.e("Email is ", response.get(i).getContect_email());
+            } catch (Exception e) {
 
             }
 
@@ -582,7 +601,7 @@ public class ContectFragment extends Fragment {
             intent.putExtra(Intent.EXTRA_STREAM, path);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(intent, "Excel Data"));*/
-            Uploadcsv(path);
+            Uploadcsv(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -926,10 +945,12 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("page", page);
+        paramObject.addProperty("page", currentPage);
         paramObject.addProperty("perPage", limit);
         paramObject.addProperty("status", "A");
         paramObject.addProperty("q", "");
+        paramObject.addProperty("orderBy","firstname");
+        paramObject.addProperty("order","asc");
         obj.add("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -946,16 +967,15 @@ public class ContectFragment extends Fragment {
                 Type listType = new TypeToken<ContectListData>() {
                 }.getType();
                 ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
-                contectListData.addAll(contectListData1.getContacts());
-                paginationAdapter.addAll(contectListData);
-                if (contectListData1.getContacts().size() == limit) {
-                    if (currentPage <= TOTAL_PAGES) paginationAdapter.addLoadingFooter();
-                    else isLastPage = true;
+                if (contectListData1.getContacts().size() > 0) {
+                    currentPage++;
+                    contectListData.addAll(contectListData1.getContacts());
+                    contectAdapter.notifyDataSetChanged();
+                    isLastPage = contectListData1.getContacts().size() < currentPage;
                 } else {
                     isLastPage = true;
-                    isLoading = false;
-
                 }
+
 
                 num_count.setText("" + contectListData1.getTotal() + " Contacts");
 
@@ -976,7 +996,7 @@ public class ContectFragment extends Fragment {
 
     private void ContectEventnext() throws JSONException {
 
-
+        loadingDialog.cancelLoading();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -987,34 +1007,36 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("page", page);
+        paramObject.addProperty("page", currentPage);
         paramObject.addProperty("perPage", limit);
         paramObject.addProperty("status", "");
         paramObject.addProperty("q", "");
+        paramObject.addProperty("orderBy","firstname");
+        paramObject.addProperty("order","asc");
         obj.add("data", paramObject);
-      /*  JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Obbject data 123456", new Gson().toJson(gsonObject));*/
+
 
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
         Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-
+                loadingDialog.cancelLoading();
+                Log.e(" Next Method Call","Yes");
                 Gson gson = new Gson();
                 String headerString = gson.toJson(response.body().getData());
                 Type listType = new TypeToken<ContectListData>() {
                 }.getType();
+                contectListData.clear();
                 ContectListData group_model = new Gson().fromJson(headerString, listType);
-                contectListData.addAll(group_model.getContacts());
-                paginationAdapter.addAll(contectListData);
-                if (group_model.getContacts().size() == limit) {
-                    if (currentPage != TOTAL_PAGES) paginationAdapter.addLoadingFooter();
-                    else isLastPage = true;
+                if (group_model.getContacts().size() > 0) {
+                    currentPage++;
+                    Log.e("Current Page ", String.valueOf(currentPage));
+                    contectListData.addAll(group_model.getContacts());
+                    contectAdapter.notifyDataSetChanged();
+                    isLastPage = group_model.getContacts().size() < currentPage;
                 } else {
                     isLastPage = true;
-                    isLoading = false;
                 }
 
                 num_count.setText("" + group_model.getTotal() + " Group");
@@ -1023,39 +1045,44 @@ public class ContectFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
+                loadingDialog.cancelLoading();
                 Log.e("Error is", throwable.getMessage());
 
             }
         });
 
 
+    }
 
 
+    private void Uploadcsv(File path) throws JSONException {
+
+        Log.e("File is", String.valueOf(path));
 
 
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-      /*  retrofitCalls.Contect_List(gsonObject, loadingDialog, token, new RetrofitCallback() {
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse("csv"),
+                        path
+                );
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("import_file", path.getName(), requestFile);
+
+        RequestBody user_id1 = RequestBody.create(MediaType.parse("text/plain"), user_id);
+        RequestBody organization_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
+        RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
+        retrofitCalls.Upload_csv(loadingDialog, Global.getToken(getActivity()), organization_id1, team_id1, user_id1, body, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
+                Log.e("Reponse is", new Gson().toJson(response.body()));
                 loadingDialog.cancelLoading();
                 if (response.body().getStatus() == 200) {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<ContectListData>() {
-                    }.getType();
-                   ContectListData group_model = new Gson().fromJson(headerString, listType);
-                    contectListData.add(group_model);
-                    paginationAdapter.addAll(contectListData);
-                    if (group_model.getContacts().size() == limit) {
-                        if (currentPage != TOTAL_PAGES) paginationAdapter.addLoadingFooter();
-                        else isLastPage = true;
-                    } else {
-                        isLastPage = true;
-                        isLoading = false;
-                    }
-
-                    num_count.setText("" + group_model.getTotal() + " Group");
 
                 } else {
 
@@ -1067,43 +1094,10 @@ public class ContectFragment extends Fragment {
                 loadingDialog.cancelLoading();
             }
         });
-*/
-
-    }
-
-
-
-
-
-    private void Uploadcsv(Uri path) throws JSONException {
-
-            SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-            retrofitCalls.Upload_csv(loadingDialog, Global.getToken(getActivity()),"1","1",user_id,String.valueOf(path), new RetrofitCallback() {
-                @Override
-                public void success(Response<ApiResponse> response) {
-
-                    Log.e("Reponse is",new Gson().toJson(response.body()));
-                    loadingDialog.cancelLoading();
-                    if (response.body().getStatus() == 200) {
-
-                    } else {
-
-                    }
-                }
-
-                @Override
-                public void error(Response<ApiResponse> response) {
-                    loadingDialog.cancelLoading();
-                }
-            });
-
 
 
     }
+
     @Override
     public void onResume() {
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
@@ -1280,7 +1274,7 @@ public class ContectFragment extends Fragment {
 
     }
 
-    public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+   /* public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private static final int LOADING = 0;
         private static final int ITEM = 1;
@@ -1322,14 +1316,18 @@ public class ContectFragment extends Fragment {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
             ContectListData.Contact Contact_data = contacts.get(position);
+            Log.e("Postion is",String.valueOf(position));
             switch (getItemViewType(position)) {
                 case ITEM:
                     ContectListAdapter.MovieViewHolder holder1 = (ContectListAdapter.MovieViewHolder) holder;
-                    holder1.userName.setText(Contact_data.getFirstname() + " " + Contact_data.getLastname());
+                    holder1.userName.setText(Contact_data.getFirstname());
                     holder1.userNumber.setVisibility(View.GONE);
 
                     holder1.first_latter.setVisibility(View.VISIBLE);
                     holder1.top_layout.setVisibility(View.VISIBLE);
+
+
+
                     String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
                     holder1.first_latter.setText(first_latter);
                     if (second_latter.equals("")) {
@@ -1441,6 +1439,8 @@ public class ContectFragment extends Fragment {
 
         public void addAll(List<ContectListData.Contact> contact) {
             for (ContectListData.Contact result : contact) {
+
+                Log.e("Result is ",new Gson().toJson(result));
                 add(result);
             }
         }
@@ -1481,7 +1481,7 @@ public class ContectFragment extends Fragment {
         }
 
     }
-
+*/
     public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
         private final LinearLayoutManager layoutManager;
