@@ -43,6 +43,7 @@ import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Csv_InviteListData;
+import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -53,6 +54,7 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitApiClient;
 import com.contactninja.retrofit.RetrofitApiInterface;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -65,6 +67,7 @@ import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -393,7 +396,7 @@ public class ContectFragment extends Fragment {
             try {
                 contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
                 contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
-                contect_email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                contect_email =cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
                 email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
                 email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
 
@@ -454,7 +457,7 @@ public class ContectFragment extends Fragment {
                 //  userListDataAdapter.notifyDataSetChanged();
 
                 try {
-                    csv_inviteListData.add(new Csv_InviteListData("" + userName.toString(),user_phone_number,""+lastname));
+                    csv_inviteListData.add(new Csv_InviteListData("" + userName.toString(),user_phone_number,contect_email,note,country,city,region,street,""+lastname));
 
                /*     csv_inviteListData.add(new Csv_InviteListData("" + userName.toString(),user_phone_number,
                             ""+user_image.toString(),""+user_des.toString(),
@@ -505,26 +508,34 @@ public class ContectFragment extends Fragment {
 
             data.append("\n" + response.get(i).getUserName() +
                     "," + response.get(i).getLast_name() +
-                    "," + "Company Name" +
-                    "," + "Company URL" +
-                    "," + "Job Title" +
-                    "," + " Notes"+
-                    "," + "DOB" +
-                    "," + "Address" +
-                    "," + "City"+
-                    "," + "State"+
-                    "," + "Zipcode"+
-                    "," +"Zoomid" +
-                    "," + "Facebook Link" +
-                    "," + "Twitter Link" +
-                    "," + "Breakout Link" +
-                    "," + "Linkedin Link"+
-                    "," + "Email" +
+                    "," + "" +
+                    "," + "" +
+                    "," + "" +
+                    "," + response.get(i).getNote()+
+                    "," + "" +
+                    "," + region+""+response.get(i).getStreet()+" "+response.get(i).getCity()+
+                    "," + response.get(i).getCity()+
+                    "," + ""+
+                    "," + ""+
+                    "," +"" +
+                    "," + "" +
+                    "," + "" +
+                    "," + "" +
+                    "," + ""+
+                    "," + response.get(i).getContect_email() +
                     "," + response.get(i).getUserPhoneNumber() +
-                    "," + "Fax"
+                    "," + ""
             );
 
-            Log.e("Phone Number is",response.get(i).getUserPhoneNumber());
+            try {
+                Log.e("Phone Number is",response.get(i).getUserPhoneNumber());
+                Log.e("Email is ",response.get(i).getContect_email());
+            }
+            catch (Exception e)
+            {
+
+            }
+
 
 
         /*    data.append("\n" + response.get(i).getUserName() + "," + response.get(i).getLast_name() + "," + ""
@@ -565,12 +576,13 @@ public class ContectFragment extends Fragment {
             // the same CSV from via Gmail or store in Google Drive
 
             Log.e("File Pathe is ", String.valueOf(path));
-            Intent intent = new Intent(Intent.ACTION_SEND);
+        /*    Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/csv");
             intent.putExtra(Intent.EXTRA_SUBJECT, "Data");
             intent.putExtra(Intent.EXTRA_STREAM, path);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(intent, "Excel Data"));
+            startActivity(Intent.createChooser(intent, "Excel Data"));*/
+            Uploadcsv(path);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1059,6 +1071,39 @@ public class ContectFragment extends Fragment {
 
     }
 
+
+
+
+
+    private void Uploadcsv(Uri path) throws JSONException {
+
+            SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+            retrofitCalls.Upload_csv(loadingDialog, Global.getToken(getActivity()),"1","1",user_id,String.valueOf(path), new RetrofitCallback() {
+                @Override
+                public void success(Response<ApiResponse> response) {
+
+                    Log.e("Reponse is",new Gson().toJson(response.body()));
+                    loadingDialog.cancelLoading();
+                    if (response.body().getStatus() == 200) {
+
+                    } else {
+
+                    }
+                }
+
+                @Override
+                public void error(Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
+                }
+            });
+
+
+
+    }
     @Override
     public void onResume() {
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());

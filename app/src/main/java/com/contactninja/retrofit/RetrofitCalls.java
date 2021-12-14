@@ -136,6 +136,15 @@ public class RetrofitCalls {
     }
 
 
+    public void Upload_csv(LoadingDialog loadingDialog, String token,String organization_id,String team_id,String user_id,String import_file,RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Upload_csv(RetrofitApiClient.API_Header,token,organization_id,team_id,user_id,import_file);
+        this.retrofitCallback = retrofitCallback;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
 
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {
