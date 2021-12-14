@@ -628,7 +628,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(gsonObject, loadingDialog, Global.getToken(this), new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager,gsonObject, loadingDialog, Global.getToken(this), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -714,7 +714,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(gsonObject, loadingDialog, Global.getToken(this), new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager,gsonObject, loadingDialog, Global.getToken(this), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 

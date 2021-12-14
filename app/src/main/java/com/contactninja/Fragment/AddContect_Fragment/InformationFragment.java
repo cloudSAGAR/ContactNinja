@@ -908,7 +908,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Contact_details_update(gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Contact_details_update(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -920,6 +920,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
+
+
         });
 
 
@@ -953,7 +955,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.update_contect(gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.update_contect(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -965,6 +967,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
+
         });
 
 

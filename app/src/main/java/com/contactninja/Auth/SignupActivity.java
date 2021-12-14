@@ -302,7 +302,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             paramObject.addProperty("login_type", login_type);
             paramObject.addProperty("otp", "1231220");
             obj.add("data", paramObject);
-            retrofitCalls.Uservalidate(obj, loadingDialog, new RetrofitCallback() {
+            retrofitCalls.Uservalidate(sessionManager,obj, loadingDialog, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
                     //Log.e("Response is",new Gson().toJson(response));

@@ -1068,13 +1068,12 @@ public class ContectFragment extends Fragment {
         RequestBody user_id1 = RequestBody.create(MediaType.parse("text/plain"), user_id);
         RequestBody organization_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
-        retrofitCalls.Upload_csv(loadingDialog, Global.getToken(getActivity()), organization_id1, team_id1, user_id1, body, new RetrofitCallback() {
+        retrofitCalls.Upload_csv(sessionManager,loadingDialog, Global.getToken(getActivity()), organization_id1, team_id1, user_id1, body, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
                 Log.e("Reponse is", new Gson().toJson(response.body()));
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
                     try {
                         ContectEvent();
                     } catch (JSONException e) {
@@ -1082,15 +1081,13 @@ public class ContectFragment extends Fragment {
                     }
                     sessionManager.setCsv_token();
 
-                } else {
-
-                }
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
+
         });
 
 

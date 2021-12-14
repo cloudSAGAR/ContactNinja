@@ -287,7 +287,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         paramObject.addProperty("login_type", Login_type);
         paramObject.addProperty("otp", "123456");
         obj.add("data", paramObject);
-        retrofitCalls.LoginUser(obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));

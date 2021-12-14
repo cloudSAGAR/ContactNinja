@@ -79,11 +79,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
-        try {
+   /*     try {
             GroupEvent();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
 
@@ -178,7 +178,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -239,7 +239,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 

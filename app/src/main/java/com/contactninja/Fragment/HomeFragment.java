@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
         paramObject.addProperty("refresh_token", ""+token);
         obj.add("data", paramObject);
         Log.e("Tokem is ",new Gson().toJson(obj));
-        retrofitCalls.Refress_Token(obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Refress_Token(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -123,6 +123,8 @@ public class HomeFragment extends Fragment {
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
+
+
         });
 
 

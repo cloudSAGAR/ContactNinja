@@ -371,7 +371,7 @@ public class VerificationActivity extends AppCompatActivity {
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp);
         obj.add("data", paramObject);
-        retrofitCalls.SignUp_user(obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.SignUp_user(sessionManager,obj, loadingDialog, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -416,7 +416,7 @@ public class VerificationActivity extends AppCompatActivity {
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp_pinview.getText().toString());
         obj.add("data", paramObject);
-        retrofitCalls.LoginUser(obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 // Log.e("Response is",new Gson().toJson(response));
@@ -435,7 +435,7 @@ public class VerificationActivity extends AppCompatActivity {
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
                     sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-                    if (!sessionManager.isEmail_Update()) {
+                    if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
                         Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                         intent.putExtra("login_type", login_type);
                         startActivity(intent);
