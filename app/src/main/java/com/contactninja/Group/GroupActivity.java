@@ -87,7 +87,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             postcode = "", postType = "", note = "";
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-    int page = 1, limit = 50, totale_group;
+    int page = 1, limit = 150, totale_group;
     GroupContectAdapter groupContectAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
@@ -247,7 +247,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         call_updatedata();
 
-    }public void call_updatedata()
+    }
+
+    public void call_updatedata()
     {
         if (sessionManager.getGroupList(this).size()!=0)
         {

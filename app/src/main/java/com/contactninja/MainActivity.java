@@ -28,6 +28,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
+import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Fragment;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.Fragment.SendFragment;
@@ -424,7 +426,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(getApplicationContext(), Broadcst_Activty.class);
+                startActivity(intent);
 
             }
         });
