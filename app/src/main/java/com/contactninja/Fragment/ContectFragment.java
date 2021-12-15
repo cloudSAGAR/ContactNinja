@@ -119,7 +119,7 @@ public class ContectFragment extends Fragment {
     StringBuilder data;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-    int page = 1, limit = 50, totale_group;
+    int page = 1, limit = 150, totale_group;
     ContectListAdapter paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
@@ -243,20 +243,9 @@ public class ContectFragment extends Fragment {
         rvinviteuserdetails.setHasFixedSize(true);
         contectListData = new ArrayList<>();
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
+        GetContactsIntoArrayList();
 
 
-        if (sessionManager.getCsv_token())
-        {
-            try {
-                ContectEvent();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            GetContactsIntoArrayList();
-
-        }
 
 
         paginationAdapter = new ContectListAdapter(getActivity());
@@ -362,12 +351,14 @@ public class ContectFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
                 int visibleItem = layoutManager.getChildCount();
                 int totalItem = layoutManager.getItemCount();
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
                 if (!isLoading && !isLastPage) {
                     if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
                         try {
+                            currentPage=currentPage + 1;
                             ContectEventnext();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -376,7 +367,7 @@ public class ContectFragment extends Fragment {
                 }
             }
         });
-        EnableRuntimePermission();
+      ///  EnableRuntimePermission();
         return content_view;
 
     }
@@ -501,7 +492,25 @@ public class ContectFragment extends Fragment {
             }
 
         }
-        splitdata(csv_inviteListData);
+
+        if (sessionManager.getCsv_token())
+        {
+            //splitdata(csv_inviteListData);
+            try {
+                ContectEvent();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                ContectEvent();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //splitdata(csv_inviteListData);
+        }
+
 
         cursor.close();
 
@@ -552,12 +561,6 @@ public class ContectFragment extends Fragment {
                     "," + ""
             );
 
-            try {
-                Log.e("Phone Number is", response.get(i).getUserPhoneNumber());
-                Log.e("Email is ", response.get(i).getContect_email());
-            } catch (Exception e) {
-
-            }
 
 
         }
@@ -583,6 +586,13 @@ public class ContectFragment extends Fragment {
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
+
+     /*       Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/csv");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Data");
+            intent.putExtra(Intent.EXTRA_STREAM, path);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(intent, "Excel Data"));*/
             Uploadcsv(file);
         } catch (Exception e) {
             e.printStackTrace();
@@ -934,9 +944,9 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("orderBy","firstname");
         paramObject.addProperty("order","asc");
         obj.add("data", paramObject);
+
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Obbject data 123456", new Gson().toJson(gsonObject));
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
         Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
         call.enqueue(new Callback<ApiResponse>() {
@@ -956,7 +966,6 @@ public class ContectFragment extends Fragment {
                     if (contectListData1.getContacts().size() == limit) {
                         if (currentPage <= TOTAL_PAGES)
                         {
-                            currentPage=+1;
                             paginationAdapter.addLoadingFooter();
                         }
                         else isLastPage = true;
@@ -1005,6 +1014,8 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("order","asc");
         obj.add("data", paramObject);
 
+        Log.e("Request data",new Gson().toJson(obj));
+
 
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
         Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
@@ -1019,11 +1030,12 @@ public class ContectFragment extends Fragment {
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<ContectListData>() {
                     }.getType();
-                    contectListData.clear();
+                    paginationAdapter.removeLoadingFooter();
                     ContectListData group_model = new Gson().fromJson(headerString, listType);
+                    contectListData.clear();
                     contectListData.addAll(group_model.getContacts());
-                    Log.e("Totale size is ", contectListData.size() + "");
                     paginationAdapter.addAll(contectListData);
+
                     if (group_model.getContacts().size() == limit) {
                         if (currentPage != TOTAL_PAGES) paginationAdapter.addLoadingFooter();
                         else isLastPage = true;
@@ -1073,13 +1085,20 @@ public class ContectFragment extends Fragment {
             public void success(Response<ApiResponse> response) {
 
                 Log.e("Reponse is", new Gson().toJson(response.body()));
-                loadingDialog.cancelLoading();
+                if (response.body().getStatus()==200)
+                {
+                    loadingDialog.cancelLoading();
                     try {
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     sessionManager.setCsv_token();
+                }
+                else {
+
+                }
+
 
             }
 

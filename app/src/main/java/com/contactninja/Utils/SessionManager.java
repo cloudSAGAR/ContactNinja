@@ -321,13 +321,13 @@ public class SessionManager {
     }
 
 
-    public static List<GroupListData> getGroupList(Context context) {
+    public static List<ContectListData.Contact> getGroupList(Context context) {
 
         Gson gson = new Gson();
         String json = pref.getString(GroupListData, null);
-        Type type = new TypeToken<ArrayList<GroupListData>>() {
+        Type type = new TypeToken<ArrayList<ContectListData.Contact>>() {
         }.getType();
-        List<GroupListData> GroupList = gson.fromJson(json, type);
+        List<ContectListData.Contact> GroupList = gson.fromJson(json, type);
         if (GroupList == null) {
             GroupList = new ArrayList<>();
         }
@@ -335,7 +335,7 @@ public class SessionManager {
 
     }
 
-    public static void setGroupList(Context context, List<GroupListData> groupModel) {
+    public static void setGroupList(Context context, List<ContectListData.Contact> groupModel) {
         Gson gson = new Gson();
         String json = gson.toJson(groupModel);
         editor.putString(GroupListData, json);

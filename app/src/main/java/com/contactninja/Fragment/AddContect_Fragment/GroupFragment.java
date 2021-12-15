@@ -36,6 +36,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -79,11 +80,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
-   /*     try {
+       try {
             GroupEvent();
         } catch (JSONException e) {
             e.printStackTrace();
-        }*/
+        }
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
 
@@ -95,27 +96,29 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         main_layout.setOnClickListener(this);
 
 
-        group_recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+        group_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            protected void loadMoreItems() {
-                Log.e("Load More Call", "yes" + currentPage);
-                isLoading = true;
-                currentPage += 1;
-                try {
-                    GroupEvent1();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItem = layoutManager.getChildCount();
+                int totalItem = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
+                        try {
+                            currentPage=currentPage + 1;
+                            GroupEvent1();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
             }
         });
 
@@ -142,15 +145,17 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
+                SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
-                getActivity().finish();
+              /*  getActivity().finish();*/
                 break;
             case R.id.group_name:
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
             case R.id.main_layout:
+                SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
-                getActivity().finish();
+                /*getActivity().finish();*/
                 break;
 
 
@@ -249,6 +254,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
                     }.getType();
+
+                    grouplists.clear();
+                    paginationAdapter.removeLoadingFooter();
                     Grouplist group_model = new Gson().fromJson(headerString, listType);
                     grouplists.addAll(group_model.getGroups());
                     paginationAdapter.addAll(grouplists);

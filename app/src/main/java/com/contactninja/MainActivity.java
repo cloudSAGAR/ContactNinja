@@ -2,6 +2,7 @@ package com.contactninja;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -28,6 +29,7 @@ import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.Fragment.SendFragment;
 import com.contactninja.Fragment.UsetProgileFragment;
 import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Grouplist;
 import com.contactninja.Utils.App;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
@@ -42,6 +44,7 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         sessionManager = new SessionManager(this);
         sessionManager.login();
-
+        SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
         IntentUI();
         //  FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         // FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));

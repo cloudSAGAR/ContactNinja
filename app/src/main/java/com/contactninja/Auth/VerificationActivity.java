@@ -90,6 +90,7 @@ public class VerificationActivity extends AppCompatActivity {
         login_type = getbunBundle.getString("login_type");
         mobile_number = getbunBundle.getString("mobile");
         v_id = getbunBundle.getString("v_id");
+        countrycode=getbunBundle.getString("countrycode");
         activity_flag = getbunBundle.getString("activity_flag");
         retrofitCalls = new RetrofitCalls();
         EnableRuntimePermission();

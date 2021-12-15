@@ -38,6 +38,7 @@ import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Model.AddGroup;
 import com.contactninja.Model.Contactdetail;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -83,7 +84,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     EditText add_new_contect,add_detail,contect_search;
     LinearLayout add_new_member;
     public static UserListDataAdapter userListDataAdapter;
-    public static List<GroupListData> inviteListData = new ArrayList<>();
+    public static List<ContectListData.Contact> inviteListData = new ArrayList<>();
     RecyclerView  contect_list_unselect;
     RecyclerView.LayoutManager layoutManager;
     FastScrollerView fastscroller;
@@ -123,6 +124,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
         }
 
+        iv_user.setOnClickListener(this);
         iv_more.setVisibility(View.GONE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
@@ -130,7 +132,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         save_button.setVisibility(View.VISIBLE);
         inviteListData.clear();
         inviteListData.addAll(sessionManager.getGroupList(this));
-        Log.e("Data Is ",new Gson().toJson(sessionManager.getGroupList(this)));
+     //   Log.e("Data Is ",new Gson().toJson(sessionManager.getGroupList(this)));
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
         fastscroller.getItemIndicatorSelectedCallbacks().add(
@@ -153,7 +155,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 (position) -> {
                     // ItemModel item = data.get(position);
                     FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-                            inviteListData.get(position).getUserName().substring(0, 1)
+                            inviteListData.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
@@ -175,9 +177,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                List<GroupListData> temp = new ArrayList();
-                for(GroupListData d: inviteListData){
-                    if(d.getUserName().contains(s.toString())){
+                List<ContectListData.Contact> temp = new ArrayList();
+                for(ContectListData.Contact d: inviteListData){
+                    if(d.getFirstname().contains(s.toString())){
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
                     }
@@ -193,6 +195,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
             }
         });
+        deleteCache(this);
     }
 
     private void IntentUI() {
@@ -240,8 +243,17 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
                 }
 
+
                 break;
 
+            case R.id.iv_user:
+                if(checkAndRequestPermissions(Final_Group.this)){
+                    captureimageDialog(true);
+
+                }
+
+
+                break;
             default:
 
 
@@ -267,8 +279,12 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
             String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
             JSONArray contect_array = new JSONArray();
-            contect_array.put(1);
-            contect_array.put(3);
+            for (int i =0;i<inviteListData.size();i++)
+            {
+                contect_array.put(inviteListData.get(i).getId());
+
+            }
+           // contect_array.put(3);
             String token=Global.getToken(this);
             JSONObject obj = new JSONObject();
             JSONObject paramObject = new JSONObject();
@@ -288,11 +304,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             paramObject.put("contact_ids",contect_array);
             paramObject.put("description", group_description);
             obj.put("data", paramObject);
-           // Log.e("Data IS ",new Gson().toJson(obj));
+            //Log.e("Data IS ",new Gson().toJson(obj));
 
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject)jsonParser.parse(obj.toString());
-            Log.e("Obbject data",new Gson().toJson(gsonObject));
+          //  Log.e("Obbject data",new Gson().toJson(gsonObject));
             retrofitCalls.AddGroup(sessionManager,gsonObject, loadingDialog,token, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
@@ -350,7 +366,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
                         Uri selectedImage = data.getData();
-                        Log.e("Uri is ", String.valueOf(selectedImage));
+               //         Log.e("Uri is ", String.valueOf(selectedImage));
                       //  filePath.substring(filePath.lastIndexOf(".") + 1); // Without dot jpg, png
 
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -375,7 +391,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
                                 user_image_Url="data:image/JPEG;base64,"+imageString;
                                 File_extension="JPEG";
-                                Log.e("url is",user_image_Url);
+                          //      Log.e("url is",user_image_Url);
                             }
                         }
                     }
@@ -383,7 +399,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
                         Uri selectedImage = data.getData();
-                        Log.e("Uri is ", String.valueOf(selectedImage));
+                    //    Log.e("Uri is ", String.valueOf(selectedImage));
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
                             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -406,7 +422,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
                                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
                                 user_image_Url="data:image/JPEG;base64,"+imageString;
-                                Log.e("url is",user_image_Url);
+                             //   Log.e("url is",user_image_Url);
                                 File_extension="JPEG";
 
 
@@ -481,46 +497,16 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
-            implements Filterable {
+    public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
         public Activity mCtx;
         int last_postion = 0;
         String second_latter = "";
         String current_latter = "", image_url = "";
-        private List<GroupListData> userDetails;
-        private final List<GroupListData> userDetailsfull;
-        private final Filter exampleFilter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                List<GroupListData> filteredList = new ArrayList<>();
-                if (constraint == null || constraint.length() == 0) {
-                    filteredList.addAll(userDetailsfull);
-                } else {
-                    String userName = constraint.toString().toLowerCase().trim();
-                    String userNumber = constraint.toString().toLowerCase().trim();
-                    for (GroupListData item : userDetailsfull) {
-                        if (item.getUserName().toLowerCase().contains(userName)
-                                || item.getUserPhoneNumber().toLowerCase().contains(userNumber)) {
-                            filteredList.add(item);
-                        }
-                    }
-                }
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                userDetails.clear();
-                userDetails.addAll((List<GroupListData>) results.values);
-                notifyDataSetChanged();
-            }
-        };
-
-        public UserListDataAdapter(Activity Ctx, Context mCtx, List<GroupListData> userDetails) {
+        private List<ContectListData.Contact> userDetails;
+        private final List<ContectListData.Contact> userDetailsfull;
+        public UserListDataAdapter(Activity Ctx, Context mCtx, List<ContectListData.Contact> userDetails) {
             this.mcntx = mCtx;
             this.mCtx = Ctx;
             this.userDetails = userDetails;
@@ -537,18 +523,19 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
         @Override
         public void onBindViewHolder(@NonNull UserListDataAdapter.InviteListDataclass holder, int position) {
-            GroupListData inviteUserDetails = userDetailsfull.get(position);
+            ContectListData.Contact inviteUserDetails = userDetailsfull.get(position);
             last_postion = position;
                 //Log.e("Size is", String.valueOf(userDetailsfull.size()));
 
             holder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("Posirion is", String.valueOf(position));
-                   // removeite(position);
-                    Log.e("Main Data Is",new Gson().toJson(inviteListData));
-                    holder.main_layout.setVisibility(View.GONE);
-                    userDetails.get(position).setFlag("true");
+
+                  //  Log.e("Posirion is", String.valueOf(position));
+                    removeite(position);
+                  //  Log.e("Main Data Is",new Gson().toJson(inviteListData));
+                   /* holder.main_layout.setVisibility(View.GONE);
+                    userDetails.get(position).setFlag("true");*/
 
                 }
             });
@@ -557,7 +544,8 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     holder.remove_contect_icon.setVisibility(View.VISIBLE);
                     holder.add_new_contect_icon.setVisibility(View.GONE);
                 }
-                else */if (userDetailsfull.get(position).getFlag().equals("false"))
+                else */
+            if (userDetailsfull.get(position).getFlag().equals("false"))
                 {
                     holder.remove_contect_icon.setVisibility(View.VISIBLE);
                     holder.add_new_contect_icon1.setVisibility(View.GONE);
@@ -587,15 +575,12 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 */
 
 
-            if (inviteUserDetails.getF_latter().equals("")) {
-                holder.first_latter.setVisibility(View.GONE);
-                holder.top_layout.setVisibility(View.GONE);
-            } else {
+
 
                 holder.first_latter.setVisibility(View.VISIBLE);
-                holder.first_latter.setText(inviteUserDetails.getF_latter());
+                holder.first_latter.setText(inviteUserDetails.getFirstname());
                 holder.top_layout.setVisibility(View.VISIBLE);
-                String first_latter = inviteUserDetails.getUserName().substring(0, 1).toUpperCase();
+                String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
 
                 if (second_latter.equals("")) {
                     current_latter = first_latter;
@@ -605,7 +590,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
                 } else if (second_latter.equals(first_latter)) {
                     current_latter = second_latter;
-                    inviteUserDetails.setF_latter("");
+                    //inviteUserDetails.setF_latter("");
                     holder.first_latter.setVisibility(View.GONE);
                     holder.top_layout.setVisibility(View.GONE);
 
@@ -618,14 +603,14 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
 
                 }
-            }
 
 
-            String file = "" + inviteUserDetails.getUserImageURL();
+
+            String file = "" + inviteUserDetails.getContactImage();
             if (file.equals("null")) {
                 holder.no_image.setVisibility(View.VISIBLE);
                 holder.profile_image.setVisibility(View.GONE);
-                String name = inviteUserDetails.getUserName();
+                String name = inviteUserDetails.getFirstname();
                 holder.profile_image.setVisibility(View.GONE);
                 String add_text = "";
                 String[] split_data = name.split(" ");
@@ -647,18 +632,18 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 holder.no_image.setVisibility(View.VISIBLE);
 
             } else {
-                image_url = inviteUserDetails.getUserImageURL();
+                image_url = inviteUserDetails.getContactImage();
 
                 if (holder.profile_image.getDrawable() == null) {
                     Glide.with(mCtx).
-                            load(inviteUserDetails.getUserImageURL())
+                            load(inviteUserDetails.getContactImage())
                             .placeholder(R.drawable.shape_primary_circle)
                             .error(R.drawable.shape_primary_circle)
                             .into(holder.profile_image);
                     //Log.e("Image ","View "+position);
                 } else {
                     holder.profile_image.setVisibility(View.GONE);
-                    String name = inviteUserDetails.getUserName();
+                    String name = inviteUserDetails.getFirstname();
                     String add_text = "";
                     String[] split_data = name.split(" ");
                     for (int i = 0; i < split_data.length; i++) {
@@ -673,8 +658,21 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 }
 
             }
-            holder.userName.setText(inviteUserDetails.getUserName());
-            holder.userNumber.setText(inviteUserDetails.getUserPhoneNumber());
+           try {
+               if (inviteUserDetails.getLastname().equals(""))
+               {
+                   holder.userName.setText(inviteUserDetails.getFirstname());
+               }
+               else {
+                   holder.userName.setText(inviteUserDetails.getFirstname()+" "+inviteUserDetails.getLastname());
+               }
+           }
+           catch (Exception e)
+           {
+               holder.userName.setText(inviteUserDetails.getFirstname());
+           }
+
+           // holder.userNumber.setText();
 
 
 
@@ -685,13 +683,8 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             return userDetails.size();
         }
 
-        @Override
-        public Filter getFilter() {
-            Log.e("Fillter is", new Gson().toJson(exampleFilter));
-            return exampleFilter;
-        }
 
-        public void updateList(List<GroupListData> list) {
+        public void updateList(List<ContectListData.Contact> list) {
             userDetails = list;
             notifyDataSetChanged();
         }
@@ -733,5 +726,27 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) { e.printStackTrace();}
+    }
 
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
 }
