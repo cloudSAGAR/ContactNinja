@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.Fragment.ContectFragment;
+import com.contactninja.MainActivity;
 import com.contactninja.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
 public class Broadcst_Activty extends AppCompatActivity implements View.OnClickListener {
@@ -97,6 +100,24 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.save_button:
+
+
+                final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Broadcst_Activty.this, R.style.CoffeeDialog);
+                bottomSheetDialog.setContentView(mView);
+                TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
+                selected_broadcast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getApplicationContext(), Broadcst_Activty.class);
+                        startActivity(intent);
+
+                    }
+                });
+
+                bottomSheetDialog.show();
+
+
 
                 break;
         }

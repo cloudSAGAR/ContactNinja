@@ -455,14 +455,6 @@ public class VerificationActivity extends AppCompatActivity {
 
                 } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                    final Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 200);
-
                 }
             }
 

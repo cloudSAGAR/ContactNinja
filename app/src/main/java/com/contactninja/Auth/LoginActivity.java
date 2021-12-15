@@ -213,7 +213,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tv_signUP:
 
                 startActivity(new Intent(getApplicationContext(), SignupActivity.class));
-                finish();
+               // finish();
 
                 break;
         }

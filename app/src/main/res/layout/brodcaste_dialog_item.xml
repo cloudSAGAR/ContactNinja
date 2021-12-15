@@ -3,7 +3,7 @@
     android:id="@+id/bottom_sheet"
     style="@style/CoffeeDialog"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_300sdp"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:orientation="vertical"
     android:padding="0dp">

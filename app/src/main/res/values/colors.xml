@@ -46,6 +46,8 @@
     <color name="alert_button">#2B72C1</color>
     <color name="black_trans">#4D464646</color>
     <color name="min_text">#8E909B</color>
+    <color name="lineView">#D8D8D8</color>
+    <color name="linkView_border">#9B9B9B</color>
 
 
 

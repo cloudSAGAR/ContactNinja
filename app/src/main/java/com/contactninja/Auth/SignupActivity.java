@@ -16,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.contactninja.Auth.PlanTyep.PlanType_Screen;
+import com.contactninja.MainActivity;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -35,11 +38,13 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.Random;
@@ -309,16 +314,30 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
                     if (response.body().getStatus() == 200) {
-                        VerifyPhone(edit_Mobile.getText().toString());
+                        if(!login_type.equals("EMAIL")){
+                            VerifyPhone(edit_Mobile.getText().toString());
+                        }else {
+                            try {
+                                SignAPI();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     } else {
                         loadingDialog.cancelLoading();
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        Type listType = new TypeToken<UservalidateModel>() {
-                        }.getType();
-                        UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                        try {
+                            JSONObject json = new JSONObject(headerString);
+                            JsonArray jsonArray=new JsonArray((Integer) json.get("email"));
+                            Global.Messageshow(getApplicationContext(), mMainLayout, jsonArray.get(0).toString(), false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+
                         /*Log.e("getAccessToken", user_model.getAccessToken());*/
-                        Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getContactNumber().get(0), false);
 
                     }
                 }
@@ -336,6 +355,39 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         super.onBackPressed();
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
+
+    }
+    private void SignAPI() throws JSONException {
+
+        loadingDialog.showLoadingDialog();
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("first_name", first_name);
+        paramObject.addProperty("last_name", last_name);
+        paramObject.addProperty("email", email_address);
+        paramObject.addProperty("contact_number", mobile_number);
+        paramObject.addProperty("login_type", login_type);
+        paramObject.addProperty("otp", "");
+        obj.add("data", paramObject);
+        retrofitCalls.SignUp_user(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+
+                if (response.isSuccessful()) {
+
+                    finish();
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+
+            }
+        });
 
     }
 
