@@ -192,17 +192,20 @@ public class Broadcste_Contect_Fragment extends Fragment  {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                List<ContectListData.Contact> temp = new ArrayList();
-                for(ContectListData.Contact d: contectListData){
-                    if(d.getFirstname().contains(s.toString())){
-                        temp.add(d);
-                        // Log.e("Same Data ",d.getUserName());
+                    List<ContectListData.Contact> temp = new ArrayList();
+                    for(ContectListData.Contact d: contectListData){
+                        if(d.getFirstname().contains(s.toString())){
+                            temp.add(d);
+                            // Log.e("Same Data ",d.getUserName());
+                        }
                     }
-                }
-                groupContectAdapter = new GroupContectAdapter(getActivity());
-                contect_list_unselect.setAdapter(groupContectAdapter);
-                groupContectAdapter.notifyDataSetChanged();
-                groupContectAdapter.updateList(temp);
+                    /*groupContectAdapter = new GroupContectAdapter(getActivity());
+                    contect_list_unselect.setAdapter(groupContectAdapter);*/
+                    groupContectAdapter.updateList(temp);
+                    //groupContectAdapter.notifyDataSetChanged();
+
+
+
             }
 
             @Override

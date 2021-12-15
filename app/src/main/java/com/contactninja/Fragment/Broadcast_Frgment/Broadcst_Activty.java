@@ -124,8 +124,7 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                     return contectFragment;
 
                 case 1:
-                    GroupFragment c_Fragment = new GroupFragment();
-
+                    Broadcast_Group_Fragment c_Fragment = new Broadcast_Group_Fragment();
                     return c_Fragment;
                 default:
                     return null;
