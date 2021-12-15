@@ -95,6 +95,7 @@ public class VerificationActivity extends AppCompatActivity {
         retrofitCalls = new RetrofitCalls();
         EnableRuntimePermission();
         firebase();
+        showTimer();
         loadingDialog = new LoadingDialog(this);
         verfiy_button.setOnClickListener(new View.OnClickListener() {
             @Override

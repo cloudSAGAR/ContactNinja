@@ -159,8 +159,6 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
             type = "PHONE";
         }
-
-
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("email", edit_email.getText().toString());

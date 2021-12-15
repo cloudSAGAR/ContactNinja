@@ -7,16 +7,27 @@ import java.util.List;
 
 public class UservalidateModel {
 
-        @SerializedName("contact_number")
-        @Expose
-        private List<String> contactNumber = null;
+    @SerializedName("email")
+    @Expose
+    private List<String> email = null;
+    @SerializedName("contact_number")
+    @Expose
+    private List<String> contact_number = null;
 
-        public List<String> getContactNumber() {
-            return contactNumber;
-        }
+    public List<String> getContact_number() {
+        return contact_number;
+    }
 
-        public void setContactNumber(List<String> contactNumber) {
-            this.contactNumber = contactNumber;
-        }
+    public void setContact_number(List<String> contact_number) {
+        this.contact_number = contact_number;
+    }
+
+    public List<String> getEmail() {
+        return email;
+    }
+
+    public void setEmail(List<String> email) {
+        this.email = email;
+    }
 
 }

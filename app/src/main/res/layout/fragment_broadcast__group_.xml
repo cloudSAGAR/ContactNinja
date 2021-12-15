@@ -10,6 +10,41 @@
     <include
         android:visibility="gone"
         layout="@layout/common_dialog"></include>
+    <LinearLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_gravity="left|center"
+        android:gravity="center|left"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            style="@style/tv_regular"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_gravity="center|end"
+            android:gravity="end|center"
+            android:text="@string/group_to"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:textColor="@color/text_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/add_contect_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+    <View
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </View>
 
     <LinearLayout
         android:id="@+id/add_new_contect_layout"

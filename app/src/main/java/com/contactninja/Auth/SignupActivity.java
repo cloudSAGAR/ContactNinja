@@ -325,13 +325,23 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     } else {
                         loadingDialog.cancelLoading();
-                        Gson gson = new Gson();
-                        String headerString = gson.toJson(response.body().getData());
+
                         try {
-                            JSONObject json = new JSONObject(headerString);
-                            JsonArray jsonArray=new JsonArray((Integer) json.get("email"));
-                            Global.Messageshow(getApplicationContext(), mMainLayout, jsonArray.get(0).toString(), false);
-                        } catch (JSONException e) {
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            Log.e("String is",headerString);
+                            Type listType = new TypeToken<UservalidateModel>() {
+                            }.getType();
+                            UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                            if (login_type.equals("EMAIL"))
+                            {
+                                Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getEmail().get(0), false);
+                            }
+                            else {
+                                Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getContact_number().get(0),  false);
+
+                            }
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
