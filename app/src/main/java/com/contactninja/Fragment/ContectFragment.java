@@ -503,12 +503,12 @@ public class ContectFragment extends Fragment {
             }
         }
         else {
-            try {
+           /* try {
                 ContectEvent();
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
-            //splitdata(csv_inviteListData);
+            }*/
+            splitdata(csv_inviteListData);
         }
 
 

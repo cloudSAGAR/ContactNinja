@@ -169,7 +169,7 @@ public class RetrofitCalls {
             public void onResponse(@NotNull Call<ApiResponse> call, @NotNull Response<ApiResponse> response) {
 
                 if (response.code() != 200) {
-                    if(response.code()==500){
+                    if(response.code()==404){
                         session.logoutUser();
                     }else
                     {

@@ -70,6 +70,8 @@
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/shape_border_ccc.xml" value="0.35625" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/shape_oval_border_10_white.xml" value="0.35208333333333336" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/shape_primary_circle.xml" value="0.35625" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/top_corner.xml" value="0.35625" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/top_corner15.xml" value="0.35625" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/drawable/twitter.xml" value="0.35625" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_addnewcontect.xml" value="0.16271442986881937" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_final_group.xml" value="0.33" />
@@ -80,9 +82,12 @@
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_send_broadcast.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_thankyou_screen.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/activity_verification.xml" value="0.3359375" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/brodcaste_dialog_item.xml" value="0.3359375" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/capture_userpicture_dialog_item.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/common_dialog.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/custom_add_work_layout.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/eamil_add_layout.xml" value="0.3359375" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_broadcste__contect_.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_contect.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_contect_main_.xml" value="0.33177083333333335" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/fragment_edit_contect.xml" value="0.3359375" />
@@ -94,6 +99,7 @@
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/invite_user_details.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/item_progress.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/phone_add_layout.xml" value="0.3359375" />
+        <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/plus_footer_layout.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/toolbar.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/top_user_details.xml" value="0.3359375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_back.xml" value="0.35625" />

@@ -3,6 +3,7 @@ package com.contactninja;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -10,10 +11,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.Fragment.SendFragment;
@@ -34,6 +38,7 @@ import com.contactninja.Utils.App;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AppUpdateManager mAppUpdateManager;
     private long mLastClickTime = 0;
     private final boolean shouldLoadHomeFragOnBackPress = true;
+    LinearLayout llCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,10 +176,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         llsend = findViewById(R.id.llsend);
         llUser = findViewById(R.id.llUser);
         frameLayout = findViewById(R.id.frameContainer);
+        llCreate=findViewById(R.id.llCreate);
         llHome.setOnClickListener(this);
         llContact.setOnClickListener(this);
         llsend.setOnClickListener(this);
         llUser.setOnClickListener(this);
+        llCreate.setOnClickListener(this);
+
     }
 
     private void UpdateManageCheck() {
@@ -279,6 +288,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user_select));
+
+            case "Add":
+                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
+
         }
     }
 
@@ -353,6 +369,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ImageSetLight("User");
 
                 break;
+            case R.id.llCreate:
+                navItemIndex = 4;
+                CURRENT_TAG = TAG_USER;
+                displayView();
+
+                ImageSetLight("Add");
+                break;
 
         }
 
@@ -375,6 +398,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 3:
                 fragment = new UsetProgileFragment();
                 break;
+            case 4:
+                Log.e("Brodcaste Call","Yes");
+                broadcast_manu();
+                break;
         }
         if (fragment != null) {
 
@@ -387,6 +414,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+    private void broadcast_manu() {
+
+        final View mView = getLayoutInflater().inflate(R.layout.brodcaste_dialog_item, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
+        selected_broadcast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
 
     public void delete() {
         class DeleteTask extends AsyncTask<Void, Void, Void> {

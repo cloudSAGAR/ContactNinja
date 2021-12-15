@@ -154,4 +154,6 @@ Number</string>
     <string name="group_broadcast">Send Broadcast</string>
     <string name="group_broadcast_group">Group Text</string>
     <string name="group_name_error">Group Text</string>
+
+    <string name="add_broadcast">Broadcast</string>
 </resources>
