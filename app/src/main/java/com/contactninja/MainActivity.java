@@ -2,7 +2,6 @@ package com.contactninja;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
@@ -13,7 +12,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,15 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Fragment;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.Fragment.SendFragment;
@@ -51,7 +46,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.io.File;
 import java.util.ArrayList;
 
 
@@ -269,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (imageName) {
             case "Home":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home_select));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
                 break;
@@ -281,19 +275,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case "Contact":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts_selece));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "User":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user_select));
 
             case "Add":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_blitz_icon));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
 

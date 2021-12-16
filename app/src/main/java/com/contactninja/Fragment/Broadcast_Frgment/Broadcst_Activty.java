@@ -1,8 +1,11 @@
 package com.contactninja.Fragment.Broadcast_Frgment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,13 +14,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.PermissionRequest;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -32,11 +38,15 @@ import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Broadcst_Activty extends AppCompatActivity implements View.OnClickListener {
+public class Broadcst_Activty extends AppCompatActivity implements View.OnClickListener ,CardClick{
     TabLayout tabLayout;
     ViewPager viewPager;
     EditText contect_search;
@@ -126,10 +136,12 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
                 ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
                 ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
+                ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
                 ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
                 LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
                 RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
                 EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
+                CoordinatorLayout layout_select_image=bottomSheetDialog.findViewById(R.id.layout_select_image);
 
                 edit_message.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -146,8 +158,12 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 for (int i=0;i<=20;i++){
                     Broadcast_image_list item=new Broadcast_image_list();
                     if(i%2 == 0){
+                        item.setId(i);
+                        item.setScelect(false);
                         item.setImagename("card_1");
                     }else {
+                        item.setId(i);
+                        item.setScelect(false);
                         item.setImagename("card_2");
                     }
                     broadcast_image_list.add(item);
@@ -155,7 +171,7 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 rv_image_card.setLayoutManager(new LinearLayoutManager(Broadcst_Activty.this,
                         LinearLayoutManager.HORIZONTAL, false));
                 rv_image_card.setHasFixedSize(true);
-                cardListAdepter = new CardListAdepter(Broadcst_Activty.this, broadcast_image_list,iv_selected);
+                cardListAdepter = new CardListAdepter(Broadcst_Activty.this, broadcast_image_list,iv_selected,this,layout_select_image);
                 rv_image_card.setAdapter(cardListAdepter);
 
 
@@ -191,11 +207,36 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 });
 
 
+                iv_cancle_select_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        layout_select_image.setVisibility(View.GONE);
+                        for(int i=0;i<broadcast_image_list.size();i++){
+                            if(broadcast_image_list.get(i).isScelect()){
+                                broadcast_image_list.get(i).setScelect(false);
+                                break;
+                            }
+                        }
+                    }
+                });
+
                 bottomSheetDialog.show();
 
 
                 break;
         }
+    }
+
+    @Override
+    public void Onclick(Broadcast_image_list broadcastImageList) {
+        for(int i=0;i<broadcast_image_list.size();i++){
+            if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
+                broadcast_image_list.get(i).setScelect(true);
+            }else {
+                broadcast_image_list.get(i).setScelect(false);
+            }
+        }
+        cardListAdepter.notifyDataSetChanged();
     }
 
     class ViewpaggerAdapter extends FragmentPagerAdapter {
@@ -235,29 +276,36 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
 
 }
 
-class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.CardListData> {
+class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
 
-    Broadcast_image_list item;
-    List<Broadcast_image_list> broadcast_image_list;
     Activity activity;
+    List<Broadcast_image_list> broadcast_image_list;
     ImageView iv_selected;
+    CardClick cardClick;
+    CoordinatorLayout layout_select_image;
 
-    public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,ImageView iv_selected) {
+
+    public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                           ImageView iv_selected,CardClick cardClick,CoordinatorLayout coordinatorLayout) {
         this.activity = activity;
         this.broadcast_image_list = broadcast_image_list;
         this.iv_selected = iv_selected;
+        this.cardClick = cardClick;
+        this.layout_select_image = coordinatorLayout;
     }
+
 
     @NonNull
     @Override
-    public CardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
-        return new CardListData(view);
+        return new cardListData(view);
     }
 
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     @Override
-    public void onBindViewHolder(@NonNull CardListData holder, int position) {
-        item = broadcast_image_list.get(position);
+    public void onBindViewHolder(@NonNull cardListData holder, int position) {
+        Broadcast_image_list item = this.broadcast_image_list.get(position);
 
 
         int resID = activity.getResources().getIdentifier(item.getImagename()
@@ -265,44 +313,40 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.CardListData>
         if (resID != 0) {
             Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
         }
-        holder.itemView.setOnClickListener(v -> {
-            holder.layout_select_image.setBackgroundResource(R.drawable.shape_blue_10);
-            for(int i=0;i<broadcast_image_list.size();i++){
-                if(broadcast_image_list.get(i).isScelect()){
-
-                }
-            }
+        holder.layout_select_image.setOnClickListener(v -> {
+            cardClick.Onclick(item);
             item.setScelect(true);
+            layout_select_image.setVisibility(View.VISIBLE);
             int resID1 = activity.getResources().getIdentifier(item.getImagename()
                     .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
             if (resID1 != 0) {
                 Glide.with(activity.getApplicationContext()).load(resID1).into(iv_selected);
             }
-            notifyDataSetChanged();
         });
         if(item.isScelect()){
             holder.layout_select_image.setBackgroundResource(R.drawable.shape_blue_10);
         }else {
             holder.layout_select_image.setBackground(null);
         }
-
-
-
     }
+
 
     @Override
     public int getItemCount() {
         return broadcast_image_list.size();
     }
 
-    public class CardListData extends RecyclerView.ViewHolder {
+    public class cardListData extends RecyclerView.ViewHolder {
+
         ImageView iv_card;
         LinearLayout layout_select_image;
 
-        public CardListData(@NonNull View itemView) {
+        public cardListData(@NonNull View itemView) {
             super(itemView);
             iv_card = itemView.findViewById(R.id.iv_card);
             layout_select_image = itemView.findViewById(R.id.layout_select_image);
         }
     }
+
+
 }
