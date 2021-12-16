@@ -162,6 +162,14 @@ public class RetrofitCalls {
 
 
 
+    public void Userexistcheck(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Userexistcheck(RetrofitApiClient.API_Header,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
 
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {

@@ -247,6 +247,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
                     sessionManager.Email_Update();
                     loadingDialog.cancelLoading();
                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
@@ -332,7 +333,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
+                    //loadingDialog.cancelLoading();
 
                     sessionManager.Email_Update();
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);

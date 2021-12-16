@@ -471,8 +471,6 @@ public class ContectFragment extends Fragment {
 
                 try {
                     csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
-
-
                 } catch (Exception e) {
 
                 }

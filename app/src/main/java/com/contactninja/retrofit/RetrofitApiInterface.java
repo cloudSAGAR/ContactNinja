@@ -91,5 +91,10 @@ public interface RetrofitApiInterface {
     );
 
 
+    @POST("userexistcheck")
+    Call<ApiResponse> Userexistcheck(@Header("Accept") String api, @Body JsonObject body);
+
+
+
 
 }

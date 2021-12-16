@@ -117,7 +117,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         List<ContectListData.Contact> test_list = new ArrayList<>();
         test_list.add(SessionManager.getOneCotect_deatil(getActivity()));
-        Log.e("Size is", String.valueOf(test_list));
+       // Log.e("Size is", String.valueOf(test_list));
         String flag = sessionManager.getContect_flag(getActivity());
         if (flag.equals("edit")) {
             tv_add_social.setVisibility(View.GONE);

@@ -40,6 +40,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
 
+import org.json.JSONException;
+
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
@@ -201,10 +203,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (checkVelidaction()) {
                     sessionManager.setlogin_type(Login_type);
                     if (Login_type.equals("EMAIL")) {
-                        LoginData();
+                        try {
+                            Uservalidate();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     } else {
-                        loadingDialog.showLoadingDialog();
-                        VerifyPhone(edit_Mobile.getText().toString().trim());
+                      //  loadingDialog.showLoadingDialog();
+                        try {
+                            Uservalidate();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
 
@@ -370,4 +381,51 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
     }
-}
+
+
+
+
+    private void Uservalidate() throws JSONException {
+
+            String txt_email=edit_email.getText().toString();
+            String txt_contect=edit_Mobile.getText().toString();
+
+            loadingDialog.showLoadingDialog();
+            JsonObject obj = new JsonObject();
+            JsonObject paramObject = new JsonObject();
+             if (Login_type.equals("EMAIL")) {
+                 paramObject.addProperty("email", txt_email);
+             }
+             else {
+                 paramObject.addProperty("contact_number", txt_contect);
+             }
+             paramObject.addProperty("first_name", "");
+            paramObject.addProperty("last_name", "");
+            paramObject.addProperty("login_type", Login_type);
+            obj.add("data", paramObject);
+            retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+                @Override
+                public void success(Response<ApiResponse> response) {
+                    //Log.e("Response is",new Gson().toJson(response));
+
+
+                    if (response.body().getStatus() == 200) {
+                        loadingDialog.cancelLoading();
+                        if(!Login_type.equals("EMAIL")){
+                            VerifyPhone(edit_Mobile.getText().toString());
+                        }else {
+                            LoginData();
+                        }
+                    } else {
+                        loadingDialog.cancelLoading();
+                        Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                    }
+                }
+
+                @Override
+                public void error(Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
+                }
+            });
+        }
+    }

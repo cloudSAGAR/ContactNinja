@@ -134,6 +134,7 @@ public class VerificationActivity extends AppCompatActivity {
                 showTimer();
                 resend_txt.setVisibility(View.GONE);
                 tvTimer.setVisibility(View.VISIBLE);
+                verfiy_button.setEnabled(true);
                 //  firebase();
             }
         });
@@ -152,6 +153,7 @@ public class VerificationActivity extends AppCompatActivity {
                     loadingDialog.showLoadingDialog();
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                     signInWithCredential(credential);
+                    verfiy_button.setEnabled(true);
 
                 }
 
@@ -522,6 +524,7 @@ public class VerificationActivity extends AppCompatActivity {
 
 
                 } else {
+                    verfiy_button.setEnabled(false);
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
