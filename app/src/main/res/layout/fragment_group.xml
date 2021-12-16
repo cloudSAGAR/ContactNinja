@@ -7,9 +7,17 @@
     android:orientation="vertical"
     tools:context=".Fragment.AddContect_Fragment.GroupFragment">
 
+
  <include
-     android:visibility="gone"
      layout="@layout/common_dialog"></include>
+
+ <LinearLayout
+     android:id="@+id/mMainLayout1"
+
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+
 
  <LinearLayout
      android:id="@+id/add_new_contect_layout"
@@ -112,5 +120,5 @@
      android:layout_height="wrap_content" />
  </LinearLayout>
 
-
+ </LinearLayout>
 </LinearLayout>

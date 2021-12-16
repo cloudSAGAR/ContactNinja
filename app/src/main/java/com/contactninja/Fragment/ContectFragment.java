@@ -383,16 +383,7 @@ public class ContectFragment extends Fragment {
                     // Log.e("Same Data ",d.getUserName());
                 }
             }
-          /*  rvinviteuserdetails = view.findViewById(R.id.contect_list);
-            userListDataAdapter = new UserListDataAdapter(activity, activity, inviteListData);
-            rvinviteuserdetails.setAdapter(userListDataAdapter);
-            userListDataAdapter.notifyDataSetChanged();
-            userListDataAdapter.updateList(temp);*/
-        } else {
-          /*  rvinviteuserdetails = view.findViewById(R.id.contect_list);
-            userListDataAdapter = new UserListDataAdapter(activity, activity, inviteListData);
-            rvinviteuserdetails.setAdapter(userListDataAdapter);
-            userListDataAdapter.notifyDataSetChanged();*/
+
         }
 
     }
@@ -1096,7 +1087,13 @@ public class ContectFragment extends Fragment {
                     sessionManager.setCsv_token();
                 }
                 else {
-
+                    loadingDialog.cancelLoading();
+                    try {
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    sessionManager.setCsv_token();
                 }
 
 

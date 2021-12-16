@@ -143,7 +143,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
 
     private void IntentUI(View view) {
 
-        main_layout = view.findViewById(R.id.main_layout);
+        main_layout = view.findViewById(R.id.demo_layout);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         group_recyclerView = view.findViewById(R.id.group_list);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -374,7 +374,9 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                             movieViewHolder.add_new_contect_icon.setVisibility(View.GONE);
                             select_contectListData.add(Group_data);
                             //userDetailsfull.get(position).setId(position);
-                            topUserListDataAdapter.notifyDataSetChanged();
+                          //  topUserListDataAdapter.notifyDataSetChanged();
+                            topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
+                            add_contect_list.setAdapter(topUserListDataAdapter);
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
 
                         }
@@ -388,7 +390,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                             movieViewHolder.remove_contect_icon.setVisibility(View.GONE);
                             movieViewHolder.add_new_contect_icon.setVisibility(View.VISIBLE);
                             topUserListDataAdapter.remove_item(position);
-
+                            topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
+                            add_contect_list.setAdapter(topUserListDataAdapter);
                            // Log.e("Postionis ",String.valueOf(position));
 
                             topUserListDataAdapter.notifyDataSetChanged();
@@ -558,30 +561,13 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 holder.no_image.setVisibility(View.VISIBLE);
 
             } else {
-                image_url = select_contectListData.get(position).getGroupImage();
 
-                if (holder.profile_image.getDrawable() == null) {
-                    Glide.with(mCtx).
+                image_url = select_contectListData.get(position).getGroupImage();
+                Glide.with(mCtx).
                             load(select_contectListData.get(position).getGroupImage())
                             .placeholder(R.drawable.shape_primary_circle)
                             .error(R.drawable.shape_primary_circle)
                             .into(holder.profile_image);
-                    //Log.e("Image ","View "+position);
-                } else {
-                    holder.profile_image.setVisibility(View.GONE);
-                    String name = select_contectListData.get(position).getGroupName();
-                    String add_text = "";
-                    String[] split_data = name.split(" ");
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                        }
-                    }
-                    holder.no_image.setText(add_text);
-                    holder.no_image.setVisibility(View.VISIBLE);
-                }
 
             }
 
