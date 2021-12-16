@@ -1,115 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:gravity="center"
-
-    android:background="@color/black_trans"
+    android:background="@drawable/shape_border_10_white"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:layout_margin="@dimen/_2sdp"
-    android:background="@drawable/shape_border_40_white"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-    <TextView
 
-        android:layout_marginTop="@dimen/_15sdp"
-        android:id="@+id/tv_title"
-        style="@style/tv_bold"
-        android:textColorHint="@color/home_list_sub_data"
-        android:textColor="@color/alert_color"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:text="Contactninja would like to \n access your contacts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </TextView>
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:src="@drawable/ic_ok">
 
-       <TextView
+        </ImageView>
+
+        <TextView
             android:id="@+id/tv_sub_titale"
-             style="@style/tv_regular"
-        android:textColorHint="@color/home_list_sub_data"
-        android:textColor="@color/alert_color"
-        android:layout_gravity="center"
-           android:layout_marginStart="@dimen/_20sdp"
-           android:layout_marginEnd="@dimen/_20sdp"
-           android:layout_marginTop="@dimen/_15sdp"
-        android:gravity="center"
-        android:text="Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts."
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </TextView>
-    <View
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_width="match_parent"
-        android:background="@color/alert_line"
-        android:layout_height="1dp">
-
-    </View>
-    <LinearLayout
-
-        android:weightSum="2"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp">
-        <TextView
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_weight="1"
-            android:id="@+id/tv_not"
-            style="@style/tv_bold"
-            android:textColorHint="@color/home_list_sub_data"
-            android:textColor="@color/alert_button"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="@dimen/_14sdp"
-            android:text="Don’t Allow"
+            style="@style/tv_regular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:gravity="center"
+            android:text="@string/text_ok"
+            android:textColor="@color/text_welcome"
+            android:textColorHint="@color/text_welcome"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold">
 
         </TextView>
-        <View
-            android:layout_width="1dp"
-            android:background="@color/alert_line"
-            android:layout_height="match_parent">
 
-        </View>
-        <TextView
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_weight="1"
-            android:id="@+id/tv_ok"
-            style="@style/tv_bold"
-            android:textColorHint="@color/home_list_sub_data"
-            android:textColor="@color/alert_button"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="@dimen/_14sdp"
-            android:text="ok"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
-    </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

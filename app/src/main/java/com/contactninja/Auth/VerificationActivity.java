@@ -73,6 +73,8 @@ public class VerificationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private final long mLastClickTime = 0;
+    String referred_by="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class VerificationActivity extends AppCompatActivity {
         v_id = getbunBundle.getString("v_id");
         countrycode=getbunBundle.getString("countrycode");
         activity_flag = getbunBundle.getString("activity_flag");
+        referred_by=getbunBundle.getString("referred_by");
         retrofitCalls = new RetrofitCalls();
         EnableRuntimePermission();
         firebase();
@@ -112,11 +115,12 @@ public class VerificationActivity extends AppCompatActivity {
 
                     //  PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                     //signInWithCredential(credential);
-                    try {
-                        LoginData();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+
+                        tc_wrong.setVisibility(View.GONE);
+                        loadingDialog.showLoadingDialog();
+                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
+                        signInWithCredential(credential);
+
 
                 }
 
@@ -127,11 +131,14 @@ public class VerificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("On Resend ", "call");
                 VerifyPhone(mobile_number.trim());
+                showTimer();
+                resend_txt.setVisibility(View.GONE);
+                tvTimer.setVisibility(View.VISIBLE);
                 //  firebase();
             }
         });
         new OTP_Receiver().setEditText(otp_pinview);
-        otp_pinview.addTextChangedListener(new TextWatcher() {
+     otp_pinview.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -145,8 +152,6 @@ public class VerificationActivity extends AppCompatActivity {
                     loadingDialog.showLoadingDialog();
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                     signInWithCredential(credential);
-
-                    //LoginData();
 
                 }
 
@@ -182,6 +187,7 @@ public class VerificationActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        loadingDialog.cancelLoading();
                         if (task.isSuccessful()) {
                             tc_wrong.setVisibility(View.GONE);
                             // sessionManager.login();
@@ -336,13 +342,14 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
     public void showTimer() {
+        Log.e("Show TImmer","Yes");
         countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @SuppressLint("NewApi")
             @Override
             public void onTick(long millisUntilFinished) {
                 second++;
                 tvTimer.setVisibility(View.VISIBLE);
-                resend_txt.setVisibility(View.INVISIBLE);
+                resend_txt.setVisibility(View.GONE);
                 tvTimer.setText(String.format("%02d:%02d",
                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
@@ -352,7 +359,7 @@ public class VerificationActivity extends AppCompatActivity {
             public void onFinish() {
                 countDownTimer.cancel();
                 tvTimer.setText("00:00");
-                tvTimer.setVisibility(View.INVISIBLE);
+                tvTimer.setVisibility(View.GONE);
                 resend_txt.setVisibility(View.VISIBLE);
             }
         };
@@ -372,13 +379,14 @@ public class VerificationActivity extends AppCompatActivity {
         paramObject.addProperty("contact_number", mobile_number);
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp);
+        paramObject.addProperty("referred_by",referred_by);
         obj.add("data", paramObject);
         retrofitCalls.SignUp_user(sessionManager,obj, loadingDialog, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
 
-                if (response.isSuccessful()) {
+                if (response.body().getStatus()==200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -387,11 +395,42 @@ public class VerificationActivity extends AppCompatActivity {
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
                     sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-                    if (!sessionManager.isEmail_Update()) {
-                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
-                        intent.putExtra("login_type", login_type);
-                        startActivity(intent);
-                    } else if (!sessionManager.isPayment_Type_Select()) {
+
+                    if (login_type.equals("EMAIL"))
+                    {
+
+                        if (user_model.getUser().getContactNumber().equals(""))
+                        {
+                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                            intent.putExtra("login_type", login_type);
+                            startActivity(intent);
+                        }
+                        else {
+                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            finish();
+                        }
+                    }
+                    else if (login_type.equals("PHONE"))
+                    {
+
+                        if (user_model.getUser().getEmail().equals(""))
+                        {
+                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                            intent.putExtra("login_type", login_type);
+                            startActivity(intent);
+                        }
+                        else {
+                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            finish();
+                        }
+                    }
+                  else if (user_model.getUser().getEmail().equals("") || user_model.getUser().getContactNumber().equals(""))
+                  {
+                      Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                      intent.putExtra("login_type", login_type);
+                      startActivity(intent);
+                  }
+                  else if (!sessionManager.isPayment_Type_Select()) {
                         startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                         finish();
                     } else {
@@ -455,6 +494,7 @@ public class VerificationActivity extends AppCompatActivity {
 
 
                 } else {
+
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }

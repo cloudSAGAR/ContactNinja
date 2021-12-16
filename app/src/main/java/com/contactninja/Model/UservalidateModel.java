@@ -14,6 +14,11 @@ public class UservalidateModel {
     @Expose
     private List<String> contact_number = null;
 
+
+    @SerializedName("password")
+    @Expose
+    private List<String> password = null;
+
     public List<String> getContact_number() {
         return contact_number;
     }
@@ -30,4 +35,11 @@ public class UservalidateModel {
         this.email = email;
     }
 
+    public List<String> getPassword() {
+        return password;
+    }
+
+    public void setPassword(List<String> password) {
+        this.password = password;
+    }
 }
