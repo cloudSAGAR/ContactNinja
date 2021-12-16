@@ -71,10 +71,10 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         mAuth = FirebaseAuth.getInstance();
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         sessionManager = new SessionManager(this);
-
+        loadingDialog = new LoadingDialog(this);
         check_login_type();
         retrofitCalls = new RetrofitCalls();
-        loadingDialog = new LoadingDialog(this);
+
         apiService = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
         firebase();
     }
@@ -336,7 +336,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                     sessionManager.Email_Update();
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
                    // startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                    finish();
+                    //finish();
                     VerifyPhone(edit_Mobile.getText().toString().trim());
 
                 }

@@ -19,6 +19,10 @@ public class UservalidateModel {
     @Expose
     private List<String> password = null;
 
+
+
+
+
     public List<String> getContact_number() {
         return contact_number;
     }
@@ -42,4 +46,7 @@ public class UservalidateModel {
     public void setPassword(List<String> password) {
         this.password = password;
     }
+
+
+
 }

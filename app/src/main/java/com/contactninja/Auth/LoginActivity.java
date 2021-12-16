@@ -328,13 +328,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else if (response.body().getStatus()==404){
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Log.e("String is",headerString);
+                    Log.e("String is",response.body().getMessage());
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
                     if (Login_type.equals("EMAIL"))
                     {
-                        Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getPassword().get(0), false);
+                        if (response.body().getMessage().equals("Invalid credencial."))
+                        {
+                            Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+
+                        }
+                        else {
+                            Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getPassword().get(0), false);
+
+                        }
                     }
                     else {
                         //Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getContact_number().get(0),  false);

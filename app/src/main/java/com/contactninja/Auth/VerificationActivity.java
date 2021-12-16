@@ -129,7 +129,7 @@ public class VerificationActivity extends AppCompatActivity {
         resend_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("On Resend ", "call");
+               // Log.e("On Resend ", "call");
                 VerifyPhone(mobile_number.trim());
                 showTimer();
                 resend_txt.setVisibility(View.GONE);
@@ -494,7 +494,6 @@ public class VerificationActivity extends AppCompatActivity {
 
 
                 } else {
-
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
