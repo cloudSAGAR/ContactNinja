@@ -281,6 +281,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     public void LoginData() {
+        loadingDialog.showLoadingDialog();
         password = edit_password.getText().toString();
 
         JsonObject obj = new JsonObject();
@@ -295,6 +296,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
 
+                loadingDialog.cancelLoading();
 
                 if (response.body().getStatus() == 200) {
 

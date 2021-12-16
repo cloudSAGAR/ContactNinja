@@ -256,6 +256,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                 }
                 else if (response.body().getStatus()==404)
                 {
+                    loadingDialog.cancelLoading();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Log.e("String is",headerString);

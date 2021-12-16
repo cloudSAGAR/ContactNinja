@@ -66,6 +66,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private List<Grouplist.Group> grouplists;
     // private GroupAdapter groupAdapter;
     private ProgressBar loadingPB;
+    LinearLayout mMainLayout1,demo_layout;
 
     public GroupFragment() {
         // Required empty public constructor
@@ -80,6 +81,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
+
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
        try {
             GroupEvent();
@@ -94,7 +96,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
-        main_layout.setOnClickListener(this);
+        demo_layout.setOnClickListener(this);
 
 
         group_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -129,7 +131,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     private void IntentUI(View view) {
 
-        main_layout = view.findViewById(R.id.main_layout);
+     /*   main_layout = view.findViewById(R.id.main_layout);*/
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         group_recyclerView = view.findViewById(R.id.group_list);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -138,6 +140,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         num_count = view.findViewById(R.id.num_count);
         loadingPB = view.findViewById(R.id.idPBLoading);
         grouplists = new ArrayList<>();
+        mMainLayout1=view.findViewById(R.id.mMainLayout1);
+        demo_layout=view.findViewById(R.id.demo_layout);
 
     }
 
@@ -153,7 +157,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             case R.id.group_name:
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
-            case R.id.main_layout:
+            case R.id.demo_layout:
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
                 /*getActivity().finish();*/
@@ -212,7 +216,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
                 } else {
-
+                    demo_layout.setVisibility(View.VISIBLE);
+                    mMainLayout1.setVisibility(View.GONE);
                 }
             }
 

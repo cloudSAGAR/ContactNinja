@@ -399,30 +399,48 @@ public class VerificationActivity extends AppCompatActivity {
                     if (login_type.equals("EMAIL"))
                     {
 
-                        if (user_model.getUser().getContactNumber().equals(""))
+                        try {
+                            if (user_model.getUser().getContactNumber().equals(""))
+                            {
+                                Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                                intent.putExtra("login_type", login_type);
+                                startActivity(intent);
+                            }
+                            else {
+                                startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                                finish();
+                            }
+                        }
+                        catch (Exception e)
                         {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
                         }
-                        else {
-                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                            finish();
-                        }
+
                     }
                     else if (login_type.equals("PHONE"))
                     {
 
-                        if (user_model.getUser().getEmail().equals(""))
+                        try {
+                            if (user_model.getUser().getEmail().equals(""))
+                            {
+                                Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                                intent.putExtra("login_type", login_type);
+                                startActivity(intent);
+                            }
+                            else {
+                                startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                                finish();
+                            }
+                        }
+                        catch (Exception e)
                         {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
                         }
-                        else {
-                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                            finish();
-                        }
+
                     }
                   else if (user_model.getUser().getEmail().equals("") || user_model.getUser().getContactNumber().equals(""))
                   {
@@ -477,18 +495,28 @@ public class VerificationActivity extends AppCompatActivity {
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
                     sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-                    if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
-                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
-                        intent.putExtra("login_type", login_type);
-                        startActivity(intent);
-                        finish();
-                    } else if (!sessionManager.isPayment_Type_Select()) {
-                        startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                        finish();
-                    } else {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
-                    }
+                   try {
+                       if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
+                           Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                           intent.putExtra("login_type", login_type);
+                           startActivity(intent);
+                           finish();
+                       } else if (!sessionManager.isPayment_Type_Select()) {
+                           startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                           finish();
+                       } else {
+                           startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                           finish();
+                       }
+                   }
+                   catch (Exception e)
+                   {
+                       Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                       intent.putExtra("login_type", login_type);
+                       startActivity(intent);
+                       finish();
+                   }
+
 
                   //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
 

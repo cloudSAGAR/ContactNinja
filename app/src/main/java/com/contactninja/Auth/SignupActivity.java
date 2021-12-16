@@ -349,6 +349,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
                     if (response.body().getStatus() == 200) {
+                        loadingDialog.cancelLoading();
                         if(!login_type.equals("EMAIL")){
                             VerifyPhone(edit_Mobile.getText().toString());
                         }else {
