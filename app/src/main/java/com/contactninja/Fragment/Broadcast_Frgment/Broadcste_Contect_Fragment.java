@@ -469,7 +469,9 @@ public class Broadcste_Contect_Fragment extends Fragment  {
                         }
                     }
                     userDetails.remove(position);
-                    topUserListDataAdapter.notifyDataSetChanged();
+                    topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                   // topUserListDataAdapter.notifyDataSetChanged();
 
 
 
@@ -813,7 +815,9 @@ public class Broadcste_Contect_Fragment extends Fragment  {
                                 holder1.add_new_contect_icon.setVisibility(View.GONE);
                                 select_contectListData.add(contacts.get(position));
                                 //userDetailsfull.get(position).setId(position);
-                                topUserListDataAdapter.notifyDataSetChanged();
+                                topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
+                                add_contect_list.setAdapter(topUserListDataAdapter);
+                                //topUserListDataAdapter.notifyDataSetChanged();
                                 num_count.setText(select_contectListData.size()+" Contact Selcted");
                                 contacts.get(position).setFlag("false");
 
@@ -835,7 +839,9 @@ public class Broadcste_Contect_Fragment extends Fragment  {
 
                                 Log.e("Postionis ",String.valueOf(position));
 
-                                topUserListDataAdapter.notifyDataSetChanged();
+                                topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
+                                add_contect_list.setAdapter(topUserListDataAdapter);
+                               // topUserListDataAdapter.notifyDataSetChanged();
                                 Log.e("Size is",new Gson().toJson(select_contectListData));
                                 num_count.setText(select_contectListData.size()+" Contact Selcted");
                                 contacts.get(position).setFlag("true");
