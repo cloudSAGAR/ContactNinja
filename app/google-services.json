@@ -7,12 +7,72 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:798777205930:android:8ae247de67a2ea12da5cd3",
+        "mobilesdk_app_id": "1:798777205930:android:08dca87711f2422eda5cd3",
+        "android_client_info": {
+          "package_name": "com.contactninja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798777205930-r14s03eos0jmo1t5sfeqlga50t7lths6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.contactninja",
+            "certificate_hash": "5ff9d4bcb4079d36232d7cde7aafa1cebb972ec7"
+          }
+        },
+        {
+          "client_id": "798777205930-v9u8s4o149ure23jevtumklf1fpn09h8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVDvl0SnyuIPpo0OwwUMRfUO93pSMC6BA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798777205930-v9u8s4o149ure23jevtumklf1fpn09h8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "798777205930-ag6grsd4i514iq89mjubgc4evrlcv0uf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.intricare.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798777205930:android:f6228aafe9cdddb8da5cd3",
         "android_client_info": {
           "package_name": "com.intricare.test"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "798777205930-71ervpkmvpompjpv3eg76485ok3rnsl4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intricare.test",
+            "certificate_hash": "bb8fae4357286119a87c4847df0abd926d0f1b4c"
+          }
+        },
+        {
+          "client_id": "798777205930-rfft8u54uchd3i8rmr7r99pgfpptr8kh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intricare.test",
+            "certificate_hash": "5ff9d4bcb4079d36232d7cde7aafa1cebb972ec7"
+          }
+        },
         {
           "client_id": "798777205930-v9u8s4o149ure23jevtumklf1fpn09h8.apps.googleusercontent.com",
           "client_type": 3

@@ -10,6 +10,158 @@
 
 
     <!--Intro screen-->
-    <string name="Skip">Skip</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="in_1">ContactNinja is a “Multi-Function CRM Tool” providing contact management, outreach support, lead and follow-up tracking, and flexible communications management.</string>
+    <string name="in_2">Use the most effective form of communication marketing to outperform your competition with contactninja Broadcasts</string>
+    <string name="in_3">Share your mission when you bring your business contact info to life on a virtual BZcard</string>
 
+
+    <!--Login-->
+    <string name="welcome">Welcome to \n Contact Ninja!</string>
+    <string name="welcome_dis">Helping you keep your contacts informed in the easiest and fastest way possible.</string>
+    <string name="account_no">Don\'t have an account?</string>
+    <string name="signup">Signup</string>
+    <string name="signIn">Sign In</string>
+    <string name="enter_phone">Enter your phone</string>
+    <string name="enter_email">Enter your email</string>
+
+    <string name="enter_code">Enter referral code</string>
+    <string name="enter_password">Enter your Password</string>
+    <string name="or_email">or use email-id</string>
+    <string name="or_phone">or use phone number</string>
+    <string name="terms">I have read and agree to <br>\nContact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="invalid_phone">Invalid Number</string>
+    <string name="add_phone_number">Invalid Number</string>
+    <string name="invalid_password">Invalid Password</string>
+    <string name="invalid_first_name">Add First Name</string>
+    <string name="invalid_last_name">Add Last Name</string>
+    <string name="or_code">Have a referral code ?</string>
+    <string name="invalid_code">Add referral code</string>
+
+    <!--SignUp-->
+    <string name="SignUp">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="account_yes">Already have an account ?</string>
+    <string name="enter_firstname">First Name</string>
+    <string name="enter_lastname">Last Name</string>
+
+
+    <!--Verification screen-->
+    <string name="otp_heder_text">Enter The Code We just \n Texted you </string>
+    <string name="otp_button_text">Verfiy</string>
+
+    <string name="otp_bottom_text">Didn\'t get code ?</string>
+    <string name="otp_resend_text">Resend</string>
+    <string name="otp_wrong">Wrong OTP entered</string>
+
+    <!--Thanks Screen-->
+    <string name="thanks_heder_text">Thanks for verifying your \n account</string>
+    <string name="thanks_info_text">Meet your new digital assistant and contact \n management tool, specifically engineered \n for professional networkers, single business \n owners, and solo-preneurs like you! \n Welcome to The Networking Toolkit that \n  grows with you. 🤝
+    </string>
+    <string name="thanks_button_text">Get Started</string>
+
+
+    <!--Plan Type-->
+    <string name="plan_type_text">Plan Type</string>
+    <string name="plan_text_free_card">Ninja Free Card</string>
+    <string name="plan_text_free">Free  </string>
+    <string name="plan_text_bz_card">Ninja BZcard</string>
+    <string name="plan_text_bz">$9.95</string>
+    <string name="plan_text_master">$39.95</string>
+    <string name="plan_text_master_card">Ninja Text Master</string>
+
+
+    <string name="plan_text_contect">$69.95</string>
+    <string name="plan_text_contect_card">ContactNinja</string>
+
+
+    <!--PlanDetail-->
+    <string name="plan_deatil_header_text">Ninja Free Card</string>
+    <string name="plan_deatil_button_text">Start your free trial</string>
+
+    <!---phone_email-->
+    <string name="get_started">Get Started !</string>
+    <string name="welcome_phone">Connect your Phone
+Number</string>
+    <string name="phone_dis">Adding phone number gives an additional
+ security layer for your Contact Ninja Account.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_new_contect">Add New Contact</string>
+    <string name="add_new_contect1">Add all contacts</string>
+
+    //Add Contect
+    <string name="f_name">First name </string>
+    <string name="add_phone">Phone</string>
+    <string name="add_number">Add Number</string>
+    <string name="add_home">Home</string>
+    <string name="add_email">Email</string>
+    <string name="add_email_a">Add Email</string>
+    <string name="add_address">Address</string>
+    <string name="add_address_a">Add Address</string>
+    <string name="add_company">Company</string>
+    <string name="add_company_a">Add Company</string>
+    <string name="add_company_url">Company URL</string>
+    <string name="add_company_url_a">Add company url</string>
+
+
+    <string name="add_job">Job Title</string>
+    <string name="add_job_a">Add job title</string>
+
+
+    <string name="add_city">City</string>
+    <string name="add_city_a">Add city</string>
+    <string name="add_state">State</string>
+    <string name="add_state_a">Select your state</string>
+    <string name="add_zip">Zip Code</string>
+    <string name="add_zip_a">Add  Zip Code</string>
+    <string name="add_zoom">Zoom Id</string>
+    <string name="add_zoom_a">Add Zoom ID </string>
+    <string name="add_note">Note</string>
+    <string name="add_note_a">Add your note</string>
+
+    <string name="add_mobile_a">Add phone</string>
+    <string name="add_email_address">Add email</string>
+    <string name="add_more_field">More Fields</string>
+    <string name="add_social_link">Add social media links</string>
+    <string name="add_social">Social Media</string>
+
+    <string name="add_timezone">Timezone</string>
+    <string name="add_bod">Birthday</string>
+    <string name="add_bob_a">Add Birthday</string>
+    <string name="add_fb">Facebook </string>
+    <string name="add_fb_a">URL</string>
+    <string name="add_twitter">Twitter</string>
+    <string name="add_breactout">Breakout</string>
+    <string name="add_linkedin">Linkedin</string>
+    <string name="add_group">Create a \n new group</string>
+
+
+    <string name="edit_text">Edit Contact</string>
+    <string name="save_text">Save Contact</string>
+    <string name="add_defult_text">Set as \n default</string>
+    <string name="add_bz_text">This ContactNinja \n hasn’t shared a BZcardSet</string>
+    <string name="add_exposures_text">This ContactNinja \n has no exposures</string>
+    <string name="add_group_txt">Add your group name</string>
+    <string name="add_group_description">Add your group description</string>
+    <string name="add_group_description_min_txt">100 Character Remaining</string>
+    <string name="add_group_all_member">All Members</string>
+    <string name="add_group_all_more">Add More Members</string>
+
+    //Group
+
+    <string name="group_to">To</string>
+    <string name="add_new_group">Add New Group</string>
+    <string name="add_new_group_name">Intricare technologies</string>
+    <string name="group_broadcast">Send Broadcast</string>
+    <string name="group_broadcast_group">Group Text</string>
+    <string name="group_name_error">Group Text</string>
+
+    <string name="add_broadcast">Broadcast</string>
+    <string name="link_add">add your affiliate link</string>
+    <string name="text_ok">password has been sent \n to your register email</string>
+    <string name="link_click">your link is attached</string>
+    <string name="type_message">Type your message here…</string>
 </resources>

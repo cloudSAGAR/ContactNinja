@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ru.rambler.libs.swipe_layout.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:left_swipe_enabled="true"
+        app:right_swipe_enabled="true"
+        tools:ignore="MissingConstraints">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_weight="3"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    style="@style/tv_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_email"
+                    android:textColor="@color/tv_medium"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edt_email"
+                    style="@style/tv_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+
+                    android:background="@color/add_contect_transpernt"
+                    android:hint="@string/add_email_a"
+                    android:textColor="@color/home_list_sub_data"
+                    android:textColorHint="@color/home_list_sub_data"
+                    android:textStyle="bold">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/select_email_label"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_27sdp"
+                android:background="@drawable/shape_border_ccc"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp">
+
+                <TextView
+                    android:id="@+id/email_txt"
+                    style="@style/tv_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/add_home"
+                    android:textColor="@color/home_list_sub_data"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <ImageView
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_1sdp"
+                    android:src="@drawable/ic_down">
+
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layout_icon_email"
+                android:background="@drawable/shape_oval_border_10_blue"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginEnd="@dimen/_10sdp"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp"
+                    android:src="@drawable/ic_email" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_swap"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|top"
+                android:gravity="center|top"
+                android:visibility="gone"
+                app:bring_to_clamp="150dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                app:clamp="self"
+                app:gravity="right"
+                app:sticky="100dp">
+
+                <LinearLayout
+                    android:id="@+id/layout_remove"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_gravity="center|top"
+                    android:background="@drawable/shape_red_back"
+                    android:gravity="center|top">
+
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_remove" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_defult"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_gravity="center|top"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:background="@drawable/shape_blue_back"
+                    android:gravity="center|top">
+
+                    <TextView
+                        style="@style/tv_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/add_defult_text"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:text="@string/invalid_email"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:id="@+id/iv_invalid"
+            style="@style/tv_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@color/home_list_add_contect_view" />
+    </LinearLayout>
+    </ru.rambler.libs.swipe_layout.SwipeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

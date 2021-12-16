@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.contactninja.MainActivity"
+    android:id="@+id/frameContainer1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include
+
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
+    <LinearLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/layout_pulse"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_oval_border_10_blue"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/_15sdp">
+            <ImageView
+                android:padding="@dimen/_18sdp"
+                android:id="@+id/pulse_icon"
+                android:src="@drawable/ic_plus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="UseAppTint"/>
+
+        </LinearLayout>
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:layout_marginStart="@dimen/_15sdp"
+            android:id="@+id/iv_user"
+            android:visibility="gone"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="right"
+            android:padding="1dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/deafult_predefine_cover"
+            app:riv_border_color="@color/purple_200"
+            app:riv_border_width="0dp"
+            app:riv_corner_radius="@dimen/_50sdp"
+            app:riv_oval="false" />
+
+
+        <LinearLayout
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:orientation="vertical"
+            android:layout_gravity="center|left"
+            android:gravity="center|left"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:background="@color/add_contect_transpernt"
+                android:id="@+id/edt_FirstName"
+                style="@style/tv_bold"
+                android:textSize="@dimen/_15sdp"
+                android:hint="@string/f_name"
+                android:inputType="text|textCapSentences"
+                android:textColorHint="@color/home_list_sub_data"
+                android:textColor="@color/tv_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </EditText>
+
+            <EditText
+                android:background="@color/add_contect_transpernt"
+                android:id="@+id/edt_lastname"
+                android:layout_marginTop="@dimen/_5sdp"
+                style="@style/tv_regular"
+                android:textColor="@color/otp_header_text_color"
+                android:hint="Last Name"
+                android:inputType="text|textCapSentences"
+                android:textColorHint="@color/home_list_sub_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </EditText>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/tabLayout"
+        style="@style/tv_bold"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabSelectedTextColor="@color/tv_medium"
+        android:layout_width="match_parent"
+        app:tabIndicatorHeight="2dp"
+        app:tabTextColor="@color/bz_text"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <FrameLayout
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llFooter" />
+
+</LinearLayout>
