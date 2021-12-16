@@ -267,6 +267,11 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.CardListData>
         }
         holder.itemView.setOnClickListener(v -> {
             holder.layout_select_image.setBackgroundResource(R.drawable.shape_blue_10);
+            for(int i=0;i<broadcast_image_list.size();i++){
+                if(broadcast_image_list.get(i).isScelect()){
+
+                }
+            }
             item.setScelect(true);
             int resID1 = activity.getResources().getIdentifier(item.getImagename()
                     .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
