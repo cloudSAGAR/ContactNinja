@@ -51,7 +51,7 @@
         <item name="android:src">@drawable/ic_nav_home</item>
     </style>
     <style name="send_">
-        <item name="android:src">@drawable/ic_nav_blitz_icon</item>
+        <item name="android:src">@drawable/ic_nav_chat_icon</item>
     </style>
     <style name="contact_">
         <item name="android:src">@drawable/ic_nav_contacts</item>

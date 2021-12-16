@@ -263,33 +263,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (imageName) {
             case "Home":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home_select));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Send":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon_select));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon_select));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Contact":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts_selece));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "User":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user_select));
+                break;
 
             case "Add":
                 llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_blitz_icon));
+                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon));
                 llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
+                break;
 
         }
     }
