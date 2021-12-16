@@ -565,7 +565,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                Log.e("Reponse is", new Gson().toJson(response.body()));
+                //Log.e("Reponse is", new Gson().toJson(response.body()));
                 if (response.body().getStatus()==200) {
 
                     Gson gson = new Gson();

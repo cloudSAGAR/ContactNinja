@@ -888,10 +888,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                Log.e("Reponse is", new Gson().toJson(response.body()));
-                if (response.body().getStatus()==200) {
 
+                try {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus()==200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<ContectListData>() {
@@ -915,6 +915,12 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
                     totale_group = contectListData1.getTotal();
                 }
+                }
+                catch (Exception e)
+                {
+
+                }
+
 
             }
 
