@@ -17,6 +17,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.contactninja.Auth.PlanTyep.PlanType_Screen;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -133,6 +134,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("email", edit_email.getText().toString());
                 intent.putExtra("login_type", Login_type);
                 intent.putExtra("activity_flag", "login");
+                intent.putExtra("referred_by","");
                 startActivity(intent);
 
 
@@ -285,7 +287,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("email", edit_email.getText().toString());
         paramObject.addProperty("login_type", Login_type);
-        paramObject.addProperty("otp", "123456");
+        paramObject.addProperty("password", password);
+
         obj.add("data", paramObject);
         retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
             @Override
@@ -305,12 +308,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (!sessionManager.isEmail_Update())
                     {
                         Intent i = new Intent(LoginActivity.this, Phone_email_verificationActivity.class);
+                        i.putExtra("login_type",Login_type);
                         startActivity(i);
                         finish();
                     }
                     else if (!sessionManager.isPayment_Type_Select())
                     {
-                        startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                        //Call Phone
+                        Intent i = new Intent(LoginActivity.this, PlanType_Screen.class);
+                        startActivity(i);
                         finish();
                     }
                     else {
@@ -319,7 +325,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
 
 
-                } else {
+                } else if (response.body().getStatus()==404){
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Log.e("String is",response.body().getMessage());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (Login_type.equals("EMAIL"))
+                    {
+                        if (response.body().getMessage().equals("Invalid credencial."))
+                        {
+                            Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+
+                        }
+                        else {
+                            Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getPassword().get(0), false);
+
+                        }
+                    }
+                    else {
+                        //Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getContact_number().get(0),  false);
+                    }
+
+                }
+                else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
 
                 }
             }

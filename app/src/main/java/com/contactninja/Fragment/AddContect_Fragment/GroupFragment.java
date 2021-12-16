@@ -79,6 +79,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         IntentUI(view);
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
+        loadingDialog = new LoadingDialog(getActivity());
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
        try {
             GroupEvent();
@@ -89,7 +90,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         group_recyclerView.setAdapter(paginationAdapter);
 
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
-        loadingDialog = new LoadingDialog(getActivity());
+
 
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);

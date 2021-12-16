@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void showAlertDialogButtonClicked() {
+   /* public void showAlertDialogButtonClicked() {
 
         // Create an alert builder
         AlertDialog.Builder builder
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         dialog.show();
-    }
+    }*/
 
     public void EnableRuntimePermission() {
 

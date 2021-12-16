@@ -240,9 +240,58 @@
                             android:textColor="@color/purple_200"
                             android:textStyle="bold" />
 
+                        <CheckBox
+                            android:id="@+id/select_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/btn_chnage_phone_email"
+                            android:buttonTint="@color/purple_200"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:text="@string/or_code"
+                            android:textColor="@color/purple_200"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold">
+
+                        </CheckBox>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:layout_below="@+id/select_code"
+                            android:id="@+id/layout_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="horizontal"
+                          >
+
+
+                            <EditText
+                                android:id="@+id/edit_code"
+                                style="@style/tv_regular"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:gravity="center|left"
+                                android:hint="@string/enter_code"
+                                android:imeOptions="actionDone"
+                                android:inputType="textEmailAddress"
+                                android:padding="10dp"
+                                android:textColor="@color/otp_header_text_color"
+                                android:textColorHint="@color/otp_header_text_color" />
+                        </LinearLayout>
+
+                        <View
+                            android:visibility="gone"
+                            android:id="@+id/view_layout"
+                            android:layout_below="@id/layout_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#A7A0A0" />
+
                     </RelativeLayout>
 
                 </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/btn_signup"
