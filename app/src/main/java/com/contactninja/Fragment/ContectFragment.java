@@ -484,24 +484,8 @@ public class ContectFragment extends Fragment {
 
         }
 
-        if (sessionManager.getCsv_token())
-        {
-            //splitdata(csv_inviteListData);
-            try {
-                ContectEvent();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-           /* try {
-                ContectEvent();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
-            splitdata(csv_inviteListData);
-        }
 
+        splitdata(csv_inviteListData);
 
         cursor.close();
 

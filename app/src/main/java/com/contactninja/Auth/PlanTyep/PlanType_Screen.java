@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.contactninja.R;
 
 
-public class PlanType_Screen extends AppCompatActivity implements View.OnClickListener {
+public class    PlanType_Screen extends AppCompatActivity implements View.OnClickListener {
 
     LinearLayout layout_free_card, layout_bz_card, layout_master, layout_contect;
     int flag = 0;
