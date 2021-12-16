@@ -46,6 +46,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Fragment.Broadcast_Frgment.Broadcst_Activty"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Group.SendBroadcast"

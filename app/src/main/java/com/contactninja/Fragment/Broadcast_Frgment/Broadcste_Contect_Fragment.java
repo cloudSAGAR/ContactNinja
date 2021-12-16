@@ -115,7 +115,6 @@ public class Broadcste_Contect_Fragment extends Fragment  {
             e.printStackTrace();
         }
         contectListData.clear();
-        loadingDialog = new LoadingDialog(getActivity());
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
         fastscroller.getItemIndicatorSelectedCallbacks().add(

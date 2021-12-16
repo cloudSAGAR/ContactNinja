@@ -157,4 +157,6 @@ Number</string>
 
     <string name="add_broadcast">Broadcast</string>
     <string name="link_add">add your affiliate link</string>
+    <string name="type_message">Type your message here…</string>
+    <string name="link_click">your link is attached</string>
 </resources>

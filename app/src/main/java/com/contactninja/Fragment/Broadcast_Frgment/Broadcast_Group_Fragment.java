@@ -82,6 +82,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         IntentUI(view);
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
+        loadingDialog = new LoadingDialog(getActivity());
+
         select_contectListData=new ArrayList<>();
         grouplists=new ArrayList<>();
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
@@ -103,7 +105,6 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         add_contect_list.setItemViewCacheSize(500);
 
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
-        loadingDialog = new LoadingDialog(getActivity());
 
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
