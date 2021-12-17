@@ -257,7 +257,7 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
 
             switch (position) {
                 case 0:
-                    Broadcste_Contect_Fragment contectFragment = new Broadcste_Contect_Fragment();
+                    Broadcste_Contect_Fragment contectFragment = new Broadcste_Contect_Fragment(Broadcst_Activty.this);
                     return contectFragment;
 
                 case 1:

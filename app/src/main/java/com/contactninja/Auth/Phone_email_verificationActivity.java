@@ -17,6 +17,7 @@ import com.contactninja.Auth.PlanTyep.PlanType_Screen;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -46,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
 
-public class Phone_email_verificationActivity extends AppCompatActivity implements View.OnClickListener {
+public class Phone_email_verificationActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static RetrofitApiInterface apiService;
     TextView btn_getStarted, iv_invalid;
     SessionManager sessionManager;
@@ -68,6 +69,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_email_verification);
         initUI();
+        Global.checkConnectivity(Phone_email_verificationActivity.this, mMainLayout);
         mAuth = FirebaseAuth.getInstance();
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         sessionManager = new SessionManager(this);
@@ -218,6 +220,8 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
     private void EmailUpdate() throws JSONException {
         Log.e("Email","Yes");
+
+        Global.getInstance().setConnectivityListener(this);
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -399,6 +403,11 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                 .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
 
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Phone_email_verificationActivity.this, mMainLayout);
     }
 }
 

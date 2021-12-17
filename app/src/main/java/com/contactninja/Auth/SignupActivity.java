@@ -25,6 +25,7 @@ import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -59,7 +60,7 @@ import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 
-public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "SignupActivity";
     public static RetrofitApiInterface apiService;
     public String fcmToken = "";
@@ -98,6 +99,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mAuth = FirebaseAuth.getInstance();
         loadingDialog = new LoadingDialog(SignupActivity.this);
         initUI();
+        Global.checkConnectivity(SignupActivity.this, mMainLayout);
         apiService = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
         //showAlertDialogButtonClicked();
         enterPhoneNumber();
@@ -403,7 +405,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
     private void SignAPI() throws JSONException {
-
+        Global.getInstance().setConnectivityListener(this);
         loadingDialog.showLoadingDialog();
 
         JsonObject obj = new JsonObject();
@@ -519,4 +521,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(SignupActivity.this, mMainLayout);
+    }
 }

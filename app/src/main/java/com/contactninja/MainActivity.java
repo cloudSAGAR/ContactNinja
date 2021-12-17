@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.HomeFragment;
@@ -32,6 +33,7 @@ import com.contactninja.Fragment.UsetProgileFragment;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Utils.App;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
@@ -49,7 +51,7 @@ import com.gun0912.tedpermission.TedPermission;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "home";
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sessionManager.login();
         SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
         IntentUI();
+        Global.checkConnectivity(MainActivity.this, mMainLayout);
         //  FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         // FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
         UpdateManageCheck();
@@ -93,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
 
 
    /* public void showAlertDialogButtonClicked() {
@@ -201,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
+        Global.getInstance().setConnectivityListener(this);
     }
 
 
@@ -460,4 +465,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(MainActivity.this, mMainLayout);
+    }
 }

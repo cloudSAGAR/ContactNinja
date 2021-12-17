@@ -36,6 +36,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddGroup;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -43,6 +44,7 @@ import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -75,7 +77,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-public class Final_Group extends AppCompatActivity implements View.OnClickListener {
+public class Final_Group extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     GroupListData groupListData;
     TextView save_button;
@@ -105,6 +107,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_group);
         IntentUI();
+        Global.checkConnectivity(Final_Group.this, mMainLayout);
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         if (SessionManager.getGroupData(this)!=null)
@@ -497,6 +500,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Final_Group.this, mMainLayout);
+    }
+
     public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
@@ -748,5 +756,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         } else {
             return false;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        Global.getInstance().setConnectivityListener(this);
+        super.onResume();
     }
 }

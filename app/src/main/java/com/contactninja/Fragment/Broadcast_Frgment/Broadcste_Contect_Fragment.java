@@ -17,9 +17,11 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -93,7 +95,10 @@ public class Broadcste_Contect_Fragment extends Fragment  {
     boolean isLastPage = false;
     List<ContectListData.Contact> contectListData;
     List<ContectListData.Contact> select_contectListData;
-
+    Activity activity;
+    Broadcste_Contect_Fragment(Activity activity0){
+        this.activity=activity0;
+    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -193,7 +198,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
 
                     List<ContectListData.Contact> temp = new ArrayList();
                     for(ContectListData.Contact d: contectListData){
-                        if(d.getFirstname().contains(s.toString())){
+                        if(d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())){
                             temp.add(d);
                             // Log.e("Same Data ",d.getUserName());
                         }
@@ -202,7 +207,6 @@ public class Broadcste_Contect_Fragment extends Fragment  {
                     contect_list_unselect.setAdapter(groupContectAdapter);*/
                     groupContectAdapter.updateList(temp);
                     //groupContectAdapter.notifyDataSetChanged();
-
 
 
             }

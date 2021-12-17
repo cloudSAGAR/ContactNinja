@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.Fragment.GroupFragment.ExposuresFragment;
@@ -22,11 +24,13 @@ import com.contactninja.Fragment.GroupFragment.MembersFragment;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, ConnectivityReceiver.ConnectivityReceiverListener {
     TextView save_button;
     ImageView iv_more, iv_back;
     EditText add_detail,add_new_contect;
@@ -35,11 +39,13 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     ViewpaggerAdapter adapter;
     SessionManager sessionManager;
     RoundedImageView add_new_contect_icon;
+    LinearLayout mMainLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_broadcast);
         IntentUI();
+        Global.checkConnectivity(SendBroadcast.this, mMainLayout);
         sessionManager=new SessionManager(this);
         Grouplist.Group group_data = SessionManager.getGroupData(this);
         Glide.with(getApplicationContext()).
@@ -87,7 +93,8 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         viewPager = findViewById(R.id.viewPager);
         add_new_contect_icon=findViewById(R.id.add_new_contect_icon);
         add_new_contect=findViewById(R.id.add_new_contect);
-        }
+        mMainLayout=findViewById(R.id.mMainLayout);
+    }
 
     @Override
     public void onClick(View v) {
@@ -117,6 +124,11 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     @Override
     public void onPageScrollStateChanged(int i) {
 
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(SendBroadcast.this, mMainLayout);
     }
 
 
@@ -156,5 +168,11 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        Global.getInstance().setConnectivityListener(this);
+        super.onResume();
     }
 }
