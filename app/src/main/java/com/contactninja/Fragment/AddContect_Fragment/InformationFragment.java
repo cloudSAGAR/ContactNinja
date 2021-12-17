@@ -216,6 +216,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_zip.setEnabled(false);
             ev_bob.setEnabled(false);
             ev_note.setEnabled(false);
+            tv_add_social.setVisibility(View.GONE);
+
 
             tv_add_social.setTextColor(getActivity().getColor(R.color.purple_200));
             ev_company.setTextColor(getActivity().getColor(R.color.purple_200));
@@ -1112,6 +1114,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.ccp_id.setVisibility(View.VISIBLE);
             holder.edt_mobile_no.setEnabled(true);
             if (edit) {
+                holder.swipe_layout.setLeftSwipeEnabled(true);
+                holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.ccp_id.setCountryForNameCode(item.getCountry_code());
                 if (contactdetails.get(position).getIs_default() == 1) {
                     holder.iv_set_default.setVisibility(View.VISIBLE);
@@ -1239,6 +1243,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             } else if (flag.equals("read")) {
                 EnableRuntimePermission();
+                holder.swipe_layout.setLeftSwipeEnabled(false);
+                holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_label.setVisibility(View.GONE);
                 holder.contect_msg.setVisibility(View.VISIBLE);
                 holder.ccp_id.setVisibility(View.GONE);
@@ -1372,7 +1378,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             } else {
 
-
+                holder.swipe_layout.setLeftSwipeEnabled(true);
+                holder.swipe_layout.setRightSwipeEnabled(true);
                 if (item.getIs_default() == 1) {
                     holder.iv_set_default.setVisibility(View.VISIBLE);
                 } else {
@@ -1594,6 +1601,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
             if (edit) {
+                holder.swipe_layout.setLeftSwipeEnabled(true);
+                holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1712,12 +1721,16 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
             } else if (flag.equals("read")) {
+                holder.swipe_layout.setLeftSwipeEnabled(false);
+                holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_email_label.setVisibility(View.GONE);
                 holder.layout_icon_email.setVisibility(View.VISIBLE);
                 holder.edt_email.setEnabled(false);
                 holder.edt_email.setTextColor(getActivity().getColor(R.color.purple_200));
                 holder.tv_email.setText(holder.tv_email.getText().toString() + "(" + item.getLabel() + ")");
             } else {
+                holder.swipe_layout.setLeftSwipeEnabled(true);
+                holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

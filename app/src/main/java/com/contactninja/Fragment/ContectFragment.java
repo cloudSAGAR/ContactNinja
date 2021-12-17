@@ -76,6 +76,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -97,6 +99,7 @@ public class ContectFragment extends Fragment {
     };
     public static UserListDataAdapter userListDataAdapter;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
+    public static ArrayList<InviteListData> csv_ListData = new ArrayList<>();
     ConstraintLayout mMainLayout;
     Context mCtx;
     Cursor cursor;
@@ -271,7 +274,7 @@ public class ContectFragment extends Fragment {
                 }
         );
 
-        fastscroller.setupWithRecyclerView(
+    /*    fastscroller.setupWithRecyclerView(
                 rvinviteuserdetails,
                 (position) -> {
                     FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
@@ -281,7 +284,7 @@ public class ContectFragment extends Fragment {
                     );
                     return fastScrollItemIndicator;
                 }
-        );
+        );*/
 
         //  getAllContect();
         add_new_contect.setOnClickListener(new View.OnClickListener() {
@@ -300,13 +303,56 @@ public class ContectFragment extends Fragment {
                 startActivity(addnewcontect);
             }
         });
-        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
+     /*   add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
                 SessionManager.setContect_flag("save");
                 Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                 startActivity(addnewcontect);
+
+            }
+        });*/
+
+
+        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("On Click","Yes");
+
+                try {
+                    for (int i=0;i<inviteListData.size();i++)
+                    {
+                        Log.e("Call",""+i);
+                        if (csv_ListData.size()==0)
+                        {
+                            csv_ListData.add(inviteListData.get(i));
+                           // Log.e("User Name Is Not Same", "Yes"+" 0");
+                        }
+                        else {
+                            for (int j = 0; j < csv_ListData.size(); j++) {
+                                if (inviteListData.get(i).getUserName().equals(csv_ListData.get(j).getUserName())) {
+                                   // Log.e("User Name Is Not Same", "Yes");
+
+                                    Log.e("Same Data ",new Gson().toJson( csv_ListData.get(j).getUserName()));
+                                    inviteListData.get(i).setUserPhoneNumber(inviteListData.get(i).getUserPhoneNumber()+","+user_phone_number);
+                                   // csv_ListData.add(inviteListData.get(i));
+                                    Log.e("New List",new Gson().toJson(inviteListData.get(i)));
+                                    break;
+                                } else {
+                                 //   Log.e("User Name Is Not Same", "No");
+                                    csv_ListData.add(inviteListData.get(i));
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+
+                }
 
             }
         });
@@ -462,12 +508,24 @@ public class ContectFragment extends Fragment {
                 //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getId())));
                 String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
+
                 inviteListData.add(new InviteListData("" + userName.trim(),
-                        user_phone_number,
+                        user_phone_number.replace(" ",""),
                         user_image,
                         user_des,
                         "", ""));
-                //  userListDataAdapter.notifyDataSetChanged();
+
+
+
+
+
+
+
+
+
+
+
+
 
                 try {
                     csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
@@ -475,7 +533,30 @@ public class ContectFragment extends Fragment {
 
                 }
 
-                getTasks(new InviteListData(userName, user_phone_number, user_image, user_des, old_latter, ""));
+                if (csv_inviteListData.size()!=0)
+                {
+                    OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
+                            .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
+                            .findFirst();
+
+                    Log.e("Size is", String.valueOf(indexOpt.getAsInt()));
+                    if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ","").equals(user_phone_number.replace(" ","")))
+                    {
+                        Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
+
+                        csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber()+","+user_phone_number);
+
+                        csv_inviteListData.remove(indexOpt.getAsInt()+1);
+                    }
+
+
+                    Log.e("Data Is",new Gson().toJson(csv_inviteListData));
+
+                }
+
+
+                //Close
+               // getTasks(new InviteListData(userName, user_phone_number, user_image, user_des, old_latter, ""));
 
 
             }
@@ -509,9 +590,6 @@ public class ContectFragment extends Fragment {
                 "Fax");
 
         for (int i = 0; i < response.size(); i++) {
-
-
-
 
             data.append("\n" + response.get(i).getUserName() +
                     "," + response.get(i).getLast_name() +
@@ -560,7 +638,7 @@ public class ContectFragment extends Fragment {
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
 
-     /*       Intent intent = new Intent(Intent.ACTION_SEND);
+         /*   Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/csv");
             intent.putExtra(Intent.EXTRA_SUBJECT, "Data");
             intent.putExtra(Intent.EXTRA_STREAM, path);
