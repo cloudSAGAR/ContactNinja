@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/ivSlide1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/_100sdp"
+        android:padding="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_welcome_2" />
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:id="@+id/tv_dis"
+        android:padding="@dimen/_10sdp"
+        style="@style/tv_regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/in_2"
+        android:textColor="@color/white"
+        android:layout_marginBottom="@dimen/_20sdp"
+        tools:ignore="MissingConstraints" />
+</RelativeLayout>

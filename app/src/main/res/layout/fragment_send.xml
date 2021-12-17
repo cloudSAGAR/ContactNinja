@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".Fragment.SendFragment">
+
+  <!-- TODO: Update blank fragment layout -->
+  <ImageView
+      android:layout_gravity="center"
+      android:src="@drawable/ic_group_otp_logo"
+      android:layout_width="@dimen/_55sdp"
+      android:layout_height="@dimen/_55sdp"></ImageView>
+  <TextView
+      android:layout_marginTop="@dimen/_10sdp"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:text="Under development"
+      android:layout_width="match_parent"
+      style="@style/tv_regular"
+      android:textColor="@color/bz_text"
+      android:textSize="@dimen/_14sdp"
+      android:textStyle="bold"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/_40sdp"
+      ></TextView>
+
+
+</LinearLayout>

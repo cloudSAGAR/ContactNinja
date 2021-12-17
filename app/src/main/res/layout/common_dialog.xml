@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:id="@+id/demo_layout"
+    android:visibility="gone"
+    android:background="@color/white"
+    android:layout_marginStart="@dimen/_30sdp"
+    android:layout_marginEnd="@dimen/_30sdp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:background="@drawable/shape_blue_back_dialog"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:id="@+id/tv_create"
+            style="@style/tv_regular"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_40sdp"
+            android:background="@color/add_contect_transpernt"
+            android:gravity="center"
+            android:hint="@string/add_group"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/_16sdp">
+
+        </TextView>
+
+
+    </LinearLayout>
+    <ImageView
+        android:layout_width="@dimen/_55sdp"
+        android:layout_height="@dimen/_55sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/_110sdp"
+        android:layout_gravity="center|left"
+        android:src="@drawable/ic_group_otp_logo">
+
+    </ImageView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <TextView
+
+        style="@style/tv_regular"
+        android:layout_gravity="center"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:gravity="center"
+
+        android:hint="Lorem ipsum dolor sit amet \n  loren ipsum"
+        android:textColorHint="@color/home_list_sub_data"
+        android:textSize="@dimen/_14sdp">
+
+    </TextView>
+
+
+
+
+</LinearLayout>

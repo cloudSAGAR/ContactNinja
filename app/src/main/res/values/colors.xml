@@ -1,13 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="purple_200">#5495EC</color>
+    <color name="purple_500">#5495EC</color>
+    <color name="purple_700">#5495EC</color>
 
-    <color name="red">#FF1100</color>
+    <color name="teal_200">#FFFFFF</color>
+    <color name="teal_700">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="red">#F64F50</color>
     <color name="green">#08910D</color>
+    <color name="otp_background">#5495EC</color>
+    <color name="otp_header_text_color">#777777</color>
+    <color name="gray_C4C4C4">#C4C4C4</color>
+    <color name="text_welcome">#484848</color>
+    <color name="tv_medium">#4A4A4A</color>
+    <color name="tv_regular">#828282</color>
+    <color name="tv_otp_validation">#F64F50</color>
+    <color name="plan_shpe_border">#D9DCE1</color>
+    <color name="plan_price_text_color">#484848</color>
+    <color name="bouttom_sheet_bg">#F4F4F4</color>
+    <color name="add_contect_transpernt">#00000000</color>
+
+
+    //Home Contect
+    <color name="home_list_latter">#F2F2F2</color>
+    <color name="home_list_sub_data">#ABABAB</color>
+    <color name="home_list_back_line">#F1F1F1</color>
+    <color name="home_list_search_border">#E3E3E3</color>
+    <color name="home_list_tab_bg">#FFDE22</color>
+    <color name="home_list_atoz">#4E90CD</color>
+    <color name="home_list_add_contect_border">#C2C6CB</color>
+    <color name="home_list_add_contect_view">#EEEEEE</color>
+
+
+
+    <color name="home_list_add_contect__bottom_text">#007AFF</color>
+    <color name="contect_bottom_sheet_color">#4848484D</color>
+    <color name="bz_text">#4A4A4A</color>
+
+
+    <color name="alert_color">#040404</color>
+    <color name="alert_line">#929292</color>
+    <color name="alert_button">#2B72C1</color>
+    <color name="black_trans">#4D464646</color>
+    <color name="min_text">#8E909B</color>
+    <color name="lineView">#D8D8D8</color>
+    <color name="linkView_border">#9B9B9B</color>
+
+
+
 </resources>

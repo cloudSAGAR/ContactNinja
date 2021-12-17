@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Auth.Thankyou_Screen">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/_100sdp"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/_135sdp"
+                android:layout_height="@dimen/_135sdp"
+                android:layout_marginStart="-27dp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:src="@drawable/ic_group_otp_logo" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/tv_Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:gravity="center|left"
+            android:paddingStart="@dimen/_25sdp"
+            android:text="@string/plan_type_text"
+            android:textColor="@color/tv_medium" />
+
+       <LinearLayout
+           android:id="@+id/layout_free_card"
+           android:weightSum="2"
+           android:layout_marginTop="@dimen/_20sdp"
+           android:background="@drawable/shape_border_ddce"
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/_47sdp"
+           android:layout_marginEnd="@dimen/_18sdp"
+           android:layout_marginStart="@dimen/_18sdp">
+
+           <TextView
+               android:layout_weight="1"
+               style="@style/tv_regular"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_gravity="top"
+               android:layout_marginStart="@dimen/_20sdp"
+               android:gravity="center|left"
+               android:text="@string/plan_text_free_card"
+               android:textColor="@color/purple_200"
+               android:textSize="@dimen/_13sdp"
+               android:textStyle="bold"
+               app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+           <TextView
+               android:layout_weight="1"
+               style="@style/tv_regular"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_gravity="top"
+               android:gravity="center|end"
+               android:layout_marginEnd="@dimen/_25sdp"
+               android:text="@string/plan_text_free"
+               android:textColor="@color/purple_200"
+               android:textSize="@dimen/_13sdp"
+               android:textStyle="bold"
+               app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+       </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_bz_card"
+            android:weightSum="2"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/shape_border_ddce"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_47sdp"
+            android:layout_marginEnd="@dimen/_18sdp"
+            android:layout_marginStart="@dimen/_18sdp">
+
+            <TextView
+                android:layout_weight="1"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:gravity="center|left"
+                android:text="@string/plan_text_bz_card"
+                android:textColor="@color/purple_200"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <TextView
+                android:layout_weight="1"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:gravity="center|end"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:text="@string/plan_text_bz"
+                android:textColor="@color/plan_price_text_color"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_master"
+            android:weightSum="2"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/shape_border_ddce"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_47sdp"
+            android:layout_marginEnd="@dimen/_18sdp"
+            android:layout_marginStart="@dimen/_18sdp">
+
+            <TextView
+                android:layout_weight="1"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:gravity="center|left"
+                android:text="@string/plan_text_master_card"
+                android:textColor="@color/purple_200"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <TextView
+                android:layout_weight="1"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:gravity="center|end"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:text="@string/plan_text_master"
+                android:textColor="@color/plan_price_text_color"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_contect"
+            android:weightSum="2"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/shape_border_ddce"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_47sdp"
+            android:layout_marginEnd="@dimen/_18sdp"
+            android:layout_marginStart="@dimen/_18sdp">
+
+            <TextView
+                android:layout_weight="1"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:gravity="center|left"
+                android:text="@string/plan_text_contect_card"
+                android:textColor="@color/purple_200"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <TextView
+                android:layout_weight="1"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:gravity="center|end"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:text="@string/plan_text_contect"
+                android:textColor="@color/plan_price_text_color"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
