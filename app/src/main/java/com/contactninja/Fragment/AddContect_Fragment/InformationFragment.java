@@ -1258,7 +1258,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
                 String main_data = item.getEmail_number().replace("+91", "");
-                holder.edt_mobile_no.setText(main_data);
+                holder.edt_mobile_no.setText("+"+item.getEmail_number());
                 holder.phone_txt.setText(item.getLabel());
                 holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -1385,7 +1385,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
-                holder.edt_mobile_no.setText(item.getEmail_number());
+                String main_data = item.getEmail_number().replace("+91", "");
+
+                holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
 
 

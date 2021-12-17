@@ -45,20 +45,7 @@
 
                 </TextView>
 
-                <EditText
-                    android:id="@+id/edt_email"
-                    style="@style/tv_regular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp"
 
-                    android:background="@color/add_contect_transpernt"
-                    android:hint="@string/add_email_a"
-                    android:textColor="@color/home_list_sub_data"
-                    android:textColorHint="@color/home_list_sub_data"
-                    android:textStyle="bold">
-
-                </EditText>
 
             </LinearLayout>
 
@@ -179,7 +166,19 @@
             android:padding="@dimen/_5sdp"
             android:textColor="@color/red"
             android:textStyle="bold" />
+        <EditText
+            android:layout_marginStart="@dimen/_10sdp"
+            android:id="@+id/edt_email"
+            style="@style/tv_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/add_contect_transpernt"
+            android:hint="@string/add_email_a"
+            android:textColor="@color/home_list_sub_data"
+            android:textColorHint="@color/home_list_sub_data"
+            android:textStyle="bold">
 
+        </EditText>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

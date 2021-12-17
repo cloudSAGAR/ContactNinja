@@ -54,6 +54,8 @@ public class SessionManager {
     public static final String Refresh_token="refresh_token";
     public static final String csv_token="csv_token";
 
+    public static final String Contect_List ="contectlist";
+
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -371,6 +373,33 @@ public class SessionManager {
         String json = gson.toJson(add_model);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Add_Contect_Detail, json);
+        editor.apply();
+    }
+
+
+
+
+
+
+    public static List<ContectListData> getContectList(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(Contect_List, null);
+        Type type = new TypeToken<ArrayList<ContectListData>>() {
+        }.getType();
+        List<ContectListData> contectList = gson.fromJson(json, type);
+        if (contectList == null) {
+            contectList = new ArrayList<>();
+        }
+        return contectList;
+
+    }
+
+    public static void setContectList(Context context, List<ContectListData> groupModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(groupModel);
+        editor.putString(Contect_List, json);
+        Log.e("Sessioin data",new Gson().toJson(groupModel));
         editor.apply();
     }
 

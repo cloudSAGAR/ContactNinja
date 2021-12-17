@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="2">
 
 
@@ -37,6 +37,7 @@
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_weight="3"
                     android:orientation="horizontal">
+
 
                     <LinearLayout
 
@@ -74,49 +75,6 @@
 
 
 
-                        <LinearLayout
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <com.hbb20.CountryCodePicker
-                                android:id="@+id/ccp_id"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center|left"
-                                android:gravity="center|left"
-                                app:ccpDialog_showTitle="false"
-                                app:ccpDialog_textColor="@color/white"
-                                app:ccp_autoDetectCountry="true"
-                                app:ccp_contentColor="@color/otp_header_text_color"
-                                app:ccp_showNameCode="false"
-                                app:ccp_textSize="@dimen/_12sdp" />
-
-                            <View
-                                android:layout_marginEnd="@dimen/_5sdp"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:layout_marginBottom="@dimen/_5sdp"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:background="@color/home_list_add_contect_view" />
-
-                            <EditText
-                                android:layout_gravity="center|left"
-                                android:id="@+id/edt_mobile_no"
-                                android:gravity="left|center"                                style="@style/tv_regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/add_contect_transpernt"
-                                android:hint="@string/add_number"
-                                android:inputType="number"
-                                android:textSize="@dimen/_12sdp"
-                                android:textColor="@color/home_list_sub_data"
-                                android:textColorHint="@color/home_list_sub_data"
-                                android:textStyle="bold"/>
-
-                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -201,13 +159,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:background="@color/home_list_add_contect_view" />
 
             </LinearLayout>
 
@@ -262,6 +213,55 @@
                 </LinearLayout>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|left"
+                    android:gravity="center|left"
+                    app:ccpDialog_showTitle="false"
+                    app:ccpDialog_textColor="@color/white"
+                    app:ccp_autoDetectCountry="true"
+                    app:ccp_contentColor="@color/otp_header_text_color"
+                    app:ccp_showNameCode="false"
+                    app:ccp_textSize="@dimen/_12sdp" />
+
+                <View
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/home_list_add_contect_view" />
+
+                <EditText
+                    android:layout_gravity="center|left"
+                    android:id="@+id/edt_mobile_no"
+                    android:gravity="left|center"                                style="@style/tv_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/add_contect_transpernt"
+                    android:hint="@string/add_number"
+                    android:inputType="number"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/home_list_sub_data"
+                    android:textColorHint="@color/home_list_sub_data"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
 
         </LinearLayout>
     </ru.rambler.libs.swipe_layout.SwipeLayout>
