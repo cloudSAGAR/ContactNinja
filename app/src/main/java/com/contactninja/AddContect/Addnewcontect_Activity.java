@@ -78,7 +78,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
     ImageView iv_back, iv_more, pulse_icon;
-    TextView save_button;
+    TextView save_button,tv_nameLetter;
     TabLayout tabLayout;
     String fragment_name, user_image_Url, File_name = "", File_extension = "";
     EditText edt_FirstName, edt_lastname;
@@ -143,7 +143,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         option_type = "save";
         String flag = sessionManager.getContect_flag(this);
         if (flag.equals("edit")) {
-            Log.e("Null", "Call");
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
             edt_FirstName.setText(Contect_data.getFirstname());
             edt_lastname.setText(Contect_data.getLastname());
@@ -170,16 +169,40 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            Glide.with(getApplicationContext()).
-                    load(Contect_data.getContactImage())
-                    .placeholder(R.drawable.shape_primary_back)
-                    .error(R.drawable.shape_primary_back).
-                    into(iv_user);
+            if(Contect_data.getContactImage()==null){
+                iv_user.setVisibility(View.GONE);
+                layout_pulse.setVisibility(View.VISIBLE);
+                pulse_icon.setVisibility(View.GONE);
+                tv_nameLetter.setVisibility(View.VISIBLE);
+                String name = Contect_data.getFirstname();
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
+                tv_nameLetter.setText(add_text);
+
+            }else {
+                iv_user.setVisibility(View.VISIBLE);
+                layout_pulse.setVisibility(View.GONE);
+                Glide.with(getApplicationContext()).
+                        load(Contect_data.getContactImage())
+                        .placeholder(R.drawable.shape_primary_back)
+                        .error(R.drawable.shape_primary_back).
+                        into(iv_user);
+            }
             olld_image = Contect_data.getContactImage();
 
             save_button.setText("Edit Contact");
-            layout_pulse.setVisibility(View.GONE);
-            iv_user.setVisibility(View.VISIBLE);
             save_button.setText("Edit Contact");
         } else {
             Log.e("Null", "No Call");
@@ -356,6 +379,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         edt_FirstName = findViewById(R.id.edt_FirstName);
         mMainLayout = findViewById(R.id.frameContainer1);
         layout_pulse = findViewById(R.id.layout_pulse);
+        tv_nameLetter = findViewById(R.id.tv_nameLetter);
 
         iv_user = findViewById(R.id.iv_user);
         pulse_icon.setOnClickListener(this);
@@ -628,7 +652,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager,gsonObject, loadingDialog, Global.getToken(this), new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager,gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -714,7 +738,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager,gsonObject, loadingDialog, Global.getToken(this), new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager,gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -783,6 +807,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
+                tv_nameLetter.setVisibility(View.GONE);
                 bottomSheetDialog.dismiss();
 
             }

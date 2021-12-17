@@ -285,7 +285,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
             }
            // contect_array.put(3);
-            String token=Global.getToken(this);
+            String token=Global.getToken(sessionManager);
             JSONObject obj = new JSONObject();
             JSONObject paramObject = new JSONObject();
             if (!group_id.equals(""))

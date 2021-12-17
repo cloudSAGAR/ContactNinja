@@ -906,7 +906,7 @@ public class ContectFragment extends Fragment {
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(getActivity());
+        String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
@@ -975,7 +975,7 @@ public class ContectFragment extends Fragment {
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(getActivity());
+        String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", "1");
@@ -1055,7 +1055,7 @@ public class ContectFragment extends Fragment {
         RequestBody user_id1 = RequestBody.create(MediaType.parse("text/plain"), user_id);
         RequestBody organization_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
-        retrofitCalls.Upload_csv(sessionManager,loadingDialog, Global.getToken(getActivity()), organization_id1, team_id1, user_id1, body, new RetrofitCallback() {
+        retrofitCalls.Upload_csv(sessionManager,loadingDialog, Global.getToken(sessionManager), organization_id1, team_id1, user_id1, body, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 

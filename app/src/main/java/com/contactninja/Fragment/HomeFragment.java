@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
     private void Refreess_token() throws JSONException {
 
 
-        String token = Global.getToken(getActivity());
+        String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("refresh_token", ""+token);
