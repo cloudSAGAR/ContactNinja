@@ -77,7 +77,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-public class Final_Group extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public class Final_Group extends AppCompatActivity implements View.OnClickListener {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     GroupListData groupListData;
     TextView save_button;
@@ -500,10 +500,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Final_Group.this, mMainLayout);
-    }
+
 
     public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass> {
 
@@ -760,7 +757,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
     @Override
     protected void onResume() {
-        Global.getInstance().setConnectivityListener(this);
         super.onResume();
     }
 }

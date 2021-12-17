@@ -30,7 +30,7 @@ import com.contactninja.Utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     TextView save_button;
     ImageView iv_more, iv_back;
     EditText add_detail,add_new_contect;
@@ -126,10 +126,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
 
     }
 
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(SendBroadcast.this, mMainLayout);
-    }
+
 
 
     class ViewpaggerAdapter extends FragmentPagerAdapter {
@@ -172,7 +169,6 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onResume() {
-        Global.getInstance().setConnectivityListener(this);
         super.onResume();
     }
 }

@@ -2,11 +2,15 @@ package com.contactninja;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -73,10 +77,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final boolean shouldLoadHomeFragOnBackPress = true;
     LinearLayout llCreate;
 
+    private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mNetworkReceiver = new ConnectivityReceiver();
+        registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
         sessionManager.login();
         SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
@@ -97,7 +105,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
 
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
    /* public void showAlertDialogButtonClicked() {
 

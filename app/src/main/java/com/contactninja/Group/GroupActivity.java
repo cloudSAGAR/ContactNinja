@@ -64,7 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GroupActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public class GroupActivity extends AppCompatActivity implements View.OnClickListener {
 
     //public static UserListDataAdapter userListDataAdapter;
     public static TopUserListDataAdapter  topUserListDataAdapter;
@@ -382,10 +382,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(GroupActivity.this, mMainLayout);
-    }
+
 
 
 
@@ -860,7 +857,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        Global.getInstance().setConnectivityListener(this);
       /*  try {
             ContectEvent();
         } catch (JSONException e) {
