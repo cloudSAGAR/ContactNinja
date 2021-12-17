@@ -16,10 +16,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -128,6 +131,7 @@ public class ContectFragment extends Fragment {
     List<Csv_InviteListData> csv_inviteListData;
     private List<ContectListData.Contact> contectListData;
     SwipeRefreshLayout swipeToRefresh;
+    EditText ev_search;
 
 
     public ContectFragment(String strtext, View view, FragmentActivity activity) {
@@ -411,7 +415,33 @@ public class ContectFragment extends Fragment {
         });*/
         ///  EnableRuntimePermission();
 
+        ev_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                List<ContectListData.Contact> temp = new ArrayList();
+                for(ContectListData.Contact d: contectListData){
+                    if(d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())){
+                        temp.add(d);
+                        // Log.e("Same Data ",d.getUserName());
+                    }
+                }
+            /*groupContectAdapter = new GroupContectAdapter(getActivity());
+            contect_list_unselect.setAdapter(groupContectAdapter);*/
+                paginationAdapter.updateList(temp);
+                //groupContectAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
         return content_view;
@@ -419,14 +449,15 @@ public class ContectFragment extends Fragment {
     }
 
     void filter(String text, View view, FragmentActivity activity) {
-
-
+        Log.e("Text is",text);
         if (!text.equals("")) {
-            List<InviteListData> temp = new ArrayList();
-            for (InviteListData d : inviteListData) {
-                if (d.getUserName().contains(text)) {
+            List<ContectListData.Contact> temp = new ArrayList();
+            for (ContectListData.Contact d : contectListData) {
+                if (d.getFirstname().toLowerCase().contains(text.toLowerCase())) {
                     temp.add(d);
-                    // Log.e("Same Data ",d.getUserName());
+                    contectListData.addAll(temp);
+                    paginationAdapter.notifyDataSetChanged();
+
                 }
             }
 
@@ -447,6 +478,7 @@ public class ContectFragment extends Fragment {
         add_new_contect_icon = content_view.findViewById(R.id.add_new_contect_icon);
         add_new_contect_layout = content_view.findViewById(R.id.add_new_contect_layout);
         swipeToRefresh=content_view.findViewById(R.id.swipeToRefresh);
+        ev_search=content_view.findViewById(R.id.ev_search);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

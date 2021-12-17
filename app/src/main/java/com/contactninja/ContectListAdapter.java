@@ -206,6 +206,10 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
     }
+    public void updateList(List<ContectListData.Contact> list) {
+        contacts = list;
+        notifyDataSetChanged();
+    }
 
     public ContectListData.Contact getItem(int position) {
         return contacts.get(position);

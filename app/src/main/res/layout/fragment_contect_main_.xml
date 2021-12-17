@@ -13,6 +13,7 @@
         layout="@layout/toolbar" />
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
         android:layout_marginStart="@dimen/_10sdp"
@@ -29,6 +30,7 @@
 
         </ImageView>
         <EditText
+            android:textColor="@color/tv_medium"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_gravity="center|left"
             android:gravity="center|left"

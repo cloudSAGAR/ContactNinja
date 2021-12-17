@@ -108,11 +108,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(500);
         contectListData = new ArrayList<>();
-        try {
-            ContectEvent();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         contectListData.clear();
         iv_more.setVisibility(View.GONE);
         save_button.setOnClickListener(this);
@@ -139,15 +135,25 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         fastscroller.setupWithRecyclerView(
                 contect_list_unselect,
                 (position) -> {
-                    // ItemModel item = data.get(position);
-                    FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
 
+                    try {
+                        FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                                inviteListData.get(position).getUserName().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );
+                        return fastScrollItemIndicator;
+                    }
+                    catch (Exception e)
+                    {
+                      /*  FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                                inviteListData.get(position).getUserName().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );*/
+                        return null;
+                    }
 
-                            inviteListData.get(position).getUserName().substring(0, 1)
-                                    .substring(0, 1)
-                                    .toUpperCase()// Grab the first letter and capitalize it
-                    );
-                    return fastScrollItemIndicator;
                 }
         );
 
@@ -244,7 +250,24 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        if (SessionManager.getContectList(this).size() != 0) {
+            GetContactsIntoArrayList();
+            contectListData.addAll(SessionManager.getContectList(this).get(0).getContacts());
+            groupContectAdapter.addAll(contectListData);
+            num_count.setText(contectListData.size()+" Contacts");
+            contect_list_unselect.setItemViewCacheSize(500);
 
+
+        } else {
+            GetContactsIntoArrayList();
+            contect_list_unselect.setItemViewCacheSize(500);
+
+            try {
+                ContectEvent();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         call_updatedata();
 
     }
@@ -787,7 +810,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     userDetails.remove(position);
                     topUserListDataAdapter.notifyDataSetChanged();
 
-
+                    num_count.setText(userDetails.size()+" Contacts");
 
 
                 }
