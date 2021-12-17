@@ -27,7 +27,6 @@
                 android:padding="1dp"
                 android:scaleType="fitXY"
                 app:riv_corner_radius="@dimen/_35sdp"
-                android:src="@drawable/deafult_predefine_cover"
                 app:riv_border_color="@color/purple_200"
                 app:riv_border_width="0dp"
                 android:layout_width="@dimen/_50sdp"

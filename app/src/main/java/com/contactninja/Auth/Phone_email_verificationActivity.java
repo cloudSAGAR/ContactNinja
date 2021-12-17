@@ -243,7 +243,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
 
-        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(this), new RetrofitCallback() {
+        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
@@ -329,7 +329,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         obj.add("data", paramObject);
         Log.e("Data is",new Gson().toJson(obj));
 
-        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(this), new RetrofitCallback() {
+        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {

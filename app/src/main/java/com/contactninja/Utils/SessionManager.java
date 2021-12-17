@@ -113,7 +113,7 @@ public class SessionManager {
 
 
 
-    public  String getRefresh_token(Context context) {
+    public  String getRefresh_token() {
 
         String type= pref.getString(Refresh_token, "");
         return  type;

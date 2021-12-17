@@ -1,8 +1,8 @@
 package com.contactninja;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -36,12 +35,12 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<ContectListData.Contact> contacts;
     private boolean isLoadingAdded = false;
 
-    public ContectListAdapter(Context context) {
+    public ContectListAdapter(@SuppressLint("UnknownNullness") Context context) {
         this.context = context;
         contacts = new LinkedList<>();
     }
 
-    public void setContactList(List<ContectListData.Contact> contacts) {
+    public void setContactList(@SuppressLint("UnknownNullness") List<ContectListData.Contact> contacts) {
         this.contacts = contacts;
     }
 
@@ -107,7 +106,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
                   if (Contact_data.getContactImage() == null) {
-                      String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
+                      String name = Contact_data.getFirstname();
                       String add_text = "";
                       String[] split_data = name.split(" ");
                       try {

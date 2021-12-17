@@ -36,7 +36,6 @@
             android:padding="1dp"
 
             android:scaleType="fitXY"
-            android:src="@drawable/deafult_predefine_cover"
             app:riv_border_color="@color/purple_200"
             app:riv_border_width="0dp"
             app:riv_corner_radius="@dimen/_50sdp"

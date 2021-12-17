@@ -189,7 +189,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(getActivity());
+        String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
         paramObject.put("organization_id", "1");
@@ -250,7 +250,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        String token = Global.getToken(getActivity());
+        String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
         paramObject.put("organization_id", "1");

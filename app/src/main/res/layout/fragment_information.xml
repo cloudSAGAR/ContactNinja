@@ -1219,7 +1219,6 @@
                         android:layout_height="wrap_content">
                         <ImageView
                             android:background="@drawable/ic_rectangle_1810"
-                            android:src="@drawable/breakout"
                             android:layout_gravity="center"
                             android:padding="5dp"
                             android:layout_width="@dimen/_20sdp"
@@ -1335,7 +1334,6 @@
             <ImageView
                 android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/img_breakout"
-                android:src="@drawable/breakout"
                 android:padding="@dimen/_5sdp"
                 android:background="@drawable/shape_primary_back"
                 android:layout_width="@dimen/_20sdp"

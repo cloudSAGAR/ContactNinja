@@ -176,10 +176,9 @@ public class Global extends Application   {
     }
 
 
-    public static String getToken(Activity activity){
+    public static String getToken(SessionManager sessionManager){
 
-        SessionManager sessionManager=new SessionManager(activity);
-        String token=sessionManager.getRefresh_token(activity);
+        String token=sessionManager.getRefresh_token();
         return token;
     }
 
