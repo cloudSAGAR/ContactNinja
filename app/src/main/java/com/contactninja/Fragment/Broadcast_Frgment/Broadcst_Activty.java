@@ -134,14 +134,18 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Broadcst_Activty.this, R.style.DialogStyle);
                 bottomSheetDialog.setContentView(mView);
                 TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
+                ImageView iv_send = bottomSheetDialog.findViewById(R.id.iv_send);
                 ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
                 ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
                 ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
                 ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
                 LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
+                LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
                 RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
                 EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
                 CoordinatorLayout layout_select_image=bottomSheetDialog.findViewById(R.id.layout_select_image);
+                LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
+                LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
 
                 edit_message.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -149,6 +153,14 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                         iv_card_list.setImageResource(R.drawable.ic_card_blank);
                         rv_image_card.setVisibility(View.GONE);
                         iv_card_list.setSelected(false);
+                    }
+                });
+
+                iv_send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        lay_main_choose_send.setVisibility(View.VISIBLE);
                     }
                 });
 

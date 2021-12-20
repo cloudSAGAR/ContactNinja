@@ -164,4 +164,6 @@ Number</string>
     <string name="text_ok">password has been sent \n to your register email</string>
     <string name="link_click">your link is attached</string>
     <string name="type_message">Type your message here…</string>
+    <string name="broadcast_Send_Now">Send Now</string>
+    <string name="broadcast_Schedule">Schedule</string>
 </resources>

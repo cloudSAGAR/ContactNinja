@@ -37,7 +37,8 @@
                 android:layout_gravity="bottom"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_25sdp"
-                android:src="@drawable/ic_card_blank"/>
+                android:src="@drawable/ic_card_blank"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:layout_marginStart="@dimen/_10sdp"
@@ -46,6 +47,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:id="@+id/layout_select_image"
                     android:visibility="gone"
@@ -57,7 +60,8 @@
                         android:src="@drawable/card_1"
                         android:id="@+id/iv_selected"
                         android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_80sdp"/>
+                        android:layout_height="@dimen/_80sdp"
+                        tools:ignore="ContentDescription" />
                     <ImageView
                         android:id="@+id/iv_cancle_select_image"
                         android:padding="@dimen/_2sdp"
@@ -65,7 +69,8 @@
                         app:layout_anchor="@id/iv_selected"
                         android:src="@drawable/ic_cancle"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        tools:ignore="ContentDescription" />
 
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -73,13 +78,15 @@
                     android:id="@+id/lay_link_copy"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    tools:ignore="UseCompoundDrawables">
                     <ImageView
                         android:id="@+id/iv_link_icon"
                         android:padding="@dimen/_2sdp"
                         android:src="@drawable/ic_link_light"
                         android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"/>
+                        android:layout_height="@dimen/_25sdp"
+                        tools:ignore="ContentDescription" />
                         <TextView
                             android:id="@+id/tv_text_link"
                             android:layout_marginStart="@dimen/_2sdp"
@@ -92,22 +99,37 @@
 
                         </TextView>
                 </LinearLayout>
-                <EditText
-                    android:id="@+id/edit_message"
-                    style="@style/tv_regular"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@null"
-                    android:gravity="center|left"
-                    android:hint="@string/type_message"
-                    android:imeOptions="actionDone"
-                    android:inputType="textEmailAddress"
-                    android:padding="10dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/otp_header_text_color"
-                    android:textColorHint="@color/otp_header_text_color"
-                    tools:ignore="Autofill,RtlHardcoded" />
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_message"
+                        style="@style/tv_regular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:gravity="center|left"
+                        android:hint="@string/type_message"
+                        android:imeOptions="actionDone"
+                        android:inputType="textEmailAddress"
+                        android:padding="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/otp_header_text_color"
+                        android:textColorHint="@color/otp_header_text_color"
+                        tools:ignore="Autofill,RtlHardcoded" />
+
+                    <ImageView
+                        android:id="@+id/iv_send"
+                        android:layout_gravity="bottom"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_broadcast_send"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -121,6 +143,56 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/lay_main_choose_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="NegativeMargin,UselessLeaf">
+            <LinearLayout
+                android:id="@+id/lay_sendnow"
+                android:padding="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="NegativeMargin,UseCompoundDrawables,UselessLeaf,UselessParent">
+                <TextView
+                    android:layout_weight="1"
+                    style="@style/tv_Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/broadcast_Send_Now"/>
+
+                <ImageView
+                    android:src="@drawable/ic_send_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lay_schedule"
+                android:padding="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="NegativeMargin,UseCompoundDrawables,UselessLeaf,UselessParent">
+                <TextView
+                    android:layout_weight="1"
+                    style="@style/tv_Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/broadcast_Schedule"/>
+
+                <ImageView
+                    android:src="@drawable/ic_broadcast_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+        </LinearLayout>
 
 
 
