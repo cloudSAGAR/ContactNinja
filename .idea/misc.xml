@@ -59,9 +59,15 @@
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/mipmap-anydpi-v26/ic_logo_round.xml" value="0.2203125" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_nav_home.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_nav_home_select.xml" value="0.35625" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_login.xml" value="0.12" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_signup.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_verification.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/common_dialog.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/custom_add_work_layout.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/custom_message_send.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/eamil_add_layout.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/fragment_contect.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/fragment_contect_main_.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/fragment_group.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/fragment_information.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/phone_add_layout.xml" value="0.3359375" />

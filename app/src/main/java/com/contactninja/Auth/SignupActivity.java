@@ -141,7 +141,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
 
-                //loadingDialog.showLoadingDialog();
+                loadingDialog.cancelLoading();
                 first_name = edit_First.getText().toString().trim();
                 last_name = edit_Last.getText().toString().trim();
                 mobile_number = edit_Mobile.getText().toString().trim();
@@ -349,7 +349,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
                     if (response.body().getStatus() == 200) {
-                        loadingDialog.cancelLoading();
+
                         if(!login_type.equals("EMAIL")){
                             VerifyPhone(edit_Mobile.getText().toString());
                         }else {
@@ -404,7 +404,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
     private void SignAPI() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+       // loadingDialog.showLoadingDialog();
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();

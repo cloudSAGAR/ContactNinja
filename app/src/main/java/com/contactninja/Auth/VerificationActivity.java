@@ -234,6 +234,7 @@ public class VerificationActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
+                                finish();
                             } else if (!sessionManager.isPayment_Type_Select()) {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                                 finish();
@@ -407,6 +408,7 @@ public class VerificationActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
+                                finish();
                             }
                             else {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
@@ -418,6 +420,7 @@ public class VerificationActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
+                            finish();
                         }
 
                     }
@@ -430,6 +433,7 @@ public class VerificationActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
+                                finish();
                             }
                             else {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
@@ -441,6 +445,7 @@ public class VerificationActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
+                            finish();
                         }
 
                     }
@@ -449,6 +454,7 @@ public class VerificationActivity extends AppCompatActivity {
                       Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                       intent.putExtra("login_type", login_type);
                       startActivity(intent);
+                      finish();
                   }
                   else if (!sessionManager.isPayment_Type_Select()) {
                         startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));

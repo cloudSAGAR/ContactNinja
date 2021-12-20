@@ -112,6 +112,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 Log.e(TAG, "onVerificationCompleted:" + credential);
+                loadingDialog.cancelLoading();
             }
 
             @Override
@@ -202,6 +203,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:
                 if (checkVelidaction()) {
                     sessionManager.setlogin_type(Login_type);
+
+                   // loadingDialog.showLoadingDialog();
                     if (Login_type.equals("EMAIL")) {
                         try {
                             Uservalidate();
@@ -209,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             e.printStackTrace();
                         }
                     } else {
-                      //  loadingDialog.showLoadingDialog();
+                        //loadingDialog.showLoadingDialog();
                         try {
                             Uservalidate();
                         } catch (JSONException e) {
@@ -292,7 +295,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     public void LoginData() {
-        loadingDialog.showLoadingDialog();
         password = edit_password.getText().toString();
 
         JsonObject obj = new JsonObject();
@@ -389,7 +391,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             String txt_email=edit_email.getText().toString();
             String txt_contect=edit_Mobile.getText().toString();
-
             loadingDialog.showLoadingDialog();
             JsonObject obj = new JsonObject();
             JsonObject paramObject = new JsonObject();
@@ -410,7 +411,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
                     if (response.body().getStatus() == 200) {
-                        loadingDialog.cancelLoading();
+
                         if(!Login_type.equals("EMAIL")){
                             VerifyPhone(edit_Mobile.getText().toString());
                         }else {

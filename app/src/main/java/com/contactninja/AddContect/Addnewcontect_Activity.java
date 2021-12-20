@@ -405,7 +405,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 .setDeniedTitle("Contactninja would like to access your contacts")
                 .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
                 .setGotoSettingButtonText("setting")
-                .setPermissions(Manifest.permission.WRITE_CONTACTS)
+                .setPermissions(Manifest.permission.WRITE_CONTACTS,Manifest.permission.SEND_SMS)
                 .setRationaleConfirmText("OK")
                 .check();
 

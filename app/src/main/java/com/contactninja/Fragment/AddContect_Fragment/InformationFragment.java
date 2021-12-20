@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -1509,7 +1511,21 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 }
             });
 
+
+
+            holder.layout_icon_message.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e("Sms Event Call","Yes");
+                    Log.e("Number is",item.getEmail_number());
+                    showAlertDialogButtonClicked1(item.getEmail_number());
+                }
+            });
         }
+
+
+
+
 
         @Override
         public int getItemCount() {
@@ -1571,6 +1587,54 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     }
 
+    public void showAlertDialogButtonClicked1(String p_num) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.custom_message_send,
+                        null);
+        builder.setView(customLayout);
+        EditText editText = customLayout.findViewById(R.id.editText);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        TextView tv_add = customLayout.findViewById(R.id.tv_add);
+        TextView tv_phone_a= customLayout.findViewById(R.id.tv_phone);
+        tv_phone_a.setText("Mobile Number "+p_num);
+
+
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendSMS(p_num,editText.getText().toString());
+                dialog.dismiss();
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+    public void sendSMS(String phoneNo, String msg) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            Toast.makeText(getContext(), "Message Sent",
+                    Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            Toast.makeText(getContext(),ex.getMessage().toString(),
+                    Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
+    }
     public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.InviteListDataclass> {
 
         private final List<Contactdetail> contactdetails;
@@ -1845,7 +1909,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     email.putExtra(Intent.EXTRA_TEXT, "");
                     email.setType("message/rfc822");
                     startActivity(Intent.createChooser(email, "Choose an Email client :"));
-
                 }
             });
 

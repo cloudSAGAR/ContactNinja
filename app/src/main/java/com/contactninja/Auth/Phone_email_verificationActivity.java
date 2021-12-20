@@ -99,6 +99,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 //Log.e(TAG, "onVerificationCompleted:" + credential);
+                loadingDialog.cancelLoading();
             }
 
             @Override
@@ -125,6 +126,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                 intent.putExtra("activity_flag", "login");
                 intent.putExtra("referred_by","");
                 startActivity(intent);
+                finish();
 
 
             }
@@ -333,14 +335,11 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
-                    //loadingDialog.cancelLoading();
+                    loadingDialog.cancelLoading();
 
                     sessionManager.Email_Update();
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
-                   // startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                    //finish();
-                    VerifyPhone(edit_Mobile.getText().toString().trim());
-
+                    startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                    finish();
                 }
                 else if (response.body().getStatus()==404)
                 {
