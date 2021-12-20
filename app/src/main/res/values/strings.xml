@@ -164,14 +164,19 @@ Number</string>
     <string name="text_ok">password has been sent \n to your register email</string>
     <string name="link_click">your link is attached</string>
     <string name="type_message">Type your message here…</string>
+    <string name="error_opps">Oops</string>\
+    <string name="brodcaste_tank_you">Your Broadcast \n has been sent!</string>
     <string name="broadcast_Send_Now">Send Now</string>
     <string name="broadcast_Schedule">Schedule</string>
-    
+
     <array name="broadcast_repeat_list">
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
         <item>Does Not Repeat</item>
+    </array>
+    <array name="broadcste_time_list">
+        <item>Time Zone ( GMT+5:30 - India )</item>
     </array>
 
     <array name="broadcast_days">
@@ -183,4 +188,9 @@ Number</string>
         <item>Friday</item>
         <item>Saturday</item>
     </array>
+
+    <string name="daily_text">I want my Broadcast to repeat</string>
+
+    <string name="number_text">Number of Recurring messages </string>
+    <string name="number_text1"> :  ( Max 90 )</string>
 </resources>

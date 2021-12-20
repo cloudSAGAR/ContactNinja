@@ -320,6 +320,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
                     sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
+                    try {
+                        if (user_model.getUser().getContactNumber().equals(""))
+                        {
+                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                            intent.putExtra("login_type", Login_type);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            finish();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                        intent.putExtra("login_type", Login_type);
+                        startActivity(intent);
+                        finish();
+                    }
+
+/*
                     if (!sessionManager.isEmail_Update())
                     {
                         Intent i = new Intent(LoginActivity.this, Phone_email_verificationActivity.class);
@@ -337,7 +359,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     else {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
-                    }
+                    }*/
 
 
                 } else if (response.body().getStatus()==404){

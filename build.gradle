@@ -4,6 +4,9 @@ buildscript {
         google()
         mavenCentral()
         maven { url "https://maven.google.com" }
+        maven {
+            url "https://jitpack.io"
+        }
     }
     dependencies {
        /* classpath 'com.android.tools.build:gradle:4.2.2'
@@ -21,6 +24,9 @@ allprojects {
         // Check that you have Google's Maven repository (if not, add it).
         google()
         maven { url "https://maven.google.com" }
+        maven {
+            url "https://jitpack.io"
+        }
     }
 }
 task clean(type: Delete) {

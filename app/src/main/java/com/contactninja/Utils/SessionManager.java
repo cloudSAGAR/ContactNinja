@@ -10,6 +10,7 @@ import android.util.Log;
 import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
@@ -55,7 +56,9 @@ public class SessionManager {
     public static final String csv_token="csv_token";
 
     public static final String Contect_List ="contectlist";
-
+    public static final String brodcaste_Contect_List ="brod_contectlist";
+    public static final String brodcaste_group ="brod_group";
+    public static final String Broadcast_Data_save=" broadcast_data";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -400,6 +403,73 @@ public class SessionManager {
         String json = gson.toJson(groupModel);
         editor.putString(Contect_List, json);
         Log.e("Sessioin data",new Gson().toJson(groupModel));
+        editor.apply();
+    }
+
+    public static List<ContectListData.Contact> getContectList_broadcste(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(brodcaste_Contect_List, null);
+        Type type = new TypeToken<ArrayList<ContectListData.Contact>>() {
+        }.getType();
+        List<ContectListData.Contact> contectList = gson.fromJson(json, type);
+        if (contectList == null) {
+            contectList = new ArrayList<>();
+        }
+        return contectList;
+
+    }
+
+    public static void setContectList_broadcste(Context context, List<ContectListData.Contact> groupModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(groupModel);
+        editor.putString(brodcaste_Contect_List, json);
+        editor.apply();
+    }
+
+
+    public static List<Grouplist.Group> getgroup_broadcste(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(brodcaste_group, null);
+        Type type = new TypeToken<ArrayList<Grouplist.Group>>() {
+        }.getType();
+        List<Grouplist.Group> contectList = gson.fromJson(json, type);
+        if (contectList == null) {
+            contectList = new ArrayList<>();
+        }
+        return contectList;
+
+    }
+
+    public static void setgroup_broadcste(Context context,List<Grouplist.Group> groupModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(groupModel);
+        editor.putString(brodcaste_group, json);
+        editor.apply();
+    }
+
+
+
+
+
+    public static Broadcast_Data getAdd_Broadcast_Data(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Broadcast_Data_save, "");
+        Type type = new TypeToken<Broadcast_Data>() {
+        }.getType();
+        Broadcast_Data signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new Broadcast_Data();
+        }
+        return signModel;
+    }
+
+    public static void setAdd_Broadcast_Data(Broadcast_Data add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Broadcast_Data_save, json);
         editor.apply();
     }
 

@@ -33,9 +33,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Broadcast_Activity.Broadcast_to_repeat;
+import com.contactninja.Broadcast_Activity.Brodcsast_Tankyou;
+import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -59,19 +63,14 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
     CardListAdepter cardListAdepter;
 
     LinearLayout main_layout;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcst_activty);
         IntentUI();
-
-
-
-
-
-
-
+        sessionManager=new SessionManager(this);
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -152,6 +151,20 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
                 LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
 
+                lay_sendnow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getApplicationContext(), Brodcsast_Tankyou.class));
+                        finish();
+                    }
+                });
+                lay_schedule.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
+                        finish();
+                    }
+                });
                 edit_message.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -164,8 +177,13 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 iv_send.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Broadcast_Data broadcast_data=new Broadcast_Data();
+                        broadcast_data.setLink(tv_text_link.getText().toString());
+                        broadcast_data.setLink_text(edit_message.getText().toString());
+                        broadcast_data.setBroadcast_image_lists(broadcast_image_list);
+                        sessionManager.setAdd_Broadcast_Data(broadcast_data);
                         lay_main_choose_send.setVisibility(View.VISIBLE);
+
                     }
                 });
 

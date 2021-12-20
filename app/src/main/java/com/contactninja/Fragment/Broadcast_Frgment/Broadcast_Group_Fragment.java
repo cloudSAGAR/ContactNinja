@@ -71,6 +71,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     private ProgressBar loadingPB;
     RecyclerView add_contect_list;
     public static TopUserListDataAdapter topUserListDataAdapter;
+    TextView tv_create;
+
 
 
 
@@ -155,6 +157,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         add_contect_list=view.findViewById(R.id.add_contect_list);
         layoutManager1=new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
         add_contect_list.setLayoutManager(layoutManager1);
+        tv_create=view.findViewById(R.id.tv_create);
 
 
     }
@@ -227,16 +230,20 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     num_count.setText("" + group_model.getTotal() + " Group");
 
                     totale_group = group_model.getTotal();
+                    main_layout.setVisibility(View.GONE);
 
 
                 } else {
-
+                    tv_create.setText(getString(R.string.error_opps));
+                    main_layout.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
+                tv_create.setText(getString(R.string.error_opps));
+                main_layout.setVisibility(View.VISIBLE);
             }
         });
 
@@ -378,6 +385,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                             topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
                             add_contect_list.setAdapter(topUserListDataAdapter);
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
+                            sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
+                            sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
 
                         }
                     });
@@ -397,6 +406,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                             topUserListDataAdapter.notifyDataSetChanged();
                           //  Log.e("Size is",new Gson().toJson(select_contectListData));
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
+                            sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
+                            sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
 
                         }
                     });
@@ -583,8 +594,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     }
                     userDetails.remove(position);
                     topUserListDataAdapter.notifyDataSetChanged();
-
-
+                    sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
+                    sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
 
 
                 }
@@ -600,8 +611,14 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
 
         public void remove_item(int item)
         {
-            userDetails.remove(item);
-            notifyItemRemoved(item);
+            try {
+                userDetails.remove(item);
+                notifyItemRemoved(item);
+            }
+            catch (Exception e)
+            {
+
+            }
 
         }
 

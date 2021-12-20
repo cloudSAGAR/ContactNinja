@@ -471,6 +471,8 @@ public class Broadcste_Contect_Fragment extends Fragment  {
                     userDetails.remove(position);
                     topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
                     add_contect_list.setAdapter(topUserListDataAdapter);
+                    sessionManager.setContectList_broadcste(getActivity(),new ArrayList<>());
+                    sessionManager.setContectList_broadcste(getActivity(),select_contectListData);
                    // topUserListDataAdapter.notifyDataSetChanged();
 
 
@@ -820,6 +822,8 @@ public class Broadcste_Contect_Fragment extends Fragment  {
                                 //topUserListDataAdapter.notifyDataSetChanged();
                                 num_count.setText(select_contectListData.size()+" Contact Selcted");
                                 contacts.get(position).setFlag("false");
+                                sessionManager.setContectList_broadcste(getActivity(),new ArrayList<>());
+                                sessionManager.setContectList_broadcste(getActivity(),select_contectListData);
 
 
 
@@ -845,6 +849,8 @@ public class Broadcste_Contect_Fragment extends Fragment  {
                                 Log.e("Size is",new Gson().toJson(select_contectListData));
                                 num_count.setText(select_contectListData.size()+" Contact Selcted");
                                 contacts.get(position).setFlag("true");
+                                sessionManager.setContectList_broadcste(getActivity(),new ArrayList<>());
+                                sessionManager.setContectList_broadcste(getActivity(),select_contectListData);
 
 
                             }
