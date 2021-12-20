@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.contactninja.MainActivity"
+    android:background="@color/white"
+    android:id="@+id/main_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
+
+
+    <LinearLayout
+        android:weightSum="2"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_gravity="left|center"
+        android:gravity="center|left"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            style="@style/tv_regular"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_gravity="center|end"
+            android:gravity="end|center"
+            android:id="@+id/save_button"
+            android:text="@string/group_to"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:textColor="@color/text_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_weight="1"
+            android:id="@+id/add_contect_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+        <View
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@color/home_list_back_line"
+            android:layout_width="2dp"
+            android:layout_height="match_parent">
+
+        </View>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_weight="1"
+            android:id="@+id/add_group_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
+
+    <View
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </View>
+    <EditText
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:id="@+id/ev_titale"
+        android:background="@color/add_contect_transpernt"
+        style="@style/tv_regular"
+        android:inputType="textCapSentences"
+        android:textColor="@color/tv_medium"
+        android:textColorHint="@color/tv_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_15sdp"
+        android:hint="@string/tv_title">
+
+    </EditText>
+
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Starts :  "
+            style="@style/tv_regular"
+            android:layout_gravity="left|center"
+            android:gravity="center|left"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/tv_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tv_start"
+            android:text=""
+            android:layout_gravity="left|center"
+            android:gravity="center|left"
+            style="@style/tv_regular"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_200"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Repeats :  "
+            style="@style/tv_regular"
+            android:layout_gravity="left|center"
+            android:gravity="center|left"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/tv_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tv_repite"
+            android:text=""
+            android:textStyle="bold"
+            style="@style/tv_regular"
+            android:layout_gravity="left|center"
+            android:gravity="center|left"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/purple_200"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Ends :  "
+            style="@style/tv_regular"
+            android:layout_gravity="left|center"
+            android:gravity="center|left"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/tv_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tv_ends"
+            android:text=" "
+            style="@style/tv_regular"
+            android:textStyle="bold"
+            android:layout_gravity="left|center"
+            android:gravity="center|left"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/purple_200"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -190,7 +190,10 @@ Number</string>
     </array>
 
     <string name="daily_text">I want my Broadcast to repeat</string>
+    <string name="select_date">Please select end date</string>
 
     <string name="number_text">Number of Recurring messages </string>
     <string name="number_text1"> :  ( Max 90 )</string>
+
+    <string name="tv_title">Title Your Scheduled Broadcast</string>
 </resources>
