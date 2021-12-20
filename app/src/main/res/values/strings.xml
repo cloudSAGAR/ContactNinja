@@ -166,4 +166,21 @@ Number</string>
     <string name="type_message">Type your message here…</string>
     <string name="broadcast_Send_Now">Send Now</string>
     <string name="broadcast_Schedule">Schedule</string>
+    
+    <array name="broadcast_repeat_list">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Does Not Repeat</item>
+    </array>
+
+    <array name="broadcast_days">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </array>
 </resources>

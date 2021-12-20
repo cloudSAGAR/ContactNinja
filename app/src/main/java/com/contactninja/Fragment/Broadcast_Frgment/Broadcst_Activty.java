@@ -67,6 +67,11 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
         IntentUI();
 
 
+
+
+
+
+
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
