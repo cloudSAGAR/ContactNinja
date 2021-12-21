@@ -158,51 +158,52 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
-            PhoneViewAdd();
-            EmailViewAdd();
+          /*  PhoneViewAdd();
+            EmailViewAdd();*/
             TextSet();
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
 
             for (int i = 0; i < detail_contect.size(); i++) {
-                if (detail_contect.get(i).getType().equals("EMAIL")) {
-                    Contactdetail contactdetail = new Contactdetail();
-                    contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
-                    contactdetail.setType(detail_contect.get(i).getType());
-                    contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                    contactdetail.setId(detail_contect.get(i).getId());
-                    contactdetail.setLabel(detail_contect.get(i).getLabel());
-                    contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
-                    emaildetails_list.add(contactdetail);
-                    Collections.reverse(emaildetails_list);
-                    contactdetails.add(contactdetail);
+                if(!detail_contect.get(i).getEmailNumber().equals("")) {
+                    if (detail_contect.get(i).getType().equals("EMAIL")) {
+                        Contactdetail contactdetail = new Contactdetail();
+                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
+                        contactdetail.setType(detail_contect.get(i).getType());
+                        contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                        contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setLabel(detail_contect.get(i).getLabel());
+                        contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
+                        emaildetails_list.add(contactdetail);
+                        Collections.reverse(emaildetails_list);
+                        contactdetails.add(contactdetail);
 
-                    layout_Add_email.setVisibility(View.GONE);
-                    emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
-                    rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    rv_email.setAdapter(emailAdapter);
+                        layout_Add_email.setVisibility(View.GONE);
+                        emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+                        rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        rv_email.setAdapter(emailAdapter);
 
-                } else {
-                    Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
-                    Contactdetail contactdetail = new Contactdetail();
-                    contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
-                    contactdetail.setType(detail_contect.get(i).getType());
-                    contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                    contactdetail.setId(detail_contect.get(i).getId());
-                    contactdetail.setLabel(detail_contect.get(i).getLabel());
-                    contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
+                    } else {
+                        Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
+                        Contactdetail contactdetail = new Contactdetail();
+                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
+                        contactdetail.setType(detail_contect.get(i).getType());
+                        contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                        contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setLabel(detail_contect.get(i).getLabel());
+                        contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
 
-                    phonedetails_list.add(contactdetail);
-                    Collections.reverse(phonedetails_list);
-                    contactdetails.add(contactdetail);
+                        phonedetails_list.add(contactdetail);
+                        Collections.reverse(phonedetails_list);
+                        contactdetails.add(contactdetail);
 
-                    phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
-                    rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    rv_phone.setAdapter(phoneAdapter);
+                        phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                        rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        rv_phone.setAdapter(phoneAdapter);
 
 
+                    }
                 }
-
             }
 
         } else if (flag.equals("read")) {
@@ -266,42 +267,43 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
 
             for (int i = 0; i < detail_contect.size(); i++) {
-                if (detail_contect.get(i).getType().equals("EMAIL")) {
-                    Contactdetail contactdetail = new Contactdetail();
-                    contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
-                    contactdetail.setType(detail_contect.get(i).getType());
-                    contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                    contactdetail.setId(detail_contect.get(i).getId());
-                    contactdetail.setLabel(detail_contect.get(i).getLabel());
-                    contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
-                    emaildetails_list.add(contactdetail);
-                    Collections.reverse(emaildetails_list);
-                    contactdetails.add(contactdetail);
+                if(!detail_contect.get(i).getEmailNumber().trim().equals("")){
+                    if (detail_contect.get(i).getType().equals("EMAIL")) {
+                        Contactdetail contactdetail = new Contactdetail();
+                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
+                        contactdetail.setType(detail_contect.get(i).getType());
+                        contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                        contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setLabel(detail_contect.get(i).getLabel());
+                        contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
+                        emaildetails_list.add(contactdetail);
+                        Collections.reverse(emaildetails_list);
+                        contactdetails.add(contactdetail);
 
-                    layout_Add_email.setVisibility(View.GONE);
-                    emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
-                    rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    rv_email.setAdapter(emailAdapter);
+                        layout_Add_email.setVisibility(View.GONE);
+                        emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+                        rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        rv_email.setAdapter(emailAdapter);
 
-                } else {
-                    Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
-                    Contactdetail contactdetail = new Contactdetail();
-                    contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
-                    contactdetail.setType(detail_contect.get(i).getType());
-                    contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                    contactdetail.setId(detail_contect.get(i).getId());
-                    contactdetail.setLabel(detail_contect.get(i).getLabel());
-                    contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
+                    } else {
+                        Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
+                        Contactdetail contactdetail = new Contactdetail();
+                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
+                        contactdetail.setType(detail_contect.get(i).getType());
+                        contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                        contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setLabel(detail_contect.get(i).getLabel());
+                        contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
 
-                    phonedetails_list.add(contactdetail);
-                    Collections.reverse(phonedetails_list);
-                    contactdetails.add(contactdetail);
+                        phonedetails_list.add(contactdetail);
+                        Collections.reverse(phonedetails_list);
+                        contactdetails.add(contactdetail);
 
-                    phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
-                    rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    rv_phone.setAdapter(phoneAdapter);
+                        phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                        rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        rv_phone.setAdapter(phoneAdapter);
 
-
+                    }
                 }
 
             }
@@ -1159,6 +1161,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             try {
+
                                 UpdateContect(contactdetails.get(position));
                                 //break;
                             } catch (JSONException e) {
@@ -1251,7 +1254,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.contect_msg.setVisibility(View.VISIBLE);
                 holder.ccp_id.setVisibility(View.GONE);
                 holder.edt_mobile_no.setEnabled(false);
-                holder.edt_mobile_no.setTextColor(getActivity().getColor(R.color.purple_200));
+                holder.edt_mobile_no.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_phone.setText(holder.tv_phone.getText().toString() + "(" + item.getLabel() + ")");
                 holder.ccp_id.setCountryForNameCode(item.getCountry_code());
                 if (contactdetails.get(position).getIs_default() == 1) {
@@ -1259,8 +1262,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
-                String main_data = item.getEmail_number().replace("+91", "");
-                holder.edt_mobile_no.setText("+"+item.getEmail_number());
+                String getFirstletter = String.valueOf(item.getEmail_number().charAt(0));
+                if(!getFirstletter.equals("+")){
+                    holder.edt_mobile_no.setText("+"+item.getEmail_number());
+                }else {
+                    holder.edt_mobile_no.setText(item.getEmail_number());
+                }
                 holder.phone_txt.setText(item.getLabel());
                 holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
                     @Override

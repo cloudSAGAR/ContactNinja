@@ -288,7 +288,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.tv_Login:
 
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+               // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
 
                 break;
@@ -398,7 +398,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+       // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
 
     }

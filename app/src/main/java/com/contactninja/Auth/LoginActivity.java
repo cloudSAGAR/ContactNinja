@@ -43,6 +43,7 @@ import com.hbb20.CountryCodePicker;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
@@ -78,6 +79,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         retrofitCalls = new RetrofitCalls(this);
         firebase();
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
+
+
+
+/*        TimeZone tz = TimeZone.getDefault();
+        Date now = new Date();
+//Import part : x.0 for double number
+        double offsetFromUtc = tz.getOffset(now.getTime()) / 3600000.0;
+        String m2tTimeZoneIs = Double.parseDouble(offsetFromUtc);
+
+        TimeZone tz = TimeZone.getDefault();
+        int time= Integer.parseInt(tz.getDisplayName(false, TimeZone.SHORT));
+        System.out.println("TimeZone   "+tz.getDisplayName(false, TimeZone.SHORT)+" Timezone id :: " +tz.getID());
+        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();*/
 
     }
 
@@ -329,7 +343,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             finish();
                         }
                         else {
-                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }
                     }

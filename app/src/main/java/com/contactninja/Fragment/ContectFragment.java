@@ -314,16 +314,32 @@ public class ContectFragment extends Fragment {
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                limit=csv_inviteListData.size();
-                contectListData.clear();
-                paginationAdapter.notifyDataSetChanged();
-                sessionManager.setContectList(getActivity(),new ArrayList<>());
 
-                try {
-                    ContectEvent();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+
+                if(SessionManager.getContectList(getActivity()).get(0).getContacts().size()!=
+                        csv_inviteListData.size()){
+                    limit = csv_inviteListData.size();
+                    splitdata(csv_inviteListData);
+                    limit=csv_inviteListData.size();
+                    contectListData.clear();
+                    paginationAdapter.notifyDataSetChanged();
+                    sessionManager.setContectList(getActivity(),new ArrayList<>());
+
+                }else {
+                    limit=csv_inviteListData.size();
+                    contectListData.clear();
+                    paginationAdapter.notifyDataSetChanged();
+                    sessionManager.setContectList(getActivity(),new ArrayList<>());
+
+                    try {
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+
             }
         });
 
@@ -584,7 +600,13 @@ public class ContectFragment extends Fragment {
         }
 
         if (SessionManager.getContectList(getActivity()).size() != 0) {
-            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+            if(SessionManager.getContectList(getActivity()).get(0).getContacts().size()!=
+              csv_inviteListData.size()){
+                limit = csv_inviteListData.size();
+                splitdata(csv_inviteListData);
+            }else {
+                contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+            }
         } else {
             limit = csv_inviteListData.size();
             splitdata(csv_inviteListData);
