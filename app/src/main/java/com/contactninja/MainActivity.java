@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
         IntentUI();
 
+
         Calendar cal = Calendar.getInstance();
         TimeZone tz1 = cal.getTimeZone();
         Calendar calendar = Calendar.getInstance(tz1,

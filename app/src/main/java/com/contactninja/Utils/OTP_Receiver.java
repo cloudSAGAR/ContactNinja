@@ -24,7 +24,14 @@ public class OTP_Receiver extends BroadcastReceiver {
 
             String msg = sms.getMessageBody();
             String otp =msg.substring(0,6);
-            pinview.setText(otp);
+            try {
+                pinview.setText(otp);
+            }
+            catch (Exception e)
+            {
+
+            }
+
         }
     }
 }

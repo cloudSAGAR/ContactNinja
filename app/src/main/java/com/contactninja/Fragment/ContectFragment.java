@@ -324,11 +324,13 @@ public class ContectFragment extends Fragment {
                     limit=csv_inviteListData.size();
                     contectListData.clear();
                     paginationAdapter.notifyDataSetChanged();
+                    paginationAdapter.notifyDataSetChanged();
                     sessionManager.setContectList(getActivity(),new ArrayList<>());
 
                 }else {
                     limit=csv_inviteListData.size();
                     contectListData.clear();
+                    paginationAdapter.removeloist();
                     paginationAdapter.notifyDataSetChanged();
                     sessionManager.setContectList(getActivity(),new ArrayList<>());
 

@@ -212,6 +212,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
+    public void removeloist() {
+        contacts.clear();
+        notifyDataSetChanged();
+    }
+
     public ContectListData.Contact getItem(int position) {
         return contacts.get(position);
     }
