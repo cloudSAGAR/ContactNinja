@@ -51,7 +51,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
@@ -405,7 +411,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void SignAPI() throws JSONException {
 
        // loadingDialog.showLoadingDialog();
-
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("first_name", first_name);
@@ -517,6 +522,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
         return false;
     }
+
+
 
 
 }

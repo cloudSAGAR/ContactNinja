@@ -34,7 +34,10 @@ import com.contactninja.Model.Grouplist;
 import com.contactninja.Utils.App;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -43,10 +46,22 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.gson.JsonObject;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import org.json.JSONException;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -70,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long mLastClickTime = 0;
     private final boolean shouldLoadHomeFragOnBackPress = true;
     LinearLayout llCreate;
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +93,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         sessionManager = new SessionManager(this);
         sessionManager.login();
+        loadingDialog=new LoadingDialog(this);
         SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
         IntentUI();
+
+        Calendar cal = Calendar.getInstance();
+        TimeZone tz1 = cal.getTimeZone();
+        Calendar calendar = Calendar.getInstance(tz1,
+                Locale.getDefault());
+
+        Date currentLocalTime = calendar.getTime();
+        DateFormat date = new SimpleDateFormat("Z");
+        String localTime = date.format(currentLocalTime);
+       String  offset = localTime.substring(0, 1);
+       Log.e("offset",offset);
+        Log.e("Show Local ",localTime);
+        Log.e("GMT offset is %s hours",""+ TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS));
         //  FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         // FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
         UpdateManageCheck();
@@ -88,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CURRENT_TAG = TAG_HOME;
         displayView();
         ImageSetLight("Home");
+
+
 
         //  showAlertDialogButtonClicked();
 
@@ -433,32 +465,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void delete() {
-        class DeleteTask extends AsyncTask<Void, Void, Void> {
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .taskDao()
-                        //.deleteDuplicates();
-                        //.DeleteData(inviteListData.getUserPhoneNumber());
-                        .RemoveData();
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                //   Log.e("Delete Task","Yes"+c);
-                super.onPostExecute(aVoid);
-
-            }
-        }
-
-        DeleteTask ut = new DeleteTask();
-        ut.execute();
-    }
 
 
 }

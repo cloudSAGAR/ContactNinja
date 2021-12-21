@@ -78,6 +78,11 @@ public class Broadcast_date_select extends AppCompatActivity {
                 Time_Selcet_Activity.putExtra("start_date",formatedDate.toString());
                 Time_Selcet_Activity.putExtra("end_date",formatedDate1.toString());
                 Time_Selcet_Activity.putExtra("type",type);
+                Time_Selcet_Activity.putExtra("repeat","");
+                Time_Selcet_Activity.putExtra("num_day","");
+                Time_Selcet_Activity.putExtra("m_day","");
+                Time_Selcet_Activity.putExtra("m_month","");
+                Time_Selcet_Activity.putExtra("m_first","");
                 startActivity(Time_Selcet_Activity);
                 //finish();
             }

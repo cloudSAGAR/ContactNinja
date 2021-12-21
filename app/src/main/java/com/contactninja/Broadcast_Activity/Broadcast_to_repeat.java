@@ -46,10 +46,16 @@ public class Broadcast_to_repeat extends AppCompatActivity {
                 }
                 else if (day_txt.equals("Weekly"))
                 {
+                    Intent intent=new Intent(getApplicationContext(),Repeat_weekly_Activity.class);
+                    intent.putExtra("type",day_txt);
+                    startActivity(intent);
 
                 }
                 else if (day_txt.equals("Monthly"))
                 {
+                    Intent intent=new Intent(getApplicationContext(),Repeat_Month_Activity.class);
+                    intent.putExtra("type",day_txt);
+                    startActivity(intent);
 
                 }
                 else if (day_txt.equals("Does Not Repeat"))

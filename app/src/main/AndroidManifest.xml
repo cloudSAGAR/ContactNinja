@@ -47,6 +47,12 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Broadcast_Activity.Repeat_Month_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Broadcast_Activity.Repeat_weekly_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Broadcast_Activity.Broadcast_Final_Activity"
             android:exported="false" />
         <activity

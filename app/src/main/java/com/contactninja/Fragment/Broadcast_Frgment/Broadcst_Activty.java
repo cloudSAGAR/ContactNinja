@@ -154,7 +154,9 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 lay_sendnow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(getApplicationContext(), Brodcsast_Tankyou.class));
+                        Intent intent1= new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
+                        intent1.putExtra("s_name","default");
+                        startActivity(intent1);
                         finish();
                     }
                 });

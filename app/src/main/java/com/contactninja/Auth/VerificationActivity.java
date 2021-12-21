@@ -50,7 +50,13 @@ import com.gun0912.tedpermission.TedPermission;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
@@ -388,7 +394,7 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-
+                Log.e("Response is",new Gson().toJson(response.body()));
                 if (response.body().getStatus()==200) {
 
                     Gson gson = new Gson();

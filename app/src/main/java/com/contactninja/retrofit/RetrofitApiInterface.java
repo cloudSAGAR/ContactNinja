@@ -96,5 +96,8 @@ public interface RetrofitApiInterface {
 
 
 
+    @POST("working_hour/add/default")
+    Call<ApiResponse> Working_hour(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
 
 }

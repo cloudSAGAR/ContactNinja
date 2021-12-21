@@ -23,7 +23,7 @@ public class Broadcast_time_select extends AppCompatActivity {
     String time="";
     TimePicker timePicker;
     ConstraintLayout mMainLayout;
-    String start_date="",end_date="",type="";
+    String start_date="",end_date="",type="",repeat="",num_day="",r_day="",r_monthe="",day_txt="";
 
 
     @Override
@@ -36,6 +36,14 @@ public class Broadcast_time_select extends AppCompatActivity {
         start_date=bundle.getString("start_date","");
         end_date=bundle.getString("end_date","");
         type=bundle.getString("type","");
+        repeat=bundle.getString("repeat","");
+        num_day=bundle.getString("num_day","");
+        r_day=bundle.getString("m_day","");
+        r_monthe=bundle.getString("m_month","");
+        day_txt=bundle.getString("m_first","");
+
+
+
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +58,12 @@ public class Broadcast_time_select extends AppCompatActivity {
                  Time_Selcet_Activity.putExtra("end_date",end_date);
                  Time_Selcet_Activity.putExtra("time",time);
                  Time_Selcet_Activity.putExtra("type",type);
-                 startActivity(new Intent(getApplicationContext(), Broadcst_Activty.class));
+                 Time_Selcet_Activity.putExtra("repeat",repeat);
+                 Time_Selcet_Activity.putExtra("num_day",num_day);
+                 Time_Selcet_Activity.putExtra("m_day",r_day);
+                 Time_Selcet_Activity.putExtra("m_month",r_monthe);
+                 Time_Selcet_Activity.putExtra("m_first",day_txt);
+                 //startActivity(new Intent(getApplicationContext(), Broadcst_Activty.class));
                  startActivity(Time_Selcet_Activity);
              }
             }

@@ -85,10 +85,15 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         add_group_list.setAdapter(groupDataAdapter);
         broadcast_image_list.addAll(sessionManager.getAdd_Broadcast_Data(getApplicationContext()).getBroadcast_image_lists());
 
-        save_button.setOnClickListener(new View.OnClickListener() {
+        alertbox();
+       save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertbox();
+
+               Intent intent1= new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
+               intent1.putExtra("s_name","final");
+                startActivity(intent1);
+                finish();
             }
         });
     }
@@ -113,12 +118,17 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
 
         Broadcast_Data b_Data= sessionManager.getAdd_Broadcast_Data(getApplicationContext());
+
+        Log.e("Data Is ",new Gson().toJson(b_Data));
         edit_message.setText(b_Data.getLink_text());
         tv_text_link.setText(b_Data.getLink());
         lay_sendnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Brodcsast_Tankyou.class));
+
+                Intent intent1= new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
+                intent1.putExtra("s_name","default");
+                startActivity(intent1);
                 finish();
             }
         });
@@ -243,7 +253,6 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         add_group_list=findViewById(R.id.add_group_list);
         layoutManager1 = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
         add_group_list.setLayoutManager(layoutManager1);
-
     }
 
 
