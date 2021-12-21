@@ -29,6 +29,7 @@ import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.HomeFragment;
 import com.contactninja.Fragment.SendFragment;
 import com.contactninja.Fragment.UsetProgileFragment;
+import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Utils.App;
@@ -430,6 +431,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 4:
                 Log.e("Brodcaste Call","Yes");
+                sessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
+                sessionManager.setContectList_broadcste(getApplicationContext(),new ArrayList<>());
+                Broadcast_Data broadcast_data=new Broadcast_Data();
+                sessionManager.setAdd_Broadcast_Data(broadcast_data);
                 broadcast_manu();
                 break;
         }

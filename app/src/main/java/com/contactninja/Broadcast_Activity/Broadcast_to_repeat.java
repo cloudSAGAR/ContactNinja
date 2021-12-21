@@ -60,7 +60,16 @@ public class Broadcast_to_repeat extends AppCompatActivity {
                 }
                 else if (day_txt.equals("Does Not Repeat"))
                 {
-
+                    Intent Time_Selcet_Activity=new Intent(getApplicationContext(),Broadcast_time_select.class);
+                    Time_Selcet_Activity.putExtra("start_date","");
+                    Time_Selcet_Activity.putExtra("end_date","");
+                    Time_Selcet_Activity.putExtra("type","");
+                    Time_Selcet_Activity.putExtra("repeat","");
+                    Time_Selcet_Activity.putExtra("num_day","");
+                    Time_Selcet_Activity.putExtra("m_day","");
+                    Time_Selcet_Activity.putExtra("m_month","");
+                    Time_Selcet_Activity.putExtra("m_first","");
+                    startActivity(Time_Selcet_Activity);
                 }
                 else {
 
