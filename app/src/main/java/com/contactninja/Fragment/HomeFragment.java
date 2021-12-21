@@ -122,7 +122,6 @@ public class HomeFragment extends Fragment {
 
         String time=offset+TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS);
         Log.e("offset",time);
-       // loadingDialog.showLoadingDialog();
         String token = Global.getToken(sessionManager);
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -145,18 +144,10 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void success(Response<ApiResponse> response) {
                     //Log.e("Response is",new Gson().toJson(response));
-
-
-                    if (response.body().getStatus() == 200) {
-                      //  loadingDialog.cancelLoading();
-                    } else {
-                       // loadingDialog.cancelLoading();
-                    }
                 }
 
                 @Override
                 public void error(Response<ApiResponse> response) {
-                    //loadingDialog.cancelLoading();
                 }
             });
         }

@@ -47,24 +47,31 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Repeat_Month_Activity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Repeat_weekly_Activity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Broadcast_Final_Activity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Broadcast_time_select"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Broadcast_date_select"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Broadcast_to_repeat"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Brodcsast_Tankyou"
             android:exported="false" />
         <activity
@@ -142,7 +149,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:screenOrientation="portrait" android:name=".MainActivity"
             android:exported="true" />
 
         <receiver android:name=".Utils.OTP_Receiver">
