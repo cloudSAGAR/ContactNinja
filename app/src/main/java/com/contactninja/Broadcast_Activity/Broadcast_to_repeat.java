@@ -2,6 +2,7 @@ package com.contactninja.Broadcast_Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,26 +30,19 @@ public class Broadcast_to_repeat extends AppCompatActivity {
         IntentUI();
 
         setSpinner_data();
-
-    }
-
-    private void setSpinner_data() {
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.broadcast_repeat_list));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        day_spinner.setAdapter(adapter);
-
-        ArrayAdapter<CharSequence> TimeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.broadcste_time_list));
-        TimeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        time_spinner.setAdapter(TimeAdapter);
-
-        day_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        save_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                day_txt=String.valueOf(day_spinner.getSelectedItem());
-                if (day_txt.equals("Daily"))
+            public void onClick(View view) {
+                if (day_txt.equals(""))
                 {
 
-
+                }
+               else if (day_txt.equals("Daily"))
+                {
+                    Intent intent=new Intent(getApplicationContext(),Broadcast_date_select.class);
+                    intent.putExtra("type",day_txt);
+                    startActivity(intent);
+                   // finish();
                 }
                 else if (day_txt.equals("Weekly"))
                 {
@@ -65,7 +59,32 @@ public class Broadcast_to_repeat extends AppCompatActivity {
                 else {
 
                 }
-               Log.e("Text is ",day_txt);
+
+            }
+        });
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+    }
+
+    private void setSpinner_data() {
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.broadcast_repeat_list));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        day_spinner.setAdapter(adapter);
+
+        ArrayAdapter<CharSequence> TimeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.broadcste_time_list));
+        TimeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        time_spinner.setAdapter(TimeAdapter);
+
+        day_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                day_txt=String.valueOf(day_spinner.getSelectedItem());
+                   Log.e("Text is ",day_txt);
             }
 
             @Override

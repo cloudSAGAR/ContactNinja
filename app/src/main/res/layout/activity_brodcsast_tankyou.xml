@@ -3,10 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_border_10_white"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_gravity="center"
     tools:context=".MainActivity">
+    <LinearLayout
+        android:background="@drawable/shape_border_10_white"
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 
     <ImageView
         android:layout_gravity="center"
@@ -35,6 +43,6 @@
         android:textStyle="bold">
 
     </TextView>
-
+    </LinearLayout>
 
 </LinearLayout>
