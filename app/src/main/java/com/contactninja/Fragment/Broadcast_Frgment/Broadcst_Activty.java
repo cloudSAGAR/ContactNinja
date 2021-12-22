@@ -1,30 +1,22 @@
 package com.contactninja.Fragment.Broadcast_Frgment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.PermissionRequest;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -38,14 +30,9 @@ import com.contactninja.Broadcast_Activity.Brodcsast_Tankyou;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.R;
-import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.makeramen.roundedimageview.RoundedImageView;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +44,7 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
     String strtext = "";
     ViewpaggerAdapter adapter;
     ImageView search_icon;
-    ImageView iv_back, iv_more;
+    ImageView iv_back, iv_Setting;
     TextView save_button;
     List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
     CardListAdepter cardListAdepter;
@@ -113,9 +100,10 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
         contect_search = findViewById(R.id.contect_search);
         search_icon = findViewById(R.id.search_icon);
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
-        iv_more = findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting = findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         iv_back.setOnClickListener(this);
         save_button.setOnClickListener(this);
         save_button.setVisibility(View.VISIBLE);

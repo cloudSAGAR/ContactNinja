@@ -80,7 +80,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
-    ImageView iv_back, iv_more, pulse_icon;
+    ImageView iv_back, iv_Setting, pulse_icon;
     TextView save_button,tv_nameLetter;
     TabLayout tabLayout;
     String fragment_name, user_image_Url, File_name = "", File_extension = "";
@@ -395,10 +395,11 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     private void IntentUI() {
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
         save_button.setVisibility(View.VISIBLE);
-        iv_more = findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting = findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         tabLayout = findViewById(R.id.tabLayout);
         frameContainer = findViewById(R.id.frameContainer);
         pulse_icon = findViewById(R.id.pulse_icon);

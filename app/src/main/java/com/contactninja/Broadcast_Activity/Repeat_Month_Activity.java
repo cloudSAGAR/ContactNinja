@@ -1,13 +1,10 @@
 package com.contactninja.Broadcast_Activity;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -16,20 +13,16 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.R;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class Repeat_Month_Activity extends AppCompatActivity {
-    ImageView iv_back, iv_more;
+    ImageView iv_back, iv_Setting;
     TextView save_button, date_spinner, tv_day;
     String type = "", week_txt = "";
     Spinner day_spinner,day_spinner1,month_spinner1,secon_month_spinner1;
@@ -195,11 +188,12 @@ public class Repeat_Month_Activity extends AppCompatActivity {
 
     private void IntentUI() {
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
         save_button.setVisibility(View.VISIBLE);
         save_button.setText("Next");
-        iv_more = findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting = findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         day_spinner = findViewById(R.id.day_spinner);
         date_spinner = findViewById(R.id.date_spinner);
         tv_day = findViewById(R.id.tv_day);

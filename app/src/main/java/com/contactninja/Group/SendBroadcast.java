@@ -15,12 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
-import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.Fragment.GroupFragment.ExposuresFragment;
 import com.contactninja.Fragment.GroupFragment.MembersFragment;
 import com.contactninja.Model.Grouplist;
-import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
@@ -28,7 +25,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     TextView save_button;
-    ImageView iv_more, iv_back;
+    ImageView iv_Setting, iv_back;
     EditText add_detail,add_new_contect;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -53,7 +50,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         iv_back.setOnClickListener(this);
         save_button.setText("Edit");
         save_button.setVisibility(View.VISIBLE);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting.setVisibility(View.GONE);
         tabLayout.addTab(tabLayout.newTab().setText("Members"));
         tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -80,13 +77,15 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     }
     private void IntentUI() {
         save_button = findViewById(R.id.save_button);
-        iv_more = findViewById(R.id.iv_more);
+        iv_Setting = findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.VISIBLE);
         iv_back = findViewById(R.id.iv_back);
         add_detail=findViewById(R.id.add_detail);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         add_new_contect_icon=findViewById(R.id.add_new_contect_icon);
         add_new_contect=findViewById(R.id.add_new_contect);
+        iv_back.setVisibility(View.VISIBLE);
         }
 
     @Override

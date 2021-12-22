@@ -4,24 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.archit.calendardaterangepicker.customviews.CalendarListener;
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView;
-import com.contactninja.MainActivity;
 import com.contactninja.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Broadcast_date_select extends AppCompatActivity {
-    ImageView iv_back,iv_more;
+    ImageView iv_back, iv_Setting;
     TextView save_button;
     DateRangeCalendarView calendar;
     private static final String TAG = Broadcast_date_select.class.getSimpleName();
@@ -100,11 +97,12 @@ public class Broadcast_date_select extends AppCompatActivity {
 
     private void IntentUI() {
         iv_back=findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         save_button=findViewById(R.id.save_button);
         save_button.setVisibility(View.VISIBLE);
         save_button.setText("Next");
-        iv_more=findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting =findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         calendar = findViewById(R.id.cdrvCalendar);
     }
     private final CalendarListener calendarListener = new CalendarListener() {

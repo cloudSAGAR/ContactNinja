@@ -16,7 +16,7 @@ import com.contactninja.R;
 
 public class Broadcast_to_repeat extends AppCompatActivity {
 
-    ImageView iv_back,iv_more;
+    ImageView iv_back, iv_Setting;
     TextView save_button;
     Spinner day_spinner,time_spinner;
     String day_txt="",time_txt="";
@@ -124,11 +124,12 @@ public class Broadcast_to_repeat extends AppCompatActivity {
 
     private void IntentUI() {
         iv_back=findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         save_button=findViewById(R.id.save_button);
         save_button.setVisibility(View.VISIBLE);
         save_button.setText("Next");
-        iv_more=findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting =findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         day_spinner=findViewById(R.id.day_spinner);
         time_spinner=findViewById(R.id.time_spinner);
 

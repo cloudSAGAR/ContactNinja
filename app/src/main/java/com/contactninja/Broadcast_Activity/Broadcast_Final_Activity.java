@@ -22,9 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcast_Group_Fragment;
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcste_Contect_Fragment;
 import com.contactninja.Fragment.Broadcast_Frgment.CardClick;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
@@ -41,7 +38,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Broadcast_Final_Activity extends AppCompatActivity implements View.OnClickListener ,CardClick {
-    ImageView iv_back,iv_more;
+    ImageView iv_back, iv_Setting;
     TextView save_button,tv_start,tv_repite,tv_ends;
     RecyclerView add_contect_list,add_group_list;
     LinearLayoutManager layoutManager,layoutManager1;
@@ -237,8 +234,8 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
     private void IntentUI() {
         iv_back = findViewById(R.id.iv_back);
         save_button = findViewById(R.id.save_button);
-        iv_more = findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting = findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         iv_back.setOnClickListener(this);
         save_button.setOnClickListener(this);
         save_button.setVisibility(View.VISIBLE);

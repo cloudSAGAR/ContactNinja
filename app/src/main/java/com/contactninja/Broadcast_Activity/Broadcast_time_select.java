@@ -5,20 +5,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 
 public class Broadcast_time_select extends AppCompatActivity {
-    ImageView iv_back,iv_more;
+    ImageView iv_back, iv_Setting;
     TextView save_button,selected_date;
     String time="";
     TimePicker timePicker;
@@ -99,11 +95,12 @@ public class Broadcast_time_select extends AppCompatActivity {
 
     private void IntentUI() {
         iv_back=findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         save_button=findViewById(R.id.save_button);
         save_button.setVisibility(View.VISIBLE);
         save_button.setText("Next");
-        iv_more=findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting =findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         selected_date=findViewById(R.id.selected_date);
         timePicker=findViewById(R.id.simpleTimePicker);
         mMainLayout=findViewById(R.id.mMainLayout);

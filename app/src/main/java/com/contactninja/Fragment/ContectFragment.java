@@ -109,7 +109,6 @@ public class ContectFragment extends Fragment {
             postcode = "", postType = "", note = "";
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
-    // ImageView iv_back,iv_more;
     SearchView contect_search;
     TextView add_new_contect, num_count;
     Handler mHandler = new Handler();
@@ -488,8 +487,6 @@ public class ContectFragment extends Fragment {
         rvinviteuserdetails = content_view.findViewById(R.id.contect_list);
         fastscroller = content_view.findViewById(R.id.fastscroller);
         fastscroller_thumb = content_view.findViewById(R.id.fastscroller_thumb);
-        // iv_back=content_view.findViewById(R.id.iv_back);
-        //iv_more=content_view.findViewById(R.id.iv_more);
         contect_search = content_view.findViewById(R.id.contect_search);
         add_new_contect = content_view.findViewById(R.id.add_new_contect);
         num_count = content_view.findViewById(R.id.num_count);

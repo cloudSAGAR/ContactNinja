@@ -14,12 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -71,7 +67,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     public static List<GroupListData> select_inviteListData = new ArrayList<>();
     TextView save_button;
-    ImageView iv_more, iv_back;
+    ImageView iv_Setting, iv_back;
     RecyclerView add_contect_list, contect_list_unselect;
     LinearLayoutManager layoutManager, layoutManager1;
     Cursor cursor;
@@ -110,7 +106,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         contectListData = new ArrayList<>();
 
         contectListData.clear();
-        iv_more.setVisibility(View.GONE);
+        iv_Setting.setVisibility(View.GONE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
@@ -290,8 +286,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     private void IntentUI() {
         save_button = findViewById(R.id.save_button);
-        iv_more = findViewById(R.id.iv_more);
+        iv_Setting = findViewById(R.id.iv_Setting);
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
         add_contect_list = findViewById(R.id.add_contect_list);
         add_contect_list.setLayoutManager(layoutManager);

@@ -17,27 +17,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Model.AddGroup;
-import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
@@ -50,10 +43,8 @@ import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
@@ -65,11 +56,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -79,7 +67,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     GroupListData groupListData;
     TextView save_button;
-    ImageView iv_more, iv_back;
+    ImageView iv_Setting, iv_back;
     String fragment_name,user_image_Url;
     EditText add_new_contect,add_detail,contect_search;
     LinearLayout add_new_member;
@@ -125,7 +113,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
 
         iv_user.setOnClickListener(this);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting.setVisibility(View.GONE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Save");
@@ -200,8 +188,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
     private void IntentUI() {
         save_button = findViewById(R.id.save_button);
-        iv_more = findViewById(R.id.iv_more);
+        iv_Setting = findViewById(R.id.iv_Setting);
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         add_new_contect=findViewById(R.id.add_new_contect);
         add_detail=findViewById(R.id.add_detail);
         add_new_member=findViewById(R.id.add_new_member);
