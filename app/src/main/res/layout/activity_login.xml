@@ -123,14 +123,16 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/layout_email"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                       >
 
                         <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/layout_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -159,8 +161,42 @@
                                 android:layout_height="1dp"
                                 android:background="#A7A0A0" />
                         </LinearLayout>
+                        <RelativeLayout
 
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:id="@+id/iv_invalid"
+                                style="@style/tv_regular"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/red"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/btn_chnage_phone_email"
+                                style="@style/tv_regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_gravity="end"
+                                android:gravity="end"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/or_email"
+                                android:textColor="@color/purple_200"
+                                android:textStyle="bold"
+                                tools:ignore="RelativeOverlap" />
+
+                        </RelativeLayout>
                         <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/email_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -190,42 +226,45 @@
                                 android:layout_height="1dp"
                                 android:background="#A7A0A0" />
                         </LinearLayout>
+                        <RelativeLayout
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:visibility="gone"
+                            android:id="@+id/forgot_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
+                            <TextView
+                                android:id="@+id/iv_password_invalid"
+                                style="@style/tv_regular"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/red"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/btn_chnage_forgot"
+                                style="@style/tv_regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_gravity="end"
+                                android:gravity="end"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/or_forgot_password"
+                                android:textColor="@color/purple_200"
+                                android:textStyle="bold"
+                                tools:ignore="RelativeOverlap" />
+
+                        </RelativeLayout>
 
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
 
-                        <TextView
-                            android:id="@+id/iv_invalid"
-                            style="@style/tv_regular"
-                            android:layout_width="@dimen/_150sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:padding="@dimen/_5sdp"
-                            android:textColor="@color/red"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/btn_chnage_phone_email"
-                            style="@style/tv_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_gravity="end"
-                            android:gravity="end"
-                            android:padding="@dimen/_5sdp"
-                            android:text="@string/or_email"
-                            android:textColor="@color/purple_200"
-                            android:textStyle="bold"
-                            tools:ignore="RelativeOverlap" />
-
-                    </RelativeLayout>
 
                 </LinearLayout>
 

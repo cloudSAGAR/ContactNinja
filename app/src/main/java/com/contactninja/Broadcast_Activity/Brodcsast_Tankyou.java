@@ -30,8 +30,6 @@ public class Brodcsast_Tankyou extends AppCompatActivity {
         else {
 
         }
-
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {

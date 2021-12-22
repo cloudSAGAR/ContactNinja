@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public String fcmToken = "";
     TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP;
     boolean is_PhoneShow = true;
-    LinearLayout layout_email, layout_phonenumber;
+    LinearLayout layout_email, layout_phonenumber,email_password;
     CountryCodePicker ccp_id;
     EditText edit_email, edit_Mobile, edit_password;
     CoordinatorLayout mMainLayout;
@@ -67,6 +68,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
+    TextView btn_chnage_forgot,iv_password_invalid;
+    RelativeLayout forgot_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         retrofitCalls = new RetrofitCalls(this);
         firebase();
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
-
-
-
-/*        TimeZone tz = TimeZone.getDefault();
-        Date now = new Date();
-//Import part : x.0 for double number
-        double offsetFromUtc = tz.getOffset(now.getTime()) / 3600000.0;
-        String m2tTimeZoneIs = Double.parseDouble(offsetFromUtc);
-
-        TimeZone tz = TimeZone.getDefault();
-        int time= Integer.parseInt(tz.getDisplayName(false, TimeZone.SHORT));
-        System.out.println("TimeZone   "+tz.getDisplayName(false, TimeZone.SHORT)+" Timezone id :: " +tz.getID());
-        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();*/
+        forgot_password.setOnClickListener(this);
 
     }
 
@@ -195,6 +186,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_chnage_phone_email.setOnClickListener(this);
         btn_login.setOnClickListener(this);
         tv_signUP.setOnClickListener(this);
+        btn_chnage_forgot=findViewById(R.id.btn_chnage_forgot);
+        iv_password_invalid=findViewById(R.id.iv_password_invalid);
+        forgot_password=findViewById(R.id.forgot_password);
+        email_password=findViewById(R.id.email_password);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -205,11 +200,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (is_PhoneShow) {
                     layout_email.setVisibility(View.VISIBLE);
                     layout_phonenumber.setVisibility(View.GONE);
+                    email_password.setVisibility(View.VISIBLE);
+                    forgot_password.setVisibility(View.VISIBLE);
                     is_PhoneShow = false;
                     btn_chnage_phone_email.setText(getResources().getString(R.string.or_phone));
                 } else {
                     layout_phonenumber.setVisibility(View.VISIBLE);
                     layout_email.setVisibility(View.GONE);
+                    email_password.setVisibility(View.GONE);
+                    forgot_password.setVisibility(View.GONE);
                     is_PhoneShow = true;
                     btn_chnage_phone_email.setText(getResources().getString(R.string.or_email));
                 }
@@ -244,6 +243,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 startActivity(new Intent(getApplicationContext(), SignupActivity.class));
                // finish();
+
+                break;
+            case R.id.forgot_password:
+                startActivity(new Intent(getApplicationContext(),ForgotPasswordActivity.class));
 
                 break;
         }

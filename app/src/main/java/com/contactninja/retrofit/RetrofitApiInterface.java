@@ -100,4 +100,12 @@ public interface RetrofitApiInterface {
     Call<ApiResponse> Working_hour(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
 
+    @POST("manual_task/store")
+    Call<ApiResponse> Send_SMS_Api(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+    @POST("forgotPassword")
+    Call<ApiResponse>  ForgotPassword(@Header("Accept") String api, @Body JsonObject jsonObject);
+
+
 }

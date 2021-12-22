@@ -23,15 +23,18 @@
     <string name="account_no">Don\'t have an account?</string>
     <string name="signup">Signup</string>
     <string name="signIn">Sign In</string>
+    <string name="send">Send</string>
     <string name="enter_phone">Enter your phone</string>
     <string name="enter_email">Enter your email</string>
 
     <string name="enter_code">Enter referral code</string>
     <string name="enter_password">Enter your Password</string>
     <string name="or_email">or use email-id</string>
+    <string name="or_forgot_password">Forget password?</string>
     <string name="or_phone">or use phone number</string>
     <string name="terms">I have read and agree to <br>\nContact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
     <string name="invalid_email">Invalid Email</string>
+    <string name="invalid_email1">This email address is not exist</string>
     <string name="invalid_phone">Invalid Number</string>
     <string name="add_phone_number">Invalid Number</string>
     <string name="invalid_password">Invalid Password</string>
@@ -269,4 +272,7 @@ Number</string>
         <item>Saturday</item>
     </array>
 
+    <string name="forgot_password">Fogot your password?</string>
+    <string name="forgot_password_txt">Enter your registerd email blow \n to receive password </string>
+    <string name="forgot_remember">Remember password?</string>
 </resources>
