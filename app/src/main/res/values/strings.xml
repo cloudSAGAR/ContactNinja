@@ -281,4 +281,16 @@ Number</string>
     <string name="Reset_Password">Reset Password</string>
     <string name="Logout">Logout</string>
     <string name="ok">Ok</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="reset_password_txt">Secure your account with a strong password.</string>
+    <string name="Current_Password">Current password</string>
+    <string name="New_Password">New password</string>
+    <string name="Confirm_Password">Confirm new password</string>
+    <string name="Create_password">Create password</string>
+    <string name="AddCurrentPassword">Add current password</string>
+    <string name="AddNewPassword">Add new password</string>
+    <string name="AddConfirmPassword">Add confirm password</string>
+    <string name="characters8">Must be at least 8 characters</string>
+    <string name="passwordCheck">Password must contain one special character, digit and capital letter</string>
+    <string name="passwordNotMetch">New password and confirm not match.</string>
 </resources>

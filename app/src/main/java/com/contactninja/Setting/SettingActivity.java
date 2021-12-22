@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,10 +20,10 @@ import com.contactninja.Utils.SessionManager;
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     TextView tv_version_name;
     ImageView iv_back;
-    LinearLayout layout_logout;
+    LinearLayout layout_logout,layout_resetPassword;
     SessionManager sessionManager;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         sessionManager=new SessionManager(getApplicationContext());
@@ -45,8 +46,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     private void intentView() {
         tv_version_name=findViewById(R.id.tv_version_name);
+        layout_resetPassword=findViewById(R.id.layout_resetPassword);
         layout_logout=findViewById(R.id.layout_logout);
         layout_logout.setOnClickListener(this);
+        layout_resetPassword.setOnClickListener(this);
         iv_back=findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +65,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         super.onBackPressed();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
-    public void onClick(View v) {
+    public void onClick(@SuppressLint("UnknownNullness") View v) {
         switch (v.getId()){
             case R.id.layout_logout:
                 showAlertDialogButtonClicked();
+                break;
+                case R.id.layout_resetPassword:
+                startActivity(new Intent(getApplicationContext(),ResetActivity.class));
                 break;
         }
     }

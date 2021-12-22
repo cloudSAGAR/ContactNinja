@@ -48,9 +48,13 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
-            android:screenOrientation="portrait"
+            android:name=".Setting.ResetActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Setting.SettingActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Auth.ForgotPasswordActivity"
             android:exported="false"
