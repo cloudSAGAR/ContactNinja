@@ -103,7 +103,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener {
 
     //Declare Variabls for fragment
     public static int navItemIndex = 0;
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @RequiresApi(api = Build.VERSION_CODES.N)
     private BroadcastReceiver mNetworkReceiver;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
             unregisterReceiver(mNetworkReceiver);
@@ -193,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -624,7 +628,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
-        Global.getInstance().setConnectivityListener(this);
+        Global.getInstance().setConnectivityListener(MainActivity.this);
     }
 
 
@@ -984,32 +988,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void delete() {
-        class DeleteTask extends AsyncTask<Void, Void, Void> {
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .taskDao()
-                        .deleteDuplicates();
-                //.DeleteData(inviteListData.getUserPhoneNumber());
-                // .RemoveData();
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                 Log.e("Delete Task","Yes");
-                super.onPostExecute(aVoid);
-
-            }
-        }
-
-        DeleteTask ut = new DeleteTask();
-        ut.execute();
-    }
 
     /*
         private void getdataanme_mobile(InviteListData inser_data) {
