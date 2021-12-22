@@ -275,4 +275,10 @@ Number</string>
     <string name="forgot_password">Fogot your password?</string>
     <string name="forgot_password_txt">Enter your registerd email blow \n to receive password </string>
     <string name="forgot_remember">Remember password?</string>
+    <string name="current_Plan">Current Plan</string>
+    <string name="Messaging_Template">Messaging Template</string>
+    <string name="About_Contact_Ninja">About Contact Ninja</string>
+    <string name="Reset_Password">Reset Password</string>
+    <string name="Logout">Logout</string>
+    <string name="ok">Ok</string>
 </resources>

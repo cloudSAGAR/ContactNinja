@@ -422,6 +422,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     {
                         if (response.body().getMessage().equals("Invalid Password."))
                         {
+                            iv_password_invalid.setText(getResources().getString(R.string.invalid_password));
                             iv_password_invalid.setVisibility(View.VISIBLE);
                         }
                         else {
