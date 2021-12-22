@@ -58,6 +58,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case LOADING:
                 View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
                 viewHolder = new ContectListAdapter.LoadingViewHolder(viewLoading);
+
                 break;
         }
         return viewHolder;
@@ -160,7 +161,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             case LOADING:
                 ContectListAdapter.LoadingViewHolder loadingViewHolder = (ContectListAdapter.LoadingViewHolder) holder;
-                loadingViewHolder.progressBar.setVisibility(View.VISIBLE);
+                loadingViewHolder.progressBar.setVisibility(View.GONE);
                 break;
         }
     }
@@ -205,6 +206,15 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             add(result);
         }
 
+    }
+    public void updateList(List<ContectListData.Contact> list) {
+        contacts = list;
+        notifyDataSetChanged();
+    }
+
+    public void removeloist() {
+        contacts.clear();
+        notifyDataSetChanged();
     }
 
     public ContectListData.Contact getItem(int position) {

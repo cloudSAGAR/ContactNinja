@@ -4,19 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
 import com.contactninja.R;
-import com.contactninja.Utils.SessionManager;
+
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UsetProgileFragment#newInstance} factory method to
+ * Use the {@link Send_Main_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UsetProgileFragment extends Fragment implements View.OnClickListener {
+public class Send_Main_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,10 +25,8 @@ public class UsetProgileFragment extends Fragment implements View.OnClickListene
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    Button btn_logout;
-    SessionManager sessionManager;
 
-    public UsetProgileFragment() {
+    public Send_Main_Fragment() {
         // Required empty public constructor
     }
 
@@ -39,11 +36,11 @@ public class UsetProgileFragment extends Fragment implements View.OnClickListene
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment UsetProgileFragment.
+     * @return A new instance of fragment SendFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UsetProgileFragment newInstance(String param1, String param2) {
-        UsetProgileFragment fragment = new UsetProgileFragment();
+    public static Send_Main_Fragment newInstance(String param1, String param2) {
+        Send_Main_Fragment fragment = new Send_Main_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,22 +61,6 @@ public class UsetProgileFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_uset_progile, container, false);
-        sessionManager= new SessionManager(getActivity());
-        btn_logout=view.findViewById(R.id.btn_logout);
-        btn_logout.setOnClickListener(this);
-        return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_logout:
-
-                sessionManager.logoutUser();
-                getActivity().finish();
-
-                break;
-        }
+        return inflater.inflate(R.layout.fragment_main_send, container, false);
     }
 }

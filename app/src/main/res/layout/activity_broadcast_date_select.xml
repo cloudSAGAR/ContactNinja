@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    tools:context=".Auth.Thankyou_Screen">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <include layout="@layout/toolbar"></include>
+
+        <TextView
+            style="@style/tv_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:gravity="center"
+            android:text="@string/select_date"
+            android:textColor="@color/text_welcome"
+            android:textSize="@dimen/_18sdp"
+            >
+
+        </TextView>
+        <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+            android:layout_marginTop="@dimen/_10sdp"
+            android:id="@+id/cdrvCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            custom:calendar_tag="Test"
+            custom:date_selection_mode="free_range"
+            custom:disable_date_color="#ABABAB"
+            custom:editable="true"
+            custom:enable_time_selection="false"
+            custom:text_size_title="@dimen/_15sdp"
+            custom:text_size_date="@dimen/_12sdp"
+            style="@style/tv_regular"
+            custom:range_color="@color/range_bg_color_app"
+            custom:selected_date_circle_color="@color/purple_200"
+            custom:title_color="@color/tv_medium"
+            custom:week_offset="0">
+
+        </com.archit.calendardaterangepicker.customviews.DateRangeCalendarView>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

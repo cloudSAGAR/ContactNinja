@@ -1,30 +1,22 @@
 package com.contactninja.Fragment.Broadcast_Frgment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.PermissionRequest;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -33,15 +25,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Broadcast_Activity.Broadcast_to_repeat;
+import com.contactninja.Broadcast_Activity.Brodcsast_Tankyou;
+import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.R;
-import com.contactninja.Utils.Global;
+import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.makeramen.roundedimageview.RoundedImageView;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,20 +44,20 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
     String strtext = "";
     ViewpaggerAdapter adapter;
     ImageView search_icon;
-    ImageView iv_back, iv_more;
+    ImageView iv_back, iv_Setting;
     TextView save_button;
     List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
     CardListAdepter cardListAdepter;
 
     LinearLayout main_layout;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcst_activty);
         IntentUI();
-
-
+        sessionManager=new SessionManager(this);
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -109,9 +100,10 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
         contect_search = findViewById(R.id.contect_search);
         search_icon = findViewById(R.id.search_icon);
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
-        iv_more = findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting = findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         iv_back.setOnClickListener(this);
         save_button.setOnClickListener(this);
         save_button.setVisibility(View.VISIBLE);
@@ -134,21 +126,54 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Broadcst_Activty.this, R.style.DialogStyle);
                 bottomSheetDialog.setContentView(mView);
                 TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
+                ImageView iv_send = bottomSheetDialog.findViewById(R.id.iv_send);
                 ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
                 ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
                 ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
                 ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
                 LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
+                LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
                 RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
                 EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
                 CoordinatorLayout layout_select_image=bottomSheetDialog.findViewById(R.id.layout_select_image);
+                LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
+                LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
 
+                lay_sendnow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent1= new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
+                        intent1.putExtra("s_name","default");
+                        startActivity(intent1);
+                        finish();
+                    }
+                });
+                lay_schedule.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
+                        finish();
+                    }
+                });
                 edit_message.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         iv_card_list.setImageResource(R.drawable.ic_card_blank);
                         rv_image_card.setVisibility(View.GONE);
                         iv_card_list.setSelected(false);
+                    }
+                });
+
+                iv_send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Broadcast_Data broadcast_data=new Broadcast_Data();
+                        broadcast_data.setLink(tv_text_link.getText().toString());
+                        broadcast_data.setLink_text(edit_message.getText().toString());
+                        broadcast_data.setBroadcast_image_lists(broadcast_image_list);
+                        sessionManager.setAdd_Broadcast_Data(broadcast_data);
+                        lay_main_choose_send.setVisibility(View.VISIBLE);
+
                     }
                 });
 

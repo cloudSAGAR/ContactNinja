@@ -48,6 +48,12 @@
     <color name="min_text">#8E909B</color>
     <color name="lineView">#D8D8D8</color>
     <color name="linkView_border">#9B9B9B</color>
+    <color name="spinner">#BBBBBB</color>
+
+
+    <color name="calendar_header_title">#FFF</color>
+    <color name="selected_date_circle_color_app">#FF5252</color>
+    <color name="range_bg_color_app">#FFCDD2</color>
 
 
 

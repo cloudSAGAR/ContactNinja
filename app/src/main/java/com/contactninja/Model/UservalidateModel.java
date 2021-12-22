@@ -10,6 +10,9 @@ public class UservalidateModel {
     @SerializedName("email")
     @Expose
     private List<String> email = null;
+    @SerializedName("firstname")
+    @Expose
+    private List<String> firstname = null;
     @SerializedName("contact_number")
     @Expose
     private List<String> contact_number = null;
@@ -47,6 +50,11 @@ public class UservalidateModel {
         this.password = password;
     }
 
+    public List<String> getFirstname() {
+        return firstname;
+    }
 
-
+    public void setFirstname(List<String> firstname) {
+        this.firstname = firstname;
+    }
 }

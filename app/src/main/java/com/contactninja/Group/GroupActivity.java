@@ -14,12 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -73,7 +70,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     public static List<GroupListData> select_inviteListData = new ArrayList<>();
     TextView save_button;
-    ImageView iv_more, iv_back;
+    ImageView iv_Setting, iv_back;
     RecyclerView add_contect_list, contect_list_unselect;
     LinearLayoutManager layoutManager, layoutManager1;
     Cursor cursor;
@@ -94,30 +91,30 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
     boolean isLastPage = false;
-    List<ContectListData.Contact> contectListData;
-    List<ContectListData.Contact> select_contectListData;
+    List<ContectListData.Contact> contectListData=new ArrayList<>();
+    List<ContectListData.Contact> select_contectListData=new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
+        inviteListData.clear();
+        pre_seleact.clear();
+        select_inviteListData.clear();
+        contectListData.clear();
+        select_contectListData.clear();
         IntentUI();
         Global.checkConnectivity(GroupActivity.this, mMainLayout);
         sessionManager=new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(this);
-        select_contectListData=new ArrayList<>();
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(500);
-        contectListData = new ArrayList<>();
-        try {
-            ContectEvent();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+
         contectListData.clear();
-        iv_more.setVisibility(View.GONE);
+        iv_Setting.setVisibility(View.GONE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
@@ -142,21 +139,32 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         fastscroller.setupWithRecyclerView(
                 contect_list_unselect,
                 (position) -> {
-                    // ItemModel item = data.get(position);
-                    FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
 
+                    try {
+                        FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                                contectListData.get(position).getFirstname().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );
+                        return fastScrollItemIndicator;
+                    }
+                    catch (Exception e)
+                    {
+                      /*  FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                                inviteListData.get(position).getUserName().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );*/
+                        return null;
+                    }
 
-                            inviteListData.get(position).getUserName().substring(0, 1)
-                                    .substring(0, 1)
-                                    .toUpperCase()// Grab the first letter and capitalize it
-                    );
-                    return fastScrollItemIndicator;
                 }
         );
 
 
 
-
+        call_updatedata();
+        Log.e("Selcete List Is",new Gson().toJson(select_contectListData));
         topUserListDataAdapter=new TopUserListDataAdapter(this,getApplicationContext(),select_contectListData);
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
@@ -247,8 +255,25 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        if (SessionManager.getContectList(this).size() != 0) {
+            GetContactsIntoArrayList();
+            contectListData.addAll(SessionManager.getContectList(this).get(0).getContacts());
+            groupContectAdapter.addAll(contectListData);
+            num_count.setText(contectListData.size()+" Contacts");
+            contect_list_unselect.setItemViewCacheSize(500);
 
-        call_updatedata();
+
+        } else {
+            GetContactsIntoArrayList();
+            contect_list_unselect.setItemViewCacheSize(500);
+
+            try {
+                ContectEvent();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }
 
@@ -270,8 +295,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     private void IntentUI() {
         save_button = findViewById(R.id.save_button);
-        iv_more = findViewById(R.id.iv_more);
+        iv_Setting = findViewById(R.id.iv_Setting);
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
         add_contect_list = findViewById(R.id.add_contect_list);
         add_contect_list.setLayoutManager(layoutManager);
@@ -793,7 +819,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     userDetails.remove(position);
                     topUserListDataAdapter.notifyDataSetChanged();
 
-
+                    num_count.setText(userDetails.size()+" Contacts");
 
 
                 }
@@ -820,8 +846,15 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         public void remove_item(int item)
         {
-            userDetails.remove(item);
-            notifyItemRemoved(item);
+            try {
+                userDetails.remove(item);
+                notifyItemRemoved(item);
+            }
+            catch (Exception e)
+            {
+
+            }
+
 
         }
 
@@ -880,7 +913,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
         paramObject.addProperty("page", currentPage);
-        paramObject.addProperty("perPage", limit);
+        paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "A");
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy","firstname");
@@ -955,7 +988,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
         paramObject.addProperty("page", currentPage);
-        paramObject.addProperty("perPage", limit);
+        paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "");
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy","firstname");
@@ -1048,21 +1081,15 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
             ContectListData.Contact Contact_data = contacts.get(position);
-            //Log.e("Postion is",String.valueOf(position));
+            Log.e("Selcete List Is",new Gson().toJson(select_contectListData));
             switch (getItemViewType(position)) {
                 case ITEM:
                     GroupContectAdapter.MovieViewHolder holder1 = (GroupContectAdapter.MovieViewHolder) holder;
 
-
-                    contacts.get(position).setFlag("true");
-
-
-
-
-
-                    try {
+               /*     try {*/
+                        //contacts.get(position).setFlag("true");
                         Log.e("Postion is", String.valueOf(position));
-                        if (contacts.get(position).getFlag().equals("false"))
+                        /*if (contacts.get(position).getFlag().equals("false"))
                         {
                             holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                             holder1.add_new_contect_icon.setVisibility(View.GONE);
@@ -1070,7 +1097,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         else {
                             holder1.remove_contect_icon.setVisibility(View.GONE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                        }
+                        }*/
+
+
+
                         Log.e("List is",new Gson().toJson(select_contectListData));
                         holder1.userName.setText(Contact_data.getFirstname());
                         holder1.userNumber.setVisibility(View.GONE);
@@ -1139,6 +1169,44 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
                         holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
 
+                    if (sessionManager.getGroupList(getApplicationContext()).size()!=0)
+                    {
+
+                        List<ContectListData.Contact> contact1= sessionManager.getGroupList(getApplicationContext());
+
+                        for (int i=0;i<contact1.size();i++)
+                        {
+                            if (contact1.get(i).getId().equals(contacts.get(position).getId())) {
+
+                                if (holder1.add_new_contect_icon.getVisibility()==View.VISIBLE)
+                                {
+                                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+                                }
+                                else {
+                                    contacts.get(position).setFlag("true");
+                                    holder1.remove_contect_icon.setVisibility(View.GONE);
+                                    holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
+                                }
+
+                            }
+                            else {
+
+                                if (holder1.remove_contect_icon.getVisibility()==View.GONE)
+                                {
+                                    holder1.remove_contect_icon.setVisibility(View.GONE);
+                                    holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
+                                }
+                                else {
+                                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+                                }
+
+
+                            }
+                        }
+
+                    }
                         holder1.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -1164,13 +1232,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void onClick(View v) {
                                 Log.e("On Click Remove ","Remove");
-                               // Log.e("Data is",new Gson().toJson(contacts.get(position)));
-                                //userDetailsfull.get(position).setId(0);
+
                                 holder1.remove_contect_icon.setVisibility(View.GONE);
                                 holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                                 topUserListDataAdapter.remove_item(position);
-
-                                Log.e("Postionis ",String.valueOf(position));
 
                                 topUserListDataAdapter.notifyDataSetChanged();
                                 Log.e("Size is",new Gson().toJson(select_contectListData));
@@ -1188,50 +1253,13 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                             }
                         });
 
-                        if (sessionManager.getGroupList(getApplicationContext()).size()!=0)
-                        {
-
-                            List<ContectListData.Contact> contact1= sessionManager.getGroupList(getApplicationContext());
-
-                            for (int i=0;i<contact1.size();i++)
-                            {
-                                if (contact1.get(i).getId().equals(contacts.get(position).getId())) {
-
-                                    if (holder1.add_new_contect_icon.getVisibility()==View.VISIBLE)
-                                    {
-                                        holder1.remove_contect_icon.setVisibility(View.GONE);
-                                        holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                                    }
-                                    else {
-                                        contacts.get(position).setFlag("true");
-                                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                                        holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                    }
-
-                                }
-                                else {
-
-                                    if (holder1.remove_contect_icon.getVisibility()==View.GONE)
-                                    {
-                                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                                        holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                    }
-                                    else {
-                                        holder1.remove_contect_icon.setVisibility(View.GONE);
-                                        holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                                    }
 
 
-                                }
-                            }
-
-                        }
-
-                    }
+                    /*}
                     catch (Exception e)
                     {
                         contacts.remove(position);
-                    }
+                    }*/
 
 
                     break;

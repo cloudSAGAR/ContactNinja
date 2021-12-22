@@ -45,6 +45,7 @@ import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -58,6 +59,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -68,6 +70,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +82,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
-    ImageView iv_back, iv_more, pulse_icon;
+    ImageView iv_back, iv_Setting, pulse_icon;
     TextView save_button,tv_nameLetter;
     TabLayout tabLayout;
     String fragment_name, user_image_Url, File_name = "", File_extension = "";
@@ -151,16 +154,41 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            Glide.with(getApplicationContext()).
-                    load(Contect_data.getContactImage())
-                    .placeholder(R.drawable.shape_primary_back)
-                    .error(R.drawable.shape_primary_back).
-                    into(iv_user);
+            if(Contect_data.getContactImage()==null){
+                iv_user.setVisibility(View.GONE);
+                layout_pulse.setVisibility(View.VISIBLE);
+                pulse_icon.setVisibility(View.GONE);
+                tv_nameLetter.setVisibility(View.VISIBLE);
+                String name = Contect_data.getFirstname();
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
+                tv_nameLetter.setText(add_text);
+
+            }else {
+                iv_user.setVisibility(View.VISIBLE);
+                layout_pulse.setVisibility(View.GONE);
+                Glide.with(getApplicationContext()).
+                        load(Contect_data.getContactImage())
+                        .placeholder(R.drawable.shape_primary_back)
+                        .error(R.drawable.shape_primary_back).
+                        into(iv_user);
+            }
             olld_image = Contect_data.getContactImage();
 
-            save_button.setText("Edit Contact");
-            layout_pulse.setVisibility(View.GONE);
-            iv_user.setVisibility(View.VISIBLE);
+            save_button.setText("Save Contact");
+
 
 
         } else if (flag.equals("read")) {
@@ -205,7 +233,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             }
             olld_image = Contect_data.getContactImage();
 
-            save_button.setText("Edit Contact");
             save_button.setText("Edit Contact");
         } else {
             Log.e("Null", "No Call");
@@ -371,10 +398,11 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     private void IntentUI() {
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
         save_button.setVisibility(View.VISIBLE);
-        iv_more = findViewById(R.id.iv_more);
-        iv_more.setVisibility(View.GONE);
+        iv_Setting = findViewById(R.id.iv_Setting);
+        iv_Setting.setVisibility(View.GONE);
         tabLayout = findViewById(R.id.tabLayout);
         frameContainer = findViewById(R.id.frameContainer);
         pulse_icon = findViewById(R.id.pulse_icon);
@@ -408,7 +436,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 .setDeniedTitle("Contactninja would like to access your contacts")
                 .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
                 .setGotoSettingButtonText("setting")
-                .setPermissions(Manifest.permission.WRITE_CONTACTS)
+                .setPermissions(Manifest.permission.WRITE_CONTACTS,Manifest.permission.SEND_SMS)
                 .setRationaleConfirmText("OK")
                 .check();
 
@@ -668,7 +696,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     save_button.setText("Edit Contact");
                     finish();
                 } else {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
+                    try{
+                        if(uservalidateModel.getFirstname().size()!=0){
+                            Global.Messageshow(getApplicationContext(), mMainLayout, uservalidateModel.getFirstname().get(0).toString(), false);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
                 }
             }
 
