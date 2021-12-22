@@ -109,6 +109,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(500);
         contectListData = new ArrayList<>();
+        GetContactsIntoArrayList();
         try {
             ContectEvent();
         } catch (JSONException e) {
@@ -137,7 +138,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
                     FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
 
 
-                            inviteListData.get(position).getUserName().substring(0, 1)
+                            contectListData.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
@@ -146,12 +147,9 @@ public class Broadcste_Contect_Fragment extends Fragment  {
         );
 
 
-
-
         topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
-        GetContactsIntoArrayList();
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -554,7 +552,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
         paramObject.addProperty("page", currentPage);
-        paramObject.addProperty("perPage", limit);
+        paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "A");
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy","firstname");

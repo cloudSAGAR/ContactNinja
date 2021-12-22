@@ -178,7 +178,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             case R.id.demo_layout:
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
-                /*getActivity().finish();*/
                 break;
 
 

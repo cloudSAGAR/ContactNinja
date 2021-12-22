@@ -92,6 +92,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_group);
+        inviteListData.clear();
         IntentUI();
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -118,7 +119,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         iv_back.setOnClickListener(this);
         save_button.setText("Save");
         save_button.setVisibility(View.VISIBLE);
-        inviteListData.clear();
         inviteListData.addAll(sessionManager.getGroupList(this));
      //   Log.e("Data Is ",new Gson().toJson(sessionManager.getGroupList(this)));
         fastscroller_thumb.setupWithFastScroller(fastscroller);
@@ -521,10 +521,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 public void onClick(View v) {
 
                   //  Log.e("Posirion is", String.valueOf(position));
+                    userDetails.get(position).setFlag("true");
                     removeite(position);
                   //  Log.e("Main Data Is",new Gson().toJson(inviteListData));
                    /* holder.main_layout.setVisibility(View.GONE);
-                    userDetails.get(position).setFlag("true");*/
+                  */
 
                 }
             });
@@ -680,9 +681,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         public void removeite(int value)
         {
             inviteListData.remove(value);
-
             userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
             contect_list_unselect.setAdapter(userListDataAdapter);
+            userListDataAdapter.notifyDataSetChanged();
+
 
         }
 

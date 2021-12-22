@@ -270,30 +270,7 @@ public class ContectFragment extends Fragment {
                     }
                 }
         );
-        fastscroller.setupWithRecyclerView(
-                rvinviteuserdetails,
-                (position) -> {
 
-                    try {
-                        FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-                                inviteListData.get(position).getUserName().substring(0, 1)
-                                        .substring(0, 1)
-                                        .toUpperCase()// Grab the first letter and capitalize it
-                        );
-                        return fastScrollItemIndicator;
-                    }
-                    catch (Exception e)
-                    {
-                      /*  FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-                                inviteListData.get(position).getUserName().substring(0, 1)
-                                        .substring(0, 1)
-                                        .toUpperCase()// Grab the first letter and capitalize it
-                        );*/
-                        return null;
-                    }
-
-                }
-        );
 
 
 
@@ -459,7 +436,30 @@ public class ContectFragment extends Fragment {
 
             }
         });
+        fastscroller.setupWithRecyclerView(
+                rvinviteuserdetails,
+                (position) -> {
 
+                    try {
+                        FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                                contectListData.get(position).getFirstname().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );
+                        return fastScrollItemIndicator;
+                    }
+                    catch (Exception e)
+                    {
+                      /*  FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                                inviteListData.get(position).getUserName().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );*/
+                        return null;
+                    }
+
+                }
+        );
 
         return content_view;
 
@@ -1036,7 +1036,7 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
         paramObject.addProperty("page", currentPage);
-        paramObject.addProperty("perPage", limit);
+        paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "A");
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy", "firstname");
@@ -1107,7 +1107,7 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
         paramObject.addProperty("page", currentPage);
-        paramObject.addProperty("perPage", limit);
+        paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "");
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy", "firstname");
