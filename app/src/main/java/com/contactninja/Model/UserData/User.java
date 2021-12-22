@@ -11,6 +11,9 @@ public class User {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("is_contact_exist")
+    @Expose
+    private Integer is_contact_exist;
     @SerializedName("first_name")
     @Expose
     private String firstName;
@@ -185,4 +188,11 @@ public class User {
         this.affiliateInfo = affiliateInfo;
     }
 
+    public Integer getIs_contact_exist() {
+        return is_contact_exist;
+    }
+
+    public void setIs_contact_exist(Integer is_contact_exist) {
+        this.is_contact_exist = is_contact_exist;
+    }
 }

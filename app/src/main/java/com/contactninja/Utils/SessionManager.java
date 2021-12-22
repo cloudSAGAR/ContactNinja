@@ -59,6 +59,7 @@ public class SessionManager {
     public static final String brodcaste_Contect_List ="brod_contectlist";
     public static final String brodcaste_group ="brod_group";
     public static final String Broadcast_Data_save=" broadcast_data";
+    public  static final String Contectexits_token="contect_token";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -127,6 +128,20 @@ public class SessionManager {
 
     public  void setRefresh_token(String efresh_token) {
         editor.putString(Refresh_token, efresh_token);
+        editor.commit();
+    }
+
+
+
+    public  String getcontectexits() {
+
+        String type= pref.getString(Contectexits_token, "");
+        return  type;
+
+    }
+
+    public  void setcontectexits(String efresh_token) {
+        editor.putString(Contectexits_token, efresh_token);
         editor.commit();
     }
 
