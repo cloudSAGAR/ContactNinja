@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         retrofitCalls = new RetrofitCalls(this);
         firebase();
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
-        forgot_password.setOnClickListener(this);
+        btn_chnage_forgot.setOnClickListener(this);
 
     }
 
@@ -245,7 +245,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                // finish();
 
                 break;
-            case R.id.forgot_password:
+            case R.id.btn_chnage_forgot:
                 startActivity(new Intent(getApplicationContext(),ForgotPasswordActivity.class));
 
                 break;

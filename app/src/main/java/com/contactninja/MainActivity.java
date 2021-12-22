@@ -58,14 +58,8 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final int RequestPermissionCode = 1;
-    private static final String TAG_HOME = "home";
-    private static final String TAG_SEND = "send";
-    private static final String TAG_Contact = "contact";
-    private static final String TAG_USER = "user";
     //Declare Variabls for fragment
     public static int navItemIndex = 0;
-    public static String CURRENT_TAG = TAG_HOME;
     private static int RC_APP_UPDATE = 0;
     InstallStateUpdatedListener installStateUpdatedListener;
     RelativeLayout mMainLayout;
@@ -75,12 +69,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean doubleBackToExitPressedOnce = false;
     private AppUpdateManager mAppUpdateManager;
     private long mLastClickTime = 0;
-    private final boolean shouldLoadHomeFragOnBackPress = true;
+    private boolean shouldLoadHomeFragOnBackPress = true;
     LinearLayout llCreate;
     LoadingDialog loadingDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sessionManager = new SessionManager(this);
@@ -96,49 +90,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Locale.getDefault());
 
         Date currentLocalTime = calendar.getTime();
-        DateFormat date = new SimpleDateFormat("Z");
+        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
        String  offset = localTime.substring(0, 1);
        Log.e("offset",offset);
         Log.e("Show Local ",localTime);
         Log.e("GMT offset is %s hours",""+ TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS));
-        //  FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-        // FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Invalidtoken"));
         UpdateManageCheck();
         EnableRuntimePermission();
 
         navItemIndex = 0;
-        CURRENT_TAG = TAG_HOME;
         displayView();
         ImageSetLight("Home");
 
-
-
-        //  showAlertDialogButtonClicked();
-
-
     }
 
-
-   /* public void showAlertDialogButtonClicked() {
-
-        // Create an alert builder
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(this);
-
-        // set the custom layout
-        final View customLayout = getLayoutInflater().inflate(R.layout.permision_dialog, null);
-        builder.setView(customLayout);
-        TextView tv_not = customLayout.findViewById(R.id.tv_not);
-        TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
-
-
-        AlertDialog dialog
-                = builder.create();
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        dialog.show();
-    }*/
 
     public void EnableRuntimePermission() {
 
@@ -166,28 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-/*
 
-    @Override
-    public void onRequestPermissionsResult(int RC, String[] per, int[] PResult) {
-
-        super.onRequestPermissionsResult(RC, per, PResult);
-        if (RC == RequestPermissionCode) {
-            if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                   // delete();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Global.Messageshow(getApplicationContext(), mMainLayout, "Permission Canceled, Now your application cannot access CONTACTS", false);
-                startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.fromParts("package", getPackageName(), null)));
-                // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-*/
 
 
     private void IntentUI() {
@@ -326,7 +271,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (shouldLoadHomeFragOnBackPress) {
             if (navItemIndex != 0) {
                 navItemIndex = 0;
-                CURRENT_TAG = TAG_HOME;
                 displayView();
                 ImageSetLight("Home");
                 return;
@@ -350,8 +294,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
-    public void onClick(View v) {
+    public void onClick(@SuppressLint("UnknownNullness") View v) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
             return;
         }
@@ -359,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.llHome:
                 navItemIndex = 0;
-                CURRENT_TAG = TAG_HOME;
                 displayView();
 
                 ImageSetLight("Home");
@@ -368,7 +312,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.llsend:
                 navItemIndex = 1;
-                CURRENT_TAG = TAG_Contact;
                 displayView();
 
                 ImageSetLight("Send");
@@ -377,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.llContact:
                 navItemIndex = 2;
-                CURRENT_TAG = TAG_SEND;
                 displayView();
 
                 ImageSetLight("Contact");
@@ -386,7 +328,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.llUser:
                 navItemIndex = 3;
-                CURRENT_TAG = TAG_USER;
                 displayView();
 
                 ImageSetLight("User");
@@ -394,7 +335,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.llCreate:
                 navItemIndex = 4;
-                CURRENT_TAG = TAG_USER;
                 displayView();
 
                 ImageSetLight("Add");
@@ -411,22 +351,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 0:
 
                 fragment = new Home_Main_Fragment();
+                shouldLoadHomeFragOnBackPress=false;
                 break;
             case 1:
                 fragment = new Send_Main_Fragment();
+                shouldLoadHomeFragOnBackPress=true;
                 break;
             case 2:
                 fragment = new Contect_main_Fragment();
+                shouldLoadHomeFragOnBackPress=true;
                 break;
             case 3:
                 fragment = new UserProfile_Main_Fragment();
+                shouldLoadHomeFragOnBackPress=true;
                 break;
             case 4:
                 Log.e("Brodcaste Call","Yes");
-                sessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
-                sessionManager.setContectList_broadcste(getApplicationContext(),new ArrayList<>());
+                SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
+                SessionManager.setContectList_broadcste(getApplicationContext(),new ArrayList<>());
                 Broadcast_Data broadcast_data=new Broadcast_Data();
-                sessionManager.setAdd_Broadcast_Data(broadcast_data);
+                SessionManager.setAdd_Broadcast_Data(broadcast_data);
                 broadcast_manu();
                 break;
         }
@@ -435,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragment, CURRENT_TAG);
+            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
             fragmentTransaction.commitAllowingStateLoss();
         }
 
@@ -444,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void broadcast_manu() {
 
-        final View mView = getLayoutInflater().inflate(R.layout.brodcaste_dialog_item, null);
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.brodcaste_dialog_item, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
@@ -453,16 +397,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(), Broadcst_Activty.class);
                 startActivity(intent);
-                finish();
-
+                //finish();
+                bottomSheetDialog.dismiss();
             }
         });
 
         bottomSheetDialog.show();
 
     }
-
-
-
-
 }
