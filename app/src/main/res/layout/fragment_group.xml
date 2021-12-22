@@ -104,16 +104,21 @@
      android:orientation="vertical"
      android:layout_width="match_parent"
      android:layout_height="match_parent">
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipeToRefresh"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
 
- <androidx.recyclerview.widget.RecyclerView
+  <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/group_list"
      android:layout_weight="1"
      android:layout_width="match_parent"
      android:layout_height="0dp">
 
  </androidx.recyclerview.widget.RecyclerView>
- <ProgressBar
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+  <ProgressBar
      android:visibility="gone"
      android:id="@+id/idPBLoading"
      android:layout_width="match_parent"

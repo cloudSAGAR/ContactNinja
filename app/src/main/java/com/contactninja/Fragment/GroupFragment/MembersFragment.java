@@ -112,7 +112,7 @@ public class MembersFragment extends Fragment {
     }
     private void getAllContect() {
         // loadingDialog.showLoadingDialog();
-        class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
+       /* class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
             @Override
             protected List<InviteListData> doInBackground(Void... voids) {
                 List<InviteListData> taskList = DatabaseClient
@@ -144,7 +144,7 @@ public class MembersFragment extends Fragment {
         }
 
         GetTasks gt = new GetTasks();
-        gt.execute();
+        gt.execute();*/
     }
 
 

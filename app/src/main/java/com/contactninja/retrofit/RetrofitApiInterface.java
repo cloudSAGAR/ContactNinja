@@ -91,5 +91,21 @@ public interface RetrofitApiInterface {
     );
 
 
+    @POST("userexistcheck")
+    Call<ApiResponse> Userexistcheck(@Header("Accept") String api, @Body JsonObject body);
+
+
+
+    @POST("working_hour/add/default")
+    Call<ApiResponse> Working_hour(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+    @POST("manual_task/store")
+    Call<ApiResponse> Send_SMS_Api(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+    @POST("forgotPassword")
+    Call<ApiResponse>  ForgotPassword(@Header("Accept") String api, @Body JsonObject jsonObject);
+
 
 }

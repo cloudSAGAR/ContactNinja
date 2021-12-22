@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 
+import com.contactninja.Model.Contect_Db;
 import com.contactninja.Model.InviteListData;
 
 import java.util.List;
@@ -16,7 +17,28 @@ import java.util.List;
 @Dao
 public interface ContectInterface {
 
-        @Query("SELECT * FROM InviteListData ")
+
+
+
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        void insertAllcontect(List<Contect_Db> Contect_list);
+
+        @Insert
+        void insert(Contect_Db contect);
+
+        @Query("SELECT * FROM  Contect_Db GROUP BY id1")
+        List<Contect_Db> getvalue();
+
+        @Query("SELECT * FROM Contect_Db WHERE first_name =:first_name OR last_name =:last_name AND email_number =:phone")
+        List<Contect_Db> getSameValue(String first_name,String last_name,String phone);
+
+        @Query("DELETE FROM Contect_Db")
+        void RemoveData();
+
+        @Query("DELETE FROM Contect_Db WHERE id NOT IN (SELECT MIN(id) FROM Contect_Db GROUP BY email_number, first_name)")
+        void deleteDuplicates();
+
+      /*  @Query("SELECT * FROM InviteListData ")
         List<InviteListData> getvalue();
 
         @Query("SELECT * FROM InviteListData WHERE userPhoneNumber =:taskId")
@@ -24,6 +46,9 @@ public interface ContectInterface {
 
         @Insert
         void insert(InviteListData contect);
+
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        void insertAllcontect(List<InviteListData> contect);
 
         @Delete
         void delete(InviteListData contect);
@@ -62,7 +87,7 @@ public interface ContectInterface {
 
 
         @Query("SELECT * FROM InviteListData ORDER BY userName")
-        List<InviteListData> getvalue1();
+        List<InviteListData> getvalue1();*/
 
 }
 

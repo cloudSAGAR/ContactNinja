@@ -162,6 +162,43 @@ public class RetrofitCalls {
 
 
 
+    public void Userexistcheck(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Userexistcheck(RetrofitApiClient.API_Header,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+
+    public void Working_hour(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Working_hour(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void Send_SMS_Api(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Send_SMS_Api(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void ForgotPassword(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.ForgotPassword(RetrofitApiClient.API_Header,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
 
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {

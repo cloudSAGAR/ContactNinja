@@ -46,18 +46,22 @@ public class    PlanType_Screen extends AppCompatActivity implements View.OnClic
             case R.id.layout_free_card:
                 intent.putExtra("flag", 1);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.layout_bz_card:
                 intent.putExtra("flag", 2);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.layout_master:
                 intent.putExtra("flag", 3);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.layout_contect:
                 intent.putExtra("flag", 4);
                 startActivity(intent);
+                finish();
                 break;
         }
     }

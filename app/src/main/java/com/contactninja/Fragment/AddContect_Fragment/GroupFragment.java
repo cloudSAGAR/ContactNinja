@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Group.GroupActivity;
@@ -72,6 +73,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
+    SwipeRefreshLayout swipeToRefresh;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,6 +128,20 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        swipeToRefresh.setColorSchemeResources(R.color.purple_200);
+        swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                paginationAdapter = new PaginationAdapter(getActivity());
+                group_recyclerView.setAdapter(paginationAdapter);
+
+                try {
+                    GroupEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return view;
     }
@@ -142,6 +159,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         grouplists = new ArrayList<>();
         mMainLayout1=view.findViewById(R.id.mMainLayout1);
         demo_layout=view.findViewById(R.id.demo_layout);
+        swipeToRefresh=view.findViewById(R.id.swipeToRefresh);
 
     }
 
@@ -160,7 +178,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             case R.id.demo_layout:
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
-                /*getActivity().finish();*/
                 break;
 
 
@@ -191,10 +208,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-
+                swipeToRefresh.setRefreshing(false);
                 loadingDialog.cancelLoading();
                 if (response.body().getStatus() == 200) {
                     Gson gson = new Gson();
+                    grouplists.clear();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
                     }.getType();
@@ -223,6 +241,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void error(Response<ApiResponse> response) {
+                swipeToRefresh.setRefreshing(false);
                 loadingDialog.cancelLoading();
             }
         });
@@ -345,7 +364,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                         public void onClick(View v) {
                             SessionManager.setGroupData(context, Group_data);
                             startActivity(new Intent(getActivity(), SendBroadcast.class));
-                            getActivity().finish();
+                            //getActivity().finish();
                         }
                     });
                     break;

@@ -23,6 +23,7 @@ import com.contactninja.Auth.PlanTyep.PlanType_Screen;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.OTP_Receiver;
@@ -50,13 +51,19 @@ import com.gun0912.tedpermission.TedPermission;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
 
 
-public class VerificationActivity extends AppCompatActivity {
+public class VerificationActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "VerificationActivity";
     public static CountDownTimer countDownTimer;
     public String fcmToken = "";
@@ -83,7 +90,7 @@ public class VerificationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         sessionManager = new SessionManager(this);
         IntentUI();
-
+        Global.checkConnectivity(VerificationActivity.this, mMainLayout);
         Intent getIntent = getIntent();
         Bundle getbunBundle = getIntent.getExtras();
         first_name = getbunBundle.getString("f_name");
@@ -134,6 +141,7 @@ public class VerificationActivity extends AppCompatActivity {
                 showTimer();
                 resend_txt.setVisibility(View.GONE);
                 tvTimer.setVisibility(View.VISIBLE);
+                verfiy_button.setEnabled(true);
                 //  firebase();
             }
         });
@@ -152,6 +160,7 @@ public class VerificationActivity extends AppCompatActivity {
                     loadingDialog.showLoadingDialog();
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                     signInWithCredential(credential);
+                    verfiy_button.setEnabled(true);
 
                 }
 
@@ -232,6 +241,7 @@ public class VerificationActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
+                                finish();
                             } else if (!sessionManager.isPayment_Type_Select()) {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                                 finish();
@@ -367,7 +377,7 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
     private void SignAPI() throws JSONException {
-
+        Global.getInstance().setConnectivityListener(this);
         loadingDialog.showLoadingDialog();
         String otp = otp_pinview.getText().toString();
 
@@ -385,7 +395,7 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-
+                Log.e("Response is",new Gson().toJson(response.body()));
                 if (response.body().getStatus()==200) {
 
                     Gson gson = new Gson();
@@ -405,6 +415,7 @@ public class VerificationActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
+                                finish();
                             }
                             else {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
@@ -416,6 +427,7 @@ public class VerificationActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
+                            finish();
                         }
 
                     }
@@ -428,6 +440,7 @@ public class VerificationActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
+                                finish();
                             }
                             else {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
@@ -439,6 +452,7 @@ public class VerificationActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
+                            finish();
                         }
 
                     }
@@ -447,6 +461,7 @@ public class VerificationActivity extends AppCompatActivity {
                       Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                       intent.putExtra("login_type", login_type);
                       startActivity(intent);
+                      finish();
                   }
                   else if (!sessionManager.isPayment_Type_Select()) {
                         startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
@@ -522,6 +537,7 @@ public class VerificationActivity extends AppCompatActivity {
 
 
                 } else {
+                    verfiy_button.setEnabled(false);
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
@@ -533,4 +549,9 @@ public class VerificationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(VerificationActivity.this, mMainLayout);
+
+    }
 }
