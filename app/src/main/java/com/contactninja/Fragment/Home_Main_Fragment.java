@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
@@ -33,12 +35,14 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
-public class HomeFragment extends Fragment {
+public class Home_Main_Fragment extends Fragment {
 
 
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
+    ImageView iv_toolbar_mail,iv_toolbar_select;
+    LinearLayout layout_toolbar_logo;
 
 
     @Override
@@ -57,7 +61,19 @@ public class HomeFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view= inflater.inflate(R.layout.fragment_main_home, container, false);
+        intentView(view);
+
+        return view;
+    }
+
+    private void intentView(View view) {
+        iv_toolbar_mail=view.findViewById(R.id.iv_toolbar_mail);
+        iv_toolbar_mail.setVisibility(View.VISIBLE);
+        iv_toolbar_select=view.findViewById(R.id.iv_toolbar_select);
+        iv_toolbar_select.setVisibility(View.VISIBLE);
+        layout_toolbar_logo=view.findViewById(R.id.layout_toolbar_logo);
+        layout_toolbar_logo.setVisibility(View.VISIBLE);
     }
 
     private void Refreess_token() throws JSONException {

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -26,19 +25,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.Fragment.Contect_main_Fragment;
-import com.contactninja.Fragment.HomeFragment;
-import com.contactninja.Fragment.SendFragment;
-import com.contactninja.Fragment.UsetProgileFragment;
+import com.contactninja.Fragment.Home_Main_Fragment;
+import com.contactninja.Fragment.Send_Main_Fragment;
+import com.contactninja.Fragment.UserProfile_Main_Fragment;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Utils.App;
-import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.retrofit.ApiResponse;
-import com.contactninja.retrofit.RetrofitCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -47,11 +43,8 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.gson.JsonObject;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-
-import org.json.JSONException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,8 +54,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
-
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -419,16 +410,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (navItemIndex) {
             case 0:
 
-                fragment = new HomeFragment();
+                fragment = new Home_Main_Fragment();
                 break;
             case 1:
-                fragment = new SendFragment();
+                fragment = new Send_Main_Fragment();
                 break;
             case 2:
                 fragment = new Contect_main_Fragment();
                 break;
             case 3:
-                fragment = new UsetProgileFragment();
+                fragment = new UserProfile_Main_Fragment();
                 break;
             case 4:
                 Log.e("Brodcaste Call","Yes");
