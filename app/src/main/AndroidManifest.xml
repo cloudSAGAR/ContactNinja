@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.contactninja">
+    package="com.contactninja"
+    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,AllowBackup,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -45,14 +46,17 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactNinja"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        >
         <activity
+            android:screenOrientation="portrait"
             android:name=".Auth.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Repeat_Month_Activity"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:screenOrientation="portrait"
             android:name=".Broadcast_Activity.Repeat_weekly_Activity"

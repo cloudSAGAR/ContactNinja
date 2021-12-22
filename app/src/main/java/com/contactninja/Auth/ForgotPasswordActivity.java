@@ -1,16 +1,16 @@
 package com.contactninja.Auth;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.contactninja.MainActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -28,13 +28,12 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     EditText edit_email;
     TextView btn_login,tv_signUP,iv_invalid;
-    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
         loadingDialog=new LoadingDialog(this);
@@ -53,8 +52,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         iv_invalid=findViewById(R.id.iv_invalid);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
-    public void onClick(View view) {
+    public void onClick(@SuppressLint("UnknownNullness") View view) {
         switch (view.getId())
         {
             case R.id.tv_signUP:
@@ -71,16 +71,16 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         iv_invalid.setText("");
         if (edit_email.getText().toString().trim().equals("")) {
             iv_invalid.setText(getResources().getString(R.string.invalid_email));
-        } else if (!edit_email.getText().toString().matches(emailPattern)) {
-            iv_invalid.setText(getResources().getString(R.string.invalid_email));
-        }
-        else {
+        } else if (Global.emailValidator(edit_email.getText().toString().trim())) {
             iv_invalid.setText("");
             try {
                 Uservalidate();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        else {
+            iv_invalid.setText(getResources().getString(R.string.invalid_email));
         }
     }
 
@@ -98,6 +98,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("login_type","EMAIL");
         obj.add("data", paramObject);
         retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+            @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
@@ -136,11 +137,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
                     showAlertDialogButtonClicked();
                     Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        public void run() {
-                            finish();
-                        }
-                    }, 2000);
+                    handler.postDelayed(ForgotPasswordActivity.this::finish, 2000);
 
                 } else {
                     loadingDialog.cancelLoading();

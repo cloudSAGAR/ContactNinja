@@ -112,7 +112,7 @@
                                 android:textColorHighlight="@color/purple_200"
                                 android:textColorHint="@color/otp_header_text_color"
                                 android:textStyle="bold"
-                                tools:ignore="Autofill" />
+                                tools:ignore="Autofill,RtlHardcoded" />
 
                         </LinearLayout>
 
@@ -177,7 +177,8 @@
                                 android:layout_marginEnd="@dimen/_10sdp"
                                 android:padding="@dimen/_5sdp"
                                 android:textColor="@color/red"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textIsSelectable="true" />
 
                             <TextView
                                 android:id="@+id/btn_chnage_phone_email"
@@ -203,11 +204,16 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:orientation="vertical">
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
 
                             <EditText
+                                android:layout_weight="1"
                                 android:id="@+id/edit_password"
                                 style="@style/tv_regular"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:textStyle="bold"
@@ -220,6 +226,17 @@
                                 android:textColor="@color/otp_header_text_color"
                                 android:textColorHint="@color/otp_header_text_color"
                                 tools:ignore="Autofill,RtlHardcoded" />
+                                <ImageView
+                                    android:id="@+id/iv_showPassword"
+                                    android:padding="@dimen/_5sdp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_visibility_off"
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="@dimen/_25sdp"
+                                    tools:ignore="ContentDescription">
+
+                                </ImageView>
+                            </LinearLayout>
 
                             <View
                                 android:layout_width="match_parent"
@@ -244,7 +261,8 @@
                                 android:layout_marginEnd="@dimen/_10sdp"
                                 android:padding="@dimen/_5sdp"
                                 android:textColor="@color/red"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textIsSelectable="true" />
 
                             <TextView
                                 android:id="@+id/btn_chnage_forgot"
@@ -340,7 +358,8 @@
         android:layout_height="@dimen/_60sdp"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_55sdp"
-        android:src="@drawable/ic_group_otp_logo">
+        android:src="@drawable/ic_group_otp_logo"
+        tools:ignore="ContentDescription">
 
     </ImageView>
 

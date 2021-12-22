@@ -3,9 +3,14 @@ package com.contactninja.Auth;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,11 +70,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     RetrofitCalls retrofitCalls;
     String Login_type = "PHONE", password = "";
     SessionManager sessionManager;
-    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
     TextView btn_chnage_forgot,iv_password_invalid;
     RelativeLayout forgot_password;
+    ImageView iv_showPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +178,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initUI() {
         sessionManager = new SessionManager(this);
         ccp_id = findViewById(R.id.ccp_id);
+        iv_showPassword = findViewById(R.id.iv_showPassword);
         edit_email = findViewById(R.id.edit_email);
         edit_Mobile = findViewById(R.id.edit_Mobile);
         btn_login = findViewById(R.id.btn_login);
@@ -190,6 +196,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         iv_password_invalid=findViewById(R.id.iv_password_invalid);
         forgot_password=findViewById(R.id.forgot_password);
         email_password=findViewById(R.id.email_password);
+
+        iv_showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.isSelected()){
+                    iv_showPassword.setSelected(false);
+                    //hide password
+                    iv_showPassword.setImageResource(R.drawable.ic_visibility_off);
+                    edit_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    edit_password.setSelection(edit_password.getText().length());
+
+                }else {
+                    iv_showPassword.setSelected(true);
+                    //show password
+                    iv_showPassword.setImageResource(R.drawable.ic_visibility);
+                    edit_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    edit_password.setSelection(edit_password.getText().length());
+                }
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -197,6 +223,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_chnage_phone_email:
+                iv_invalid.setVisibility(View.GONE);
+                iv_password_invalid.setVisibility(View.GONE);
                 if (is_PhoneShow) {
                     layout_email.setVisibility(View.VISIBLE);
                     layout_phonenumber.setVisibility(View.GONE);
@@ -220,6 +248,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                    // loadingDialog.showLoadingDialog();
                     if (Login_type.equals("EMAIL")) {
                         try {
+                            iv_password_invalid.setVisibility(View.GONE);
+                            iv_invalid.setVisibility(View.GONE);
                             Uservalidate();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -227,6 +257,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     } else {
                         //loadingDialog.showLoadingDialog();
                         try {
+                            iv_invalid.setVisibility(View.GONE);
                             Uservalidate();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -269,9 +300,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Login_type = "PHONE";
             if (edit_Mobile.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-            } else if (edit_Mobile.getText().length() != 10) {
-                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-            } else {
+            }else {
                 String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
                 String phoneNumber = edit_Mobile.getText().toString().trim();
                 if (countryCode.length() > 0 && phoneNumber.length() > 0) {
@@ -279,12 +308,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
                         if (status) {
                             iv_invalid.setText("");
+                            iv_invalid.setVisibility(View.VISIBLE);
                             return true;
                         } else {
                             iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                            iv_invalid.setVisibility(View.VISIBLE);
                         }
                     } else {
                         iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                        iv_invalid.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -292,20 +324,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Login_type = "EMAIL";
             if (edit_email.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_email));
-
-            } else if (!edit_email.getText().toString().matches(emailPattern)) {
-                iv_invalid.setText(getResources().getString(R.string.invalid_email));
-
-            } else if (edit_password.getText().equals("")) {
-                iv_invalid.setText(getResources().getString(R.string.invalid_password));
-            } else {
-                if (Global.emailValidator(edit_email.getText().toString().trim())) {
-                    return true;
+                iv_invalid.setVisibility(View.VISIBLE);
+            }  else if (Global.emailValidator(edit_email.getText().toString().trim())) {
+                iv_invalid.setVisibility(View.GONE);
+                if (edit_password.getText().toString().trim().equals("")) {
+                    iv_password_invalid.setText(getResources().getString(R.string.invalid_password));
+                    iv_password_invalid.setVisibility(View.VISIBLE);
                 } else {
-                    iv_invalid.setText(getResources().getString(R.string.invalid_email));
+                    return true;
                 }
-
+            } else {
+                iv_invalid.setText(getResources().getString(R.string.invalid_email));
+                iv_invalid.setVisibility(View.VISIBLE);
             }
+
         }
         return false;
     }
@@ -388,18 +420,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
                     if (Login_type.equals("EMAIL"))
                     {
-                        if (response.body().getMessage().equals("Invalid credencial."))
+                        if (response.body().getMessage().equals("Invalid Password."))
                         {
-                            Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-
+                            iv_password_invalid.setVisibility(View.VISIBLE);
                         }
                         else {
-                            Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getPassword().get(0), false);
-
+                            iv_invalid.setVisibility(View.VISIBLE);
                         }
-                    }
-                    else {
-                        //Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getContact_number().get(0),  false);
                     }
 
                 }
