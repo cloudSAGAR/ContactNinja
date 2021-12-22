@@ -9,7 +9,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class ConnectivityReceiver extends BroadcastReceiver {
+
     public static ConnectivityReceiverListener connectivityReceiverListener ;
+
 
     public ConnectivityReceiver() {
         super();
@@ -25,9 +27,10 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         }
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        if (Global.IsNotNull(connectivityReceiverListener)) {
+        if(Global.IsNotNull(isConnected)){
             connectivityReceiverListener.onNetworkConnectionChanged(isConnected);
         }
+
     }
 
 
@@ -41,7 +44,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     }
 
 
-    @SuppressWarnings("unused")
+ @SuppressWarnings("unused")
     public interface ConnectivityReceiverListener {
         void onNetworkConnectionChanged(boolean isConnected);
     }

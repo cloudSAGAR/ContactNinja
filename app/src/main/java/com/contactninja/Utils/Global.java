@@ -29,7 +29,7 @@ public class Global extends Application   {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     private static long lastClickTime = 0;
     private static Global mInstance;
-
+    private static Snackbar snackbar;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -150,8 +150,8 @@ public class Global extends Application   {
         ConnectivityReceiver.connectivityReceiverListener = listener;
     }
     public static void checkConnectivity (Activity activity, View mMainLayout) {
-        boolean Connectivity = false;
-        Snackbar snackbar;
+        boolean finalConnectivity = false;
+
         snackbar =
                 Snackbar.make(
                         mMainLayout,
@@ -159,16 +159,10 @@ public class Global extends Application   {
                         Snackbar.LENGTH_INDEFINITE);
         snackbar.setActionTextColor(activity.getResources().getColor(R.color.red));
 
-        boolean finalConnectivity = Connectivity;
         snackbar.setAction(activity.getString(R.string.tryAgain), view -> {
-            if (finalConnectivity) {
-                snackbar.dismiss();
-            } else {
-                checkConnectivity(activity,mMainLayout);
-            }
+            checkConnectivity(activity,mMainLayout);
         });
         if (ConnectivityReceiver.isConnected()) {
-            Connectivity = true;
             snackbar.dismiss();
         } else {
             snackbar.show();

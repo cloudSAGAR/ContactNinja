@@ -23,6 +23,7 @@ import com.contactninja.Auth.PlanTyep.PlanType_Screen;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.OTP_Receiver;
@@ -62,7 +63,7 @@ import java.util.concurrent.TimeUnit;
 import retrofit2.Response;
 
 
-public class VerificationActivity extends AppCompatActivity {
+public class VerificationActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "VerificationActivity";
     public static CountDownTimer countDownTimer;
     public String fcmToken = "";
@@ -89,7 +90,7 @@ public class VerificationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         sessionManager = new SessionManager(this);
         IntentUI();
-
+        Global.checkConnectivity(VerificationActivity.this, mMainLayout);
         Intent getIntent = getIntent();
         Bundle getbunBundle = getIntent.getExtras();
         first_name = getbunBundle.getString("f_name");
@@ -376,7 +377,7 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
     private void SignAPI() throws JSONException {
-
+        Global.getInstance().setConnectivityListener(this);
         loadingDialog.showLoadingDialog();
         String otp = otp_pinview.getText().toString();
 
@@ -548,4 +549,9 @@ public class VerificationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(VerificationActivity.this, mMainLayout);
+
+    }
 }

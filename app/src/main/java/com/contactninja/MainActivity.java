@@ -4,7 +4,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,6 +17,9 @@ import android.os.Build;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import android.net.ConnectivityManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -36,6 +41,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.Home_Main_Fragment;
@@ -49,6 +55,8 @@ import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Utils.App;
+import com.contactninja.Utils.DatabaseClient;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -131,10 +139,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+    private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mNetworkReceiver = new ConnectivityReceiver();
+        registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
         sessionManager.login();
         loadingDialog=new LoadingDialog(this);
@@ -164,6 +176,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
     public void EnableRuntimePermission() {
 
@@ -590,6 +624,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
+        Global.getInstance().setConnectivityListener(this);
     }
 
 
@@ -823,6 +858,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         bottomSheetDialog.show();
 
+    }
+
+    public void delete() {
+        class DeleteTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        //.deleteDuplicates();
+                        //.DeleteData(inviteListData.getUserPhoneNumber());
+                        .RemoveData();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                //   Log.e("Delete Task","Yes"+c);
+                super.onPostExecute(aVoid);
+
+            }
+        }
+
+        DeleteTask ut = new DeleteTask();
+        ut.execute();
+    }
+
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(MainActivity.this, mMainLayout);
     }
 
 

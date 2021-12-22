@@ -1,5 +1,6 @@
 package com.contactninja.Auth;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +14,12 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.google.android.material.tabs.TabLayout;
 import com.contactninja.Utils.SessionManager;
 
 
-public class AppIntroActivity extends AppCompatActivity implements View.OnClickListener {
+public class AppIntroActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ViewPager viewPager;
     int[] layouts;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -25,11 +27,14 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
     TabLayout tab_layout;
     SessionManager sessionManager;
 
+    private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_intro);
         sessionManager=new SessionManager(AppIntroActivity.this);
+        mNetworkReceiver = new ConnectivityReceiver();
 
         initUI();
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -77,6 +82,11 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+
     }
 
     class MyViewPagerAdapter extends PagerAdapter {

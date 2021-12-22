@@ -62,18 +62,19 @@
 
         </ImageView>
         <EditText
-
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_gravity="center|left"
-            android:gravity="center|left"
-            android:textColor="@color/tv_medium"
+            style="@style/tv_Medium"
             android:id="@+id/contect_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center|left"
+            android:hint="Search"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:background="@color/add_contect_transpernt"
-            >
-
-        </EditText>
+            android:textColor="@color/otp_header_text_color"
+            android:visibility="visible" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/add_new_contect_layout"
