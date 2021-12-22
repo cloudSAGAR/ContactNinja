@@ -37,6 +37,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
@@ -46,6 +47,7 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -75,7 +77,7 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener {
+public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -140,6 +142,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnewcontect);
         IntentUI();
+        Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
         EnableRuntimePermission();
         sessionManager = new SessionManager(this);
         save_button.setText("Save Contact");
@@ -1065,7 +1068,12 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     @Override
     protected void onResume() {
+        Global.getInstance().setConnectivityListener(this);
         super.onResume();
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
+    }
 }

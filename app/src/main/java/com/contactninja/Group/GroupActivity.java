@@ -26,10 +26,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -76,7 +79,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     EditText contect_search;
     TextView add_new_contect, num_count;
     ImageView add_new_contect_icon;
-    LinearLayout add_new_contect_layout;
+    LinearLayout add_new_contect_layout,mMainLayout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
             contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
@@ -102,6 +105,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         contectListData.clear();
         select_contectListData.clear();
         IntentUI();
+        Global.checkConnectivity(GroupActivity.this, mMainLayout);
         sessionManager=new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -307,6 +311,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         num_count = findViewById(R.id.num_count);
         add_new_contect_icon = findViewById(R.id.add_new_contect_icon);
         add_new_contect_layout = findViewById(R.id.add_new_contect_layout);
+        mMainLayout=findViewById(R.id.mMainLayout);
 
     }
 
@@ -402,6 +407,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
+
+
 
 
 
@@ -1347,6 +1354,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
+
+
 
 
 

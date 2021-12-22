@@ -31,11 +31,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Model.AddGroup;
+import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -94,6 +99,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_final_group);
         inviteListData.clear();
         IntentUI();
+        Global.checkConnectivity(Final_Group.this, mMainLayout);
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         if (SessionManager.getGroupData(this)!=null)
@@ -486,6 +492,8 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+
+
     public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
@@ -739,5 +747,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         } else {
             return false;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
