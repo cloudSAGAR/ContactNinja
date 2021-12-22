@@ -10,7 +10,6 @@ import java.io.Serializable;
 public class InviteListData implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
-
     @ColumnInfo(name = "userImageURL")
     private String userImageURL;
     @ColumnInfo(name = "userName")
@@ -23,6 +22,9 @@ public class InviteListData implements Serializable {
     private String f_latter;
     @ColumnInfo(name = "flag")
     private String  flag;
+
+    @ColumnInfo(name = "contect_id")
+    private String  contect_id;
    /* @ColumnInfo(name = "country")
     private String  country;
 
@@ -137,6 +139,14 @@ public class InviteListData implements Serializable {
 
     public int compareTo(InviteListData lhs) {
         return 0;
+    }
+
+    public String getContect_id() {
+        return contect_id;
+    }
+
+    public void setContect_id(String contect_id) {
+        this.contect_id = contect_id;
     }
 
     /*public String getCountry() {

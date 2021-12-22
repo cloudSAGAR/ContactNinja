@@ -1080,21 +1080,23 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     GroupContectAdapter.MovieViewHolder holder1 = (GroupContectAdapter.MovieViewHolder) holder;
 
                /*     try {*/
-                        //contacts.get(position).setFlag("true");
-                        Log.e("Postion is", String.valueOf(position));
-                        /*if (contacts.get(position).getFlag().equals("false"))
-                        {
-                            holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                            holder1.add_new_contect_icon.setVisibility(View.GONE);
-                        }
-                        else {
-                            holder1.remove_contect_icon.setVisibility(View.GONE);
-                            holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                        }*/
+
+                    contacts.get(position).setFlag("true");
+                    Log.e("Postion is", String.valueOf(position));
+                    if (contacts.get(position).getFlag().equals("false"))
+                    {
+                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                        holder1.add_new_contect_icon.setVisibility(View.GONE);
+                    }
+                    else {
+                        holder1.remove_contect_icon.setVisibility(View.GONE);
+                        holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
+                    }
 
 
 
-                        Log.e("List is",new Gson().toJson(select_contectListData));
+
+                    Log.e("List is",new Gson().toJson(select_contectListData));
                         holder1.userName.setText(Contact_data.getFirstname());
                         holder1.userNumber.setVisibility(View.GONE);
 

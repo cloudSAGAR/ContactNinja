@@ -183,4 +183,11 @@ public class Global extends Application   {
     }
 
 
+    public static String getcontectexits(SessionManager sessionManager){
+
+        String token=sessionManager.getcontectexits();
+        return token;
+    }
+
+
 }

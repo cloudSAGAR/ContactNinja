@@ -748,7 +748,7 @@ public class ContectFragment extends Fragment {
 
     }
 
-    private void getAllContect() {
+   /* private void getAllContect() {
         // loadingDialog.showLoadingDialog();
         class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
             @Override
@@ -770,9 +770,9 @@ public class ContectFragment extends Fragment {
                 } else {
                     loadingDialog.cancelLoading();
                     num_count.setText(tasks.size() + " Contacts");
-                  /*  userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), (ArrayList<InviteListData>) tasks);
+                  *//*  userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), (ArrayList<InviteListData>) tasks);
                     rvinviteuserdetails.setAdapter(userListDataAdapter);
-                    userListDataAdapter.notifyDataSetChanged();*/
+                    userListDataAdapter.notifyDataSetChanged();*//*
                     super.onPostExecute(tasks);
                 }
 
@@ -824,7 +824,7 @@ public class ContectFragment extends Fragment {
 
                 }
                 // }
-             /*   else {
+             *//*   else {
                     boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
                     if (found) {
                         delete();
@@ -834,7 +834,7 @@ public class ContectFragment extends Fragment {
                     }
 
 
-                }*/
+                }*//*
                 super.onPostExecute(tasks);
             }
         }
@@ -970,11 +970,11 @@ public class ContectFragment extends Fragment {
                 }
                 //One more then Remove Contect
                 else if (tasks.size() < 2) {
-                   /* boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
+                   *//* boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
                     if (found)
                     {
 
-                    }*/
+                    }*//*
                     delete();
 
                 }
@@ -1022,7 +1022,7 @@ public class ContectFragment extends Fragment {
         GetTasks gt = new GetTasks();
         gt.execute();
     }
-
+*/
     private void ContectEvent() throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
