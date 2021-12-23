@@ -479,6 +479,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (response.body().getStatus() == 200) {
 
                         if(!Login_type.equals("EMAIL")){
+                          /*  try {
+                                LoginData1();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }*/
                             VerifyPhone(edit_Mobile.getText().toString());
                         }else {
                             LoginData();
@@ -495,4 +500,71 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             });
         }
+
+/*
+    public void LoginData1() throws JSONException {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("email", "");
+        paramObject.addProperty("contact_number", "7874732505");
+        paramObject.addProperty("login_type", "PHONE");
+        paramObject.addProperty("otp", "123456");
+        obj.add("data", paramObject);
+        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                // Log.e("Response is",new Gson().toJson(response));
+                loadingDialog.cancelLoading();
+
+
+                if (response.body().getStatus() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<SignResponseModel>() {
+                    }.getType();
+
+
+                    // Log.e("Reponse is",gson.toJson(response.body().getData()));
+                    SignResponseModel user_model = new Gson().fromJson(headerString, listType);
+                    SessionManager.setUserdata(getApplicationContext(), user_model);
+                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
+                    try {
+                        if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
+                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                            intent.putExtra("login_type", "PHONE");
+                            startActivity(intent);
+                            finish();
+                        } else if (!sessionManager.isPayment_Type_Select()) {
+                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                        intent.putExtra("login_type", "PHONE");
+                        startActivity(intent);
+                        finish();
+                    }
+
+
+                    //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
+
+
+                } else {
+                   // verfiy_button.setEnabled(false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }*/
     }

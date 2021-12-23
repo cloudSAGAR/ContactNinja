@@ -2,22 +2,17 @@ package com.contactninja;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,7 +36,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.Home_Main_Fragment;
@@ -55,7 +49,6 @@ import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Utils.App;
-import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
@@ -82,6 +75,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -98,15 +92,25 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
+    private final static String[] DATA_COLS = {
+
+            ContactsContract.Data.MIMETYPE,
+            ContactsContract.Data.DATA1,//phone number
+            ContactsContract.Data.CONTACT_ID
+    };
     //Declare Variabls for fragment
     public static int navItemIndex = 0;
+    public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     private static int RC_APP_UPDATE = 0;
     InstallStateUpdatedListener installStateUpdatedListener;
     RelativeLayout mMainLayout;
@@ -114,30 +118,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FrameLayout frameLayout;
     SessionManager sessionManager;
     boolean doubleBackToExitPressedOnce = false;
-    private AppUpdateManager mAppUpdateManager;
-    private long mLastClickTime = 0;
-    private boolean shouldLoadHomeFragOnBackPress = true;
     LinearLayout llCreate;
     LoadingDialog loadingDialog;
-    List<Csv_InviteListData> csv_inviteListData=new ArrayList<>();
-    private List<ContectListData.Contact> contectListData=new ArrayList<>();
-
-    int limit=0;
+    List<Csv_InviteListData> csv_inviteListData = new ArrayList<>();
+    int limit = 0;
     RetrofitCalls retrofitCalls;
-
-    public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     String userName = "", user_phone_number = "", user_image = "", user_des = "", strtext = "", old_latter = "", contect_type = "", contect_email = "",
             contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
             postcode = "", postType = "", note = "";
     StringBuilder data;
     Cursor cursor;
-    private final static String[] DATA_COLS = {
-
-            ContactsContract.Data.MIMETYPE,
-            ContactsContract.Data.DATA1,//phone number
-            ContactsContract.Data.CONTACT_ID
-    };
-
+    private AppUpdateManager mAppUpdateManager;
+    private long mLastClickTime = 0;
+    private boolean shouldLoadHomeFragOnBackPress = true;
+    private final List<ContectListData.Contact> contectListData = new ArrayList<>();
     @RequiresApi(api = Build.VERSION_CODES.N)
     private BroadcastReceiver mNetworkReceiver;
 
@@ -150,9 +144,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
         sessionManager.login();
-        loadingDialog=new LoadingDialog(this);
+        loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
-        SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
+        SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
         IntentUI();
 
 
@@ -164,10 +158,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Date currentLocalTime = calendar.getTime();
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
-       String  offset = localTime.substring(0, 1);
-       Log.e("offset",offset);
-        Log.e("Show Local ",localTime);
-        Log.e("GMT offset is %s hours",""+ TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS));
+        String offset = localTime.substring(0, 1);
+        //Log.e("offset", offset);
+       // Log.e("Show Local ", localTime);
+       //Log.e("GMT offset is %s hours", "" + TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS));
         UpdateManageCheck();
         EnableRuntimePermission();
 
@@ -210,9 +204,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onPermissionGranted() {
 
-               // loadingDialog.showLoadingDialog();
+                // loadingDialog.showLoadingDialog();
                 GetContactsIntoArrayList();
-
+                /*try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
             }
 
             @Override
@@ -227,13 +225,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setDeniedTitle("Contactninja would like to access your contacts")
                 .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
                 .setGotoSettingButtonText("setting")
-                .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SEND_SMS)
+                .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SEND_SMS)
                 .setRationaleConfirmText("OK")
                 .check();
 
 
     }
-
 
 
     private void IntentUI() {
@@ -243,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         llsend = findViewById(R.id.llsend);
         llUser = findViewById(R.id.llUser);
         frameLayout = findViewById(R.id.frameContainer);
-        llCreate=findViewById(R.id.llCreate);
+        llCreate = findViewById(R.id.llCreate);
         llHome.setOnClickListener(this);
         llContact.setOnClickListener(this);
         llsend.setOnClickListener(this);
@@ -251,7 +248,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         llCreate.setOnClickListener(this);
 
     }
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -323,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "", ""));
 
 
-            try {
+                try {
                     csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
                 } catch (Exception e) {
 
@@ -333,8 +329,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
                             .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
                             .findFirst();
-
-                    // Log.e("Size is", String.valueOf(indexOpt.getAsInt()));
                     if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
                         // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
 
@@ -344,12 +338,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
 
-                    //   Log.e("Data Is",new Gson().toJson(csv_inviteListData));
+                    //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
 
                 }
-
-
-
 
 
             }
@@ -359,30 +350,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
-        Log.e("is exits",Is_contact_exist);
-        Log.e("Global.getcontectexits(sessionManager)",Global.getcontectexits(sessionManager));
+        //Log.e("is exits", Is_contact_exist);
+        //Log.e("Global.getcontectexits(sessionManager)", Global.getcontectexits(sessionManager));
 
-        if (Global.getcontectexits(sessionManager).equals("0"))
-        {
-            if (Is_contact_exist.equals("0"))
-            {
-                limit = csv_inviteListData.size();
-                Log.e("Csv List",""+limit);
-                splitdata(csv_inviteListData);
-            }
-            else {
-                // limit = csv_inviteListData.size();
-                // splitdata(csv_inviteListData);
+        if (csv_inviteListData.size() == 0) {
+            //Log.e("Csv Size is ","0");
+        } else {
+            if (Global.getcontectexits(sessionManager).equals("0")) {
+                //Not Upload Contect Then If Call
+                if (Is_contact_exist.equals("0")) {
+                    limit = csv_inviteListData.size();
+                    // Log.e("Csv List",""+limit);
+                    splitdata(csv_inviteListData);
 
+                } else {
+                    //Upload Contect Then If Call
+                    getTasks();
+
+                }
+            } else {
+                //Upload Contect Then If Call
                 getTasks();
 
             }
         }
-        else {
 
-            getTasks();
-
-        }
 
      /*   if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
             if(SessionManager.getContectList(getApplicationContext()).get(0).getContacts().size()!=
@@ -507,16 +499,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RequestBody user_id1 = RequestBody.create(MediaType.parse("text/plain"), user_id);
         RequestBody organization_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
-        retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager), organization_id1, team_id1, user_id1, body, new RetrofitCallback() {
+        RequestBody id = RequestBody.create(MediaType.parse("text/plain"), "1");
+
+        retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager), organization_id1, team_id1, user_id1, id, body, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 sessionManager.setcontectexits("1");
-                Log.e("Reponse is", new Gson().toJson(response.body()));
+                //Log.e("Reponse is", new Gson().toJson(response.body()));
                 if (response.body().getStatus() == 200) {
 
                     SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
                     user_data.getUser().setIs_contact_exist(1);
-                    SessionManager.setUserdata(getApplicationContext(),user_data);
+                    SessionManager.setUserdata(getApplicationContext(), user_data);
 
                     loadingDialog.cancelLoading();
                     try {
@@ -592,8 +586,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     contectListData_store.add(contectListData1);
                     SessionManager.setContectList(getApplicationContext(), contectListData_store);
 
-                    SetDatainDatabase(contectListData);
-                    delete();
+
+                    delete(contectListData);
+
+                    /*Duplicate_remove();*/
                 }
 
             }
@@ -608,6 +604,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
     private void UpdateManageCheck() {
         PackageManager manager = getPackageManager();
         PackageInfo info = null;
@@ -809,25 +806,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 0:
 
                 fragment = new Home_Main_Fragment();
-                shouldLoadHomeFragOnBackPress=false;
+                shouldLoadHomeFragOnBackPress = false;
                 break;
             case 1:
                 fragment = new Send_Main_Fragment();
-                shouldLoadHomeFragOnBackPress=true;
+                shouldLoadHomeFragOnBackPress = true;
                 break;
             case 2:
                 fragment = new Contect_main_Fragment();
-                shouldLoadHomeFragOnBackPress=true;
+                shouldLoadHomeFragOnBackPress = true;
                 break;
             case 3:
                 fragment = new UserProfile_Main_Fragment();
-                shouldLoadHomeFragOnBackPress=true;
+                shouldLoadHomeFragOnBackPress = true;
                 break;
             case 4:
-                Log.e("Brodcaste Call","Yes");
-                SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
-                SessionManager.setContectList_broadcste(getApplicationContext(),new ArrayList<>());
-                Broadcast_Data broadcast_data=new Broadcast_Data();
+                Log.e("Brodcaste Call", "Yes");
+                SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
+                SessionManager.setContectList_broadcste(getApplicationContext(), new ArrayList<>());
+                Broadcast_Data broadcast_data = new Broadcast_Data();
                 SessionManager.setAdd_Broadcast_Data(broadcast_data);
                 broadcast_manu();
                 break;
@@ -853,7 +850,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), Broadcst_Activty.class);
+                Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
                 startActivity(intent);
                 //finish();
                 bottomSheetDialog.dismiss();
@@ -864,7 +861,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void delete() {
+    public void delete(List<ContectListData.Contact> contectListData) {
         class DeleteTask extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -881,6 +878,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             protected void onPostExecute(Void aVoid) {
+                Log.e("Delete Task", "Yes");
+                SetDatainDatabase(contectListData);
+                super.onPostExecute(aVoid);
+
+            }
+        }
+
+        DeleteTask ut = new DeleteTask();
+        ut.execute();
+    }
+
+    public void Duplicate_remove() {
+        class DeleteTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        //.deleteDuplicates();
+                        //.DeleteData(inviteListData.getUserPhoneNumber());
+                        .deleteDuplicates();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
                 //   Log.e("Delete Task","Yes"+c);
                 super.onPostExecute(aVoid);
 
@@ -891,18 +916,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ut.execute();
     }
 
-
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(MainActivity.this, mMainLayout);
     }
 
 
-
-
-
-   private void getTasks() {
-
+    private void getTasks() {
+//Get All Contect Locale Room Database
 
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
@@ -919,16 +940,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected void onPostExecute(List<Contect_Db> contect_list) {
 
-                Log.e("ContectList", String.valueOf(contect_list.size()));
-                Log.e("Store", String.valueOf(csv_inviteListData.size()));
-                if (contect_list.size()==csv_inviteListData.size())
-                {
+              //  Log.e("ContectList", String.valueOf(contect_list.size()));
+               // Log.e("Store", String.valueOf(csv_inviteListData.size()));
+                //Get All Contect Locale Room Database  No Data Then Upload Csv Code Call
+                if (contect_list.size() == 0) {
+                    splitdata(csv_inviteListData);
+                } else if (contect_list.size() == csv_inviteListData.size()) {
+                    //Phone Book And Local Data Size Same then Update Call
 
-                    Log.e("Same Data","Yes");
+                    for (int i = 0; i < csv_inviteListData.size(); i++) {
+                        String num = csv_inviteListData.get(i).getUserPhoneNumber();
+                        String f_name = csv_inviteListData.get(i).getUserName();
+                        boolean found = contect_list.stream().anyMatch(p -> p.getEmailNumber().equals(num));
+                        boolean found1 = contect_list.stream().anyMatch(p -> p.getFirst_name().equals(f_name));
 
-                }
-                else {
-                    Log.e("Same Data","No");
+                        if (found == true && found1 == false) {
+                            check_list_for_Update(csv_inviteListData.get(i).getUserName(), csv_inviteListData.get(i).getLast_name(), csv_inviteListData.get(i).getUserPhoneNumber());
+                        }
+                    }
+
+                } else {
+                    Log.e("Same Data", "No");
+                    //Call Phone Number Exits OR N0t
                     getUser_check(csv_inviteListData);
                 }
 
@@ -941,16 +974,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getUser_check(List<Csv_InviteListData> csv_inviteListData) {
-        for (int i=0;i<csv_inviteListData.size();i++)
-        {
-            check_list(csv_inviteListData.get(i).getUserName(),csv_inviteListData.get(i).getLast_name(),csv_inviteListData.get(i).getUserPhoneNumber());
+        //Get One By One Model Data
+        for (int i = 0; i < csv_inviteListData.size(); i++) {
+            check_list(csv_inviteListData.get(i).getUserName(), csv_inviteListData.get(i).getLast_name(), csv_inviteListData.get(i).getUserPhoneNumber());
         }
 
 
-
     }
-    public void check_list(String userName, String last_name, String userPhoneNumber)
-    {
+
+    public void check_list(String userName, String last_name, String userPhoneNumber) {
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
             protected List<Contect_Db> doInBackground(Void... voids) {
@@ -958,20 +990,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .getInstance(getApplicationContext())
                         .getAppDatabase()
                         .taskDao()
-                        .getSameValue(userName,last_name,userPhoneNumber);
-                if (taskList.size()==0)
-                {
-                    List<Csv_InviteListData> csv_inviteListData1=new ArrayList<>();
-                    csv_inviteListData1.add(new Csv_InviteListData(userName,userPhoneNumber,"","","","","","",last_name));
-                    splitdata(csv_inviteListData1);
-                }
-                else if (taskList.size()!=1)
-                {
-                    delete();
-                }
-               else if (taskList.size()==1)
-                {
-                    Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
+                        .getSameValue(userName, last_name, userPhoneNumber);
+                if (taskList.size() == 0) {
+                    //Update Call
+                    check_list_for_Update(userName, last_name, userPhoneNumber);
+
+                } else if (taskList.size() != 1) {
+                    //Multiple Same Data Then Remove
+                    Duplicate_remove();
+                } else if (taskList.size() == 1) {
+                    //Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
+                    //check_list_for_Update(userName,last_name,userPhoneNumber);
                 }
                 return taskList;
             }
@@ -988,6 +1017,108 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    public void check_list_for_Update(String userName, String last_name, String userPhoneNumber) {
+        //  Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
+        class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
+            @Override
+            protected List<Contect_Db> doInBackground(Void... voids) {
+                List<Contect_Db> taskList = DatabaseClient
+                        .getInstance(getApplicationContext())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getSameValue_Firstorlastname(userPhoneNumber);
+                /*if (taskList.size()==0)
+                {
+                    List<Csv_InviteListData> csv_inviteListData1=new ArrayList<>();
+                    csv_inviteListData1.add(new Csv_InviteListData(userName,userPhoneNumber,"","","","","","",last_name));
+                    splitdata(csv_inviteListData1);
+                }
+                else if (taskList.size()!=1)
+                {
+                    delete();
+                }
+                else if (taskList.size()==1)
+                {
+                    Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
+                }*/
+
+                Log.e("Contect List Update Size", " : " + taskList.size());
+                if (taskList.size() == 0) {
+                    //No Data Then Add Contect
+                    List<Csv_InviteListData> csv_inviteListData1 = new ArrayList<>();
+                    csv_inviteListData1.add(new Csv_InviteListData(userName, userPhoneNumber, "", "", "", "", "", "", last_name));
+                    splitdata(csv_inviteListData1);
+                }
+                else {
+                    //Update Contect Api Call
+                    Log.e("Update Name ", "Yes");
+                    try {
+                        AddContect_Api1(userName, last_name, userPhoneNumber, taskList.get(0).getContect_id(), taskList.get(0).getContactId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return taskList;
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            protected void onPostExecute(List<Contect_Db> contect_list) {
+                //Log.e("Contect List Update Size 1 "," : "+contect_list.size());
+                super.onPostExecute(contect_list);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
+    }
+
+
+    public void AddContect_Api1(String userName, String last_name, String userPhoneNumber, String contect_id, Integer contactId) throws JSONException {
+
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        JSONObject obj = new JSONObject();
+
+        JSONObject paramObject = new JSONObject();
+
+        paramObject.put("id", contect_id);
+        paramObject.put("firstname", userName);
+        if (!last_name.equals("")) {
+            paramObject.put("lastname", last_name);
+        }
+        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+
+        Log.e("Final Data is", new Gson().toJson(gsonObject));
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    try {
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+    }
 
 
     /*
@@ -1126,41 +1257,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ut.execute();
     }*/
     private void SetDatainDatabase(List<ContectListData.Contact> contectListData) {
+        Log.e("List is", new Gson().toJson(contectListData));
 
 
-        for (int i=0;i<contectListData.size();i++)
-        {
-            Contect_Db contect_db=new Contect_Db();
-            for (int j=0;j<contectListData.get(i).getContactDetails().size();j++)
-            {
-                ContectListData.Contact.ContactDetail data=contectListData.get(i).getContactDetails().get(j);
-                contect_db.setId1(data.getId());
-                contect_db.setContect_id(String.valueOf(contectListData.get(i).getId()));
-                contect_db.setCreatedAt(data.getCreatedAt());
-                contect_db.setOrganizationId(contectListData.get(i).getOrganizationId());
-                contect_db.setTeamId(contectListData.get(i).getTeamId());
-                contect_db.setFirst_name(contectListData.get(i).getFirstname());
-                contect_db.setLast_name(contectListData.get(i).getLastname());
-                contect_db.setFlag("csv");
-                contect_db.setEmailNumber(data.getEmailNumber());
-                contect_db.setCountryCode(data.getCountryCode());
-                contect_db.setType(data.getType());
-                contect_db.setStatus(data.getStatus());
-                contect_db.setDeletedAt(String.valueOf(data.getDeletedAt()));
-                contect_db.setCreatedBy(data.getCreatedBy());
-                contect_db.setIsBlocked(data.getIsBlocked());
-                contect_db.setCreatedAt(data.getCreatedAt());
-                contect_db.setUpdatedAt(data.getUpdatedAt());
-
+        for (int i = 0; i < contectListData.size(); i++) {
+            Contect_Db contect_db = new Contect_Db();
+            for (int j = 0; j < contectListData.get(i).getContactDetails().size(); j++) {
+                ContectListData.Contact.ContactDetail data = contectListData.get(i).getContactDetails().get(j);
+                Log.e("Number is", data.getEmailNumber());
+                if (!data.getEmailNumber().equals(" ")) {
+                    contect_db.setId1(data.getId());
+                    contect_db.setContect_id(String.valueOf(contectListData.get(i).getId()));
+                    contect_db.setCreatedAt(data.getCreatedAt());
+                    contect_db.setOrganizationId(contectListData.get(i).getOrganizationId());
+                    contect_db.setTeamId(contectListData.get(i).getTeamId());
+                    contect_db.setFirst_name(contectListData.get(i).getFirstname());
+                    contect_db.setLast_name(contectListData.get(i).getLastname());
+                    contect_db.setFlag("csv");
+                    Log.e("Number is", data.getEmailNumber());
+                    contect_db.setEmailNumber(data.getEmailNumber());
+                    contect_db.setCountryCode(data.getCountryCode());
+                    contect_db.setType(data.getType());
+                    contect_db.setStatus(data.getStatus());
+                    contect_db.setDeletedAt(String.valueOf(data.getDeletedAt()));
+                    contect_db.setCreatedBy(data.getCreatedBy());
+                    contect_db.setIsBlocked(data.getIsBlocked());
+                    contect_db.setCreatedAt(data.getCreatedAt());
+                    contect_db.setUpdatedAt(data.getUpdatedAt());
+                }
             }
+            Log.e("Data Is ", new Gson().toJson(contect_db));
             save_data(contect_db);
         }
 
 
     }
 
-    public void save_data(Contect_Db contect_db)
-    {
+    public void save_data(Contect_Db contect_db) {
         class SaveTask extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -1174,7 +1307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                Log.e("Insert Data","Yes");
+                Log.e("Insert Data", "Yes");
                 super.onPostExecute(aVoid);
             }
         }

@@ -152,8 +152,8 @@ public class RetrofitCalls {
     }
 
 
-    public void Upload_csv(SessionManager session,LoadingDialog loadingDialog, String token, RequestBody organization_id, RequestBody team_id, RequestBody user_id, MultipartBody.Part import_file, RetrofitCallback retrofitCallback) {
-       call = retrofitApiInterface.Upload_csv(RetrofitApiClient.API_Header,token,import_file,team_id,user_id,organization_id);
+    public void Upload_csv(SessionManager session,LoadingDialog loadingDialog, String token, RequestBody organization_id, RequestBody team_id, RequestBody user_id,RequestBody id, MultipartBody.Part import_file, RetrofitCallback retrofitCallback) {
+       call = retrofitApiInterface.Upload_csv(RetrofitApiClient.API_Header,token,import_file,team_id,user_id,organization_id,id);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
