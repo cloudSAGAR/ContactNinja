@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.SystemClock;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
@@ -139,7 +140,23 @@ public class Global extends Application   {
 
     return click;
     }
+    public static boolean isPasswordValidMethod(String password) {
 
+        boolean isValid = false;
+
+        // ^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$
+        // ^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$
+
+        String expression =  "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+        CharSequence inputStr = password;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }
     public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             return Patterns.PHONE.matcher(phoneNumber).matches();

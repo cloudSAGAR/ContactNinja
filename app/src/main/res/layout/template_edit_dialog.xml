@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_20sdp"
+    android:background="@drawable/shape_border_10_white"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/tv_template_name"
+        style="@style/tv_Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/tv_medium"
+        android:textSize="@dimen/_16sdp" />
+
+    <EditText
+        android:id="@+id/edit_template_name"
+        style="@style/tv_regular"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:gravity="center|left"
+        android:imeOptions="actionDone"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/purple_200"
+        android:textStyle="bold"
+        tools:ignore="Autofill,RtlHardcoded" />
+
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_20sdp"
+        android:gravity="end"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/purple_200"
+            android:text="@string/ok"
+            style="@style/tv_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

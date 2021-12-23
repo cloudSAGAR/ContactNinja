@@ -177,8 +177,8 @@
                                 android:layout_marginEnd="@dimen/_10sdp"
                                 android:padding="@dimen/_5sdp"
                                 android:textColor="@color/red"
-                                android:textStyle="bold"
-                                android:textIsSelectable="true" />
+                                android:textIsSelectable="true"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/btn_chnage_phone_email"
