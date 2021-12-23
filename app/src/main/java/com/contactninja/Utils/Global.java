@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 @SuppressLint({"SimpleDateFormat", "StaticFieldLeak"})
 public class Global extends Application   {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
+    public static String about="https://contactninja.us/about/";
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;

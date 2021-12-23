@@ -14,12 +14,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     TextView tv_version_name;
     ImageView iv_back;
-    LinearLayout layout_logout, layout_resetPassword, layout_template;
+    LinearLayout layout_logout, layout_resetPassword, layout_template, layout_Current_plan, layout_about;
     SessionManager sessionManager;
 
     @Override
@@ -46,12 +47,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     private void intentView() {
         tv_version_name = findViewById(R.id.tv_version_name);
+        layout_Current_plan = findViewById(R.id.layout_Current_plan);
+        layout_about = findViewById(R.id.layout_about);
         layout_template = findViewById(R.id.layout_template);
         layout_resetPassword = findViewById(R.id.layout_resetPassword);
         layout_logout = findViewById(R.id.layout_logout);
         layout_template.setOnClickListener(this);
         layout_logout.setOnClickListener(this);
+        layout_Current_plan.setOnClickListener(this);
         layout_resetPassword.setOnClickListener(this);
+        layout_about.setOnClickListener(this);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +84,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.layout_template:
                 startActivity(new Intent(getApplicationContext(), TemplateActivity.class));
+                break;
+            case R.id.layout_Current_plan:
+                startActivity(new Intent(getApplicationContext(), CurrentPlanActivity.class));
+                break;
+            case R.id.layout_about:
+                Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                intent.putExtra("WebUrl", Global.about);
+                startActivity(intent);
                 break;
         }
     }
