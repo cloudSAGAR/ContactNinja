@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +115,21 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     error(R.drawable.shape_primary_back).into(iv_user);
             iv_dummy.setVisibility(View.GONE);
             old_image=group_data.getGroupImage();
+
             group_id= String.valueOf(group_data.getId());
+            Log.e("Group id is",group_id);
+            if (group_id.equals(""))
+            {
+                group_id="";
+            }
+            else if (group_id.equals("null"))
+            {
+                group_id="";
+            }
+            else {
+                group_id=group_id;
+            }
+
 
 
         }

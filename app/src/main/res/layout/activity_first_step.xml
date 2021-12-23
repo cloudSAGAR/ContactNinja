@@ -21,4 +21,28 @@
         android:text="@string/campaign_step_one"
         android:textColor="@color/tv_medium"
         android:textStyle="bold" />
+    <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="@dimen/_15sdp"
+        android:id="@+id/tabLayout"
+        style="@style/tv_bold"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabSelectedTextColor="@color/tv_medium"
+        app:tabTextColor="@color/bz_text"
+        android:layout_width="match_parent"
+        app:tabIndicatorHeight="2dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <androidx.viewpager.widget.ViewPager
+        android:layout_marginTop="@dimen/_3sdp"
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        />
 </LinearLayout>

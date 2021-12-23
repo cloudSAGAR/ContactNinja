@@ -319,15 +319,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
                     else {
                          try {
-                            AddContect_Api();
+                            AddContect_Api1();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
 
                 }
-
-
                 else if (save_button.getText().toString().equals("Save Contact")) {
                     //Add Contect.
                     if (f_name.equals("")) {
@@ -343,7 +341,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     } else {
 
                         try {
-                            AddContect_Api1();
+                            AddContect_Api();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
