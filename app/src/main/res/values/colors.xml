@@ -49,6 +49,7 @@
     <color name="lineView">#D8D8D8</color>
     <color name="linkView_border">#9B9B9B</color>
     <color name="spinner">#BBBBBB</color>
+    <color name="unSelect">#E9E9E9</color>
 
 
     <color name="calendar_header_title">#FFF</color>

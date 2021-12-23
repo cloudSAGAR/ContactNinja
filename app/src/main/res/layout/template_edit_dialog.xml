@@ -10,25 +10,30 @@
 
 
     <TextView
+        android:id="@+id/tv_template_name"
         style="@style/tv_Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Sign Out of App?"
         android:textColor="@color/tv_medium"
         android:textSize="@dimen/_16sdp" />
 
-    <TextView
-        android:layout_marginTop="@dimen/_10sdp"
+    <EditText
+        android:id="@+id/edit_template_name"
         style="@style/tv_regular"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Are you sure that you would like to signout?"
-        android:textColor="@color/otp_header_text_color"
-        android:textSize="@dimen/_14sdp" />
+        android:background="@null"
+        android:gravity="center|left"
+        android:imeOptions="actionDone"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/purple_200"
+        android:textStyle="bold"
+        tools:ignore="Autofill,RtlHardcoded" />
+
+
     <LinearLayout
         android:layout_marginTop="@dimen/_20sdp"
         android:gravity="end"
@@ -36,14 +41,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_cancel"
-            android:padding="@dimen/_10sdp"
-            android:textColor="@color/red"
-            android:text="@string/cancel"
-            style="@style/tv_regular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/tv_ok"
             android:padding="@dimen/_10sdp"

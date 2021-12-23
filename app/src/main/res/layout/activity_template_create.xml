@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Setting.TemplateCreateActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_below="@+id/toolbar"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/tv_item"
+            style="@style/tv_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:text="@string/Template_name"
+            android:textColor="@color/purple_200"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edit_template_name"
+            style="@style/tv_regular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center|left"
+            android:hint="@string/Enter_template_name"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/tv_medium"
+            android:textColorHint="@color/otp_header_text_color"
+            android:textStyle="bold"
+            tools:ignore="Autofill,RtlHardcoded" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:id="@+id/line_view"
+        android:layout_below="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_C4C4C4"/>
+
+    <EditText
+        android:id="@+id/edit_template"
+        style="@style/tv_regular"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/line_view"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:focusable="true"
+        android:gravity="left"
+        android:hint="@string/Typehere"
+        android:imeOptions="actionDone"
+        android:padding="10dp"
+        android:textColor="@color/tv_medium"
+        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_direct_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
+
+
+
+
+
+
+
+</RelativeLayout>

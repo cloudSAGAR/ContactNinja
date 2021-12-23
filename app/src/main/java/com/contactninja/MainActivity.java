@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onPermissionGranted() {
 
                // loadingDialog.showLoadingDialog();
-                GetContactsIntoArrayList();
+             //   GetContactsIntoArrayList();
 
             }
 

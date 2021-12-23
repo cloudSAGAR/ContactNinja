@@ -280,7 +280,7 @@ Number</string>
     <string name="About_Contact_Ninja">About Contact Ninja</string>
     <string name="Reset_Password">Reset Password</string>
     <string name="Logout">Logout</string>
-    <string name="ok">Ok</string>
+    <string name="ok">Okay</string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_txt">Secure your account with a strong password.</string>
     <string name="Current_Password">Current password</string>
@@ -293,4 +293,13 @@ Number</string>
     <string name="characters8">Must be at least 8 characters</string>
     <string name="passwordCheck">Password must contain one special character, digit and capital letter</string>
     <string name="passwordNotMetch">New password and confirm not match.</string>
+    <string name="addTemplate">Add New Messaging Template</string>
+    <string name="cratetemplate">Create New  Messaging Template</string>
+    <string name="Use_template">Use template</string>
+    <string name="Please_select_template">Please select template</string>
+    <string name="template_error">Seems like you don\'t have any templates! you can create that in your profile section</string>
+    <string name="Typehere">Type here…</string>
+    <string name="Template_name">Template name:</string>
+    <string name="Enter_template_name">Enter template name</string>
+    <string name="save">Save</string>
 </resources>

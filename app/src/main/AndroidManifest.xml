@@ -48,6 +48,15 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
+            android:name=".Setting.TemplateCreateActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Setting.TemplateActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Setting.ResetActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
