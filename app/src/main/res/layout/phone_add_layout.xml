@@ -30,12 +30,13 @@
                 <LinearLayout
 
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_weight="3"
+                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:orientation="horizontal">
 
 
@@ -114,6 +115,57 @@
                     </LinearLayout>
                     <LinearLayout
                         android:visibility="gone"
+                        android:id="@+id/layout_swap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|top"
+                        android:gravity="center|top"
+                        app:bring_to_clamp="150dp"
+                        app:clamp="self"
+                        app:gravity="right"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        app:sticky="100dp">
+
+                        <LinearLayout
+                            android:id="@+id/layout_remove"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_gravity="center|top"
+                            android:background="@drawable/shape_red_back"
+                            android:gravity="center|top">
+
+                            <ImageView
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_remove" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_defult"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_gravity="center|top"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:background="@drawable/shape_blue_back"
+                            android:gravity="center|top">
+
+                            <TextView
+                                style="@style/tv_regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="@string/add_defult_text"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_10sdp"
+                                android:textStyle="bold"></TextView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/contect_msg"
                         android:layout_weight="2"
                         android:layout_gravity="center"
@@ -157,62 +209,13 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
                 </LinearLayout>
 
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layout_swap"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center|top"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:gravity="center|top"
-                android:visibility="gone"
-                app:bring_to_clamp="150dp"
-                app:clamp="self"
-                app:gravity="right"
-                app:sticky="100dp">
 
-                <LinearLayout
-                    android:id="@+id/layout_remove"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_gravity="center|top"
-                    android:background="@drawable/shape_red_back"
-                    android:gravity="center|top">
-
-                    <ImageView
-                        android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_15sdp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_remove" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_defult"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_gravity="center|top"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:background="@drawable/shape_blue_back"
-                    android:gravity="center|top">
-
-                    <TextView
-                        style="@style/tv_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/add_defult_text"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10sdp"
-                        android:textStyle="bold"></TextView>
-                </LinearLayout>
-
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"

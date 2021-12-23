@@ -134,7 +134,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_zip.setEnabled(true);
             ev_bob.setEnabled(true);
             ev_note.setEnabled(true);
-            Log.e("Null", "No Call");
+           // Log.e("Null", "No Call");
             edit = true;
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
@@ -1110,7 +1110,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
             Contactdetail item = contactdetails.get(position);
             Log.e("All Mobile Data ", new Gson().toJson(contactdetails));
-            //  Log.e("Potion is ", contactdetails.get(position).getType());
             String flag = sessionManager.getContect_flag(getActivity());
 
             holder.select_label.setVisibility(View.VISIBLE);
