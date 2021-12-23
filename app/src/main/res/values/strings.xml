@@ -302,6 +302,8 @@ Number</string>
     <string name="Template_name">Template name:</string>
     <string name="Enter_template_name">Enter template name</string>
     <string name="save">Save</string>
+    <string name="Select_plan_type">Select plan type</string>
+    <string name="Current_Plan">Current Plan</string>
     <string name="campaign_add">Create New Campaign</string>
     <string name="campaign_alert_txt">Click to create \n Campaign</string>
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or SMSes sent to a prospect using automation or creating a manual task on predetermined time delay.</string>

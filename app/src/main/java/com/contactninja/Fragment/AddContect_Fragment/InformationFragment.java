@@ -163,9 +163,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             TextSet();
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
-
             for (int i = 0; i < detail_contect.size(); i++) {
-                if(!detail_contect.get(i).getEmailNumber().equals("")) {
+                if(!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")){
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
                         Contactdetail contactdetail = new Contactdetail();
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
@@ -267,7 +266,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
 
             for (int i = 0; i < detail_contect.size(); i++) {
-                if(!detail_contect.get(i).getEmailNumber().trim().equals("")){
+                if(!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")){
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
                         Contactdetail contactdetail = new Contactdetail();
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
@@ -1190,18 +1189,18 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                     @Override
                     public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "MOveto right1");
+                        Log.e("Swipe Call", "MOveto right1");
 
                     }
 
                     @Override
                     public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Left");
+                        Log.e("Swipe Call", "Left");
                     }
 
                     @Override
                     public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Right");
+                        Log.e("Swipe Call", "Right");
 
                     }
                 });
@@ -1323,14 +1322,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         } else {
                             holder.layout_swap.setVisibility(View.GONE);
                         }
-
-
                     }
 
                     @Override
                     public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
                         Log.e("Swipe Call ", "MOveto right1");
-
                     }
 
                     @Override
@@ -1341,7 +1337,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     @Override
                     public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
                         Log.e("Swipe Call ", "Right");
-
                     }
                 });
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
@@ -1798,7 +1793,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_email_label.setVisibility(View.GONE);
                 holder.layout_icon_email.setVisibility(View.VISIBLE);
                 holder.edt_email.setEnabled(false);
-                holder.edt_email.setTextColor(getActivity().getColor(R.color.purple_200));
+                holder.edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_email.setText(holder.tv_email.getText().toString() + "(" + item.getLabel() + ")");
             } else {
                 holder.swipe_layout.setLeftSwipeEnabled(true);

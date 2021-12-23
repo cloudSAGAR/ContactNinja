@@ -19,7 +19,6 @@ public class App extends MultiDexApplication {
         //set true when upload apk on playstore
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-
     }
 
 }
