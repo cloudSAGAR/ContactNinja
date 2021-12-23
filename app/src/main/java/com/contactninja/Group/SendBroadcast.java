@@ -1,6 +1,7 @@
 package com.contactninja.Group;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -38,7 +39,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     ViewpaggerAdapter adapter;
     SessionManager sessionManager;
     RoundedImageView add_new_contect_icon;
-    LinearLayout mMainLayout;
+    ConstraintLayout mMainLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
