@@ -142,6 +142,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnewcontect);
         IntentUI();
+        sessionManager=new SessionManager(this);
+        loadingDialog=new LoadingDialog(this);
         Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
         EnableRuntimePermission();
         sessionManager = new SessionManager(this);
@@ -238,7 +240,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             Log.e("Null", "No Call");
         }
         retrofitCalls = new RetrofitCalls(this);
-        loadingDialog = new LoadingDialog(this);
+       // loadingDialog = new LoadingDialog(this);
         //Set Viewpagger
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
@@ -306,9 +308,27 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 note = addcontectModel.getNote();
                 f_name = edt_FirstName.getText().toString();
                 l_name = edt_lastname.getText().toString();
+                if ( sessionManager.getContect_flag(getApplicationContext()).equals("edit"))
+                {
+                    if (f_name.equals("")) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
+
+                    } else if (l_name.equals("")) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_last_name), false);
+
+                    }
+                    else {
+                         try {
+                            AddContect_Api();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
 
 
-                if (save_button.getText().toString().equals("Save Contact")) {
+                else if (save_button.getText().toString().equals("Save Contact")) {
                     //Add Contect.
                     if (f_name.equals("")) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
@@ -323,7 +343,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     } else {
 
                         try {
-                            AddContect_Api();
+                            AddContect_Api1();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

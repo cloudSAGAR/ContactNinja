@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.contactninja.Campaign.Campaign_List_Activity;
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.Fragment.Contect_main_Fragment;
 import com.contactninja.Fragment.Home_Main_Fragment;
@@ -846,6 +847,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.brodcaste_dialog_item, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
+        TextView selected_campaign=bottomSheetDialog.findViewById(R.id.selected_campaign);
+
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -853,6 +856,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
                 startActivity(intent);
                 //finish();
+                bottomSheetDialog.dismiss();
+            }
+        });
+        selected_campaign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
+                startActivity(intent);
                 bottomSheetDialog.dismiss();
             }
         });
@@ -1121,143 +1132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    /*
-        private void getdataanme_mobile(InviteListData inser_data) {
-            // c=c+1;
-            // Log.e("C is ", String.valueOf(c));
-
-            class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
-                @Override
-                protected List<InviteListData> doInBackground(Void... voids) {
-                    List<InviteListData> taskList = DatabaseClient
-                            .getInstance(getApplicationContext())
-                            .getAppDatabase()
-                            .taskDao()
-                            .getTaskUpdate(inser_data.getUserPhoneNumber(), inser_data.getUserName());
-
-                    return taskList;
-                }
-
-                @Override
-                protected void onPostExecute(List<InviteListData> tasks) {
-
-                    if (tasks.size() == 0) {
-                        inser_data.setFlag("Update");
-                        getdataanme_mobile1(inser_data);
-                        Log.e("Event Update ", "Call");
-                    }
-                    //One more then Remove Contect
-                    else if (tasks.size() < 2) {
-                       *//* boolean found = tasks.stream().anyMatch(p -> p.getUserPhoneNumber().equals(inser_data.getUserPhoneNumber()));
-                    if (found)
-                    {
-
-                    }*//*
-                    delete();
-
-                }
-
-
-                super.onPostExecute(tasks);
-            }
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();
-    }
-
-
-    private void getTasks1(InviteListData inser_data) {
-        class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
-            @Override
-            protected List<InviteListData> doInBackground(Void... voids) {
-                List<InviteListData> taskList = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .taskDao()
-                        .getTask(inser_data.getUserPhoneNumber());
-
-                return taskList;
-            }
-
-            @Override
-            protected void onPostExecute(List<InviteListData> tasks) {
-                // Log.e("Insert Task list Size ", String.valueOf(tasks.size()));
-                if (tasks.size() == 0) {
-                    SetDatainDatabase(inser_data);
-                }
-
-                super.onPostExecute(tasks);
-            }
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();
-    }
-
-    private void getdataanme_mobile1(InviteListData inser_data) {
-
-        class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
-            @Override
-            protected List<InviteListData> doInBackground(Void... voids) {
-                List<InviteListData> taskList = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .taskDao()
-                        .getTaskUpdate1(inser_data.getUserPhoneNumber(), inser_data.getUserName());
-
-                return taskList;
-            }
-
-            @Override
-            protected void onPostExecute(List<InviteListData> tasks) {
-                Log.e("Update Data Event ", "CAll" + tasks.size());
-                if (tasks.size() == 0) {
-                    inser_data.setFlag("Add");
-                    Log.e("Insert Flag", inser_data.getFlag());
-                    SetDatainDatabase(inser_data);
-                } else {
-                    inser_data.setFlag("Update");
-                    updatedata(inser_data);
-                }
-
-
-                super.onPostExecute(tasks);
-            }
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();
-    }
-
-    public void delete() {
-        class DeleteTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .taskDao()
-                        .deleteDuplicates();
-                //.DeleteData(inviteListData.getUserPhoneNumber());
-                // .RemoveData();
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                //   Log.e("Delete Task","Yes"+c);
-                super.onPostExecute(aVoid);
-
-            }
-        }
-
-        DeleteTask ut = new DeleteTask();
-        ut.execute();
-    }*/
     private void SetDatainDatabase(List<ContectListData.Contact> contectListData) {
-        Log.e("List is", new Gson().toJson(contectListData));
+        //Log.e("List is", new Gson().toJson(contectListData));
 
 
         for (int i = 0; i < contectListData.size(); i++) {
