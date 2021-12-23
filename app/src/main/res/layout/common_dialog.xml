@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:id="@+id/demo_layout"
-    android:visibility="gone"
+android:visibility="gone"
     android:background="@color/white"
     android:layout_marginStart="@dimen/_30sdp"
     android:layout_marginEnd="@dimen/_30sdp"
@@ -66,10 +66,9 @@
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <TextView
-
+        android:id="@+id/sub_txt"
         style="@style/tv_regular"
         android:layout_gravity="center"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"

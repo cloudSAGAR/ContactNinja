@@ -602,13 +602,13 @@ public class ContectFragment extends Fragment {
             if(SessionManager.getContectList(getActivity()).get(0).getContacts().size()!=
               csv_inviteListData.size()){
                 limit = csv_inviteListData.size();
-                splitdata(csv_inviteListData);
+               // splitdata(csv_inviteListData);
             }else {
                 contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
             }
         } else {
             limit = csv_inviteListData.size();
-            splitdata(csv_inviteListData);
+           // splitdata(csv_inviteListData);
         }
         //limit=csv_inviteListData.size();
         // splitdata(csv_inviteListData);
