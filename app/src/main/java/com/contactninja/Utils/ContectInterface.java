@@ -32,10 +32,15 @@ public interface ContectInterface {
         @Query("SELECT * FROM Contect_Db WHERE first_name =:first_name OR last_name =:last_name AND email_number =:phone")
         List<Contect_Db> getSameValue(String first_name,String last_name,String phone);
 
+
+
+        @Query("SELECT * FROM Contect_Db WHERE email_number =:phone")
+        List<Contect_Db> getSameValue_Firstorlastname(String phone);
+
         @Query("DELETE FROM Contect_Db")
         void RemoveData();
 
-        @Query("DELETE FROM Contect_Db WHERE id NOT IN (SELECT MIN(id) FROM Contect_Db GROUP BY email_number, first_name)")
+        @Query("DELETE FROM Contect_Db WHERE id NOT IN (SELECT MIN(id) FROM Contect_Db GROUP BY email_number)")
         void deleteDuplicates();
 
       /*  @Query("SELECT * FROM InviteListData ")

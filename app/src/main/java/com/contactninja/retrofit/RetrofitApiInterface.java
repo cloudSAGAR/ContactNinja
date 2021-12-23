@@ -87,7 +87,8 @@ public interface RetrofitApiInterface {
             @Part MultipartBody.Part file,
             @Part("team_id") RequestBody team_id,
             @Part("user_id") RequestBody user_id,
-            @Part("organization_id") RequestBody organization_id
+            @Part("organization_id") RequestBody organization_id,
+            @Part("is_phonebook") RequestBody is_phonebook
     );
 
 
