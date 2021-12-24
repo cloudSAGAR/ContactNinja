@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:background="@drawable/shape_border_20_white"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop="@dimen/_20sdp"
+            style="@style/tv_regular"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/_16sdp"
+            android:textColor="@color/tv_medium"
+            android:text="Please add title of \n your Template">
+
+        </TextView>
+        <EditText
+            android:layout_marginTop="@dimen/_20sdp"
+            android:id="@+id/editText"
+            style="@style/tv_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@color/add_contect_transpernt"
+            android:gravity="center"
+            android:hint="Contact ninja"
+
+            android:textColor="@color/purple_200"
+            android:textColorHint="@color/purple_200"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold">
+
+        </EditText>
+
+        <View
+            android:id="@+id/view_l"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/editText"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@color/home_list_add_contect_view"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_l"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:gravity="end|center">
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_cancel"
+                style="@style/tv_regular"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:gravity="center|end"
+                android:textColor="@color/home_list_sub_data"
+                android:text="Cancel">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_add"
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:gravity="center|end"
+                android:text="Okay"
+                android:textColor="@color/purple_200"
+                android:textStyle="bold">
+
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
