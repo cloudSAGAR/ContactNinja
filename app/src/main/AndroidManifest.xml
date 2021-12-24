@@ -48,9 +48,17 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
-            android:screenOrientation="portrait"
+            android:name=".Campaign.First_Step_Start_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait"  />
+        <activity
             android:name=".Setting.WebActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_List_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Campaign.First_Step_Activity"
             android:exported="false"

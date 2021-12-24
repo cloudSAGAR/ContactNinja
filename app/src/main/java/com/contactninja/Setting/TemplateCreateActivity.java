@@ -137,16 +137,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         dialog.show();
     }
 
-    private void bouttomSheet() {
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(TemplateCreateActivity.this, R.style.CoffeeDialog);
-        bottomSheetDialog.setContentView(mView);
-      //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
-        TextView tv_error=bottomSheetDialog.findViewById(R.id.tv_error);
-        tv_error.setVisibility(View.VISIBLE);
 
-        bottomSheetDialog.show();
-    }
 
     @Override
     public void onBackPressed() {

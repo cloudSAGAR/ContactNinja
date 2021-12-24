@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onPermissionGranted() {
 
                 // loadingDialog.showLoadingDialog();
-               // GetContactsIntoArrayList();
+                GetContactsIntoArrayList();
                 /*try {
                     ContectEvent();
                 } catch (JSONException e) {
@@ -523,11 +523,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     sessionManager.setCsv_token();
                 } else {
                     loadingDialog.cancelLoading();
-                  /* try {
+                   try {
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                     sessionManager.setCsv_token();
                 }
 

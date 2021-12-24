@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Campaign.Fragment.Campaign_Email_Fragment">
+
+
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/auto_layout"
+            android:weightSum="1"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:background="@drawable/shape_border_gray"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp">
+
+            <TextView
+                android:layout_weight="1"
+                style="@style/tv_bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:paddingStart="@dimen/_20sdp"
+                android:text="@string/campaign_step_one_email"
+                android:textColor="@color/tv_medium"
+                android:textSize="@dimen/_15sdp">
+
+            </TextView>
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:id="@+id/select_automated"
+                android:src="@drawable/ic_done"
+                android:padding="@dimen/_5sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_blue_back_dialog"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"></ImageView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="1"
+            android:id="@+id/manual_layout"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:background="@drawable/shape_border_gray"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp">
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingStart="@dimen/_20sdp"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                style="@style/tv_bold"
+                android:textSize="@dimen/_15sdp"
+                android:text="@string/campaign_step_one_email_manual"
+                android:textColor="@color/tv_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:id="@+id/select_manual"
+                android:src="@drawable/ic_done"
+                android:padding="@dimen/_5sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_blue_back_dialog"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"></ImageView>
+
+        </LinearLayout>
+        <TextView
+           android:layout_marginTop="@dimen/_30sdp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            style="@style/tv_regular"
+            android:textSize="@dimen/_12sdp"
+            android:text="@string/campaign_step_one_email_txt"
+            android:textColor="@color/home_list_sub_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+    <ImageView
+        android:layout_gravity="bottom|left"
+        android:src="@drawable/ic_campaign_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </ImageView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
