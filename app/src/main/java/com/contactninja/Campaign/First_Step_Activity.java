@@ -35,7 +35,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     ViewPager viewPager;
     private int[] tabIcons = {
             R.drawable.ic_email,
-            R.drawable.ic_message,
+            R.drawable.ic_message_tab,
     };
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -98,7 +98,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     }
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     private String tabTitles[] = new String[] { "Email ", "SMS" };
-    private int[] imageResId = { R.drawable.ic_email, R.drawable.ic_message };
+    private int[] imageResId = { R.drawable.ic_email, R.drawable.ic_message_tab };
     final int PAGE_COUNT = 2;
 
     public SampleFragmentPagerAdapter(@NonNull FragmentManager fm) {

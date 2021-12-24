@@ -55,6 +55,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     }
 
     private void bouttomSheet() {
+        templateTextList1.clear();
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(First_Step_Start_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
