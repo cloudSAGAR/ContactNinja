@@ -1,26 +1,24 @@
 package com.contactninja.Campaign;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
-import com.contactninja.Fragment.ContectFragment;
-import com.contactninja.Fragment.Contect_main_Fragment;
+import com.contactninja.Campaign.Fragment.Campaign_Email_Fragment;
+import com.contactninja.Campaign.Fragment.Campaign_Sms_Fragment;
 import com.contactninja.R;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -35,8 +33,10 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     TextView save_button;
     TabLayout tabLayout;
     ViewPager viewPager;
-    String strtext = "";
-    ViewpaggerAdapter adapter;
+    private int[] tabIcons = {
+            R.drawable.ic_email,
+            R.drawable.ic_message,
+    };
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -47,38 +47,39 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
-        tabLayout.addTab(tabLayout.newTab().setText("Email").setIcon(getDrawable(R.drawable.ic_email)));
-        tabLayout.addTab(tabLayout.newTab().setText("SMS").setIcon(getDrawable(R.drawable.ic_message)));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
-                tabLayout.getTabCount(), strtext);
 
-        viewPager.setAdapter(adapter);
+        SampleFragmentPagerAdapter pagerAdapter =
+                new SampleFragmentPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+        tabLayout.setupWithViewPager(viewPager);
+       tabLayout.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#4A4A4A"));
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        // Iterate over all tabs and set the custom view
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            tab.setCustomView(pagerAdapter.getTabView(i));
+        }
     }
+
+
+
+
+
+
+
     private void IntentUI() {
         iv_back=findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button=findViewById(R.id.save_button);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
+        save_button.setVisibility(View.VISIBLE);
+        save_button.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
+        save_button.setText("Next");
+
 
 
     }
@@ -90,44 +91,52 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.save_button:
+                startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
                 break;
 
         }
     }
+public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+    private String tabTitles[] = new String[] { "Email ", "SMS" };
+    private int[] imageResId = { R.drawable.ic_email, R.drawable.ic_message };
+    final int PAGE_COUNT = 2;
 
-    class ViewpaggerAdapter extends FragmentPagerAdapter {
+    public SampleFragmentPagerAdapter(@NonNull FragmentManager fm) {
+        super(fm);
+    }
 
-        Context context;
-        int totalTabs;
-        String strtext1;
+    public View getTabView(int position) {
+        // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
+        View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.custom_tab_campagin, null);
+        TextView tv = (TextView) v.findViewById(R.id.tabContent);
+        tv.setText(tabTitles[position]);
+        ImageView img = (ImageView) v.findViewById(R.id.image_view);
+        img.setImageResource(imageResId[position]);
+        return v;
+    }
 
-        public ViewpaggerAdapter(Context c, FragmentManager fm, int totalTabs, String strtext1) {
-            super(fm);
-            context = c;
-            this.totalTabs = totalTabs;
-            this.strtext1 = strtext1;
-        }
+    @Override
+    public Fragment getItem(int position) {
+        switch (position) {
+            case 0:
+                Campaign_Email_Fragment campaign_email_fragment = new Campaign_Email_Fragment();
+                return campaign_email_fragment;
 
-        @Override
-        public Fragment getItem(int position) {
+            case 1:
+                Campaign_Sms_Fragment campaign_sms_fragment = new Campaign_Sms_Fragment();
 
-            switch (position) {
-                case 0:
-                    GroupFragment c_Fragment = new GroupFragment();
-                    return c_Fragment;
-
-                case 1:
-                    GroupFragment c_Fragment1 = new GroupFragment();
-
-                    return c_Fragment1;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return totalTabs;
+                return campaign_sms_fragment;
+            default:
+                return null;
         }
     }
+
+    @Override
+    public int getCount() {
+        return PAGE_COUNT;
+    }
+
+}
+
+
 }

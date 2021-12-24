@@ -299,6 +299,7 @@ Number</string>
     <string name="Please_select_template">Please select template</string>
     <string name="template_error">Seems like you don\'t have any templates! you can create that in your profile section</string>
     <string name="Typehere">Type here…</string>
+    <string name="Typeher1e">Type here…</string>
     <string name="Template_name">Template name:</string>
     <string name="Enter_template_name">Enter template name</string>
     <string name="save">Save</string>
@@ -309,4 +310,15 @@ Number</string>
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or SMSes sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
     <string name="campaign_step_one">Select your first step</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
+
+    <string name="campaign_step_one_email">Automated Email</string>
+    <string name="campaign_step_one_email_manual">Manual Email</string>
+    <string name="campaign_step_one_email_txt">Automated emails are sent using automation and Manual emails create a task on your /n dashboard for you to approve it before sending.</string>
+
+    <string name="campaign_step_one_sms">Automated SMS</string>
+    <string name="campaign_step_one_sms_manual">Manual SMS </string>
+    <string name="campaign_step_one_sms_txt">Automated SMSes are sent using automation \n  and Manual SMSes create a task on your \n  dashboard for you to approve it before sending.</string>
+
+    <string name="campaign_step_one_one">Step#1 (Automated SMS)</string>
+    <string name="temp_txt">Use template</string>
 </resources>

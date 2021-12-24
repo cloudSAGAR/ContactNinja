@@ -22,7 +22,7 @@
         android:textColor="@color/tv_medium"
         android:textStyle="bold" />
     <com.google.android.material.tabs.TabLayout
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_25sdp"
         android:id="@+id/tabLayout"
         style="@style/tv_bold"
         app:tabIndicatorColor="@color/home_list_tab_bg"
@@ -31,7 +31,9 @@
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        app:tabGravity="fill"
+        app:tabMode="fixed">
     </com.google.android.material.tabs.TabLayout>
 
     <View
