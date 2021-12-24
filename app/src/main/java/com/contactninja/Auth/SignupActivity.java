@@ -392,9 +392,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
     private void SignAPI() throws JSONException {
         Global.getInstance().setConnectivityListener(this);
-        loadingDialog.showLoadingDialog();
 
-        // loadingDialog.showLoadingDialog();
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("first_name", first_name);
