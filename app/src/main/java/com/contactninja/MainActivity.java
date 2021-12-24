@@ -204,14 +204,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
+                if (sessionManager.getContectList(getApplicationContext()).size() == 0)
+                {
+                    loadingDialog.showLoadingDialog();
+                }
 
-                // loadingDialog.showLoadingDialog();
                 GetContactsIntoArrayList();
-                /*try {
-                    ContectEvent();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
+
             }
 
             @Override
@@ -355,6 +354,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Log.e("Global.getcontectexits(sessionManager)", Global.getcontectexits(sessionManager));
 
         if (csv_inviteListData.size() == 0) {
+            loadingDialog.cancelLoading();
             //Log.e("Csv Size is ","0");
         } else {
             if (Global.getcontectexits(sessionManager).equals("0")) {
@@ -1003,15 +1003,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .taskDao()
                         .getSameValue(userName, last_name, userPhoneNumber);
                 if (taskList.size() == 0) {
-                    //Update Call
+                      //Update Call
                     check_list_for_Update(userName, last_name, userPhoneNumber);
 
                 } else if (taskList.size() != 1) {
-                    //Multiple Same Data Then Remove
+                    loadingDialog.cancelLoading();   //Multiple Same Data Then Remove
                     Duplicate_remove();
                 } else if (taskList.size() == 1) {
+                    loadingDialog.cancelLoading();
                     //Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
                     //check_list_for_Update(userName,last_name,userPhoneNumber);
+                }else
+                {
+                    loadingDialog.cancelLoading();
                 }
                 return taskList;
             }
