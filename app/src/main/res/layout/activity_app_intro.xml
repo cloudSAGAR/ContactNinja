@@ -22,14 +22,13 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.viewpager.widget.ViewPager
-        android:layout_above="@+id/tab_layout"
-        android:layout_below="@+id/tv_skip"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/tab_layout"
+        android:layout_below="@+id/tv_skip"
         android:overScrollMode="never"
-        tools:ignore="MissingConstraints" >
-    </androidx.viewpager.widget.ViewPager>
+        tools:ignore="MissingConstraints"></androidx.viewpager.widget.ViewPager>
 
   <!--  <TextView
         android:id="@+id/tv_dis"

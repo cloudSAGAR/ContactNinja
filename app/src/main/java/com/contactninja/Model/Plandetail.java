@@ -3,28 +3,41 @@ package com.contactninja.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Plandetail {
 
     @SerializedName("plan_name")
     @Expose
-    private String plan_name;
+    private String plan_name="";
 
     @SerializedName("plan_description")
     @Expose
     private String plan_description;
 
+    @SerializedName("plan_free")
+    @Expose
+    private String plan_free;
+
     @SerializedName("subCategories")
     @Expose
-    private List<Plansublist> plansublist = null;
+    private List<Plansublist> plansublist = new ArrayList<>();
 
     public List<Plansublist> getPlansublist() {
         return plansublist;
     }
 
-    public void setPlansublist(List<Plansublist> subCategories) {
+    public void setPlansublist(List<Plansublist> plansublist) {
         this.plansublist = plansublist;
+    }
+
+    public String getPlan_free() {
+        return plan_free;
+    }
+
+    public void setPlan_free(String plan_free) {
+        this.plan_free = plan_free;
     }
 
     public String getPlan_name() {

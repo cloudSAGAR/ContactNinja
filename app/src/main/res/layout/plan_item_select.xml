@@ -5,21 +5,53 @@
     android:gravity="center"
     android:layout_height="match_parent">
 <LinearLayout
-    android:background="@drawable/shape_blue_50"
+    android:padding="@dimen/_10sdp"
+    android:background="@drawable/shape_blue_10"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
-        android:padding="@dimen/_20sdp"
-        android:id="@+id/tv_name"
-        android:gravity="center"
-        android:layout_gravity="center"
-        style="@style/tv_Medium"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/current_Plan"
-        android:textColor="@color/white" />
-
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/ic_small_logo"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:padding="@dimen/_4sdp"
+                android:id="@+id/tv_title"
+                style="@style/tv_regular"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textStyle="bold"
+                android:padding="@dimen/_4sdp"
+                android:id="@+id/tv_prise"
+                style="@style/tv_regular"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:padding="@dimen/_5sdp"
+        android:id="@+id/tv_text"
+        style="@style/tv_regular"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/plan_condition"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
 
 </LinearLayout>

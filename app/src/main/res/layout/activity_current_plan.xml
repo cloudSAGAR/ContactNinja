@@ -25,28 +25,38 @@
         android:textColor="@color/tv_medium"
         android:textStyle="bold" />
 
-
-    <com.dalong.francyconverflow.FancyCoverFlow
-        android:id="@+id/fancyCoverFlow"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout
         android:layout_above="@+id/tv_save"
-        android:layout_below="@+id/add_Template" />
+        android:layout_below="@+id/add_Template"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_weight="1"
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:paddingStart="@dimen/_40sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            tools:ignore="RtlSymmetry" />
 
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_save"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/_50sdp"
-        android:layout_marginEnd="@dimen/_50sdp"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:padding="@dimen/_15sdp"
-        android:background="@drawable/shape_blue_50"
         style="@style/tv_regular"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Current_Plan"/>
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_50sdp"
+        android:layout_marginEnd="@dimen/_50sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:background="@drawable/shape_blue_50"
+        android:gravity="center"
+        android:padding="@dimen/_15sdp"
+        android:text="@string/Current_Plan"
+        android:textColor="@color/white" />
 </RelativeLayout>
