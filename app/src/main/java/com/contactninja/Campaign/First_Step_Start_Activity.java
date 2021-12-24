@@ -105,20 +105,20 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             TemplateText templateText1=new TemplateText();
             if(i==0){
                 templateText1.setTemplateText("Please select template");
-                templateText1.setSelect(true);
+                templateText1.setSelect(false);
             }
             if(i==1){
                 templateText1.setTemplateText("New member joining");
                 templateText1.setSelect(true);
             }else if(i==2){
                 templateText1.setTemplateText("Customer service");
-                templateText1.setSelect(false);
+                templateText1.setSelect(true);
             }else if(i==3){
                 templateText1.setTemplateText("New Product development");
-                templateText1.setSelect(false);
+                templateText1.setSelect(true);
             }else if(i==4){
                 templateText1.setTemplateText("Save Current as template");
-                templateText1.setSelect(false);
+                templateText1.setSelect(true);
             }
             templateTextList1.add(i,templateText1);
         }
