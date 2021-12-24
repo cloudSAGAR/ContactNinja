@@ -111,6 +111,5 @@ dependencies {
     implementation 'com.archit.calendar:awesome-calendar:2.0.0'
 
 
-    implementation 'com.dalong.coverflow:coverflow:1.0.0'
-
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
