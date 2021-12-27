@@ -1,5 +1,6 @@
 package com.contactninja.Campaign.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.contactninja.Campaign.Automated_Email_Activity;
 import com.contactninja.R;
 
 public class Campaign_Email_Fragment extends Fragment implements View.OnClickListener {
@@ -47,7 +49,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
                     click=1;
                     select_automated.setVisibility(View.VISIBLE);
                     select_manual.setVisibility(View.GONE);
-
+                    startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
 
                 break;
             case R.id.manual_layout:
@@ -55,6 +57,8 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
                     click=1;
                     select_automated.setVisibility(View.GONE);
                     select_manual.setVisibility(View.VISIBLE);
+                    startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
+
                 break;
         }
     }

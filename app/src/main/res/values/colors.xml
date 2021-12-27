@@ -58,6 +58,8 @@
     <color name="calendar_header_title">#FFF</color>
     <color name="selected_date_circle_color_app">#FF5252</color>
     <color name="range_bg_color_app">#FFCDD2</color>
+    <color name="camp_line">#707070B2</color>
+    <color name="camp_delete">#F47F7F</color>
 
 
 

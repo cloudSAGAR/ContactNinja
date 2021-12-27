@@ -34,6 +34,8 @@ public class Global extends Application   {
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;
+    public static int count=1;
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.Broadcast_Frgment;
+package com.contactninja.Campaign.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -13,25 +25,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Group.Final_Group;
-import com.contactninja.Group.GroupActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -65,7 +60,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class Broadcste_Contect_Fragment extends Fragment  {
+public class Campaign_Contect_Fragment extends Fragment  {
 
 
     public static TopUserListDataAdapter  topUserListDataAdapter;
@@ -96,7 +91,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
     List<ContectListData.Contact> contectListData;
     List<ContectListData.Contact> select_contectListData;
     Activity activity;
-    public Broadcste_Contect_Fragment(Activity activity0){
+    public Campaign_Contect_Fragment(Activity activity0){
         this.activity=activity0;
     }
 
@@ -378,14 +373,14 @@ public class Broadcste_Contect_Fragment extends Fragment  {
 
         @NonNull
         @Override
-        public TopUserListDataAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.top_user_details, parent, false);
-            return new TopUserListDataAdapter.InviteListDataclass(view);
+            return new InviteListDataclass(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull TopUserListDataAdapter.InviteListDataclass holder, int position) {
+        public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
             ContectListData.Contact inviteUserDetails = userDetails.get(position);
             last_postion = position;
             holder.userName.setText(select_contectListData.get(position).getFirstname());
@@ -708,11 +703,11 @@ public class Broadcste_Contect_Fragment extends Fragment  {
             switch (viewType) {
                 case ITEM:
                     View viewItem = inflater.inflate(R.layout.invite_user_details, parent, false);
-                    viewHolder = new GroupContectAdapter.MovieViewHolder(viewItem);
+                    viewHolder = new MovieViewHolder(viewItem);
                     break;
                 case LOADING:
                     View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
-                    viewHolder = new GroupContectAdapter.LoadingViewHolder(viewLoading);
+                    viewHolder = new LoadingViewHolder(viewLoading);
                     break;
             }
             return viewHolder;
@@ -725,7 +720,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
             Log.e("Selcete List Is",new Gson().toJson(select_contectListData));
             switch (getItemViewType(position)) {
                 case ITEM:
-                    GroupContectAdapter.MovieViewHolder holder1 = (GroupContectAdapter.MovieViewHolder) holder;
+                    MovieViewHolder holder1 = (MovieViewHolder) holder;
 
                     /*     try {*/
                     //contacts.get(position).setFlag("true");
@@ -898,7 +893,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
                     break;
 
                 case LOADING:
-                    GroupContectAdapter.LoadingViewHolder loadingViewHolder = (GroupContectAdapter.LoadingViewHolder) holder;
+                    LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
                     loadingViewHolder.progressBar.setVisibility(View.VISIBLE);
                     break;
             }

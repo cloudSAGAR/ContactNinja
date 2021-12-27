@@ -22,6 +22,7 @@ import com.contactninja.Interface.TextClick;
 import com.contactninja.Model.TemplateText;
 import com.contactninja.R;
 import com.contactninja.Setting.TemplateCreateActivity;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -149,7 +150,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                 break;
             case R.id.save_button:
                 //Add Api Call
+                Global.count=1;
                 startActivity(new Intent(getApplicationContext(),Campaign_Overview.class));
+
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
