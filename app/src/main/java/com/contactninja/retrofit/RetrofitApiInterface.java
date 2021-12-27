@@ -69,6 +69,8 @@ public interface RetrofitApiInterface {
     @POST("refreshToken")
     Call<ApiResponse> RefressToken(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
+    @POST("user/changepassword")
+    Call<ApiResponse> ResetPassword(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
  /*   @Multipart
     @POST("contact/import")
     Call<ApiResponse> Upload_csv(@Header("Accept") String api,

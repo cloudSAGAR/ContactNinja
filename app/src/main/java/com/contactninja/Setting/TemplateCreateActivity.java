@@ -1,7 +1,11 @@
 package com.contactninja.Setting;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,9 +15,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,13 +28,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.Model.TemplateText;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TemplateCreateActivity extends AppCompatActivity implements View.OnClickListener, TextClick {
+public class TemplateCreateActivity extends AppCompatActivity implements View.OnClickListener, TextClick,ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button;
     EditText edit_template,edit_template_name;
@@ -36,11 +44,14 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     RecyclerView rv_direct_list;
     List<TemplateText> templateTextList=new ArrayList<>();
     LinearLayout layout_title;
+    RelativeLayout mMainLayout;
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_template_create);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         Listset();
     }
@@ -73,6 +84,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         layout_title = findViewById(R.id.layout_title);
         save_button = findViewById(R.id.save_button);
         save_button.setText(getResources().getText(R.string.save));
@@ -144,7 +156,36 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         finish();
         super.onBackPressed();
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(TemplateCreateActivity.this, mMainLayout);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
     @Override
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext=edit_template.getText().toString();

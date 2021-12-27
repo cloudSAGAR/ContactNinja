@@ -2,6 +2,7 @@ package com.contactninja.AddContect;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
@@ -9,11 +10,14 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -29,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -98,6 +103,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     RoundedImageView iv_user;
     LinearLayout layout_pulse;
     String option_type = "";
+    private BroadcastReceiver mNetworkReceiver;
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
@@ -141,6 +147,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnewcontect);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         sessionManager=new SessionManager(this);
         loadingDialog=new LoadingDialog(this);
@@ -1093,5 +1100,30 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 }

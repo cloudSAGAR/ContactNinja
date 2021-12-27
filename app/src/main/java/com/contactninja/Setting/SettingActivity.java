@@ -1,32 +1,42 @@
 package com.contactninja.Setting;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 
-public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     TextView tv_version_name;
     ImageView iv_back;
     LinearLayout layout_logout, layout_resetPassword, layout_template, layout_Current_plan, layout_about;
     SessionManager sessionManager;
+    RelativeLayout mMainLayout;
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        mNetworkReceiver = new ConnectivityReceiver();
         sessionManager = new SessionManager(getApplicationContext());
         intentView();
 
@@ -46,6 +56,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void intentView() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         tv_version_name = findViewById(R.id.tv_version_name);
         layout_Current_plan = findViewById(R.id.layout_Current_plan);
         layout_about = findViewById(R.id.layout_about);
@@ -70,6 +81,36 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(SettingActivity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     @SuppressLint("NonConstantResourceId")

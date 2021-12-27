@@ -1,10 +1,16 @@
 package com.contactninja.Setting;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -16,6 +22,7 @@ import android.widget.TextView;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -32,7 +39,7 @@ import java.lang.reflect.Type;
 
 import retrofit2.Response;
 
-public class ResetActivity extends AppCompatActivity implements View.OnClickListener {
+public class ResetActivity extends AppCompatActivity implements View.OnClickListener ,ConnectivityReceiver.ConnectivityReceiverListener {
 
     TextView btn_Create_password,iv_invalid;
     EditText edit_Current_Password,edit_New_Password,edit_Confirm_Password;
@@ -41,10 +48,14 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
     SessionManager sessionManager;
     LoadingDialog loadingDialog;
     RetrofitCalls retrofitCalls;
+    Handler mHandler=new Handler();
+    private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset);
+        mNetworkReceiver = new ConnectivityReceiver();
         retrofitCalls = new RetrofitCalls(ResetActivity.this);
         sessionManager=new SessionManager(ResetActivity.this);
         loadingDialog=new LoadingDialog(ResetActivity.this);
@@ -77,7 +88,7 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.btn_Create_password:
                 if(checkVelidaction()){
-
+                    iv_invalid.setText("");
                     try {
                         apiCall();
                     } catch (JSONException e) {
@@ -139,7 +150,8 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
     }
 
         private void apiCall() throws JSONException {
-
+            loadingDialog.showLoadingDialog();
+            SignResponseModel signResponseModel=SessionManager.getGetUserdata(ResetActivity.this);
 
             String token = Global.getToken(sessionManager);
             JsonObject obj = new JsonObject();
@@ -149,27 +161,23 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
             paramObject.addProperty("c_password", edit_Confirm_Password.getText().toString().trim());
             paramObject.addProperty("organization_id", "1");
             paramObject.addProperty("team_id", "1");
-            paramObject.addProperty("user_id", "1");
+            paramObject.addProperty("user_id",signResponseModel.getUser().getId());
             obj.add("data", paramObject);
-            Log.e("Tokem is ",new Gson().toJson(obj));
-            retrofitCalls.Refress_Token(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+            retrofitCalls.ResetPassword(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
 
                     loadingDialog.cancelLoading();
+
                     if (response.body().getStatus() == 200) {
-                        Gson gson = new Gson();
-                        String headerString = gson.toJson(response.body().getData());
-                        Type listType = new TypeToken<Grouplist>() {
-                        }.getType();
-                        SignResponseModel data= new Gson().fromJson(headerString, listType);
-                        sessionManager.setRefresh_token(data.getTokenType()+" "+data.getAccessToken());
-                        //   sessionManager.setUserdata(getApplicationContext(),data);
-
+                        Global.Messageshow(getApplication(),mMainLayout,response.body().getMessage(),true);
+                        Runnable mRunnable = () -> {
+                            onBackPressed();
+                        };
+                        int SPLASH_DISPLAY_LENGTH = 2000;
+                        mHandler.postDelayed(mRunnable, SPLASH_DISPLAY_LENGTH);
                     } else {
-                        //   Toast.makeText(getActivity(),"Token :(",Toast.LENGTH_SHORT).show();
-
-
+                        Global.Messageshow(getApplication(),mMainLayout,response.body().getMessage(),false);
                     }
                 }
 
@@ -223,5 +231,36 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(ResetActivity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

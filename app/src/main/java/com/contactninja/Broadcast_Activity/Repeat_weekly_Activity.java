@@ -1,13 +1,19 @@
 package com.contactninja.Broadcast_Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,13 +27,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class Repeat_weekly_Activity extends AppCompatActivity {
+public class Repeat_weekly_Activity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener   {
     ImageView iv_back, iv_Setting;
     TextView save_button,date_spinner,tv_day;
     String type="",week_txt="";
@@ -35,6 +44,8 @@ public class Repeat_weekly_Activity extends AppCompatActivity {
     private int mYear, mMonth, mDay, mHour, mMinute;
     List<String> select_string=new ArrayList<>();
     String select_day="",end_date="";
+    private BroadcastReceiver mNetworkReceiver;
+    ConstraintLayout mMainLayout;
 
 
 
@@ -42,6 +53,7 @@ public class Repeat_weekly_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repeat_weekly);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +130,7 @@ public class Repeat_weekly_Activity extends AppCompatActivity {
 
     }
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         iv_back=findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button=findViewById(R.id.save_button);
@@ -183,7 +196,36 @@ public class Repeat_weekly_Activity extends AppCompatActivity {
 
         bottomSheetDialog.show();
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Repeat_weekly_Activity.this, mMainLayout);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
     public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.InviteListDataclass> {
 
         public Context mCtx;
@@ -246,6 +288,7 @@ public class Repeat_weekly_Activity extends AppCompatActivity {
         }
 
     }
+
 
 
 }

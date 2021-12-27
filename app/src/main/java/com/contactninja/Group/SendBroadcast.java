@@ -1,5 +1,6 @@
 package com.contactninja.Group;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -24,13 +29,14 @@ import com.contactninja.Fragment.GroupFragment.ExposuresFragment;
 import com.contactninja.Fragment.GroupFragment.MembersFragment;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener  , ConnectivityReceiver.ConnectivityReceiverListener {
     TextView save_button;
     ImageView iv_Setting, iv_back;
     EditText add_detail,add_new_contect;
@@ -40,10 +46,12 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     SessionManager sessionManager;
     RoundedImageView add_new_contect_icon;
     ConstraintLayout mMainLayout;
+    private BroadcastReceiver mNetworkReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_broadcast);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         Global.checkConnectivity(SendBroadcast.this, mMainLayout);
         sessionManager=new SessionManager(this);
@@ -172,4 +180,35 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(SendBroadcast.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
 }

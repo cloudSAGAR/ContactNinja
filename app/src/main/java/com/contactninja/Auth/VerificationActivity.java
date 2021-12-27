@@ -2,7 +2,11 @@ package com.contactninja.Auth;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -23,6 +28,7 @@ import com.contactninja.Auth.PlanTyep.PlanType_Screen;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -81,12 +87,14 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private final long mLastClickTime = 0;
     String referred_by="";
+    private BroadcastReceiver mNetworkReceiver;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
+        mNetworkReceiver = new ConnectivityReceiver();
         mAuth = FirebaseAuth.getInstance();
         sessionManager = new SessionManager(this);
         IntentUI();
@@ -160,6 +168,9 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     loadingDialog.showLoadingDialog();
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                     signInWithCredential(credential);
+                    verfiy_button.setEnabled(false);
+
+                }else {
                     verfiy_button.setEnabled(true);
 
                 }
@@ -554,4 +565,32 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         Global.checkConnectivity(VerificationActivity.this, mMainLayout);
 
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
 }

@@ -140,6 +140,13 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
+    public void ResetPassword(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.ResetPassword(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
 
 
 
