@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -90,7 +91,9 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
                 if(checkVelidaction()){
                     iv_invalid.setText("");
                     try {
-                        apiCall();
+                        if(Global.isNetworkAvailable(ResetActivity.this,mMainLayout)) {
+                            apiCall();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

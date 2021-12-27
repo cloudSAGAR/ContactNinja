@@ -175,7 +175,9 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             } else {
                 // login_type="EMAIL";
                 try {
-                    EmailUpdate();
+                    if(Global.isNetworkAvailable(Phone_email_verificationActivity.this,mMainLayout)) {
+                        EmailUpdate();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -192,7 +194,9 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             } else {
                 // login_type="PHONE";
                 try {
-                    PhoneUpdate();
+                    if(Global.isNetworkAvailable(Phone_email_verificationActivity.this,mMainLayout)) {
+                        PhoneUpdate();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

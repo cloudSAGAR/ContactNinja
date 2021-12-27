@@ -38,12 +38,6 @@ public class RetrofitCalls {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE"); }
 
-    public void login_user(SessionManager session,String email_address, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
-        // call = retrofitApiInterface.loginUser(email_address);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-    }
     public void SignUp_user(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Register(RetrofitApiClient.API_Header,registerinfo);
         this.retrofitCallback = retrofitCallback;
@@ -111,17 +105,6 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
-
-
-
-    public void Contect_List(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Contect_List(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
 
 
     public void Contact_details_update(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {

@@ -43,6 +43,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
@@ -326,7 +327,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
                     else {
                          try {
-                            AddContect_Api1();
+                             if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)) {
+                                 AddContect_Api1();
+                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -348,7 +352,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     } else {
 
                         try {
-                            AddContect_Api();
+                            if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)) {
+                                AddContect_Api();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -372,7 +378,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
                         try {
-                            AddContect_Api1();
+                            if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)) {
+                                AddContect_Api1();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

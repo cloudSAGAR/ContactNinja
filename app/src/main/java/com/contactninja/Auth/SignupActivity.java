@@ -279,8 +279,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 if (checkVelidaction()) {
 
                     try {
-                        Uservalidate();
-                        sessionManager.setlogin_type(login_type);
+                        if(Global.isNetworkAvailable(SignupActivity.this,mMainLayout)) {
+                            Uservalidate();
+                            sessionManager.setlogin_type(login_type);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -353,7 +355,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         VerifyPhone(edit_Mobile.getText().toString());
                     } else {
                         try {
-                            SignAPI();
+                            if(Global.isNetworkAvailable(SignupActivity.this,mMainLayout)){
+                                SignAPI();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

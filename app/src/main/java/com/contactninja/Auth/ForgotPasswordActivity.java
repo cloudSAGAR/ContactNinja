@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.contactninja.MainActivity;
 import com.contactninja.R;
 import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -86,7 +87,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         } else if (Global.emailValidator(edit_email.getText().toString().trim())) {
             iv_invalid.setText("");
             try {
-                Uservalidate();
+                if(Global.isNetworkAvailable(ForgotPasswordActivity.this,mMainLayout)) {
+                    Uservalidate();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -116,7 +119,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                 if (response.body().getStatus() == 200) {
 
                     try {
-                        ForgotPassword();
+                        if(Global.isNetworkAvailable(ForgotPasswordActivity.this,mMainLayout)) {
+                            ForgotPassword();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

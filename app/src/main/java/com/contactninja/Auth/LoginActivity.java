@@ -253,7 +253,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             iv_password_invalid.setVisibility(View.GONE);
                             iv_invalid.setVisibility(View.GONE);
-                            Uservalidate();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                Uservalidate();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -261,7 +263,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //loadingDialog.showLoadingDialog();
                         try {
                             iv_invalid.setVisibility(View.GONE);
-                            Uservalidate();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                Uservalidate();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -515,7 +519,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }*/
                             VerifyPhone(edit_Mobile.getText().toString());
                         }else {
-                            LoginData();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                LoginData();
+                            }
                         }
                     } else {
                         loadingDialog.cancelLoading();

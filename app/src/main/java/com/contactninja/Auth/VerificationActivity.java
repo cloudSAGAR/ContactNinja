@@ -214,13 +214,17 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                             loadingDialog.cancelLoading();
                             if (activity_flag.equals("login")) {
                                 try {
-                                    LoginData();
+                                    if(Global.isNetworkAvailable(VerificationActivity.this,mMainLayout)) {
+                                        LoginData();
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             } else {
                                 try {
-                                    SignAPI();
+                                    if(Global.isNetworkAvailable(VerificationActivity.this,mMainLayout)) {
+                                        SignAPI();
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

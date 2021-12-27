@@ -692,7 +692,9 @@ public class ContectFragment extends Fragment {
             intent.putExtra(Intent.EXTRA_STREAM, path);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(intent, "Excel Data"));*/
-            Uploadcsv(file);
+            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                Uploadcsv(file);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

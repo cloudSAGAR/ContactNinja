@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -95,7 +96,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     List<Contactdetail> emaildetails_list = new ArrayList<>();
     LoadingDialog loadingDialog;
     RetrofitCalls retrofitCalls;
-    View mMainLayout;
+    LinearLayout mMainLayout;
     boolean edit = false;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -1160,7 +1161,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             try {
 
-                                UpdateContect(contactdetails.get(position));
+                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                    UpdateContect(contactdetails.get(position));
+                                }
                                 //break;
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -1235,7 +1238,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                RemoveContect(item.getId());
+                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                    RemoveContect(item.getId());
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -1299,7 +1304,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             try {
-                                UpdateContect(contactdetails.get(position));
+                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                    UpdateContect(contactdetails.get(position));
+                                }
                                 //break;
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -1370,7 +1377,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                RemoveContect(item.getId());
+                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                    RemoveContect(item.getId());
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -1493,7 +1502,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                RemoveContect(item.getId());
+                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                    RemoveContect(item.getId());
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -1761,7 +1772,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                RemoveContect(item.getId());
+                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                    RemoveContect(item.getId());
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -1776,7 +1789,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
                             try {
-                                UpdateContect(contactdetails.get(position));
+                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                    UpdateContect(contactdetails.get(position));
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -1889,7 +1904,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                RemoveContect(item.getId());
+                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                    RemoveContect(item.getId());
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

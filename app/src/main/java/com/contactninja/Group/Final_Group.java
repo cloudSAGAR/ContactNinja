@@ -39,6 +39,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Model.AddGroup;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -244,7 +245,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.save_button:
                 try {
-                    SaveEvent();
+                    if(Global.isNetworkAvailable(Final_Group.this,mMainLayout)) {
+                        SaveEvent();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

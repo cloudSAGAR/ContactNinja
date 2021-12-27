@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.browser.trusted.Token;
 import androidx.fragment.app.Fragment;
 
+import com.contactninja.Auth.SignupActivity;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -55,12 +57,16 @@ public class Home_Main_Fragment extends Fragment {
         loadingDialog=new LoadingDialog(getActivity());
         sessionManager=new SessionManager(getActivity());
         try {
-            Refreess_token();
+            if(Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                Refreess_token();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            TimeZooneUpdate();
+            if(Global.isNetworkAvailable(getActivity(),MainActivity.mMainLayout)) {
+                TimeZooneUpdate();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

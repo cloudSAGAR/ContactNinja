@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Campaign.Campaign_List_Activity;
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.Fragment.Contect_main_Fragment;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     private static int RC_APP_UPDATE = 0;
     InstallStateUpdatedListener installStateUpdatedListener;
-    RelativeLayout mMainLayout;
+    public static RelativeLayout mMainLayout;
     ImageView llHome, llsend, llContact, llUser;
     FrameLayout frameLayout;
     SessionManager sessionManager;
@@ -472,7 +473,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra(Intent.EXTRA_STREAM, path);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(intent, "Excel Data"));*/
-            Uploadcsv(file);
+            if(Global.isNetworkAvailable(MainActivity.this,mMainLayout)) {
+                Uploadcsv(file);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1068,8 +1071,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //Update Contect Api Call
                     Log.e("Update Name ", "Yes");
                     try {
-                        AddContect_Api1(userName, last_name, userPhoneNumber, taskList.get(0).getContect_id(), taskList.get(0).getContactId());
-                    } catch (JSONException e) {
+                        if(Global.isNetworkAvailable(MainActivity.this,mMainLayout)) {
+
+                            AddContect_Api1(userName, last_name, userPhoneNumber, taskList.get(0).getContect_id(), taskList.get(0).getContactId());
+                        }                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }

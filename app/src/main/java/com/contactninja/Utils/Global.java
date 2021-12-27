@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -187,6 +189,18 @@ public class Global extends Application   {
         }
     }
 
+    public static boolean isNetworkAvailable(Activity context, View view) {
+        boolean isAvailable;
+        ConnectivityManager connectivityMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityMgr.getActiveNetworkInfo();
+        isAvailable = networkInfo != null && networkInfo.isConnected();
+        if (isAvailable) {
+            return true;
+        } else {
+            Global.checkConnectivity(context, view);
+            return false;
+        }
+    }
 
     public static String getToken(SessionManager sessionManager){
 
