@@ -71,6 +71,16 @@ public interface RetrofitApiInterface {
 
     @POST("user/changepassword")
     Call<ApiResponse> ResetPassword(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+    @POST("hashtags/list")
+    Call<ApiResponse> Hastag_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+     @POST("templates/list")
+    Call<ApiResponse> Template_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+   @POST("templates/add")
+    Call<ApiResponse> CreateTemplate(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
  /*   @Multipart
     @POST("contact/import")
     Call<ApiResponse> Upload_csv(@Header("Accept") String api,

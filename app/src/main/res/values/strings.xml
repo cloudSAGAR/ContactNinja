@@ -336,4 +336,9 @@ Number</string>
     <string name="camp_done">Please add title of \n  your Campaign</string>
     <string name="camp_remaingn"> Characters remaining</string>
     <string name="camp_title">Enter Campagin Title</string>
+    <string name="update">update</string>
+    <string name="Enter_subject_here">Enter subject here…</string>
+    <string name="Subject">Subject:</string>
+    <string name="Email_Template">Email Template</string>
+    <string name="SMS_Template">SMS Template</string>
 </resources>

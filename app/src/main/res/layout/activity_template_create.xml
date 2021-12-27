@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,12 +10,23 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
+<LinearLayout
+    android:id="@+id/lay_title"
+    android:orientation="vertical"
+    android:layout_below="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
+        android:layout_below="@+id/toolbar"
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:layout_below="@+id/toolbar"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="@dimen/_10sdp">
@@ -51,24 +61,80 @@
 
 
     </LinearLayout>
-
-    <View
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:id="@+id/line_view"
+        <View
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:id="@+id/line_view"
+            android:layout_below="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_C4C4C4"/>
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
         android:layout_below="@+id/layout_title"
+        android:id="@+id/layout_email_subject"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_C4C4C4"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@string/Subject"
+                android:textColor="@color/purple_200"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edit_template_subject"
+                style="@style/tv_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center|left"
+                android:hint="@string/Enter_subject_here"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/tv_medium"
+                android:textColorHint="@color/otp_header_text_color"
+                android:textStyle="bold"
+                tools:ignore="Autofill,RtlHardcoded" />
+
+
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_below="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_C4C4C4"/>
+    </LinearLayout>
+
+</LinearLayout>
+
 
     <EditText
         android:id="@+id/edit_template"
         style="@style/tv_regular"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/line_view"
+        android:layout_below="@+id/lay_title"
         android:layout_gravity="center"
         android:background="@null"
         android:focusable="true"

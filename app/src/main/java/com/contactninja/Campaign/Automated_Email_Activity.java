@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.contactninja.Interface.TextClick;
-import com.contactninja.Model.TemplateText;
+import com.contactninja.Model.HastagList;
 import com.contactninja.R;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -42,11 +42,11 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     LoadingDialog loadingDialog;
     EditText ev_subject,edit_template;
     LinearLayout top_layout;
-    List<TemplateText> templateTextList1=new ArrayList<>();
+    List<HastagList.TemplateText> templateTextList1=new ArrayList<>();
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
     PicUpTextAdepter picUpTextAdepter;
-    List<TemplateText> templateTextList=new ArrayList<>();
+    List<HastagList.TemplateText> templateTextList=new ArrayList<>();
     public static final int PICKFILE_RESULT_CODE = 1;
      String filePath;
 
@@ -81,7 +81,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     private void Listset() {
         for(int i=0;i<=4;i++){
-            TemplateText templateText=new TemplateText();
+            HastagList.TemplateText templateText=new HastagList.TemplateText();
 
             if(i==0){
                 templateText.setFile(R.drawable.ic_a);
@@ -93,21 +93,21 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             }
             if(i==2){
 
-                templateText.setTemplateText("Placeholders #");
+                templateText.setDescription("Placeholders #");
                 templateText.setSelect(true);
 
             }
             else if(i==3){
-                templateText.setTemplateText("First Name");
+                templateText.setDescription("First Name");
                 templateText.setSelect(false);
             }else if(i==4){
-                templateText.setTemplateText("Last Name");
+                templateText.setDescription("Last Name");
                 templateText.setSelect(false);
             }else if(i==5){
-                templateText.setTemplateText("Hi");
+                templateText.setDescription("Hi");
                 templateText.setSelect(false);
             }else if(i==6){
-                templateText.setTemplateText("Hello");
+                templateText.setDescription("Hello");
                 templateText.setSelect(false);
             }
             templateTextList.add(i,templateText);
@@ -173,22 +173,22 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     private void Listset1() {
         for(int i=0;i<=4;i++){
-            TemplateText templateText1=new TemplateText();
+            HastagList.TemplateText templateText1=new HastagList.TemplateText();
             if(i==0){
-                templateText1.setTemplateText("Please select template");
+                templateText1.setDescription("Please select template");
                 templateText1.setSelect(false);
             }
             if(i==1){
-                templateText1.setTemplateText("New member joining");
+                templateText1.setDescription("New member joining");
                 templateText1.setSelect(true);
             }else if(i==2){
-                templateText1.setTemplateText("Customer service");
+                templateText1.setDescription("Customer service");
                 templateText1.setSelect(true);
             }else if(i==3){
-                templateText1.setTemplateText("New Product development");
+                templateText1.setDescription("New Product development");
                 templateText1.setSelect(true);
             }else if(i==4){
-                templateText1.setTemplateText("Save Current as template");
+                templateText1.setDescription("Save Current as template");
                 templateText1.setSelect(true);
             }
             templateTextList1.add(i,templateText1);
@@ -205,9 +205,9 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder>{
 
         public Context mCtx;
-        List<TemplateText> templateTextList1;
+        List<HastagList.TemplateText> templateTextList1;
         TextClick interfaceClick;
-        public TemplateAdepter(Context applicationContext, List<TemplateText> templateTextList1,TextClick interfaceClick) {
+        public TemplateAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList1,TextClick interfaceClick) {
             this.mCtx=applicationContext;
             this.templateTextList1=templateTextList1;
             this.interfaceClick=interfaceClick;
@@ -223,8 +223,8 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
         @Override
         public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
-            TemplateText item=templateTextList1.get(position);
-            holder.tv_item.setText(item.getTemplateText());
+            HastagList.TemplateText item=templateTextList1.get(position);
+            holder.tv_item.setText(item.getDescription());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
 
@@ -303,9 +303,9 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder>{
 
         public Context mCtx;
-        List<TemplateText> templateTextList;
+        List<HastagList.TemplateText> templateTextList;
         TextClick interfaceClick;
-        public PicUpTextAdepter(Context applicationContext, List<TemplateText> templateTextList,TextClick interfaceClick) {
+        public PicUpTextAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList,TextClick interfaceClick) {
             this.mCtx=applicationContext;
             this.templateTextList=templateTextList;
             this.interfaceClick=interfaceClick;
@@ -321,8 +321,8 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
-            TemplateText item=templateTextList.get(position);
-            holder.tv_item.setText(item.getTemplateText());
+            HastagList.TemplateText item=templateTextList.get(position);
+            holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
             if (item.getFile()!=0)
@@ -385,7 +385,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getTemplateText());
+                        interfaceClick.OnClick(item.getDescription());
                     }
                 }
             });

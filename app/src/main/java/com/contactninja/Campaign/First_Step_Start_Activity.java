@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +20,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.contactninja.Interface.TextClick;
-import com.contactninja.Model.TemplateText;
+import com.contactninja.MainActivity;
+import com.contactninja.Model.HastagList;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
-import com.contactninja.Setting.TemplateCreateActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
 
 public class First_Step_Start_Activity extends AppCompatActivity implements View.OnClickListener , TextClick {
     ImageView iv_back;
@@ -41,8 +53,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     PicUpTextAdepter picUpTextAdepter;
     TemplateAdepter templateAdepter;
     EditText edit_template,edit_template_name;
-    List<TemplateText> templateTextList=new ArrayList<>();
-    List<TemplateText> templateTextList1=new ArrayList<>();
+    List<HastagList.TemplateText> templateTextList=new ArrayList<>();
+    List<HastagList.TemplateText> templateTextList1=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +63,13 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
-        Listset();
-
+        try {
+            if(Global.isNetworkAvailable(First_Step_Start_Activity.this, MainActivity.mMainLayout)) {
+                Hastag_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         edit_template.requestFocus();
     }
 
@@ -74,36 +91,61 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
         bottomSheetDialog.show();
     }
+    private void Hastag_list() throws JSONException {
 
-    private void Listset() {
-        for(int i=0;i<=4;i++){
-            TemplateText templateText=new TemplateText();
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(First_Step_Start_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        Log.e("Tokem is ",new Gson().toJson(obj));
+        retrofitCalls.Hastag_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+            @SuppressLint("SyntheticAccessor")
+            @Override
+            public void success(Response<ApiResponse> response) {
 
-            if(i==0){
-                templateText.setTemplateText("Placeholders #");
-                templateText.setSelect(true);
-            }else if(i==1){
-                templateText.setTemplateText("First Name");
-                templateText.setSelect(false);
-            }else if(i==2){
-                templateText.setTemplateText("Last Name");
-                templateText.setSelect(false);
-            }else if(i==3){
-                templateText.setTemplateText("Hi");
-                templateText.setSelect(false);
-            }else if(i==4){
-                templateText.setTemplateText("Hello");
-                templateText.setSelect(false);
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    templateTextList.clear();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<HastagList>() {
+                    }.getType();
+                    HastagList hastagList=new Gson().fromJson(headerString, listType);
+                    templateTextList=hastagList.getHashtag();
+                    HastagList.TemplateText templateText=new HastagList.TemplateText();
+                    templateText.setDescription("Placeholders #");
+                    templateText.setSelect(true);
+                    templateTextList.add(0,templateText);
+
+                    Listset(templateTextList);
+
+
+
+                }
             }
-            templateTextList.add(i,templateText);
-        }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
+    }
+    private void Listset(List<HastagList.TemplateText> templateTextList1) {
         rv_direct_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         rv_direct_list.setHasFixedSize(true);
-        picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
+        picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList1, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
     private void Listset1() {
-        for(int i=0;i<=4;i++){
+/*        for(int i=0;i<=4;i++){
             TemplateText templateText1=new TemplateText();
             if(i==0){
                 templateText1.setTemplateText("Please select template");
@@ -123,7 +165,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                 templateText1.setSelect(true);
             }
             templateTextList1.add(i,templateText1);
-        }
+        }*/
 
     }
     private void IntentUI() {
@@ -172,9 +214,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     static class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder>{
 
         public Context mCtx;
-        List<TemplateText> templateTextList;
+        List<HastagList.TemplateText> templateTextList;
         TextClick interfaceClick;
-        public PicUpTextAdepter(Context applicationContext, List<TemplateText> templateTextList,TextClick interfaceClick) {
+        public PicUpTextAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList,TextClick interfaceClick) {
             this.mCtx=applicationContext;
             this.templateTextList=templateTextList;
             this.interfaceClick=interfaceClick;
@@ -190,8 +232,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
-            TemplateText item=templateTextList.get(position);
-            holder.tv_item.setText(item.getTemplateText());
+            HastagList.TemplateText item=templateTextList.get(position);
+            holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
             if(item.isSelect()){
@@ -215,7 +257,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getTemplateText());
+                        interfaceClick.OnClick(item.getDescription());
                     }
                 }
             });
@@ -248,9 +290,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder>{
 
         public Context mCtx;
-        List<TemplateText> templateTextList1;
+        List<HastagList.TemplateText> templateTextList1;
         TextClick interfaceClick;
-        public TemplateAdepter(Context applicationContext, List<TemplateText> templateTextList1,TextClick interfaceClick) {
+        public TemplateAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList1,TextClick interfaceClick) {
             this.mCtx=applicationContext;
             this.templateTextList1=templateTextList1;
             this.interfaceClick=interfaceClick;
@@ -266,8 +308,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
         @Override
         public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
-            TemplateText item=templateTextList1.get(position);
-            holder.tv_item.setText(item.getTemplateText());
+            HastagList.TemplateText item=templateTextList1.get(position);
+            holder.tv_item.setText(item.getDescription());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
             if(item.isSelect()){
