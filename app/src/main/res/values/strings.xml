@@ -321,4 +321,5 @@ Number</string>
 
     <string name="campaign_step_one_one">Step#1 (Automated SMS)</string>
     <string name="temp_txt">Use template</string>
+    <string name="campaign_step_title">Campaign Overview</string>
 </resources>

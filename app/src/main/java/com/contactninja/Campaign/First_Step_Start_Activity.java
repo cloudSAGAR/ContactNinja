@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     }
 
     private void bouttomSheet() {
+        templateTextList1.clear();
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(First_Step_Start_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
@@ -104,20 +106,20 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             TemplateText templateText1=new TemplateText();
             if(i==0){
                 templateText1.setTemplateText("Please select template");
-                templateText1.setSelect(true);
+                templateText1.setSelect(false);
             }
             if(i==1){
                 templateText1.setTemplateText("New member joining");
                 templateText1.setSelect(true);
             }else if(i==2){
                 templateText1.setTemplateText("Customer service");
-                templateText1.setSelect(false);
+                templateText1.setSelect(true);
             }else if(i==3){
                 templateText1.setTemplateText("New Product development");
-                templateText1.setSelect(false);
+                templateText1.setSelect(true);
             }else if(i==4){
                 templateText1.setTemplateText("Save Current as template");
-                templateText1.setSelect(false);
+                templateText1.setSelect(true);
             }
             templateTextList1.add(i,templateText1);
         }
@@ -146,7 +148,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                 finish();
                 break;
             case R.id.save_button:
-                startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+                //Add Api Call
+                startActivity(new Intent(getApplicationContext(),Campaign_Overview.class));
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
@@ -270,21 +273,13 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             }else {
                 holder.line_view.setVisibility(View.GONE);
             }
+
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    if(!item.isSelect()){
-                        Handler handler = new Handler();
-                        Runnable r = new Runnable() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            public void run() {
-                                notifyDataSetChanged();
-                            }
-                        };
-                        handler.postDelayed(r, 1000);
-
-                        holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getTemplateText());
+                public void onClick(View view) {
+                    if (holder.tv_item.getText().toString().equals("Save Current as template"))
+                    {
+                        showAlertDialogButtonClicked(view);
                     }
                 }
             });
@@ -308,6 +303,40 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                 line_view=view.findViewById(R.id.line_view);
             }
         }
+    }
+
+    public void showAlertDialogButtonClicked(View view) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this, R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.add_titale_for_templet,
+                        null);
+        builder.setView(customLayout);
+        EditText editText = customLayout.findViewById(R.id.editText);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        TextView tv_add = customLayout.findViewById(R.id.tv_add);
+        AlertDialog dialog
+                = builder.create();
+
+        dialog.show();
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
 }

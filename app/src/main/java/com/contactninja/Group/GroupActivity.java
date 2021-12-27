@@ -30,6 +30,7 @@ import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
+import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -390,6 +391,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                SessionManager.setGroupData(this,new Grouplist.Group());
                 finish();
                 break;
             case R.id.save_button:
@@ -1358,7 +1360,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        SessionManager.setGroupData(this,new Grouplist.Group());
+        super.onBackPressed();
+    }
 }

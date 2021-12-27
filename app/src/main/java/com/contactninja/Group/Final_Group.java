@@ -231,6 +231,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
                 finish();
                 break;
             case R.id.save_button:
@@ -767,5 +768,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
+        super.onBackPressed();
     }
 }
