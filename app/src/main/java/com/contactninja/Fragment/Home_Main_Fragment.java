@@ -103,7 +103,7 @@ public class Home_Main_Fragment extends Fragment {
                     //   sessionManager.setUserdata(getApplicationContext(),data);
 
                 } else {
-                    Toast.makeText(getActivity(),"Token :(",Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(getActivity(),"Token :(",Toast.LENGTH_SHORT).show();
 
 
                 }

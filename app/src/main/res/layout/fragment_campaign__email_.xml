@@ -7,101 +7,406 @@
     tools:context=".Campaign.Fragment.Campaign_Email_Fragment">
 
 
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/auto_layout"
-            android:weightSum="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_25sdp"
             android:background="@drawable/shape_border_gray"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
 
-            <TextView
-                android:layout_weight="1"
-                style="@style/tv_bold"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|left"
-                android:gravity="center|left"
-                android:paddingStart="@dimen/_20sdp"
-                android:text="@string/campaign_step_one_email"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_15sdp">
-
-            </TextView>
-            <ImageView
-                android:visibility="gone"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:id="@+id/select_automated"
-                android:src="@drawable/ic_done"
-                android:padding="@dimen/_5sdp"
                 android:layout_gravity="center"
-                android:background="@drawable/shape_blue_back_dialog"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"></ImageView>
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
+                <TextView
+                    style="@style/tv_bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:padding="@dimen/_15sdp"
+                    android:text="@string/campaign_step_one_email"
+                    android:textColor="@color/tv_medium"
+                    android:textSize="@dimen/_15sdp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/select_automated"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/shape_blue_back_dialog"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_done"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layout_email_second_automated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#A7A0A0" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:padding="@dimen/_5sdp"
+                        style="@style/tv_regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/Run_this_step_on"
+                        android:textColor="@color/tv_medium" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/tv_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/Day"
+                            android:textColor="@color/tv_medium" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_day"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+
+                            <EditText
+                                android:id="@+id/edit_day"
+                                style="@style/tv_regular"
+                                android:layout_width="86dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:maxLines="1"
+                                android:padding="5dp"
+                                android:textColor="@color/purple_200"
+                                android:textSize="@dimen/_16sdp"
+                                android:textStyle="bold"
+                                tools:ignore="Autofill,LabelFor,RtlHardcoded" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#A7A0A0" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/tv_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/and"
+                            android:textColor="@color/tv_medium" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_minutes"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+
+                            <EditText
+                                android:id="@+id/edit_minutes"
+                                style="@style/tv_regular"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:maxLines="1"
+                                android:padding="5dp"
+                                android:textColor="@color/purple_200"
+                                android:textSize="@dimen/_16sdp"
+                                android:textStyle="bold"
+                                tools:ignore="Autofill,LabelFor,RtlHardcoded" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#A7A0A0" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/tv_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/minutes"
+                            android:textColor="@color/tv_medium" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/tv_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/campaing_email_text"
+                        android:textColor="@color/tv_medium" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:weightSum="1"
             android:id="@+id/manual_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_25sdp"
             android:background="@drawable/shape_border_gray"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
 
-            <TextView
-                android:layout_weight="1"
-                android:paddingStart="@dimen/_20sdp"
-                android:layout_gravity="center|left"
-                android:gravity="center|left"
-                style="@style/tv_bold"
-                android:textSize="@dimen/_15sdp"
-                android:text="@string/campaign_step_one_email_manual"
-                android:textColor="@color/tv_medium"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </TextView>
-            <ImageView
-                android:visibility="gone"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:id="@+id/select_manual"
-                android:src="@drawable/ic_done"
-                android:padding="@dimen/_5sdp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/shape_blue_back_dialog"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"></ImageView>
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
+                <TextView
+                    style="@style/tv_bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:padding="@dimen/_15sdp"
+                    android:text="@string/campaign_step_one_email_manual"
+                    android:textColor="@color/tv_medium"
+                    android:textSize="@dimen/_15sdp"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/select_manual"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/shape_blue_back_dialog"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_done"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layout_email_second_manual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#A7A0A0" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:padding="@dimen/_5sdp"
+                        style="@style/tv_regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/Run_this_step_on"
+                        android:textColor="@color/tv_medium" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/tv_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/Day"
+                            android:textColor="@color/tv_medium" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_day_manual"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+
+                            <EditText
+                                android:id="@+id/edit_day_manual"
+                                style="@style/tv_regular"
+                                android:layout_width="86dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:maxLines="1"
+                                android:padding="5dp"
+                                android:textColor="@color/purple_200"
+                                android:textSize="@dimen/_16sdp"
+                                android:textStyle="bold"
+                                tools:ignore="Autofill,LabelFor,RtlHardcoded" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#A7A0A0" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/tv_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/and"
+                            android:textColor="@color/tv_medium" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_minutes_manual"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+
+                            <EditText
+                                android:id="@+id/edit_minutes_manual"
+                                style="@style/tv_regular"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:maxLines="1"
+                                android:padding="5dp"
+                                android:textColor="@color/purple_200"
+                                android:textSize="@dimen/_16sdp"
+                                android:textStyle="bold"
+                                tools:ignore="Autofill,LabelFor,RtlHardcoded" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#A7A0A0" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/tv_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/minutes"
+                            android:textColor="@color/tv_medium" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/tv_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/campaing_email_text"
+                        android:textColor="@color/tv_medium" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
         <TextView
-           android:layout_marginTop="@dimen/_30sdp"
+            style="@style/tv_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_30sdp"
             android:gravity="center"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
-            style="@style/tv_regular"
-            android:textSize="@dimen/_12sdp"
             android:text="@string/campaign_step_one_email_txt"
             android:textColor="@color/home_list_sub_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:textSize="@dimen/_12sdp">
 
         </TextView>
 
     </LinearLayout>
+
     <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"
         android:src="@drawable/ic_campaign_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        tools:ignore="ContentDescription,RtlHardcoded">
 
     </ImageView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

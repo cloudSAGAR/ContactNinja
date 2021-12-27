@@ -322,4 +322,9 @@ Number</string>
     <string name="campaign_step_one_one">Step#1 (Automated SMS)</string>
     <string name="temp_txt">Use template</string>
     <string name="campaign_step_title">Campaign Overview</string>
+    <string name="campaing_email_text"><![CDATA[An Email will be automatically delivered immediately,  after a prospect is added to this sequence.]]></string>
+    <string name="minutes">minutes</string>
+    <string name="and">and</string>
+    <string name="Day">Day</string>
+    <string name="Run_this_step_on">Run this step on</string>
 </resources>
