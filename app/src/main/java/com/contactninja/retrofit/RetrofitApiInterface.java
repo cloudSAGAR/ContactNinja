@@ -82,6 +82,10 @@ public interface RetrofitApiInterface {
     Call<ApiResponse> CreateTemplate(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
 
+   @POST("usergmail/list")
+    Call<ApiResponse> Mail_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
 
  /*   @Multipart
     @POST("contact/import")

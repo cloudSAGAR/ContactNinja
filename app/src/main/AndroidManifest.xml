@@ -48,6 +48,12 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Setting.EmailListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Setting.Email_verification"
+            android:exported="true" />
+        <activity
             android:name=".Campaign.Campaign_Name_Activity"
             android:exported="false" />
         <activity
