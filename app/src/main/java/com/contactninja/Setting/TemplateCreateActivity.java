@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.contactninja.MainActivity;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -53,19 +53,20 @@ import retrofit2.Response;
 public class TemplateCreateActivity extends AppCompatActivity implements View.OnClickListener, TextClick, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button;
-    EditText edit_template, edit_template_name,edit_template_subject;
+    EditText edit_template, edit_template_name, edit_template_subject;
     PicUpTextAdepter picUpTextAdepter;
     RecyclerView rv_direct_list;
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
-    LinearLayout layout_title,layout_email_subject;
+    LinearLayout layout_title, layout_email_subject;
     RelativeLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     TemplateList.Template template;
-    boolean isEdit=false;
-    String template_type="";
+    boolean isEdit = false;
+    String template_type = "";
+
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,24 +79,24 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
 
         template = (TemplateList.Template) getIntent().getSerializableExtra("template");
         template_type = getIntent().getStringExtra("template_type");
-        if(template!=null){
-            template_type=template.getType();
-            if(template_type.equals("EMAIL")){
+        if (template != null) {
+            template_type = template.getType();
+            if (template_type.equals("EMAIL")) {
                 layout_email_subject.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 layout_email_subject.setVisibility(View.GONE);
             }
             setdata(template);
             save_button.setText(getResources().getText(R.string.update));
-            isEdit=true;
-        }else {
-            if(template_type.equals("EMAIL")){
+            isEdit = true;
+        } else {
+            if (template_type.equals("EMAIL")) {
                 layout_email_subject.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 layout_email_subject.setVisibility(View.GONE);
             }
             save_button.setText(getResources().getText(R.string.save));
-            isEdit=false;
+            isEdit = false;
         }
 
         try {
@@ -192,20 +193,24 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                 onBackPressed();
                 break;
             case R.id.save_button:
-                if(isEdit){
+                if (isEdit) {
                     //update template
                     try {
-                        if(Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
-                            UpdateTemplate();
+                        if (Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
+                            if (isValidation()) {
+                                UpdateTemplate();
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
+                } else {
                     //create template
                     try {
-                        if(Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
-                            CreateTemplate();
+                        if (Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
+                            if (isValidation())
+                                CreateTemplate();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -219,9 +224,36 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                 break;
         }
     }
+
+    private boolean isValidation() {
+        if (template_type.equals("SMS")) {
+            if (edit_template_name.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+            }
+            if (edit_template.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+            } else {
+                return true;
+            }
+        } else {
+            if (edit_template_name.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+            }
+            if (edit_template_subject.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
+            }
+            if (edit_template.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void UpdateTemplate() throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(TemplateCreateActivity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(TemplateCreateActivity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -231,18 +263,28 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("id", template.getId());
         paramObject.addProperty("template_name", edit_template_name.getText().toString().trim());
         paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
-        String template_slug=  edit_template_name.getText().toString().toUpperCase().replace(" ","_");
+        String template_slug = edit_template_name.getText().toString().toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
         paramObject.addProperty("content_body", edit_template.getText().toString().trim());
         paramObject.addProperty("type", template_type);
 
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getStatus() == 200) {
-                onBackPressed();
+                    onBackPressed();
+                } else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                "The template title has already been taken.", false);
+                    }
                 }
             }
 
@@ -254,9 +296,10 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
 
 
     }
+
     private void CreateTemplate() throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(TemplateCreateActivity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(TemplateCreateActivity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -265,19 +308,29 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("template_name", edit_template_name.getText().toString().trim());
         paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
-        String template_slug=  edit_template_name.getText().toString().toUpperCase().replace(" ","_");
+        String template_slug = edit_template_name.getText().toString().toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
         paramObject.addProperty("content_body", edit_template.getText().toString().trim());
         paramObject.addProperty("type", template_type);
 
         obj.add("data", paramObject);
-        retrofitCalls.CreateTemplate(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getStatus() == 200) {
-                 // onBackPressed();
+                    onBackPressed();
 
+                } else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                "The template title has already been taken.", false);
+                    }
                 }
             }
 
@@ -291,6 +344,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
 
 
     }
+
     public void showAlertDialogButtonClicked() {
 
         // Create an alert builder

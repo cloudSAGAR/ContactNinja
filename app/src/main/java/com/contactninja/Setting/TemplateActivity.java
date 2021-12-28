@@ -263,6 +263,18 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if(Global.isNetworkAvailable(TemplateActivity.this, MainActivity.mMainLayout)) {
+                Template_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewData> {
 
         public Context mCtx;
