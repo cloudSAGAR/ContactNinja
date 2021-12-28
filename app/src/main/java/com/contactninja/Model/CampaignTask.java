@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CampaignTask {
-    public class Datum {
+
 
         @SerializedName("id")
         @Expose
@@ -128,6 +128,5 @@ public class CampaignTask {
             this.updatedAt = updatedAt;
         }
 
-    }
 
 }

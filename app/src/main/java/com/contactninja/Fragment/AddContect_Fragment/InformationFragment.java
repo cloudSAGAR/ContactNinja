@@ -35,6 +35,7 @@ import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.Model.WorkTypeData;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -47,6 +48,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hbb20.CountryCodePicker;
@@ -54,6 +56,7 @@ import com.hbb20.CountryCodePicker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -1530,7 +1533,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 public void onClick(View view) {
                     Log.e("Sms Event Call","Yes");
                     Log.e("Number is",item.getEmail_number());
-                    showAlertDialogButtonClicked1(item.getEmail_number());
+                    //showAlertDialogButtonClicked1(item.getEmail_number());
+                    showAlertDialogMeassge(item.getEmail_number());
                 }
             });
         }
@@ -1635,6 +1639,174 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         });
 
     }
+    public void showAlertDialogMeassge(String p_num) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.select_msg_send_type,
+                        null);
+        builder.setView(customLayout);
+        TextView tv_munual = customLayout.findViewById(R.id.tv_munual);
+        TextView tv_api = customLayout.findViewById(R.id.tv_api);
+
+
+
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+        tv_munual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialogButtonClicked1(p_num);
+                dialog.dismiss();
+            }
+        });
+        tv_api.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                try {
+                    SMSAPI();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+
+
+    private void SMSAPI() throws JSONException {
+        Log.e("Email","Yes");
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("email", "");
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", team_id);
+        paramObject.addProperty("update_type", "");
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+
+        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                    sessionManager.Email_Update();
+                    loadingDialog.cancelLoading();
+
+                }
+                else if (response.body().getStatus()==404)
+                {
+                    loadingDialog.cancelLoading();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Log.e("String is",headerString);
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    Global.Messageshow(getContext(), mMainLayout, user_model.getEmail().get(0),  false);
+
+                }
+                else {
+                    loadingDialog.cancelLoading();
+                    try {
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Log.e("String is",headerString);
+                        Type listType = new TypeToken<UservalidateModel>() {
+                        }.getType();
+                        UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+    private void EmailAPI(String subject, String text, int id) throws JSONException {
+        Log.e("Email","Yes");
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("email", "");
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", team_id);
+        paramObject.addProperty("update_type", "");
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+
+        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                    sessionManager.Email_Update();
+                    loadingDialog.cancelLoading();
+
+                }
+                else if (response.body().getStatus()==404)
+                {
+                    loadingDialog.cancelLoading();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Log.e("String is",headerString);
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    Global.Messageshow(getContext(), mMainLayout, user_model.getEmail().get(0),  false);
+
+                }
+                else {
+                    loadingDialog.cancelLoading();
+                    try {
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Log.e("String is",headerString);
+                        Type listType = new TypeToken<UservalidateModel>() {
+                        }.getType();
+                        UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+
     public void sendSMS(String phoneNo, String msg) {
         try {
             SmsManager smsManager = SmsManager.getDefault();
@@ -1921,12 +2093,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent email = new Intent(Intent.ACTION_SEND);
-                    email.putExtra(Intent.EXTRA_EMAIL, new String[]{item.getEmail_number()});
-                    email.putExtra(Intent.EXTRA_SUBJECT, "");
-                    email.putExtra(Intent.EXTRA_TEXT, "");
-                    email.setType("message/rfc822");
-                    startActivity(Intent.createChooser(email, "Choose an Email client :"));
+                    showAlertDialogEmailMeassge(item.getEmail_number(),item.getId());
                 }
             });
 
@@ -1962,6 +2129,46 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
 
         }
+
+    }
+
+    public void showAlertDialogEmailMeassge(String email, int id) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.email_send_layout,
+                        null);
+        builder.setView(customLayout);
+        EditText ev_subject = customLayout.findViewById(R.id.ev_subject);
+        EditText ev_type = customLayout.findViewById(R.id.ev_type);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        TextView tv_add = customLayout.findViewById(R.id.tv_add);
+
+
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                try {
+                    EmailAPI(ev_subject.getText().toString(),ev_type.getText().toString(),id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 

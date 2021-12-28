@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,9 @@ import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.TemplateCreateActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -49,7 +52,7 @@ import retrofit2.Response;
 
 public class First_Step_Start_Activity extends AppCompatActivity implements View.OnClickListener , TextClick,TemplateClick {
     ImageView iv_back;
-    TextView save_button,tv_use_tamplet;
+    TextView save_button,tv_use_tamplet,tv_step;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -81,6 +84,18 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         }
 
         edit_template.requestFocus();
+        if (SessionManager.getTask(getApplicationContext()).size()==0)
+        {
+            String step_id= String.valueOf(SessionManager.getTask(getApplicationContext()).size()+1);
+            String stpe_tyep=SessionManager.getCampaign_type_name(getApplicationContext());
+            tv_step.setText("Step#"+step_id+"("+stpe_tyep+" "+SessionManager.getCampaign_type(getApplicationContext())+")");
+        }
+        else {
+            String step_id= String.valueOf(SessionManager.getTask(getApplicationContext()).size()+1);
+            String stpe_tyep=SessionManager.getCampaign_type_name(getApplicationContext());
+            tv_step.setText("Step#"+step_id+"("+stpe_tyep+" "+SessionManager.getCampaign_type(getApplicationContext())+")");
+
+        }
     }
 
     private void bouttomSheet() {
@@ -104,7 +119,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
         tv_error.setVisibility(View.GONE);
 
-        bottomSheetDialog_templateList.show();
+
     }
     private void Template_list(RecyclerView templet_list) throws JSONException {
         SignResponseModel signResponseModel= SessionManager.getGetUserdata(First_Step_Start_Activity.this);
@@ -180,7 +195,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                     templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick);
                     templet_list.setAdapter(templateAdepter);
-
+                    bottomSheetDialog_templateList.show();
                 }
             }
 
@@ -261,6 +276,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         edit_template = findViewById(R.id.edit_template);
         tv_use_tamplet.setOnClickListener(this);
         mMainLayout=findViewById(R.id.mMainLayout);
+        tv_step=findViewById(R.id.tv_step);
     }
 
     @Override
@@ -418,9 +434,11 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                 public void onClick(View view) {
                     if (holder.tv_item.getText().toString().equals("Save Current as template"))
                     {
-                        showAlertDialogButtonClicked(view);
+                        showAlertDialogButtonClicked(view,edit_template.getText().toString());
+                        bottomSheetDialog_templateList.cancel();
                     }else {
                         interfaceClick.OnClick(item);
+                        bottomSheetDialog_templateList.cancel();
                     }
                 }
             });
@@ -446,7 +464,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         }
     }
 
-    public void showAlertDialogButtonClicked(View view) {
+    public void showAlertDialogButtonClicked(View view, String body_text) {
 
         // Create an alert builder
         AlertDialog.Builder builder
@@ -457,6 +475,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                         R.layout.add_titale_for_templet,
                         null);
         builder.setView(customLayout);
+        CoordinatorLayout c_layout=customLayout.findViewById(R.id.c_layout);
         EditText editText = customLayout.findViewById(R.id.editText);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
         TextView tv_add = customLayout.findViewById(R.id.tv_add);
@@ -467,8 +486,26 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (editText.getText().toString().equals(""))
+                {
+                    Global.Messageshow(getApplicationContext(),c_layout,"Enter template name ",false);
+                }
+                else if (body_text.equals(""))
+                {
+                    Global.Messageshow(getApplicationContext(),c_layout,"Enter template Text ",false);
 
-                dialog.dismiss();
+                }
+                else {
+                    try {
+                        dialog.dismiss();
+                        CreateTemplate(body_text,editText.getText().toString());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
@@ -515,9 +552,10 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<CampaignTask>() {
                     }.getType();
-                    CampaignTask user_model = new Gson().fromJson(headerString, listType);
+                    CampaignTask user_model1 = new Gson().fromJson(headerString, listType);
+                    Log.e("User Model ",new Gson().toJson(user_model1));
                     List<CampaignTask> campaignTasks=new ArrayList<>();
-                    campaignTasks.add(user_model);
+                    campaignTasks.add(user_model1);
                     SessionManager.setTask(getApplicationContext(), campaignTasks);
                     startActivity(new Intent(getApplicationContext(),Campaign_Overview.class));
                 }
@@ -534,6 +572,55 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                 loadingDialog.cancelLoading();
             }
         });
+    }
+
+
+    private void CreateTemplate(String body_text, String s) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(First_Step_Start_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("template_name", s);
+        paramObject.addProperty("content_header", "");
+        String template_slug=  s.toUpperCase().replace(" ","_");
+        paramObject.addProperty("template_slug", template_slug);
+        paramObject.addProperty("content_body", body_text);
+        paramObject.addProperty("type", "SMS");
+
+        obj.add("data", paramObject);
+        retrofitCalls.CreateTemplate(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    // onBackPressed();
+                }
+                else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if(user_model.getTemplate_slug()!=null){
+                        Global.Messageshow(getApplicationContext(),mMainLayout,
+                                "The template title has already been taken.",false);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
     }
 
 }

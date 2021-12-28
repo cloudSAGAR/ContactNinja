@@ -43,7 +43,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
             }
-            else if (c_name.equals("Manual"))
+            else if (c_name.equals("MANUAL"))
             {
                 select_automated.setVisibility(View.GONE);
                 select_manual.setVisibility(View.VISIBLE);
@@ -82,7 +82,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
             case R.id.manual_layout:
 
                 SessionManager.setCampaign_type("Email");
-                SessionManager.setCampaign_type_name("Manual");
+                SessionManager.setCampaign_type_name("MANUAL");
                 //  startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
                 Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
                 Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
@@ -108,7 +108,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
             }
-            else if (c_name.equals("Manual"))
+            else if (c_name.equals("MANUAL"))
             {
                 select_automated.setVisibility(View.GONE);
                 select_manual.setVisibility(View.VISIBLE);
@@ -134,7 +134,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
             }
-            else if (c_name.equals("Manual"))
+            else if (c_name.equals("MANUAL"))
             {
                 select_automated.setVisibility(View.GONE);
                 select_manual.setVisibility(View.VISIBLE);

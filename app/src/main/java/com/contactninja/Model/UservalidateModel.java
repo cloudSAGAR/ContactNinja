@@ -17,6 +17,9 @@ public class UservalidateModel {
     @Expose
     private List<String> contact_number = null;
 
+    public List<String> getTemplate_slug() {
+        return template_slug;
+    }
 
     @SerializedName("password")
     @Expose
@@ -65,4 +68,6 @@ public class UservalidateModel {
     public void setFirstname(List<String> firstname) {
         this.firstname = firstname;
     }
+
+
 }

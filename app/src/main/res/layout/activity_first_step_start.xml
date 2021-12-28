@@ -25,7 +25,7 @@
     </ImageView>
     <TextView
         android:layout_marginTop="@dimen/_10sdp"
-        android:id="@+id/add_new_contect"
+        android:id="@+id/tv_step"
         style="@style/tv_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

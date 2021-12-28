@@ -78,15 +78,15 @@
             <TextView
                 android:id="@+id/tv_cancel"
                 style="@style/tv_regular"
-                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
+                android:text="Cancel"
                 android:textColor="@color/home_list_sub_data"
-                android:text="Cancel">
+                android:textStyle="bold">
 
             </TextView>
 

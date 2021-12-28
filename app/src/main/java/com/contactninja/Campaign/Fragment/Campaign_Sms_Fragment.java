@@ -42,7 +42,7 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
             }
-            else if (c_name.equals("Manual"))
+            else if (c_name.equals("MANUAL"))
             {
                 select_automated.setVisibility(View.GONE);
                 select_manual.setVisibility(View.VISIBLE);
@@ -81,7 +81,7 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
             case R.id.manual_layout:
 
                 SessionManager.setCampaign_type("SMS");
-                SessionManager.setCampaign_type_name("Manual");
+                SessionManager.setCampaign_type_name("MANUAL");
                 Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
                 Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
                 select_automated.setVisibility(View.GONE);
@@ -108,7 +108,7 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
             }
-            else if (c_name.equals("Manual"))
+            else if (c_name.equals("MANUAL"))
             {
                 select_automated.setVisibility(View.GONE);
                 select_manual.setVisibility(View.VISIBLE);
@@ -135,7 +135,7 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
             }
-            else if (c_name.equals("Manual"))
+            else if (c_name.equals("MANUAL"))
             {
                 select_automated.setVisibility(View.GONE);
                 select_manual.setVisibility(View.VISIBLE);

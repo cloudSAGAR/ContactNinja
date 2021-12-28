@@ -137,7 +137,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-            CampaignTask Group_data = movieList.get(position);
+            CampaignTask movieList_data = movieList.get(position);
             switch (getItemViewType(position)) {
                 case ITEM:
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
@@ -172,6 +172,20 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                             broadcast_manu();
                         }
                     });
+                    if (SessionManager.getTask(getApplicationContext()).size()==0)
+                    {
+                        String step_id= String.valueOf(SessionManager.getTask(getApplicationContext()).size()+1);
+                        String stpe_tyep=SessionManager.getCampaign_type_name(getApplicationContext());
+                        movieViewHolder.tv_title.setText("Step#"+step_id+"("+stpe_tyep+" "+SessionManager.getCampaign_type(getApplicationContext())+")");
+                    }
+                    else {
+                        String step_id= String.valueOf(SessionManager.getTask(getApplicationContext()).size()+1);
+                        String stpe_tyep=SessionManager.getCampaign_type_name(getApplicationContext());
+                        movieViewHolder.tv_title.setText("Step#"+step_id+"("+stpe_tyep+" "+SessionManager.getCampaign_type(getApplicationContext())+")");
+
+                    }
+               /*     movieViewHolder.tv_title.setText("");*/
+                    movieViewHolder.tv_detail.setText(movieList.get(position).getSeqName());
                     break;
 
                 case LOADING:

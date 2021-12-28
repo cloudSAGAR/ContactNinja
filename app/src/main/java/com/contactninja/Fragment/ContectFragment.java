@@ -279,9 +279,9 @@ public class ContectFragment extends Fragment {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
             paginationAdapter.addAll(contectListData);
             num_count.setText(contectListData.size()+" Contacts");
-            GetContactsIntoArrayList();
+          /*  GetContactsIntoArrayList();*/
         } else {
-            GetContactsIntoArrayList();
+            /*GetContactsIntoArrayList();*/
         }
         //  getAllContect();
 
