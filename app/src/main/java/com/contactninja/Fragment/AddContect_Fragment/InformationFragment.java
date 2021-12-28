@@ -53,6 +53,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hbb20.CountryCodePicker;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1743,60 +1744,74 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
         });
     }
-    private void EmailAPI(String subject, String text, int id) throws JSONException {
-        Log.e("Email","Yes");
+    private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject obj = new JSONObject();
 
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("email", "");
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", team_id);
-        paramObject.addProperty("update_type", "");
-        paramObject.addProperty("user_id", user_id);
-        obj.add("data", paramObject);
+        JSONObject paramObject = new JSONObject();
 
-        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+        paramObject.put("type", "EMAIL");
+        paramObject.put("team_id", "1");
+        paramObject.put("organization_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("time", "00:00");
+        paramObject.put("date", "2021-12-28");
+        paramObject.put("assign_to",user_id);
+        paramObject.put("task_description",text);
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < 1; i++) {
+            JSONObject paramObject1 = new JSONObject();
+            paramObject1.put("prospect_id", id);
+            JSONArray contect_array = new JSONArray();
+            contect_array.put(email);
+            paramObject1.put("email_mobile", contect_array);
+            jsonArray.put(paramObject1);
+            break;
+        }
+        JSONArray contact_group_ids = new JSONArray();
+        contact_group_ids.put("");
+        paramObject.put("contact_group_ids",contact_group_ids);
+        paramObject.put("prospect_id", jsonArray);
+
+        obj.put("data", paramObject);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is",new Gson().toJson(gsonObject));
+
+
+   retrofitCalls.manual_task_store(sessionManager,gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
                     loadingDialog.cancelLoading();
-                    sessionManager.Email_Update();
-                    loadingDialog.cancelLoading();
+                    String jsonRawData = new Gson().toJson(response.body());
 
-                }
-                else if (response.body().getStatus()==404)
-                {
-                    loadingDialog.cancelLoading();
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Log.e("String is",headerString);
-                    Type listType = new TypeToken<UservalidateModel>() {
-                    }.getType();
-                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
-                    Global.Messageshow(getContext(), mMainLayout, user_model.getEmail().get(0),  false);
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(jsonRawData);
+                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
+                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
+                        String _newid = jsonDailyObject1.getString("id");
+                        Log.e("_newid",_newid);
+                        Email_execute(subject,text,id,email,_newid);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 }
                 else {
                     loadingDialog.cancelLoading();
-                    try {
-                        Gson gson = new Gson();
-                        String headerString = gson.toJson(response.body().getData());
-                        Log.e("String is",headerString);
-                        Type listType = new TypeToken<UservalidateModel>() {
-                        }.getType();
-                        UservalidateModel user_model = new Gson().fromJson(headerString, listType);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
                 }
+
+
             }
 
             @Override
@@ -1806,6 +1821,52 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         });
     }
 
+
+
+
+    private void Email_execute(String subject, String text, int id, String email,String record_id) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JsonObject obj = new JsonObject();
+
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("content_body", text);
+        paramObject.addProperty("content_header", subject);
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("prospect_id", id);
+        paramObject.addProperty("record_id", record_id);
+        paramObject.addProperty("type", "EMAIL");
+        paramObject.addProperty("team_id", "1");
+        obj.add("data", paramObject);
+
+      /*  JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is",new Gson().toJson(gsonObject));
+*/
+
+        retrofitCalls.Email_execute(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                }
+                else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
 
     public void sendSMS(String phoneNo, String msg) {
         try {
@@ -2163,7 +2224,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             public void onClick(View v) {
                 dialog.dismiss();
                 try {
-                    EmailAPI(ev_subject.getText().toString(),ev_type.getText().toString(),id);
+                    EmailAPI(ev_subject.getText().toString(),ev_type.getText().toString(),id,email);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

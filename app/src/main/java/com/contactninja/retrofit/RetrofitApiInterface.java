@@ -124,4 +124,12 @@ public interface RetrofitApiInterface {
 
     @POST("sequence/task_store")
     Call<ApiResponse>  Task_store(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+    @POST("manual_task/store")
+    Call<ApiResponse>  manual_task_store(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+    @POST("manual_task/execute")
+    Call<ApiResponse>  Email_execute(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
 }

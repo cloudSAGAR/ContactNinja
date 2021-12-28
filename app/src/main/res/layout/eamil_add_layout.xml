@@ -107,7 +107,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp"
-                    android:src="@drawable/ic_email" />
+                    android:tint="@color/purple_200"
+                    android:src="@drawable/ic_email"
+                    tools:ignore="UseAppTint" />
 
             </LinearLayout>
             </LinearLayout>
