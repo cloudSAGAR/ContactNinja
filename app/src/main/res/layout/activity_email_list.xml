@@ -65,7 +65,7 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/Email_list"
+                    android:id="@+id/rv_email_list"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp">

@@ -79,13 +79,6 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         templateClick=this;
         IntentUI();
 
-        try {
-            if(Global.isNetworkAvailable(TemplateActivity.this, MainActivity.mMainLayout)) {
-                Template_list();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void Template_list() throws JSONException {

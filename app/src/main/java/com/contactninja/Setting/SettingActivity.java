@@ -190,12 +190,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getStatus() == 200) {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<UserLinkedList>() {
-                    }.getType();
-                    UserLinkedList.UserLinkedGmail userLinkedGmail=new Gson().fromJson(headerString, listType);
-
+                    startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
                 }else {
                  startActivity(new Intent(getApplicationContext(),Email_verification.class));
                 }
