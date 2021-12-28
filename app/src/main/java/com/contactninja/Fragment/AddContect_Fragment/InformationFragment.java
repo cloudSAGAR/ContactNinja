@@ -30,7 +30,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -124,7 +123,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         List<ContectListData.Contact> test_list = new ArrayList<>();
         test_list.add(SessionManager.getOneCotect_deatil(getActivity()));
-       // Log.e("Size is", String.valueOf(test_list));
+        // Log.e("Size is", String.valueOf(test_list));
         String flag = sessionManager.getContect_flag(getActivity());
         if (flag.equals("edit")) {
             tv_add_social.setVisibility(View.GONE);
@@ -139,7 +138,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_zip.setEnabled(true);
             ev_bob.setEnabled(true);
             ev_note.setEnabled(true);
-           // Log.e("Null", "No Call");
+            // Log.e("Null", "No Call");
             edit = true;
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
@@ -169,7 +168,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
             for (int i = 0; i < detail_contect.size(); i++) {
-                if(!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")){
+                if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
                         Contactdetail contactdetail = new Contactdetail();
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
@@ -271,7 +270,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
 
             for (int i = 0; i < detail_contect.size(); i++) {
-                if(!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")){
+                if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
                         Contactdetail contactdetail = new Contactdetail();
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
@@ -918,7 +917,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Contact_details_update(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Contact_details_update(sessionManager, gsonObject, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -965,7 +964,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.update_contect(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.update_contect(sessionManager, gsonObject, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -1008,6 +1007,391 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 .setRationaleConfirmText("OK")
                 .check();
 
+
+    }
+
+    public void showAlertDialogButtonClicked1(String p_num, int id,String type) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.custom_message_send,
+                        null);
+        builder.setView(customLayout);
+        EditText editText = customLayout.findViewById(R.id.editText);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        TextView tv_add = customLayout.findViewById(R.id.tv_add);
+        TextView tv_phone_a = customLayout.findViewById(R.id.tv_phone);
+        tv_phone_a.setText("Mobile Number " + p_num);
+
+
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (type.equals("sim"))
+                {
+                    sendSMS(p_num, editText.getText().toString());
+                    dialog.dismiss();
+                }
+                else {
+                try {
+                    SMSAPI(editText.getText().toString(),id, p_num);
+                    dialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                }
+
+
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    public void showAlertDialogMeassge(String p_num, int id) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.select_msg_send_type,
+                        null);
+        builder.setView(customLayout);
+        TextView tv_munual = customLayout.findViewById(R.id.tv_munual);
+        TextView tv_api = customLayout.findViewById(R.id.tv_api);
+
+
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+        tv_munual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialogButtonClicked1(p_num,id,"sim");
+                dialog.dismiss();
+            }
+        });
+        tv_api.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showAlertDialogButtonClicked1(p_num,id,"app");
+                dialog.dismiss();
+
+
+            }
+        });
+
+    }
+
+    private void SMSAPI(String text, int id, String email) throws JSONException {
+
+        Log.e("Phone Number",email);
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject obj = new JSONObject();
+
+        JSONObject paramObject = new JSONObject();
+
+        paramObject.put("type", "SMS");
+        paramObject.put("team_id", "1");
+        paramObject.put("organization_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("time", "00:00");
+        paramObject.put("date", "2021-12-28");
+        paramObject.put("assign_to", user_id);
+        paramObject.put("task_description", text);
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < 1; i++) {
+            JSONObject paramObject1 = new JSONObject();
+            paramObject1.put("prospect_id", id);
+            JSONArray contect_array = new JSONArray();
+            contect_array.put(email);
+            paramObject1.put("email_mobile", contect_array);
+            jsonArray.put(paramObject1);
+            break;
+        }
+        JSONArray contact_group_ids = new JSONArray();
+        contact_group_ids.put("");
+        paramObject.put("contact_group_ids", contact_group_ids);
+        paramObject.put("prospect_id", jsonArray);
+
+        obj.put("data", paramObject);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+
+
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                    String jsonRawData = new Gson().toJson(response.body());
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(jsonRawData);
+                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
+                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
+                        String _newid = jsonDailyObject1.getString("id");
+                        Log.e("_newid", _newid);
+                        SMS_execute(text, id, email, _newid);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+    private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JsonObject obj = new JsonObject();
+
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("content_body", text);
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("prospect_id", id);
+        paramObject.addProperty("record_id", record_id);
+        paramObject.addProperty("type", "SMS");
+        paramObject.addProperty("team_id", "1");
+        obj.add("data", paramObject);
+
+      /*  JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is",new Gson().toJson(gsonObject));
+*/
+
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+
+
+
+
+    private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject obj = new JSONObject();
+
+        JSONObject paramObject = new JSONObject();
+
+        paramObject.put("type", "EMAIL");
+        paramObject.put("team_id", "1");
+        paramObject.put("organization_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("time", "00:00");
+        paramObject.put("date", "2021-12-28");
+        paramObject.put("assign_to", user_id);
+        paramObject.put("task_description", text);
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < 1; i++) {
+            JSONObject paramObject1 = new JSONObject();
+            paramObject1.put("prospect_id", id);
+            JSONArray contect_array = new JSONArray();
+            contect_array.put(email);
+            paramObject1.put("email_mobile", contect_array);
+            jsonArray.put(paramObject1);
+            break;
+        }
+        JSONArray contact_group_ids = new JSONArray();
+        contact_group_ids.put("");
+        paramObject.put("contact_group_ids", contact_group_ids);
+        paramObject.put("prospect_id", jsonArray);
+
+        obj.put("data", paramObject);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+
+
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                    String jsonRawData = new Gson().toJson(response.body());
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(jsonRawData);
+                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
+                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
+                        String _newid = jsonDailyObject1.getString("id");
+                        Log.e("_newid", _newid);
+                        Email_execute(subject, text, id, email, _newid);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+    private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JsonObject obj = new JsonObject();
+
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("content_body", text);
+        paramObject.addProperty("content_header", subject);
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("prospect_id", id);
+        paramObject.addProperty("record_id", record_id);
+        paramObject.addProperty("type", "EMAIL");
+        paramObject.addProperty("team_id", "1");
+        obj.add("data", paramObject);
+
+      /*  JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is",new Gson().toJson(gsonObject));
+*/
+
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+    public void sendSMS(String phoneNo, String msg) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            Toast.makeText(getContext(), "Message Sent",
+                    Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            Toast.makeText(getContext(), ex.getMessage(),
+                    Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
+    }
+
+    public void showAlertDialogEmailMeassge(String email, int id) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.email_send_layout,
+                        null);
+        builder.setView(customLayout);
+        EditText ev_subject = customLayout.findViewById(R.id.ev_subject);
+        EditText ev_type = customLayout.findViewById(R.id.ev_type);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        TextView tv_add = customLayout.findViewById(R.id.tv_add);
+
+
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                try {
+                    EmailAPI(ev_subject.getText().toString(), ev_type.getText().toString(), id, email);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -1165,7 +1549,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             try {
 
-                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                     UpdateContect(contactdetails.get(position));
                                 }
                                 //break;
@@ -1242,7 +1626,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                     RemoveContect(item.getId());
                                 }
                             } catch (JSONException e) {
@@ -1270,9 +1654,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
                 String getFirstletter = String.valueOf(item.getEmail_number().charAt(0));
-                if(!getFirstletter.equals("+")){
-                    holder.edt_mobile_no.setText("+"+item.getEmail_number());
-                }else {
+                if (!getFirstletter.equals("+")) {
+                    holder.edt_mobile_no.setText("+" + item.getEmail_number());
+                } else {
                     holder.edt_mobile_no.setText(item.getEmail_number());
                 }
                 holder.phone_txt.setText(item.getLabel());
@@ -1308,7 +1692,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             try {
-                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                     UpdateContect(contactdetails.get(position));
                                 }
                                 //break;
@@ -1381,7 +1765,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                     RemoveContect(item.getId());
                                 }
                             } catch (JSONException e) {
@@ -1506,7 +1890,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                     RemoveContect(item.getId());
                                 }
                             } catch (JSONException e) {
@@ -1528,20 +1912,16 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             });
 
 
-
             holder.layout_icon_message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.e("Sms Event Call","Yes");
-                    Log.e("Number is",item.getEmail_number());
+                    Log.e("Sms Event Call", "Yes");
+                    Log.e("Number is", item.getEmail_number());
                     //showAlertDialogButtonClicked1(item.getEmail_number());
-                    showAlertDialogMeassge(item.getEmail_number());
+                    showAlertDialogMeassge(item.getEmail_number(), item.getId());
                 }
             });
         }
-
-
-
 
 
         @Override
@@ -1604,282 +1984,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     }
 
-    public void showAlertDialogButtonClicked1(String p_num) {
-
-        // Create an alert builder
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
-        final View customLayout
-                = getLayoutInflater()
-                .inflate(
-                        R.layout.custom_message_send,
-                        null);
-        builder.setView(customLayout);
-        EditText editText = customLayout.findViewById(R.id.editText);
-        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
-        TextView tv_add = customLayout.findViewById(R.id.tv_add);
-        TextView tv_phone_a= customLayout.findViewById(R.id.tv_phone);
-        tv_phone_a.setText("Mobile Number "+p_num);
-
-
-        AlertDialog dialog
-                = builder.create();
-        dialog.show();
-        tv_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendSMS(p_num,editText.getText().toString());
-                dialog.dismiss();
-            }
-        });
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-    }
-    public void showAlertDialogMeassge(String p_num) {
-
-        // Create an alert builder
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
-        final View customLayout
-                = getLayoutInflater()
-                .inflate(
-                        R.layout.select_msg_send_type,
-                        null);
-        builder.setView(customLayout);
-        TextView tv_munual = customLayout.findViewById(R.id.tv_munual);
-        TextView tv_api = customLayout.findViewById(R.id.tv_api);
-
-
-
-        AlertDialog dialog
-                = builder.create();
-        dialog.show();
-        tv_munual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertDialogButtonClicked1(p_num);
-                dialog.dismiss();
-            }
-        });
-        tv_api.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                try {
-                    SMSAPI();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-
-
-
-    private void SMSAPI() throws JSONException {
-        Log.e("Email","Yes");
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("email", "");
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", team_id);
-        paramObject.addProperty("update_type", "");
-        paramObject.addProperty("user_id", user_id);
-        obj.add("data", paramObject);
-
-        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
-                    sessionManager.Email_Update();
-                    loadingDialog.cancelLoading();
-
-                }
-                else if (response.body().getStatus()==404)
-                {
-                    loadingDialog.cancelLoading();
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Log.e("String is",headerString);
-                    Type listType = new TypeToken<UservalidateModel>() {
-                    }.getType();
-                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
-                    Global.Messageshow(getContext(), mMainLayout, user_model.getEmail().get(0),  false);
-
-                }
-                else {
-                    loadingDialog.cancelLoading();
-                    try {
-                        Gson gson = new Gson();
-                        String headerString = gson.toJson(response.body().getData());
-                        Log.e("String is",headerString);
-                        Type listType = new TypeToken<UservalidateModel>() {
-                        }.getType();
-                        UservalidateModel user_model = new Gson().fromJson(headerString, listType);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-    }
-    private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JSONObject obj = new JSONObject();
-
-        JSONObject paramObject = new JSONObject();
-
-        paramObject.put("type", "EMAIL");
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", "MANUAL");
-        paramObject.put("time", "00:00");
-        paramObject.put("date", "2021-12-28");
-        paramObject.put("assign_to",user_id);
-        paramObject.put("task_description",text);
-
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < 1; i++) {
-            JSONObject paramObject1 = new JSONObject();
-            paramObject1.put("prospect_id", id);
-            JSONArray contect_array = new JSONArray();
-            contect_array.put(email);
-            paramObject1.put("email_mobile", contect_array);
-            jsonArray.put(paramObject1);
-            break;
-        }
-        JSONArray contact_group_ids = new JSONArray();
-        contact_group_ids.put("");
-        paramObject.put("contact_group_ids",contact_group_ids);
-        paramObject.put("prospect_id", jsonArray);
-
-        obj.put("data", paramObject);
-
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is",new Gson().toJson(gsonObject));
-
-
-   retrofitCalls.manual_task_store(sessionManager,gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
-                    String jsonRawData = new Gson().toJson(response.body());
-
-                    try {
-
-                        JSONObject jsonObject = new JSONObject(jsonRawData);
-                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
-                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
-                        String _newid = jsonDailyObject1.getString("id");
-                        Log.e("_newid",_newid);
-                        Email_execute(subject,text,id,email,_newid);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                else {
-                    loadingDialog.cancelLoading();
-                }
-
-
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-    }
-
-
-
-
-    private void Email_execute(String subject, String text, int id, String email,String record_id) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JsonObject obj = new JsonObject();
-
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("content_body", text);
-        paramObject.addProperty("content_header", subject);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("prospect_id", id);
-        paramObject.addProperty("record_id", record_id);
-        paramObject.addProperty("type", "EMAIL");
-        paramObject.addProperty("team_id", "1");
-        obj.add("data", paramObject);
-
-      /*  JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is",new Gson().toJson(gsonObject));
-*/
-
-        retrofitCalls.Email_execute(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
-                }
-                else {
-                    loadingDialog.cancelLoading();
-                }
-
-
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-    }
-
-    public void sendSMS(String phoneNo, String msg) {
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
-            Toast.makeText(getContext(), "Message Sent",
-                    Toast.LENGTH_LONG).show();
-        } catch (Exception ex) {
-            Toast.makeText(getContext(),ex.getMessage().toString(),
-                    Toast.LENGTH_LONG).show();
-            ex.printStackTrace();
-        }
-    }
     public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.InviteListDataclass> {
 
         private final List<Contactdetail> contactdetails;
@@ -2005,7 +2109,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                     RemoveContect(item.getId());
                                 }
                             } catch (JSONException e) {
@@ -2022,7 +2126,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
                             try {
-                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                     UpdateContect(contactdetails.get(position));
                                 }
                             } catch (JSONException e) {
@@ -2137,7 +2241,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                         if (edit) {
                             try {
-                                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                     RemoveContect(item.getId());
                                 }
                             } catch (JSONException e) {
@@ -2154,7 +2258,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showAlertDialogEmailMeassge(item.getEmail_number(),item.getId());
+                 //  showAlertDialogEmailMeassge(item.getEmail_number(), item.getId());
                 }
             });
 
@@ -2190,46 +2294,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
 
         }
-
-    }
-
-    public void showAlertDialogEmailMeassge(String email, int id) {
-
-        // Create an alert builder
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(getActivity(), R.style.BottomSheetDialog);
-        final View customLayout
-                = getLayoutInflater()
-                .inflate(
-                        R.layout.email_send_layout,
-                        null);
-        builder.setView(customLayout);
-        EditText ev_subject = customLayout.findViewById(R.id.ev_subject);
-        EditText ev_type = customLayout.findViewById(R.id.ev_type);
-        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
-        TextView tv_add = customLayout.findViewById(R.id.tv_add);
-
-
-        AlertDialog dialog
-                = builder.create();
-        dialog.show();
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        tv_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                try {
-                    EmailAPI(ev_subject.getText().toString(),ev_type.getText().toString(),id,email);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
     }
 

@@ -3,17 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
-        android:paddingTop="@dimen/_10sdp"
+        android:paddingTop="@dimen/_15sdp"
         android:paddingBottom="@dimen/_15sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_40sdp"
+
         android:paddingEnd="@dimen/_10sdp"
         android:paddingStart="@dimen/_10sdp"
         android:background="@drawable/shape_border_20_white"
-        android:orientation="vertical">\
+        android:orientation="vertical">
         <LinearLayout
-            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -23,41 +23,39 @@
 
                 android:id="@+id/ev_subject"
                 style="@style/tv_regular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
 
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@color/add_contect_transpernt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/shape_border_gray_edit"
                 android:gravity="center|left"
                 android:hint="Add Subject"
+                android:padding="@dimen/_10sdp"
                 android:textColor="@color/otp_header_text_color"
                 android:textColorHint="@color/home_list_sub_data"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold">
 
             </EditText>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/editText"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@color/home_list_add_contect_view"></View>
+
 
             <EditText
 
                 android:id="@+id/ev_type"
                 style="@style/tv_regular"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@color/add_contect_transpernt"
-                android:gravity="center|left"
-                android:hint="Type ....."
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:background="@drawable/shape_border_gray_edit"
+                android:gravity="left"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:hint="Type your message here..."
                 android:textColor="@color/otp_header_text_color"
                 android:textColorHint="@color/home_list_sub_data"
                 android:textSize="@dimen/_13sdp"
@@ -65,21 +63,13 @@
 
             </EditText>
 
-        <View
-            android:id="@+id/view_l"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/editText"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@color/home_list_add_contect_view"></View>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view_l"
                 android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="end|center">
 
                 <TextView
@@ -92,9 +82,8 @@
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:gravity="center|end"
                     android:text="Cancel"
-                    android:textSize="@dimen/_14sdp"
-                    android:textColor="@color/home_list_sub_data"
-                    android:textStyle="bold">
+                    android:textColor="@color/shape_red"
+                    android:textSize="@dimen/_14sdp">
 
                 </TextView>
 
@@ -109,8 +98,8 @@
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:gravity="center|end"
                     android:text="Send"
-                    android:textSize="@dimen/_14sdp"
                     android:textColor="@color/purple_200"
+                    android:textSize="@dimen/_14sdp"
                     android:textStyle="bold">
 
                 </TextView>
@@ -119,13 +108,6 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_group_otp_logo">
 
-    </ImageView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

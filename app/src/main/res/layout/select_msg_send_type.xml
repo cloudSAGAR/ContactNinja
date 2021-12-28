@@ -7,22 +7,34 @@
         android:paddingBottom="@dimen/_15sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_40sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingStart="@dimen/_10sdp"
         android:background="@drawable/shape_border_20_white"
         android:orientation="vertical">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                style="@style/tv_Medium"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:text="Please select label">
+            </TextView>
 
 
         <TextView
             android:id="@+id/tv_munual"
-            style="@style/tv_regular"
+            style="@style/tv_Medium"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,8 +42,8 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:gravity="center"
-            android:textColor="@color/home_list_sub_data"
-            android:text="Using SIM Message Send ">
+            android:textColor="@color/purple_200"
+            android:text="sim">
 
         </TextView>
             <View
@@ -40,26 +52,29 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/editText"
                 android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@color/home_list_add_contect_view"></View>
         <TextView
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/tv_api"
-            style="@style/tv_regular"
+            android:layout_marginBottom="@dimen/_10sdp"
+            style="@style/tv_Medium"
             android:textStyle="bold"
+            android:textSize="@dimen/_15sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:gravity="center"
-            android:textColor="@color/home_list_sub_data"
-            android:text="Using APP Message Send ">
+            android:textColor="@color/purple_200"
+            android:text="app">
 
         </TextView>
 
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/editText"
@@ -70,14 +85,4 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-    <ImageView
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_group_otp_logo">
-
-    </ImageView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
