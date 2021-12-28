@@ -54,6 +54,9 @@
             android:name=".Setting.Email_verification"
             android:exported="true" />
         <activity
+            android:name=".AddContect.EmailSend_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Campaign.Campaign_Name_Activity"
             android:exported="false" />
         <activity

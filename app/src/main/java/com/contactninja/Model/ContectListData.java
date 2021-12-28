@@ -114,6 +114,75 @@ public class ContectListData {
 
         private String  flag;
 
+
+
+        @SerializedName("facebook_link")
+        @Expose
+        private String facebook_link;
+        @SerializedName("twitter_link")
+        @Expose
+        private String twitter_link;
+        @SerializedName("breakout_link")
+        @Expose
+        private String breakout_link;
+        @SerializedName("linkedin_link")
+        @Expose
+        private String linkedin_link;
+        @SerializedName("company_url")
+        @Expose
+        private String company_url;
+        @SerializedName("dob")
+        @Expose
+        private String dob;
+
+        public String getFacebook_link() {
+            return facebook_link;
+        }
+
+        public void setFacebook_link(String facebook_link) {
+            this.facebook_link = facebook_link;
+        }
+
+        public String getTwitter_link() {
+            return twitter_link;
+        }
+
+        public void setTwitter_link(String twitter_link) {
+            this.twitter_link = twitter_link;
+        }
+
+        public String getBreakout_link() {
+            return breakout_link;
+        }
+
+        public void setBreakout_link(String breakout_link) {
+            this.breakout_link = breakout_link;
+        }
+
+        public String getLinkedin_link() {
+            return linkedin_link;
+        }
+
+        public void setLinkedin_link(String linkedin_link) {
+            this.linkedin_link = linkedin_link;
+        }
+
+        public String getCompany_url() {
+            return company_url;
+        }
+
+        public void setCompany_url(String company_url) {
+            this.company_url = company_url;
+        }
+
+        public String getDob() {
+            return dob;
+        }
+
+        public void setDob(String dob) {
+            this.dob = dob;
+        }
+
         public String getFlag() {
             return flag;
         }

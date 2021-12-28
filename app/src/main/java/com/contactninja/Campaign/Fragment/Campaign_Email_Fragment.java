@@ -72,8 +72,8 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
                 SessionManager.setCampaign_type("Email");
                 SessionManager.setCampaign_type_name("AUTO");
                 // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
-                Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
-                Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
+                //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
+                //Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
                     select_automated.setVisibility(View.VISIBLE);
                     select_manual.setVisibility(View.GONE);
 

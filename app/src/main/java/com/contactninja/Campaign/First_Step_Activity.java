@@ -119,6 +119,9 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,"EMAIL OR SMS select",false);
                 }
+               else if (sessionManager.getCampaign_type(getApplicationContext()).equals("Email")){
+                   startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+               }
                else {
                    startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
                }

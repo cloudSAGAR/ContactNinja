@@ -51,8 +51,11 @@ import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.Email_verification;
+import com.contactninja.Setting.SettingActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -1140,4 +1143,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     public void fragmentBecameVisible() {
 
     }
+
+
+
 }

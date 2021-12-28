@@ -401,7 +401,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         paramObject.addProperty("first_name", first_name);
         paramObject.addProperty("last_name", last_name);
         paramObject.addProperty("email", email_address);
-        paramObject.addProperty("contact_number", mobile_number);
+        paramObject.addProperty("contact_number", countrycode+mobile_number);
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp);
         paramObject.addProperty("referred_by",referred_by);
@@ -499,6 +499,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     }
 
     public void LoginData() throws JSONException {
+        Log.e("Code is",countrycode);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("email", email_address);

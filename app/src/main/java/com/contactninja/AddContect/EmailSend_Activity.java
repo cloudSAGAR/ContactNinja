@@ -1,4 +1,9 @@
-package com.contactninja.Campaign;
+package com.contactninja.AddContect;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -7,8 +12,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,18 +21,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.contactninja.Campaign.Automated_Email_Activity;
+import com.contactninja.Campaign.First_Step_Start_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
+import com.contactninja.Setting.Email_verification;
+import com.contactninja.Setting.SettingActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -39,9 +42,12 @@ import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -49,14 +55,13 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class Automated_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick ,TemplateClick{
-    ImageView iv_back;
-    TextView save_button, tv_use_tamplet;
+public class EmailSend_Activity extends AppCompatActivity implements  View.OnClickListener, TextClick ,TemplateClick {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    EditText ev_subject, edit_template;
-    LinearLayout top_layout;
+    ImageView iv_back;
+    TextView save_button,tv_use_tamplet;
+    LinearLayout mMainLayout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
     PicUpTextAdepter picUpTextAdepter;
@@ -66,45 +71,52 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     String filePath;
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
+
+    EditText edit_template,ev_subject;
+    String email="",id="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_automated_email);
-        loadingDialog = new LoadingDialog(this);
-        sessionManager = new SessionManager(this);
+        setContentView(R.layout.activity_email_send);
+        loadingDialog=new LoadingDialog(this);
+        sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        templateClick=Automated_Email_Activity.this;
+        templateClick=EmailSend_Activity.this;
 
         IntentUI();
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        email=bundle.getString("email");
+        id=bundle.getString("id");
+        Log.e("Id is",id);
+        Log.e("email",email);
         try {
-            if (Global.isNetworkAvailable(Automated_Email_Activity.this, MainActivity.mMainLayout)) {
-                Hastag_list();
-            }
+            Hastag_list();
+            Mail_list();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
-        edit_template.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                top_layout.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+    private void IntentUI() {
+        iv_back=findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
+        save_button=findViewById(R.id.save_button);
+        save_button.setVisibility(View.VISIBLE);
+        save_button.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
+        save_button.setText("Next");
+        mMainLayout=findViewById(R.id.mMainLayout);
+        tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
+        tv_use_tamplet.setOnClickListener(this);
+        rv_direct_list = findViewById(R.id.rv_direct_list);
+        edit_template=findViewById(R.id.edit_compose);
+        ev_subject=findViewById(R.id.ev_subject);
     }
 
     private void Hastag_list() throws JSONException {
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -168,52 +180,37 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
 
-    private void IntentUI() {
-        iv_back = findViewById(R.id.iv_back);
-        iv_back.setVisibility(View.VISIBLE);
-        save_button = findViewById(R.id.save_button);
-        save_button.setVisibility(View.VISIBLE);
-        save_button.setOnClickListener(this);
-        iv_back.setOnClickListener(this);
-        save_button.setText("Next");
-        ev_subject = findViewById(R.id.ev_subject);
-        edit_template = findViewById(R.id.edit_template);
-        top_layout = findViewById(R.id.top_layout);
-        tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
-        tv_use_tamplet.setOnClickListener(this);
-        rv_direct_list = findViewById(R.id.rv_direct_list);
-    }
-
-    @SuppressLint("NonConstantResourceId")
     @Override
-    public void onClick(@SuppressLint("UnknownNullness") View view) {
-        switch (view.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()){
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.save_button:
-                //Add Api Call
-                // startActivity(new Intent(getApplicationContext(),Campaign_Overview.class));
+                try {
+                    EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
                 break;
 
-
         }
-
     }
+
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList= new BottomSheetDialog(Automated_Email_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList= new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
         try {
-            if(Global.isNetworkAvailable(Automated_Email_Activity.this, MainActivity.mMainLayout)) {
+            if(Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -227,7 +224,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         bottomSheetDialog_templateList.show();
     }
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(EmailSend_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -550,6 +547,162 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
                 break;
         }
+    }
+
+
+    private void Mail_list() throws JSONException {
+
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(EmailSend_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList.UserLinkedGmail userLinkedGmail=new Gson().fromJson(headerString, listType);
+
+                    Log.e("Link Is",new Gson().toJson(userLinkedGmail));
+                }else {
+                    startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
+    private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject obj = new JSONObject();
+
+        JSONObject paramObject = new JSONObject();
+
+        paramObject.put("type", "EMAIL");
+        paramObject.put("team_id", "1");
+        paramObject.put("organization_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("time", "00:00");
+        paramObject.put("date", "2021-12-28");
+        paramObject.put("assign_to", user_id);
+        paramObject.put("task_description", text);
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < 1; i++) {
+            JSONObject paramObject1 = new JSONObject();
+            paramObject1.put("prospect_id", id);
+            JSONArray contect_array = new JSONArray();
+            contect_array.put(email);
+            paramObject1.put("email_mobile", contect_array);
+            jsonArray.put(paramObject1);
+            break;
+        }
+        JSONArray contact_group_ids = new JSONArray();
+        contact_group_ids.put("");
+        paramObject.put("contact_group_ids", contact_group_ids);
+        paramObject.put("prospect_id", jsonArray);
+
+        obj.put("data", paramObject);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+
+
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                    String jsonRawData = new Gson().toJson(response.body());
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(jsonRawData);
+                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
+                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
+                        String _newid = jsonDailyObject1.getString("id");
+                        Log.e("_newid", _newid);
+                        Email_execute(subject, text, id, email, _newid);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+    private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JsonObject obj = new JsonObject();
+
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("content_body", text);
+        paramObject.addProperty("content_header", subject);
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("prospect_id", id);
+        paramObject.addProperty("record_id", record_id);
+        paramObject.addProperty("type", "EMAIL");
+        paramObject.addProperty("team_id", "1");
+        obj.add("data", paramObject);
+
+      /*  JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is",new Gson().toJson(gsonObject));
+*/
+
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
     }
 
 

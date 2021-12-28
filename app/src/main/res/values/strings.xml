@@ -341,9 +341,12 @@ Number</string>
     <string name="Subject">Subject:</string>
     <string name="Email_Template">Email Template</string>
     <string name="SMS_Template">SMS Template</string>
-    <string name="template_name">Please add Template Name </string>
-    <string name="template_dody">Please add template content </string>
-    <string name="template_subject">Please add template subject </string>
+    <string name="template_name">"Please add Template Name "</string>
+    <string name="template_dody">"Please add template content "</string>
+    <string name="template_subject">"Please add template subject "</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
+    <string name="to_subject">Subejct:</string>
     <string name="Mail_Box">Mail Box</string>
     <string name="addEmail">Add new email</string>
 </resources>

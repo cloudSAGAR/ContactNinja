@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -149,7 +150,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setZoom_id(Contect_data.getZoomId());
             addcontectModel.setAddress(Contect_data.getAddress());
             addcontectModel.setZoom_id(Contect_data.getZipcode());
-
+            addcontectModel.setCompany_url(Contect_data.getCompany_url());
+            addcontectModel.setBreakoutu(Contect_data.getBreakout_link());
+            addcontectModel.setLinkedin(Contect_data.getLinkedin_link());
+            addcontectModel.setFacebook(Contect_data.getFacebook_link());
+            addcontectModel.setBirthday(Contect_data.getDob());
 
             ev_zip.setText(Contect_data.getZipcode());
             ev_address.setText(Contect_data.getAddress());
@@ -162,6 +167,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
+            ev_company_url.setText(Contect_data.getCompany_url());
+            ev_bob.setText(Contect_data.getDob());
+            ev_twitter.setText(Contect_data.getTwitter_link());
+            ev_fb.setText(Contect_data.getFacebook_link());
+            ev_linkedin.setText(Contect_data.getLinkedin_link());
+            ev_breakout.setText(Contect_data.getBreakout_link());
           /*  PhoneViewAdd();
             EmailViewAdd();*/
             TextSet();
@@ -246,11 +257,17 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setZoom_id(Contect_data.getZoomId());
             addcontectModel.setAddress(Contect_data.getAddress());
             addcontectModel.setZoom_id(Contect_data.getZipcode());
-            img_fb.setVisibility(View.GONE);
+            addcontectModel.setCompany_url(Contect_data.getCompany_url());
+            addcontectModel.setBreakoutu(Contect_data.getBreakout_link());
+            addcontectModel.setLinkedin(Contect_data.getLinkedin_link());
+            addcontectModel.setFacebook(Contect_data.getFacebook_link());
+            addcontectModel.setBirthday(Contect_data.getDob());
+           /* addcontectModel.setTime(Contect_data.getTimezoneId());*/
+          /*  img_fb.setVisibility(View.GONE);
             img_breakout.setVisibility(View.GONE);
             img_linkdin.setVisibility(View.GONE);
             img_twitter.setVisibility(View.GONE);
-
+*/
 
             ev_zip.setText(Contect_data.getZipcode());
             ev_address.setText(Contect_data.getAddress());
@@ -263,6 +280,78 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
+            ev_company_url.setText(Contect_data.getCompany_url());
+            ev_bob.setText(Contect_data.getDob());
+            media_link.setVisibility(View.VISIBLE);
+            if (Contect_data.getFacebook_link().equals(""))
+            {
+                img_fb.setVisibility(View.GONE);
+            }
+            else {
+                img_fb.setVisibility(View.VISIBLE);
+            }
+
+            img_fb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse(Contect_data.getFacebook_link()); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
+            if (Contect_data.getTwitter_link().equals(""))
+            {
+                img_twitter.setVisibility(View.GONE);
+            }
+            else {
+                img_twitter.setVisibility(View.VISIBLE);
+            }
+            ev_twitter.setText(Contect_data.getTwitter_link());
+            ev_fb.setText(Contect_data.getFacebook_link());
+            ev_linkedin.setText(Contect_data.getLinkedin_link());
+            ev_breakout.setText(Contect_data.getBreakout_link());
+            img_twitter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse(Contect_data.getTwitter_link()); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
+            if (Contect_data.getLinkedin_link().equals(""))
+            {
+                img_linkdin.setVisibility(View.GONE);
+            }
+            else {
+                 img_linkdin.setVisibility(View.VISIBLE);
+            }
+
+            img_linkdin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse(Contect_data.getLinkedin_link()); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
+            if (Contect_data.getBreakout_link().equals(""))
+            {
+                img_breakout.setVisibility(View.GONE);
+            }
+            else {
+                img_breakout.setVisibility(View.VISIBLE);
+            }
+
+
+            img_breakout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse(Contect_data.getBreakout_link()); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
+
        /*     PhoneViewAdd();
             EmailViewAdd();
             TextSet();*/
@@ -2258,6 +2347,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent=new Intent(getActivity(), EmailSend_Activity.class);
+                    intent.putExtra("email",item.getEmail_number());
+                    intent.putExtra("id",String.valueOf(item.getId()));
+                    startActivity(intent);
                  //  showAlertDialogEmailMeassge(item.getEmail_number(), item.getId());
                 }
             });
