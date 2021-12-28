@@ -100,7 +100,6 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        Log.e("Tokem is ",new Gson().toJson(obj));
         retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {

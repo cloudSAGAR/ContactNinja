@@ -123,7 +123,6 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        Log.e("Tokem is ", new Gson().toJson(obj));
         retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
@@ -277,7 +276,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getStatus() == 200) {
-                  onBackPressed();
+                 // onBackPressed();
 
                 }
             }

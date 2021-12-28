@@ -30,7 +30,17 @@ public class TemplateList implements Serializable {
         this.template = template;
     }
 
-    public class Template implements Serializable  {
+    public static class Template implements Serializable  {
+        boolean isSelect=true;
+
+        public boolean isSelect() {
+            return isSelect;
+        }
+
+        public void setSelect(boolean select) {
+            isSelect = select;
+        }
+
         @SerializedName("id")
         @Expose
         private Integer id;

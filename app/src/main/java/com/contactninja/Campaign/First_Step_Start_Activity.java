@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +19,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.contactninja.Auth.Phone_email_verificationActivity;
+import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.CampaignTask;
 
 import com.contactninja.Model.HastagList;
+import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
-import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
-import com.contactninja.Setting.TemplateCreateActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -41,13 +39,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
 
-public class First_Step_Start_Activity extends AppCompatActivity implements View.OnClickListener , TextClick {
+public class First_Step_Start_Activity extends AppCompatActivity implements View.OnClickListener , TextClick,TemplateClick {
     ImageView iv_back;
     TextView save_button,tv_use_tamplet;
     SessionManager sessionManager;
@@ -58,92 +58,194 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     TemplateAdepter templateAdepter;
     EditText edit_template,edit_template_name;
     List<HastagList.TemplateText> templateTextList=new ArrayList<>();
-    List<HastagList.TemplateText> templateTextList1=new ArrayList<>();
+    List<TemplateList.Template> templateList=new ArrayList<>();
     CoordinatorLayout mMainLayout;
     String step_no="1",time="09:00",day="1",minite="0",sequence_id="";
+    TemplateClick templateClick;
+    BottomSheetDialog bottomSheetDialog_templateList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_step_start);
+        templateClick=First_Step_Start_Activity.this;
         loadingDialog=new LoadingDialog(this);
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
-        Listset();
+        try {
+            if (Global.isNetworkAvailable(First_Step_Start_Activity.this, MainActivity.mMainLayout)) {
+                Hastag_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         edit_template.requestFocus();
     }
 
     private void bouttomSheet() {
-        templateTextList1.clear();
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(First_Step_Start_Activity.this, R.style.CoffeeDialog);
-        bottomSheetDialog.setContentView(mView);
+        bottomSheetDialog_templateList = new BottomSheetDialog(First_Step_Start_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
-        TextView tv_error=bottomSheetDialog.findViewById(R.id.tv_error);
-        RecyclerView templet_list=bottomSheetDialog.findViewById(R.id.templet_list);
+        TextView tv_error= bottomSheetDialog_templateList.findViewById(R.id.tv_error);
+        RecyclerView templet_list= bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
-        Listset1();
-        templet_list.setLayoutManager(new LinearLayoutManager(this));
-        templateAdepter = new TemplateAdepter(getApplicationContext(), templateTextList1, this);
-        templet_list.setAdapter(templateAdepter);
+
+        try {
+            if(Global.isNetworkAvailable(First_Step_Start_Activity.this, MainActivity.mMainLayout)) {
+                Template_list(templet_list);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
 
         tv_error.setVisibility(View.GONE);
 
-        bottomSheetDialog.show();
+        bottomSheetDialog_templateList.show();
     }
+    private void Template_list(RecyclerView templet_list) throws JSONException {
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(First_Step_Start_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                    templateList.clear();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<TemplateList>() {
+                    }.getType();
+                    TemplateList list=new Gson().fromJson(headerString, listType);
+                    String CurrentType=SessionManager.getCampaign_type(getApplicationContext());
 
-    private void Listset() {
-        for(int i=0;i<=4;i++){
-            HastagList.TemplateText templateText=new HastagList.TemplateText();
+                    TemplateList.Template template2=new TemplateList.Template();
+                    template2.setTemplateName("Please select template");
+                    template2.setSelect(false);
+                    templateList.add(0,template2);
 
-            if(i==0){
-                templateText.setDescription("Placeholders #");
-                templateText.setSelect(true);
-            }else if(i==1){
-                templateText.setDescription("First Name");
-                templateText.setSelect(false);
-            }else if(i==2){
-                templateText.setDescription("Last Name");
-                templateText.setSelect(false);
-            }else if(i==3){
-                templateText.setDescription("Hi");
-                templateText.setSelect(false);
-            }else if(i==4){
-                templateText.setDescription("Hello");
-                templateText.setSelect(false);
+                    for(int i=0;i<list.getTemplate().size();i++){
+                        if(CurrentType.equals("Email")){
+                            if(list.getTemplate().get(i).getType().equals("EMAIL")){
+                                TemplateList.Template template=new TemplateList.Template();
+                                template.setId(list.getTemplate().get(i).getId());
+                                template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
+                                template.setTeamId(list.getTemplate().get(i).getTeamId());
+                                template.setTemplateName(list.getTemplate().get(i).getTemplateName());
+                                template.setTemplateSlug(list.getTemplate().get(i).getTemplateSlug());
+                                template.setContentHeader(list.getTemplate().get(i).getContentHeader());
+                                template.setType(list.getTemplate().get(i).getType());
+                                template.setContentBody(list.getTemplate().get(i).getContentBody());
+                                template.setStatus(list.getTemplate().get(i).getStatus());
+                                template.setCreatedAt(list.getTemplate().get(i).getCreatedAt());
+                                template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
+                                templateList.add(template);
+                            }
+                        }else {
+                            if(list.getTemplate().get(i).getType().equals("SMS")){
+                                TemplateList.Template template=new TemplateList.Template();
+                                template.setId(list.getTemplate().get(i).getId());
+                                template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
+                                template.setTeamId(list.getTemplate().get(i).getTeamId());
+                                template.setTemplateName(list.getTemplate().get(i).getTemplateName());
+                                template.setTemplateSlug(list.getTemplate().get(i).getTemplateSlug());
+                                template.setContentHeader(list.getTemplate().get(i).getContentHeader());
+                                template.setType(list.getTemplate().get(i).getType());
+                                template.setContentBody(list.getTemplate().get(i).getContentBody());
+                                template.setStatus(list.getTemplate().get(i).getStatus());
+                                template.setCreatedAt(list.getTemplate().get(i).getCreatedAt());
+                                template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
+                                templateList.add(template);
+                            }
+                        }
+                    }
+
+
+
+                    TemplateList.Template template1=new TemplateList.Template();
+                    template1.setTemplateName("Save Current as template");
+                    template1.setSelect(true);
+                    templateList.add(templateList.size(),template1);
+
+
+                    templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick);
+                    templet_list.setAdapter(templateAdepter);
+
+                }
             }
-            templateTextList.add(i,templateText);
-        }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
+    }
+    private void Hastag_list() throws JSONException {
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(First_Step_Start_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
+            @SuppressLint("SyntheticAccessor")
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    templateTextList.clear();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<HastagList>() {
+                    }.getType();
+                    HastagList hastagList = new Gson().fromJson(headerString, listType);
+                    templateTextList = hastagList.getHashtag();
+                    HastagList.TemplateText templateText = new HastagList.TemplateText();
+                    templateText.setDescription("Placeholders #");
+                    templateText.setSelect(true);
+                    templateTextList.add(0, templateText);
+
+                    Listset(templateTextList);
+
+                    //   sessionManager.setUserdata(getApplicationContext(),data);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
+    }
+    private void Listset(List<HastagList.TemplateText> templateTextList) {
+
         rv_direct_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         rv_direct_list.setHasFixedSize(true);
         picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
-    private void Listset1() {
-        for(int i=0;i<=4;i++){
-            HastagList.TemplateText templateText1=new HastagList.TemplateText();
-            if(i==0){
-                templateText1.setDescription("Please select template");
-                templateText1.setSelect(false);
-            }
-            if(i==1){
-                templateText1.setDescription("New member joining");
-                templateText1.setSelect(true);
-            }else if(i==2){
-                templateText1.setDescription("Customer service");
-                templateText1.setSelect(true);
-            }else if(i==3){
-                templateText1.setDescription("New Product development");
-                templateText1.setSelect(true);
-            }else if(i==4){
-                templateText1.setDescription("Save Current as template");
-                templateText1.setSelect(true);
-            }
-            templateTextList1.add(i,templateText1);
-        }
 
-    }
     private void IntentUI() {
         iv_back=findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -196,6 +298,13 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         edit_template.setSelection(edit_template.getText().length());
     }
 
+    @Override
+    public void OnClick(TemplateList.Template template) {
+        edit_template.setText(template.getContentBody());
+        edit_template.setSelection(edit_template.getText().length());
+        bottomSheetDialog_templateList.dismiss();
+    }
+
     static class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder>{
 
         public Context mCtx;
@@ -218,7 +327,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item=templateTextList.get(position);
-            holder.tv_item.setText(item.getId());
+            holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
             if(item.isSelect()){
@@ -275,9 +384,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder>{
 
         public Context mCtx;
-        List<HastagList.TemplateText> templateTextList1;
-        TextClick interfaceClick;
-        public TemplateAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList1,TextClick interfaceClick) {
+        List<TemplateList.Template> templateTextList1;
+        TemplateClick interfaceClick;
+        public TemplateAdepter(Context applicationContext, List<TemplateList.Template> templateTextList1, TemplateClick interfaceClick) {
             this.mCtx=applicationContext;
             this.templateTextList1=templateTextList1;
             this.interfaceClick=interfaceClick;
@@ -293,8 +402,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
         @Override
         public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
-            HastagList.TemplateText item=templateTextList1.get(position);
-            holder.tv_item.setText(item.getDescription());
+            TemplateList.Template item=templateTextList1.get(position);
+            holder.tv_item.setText(item.getTemplateName());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
             if(item.isSelect()){
@@ -310,6 +419,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                     if (holder.tv_item.getText().toString().equals("Save Current as template"))
                     {
                         showAlertDialogButtonClicked(view);
+                    }else {
+                        interfaceClick.OnClick(item);
                     }
                 }
             });
