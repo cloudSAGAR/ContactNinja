@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.MainActivity;
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -41,8 +42,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     LoadingDialog loadingDialog;
     RecyclerView item_list;
     Campaign_OverviewAdapter campaign_overviewAdapter;
-    List<String> stringList;
-
+   /* List<String> stringList;*/
+    List<CampaignTask> campaignTasks=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +54,15 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        stringList = new ArrayList<>();
+        campaignTasks.addAll(sessionManager.getTask(getApplicationContext()));
+        /*stringList = new ArrayList<>();
         stringList.add("One ");
         stringList.add("Two");
         stringList.add("Three");
-        stringList.add("Foure");
+        stringList.add("Foure");*/
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
         item_list.setAdapter(campaign_overviewAdapter);
-        campaign_overviewAdapter.addAll(stringList);
+        campaign_overviewAdapter.addAll(campaignTasks);
 
     }
 
@@ -100,7 +102,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         private static final int LOADING = 0;
         private static final int ITEM = 1;
         private final Context context;
-        private List<String> movieList;
+        private List<CampaignTask> movieList;
         private boolean isLoadingAdded = false;
 
         public Campaign_OverviewAdapter(Context context) {
@@ -109,7 +111,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         }
 
 
-        public void setMovieList(List<String> movieList) {
+        public void setMovieList(List<CampaignTask> movieList) {
             this.movieList = movieList;
         }
 
@@ -135,7 +137,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-            String Group_data = movieList.get(position);
+            CampaignTask Group_data = movieList.get(position);
             switch (getItemViewType(position)) {
                 case ITEM:
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
@@ -191,14 +193,14 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
 
         public void addLoadingFooter() {
             isLoadingAdded = true;
-            add("");
+            //add("");
         }
 
         public void removeLoadingFooter() {
             isLoadingAdded = false;
 
             int position = movieList.size() - 1;
-            String result = getItem(position);
+            CampaignTask result = getItem(position);
 
             if (result != null) {
                 movieList.remove(position);
@@ -206,18 +208,18 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             }
         }
 
-        public void add(String movie) {
+        public void add(CampaignTask movie) {
             movieList.add(movie);
             notifyItemInserted(movieList.size() - 1);
         }
 
-        public void addAll(List<String> moveResults) {
-            for (String result : moveResults) {
+        public void addAll(List<CampaignTask> moveResults) {
+            for (CampaignTask result : moveResults) {
                 add(result);
             }
         }
 
-        public String getItem(int position) {
+        public CampaignTask getItem(int position) {
             return movieList.get(position);
         }
 

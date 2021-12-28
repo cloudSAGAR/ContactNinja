@@ -11,6 +11,7 @@ import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Broadcast_Data;
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
@@ -37,6 +38,7 @@ public class SessionManager {
     public static final String Plan_type ="plan_type";
     public static final String Login_type ="login_type";
     public static final String Sign_Model ="sign_model";
+    public static final String Task_Model ="task_model";
     public static final String Contect_Name="contect_name";
     public static final String Contect_Type="contect_type";
     public static final String Add_Contect_Detail="contect_detail";
@@ -60,6 +62,10 @@ public class SessionManager {
     public static final String brodcaste_group ="brod_group";
     public static final String Broadcast_Data_save=" broadcast_data";
     public  static final String Contectexits_token="contect_token";
+
+    public static final String campaign_type="campaign_type";
+    public static final String campaign_type_name="campaign_type_name";
+
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -116,6 +122,33 @@ public class SessionManager {
         editor.commit();
     }
 
+
+
+
+    public static String getCampaign_type(Context context) {
+
+        String type= pref.getString(campaign_type, "");
+        return  type;
+
+    }
+
+    public static void setCampaign_type(String campaign_type1) {
+        editor.putString(campaign_type, campaign_type1);
+        editor.commit();
+    }
+
+
+    public static String getCampaign_type_name(Context context) {
+
+        String type= pref.getString(campaign_type_name, "");
+        return  type;
+
+    }
+
+    public static void setCampaign_type_name(String campaign_type_name1) {
+        editor.putString(campaign_type_name, campaign_type_name1);
+        editor.commit();
+    }
 
 
 
@@ -287,6 +320,9 @@ public class SessionManager {
         Log.e("Sessioin data",new Gson().toJson(signModel));
         editor.apply();
     }
+
+
+
 
 
 
@@ -489,4 +525,51 @@ public class SessionManager {
     }
 
 
+
+
+
+/*    public static CampaignTask getTask(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Task_Model, "");
+        Type type = new TypeToken<CampaignTask>() {
+        }.getType();
+        CampaignTask signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new CampaignTask();
+        }
+        return signModel;
+    }
+
+    public static void setTask(Context context, CampaignTask signModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(signModel);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Task_Model, json);
+        Log.e("Sessioin data",new Gson().toJson(signModel));
+        editor.apply();
+    }*/
+
+
+
+    public static void setTask(Context context, List<CampaignTask> groupModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(groupModel);
+        editor.putString(Task_Model, json);
+        editor.apply();
+    }
+
+
+    public static List<CampaignTask> getTask(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(Task_Model, null);
+        Type type = new TypeToken<ArrayList<CampaignTask>>() {
+        }.getType();
+        List<CampaignTask> contectList = gson.fromJson(json, type);
+        if (contectList == null) {
+            contectList = new ArrayList<>();
+        }
+        return contectList;
+
+    }
 }

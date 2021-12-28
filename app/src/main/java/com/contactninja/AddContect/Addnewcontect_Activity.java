@@ -57,6 +57,7 @@ import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -83,7 +84,7 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener , YourFragmentInterface {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -1133,5 +1134,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
+    }
+
+    @Override
+    public void fragmentBecameVisible() {
+
     }
 }

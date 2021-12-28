@@ -81,6 +81,8 @@ public interface RetrofitApiInterface {
    @POST("templates/add")
     Call<ApiResponse> CreateTemplate(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
+
+
  /*   @Multipart
     @POST("contact/import")
     Call<ApiResponse> Upload_csv(@Header("Accept") String api,
@@ -120,5 +122,6 @@ public interface RetrofitApiInterface {
     @POST("forgotPassword")
     Call<ApiResponse>  ForgotPassword(@Header("Accept") String api, @Body JsonObject jsonObject);
 
-
+    @POST("sequence/task_store")
+    Call<ApiResponse>  Task_store(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 }

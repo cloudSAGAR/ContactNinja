@@ -2,6 +2,7 @@ package com.contactninja.Campaign;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,11 +20,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.contactninja.Auth.Phone_email_verificationActivity;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Model.CampaignTask;
+
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.TemplateCreateActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -34,8 +40,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONException;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -55,6 +59,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     EditText edit_template,edit_template_name;
     List<HastagList.TemplateText> templateTextList=new ArrayList<>();
     List<HastagList.TemplateText> templateTextList1=new ArrayList<>();
+    CoordinatorLayout mMainLayout;
+    String step_no="1",time="09:00",day="1",minite="0",sequence_id="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +69,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
-        try {
-            if(Global.isNetworkAvailable(First_Step_Start_Activity.this, MainActivity.mMainLayout)) {
-                Hastag_list();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Listset();
+
         edit_template.requestFocus();
     }
 
@@ -91,81 +92,56 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
         bottomSheetDialog.show();
     }
-    private void Hastag_list() throws JSONException {
 
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(First_Step_Start_Activity.this);
-        String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        obj.add("data", paramObject);
-        Log.e("Tokem is ",new Gson().toJson(obj));
-        retrofitCalls.Hastag_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
-            @SuppressLint("SyntheticAccessor")
-            @Override
-            public void success(Response<ApiResponse> response) {
+    private void Listset() {
+        for(int i=0;i<=4;i++){
+            HastagList.TemplateText templateText=new HastagList.TemplateText();
 
-                loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
-                    templateTextList.clear();
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<HastagList>() {
-                    }.getType();
-                    HastagList hastagList=new Gson().fromJson(headerString, listType);
-                    templateTextList=hastagList.getHashtag();
-                    HastagList.TemplateText templateText=new HastagList.TemplateText();
-                    templateText.setDescription("Placeholders #");
-                    templateText.setSelect(true);
-                    templateTextList.add(0,templateText);
-
-                    Listset(templateTextList);
-
-
-
-                }
+            if(i==0){
+                templateText.setDescription("Placeholders #");
+                templateText.setSelect(true);
+            }else if(i==1){
+                templateText.setDescription("First Name");
+                templateText.setSelect(false);
+            }else if(i==2){
+                templateText.setDescription("Last Name");
+                templateText.setSelect(false);
+            }else if(i==3){
+                templateText.setDescription("Hi");
+                templateText.setSelect(false);
+            }else if(i==4){
+                templateText.setDescription("Hello");
+                templateText.setSelect(false);
             }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-
-
-        });
-
-
-    }
-    private void Listset(List<HastagList.TemplateText> templateTextList1) {
+            templateTextList.add(i,templateText);
+        }
         rv_direct_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         rv_direct_list.setHasFixedSize(true);
-        picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList1, this);
+        picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
     private void Listset1() {
-/*        for(int i=0;i<=4;i++){
-            TemplateText templateText1=new TemplateText();
+        for(int i=0;i<=4;i++){
+            HastagList.TemplateText templateText1=new HastagList.TemplateText();
             if(i==0){
-                templateText1.setTemplateText("Please select template");
+                templateText1.setDescription("Please select template");
                 templateText1.setSelect(false);
             }
             if(i==1){
-                templateText1.setTemplateText("New member joining");
+                templateText1.setDescription("New member joining");
                 templateText1.setSelect(true);
             }else if(i==2){
-                templateText1.setTemplateText("Customer service");
+                templateText1.setDescription("Customer service");
                 templateText1.setSelect(true);
             }else if(i==3){
-                templateText1.setTemplateText("New Product development");
+                templateText1.setDescription("New Product development");
                 templateText1.setSelect(true);
             }else if(i==4){
-                templateText1.setTemplateText("Save Current as template");
+                templateText1.setDescription("Save Current as template");
                 templateText1.setSelect(true);
             }
             templateTextList1.add(i,templateText1);
-        }*/
+        }
 
     }
     private void IntentUI() {
@@ -182,6 +158,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         tv_use_tamplet=findViewById(R.id.tv_use_tamplet);
         edit_template = findViewById(R.id.edit_template);
         tv_use_tamplet.setOnClickListener(this);
+        mMainLayout=findViewById(R.id.mMainLayout);
     }
 
     @Override
@@ -193,7 +170,15 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             case R.id.save_button:
                 //Add Api Call
                 Global.count=1;
-                startActivity(new Intent(getApplicationContext(),Campaign_Overview.class));
+                if (edit_template.getText().equals(""))
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"ERROR",false);
+
+                }
+                else {
+                    StepData();
+                }
+
 
                 break;
             case R.id.tv_use_tamplet:
@@ -233,7 +218,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item=templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setText(item.getId());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
             if(item.isSelect()){
@@ -382,6 +367,62 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             }
         });
 
+    }
+
+
+    public void StepData() {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("content_body", edit_template.getText().toString());
+        paramObject.addProperty("day", "1");
+        paramObject.addProperty("manage_by", sessionManager.getCampaign_type_name(getApplicationContext()));
+        paramObject.addProperty("minute",minite );
+        paramObject.addProperty("organization_id","1");
+        paramObject.addProperty("sequence_id", sequence_id);
+        paramObject.addProperty("step_no", step_no);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("type", sessionManager.getCampaign_type(getApplicationContext()));
+        paramObject.addProperty("time", time);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Task_store(sessionManager,obj, loadingDialog, Global.getToken(sessionManager),new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+
+                loadingDialog.cancelLoading();
+
+                if (response.body().getStatus() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<CampaignTask>() {
+                    }.getType();
+                    CampaignTask user_model = new Gson().fromJson(headerString, listType);
+                    List<CampaignTask> campaignTasks=new ArrayList<>();
+                    campaignTasks.add(user_model);
+                    SessionManager.setTask(getApplicationContext(), campaignTasks);
+                    startActivity(new Intent(getApplicationContext(),Campaign_Overview.class));
+                }
+                else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
     }
 
 }

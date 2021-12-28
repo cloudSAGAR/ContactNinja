@@ -86,7 +86,15 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                 break;
             case R.id.save_button:
                 //Add Api Call
-                startActivity(new Intent(getApplicationContext(), ContectAndGroup_Actvity.class));
+                if (ev_titale.getText().equals(""))
+                {
+                    tv_error.setVisibility(View.VISIBLE);
+                }
+                else {
+                    tv_error.setVisibility(View.GONE);
+                    startActivity(new Intent(getApplicationContext(), ContectAndGroup_Actvity.class));
+                }
+
                 break;
 
         }
