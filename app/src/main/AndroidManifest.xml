@@ -49,25 +49,32 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Setting.EmailListActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.Email_verification"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddContect.EmailSend_Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Campaign.Campaign_Name_Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Campaign.ContectAndGroup_Actvity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Campaign.Automated_Email_Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Campaign.Campaign_Overview"
             android:exported="false"
+
             android:screenOrientation="portrait" />
         <activity
             android:name=".Campaign.First_Step_Start_Activity"

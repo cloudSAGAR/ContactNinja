@@ -35,7 +35,6 @@ import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
-import com.contactninja.Model.UservalidateModel;
 import com.contactninja.Model.WorkTypeData;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -48,7 +47,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hbb20.CountryCodePicker;
@@ -57,7 +55,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -262,7 +259,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setLinkedin(Contect_data.getLinkedin_link());
             addcontectModel.setFacebook(Contect_data.getFacebook_link());
             addcontectModel.setBirthday(Contect_data.getDob());
-           /* addcontectModel.setTime(Contect_data.getTimezoneId());*/
+            /* addcontectModel.setTime(Contect_data.getTimezoneId());*/
           /*  img_fb.setVisibility(View.GONE);
             img_breakout.setVisibility(View.GONE);
             img_linkdin.setVisibility(View.GONE);
@@ -283,13 +280,17 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_company_url.setText(Contect_data.getCompany_url());
             ev_bob.setText(Contect_data.getDob());
             media_link.setVisibility(View.VISIBLE);
-            if (Contect_data.getFacebook_link().equals(""))
-            {
+            try {
+
+                if (Contect_data.getFacebook_link().equals("")) {
+                    img_fb.setVisibility(View.GONE);
+                } else {
+                    img_fb.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
                 img_fb.setVisibility(View.GONE);
             }
-            else {
-                img_fb.setVisibility(View.VISIBLE);
-            }
+
 
             img_fb.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -299,13 +300,17 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     startActivity(intent);
                 }
             });
-            if (Contect_data.getTwitter_link().equals(""))
-            {
+            try {
+                if (Contect_data.getTwitter_link().equals("")) {
+                    img_twitter.setVisibility(View.GONE);
+                } else {
+                    img_twitter.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
                 img_twitter.setVisibility(View.GONE);
+
             }
-            else {
-                img_twitter.setVisibility(View.VISIBLE);
-            }
+
             ev_twitter.setText(Contect_data.getTwitter_link());
             ev_fb.setText(Contect_data.getFacebook_link());
             ev_linkedin.setText(Contect_data.getLinkedin_link());
@@ -318,13 +323,17 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     startActivity(intent);
                 }
             });
-            if (Contect_data.getLinkedin_link().equals(""))
-            {
+            try {
+                if (Contect_data.getLinkedin_link().equals("")) {
+                    img_linkdin.setVisibility(View.GONE);
+                } else {
+                    img_linkdin.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
                 img_linkdin.setVisibility(View.GONE);
+
             }
-            else {
-                 img_linkdin.setVisibility(View.VISIBLE);
-            }
+
 
             img_linkdin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -334,14 +343,18 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     startActivity(intent);
                 }
             });
-            if (Contect_data.getBreakout_link().equals(""))
-            {
-                img_breakout.setVisibility(View.GONE);
-            }
-            else {
-                img_breakout.setVisibility(View.VISIBLE);
-            }
+            try {
 
+                if (Contect_data.getBreakout_link().equals("")) {
+                    img_breakout.setVisibility(View.GONE);
+                } else {
+                    img_breakout.setVisibility(View.VISIBLE);
+                }
+
+            } catch (Exception e) {
+                img_breakout.setVisibility(View.GONE);
+
+            }
 
             img_breakout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1099,7 +1112,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     }
 
-    public void showAlertDialogButtonClicked1(String p_num, int id,String type) {
+    public void showAlertDialogButtonClicked1(String p_num, int id, String type) {
 
         // Create an alert builder
         AlertDialog.Builder builder
@@ -1124,18 +1137,16 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
 
-                if (type.equals("sim"))
-                {
+                if (type.equals("sim")) {
                     sendSMS(p_num, editText.getText().toString());
                     dialog.dismiss();
-                }
-                else {
-                try {
-                    SMSAPI(editText.getText().toString(),id, p_num);
-                    dialog.dismiss();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                } else {
+                    try {
+                        SMSAPI(editText.getText().toString(), id, p_num);
+                        dialog.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
 
@@ -1171,7 +1182,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_munual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertDialogButtonClicked1(p_num,id,"sim");
+                showAlertDialogButtonClicked1(p_num, id, "sim");
                 dialog.dismiss();
             }
         });
@@ -1179,7 +1190,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showAlertDialogButtonClicked1(p_num,id,"app");
+                showAlertDialogButtonClicked1(p_num, id, "app");
                 dialog.dismiss();
 
 
@@ -1190,7 +1201,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     private void SMSAPI(String text, int id, String email) throws JSONException {
 
-        Log.e("Phone Number",email);
+        Log.e("Phone Number", email);
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -1307,9 +1318,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
         });
     }
-
-
-
 
 
     private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
@@ -2347,11 +2355,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(getActivity(), EmailSend_Activity.class);
-                    intent.putExtra("email",item.getEmail_number());
-                    intent.putExtra("id",String.valueOf(item.getId()));
+                    Intent intent = new Intent(getActivity(), EmailSend_Activity.class);
+                    intent.putExtra("email", item.getEmail_number());
+                    intent.putExtra("id", String.valueOf(item.getId()));
                     startActivity(intent);
-                 //  showAlertDialogEmailMeassge(item.getEmail_number(), item.getId());
+                    //  showAlertDialogEmailMeassge(item.getEmail_number(), item.getId());
                 }
             });
 

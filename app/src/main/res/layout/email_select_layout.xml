@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:layout_height="match_parent">
+    <TextView
+        android:padding="@dimen/_10sdp"
+        android:id="@+id/tv_item"
+        style="@style/tv_regular"
+        android:textStyle="bold"
+        android:text="Phone"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:textSize="@dimen/_13sdp"
+        android:textColor="@color/tv_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </TextView>
+    <ImageView
+        android:id="@+id/iv_dufult"
+        android:layout_gravity="center"
+        android:src="@drawable/shape_yallow_circle"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"></ImageView>
+    <RadioButton
+        android:layout_weight="1"
+        android:id="@+id/radio_button"
+        android:layout_gravity="center|end"
+
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp">
+
+    </RadioButton>
+</LinearLayout>
