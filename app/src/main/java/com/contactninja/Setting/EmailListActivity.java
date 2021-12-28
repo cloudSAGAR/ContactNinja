@@ -55,6 +55,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
     SwipeRefreshLayout swipeToRefresh;
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
+    LinearLayout add_new_email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,11 +122,13 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
     }
     private void IntentUI() {
-        rv_template_list = findViewById(R.id.template_list);
+        add_new_email = findViewById(R.id.add_new_email);
+        rv_template_list = findViewById(R.id.rv_email_list);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
+        add_new_email.setOnClickListener(this);
 
 
 
@@ -139,6 +142,9 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.iv_back:
                 onBackPressed();
+                break;
+                case R.id.add_new_email:
+                    startActivity(new Intent(getApplicationContext(),Email_verification.class));
                 break;
         }
     }
@@ -185,6 +191,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             UserLinkedList.UserLinkedGmail userLinkedGmail=userLinkedGmailList.get(position);
                 holder.iv_select_type.setBackgroundResource(R.drawable.ic_email);
+                holder.tv_email_name.setText(userLinkedGmail.getUserEmail());
 
 
         }
