@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -177,6 +178,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
+                SessionManager.setGroupList(getActivity(),new ArrayList<>());
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
               /*  getActivity().finish();*/
@@ -185,6 +187,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
             case R.id.demo_layout:
+                SessionManager.setGroupList(getActivity(),new ArrayList<>());
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
                 break;

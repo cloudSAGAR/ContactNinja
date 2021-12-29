@@ -126,7 +126,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
         save_button.setVisibility(View.VISIBLE);
-        save_button.setTextColor(getColor(R.color.home_list_sub_data));
         loadingDialog = new LoadingDialog(this);
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
@@ -235,7 +234,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         });
 
 
-        contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      /*  contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -253,14 +252,14 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             currentPage=currentPage + 1;
                             Log.e("Current Page is", String.valueOf(currentPage));
-                            ContectEventnext();
+                         //   ContectEventnext();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 }
             }
-        });
+        });*/
 
         if (SessionManager.getContectList(this).size() != 0) {
             GetContactsIntoArrayList();
@@ -286,11 +285,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     public void call_updatedata()
     {
-        if (sessionManager.getGroupList(this).size()!=0)
+        if (SessionManager.getGroupList(this).size()!=0)
         {
             select_contectListData.clear();
             pre_seleact.clear();
-            pre_seleact.addAll(sessionManager.getGroupList(this));
+            pre_seleact.addAll(SessionManager.getGroupList(this));
             select_contectListData.addAll(pre_seleact);
             topUserListDataAdapter.notifyDataSetChanged();
 

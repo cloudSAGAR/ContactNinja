@@ -117,12 +117,19 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             Grouplist.Group group_data = SessionManager.getGroupData(this);
             add_new_contect.setText(group_data.getGroupName());
             add_detail.setText(group_data.getDescription());
-            iv_user.setVisibility(View.VISIBLE);
-            Glide.with(getApplicationContext()).
-                    load(group_data.getGroupImage()).
-                    placeholder(R.drawable.shape_primary_back).
-                    error(R.drawable.shape_primary_back).into(iv_user);
-            iv_dummy.setVisibility(View.GONE);
+            if(group_data.getGroupImage()!=null){
+                iv_user.setVisibility(View.VISIBLE);
+                Glide.with(getApplicationContext()).
+                        load(group_data.getGroupImage()).
+                        placeholder(R.drawable.shape_primary_back).
+                        error(R.drawable.shape_primary_back).into(iv_user);
+                iv_dummy.setVisibility(View.GONE);
+            }else {
+                iv_user.setVisibility(View.GONE);
+                iv_dummy.setVisibility(View.VISIBLE);
+            }
+
+
             old_image=group_data.getGroupImage();
 
             group_id= String.valueOf(group_data.getId());
@@ -603,9 +610,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
 
                 holder.first_latter.setVisibility(View.VISIBLE);
-                holder.first_latter.setText(inviteUserDetails.getFirstname());
                 holder.top_layout.setVisibility(View.VISIBLE);
                 String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+            holder.first_latter.setText(first_latter);
 
                 if (second_latter.equals("")) {
                     current_latter = first_latter;
@@ -783,6 +790,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
+        SessionManager.setGroupList(getApplicationContext(),new ArrayList<>());
         SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
         super.onBackPressed();
     }

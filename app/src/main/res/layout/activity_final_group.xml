@@ -24,7 +24,7 @@
             android:padding="@dimen/_15sdp"
             android:background="@drawable/shape_oval_border_10_blue"
             android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"></ImageView>
+            android:layout_height="@dimen/_40sdp"/>
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:layout_marginStart="@dimen/_15sdp"
