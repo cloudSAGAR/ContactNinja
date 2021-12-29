@@ -94,7 +94,7 @@ Number</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_contect">Add New Contact</string>
     <string name="add_new_contect1">Add all contacts</string>
-
+    <string name="add_new">Add new</string>
     //Add Contect
     <string name="f_name">First name </string>
     <string name="add_phone">Phone</string>
@@ -105,6 +105,7 @@ Number</string>
     <string name="add_address">Address</string>
     <string name="add_address_a">Add Address</string>
     <string name="add_company">Company</string>
+    <string name="other_company">Other Company</string>
     <string name="add_company_a">Add Company</string>
     <string name="add_company_url">Company URL</string>
     <string name="add_company_url_a">Add company url</string>
