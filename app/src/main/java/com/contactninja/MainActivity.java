@@ -212,10 +212,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-             //   if (sessionManager.getContectList(getApplicationContext()).size() == 0)
-             //   {
-             //       loadingDialog.showLoadingDialog();
-             //   }
+               if (sessionManager.getContectList(getApplicationContext()).size() == 0)
+               {
+                   loadingDialog.showLoadingDialog();
+               }
 
                 GetContactsIntoArrayList();
 
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.err.println("NumberParseException was thrown: " + e.toString());
             }
             if(!user_phone_number.contains("+")){
-                user_phone_number=String.valueOf("+"+countryCode+user_phone_number);
+                user_phone_number=String.valueOf("+"+countryCode+user_phone_number.trim());
             }
             try {
                 contect_email = "";
@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             boolean found = false;
             try {
-                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
+                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number.trim()));
 
             } catch (Exception e) {
 
@@ -352,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 try {
-                    csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                    csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number.trim(), contect_email, note, country, city, region, street, "" + lastname));
                 } catch (Exception e) {
 
                 }
@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
                         // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
 
-                        csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
+                        csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number.trim());
 
                         csv_inviteListData.remove(indexOpt.getAsInt() + 1);
                     }

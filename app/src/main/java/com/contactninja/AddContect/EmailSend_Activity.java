@@ -490,8 +490,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
         paramObject.put("manage_by", "MANUAL");
-        paramObject.put("time", "00:00");
-        paramObject.put("date", "2021-12-28");
+        paramObject.put("time", Global.getCurrentTime());
+        paramObject.put("date", Global.getCurrentDate());
         paramObject.put("assign_to", user_id);
         paramObject.put("task_description", text);
 
