@@ -283,9 +283,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (NumberParseException e) {
                 System.err.println("NumberParseException was thrown: " + e.toString());
             }
-            user_phone_number=String.valueOf("+"+countryCode+user_phone_number);
+            if(!user_phone_number.contains("+")){
+                user_phone_number=String.valueOf("+"+countryCode+user_phone_number);
+            }
             try {
-                contect_email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DISPLAY_NAME));
+                contect_email = "";
                 region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
 
                 contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
