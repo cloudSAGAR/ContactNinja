@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,8 +73,14 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
 
-    EditText edit_template,ev_subject,ev_to;
+    EditText edit_template,ev_subject,ev_to,ev_from;
     String email="",id="";
+    private int amountOfItemsSelected=0;
+    BottomSheetDialog bottomSheetDialog_templateList1;
+    ImageView iv_more;
+
+    int defult_id;
+    List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList=new ArrayList<>();
 
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
     @Override
@@ -96,6 +103,11 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
 
         try {
             Hastag_list();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
             Mail_list();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -117,6 +129,10 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
         edit_template=findViewById(R.id.edit_compose);
         ev_subject=findViewById(R.id.ev_subject);
         ev_to=findViewById(R.id.ev_to);
+        ev_from=findViewById(R.id.ev_from);
+        iv_more=findViewById(R.id.iv_more);
+        iv_more.setOnClickListener(this);
+
 
     }
 
@@ -193,6 +209,7 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
                 break;
             case R.id.save_button:
                 try {
+
                     EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -200,6 +217,9 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
+                break;
+            case R.id.iv_more:
+                Email_bouttomSheet();
                 break;
 
         }
@@ -539,18 +559,37 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
     }
 
 
+    private void Email_bouttomSheet() {
+      final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
+        bottomSheetDialog_templateList1= new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1.setContentView(mView);
+        TextView tv_done=bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
+        email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        EmailListAdepter emailListAdepter = new EmailListAdepter(getApplicationContext(), userLinkedGmailList);
+        email_list.setAdapter(emailListAdepter);
+        email_list.setVisibility(View.VISIBLE);
 
+
+        tv_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog_templateList1.cancel();
+                ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
+            }
+        });
+
+        bottomSheetDialog_templateList1.show();
+    }
 
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
 
         public Context mCtx;
         List<UserLinkedList.UserLinkedGmail> userLinkedGmailList;
-        TextClick interfaceClick;
 
-        public EmailListAdepter(Context applicationContext, List<UserLinkedList.UserLinkedGmail> userLinkedGmailList, TextClick interfaceClick) {
+        public EmailListAdepter(Context applicationContext, List<UserLinkedList.UserLinkedGmail> userLinkedGmailList) {
             this.mCtx = applicationContext;
             this.userLinkedGmailList = userLinkedGmailList;
-            this.interfaceClick = interfaceClick;
         }
 
         @NonNull
@@ -563,65 +602,51 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
 
         @Override
         public void onBindViewHolder(@NonNull EmailListAdepter.viewholder holder, int position) {
-            UserLinkedList.UserLinkedGmail item = userLinkedGmailList.get(position);
-            holder.tv_item.setText(item.getDescription());
-            holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
-            if (item.getFile() != 0) {
-                holder.im_file.setVisibility(View.VISIBLE);
-                holder.tv_item.setVisibility(View.GONE);
-                holder.im_file.setImageDrawable(mCtx.getDrawable(item.getFile()));
-                holder.line_view.setVisibility(View.GONE);
 
-            } else {
+            holder.tv_item.setText(userLinkedGmailList.get(position).getUserEmail());
+            if(holder.iv_selected.isSelected() == false){
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+                holder.iv_selected.setVisibility(View.GONE);
 
-                holder.im_file.setVisibility(View.GONE);
-                holder.tv_item.setVisibility(View.VISIBLE);
+                amountOfItemsSelected++;
+            }
+            else if(holder.iv_selected.isSelected() == true){
+                holder.iv_unselected.setVisibility(View.GONE);
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                amountOfItemsSelected--;
+            }
+
+            if (amountOfItemsSelected>1){
 
             }
-            if (position == 0) {
-
-                holder.line_view.setVisibility(View.GONE);
-
-            } else if (position == 1) {
-                holder.line_view.setVisibility(View.GONE);
-            } else {
-
+            if (userLinkedGmailList.get(position).getIsDefault().toString().equals("1"))
+            {
+                holder.iv_dufult.setVisibility(View.VISIBLE);
             }
-            holder.im_file.setOnClickListener(new View.OnClickListener() {
+            else {
+                holder.iv_dufult.setVisibility(View.GONE);
+            }
+
+
+            holder.iv_selected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
-                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                        chooseFile.setType("*/*");
-                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
-                    }
+
+                    holder.iv_selected.setVisibility(View.GONE);
+                    holder.iv_unselected.setVisibility(View.VISIBLE);
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
+                    defult_id=userLinkedGmailList.get(position).getId();
+                   // notifyDataSetChanged();
                 }
             });
-            if (item.isSelect()) {
-                holder.tv_item.setBackground(null);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
-                holder.line_view.setVisibility(View.VISIBLE);
-            } else {
-                holder.line_view.setVisibility(View.GONE);
-            }
-            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+            holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    if (!item.isSelect()) {
-                        Handler handler = new Handler();
-                        Runnable r = new Runnable() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            public void run() {
-                                notifyDataSetChanged();
-                            }
-                        };
-                        handler.postDelayed(r, 1000);
-                        holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
-                        holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getDescription());
-                    }
+                public void onClick(View view) {
+                    select_userLinkedGmailList.clear();
+                    holder.iv_selected.setVisibility(View.VISIBLE);
+                    holder.iv_unselected.setVisibility(View.GONE);
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
+                  //  notifyDataSetChanged();
                 }
             });
 
@@ -636,14 +661,16 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
         public class viewholder extends RecyclerView.ViewHolder {
             TextView tv_item;
             View line_view;
-            ImageView im_file;
+            ImageView iv_dufult,iv_selected,iv_unselected;
 
             public viewholder(View view) {
                 super(view);
                 tv_item = view.findViewById(R.id.tv_item);
                 line_view = view.findViewById(R.id.line_view);
-                im_file = view.findViewById(R.id.im_file);
-            }
+                iv_dufult = view.findViewById(R.id.iv_dufult);
+                iv_selected=view.findViewById(R.id.iv_selected);
+                iv_unselected=view.findViewById(R.id.iv_unselected);
+             }
         }
     }
 
@@ -687,8 +714,16 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
                     }.getType();
                     UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
                     userLinkedGmailList=userLinkedGmail.getUserLinkedGmail();
+                    Log.e("Size is",""+userLinkedGmailList.size());
+                    for (int i=0;i<userLinkedGmailList.size();i++)
+                    {
+                        if (userLinkedGmailList.get(i).getIsDefault().toString().equals("1"))
+                        {
+                            ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
+                            defult_id=userLinkedGmailList.get(i).getId();
+                        }
+                    }
                     Log.e("List Is",new Gson().toJson(userLinkedGmailList));
-
                 }else {
                     startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
@@ -780,7 +815,11 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
     }
 
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
+
         loadingDialog.showLoadingDialog();
+        //From Id Is defult_id
+        Log.e("Defuilt id", String.valueOf(defult_id));
+
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());

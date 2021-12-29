@@ -19,7 +19,6 @@ public class Email_verification extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verification);
-
         webEmail = findViewById(R.id.webEmail);
         webEmail.clearCache(true);
         webEmail.getSettings().setJavaScriptEnabled(true);

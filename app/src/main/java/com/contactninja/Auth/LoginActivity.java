@@ -497,7 +497,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  paramObject.addProperty("email", txt_email);
              }
              else {
-                 paramObject.addProperty("contact_number", txt_contect);
+                 paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+txt_contect);
              }
              paramObject.addProperty("first_name", "");
             paramObject.addProperty("last_name", "");

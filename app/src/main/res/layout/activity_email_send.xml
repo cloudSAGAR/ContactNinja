@@ -16,6 +16,7 @@
 
 
         <LinearLayout
+            android:weightSum="1"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
@@ -31,6 +32,7 @@
             </TextView>
 
             <EditText
+                android:layout_weight="1"
                 android:id="@+id/ev_from"
                 style="@style/tv_regular"
                 android:layout_width="match_parent"
@@ -40,10 +42,16 @@
                 android:focusable="true"
                 android:gravity="left"
                 android:imeOptions="actionDone"
-                android:padding="15dp"
-                android:hint="@string/ComposeEmail"
+                android:paddingStart="@dimen/_15sdp"
                 android:textColor="@color/tv_medium"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+            <ImageView
+                android:id="@+id/iv_more"
+                android:src="@drawable/ic_down"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:layout_height="@dimen/_13sdp"></ImageView>
 
 
 
@@ -83,9 +91,8 @@
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
                 android:gravity="left"
+                android:paddingStart="@dimen/_15sdp"
                 android:imeOptions="actionDone"
-                android:padding="15dp"
-                android:hint="@string/ComposeEmail"
                 android:textColor="@color/tv_medium"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
@@ -128,7 +135,6 @@
                 android:focusable="true"
                 android:gravity="left"
                 android:imeOptions="actionDone"
-                android:padding="15dp"
                 android:hint="@string/ComposeEmail"
                 android:textColor="@color/tv_medium"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />

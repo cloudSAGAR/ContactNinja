@@ -503,7 +503,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("email", email_address);
-        paramObject.addProperty("contact_number", mobile_number);
+        paramObject.addProperty("contact_number", countrycode+mobile_number);
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp_pinview.getText().toString());
         obj.add("data", paramObject);

@@ -148,7 +148,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 last_name = edit_Last.getText().toString().trim();
                 mobile_number = edit_Mobile.getText().toString().trim();
                 email_address = edit_email.getText().toString();
-                referred_by = "t2q2";
+                referred_by = "";
                 Otp = getRandomNumberString();
                 if (first_name.equals("")) {
                     iv_invalid.setText(getResources().getString(R.string.invalid_first_name));
@@ -339,7 +339,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         paramObject.addProperty("first_name", first_name);
         paramObject.addProperty("last_name", last_name);
         paramObject.addProperty("email", email_address);
-        paramObject.addProperty("contact_number", mobile_number);
+        paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+mobile_number);
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", "1231220");
         obj.add("data", paramObject);

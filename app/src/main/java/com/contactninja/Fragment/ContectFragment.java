@@ -292,7 +292,7 @@ public class ContectFragment extends Fragment {
             public void onRefresh() {
 
 
-
+                try {
                 if(SessionManager.getContectList(getActivity()).get(0).getContacts().size()!=
                         csv_inviteListData.size()){
                     limit = csv_inviteListData.size();
@@ -316,6 +316,17 @@ public class ContectFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                }
+                catch (Exception e)
+                {
+                      try {
+                        ContectEvent();
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+
 
 
             }

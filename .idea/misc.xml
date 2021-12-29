@@ -58,9 +58,18 @@
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/mipmap-anydpi-v26/ic_logo.xml" value="0.2203125" />
         <entry key="..\:/Android Project/ContactNinja/app/src/main/res/mipmap-anydpi-v26/ic_logo_round.xml" value="0.2203125" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/calendar_header.xml" value="0.34933605720122574" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_a.xml" value="0.33611111111111114" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_campaign_edit_back.xml" value="0.35625" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_delete.xml" value="0.33611111111111114" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_edit.xml" value="0.33611111111111114" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_file.xml" value="0.33611111111111114" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_message.xml" value="0.34933605720122574" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_message_tab.xml" value="0.34933605720122574" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_nav_home.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/ic_nav_home_select.xml" value="0.35625" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/line_bg_bottom.xml" value="0.34933605720122574" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/line_bg_middle.xml" value="0.34933605720122574" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/line_bg_top.xml" value="0.34933605720122574" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/selector_tab_indicator.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/selector_tab_indicator_blue.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/selector_tab_indicator_white.xml" value="0.35625" />
@@ -71,20 +80,29 @@
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/shape_border_gray_edit.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/shape_oval_border_10_blue.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/shape_oval_border_10_white.xml" value="0.35625" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/shape_primary_back.xml" value="0.34933605720122574" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/shape_red_circle.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/shape_yallow_circle.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/tab_selector.xml" value="0.35625" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/drawable/tab_text_color_change.xml" value="0.35625" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_addnewcontect.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_automated_email.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_broadcast_date_select.xml" value="0.31875" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_broadcast_final.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_broadcast_time_select.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_broadcast_to_repeat.xml" value="0.3359375" />
-        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_broadcst_activty.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_broadcst_activty.xml" value="0.33" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_brodcsast_tankyou.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_campaign_list.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_campaign_name.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_campaign_overview.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_contect_and_group_actvity.xml" value="0.31875" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_email_list.xml" value="0.2796296296296296" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_email_send.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_email_verification.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_final_group.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_first_step.xml" value="0.3359375" />
-        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_first_step_start.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_first_step_start.xml" value="0.25" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_group.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_login.xml" value="0.25" />
@@ -96,17 +114,23 @@
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_template_create.xml" value="0.25" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_thankyou_screen.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/activity_verification.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/add_titale_for_templet.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/bottom_sheet_dialog_for_day_select.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/bottom_sheet_dialog_for_home.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/brodcaste_campaign_manu.xml" value="0.25" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/brodcaste_dialog_item.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/brodcaste_link_dialog_item.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/campaign_list_layout.xml" value="0.25" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/campign_item.xml" value="0.25" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/card_list.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/common_dialog.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/custom_add_work_layout.xml" value="0.3359375" />
-        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/custom_message_send.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/custom_message_send.xml" value="0.1940928270042194" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/custom_tab_campagin.xml" value="0.31875" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/eamil_add_layout.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/email_bottom_sheet.xml" value="0.33177083333333335" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/email_select_layout.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/email_send_layout.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/fragment_broadcast__group_.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/fragment_broadcste__contect_.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/fragment_campaign__email_.xml" value="0.33" />
@@ -117,11 +141,14 @@
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/fragment_information.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/group_list.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/invite_user_details.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/item_emaillist.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/item_progress.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/permision_dialog.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/phone_add_layout.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/select_msg_send_type.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/select_templet_layout.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/template_list_dialog_item.xml" value="0.3359375" />
+        <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/template_text_selecte.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/toolbar.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/weekday_layout.xml" value="0.3359375" />
         <entry key="..\:/Contect Main Project Update 16-12-2021/app/src/main/res/layout/work_type_selecte.xml" value="0.3359375" />

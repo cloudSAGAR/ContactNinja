@@ -297,6 +297,7 @@ Number</string>
     <string name="cratetemplate">Create New  Messaging Template</string>
     <string name="Use_template">Use template</string>
     <string name="Please_select_template">Please select template</string>
+    <string name="Please_select_email">Please select mail box</string>
     <string name="template_error">Seems like you don\'t have any templates! you can create that in your profile section</string>
     <string name="Typehere">Type here…</string>
     <string name="Typeher1e">Type here…</string>
