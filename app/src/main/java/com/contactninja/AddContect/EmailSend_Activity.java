@@ -29,7 +29,6 @@ import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
-import com.contactninja.Setting.Email_verification;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -97,13 +96,17 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         ev_to.setText(email);
 
         try {
-            Hastag_list();
+            if(Global.isNetworkAvailable(EmailSend_Activity.this,mMainLayout)){
+                Hastag_list();
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            Mail_list();
+            if(Global.isNetworkAvailable(EmailSend_Activity.this,mMainLayout)){
+                Mail_list();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -457,7 +460,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
-                    startActivity(new Intent(getApplicationContext(), Email_verification.class));
+
+                    Global.openEmailAuth(EmailSend_Activity.this);
+                   // startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 

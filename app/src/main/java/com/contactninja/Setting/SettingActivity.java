@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -192,7 +193,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 if (response.body().getStatus() == 200) {
                     startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
                 }else {
-                 startActivity(new Intent(getApplicationContext(),Email_verification.class));
+                    Global.openEmailAuth(SettingActivity.this);
+                    //startActivity(new Intent(getApplicationContext(),Email_verification.class));
                 }
             }
 

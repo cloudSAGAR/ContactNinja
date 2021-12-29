@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -37,6 +39,12 @@ public class Global extends Application   {
     private static Global mInstance;
     private static Snackbar snackbar;
     public static int count=1;
+
+    public static void openEmailAuth(Activity activity) {
+        Uri uri = Uri.parse(Global.Email_auth); // missing 'http://' will cause crashed
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        activity.startActivity(intent);
+    }
 
     @Override
     public void onCreate() {

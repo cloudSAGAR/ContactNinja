@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.TemplateList;
@@ -151,7 +152,8 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                 onBackPressed();
                 break;
                 case R.id.add_new_email:
-                    startActivity(new Intent(getApplicationContext(),Email_verification.class));
+                    Global.openEmailAuth(EmailListActivity.this);
+                   // startActivity(new Intent(getApplicationContext(),Email_verification.class));
                 break;
         }
     }
