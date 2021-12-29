@@ -3,6 +3,7 @@ package com.contactninja;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -75,6 +78,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.hbb20.CountryCodePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +98,9 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+import io.michaelrocks.libphonenumber.android.NumberParseException;
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -205,10 +212,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-                if (sessionManager.getContectList(getApplicationContext()).size() == 0)
-                {
-                    loadingDialog.showLoadingDialog();
-                }
+             //   if (sessionManager.getContectList(getApplicationContext()).size() == 0)
+             //   {
+             //       loadingDialog.showLoadingDialog();
+             //   }
 
                 GetContactsIntoArrayList();
 
@@ -226,7 +233,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setDeniedTitle("Contactninja would like to access your contacts")
                 .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
                 .setGotoSettingButtonText("setting")
-                .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SEND_SMS)
+                .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.SEND_SMS ,Manifest.permission.READ_PHONE_STATE)
                 .setRationaleConfirmText("OK")
                 .check();
 
@@ -255,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void GetContactsIntoArrayList() {
 
         String firstname = "", lastname = "";
+
         cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         while (cursor.moveToNext()) {
 
@@ -262,11 +272,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
             user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
-
+            TelephonyManager tm = (TelephonyManager)getSystemService(getApplicationContext().TELEPHONY_SERVICE);
+            String country = tm.getNetworkCountryIso();
+            int countryCode = 0;
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(MainActivity.this);
             try {
+                // phone must begin with '+'
+                Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
+                 countryCode = numberProto.getCountryCode();
+            } catch (NumberParseException e) {
+                System.err.println("NumberParseException was thrown: " + e.toString());
+            }
+            user_phone_number=String.valueOf("+"+countryCode+user_phone_number);
+            try {
+                contect_email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DISPLAY_NAME));
+                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
+
                 contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
                 contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
-                contect_email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
                 email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
                 email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
 
@@ -287,6 +310,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
                 lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+
+
+
+
 
             } catch (Exception e) {
 
@@ -318,6 +345,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         user_image,
                         user_des,
                         "", ""));
+
+
 
 
                 try {
@@ -1060,7 +1089,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
                 }*/
 
-                Log.e("Contect List Update Size", " : " + taskList.size());
+                Log.e(  "Contect List Update Size", " : " + taskList.size());
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
                     List<Csv_InviteListData> csv_inviteListData1 = new ArrayList<>();

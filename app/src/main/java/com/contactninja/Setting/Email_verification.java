@@ -38,15 +38,12 @@ public class Email_verification extends AppCompatActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-
             String hostURL = url.substring(url.lastIndexOf("/") + 1, url.length());
-            if (hostURL.equals("stripesuccess")) {
-                //Continue connect to stripe
+            if (hostURL.equals("login")) {
+               finish();
             } else {
-
-               // finish();
+                webView.loadUrl(url);
             }
-            webView.loadUrl(url);
             return true;
         }
 
