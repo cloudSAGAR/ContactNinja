@@ -1,6 +1,7 @@
 package com.contactninja.Group;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,13 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -34,6 +39,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Model.AddGroup;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -41,6 +47,7 @@ import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -69,7 +76,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-public class Final_Group extends AppCompatActivity implements View.OnClickListener {
+public class Final_Group extends AppCompatActivity implements View.OnClickListener ,ConnectivityReceiver.ConnectivityReceiverListener{
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     GroupListData groupListData;
     TextView save_button;
@@ -92,6 +99,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     RetrofitCalls retrofitCalls;
     String old_image="",group_id="";
 
+    private BroadcastReceiver mNetworkReceiver;
 
 
     @Override
@@ -99,6 +107,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_group);
         inviteListData.clear();
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         Global.checkConnectivity(Final_Group.this, mMainLayout);
         sessionManager=new SessionManager(this);
@@ -236,7 +245,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.save_button:
                 try {
-                    SaveEvent();
+                    if(Global.isNetworkAvailable(Final_Group.this,mMainLayout)) {
+                        SaveEvent();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -775,4 +786,35 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
         super.onBackPressed();
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Final_Group.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
 }

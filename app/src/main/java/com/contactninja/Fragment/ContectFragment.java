@@ -279,9 +279,9 @@ public class ContectFragment extends Fragment {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
             paginationAdapter.addAll(contectListData);
             num_count.setText(contectListData.size()+" Contacts");
-            GetContactsIntoArrayList();
+          /*  GetContactsIntoArrayList();*/
         } else {
-            GetContactsIntoArrayList();
+            /*GetContactsIntoArrayList();*/
         }
         //  getAllContect();
 
@@ -292,7 +292,7 @@ public class ContectFragment extends Fragment {
             public void onRefresh() {
 
 
-
+                try {
                 if(SessionManager.getContectList(getActivity()).get(0).getContacts().size()!=
                         csv_inviteListData.size()){
                     limit = csv_inviteListData.size();
@@ -316,6 +316,17 @@ public class ContectFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                }
+                catch (Exception e)
+                {
+                      try {
+                        ContectEvent();
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+
 
 
             }
@@ -692,7 +703,9 @@ public class ContectFragment extends Fragment {
             intent.putExtra(Intent.EXTRA_STREAM, path);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(intent, "Excel Data"));*/
-            Uploadcsv(file);
+            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                Uploadcsv(file);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1052,7 +1065,7 @@ public class ContectFragment extends Fragment {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
-             /*   Log.e("Reponse is", new Gson().toJson(response.body()));*/
+               Log.e("Reponse is", new Gson().toJson(response.body()));
                 if (response.body().getStatus() == 200) {
                     SessionManager.setContectList(getActivity(), new ArrayList<>());
                     Gson gson = new Gson();

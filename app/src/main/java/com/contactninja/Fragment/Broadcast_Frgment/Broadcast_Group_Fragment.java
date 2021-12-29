@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
@@ -72,7 +73,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     RecyclerView add_contect_list;
     public static TopUserListDataAdapter topUserListDataAdapter;
     TextView tv_create;
-
+    LinearLayout mMainLayout;
 
 
 
@@ -90,7 +91,9 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         grouplists=new ArrayList<>();
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
         try {
-            GroupEvent();
+            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                GroupEvent();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -130,7 +133,9 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
                         try {
                             currentPage=currentPage + 1;
-                            GroupEvent1();
+                            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                GroupEvent1();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -145,6 +150,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
 
     private void IntentUI(View view) {
 
+        mMainLayout = view.findViewById(R.id.mMainLayout);
         main_layout = view.findViewById(R.id.demo_layout);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         group_recyclerView = view.findViewById(R.id.group_list);

@@ -12,16 +12,20 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.contactninja.Campaign.Fragment.Campaign_Email_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Sms_Fragment;
 import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
 
@@ -37,6 +41,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
             R.drawable.ic_email,
             R.drawable.ic_message_tab,
     };
+    LinearLayout mMainLayout;
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -53,9 +59,24 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         viewPager.setAdapter(pagerAdapter);
 
 
-        tabLayout.setupWithViewPager(viewPager);
-       tabLayout.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#4A4A4A"));
 
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#4A4A4A"));
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(final int i, final float v, final int i2) {
+            }
+            @Override
+            public void onPageSelected(final int i) {
+                YourFragmentInterface fragment = (YourFragmentInterface) pagerAdapter.instantiateItem(viewPager, i);
+                if (fragment != null) {
+                    fragment.fragmentBecameVisible();
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(final int i) {
+            }
+        });
         // Iterate over all tabs and set the custom view
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
@@ -79,6 +100,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
+        mMainLayout=findViewById(R.id.mMainLayout);
 
 
 
@@ -91,7 +113,21 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.save_button:
-                startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+               Log.e("Type",sessionManager.getCampaign_type_name(getApplicationContext()));
+               Log.e("Type 1",sessionManager.getCampaign_type(getApplicationContext()));
+               if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"EMAIL OR SMS select",false);
+                }
+               else if (sessionManager.getCampaign_type(getApplicationContext()).equals("Email")){
+                   startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+               }
+               else {
+                   startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+               }
+
+
+                //
                 break;
 
         }

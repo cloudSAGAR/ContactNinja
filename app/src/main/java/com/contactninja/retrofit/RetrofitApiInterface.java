@@ -69,6 +69,24 @@ public interface RetrofitApiInterface {
     @POST("refreshToken")
     Call<ApiResponse> RefressToken(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
+    @POST("user/changepassword")
+    Call<ApiResponse> ResetPassword(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+    @POST("hashtags/list")
+    Call<ApiResponse> Hastag_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+     @POST("templates/list")
+    Call<ApiResponse> Template_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+   @POST("templates/add")
+    Call<ApiResponse> CreateTemplate(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+   @POST("usergmail/list")
+    Call<ApiResponse> Mail_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+
  /*   @Multipart
     @POST("contact/import")
     Call<ApiResponse> Upload_csv(@Header("Accept") String api,
@@ -108,5 +126,19 @@ public interface RetrofitApiInterface {
     @POST("forgotPassword")
     Call<ApiResponse>  ForgotPassword(@Header("Accept") String api, @Body JsonObject jsonObject);
 
+    @POST("sequence/task_store")
+    Call<ApiResponse>  Task_store(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+    @POST("manual_task/store")
+    Call<ApiResponse>  manual_task_store(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+    @POST("manual_task/execute")
+    Call<ApiResponse>  Email_execute(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
+
+
+    @POST("timezone/list")
+    Call<ApiResponse>  Timezone_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
 }

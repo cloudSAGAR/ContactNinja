@@ -2,16 +2,22 @@ package com.contactninja.Setting;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,20 +27,24 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.contactninja.Model.Plandetail;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrentPlanActivity extends AppCompatActivity implements View.OnClickListener {
+public class CurrentPlanActivity extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back;
     ViewPager2 viewPager2;
     List<Plandetail> plandetailslist=new ArrayList<>();
     TextView tv_save;
-
+    private BroadcastReceiver mNetworkReceiver;
+    RelativeLayout mMainLayout;
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_plan);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         ListShow();
     }
@@ -366,6 +376,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         tv_save = findViewById(R.id.tv_save);
         viewPager2 = findViewById(R.id.viewpager);
         iv_back=findViewById(R.id.iv_back);
@@ -390,7 +401,36 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
         finish();
         super.onBackPressed();
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(CurrentPlanActivity.this, mMainLayout);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
     public static class ViewPageAdepter extends RecyclerView.Adapter<ViewPageAdepter.viewholder>{
 
         public Context mCtx;

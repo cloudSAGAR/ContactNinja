@@ -1,7 +1,11 @@
 package com.contactninja.Auth;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -75,11 +80,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView btn_chnage_forgot,iv_password_invalid;
     RelativeLayout forgot_password;
     ImageView iv_showPassword;
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mNetworkReceiver = new ConnectivityReceiver();
         mAuth = FirebaseAuth.getInstance();
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         loadingDialog = new LoadingDialog(LoginActivity.this);
@@ -98,10 +105,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     private void firebase() {
         FirebaseMessaging.getInstance().getToken()
@@ -250,7 +253,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             iv_password_invalid.setVisibility(View.GONE);
                             iv_invalid.setVisibility(View.GONE);
-                            Uservalidate();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                Uservalidate();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -258,7 +263,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //loadingDialog.showLoadingDialog();
                         try {
                             iv_invalid.setVisibility(View.GONE);
-                            Uservalidate();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                Uservalidate();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -450,6 +457,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
 
 
@@ -465,7 +497,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  paramObject.addProperty("email", txt_email);
              }
              else {
-                 paramObject.addProperty("contact_number", txt_contect);
+                 paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+txt_contect);
              }
              paramObject.addProperty("first_name", "");
             paramObject.addProperty("last_name", "");
@@ -487,7 +519,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }*/
                             VerifyPhone(edit_Mobile.getText().toString());
                         }else {
-                            LoginData();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                LoginData();
+                            }
                         }
                     } else {
                         loadingDialog.cancelLoading();

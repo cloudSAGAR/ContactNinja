@@ -24,6 +24,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission
         android:name="android.permission.CALL_PHONE"
         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
@@ -48,8 +49,33 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Setting.EmailListActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.Email_verification"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddContect.EmailSend_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_Name_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.ContectAndGroup_Actvity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Automated_Email_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Campaign.Campaign_Overview"
             android:exported="false"
+
             android:screenOrientation="portrait" />
         <activity
             android:name=".Campaign.First_Step_Start_Activity"

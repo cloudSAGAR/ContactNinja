@@ -5,9 +5,12 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -29,9 +32,12 @@ import java.util.regex.Pattern;
 public class Global extends Application   {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static String about="https://contactninja.us/about/";
+    public static String Email_auth="https://app.contactninja.org/email_api/callback.php";
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;
+    public static int count=1;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -187,10 +193,22 @@ public class Global extends Application   {
         }
     }
 
+    public static boolean isNetworkAvailable(Activity context, View view) {
+        boolean isAvailable;
+        ConnectivityManager connectivityMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityMgr.getActiveNetworkInfo();
+        isAvailable = networkInfo != null && networkInfo.isConnected();
+        if (isAvailable) {
+            return true;
+        } else {
+            Global.checkConnectivity(context, view);
+            return false;
+        }
+    }
 
     public static String getToken(SessionManager sessionManager){
-
         String token=sessionManager.getRefresh_token();
+        Log.e("token",token);
         return token;
     }
 

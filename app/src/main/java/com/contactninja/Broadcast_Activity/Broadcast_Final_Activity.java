@@ -1,6 +1,7 @@
 package com.contactninja.Broadcast_Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,8 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +33,9 @@ import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
@@ -37,7 +45,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Broadcast_Final_Activity extends AppCompatActivity implements View.OnClickListener ,CardClick {
+public class Broadcast_Final_Activity extends AppCompatActivity implements View.OnClickListener ,CardClick, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back, iv_Setting;
     TextView save_button,tv_start,tv_repite,tv_ends;
     RecyclerView add_contect_list,add_group_list;
@@ -50,10 +58,13 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
     String start_date="",end_date="",time="",type="";
     List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
     CardListAdepter cardListAdepter;
+    private BroadcastReceiver mNetworkReceiver;
+    LinearLayout main_layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast_final);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
 
         Intent intent=getIntent();
@@ -232,6 +243,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
 
     }
     private void IntentUI() {
+        main_layout = findViewById(R.id.main_layout);
         iv_back = findViewById(R.id.iv_back);
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
@@ -422,6 +434,36 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
 
         }
 
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Broadcast_Final_Activity.this, main_layout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass>

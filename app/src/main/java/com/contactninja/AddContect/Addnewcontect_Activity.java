@@ -2,6 +2,7 @@ package com.contactninja.AddContect;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
@@ -9,11 +10,14 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -29,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -38,6 +43,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
@@ -45,12 +51,16 @@ import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.Email_verification;
+import com.contactninja.Setting.SettingActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -77,7 +87,7 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener , YourFragmentInterface {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -98,6 +108,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     RoundedImageView iv_user;
     LinearLayout layout_pulse;
     String option_type = "";
+    private BroadcastReceiver mNetworkReceiver;
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
@@ -141,6 +152,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnewcontect);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         sessionManager=new SessionManager(this);
         loadingDialog=new LoadingDialog(this);
@@ -319,7 +331,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
                     else {
                          try {
-                            AddContect_Api1();
+                             if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)) {
+                                 AddContect_Api1();
+                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -341,7 +356,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     } else {
 
                         try {
-                            AddContect_Api();
+                            if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)) {
+                                AddContect_Api();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -365,7 +382,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
                         try {
-                            AddContect_Api1();
+                            if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)) {
+                                AddContect_Api1();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -666,7 +685,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("state", state);
         paramObject.put("team_id", "1");
         // addcontectModel.getTime()
-        paramObject.put("timezone_id", "2");
+        paramObject.put("timezone_id", addcontectModel.getTime());
         paramObject.put("twitter_link", addcontectModel.getTwitter());
         paramObject.put("user_id", user_id);
         paramObject.put("zipcode", zip_code);
@@ -786,7 +805,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("state", state);
         paramObject.put("team_id", Contect_data.getTeamId());
         // addcontectModel.getTime()
-        paramObject.put("timezone_id", "2");
+        paramObject.put("timezone_id", addcontectModel.getTime());
         paramObject.put("twitter_link", addcontectModel.getTwitter());
         paramObject.put("user_id", user_id);
         paramObject.put("zipcode", zip_code);
@@ -1094,4 +1113,37 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
+    @Override
+    public void fragmentBecameVisible() {
+
+    }
+
+
+
 }

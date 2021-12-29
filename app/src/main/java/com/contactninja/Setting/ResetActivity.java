@@ -1,31 +1,67 @@
 package com.contactninja.Setting;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.contactninja.Auth.SignupActivity;
+import com.contactninja.Model.Grouplist;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
-public class ResetActivity extends AppCompatActivity implements View.OnClickListener {
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
+
+import retrofit2.Response;
+
+public class ResetActivity extends AppCompatActivity implements View.OnClickListener ,ConnectivityReceiver.ConnectivityReceiverListener {
 
     TextView btn_Create_password,iv_invalid;
     EditText edit_Current_Password,edit_New_Password,edit_Confirm_Password;
     ImageView iv_current_showPassword,iv_new_showPassword,iv_Confirm_showPassword;
     CoordinatorLayout mMainLayout;
+    SessionManager sessionManager;
+    LoadingDialog loadingDialog;
+    RetrofitCalls retrofitCalls;
+    Handler mHandler=new Handler();
+    private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset);
+        mNetworkReceiver = new ConnectivityReceiver();
+        retrofitCalls = new RetrofitCalls(ResetActivity.this);
+        sessionManager=new SessionManager(ResetActivity.this);
+        loadingDialog=new LoadingDialog(ResetActivity.this);
         intentView();
+
     }
 
 
@@ -53,7 +89,16 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.btn_Create_password:
                 if(checkVelidaction()){
-                       Global.Messageshow(getApplicationContext(),mMainLayout,"Successful but Api :(",false);
+                    iv_invalid.setText("");
+                    try {
+                        if(Global.isNetworkAvailable(ResetActivity.this,mMainLayout)) {
+                            apiCall();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
                 break;
                 case R.id.iv_current_showPassword:
@@ -107,6 +152,56 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+        private void apiCall() throws JSONException {
+            loadingDialog.showLoadingDialog();
+            SignResponseModel signResponseModel=SessionManager.getGetUserdata(ResetActivity.this);
+
+            String token = Global.getToken(sessionManager);
+            JsonObject obj = new JsonObject();
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("old_password", edit_Current_Password.getText().toString().trim());
+            paramObject.addProperty("password", edit_New_Password.getText().toString().trim());
+            paramObject.addProperty("c_password", edit_Confirm_Password.getText().toString().trim());
+            paramObject.addProperty("organization_id", "1");
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("user_id",signResponseModel.getUser().getId());
+            obj.add("data", paramObject);
+            retrofitCalls.ResetPassword(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+                @Override
+                public void success(Response<ApiResponse> response) {
+
+                    loadingDialog.cancelLoading();
+
+                    if (response.body().getStatus() == 200) {
+                        Global.Messageshow(getApplication(),mMainLayout,response.body().getMessage(),true);
+                        Runnable mRunnable = () -> {
+                            onBackPressed();
+                        };
+                        int SPLASH_DISPLAY_LENGTH = 2000;
+                        mHandler.postDelayed(mRunnable, SPLASH_DISPLAY_LENGTH);
+                    } else {
+                        Global.Messageshow(getApplication(),mMainLayout,response.body().getMessage(),false);
+                    }
+                }
+
+                @Override
+                public void error(Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            });
+
+
+
+
+
+
+
+
+        }
+
+
     private boolean checkVelidaction() {
         String CurrentPassword=edit_Current_Password.getText().toString().trim();
         String NewPassword=edit_New_Password.getText().toString().trim();
@@ -139,5 +234,36 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(ResetActivity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

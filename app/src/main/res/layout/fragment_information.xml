@@ -764,7 +764,7 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="@string/add_home"
+                            android:text="@string/add_timezone"
                             android:textColor="@color/home_list_sub_data"
                             android:textStyle="bold">
 

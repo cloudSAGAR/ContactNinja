@@ -96,7 +96,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
     List<ContectListData.Contact> contectListData;
     List<ContectListData.Contact> select_contectListData;
     Activity activity;
-    Broadcste_Contect_Fragment(Activity activity0){
+    public Broadcste_Contect_Fragment(Activity activity0){
         this.activity=activity0;
     }
 

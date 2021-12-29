@@ -1,32 +1,65 @@
 package com.contactninja.Setting;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.contactninja.MainActivity;
+import com.contactninja.Model.TemplateList;
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
-public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
+
+import retrofit2.Response;
+
+public class SettingActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     TextView tv_version_name;
     ImageView iv_back;
-    LinearLayout layout_logout, layout_resetPassword, layout_template, layout_Current_plan, layout_about;
+    LinearLayout layout_logout, layout_resetPassword, layout_template, layout_Current_plan, layout_about, layout_mail_box;
     SessionManager sessionManager;
+    RelativeLayout mMainLayout;
+    private BroadcastReceiver mNetworkReceiver;
+    RetrofitCalls retrofitCalls;
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        mNetworkReceiver = new ConnectivityReceiver();
+        loadingDialog=new LoadingDialog(SettingActivity.this);
+        retrofitCalls = new RetrofitCalls(SettingActivity.this);
         sessionManager = new SessionManager(getApplicationContext());
         intentView();
 
@@ -46,12 +79,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void intentView() {
+        mMainLayout = findViewById(R.id.mMainLayout);
+        layout_mail_box = findViewById(R.id.layout_mail_box);
         tv_version_name = findViewById(R.id.tv_version_name);
         layout_Current_plan = findViewById(R.id.layout_Current_plan);
         layout_about = findViewById(R.id.layout_about);
         layout_template = findViewById(R.id.layout_template);
         layout_resetPassword = findViewById(R.id.layout_resetPassword);
         layout_logout = findViewById(R.id.layout_logout);
+        layout_mail_box.setOnClickListener(this);
         layout_template.setOnClickListener(this);
         layout_logout.setOnClickListener(this);
         layout_Current_plan.setOnClickListener(this);
@@ -70,6 +106,37 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(SettingActivity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -93,9 +160,50 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("WebUrl", Global.about);
                 startActivity(intent);
                 break;
+
+            case R.id.layout_mail_box:
+
+
+                try {
+                    if(Global.isNetworkAvailable(SettingActivity.this, MainActivity.mMainLayout)) {
+                        Mail_list();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                break;
         }
     }
+    private void Mail_list() throws JSONException {
 
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(SettingActivity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
+                }else {
+                 startActivity(new Intent(getApplicationContext(),Email_verification.class));
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
     public void showAlertDialogButtonClicked() {
 
         // Create an alert builder

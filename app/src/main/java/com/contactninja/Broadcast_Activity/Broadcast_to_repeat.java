@@ -1,8 +1,14 @@
 package com.contactninja.Broadcast_Activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,20 +19,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
 
-public class Broadcast_to_repeat extends AppCompatActivity {
+public class Broadcast_to_repeat extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
 
     ImageView iv_back, iv_Setting;
     TextView save_button;
     Spinner day_spinner,time_spinner;
     String day_txt="",time_txt="";
-
+    private BroadcastReceiver mNetworkReceiver;
+    ConstraintLayout mMainLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast_to_repeat);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
 
         setSpinner_data();
@@ -123,6 +134,7 @@ public class Broadcast_to_repeat extends AppCompatActivity {
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         iv_back=findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button=findViewById(R.id.save_button);
@@ -133,5 +145,35 @@ public class Broadcast_to_repeat extends AppCompatActivity {
         day_spinner=findViewById(R.id.day_spinner);
         time_spinner=findViewById(R.id.time_spinner);
 
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Broadcast_to_repeat.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 }

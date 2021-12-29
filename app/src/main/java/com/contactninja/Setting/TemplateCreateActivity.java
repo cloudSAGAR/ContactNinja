@@ -1,71 +1,165 @@
 package com.contactninja.Setting;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Interface.TextClick;
-import com.contactninja.Model.TemplateText;
+import com.contactninja.MainActivity;
+import com.contactninja.Model.HastagList;
+import com.contactninja.Model.TemplateList;
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TemplateCreateActivity extends AppCompatActivity implements View.OnClickListener, TextClick {
+import retrofit2.Response;
+
+public class TemplateCreateActivity extends AppCompatActivity implements View.OnClickListener, TextClick, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button;
-    EditText edit_template,edit_template_name;
+    EditText edit_template, edit_template_name, edit_template_subject;
     PicUpTextAdepter picUpTextAdepter;
     RecyclerView rv_direct_list;
-    List<TemplateText> templateTextList=new ArrayList<>();
-    LinearLayout layout_title;
+    List<HastagList.TemplateText> templateTextList = new ArrayList<>();
+    LinearLayout layout_title, layout_email_subject;
+    RelativeLayout mMainLayout;
+    private BroadcastReceiver mNetworkReceiver;
+    RetrofitCalls retrofitCalls;
+    LoadingDialog loadingDialog;
+    SessionManager sessionManager;
+    TemplateList.Template template;
+    boolean isEdit = false;
+    String template_type = "";
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_template_create);
+        mNetworkReceiver = new ConnectivityReceiver();
+        retrofitCalls = new RetrofitCalls(TemplateCreateActivity.this);
+        loadingDialog = new LoadingDialog(TemplateCreateActivity.this);
+        sessionManager = new SessionManager(TemplateCreateActivity.this);
         IntentUI();
-        Listset();
+
+        template = (TemplateList.Template) getIntent().getSerializableExtra("template");
+        template_type = getIntent().getStringExtra("template_type");
+        if (template != null) {
+            template_type = template.getType();
+            if (template_type.equals("EMAIL")) {
+                layout_email_subject.setVisibility(View.VISIBLE);
+            } else {
+                layout_email_subject.setVisibility(View.GONE);
+            }
+            setdata(template);
+            save_button.setText(getResources().getText(R.string.update));
+            isEdit = true;
+        } else {
+            if (template_type.equals("EMAIL")) {
+                layout_email_subject.setVisibility(View.VISIBLE);
+            } else {
+                layout_email_subject.setVisibility(View.GONE);
+            }
+            save_button.setText(getResources().getText(R.string.save));
+            isEdit = false;
+        }
+
+        try {
+            if (Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
+                Hastag_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void Listset() {
-        for(int i=0;i<=4;i++){
-            TemplateText templateText=new TemplateText();
-            if(i==0){
-                templateText.setTemplateText("Placeholders #");
-                templateText.setSelect(true);
-            }else if(i==1){
-                templateText.setTemplateText("First Name");
-                templateText.setSelect(false);
-            }else if(i==2){
-                templateText.setTemplateText("Last Name");
-                templateText.setSelect(false);
-            }else if(i==3){
-                templateText.setTemplateText("Hi");
-                templateText.setSelect(false);
-            }else if(i==4){
-                templateText.setTemplateText("Hello");
-                templateText.setSelect(false);
+    private void setdata(TemplateList.Template template) {
+        edit_template_name.setText(template.getTemplateName());
+        edit_template.setText(template.getContentBody());
+        edit_template.setSelection(edit_template.getText().length());
+    }
+
+    private void Hastag_list() throws JSONException {
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(TemplateCreateActivity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    templateTextList.clear();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<HastagList>() {
+                    }.getType();
+                    HastagList hastagList = new Gson().fromJson(headerString, listType);
+                    templateTextList = hastagList.getHashtag();
+                    HastagList.TemplateText templateText = new HastagList.TemplateText();
+                    templateText.setDescription("Placeholders #");
+                    templateText.setSelect(true);
+                    templateTextList.add(0, templateText);
+
+                    Listset(templateTextList);
+
+                    //   sessionManager.setUserdata(getApplicationContext(),data);
+                }
             }
-            templateTextList.add(i,templateText);
-        }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
+    }
+
+    private void Listset(List<HastagList.TemplateText> templateTextList) {
+
         rv_direct_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         rv_direct_list.setHasFixedSize(true);
         picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
@@ -73,9 +167,11 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
+        layout_email_subject = findViewById(R.id.layout_email_subject);
+        edit_template_subject = findViewById(R.id.edit_template_subject);
         layout_title = findViewById(R.id.layout_title);
         save_button = findViewById(R.id.save_button);
-        save_button.setText(getResources().getText(R.string.save));
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         edit_template_name = findViewById(R.id.edit_template_name);
@@ -96,14 +192,157 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             case R.id.iv_back:
                 onBackPressed();
                 break;
-                case R.id.save_button:
+            case R.id.save_button:
+                if (isEdit) {
+                    //update template
+                    try {
+                        if (Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
+                            if (isValidation()) {
+                                UpdateTemplate();
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //create template
+                    try {
+                        if (Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
+                            if (isValidation())
+                                CreateTemplate();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 finish();
                 break;
 
-                case R.id.layout_title:
-                    showAlertDialogButtonClicked();
-                    break;
+            case R.id.layout_title:
+                showAlertDialogButtonClicked();
+                break;
         }
+    }
+
+    private boolean isValidation() {
+        if (template_type.equals("SMS")) {
+            if (edit_template_name.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+            }
+            if (edit_template.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+            } else {
+                return true;
+            }
+        } else {
+            if (edit_template_name.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+            }
+            if (edit_template_subject.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
+            }
+            if (edit_template.getText().toString().equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void UpdateTemplate() throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(TemplateCreateActivity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("id", template.getId());
+        paramObject.addProperty("template_name", edit_template_name.getText().toString().trim());
+        paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
+        String template_slug = edit_template_name.getText().toString().toUpperCase().replace(" ", "_");
+        paramObject.addProperty("template_slug", template_slug);
+        paramObject.addProperty("content_body", edit_template.getText().toString().trim());
+        paramObject.addProperty("type", template_type);
+
+        obj.add("data", paramObject);
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    onBackPressed();
+                } else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                "The template title has already been taken.", false);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
+    private void CreateTemplate() throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(TemplateCreateActivity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("template_name", edit_template_name.getText().toString().trim());
+        paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
+        String template_slug = edit_template_name.getText().toString().toUpperCase().replace(" ", "_");
+        paramObject.addProperty("template_slug", template_slug);
+        paramObject.addProperty("content_body", edit_template.getText().toString().trim());
+        paramObject.addProperty("type", template_type);
+
+        obj.add("data", paramObject);
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    onBackPressed();
+
+                } else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                "The template title has already been taken.", false);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
     }
 
     public void showAlertDialogButtonClicked() {
@@ -138,7 +377,6 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     }
 
 
-
     @Override
     public void onBackPressed() {
         finish();
@@ -146,22 +384,54 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     }
 
     @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(TemplateCreateActivity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
+    @Override
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
-        String curenttext=edit_template.getText().toString();
-        String Newtext=curenttext+"{"+s+"}";
+        String curenttext = edit_template.getText().toString();
+        String Newtext = curenttext + "{" + s + "}";
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
 
-    static class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder>{
+    static class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
         public Context mCtx;
-        List<TemplateText> templateTextList;
+        List<HastagList.TemplateText> templateTextList;
         TextClick interfaceClick;
-        public PicUpTextAdepter(Context applicationContext, List<TemplateText> templateTextList,TextClick interfaceClick) {
-            this.mCtx=applicationContext;
-            this.templateTextList=templateTextList;
-            this.interfaceClick=interfaceClick;
+
+        public PicUpTextAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList, TextClick interfaceClick) {
+            this.mCtx = applicationContext;
+            this.templateTextList = templateTextList;
+            this.interfaceClick = interfaceClick;
         }
 
         @NonNull
@@ -174,22 +444,22 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
 
         @Override
         public void onBindViewHolder(@NonNull viewholder holder, int position) {
-            TemplateText item=templateTextList.get(position);
-            holder.tv_item.setText(item.getTemplateText());
-                holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
-            if(item.isSelect()){
+            HastagList.TemplateText item = templateTextList.get(position);
+            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
                 holder.line_view.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.line_view.setVisibility(View.GONE);
             }
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!item.isSelect()){
-                        Handler  handler = new Handler();
+                    if (!item.isSelect()) {
+                        Handler handler = new Handler();
                         Runnable r = new Runnable() {
                             @SuppressLint("NotifyDataSetChanged")
                             public void run() {
@@ -199,12 +469,10 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getTemplateText());
+                        interfaceClick.OnClick(item.getDescription());
                     }
                 }
             });
-
-
 
 
         }
@@ -217,10 +485,11 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         public class viewholder extends RecyclerView.ViewHolder {
             TextView tv_item;
             View line_view;
+
             public viewholder(View view) {
                 super(view);
-                tv_item=view.findViewById(R.id.tv_item);
-                line_view=view.findViewById(R.id.line_view);
+                tv_item = view.findViewById(R.id.tv_item);
+                line_view = view.findViewById(R.id.line_view);
             }
         }
     }

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
 import com.contactninja.Model.Grouplist;
@@ -68,7 +69,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     // private GroupAdapter groupAdapter;
     private ProgressBar loadingPB;
     LinearLayout mMainLayout1,demo_layout;
-
+    LinearLayout mMainLayout;
     public GroupFragment() {
         // Required empty public constructor
     }
@@ -85,9 +86,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
 
+
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
        try {
-            GroupEvent();
+           if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+               GroupEvent();
+           }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -119,7 +123,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
                         try {
                             currentPage=currentPage + 1;
-                            GroupEvent1();
+                            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                GroupEvent1();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -136,7 +142,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 group_recyclerView.setAdapter(paginationAdapter);
 
                 try {
-                    GroupEvent();
+                    if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                        GroupEvent();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -158,6 +166,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         loadingPB = view.findViewById(R.id.idPBLoading);
         grouplists = new ArrayList<>();
         mMainLayout1=view.findViewById(R.id.mMainLayout1);
+        mMainLayout=view.findViewById(R.id.mMainLayout);
         demo_layout=view.findViewById(R.id.demo_layout);
         swipeToRefresh=view.findViewById(R.id.swipeToRefresh);
 

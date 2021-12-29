@@ -1,9 +1,14 @@
 package com.contactninja.Broadcast_Activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,21 +16,25 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 
-public class Broadcast_time_select extends AppCompatActivity {
+public class Broadcast_time_select extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back, iv_Setting;
     TextView save_button,selected_date;
     String time="";
     TimePicker timePicker;
     ConstraintLayout mMainLayout;
     String start_date="",end_date="",type="",repeat="",num_day="",r_day="",r_monthe="",day_txt="";
+    private BroadcastReceiver mNetworkReceiver;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast_time_select);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         Intent intent=getIntent();
         Bundle bundle=intent.getExtras();
@@ -106,4 +115,35 @@ public class Broadcast_time_select extends AppCompatActivity {
         mMainLayout=findViewById(R.id.mMainLayout);
 
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Broadcast_time_select.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
 }
