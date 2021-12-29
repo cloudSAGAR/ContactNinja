@@ -663,15 +663,27 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
            contactdetails.add(j,contactdetail);
        }*/
 
+
+
         JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
 
+        //Other Company Add
+      if (addcontectModel.getCompany().equals(""))
+        {
+            paramObject.put("company_name", "");
+            paramObject.put("company_id",  addcontectModel.getCompany_id());
+        }
+      else {
+          paramObject.put("company_name", addcontectModel.getCompany());
+          paramObject.put("company_id",  "");
+       }
         paramObject.put("address", address);
         paramObject.put("breakout_link", addcontectModel.getBreakoutu());
         paramObject.put("city", city);
-        paramObject.put("company_id", "");
-        paramObject.put("company_name", addcontectModel.getCompany());
+
+
         paramObject.put("company_url", "");
         paramObject.put("dob", addcontectModel.getBirthday());
         paramObject.put("dynamic_fields_value", "");
@@ -701,7 +713,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             if (contactdetails.get(i).getEmail_number().equals("")) {
 
             } else {
-                phone = contactdetails.get(i).getEmail_number();
+                if (contactdetails.get(i).getType().equals("NUMBER"))
+                {
+                    phone = contactdetails.get(i).getEmail_number();
+                }
                 phone_type = contactdetails.get(i).getLabel();
                 paramObject1.put("email_number", contactdetails.get(i).getEmail_number());
                 paramObject1.put("id", contactdetails.get(i).getId());
@@ -785,12 +800,11 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
-
         paramObject.put("id", Contect_data.getId());
         paramObject.put("address", address);
         paramObject.put("breakout_link", addcontectModel.getBreakoutu());
         paramObject.put("city", city);
-        paramObject.put("company_id", "");
+        paramObject.put("company_id", addcontectModel.getCompany_id());
         paramObject.put("company_name", addcontectModel.getCompany());
         paramObject.put("company_url", "");
         paramObject.put("dob", addcontectModel.getBirthday());
@@ -1143,6 +1157,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     public void fragmentBecameVisible() {
 
     }
+
 
 
 

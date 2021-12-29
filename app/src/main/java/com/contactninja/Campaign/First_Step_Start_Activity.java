@@ -550,7 +550,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<CampaignTask>() {
+                    Type listType = new TypeToken<List<CampaignTask>>() {
                     }.getType();
                     CampaignTask user_model1 = new Gson().fromJson(headerString, listType);
                     Log.e("User Model ",new Gson().toJson(user_model1));

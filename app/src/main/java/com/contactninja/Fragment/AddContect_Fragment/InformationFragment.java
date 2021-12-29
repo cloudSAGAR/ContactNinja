@@ -76,7 +76,7 @@ import ru.rambler.libs.swipe_layout.SwipeLayout;
 public class InformationFragment extends Fragment implements View.OnClickListener {
 
     List<TimezoneModel> timezoneModels=new ArrayList<>();
-    BottomSheetDialog bottomSheetDialog_time;
+    BottomSheetDialog bottomSheetDialog_time,bottomSheetDialog_company;
     EditText ev_address, ev_city, ev_zip, ev_zoom, ev_note,
             ev_company_url, ev_state, ev_job, ev_bob, ev_fb, ev_twitter, ev_breakout,
             ev_linkedin, ev_company;
@@ -103,9 +103,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     List<Contactdetail> emaildetails_list = new ArrayList<>();
     LoadingDialog loadingDialog;
     RetrofitCalls retrofitCalls;
-    LinearLayout mMainLayout;
+    LinearLayout mMainLayout,company_layout,other_company_layout;
     boolean edit = false;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    EditText ev_othre_company;
+
+
 
     public InformationFragment() {
         // Required empty public constructor
@@ -463,6 +466,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         });
 
+        company_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBottomSheetDialog_For_Company();
+            }
+        });
+
         return view;
     }
 
@@ -702,7 +712,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        ev_company.addTextChangedListener(new TextWatcher() {
+        ev_othre_company.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -897,6 +907,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         img_twitter = view.findViewById(R.id.img_twitter);
         img_linkdin = view.findViewById(R.id.img_linkdin);
         img_breakout = view.findViewById(R.id.img_breakout);
+        company_layout=view.findViewById(R.id.company_layout);
+        company_layout.setOnClickListener(this);
+        other_company_layout=view.findViewById(R.id.other_company_layout);
+        ev_othre_company=view.findViewById(R.id.ev_othre_company);
 
     }
 
@@ -2420,7 +2434,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     private void Timezoneget() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+        //loadingDialog.showLoadingDialog();
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getContext());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -2464,7 +2478,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         }
                     }
                 } else {
-                    loadingDialog.cancelLoading();
+                   // loadingDialog.cancelLoading();
                 }
 
 
@@ -2472,10 +2486,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
+              //  loadingDialog.cancelLoading();
             }
         });
     }
+
 
     void showBottomSheetDialog_For_TimeZone() {
         bottomSheetDialog_time = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
@@ -2490,6 +2505,61 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         home_type_list.setAdapter(timezoneAdapter);
 
         bottomSheetDialog_time.show();
+    }
+
+
+    void showBottomSheetDialog_For_Company() {
+        bottomSheetDialog_company = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
+        bottomSheetDialog_company.setContentView(R.layout.bottom_sheet_dialog_for_compnay);
+        RecyclerView home_type_list = bottomSheetDialog_company.findViewById(R.id.home_type_list);
+        TextView tv_item=bottomSheetDialog_company.findViewById(R.id.tv_item);
+        tv_item.setText("Please select Timezone");
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        home_type_list.setLayoutManager(layoutManager);
+        ImageView search_icon=bottomSheetDialog_company.findViewById(R.id.search_icon);
+        EditText ev_search=bottomSheetDialog_company.findViewById(R.id.ev_search);
+        LinearLayout add_new=bottomSheetDialog_company.findViewById(R.id.add_new);
+        search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ev_search.requestFocus();
+            }
+        });
+        List<ContectListData> List_is=SessionManager.getContectList(getContext());
+        List<ContectListData.Company> companyList=List_is.get(0).getCompany();
+        CompanyAdapter companyAdapter = new CompanyAdapter(getActivity(), companyList);
+        home_type_list.setAdapter(companyAdapter);
+        add_new.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                bottomSheetDialog_company.cancel();
+            }
+        });
+        ev_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                List<ContectListData.Company> temp = new ArrayList();
+                for(ContectListData.Company d: companyList){
+                    if(d.getName().toLowerCase().contains(charSequence.toString().toLowerCase())){
+                        temp.add(d);
+                        // Log.e("Same Data ",d.getUserName());
+                    }
+                }
+                companyAdapter.updateList(temp);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        bottomSheetDialog_company.show();
     }
 
     public class TimezoneAdapter extends RecyclerView.Adapter<TimezoneAdapter.InviteListDataclass> {
@@ -2553,6 +2623,65 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     }
 
+
+    public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.InviteListDataclass> {
+
+        public Context mCtx;
+        TextView phone_txt;
+        Contactdetail item;
+        private List<ContectListData.Company> companyList;
+
+        public CompanyAdapter(Context context, List<ContectListData.Company> companyList) {
+            this.mCtx = context;
+            this.companyList = companyList;
+        }
+
+        @NonNull
+        @Override
+        public InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.company_type_selecte, parent, false);
+            return new InviteListDataclass(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
+            ContectListData.Company WorkData = companyList.get(position);
+            holder.tv_item.setText(WorkData.getName());
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bottomSheetDialog_company.cancel();
+                    ev_company.setText(holder.tv_item.getText().toString());
+                    //addcontectModel.setCompany(String.valueOf(WorkData.getName()));
+                    addcontectModel.setCompany_id(String.valueOf(WorkData.getId()));
+                    SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return companyList.size();
+        }
+
+        public void updateList(List<ContectListData.Company> list) {
+            companyList = list;
+            notifyDataSetChanged();
+        }
+
+        public class InviteListDataclass extends RecyclerView.ViewHolder {
+            TextView tv_item;
+
+            public InviteListDataclass(@NonNull View itemView) {
+                super(itemView);
+                tv_item = itemView.findViewById(R.id.tv_item);
+            }
+
+        }
+
+    }
 
 
 
