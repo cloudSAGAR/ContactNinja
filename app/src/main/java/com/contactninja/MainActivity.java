@@ -235,7 +235,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setGotoSettingButtonText("setting")
                 .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.SEND_SMS ,Manifest.permission.READ_PHONE_STATE)
+                        Manifest.permission.SEND_SMS
+                )
                 .setRationaleConfirmText("OK")
                 .check();
 
@@ -272,6 +273,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
             user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
+
+
+
             TelephonyManager tm = (TelephonyManager)getSystemService(getApplicationContext().TELEPHONY_SERVICE);
             String country = tm.getNetworkCountryIso();
             int countryCode = 0;
@@ -283,8 +287,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (NumberParseException e) {
                 System.err.println("NumberParseException was thrown: " + e.toString());
             }
+            user_phone_number=user_phone_number.replace(" ","");
+            user_phone_number=user_phone_number.replace("-","");
             if(!user_phone_number.contains("+")){
-                user_phone_number=String.valueOf("+"+countryCode+user_phone_number.trim());
+                user_phone_number=String.valueOf("+"+countryCode+user_phone_number);
             }
             try {
                 contect_email = "";
@@ -321,13 +327,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
+
+
+
             String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                     .substring(0, 1)
                     .toUpperCase();
 
             boolean found = false;
             try {
-                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number.trim()));
+                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
 
             } catch (Exception e) {
 
@@ -352,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 try {
-                    csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number.trim(), contect_email, note, country, city, region, street, "" + lastname));
+                    csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
                 } catch (Exception e) {
 
                 }
@@ -364,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
                         // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
 
-                        csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number.trim());
+                        csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
 
                         csv_inviteListData.remove(indexOpt.getAsInt() + 1);
                     }
@@ -498,15 +507,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
 
-          /*  Intent intent = new Intent(Intent.ACTION_SEND);
+           /* Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/csv");
             intent.putExtra(Intent.EXTRA_SUBJECT, "Data");
             intent.putExtra(Intent.EXTRA_STREAM, path);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(intent, "Excel Data"));*/
-            if(Global.isNetworkAvailable(MainActivity.this,mMainLayout)) {
-                Uploadcsv(file);
-            }
+        if(Global.isNetworkAvailable(MainActivity.this,mMainLayout)) {
+            Uploadcsv(file);
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
