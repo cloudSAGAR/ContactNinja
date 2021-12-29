@@ -1,15 +1,9 @@
 package com.contactninja.AddContect;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,8 +16,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.Campaign.Automated_Email_Activity;
-import com.contactninja.Campaign.First_Step_Start_Activity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -33,7 +30,6 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Setting.Email_verification;
-import com.contactninja.Setting.SettingActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -56,49 +52,48 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class EmailSend_Activity extends AppCompatActivity implements  View.OnClickListener, TextClick ,TemplateClick {
+public class EmailSend_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick {
+    public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back;
-    TextView save_button,tv_use_tamplet;
+    TextView save_button, tv_use_tamplet;
     LinearLayout mMainLayout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
     PicUpTextAdepter picUpTextAdepter;
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
-    List<TemplateList.Template> templateList=new ArrayList<>();
-    public static final int PICKFILE_RESULT_CODE = 1;
+    List<TemplateList.Template> templateList = new ArrayList<>();
     String filePath;
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
 
-    EditText edit_template,ev_subject,ev_to,ev_from;
-    String email="",id="";
-    private int amountOfItemsSelected=0;
+    EditText edit_template, ev_subject, ev_to, ev_from;
+    String email = "", id = "";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
-
     int defult_id;
-    List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList=new ArrayList<>();
+    List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
+    List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
+    private int amountOfItemsSelected = 0;
 
-    List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_send);
-        loadingDialog=new LoadingDialog(this);
-        sessionManager=new SessionManager(this);
+        loadingDialog = new LoadingDialog(this);
+        sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        templateClick=EmailSend_Activity.this;
+        templateClick = EmailSend_Activity.this;
 
         IntentUI();
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        email=bundle.getString("email");
-        id=bundle.getString("id");
-        Log.e("Id is",id);
-        Log.e("email",email);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        email = bundle.getString("email");
+        id = bundle.getString("id");
+        Log.e("Id is", id);
+        Log.e("email", email);
         ev_to.setText(email);
 
         try {
@@ -115,22 +110,22 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
     }
 
     private void IntentUI() {
-        iv_back=findViewById(R.id.iv_back);
+        iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
-        save_button=findViewById(R.id.save_button);
+        save_button = findViewById(R.id.save_button);
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
-        mMainLayout=findViewById(R.id.mMainLayout);
+        mMainLayout = findViewById(R.id.mMainLayout);
         tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
         tv_use_tamplet.setOnClickListener(this);
         rv_direct_list = findViewById(R.id.rv_direct_list);
-        edit_template=findViewById(R.id.edit_compose);
-        ev_subject=findViewById(R.id.ev_subject);
-        ev_to=findViewById(R.id.ev_to);
-        ev_from=findViewById(R.id.ev_from);
-        iv_more=findViewById(R.id.iv_more);
+        edit_template = findViewById(R.id.edit_compose);
+        ev_subject = findViewById(R.id.ev_subject);
+        ev_to = findViewById(R.id.ev_to);
+        ev_from = findViewById(R.id.ev_from);
+        iv_more = findViewById(R.id.iv_more);
         iv_more.setOnClickListener(this);
 
 
@@ -203,7 +198,7 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
@@ -228,14 +223,14 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList= new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
         try {
-            if(Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -243,13 +238,13 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
         }
 
 
-
         tv_error.setVisibility(View.GONE);
 
         bottomSheetDialog_templateList.show();
     }
+
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -257,7 +252,7 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
@@ -267,18 +262,18 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
-                    TemplateList list=new Gson().fromJson(headerString, listType);
-                    String CurrentType=SessionManager.getCampaign_type(getApplicationContext());
+                    TemplateList list = new Gson().fromJson(headerString, listType);
+                    String CurrentType = SessionManager.getCampaign_type(getApplicationContext());
 
-                    TemplateList.Template template2=new TemplateList.Template();
+                    TemplateList.Template template2 = new TemplateList.Template();
                     template2.setTemplateName("Please select template");
                     template2.setSelect(false);
-                    templateList.add(0,template2);
+                    templateList.add(0, template2);
 
-                    for(int i=0;i<list.getTemplate().size();i++){
-                        if(CurrentType.equals("Email")){
-                            if(list.getTemplate().get(i).getType().equals("EMAIL")){
-                                TemplateList.Template template=new TemplateList.Template();
+                    for (int i = 0; i < list.getTemplate().size(); i++) {
+                        if (CurrentType.equals("Email")) {
+                            if (list.getTemplate().get(i).getType().equals("EMAIL")) {
+                                TemplateList.Template template = new TemplateList.Template();
                                 template.setId(list.getTemplate().get(i).getId());
                                 template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
                                 template.setTeamId(list.getTemplate().get(i).getTeamId());
@@ -292,9 +287,9 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
                                 template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
                                 templateList.add(template);
                             }
-                        }else {
-                            if(list.getTemplate().get(i).getType().equals("SMS")){
-                                TemplateList.Template template=new TemplateList.Template();
+                        } else {
+                            if (list.getTemplate().get(i).getType().equals("SMS")) {
+                                TemplateList.Template template = new TemplateList.Template();
                                 template.setId(list.getTemplate().get(i).getId());
                                 template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
                                 template.setTeamId(list.getTemplate().get(i).getTeamId());
@@ -312,11 +307,10 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
                     }
 
 
-
-                    TemplateList.Template template1=new TemplateList.Template();
+                    TemplateList.Template template1 = new TemplateList.Template();
                     template1.setTemplateName("Save Current as template");
                     template1.setSelect(true);
-                    templateList.add(templateList.size(),template1);
+                    templateList.add(templateList.size(), template1);
 
 
                     templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -350,71 +344,6 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
         edit_template.setText(template.getContentBody());
         edit_template.setSelection(edit_template.getText().length());
         bottomSheetDialog_templateList.dismiss();
-    }
-
-    class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
-
-        public Context mCtx;
-        List<TemplateList.Template> templateTextList1;
-        TemplateClick interfaceClick;
-
-        public TemplateAdepter(Context applicationContext, List<TemplateList.Template> templateTextList1, TemplateClick interfaceClick) {
-            this.mCtx = applicationContext;
-            this.templateTextList1 = templateTextList1;
-            this.interfaceClick = interfaceClick;
-        }
-
-        @NonNull
-        @Override
-        public TemplateAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.select_templet_layout, parent, false);
-            return new TemplateAdepter.viewholder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
-            TemplateList.Template item = templateTextList1.get(position);
-            holder.tv_item.setText(item.getTemplateName());
-            //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
-
-            if (item.isSelect()) {
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
-                holder.line_view.setVisibility(View.VISIBLE);
-            } else {
-                holder.line_view.setVisibility(View.GONE);
-            }
-
-            holder.tv_item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (holder.tv_item.getText().toString().equals("Save Current as template")) {
-                        showAlertDialogButtonClicked(view);
-                    }else {
-                        interfaceClick.OnClick(item);
-                    }
-                }
-            });
-
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return templateTextList1.size();
-        }
-
-        public class viewholder extends RecyclerView.ViewHolder {
-            TextView tv_item;
-            View line_view;
-
-            public viewholder(View view) {
-                super(view);
-                tv_item = view.findViewById(R.id.selected_broadcast);
-                line_view = view.findViewById(R.id.line_view);
-            }
-        }
     }
 
     public void showAlertDialogButtonClicked(View view) {
@@ -451,119 +380,11 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
 
     }
 
-
-    class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
-
-        public Context mCtx;
-        List<HastagList.TemplateText> templateTextList;
-        TextClick interfaceClick;
-
-        public PicUpTextAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList, TextClick interfaceClick) {
-            this.mCtx = applicationContext;
-            this.templateTextList = templateTextList;
-            this.interfaceClick = interfaceClick;
-        }
-
-        @NonNull
-        @Override
-        public PicUpTextAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.template_text_selecte, parent, false);
-            return new PicUpTextAdepter.viewholder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
-            HastagList.TemplateText item = templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
-            holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
-            if (item.getFile() != 0) {
-                holder.im_file.setVisibility(View.VISIBLE);
-                holder.tv_item.setVisibility(View.GONE);
-                holder.im_file.setImageDrawable(mCtx.getDrawable(item.getFile()));
-                holder.line_view.setVisibility(View.GONE);
-
-            } else {
-
-                holder.im_file.setVisibility(View.GONE);
-                holder.tv_item.setVisibility(View.VISIBLE);
-
-            }
-            if (position == 0) {
-
-                holder.line_view.setVisibility(View.GONE);
-
-            } else if (position == 1) {
-                holder.line_view.setVisibility(View.GONE);
-            } else {
-
-            }
-            holder.im_file.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (position == 1) {
-                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                        chooseFile.setType("*/*");
-                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
-                    }
-                }
-            });
-            if (item.isSelect()) {
-                holder.tv_item.setBackground(null);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
-                holder.line_view.setVisibility(View.VISIBLE);
-            } else {
-                holder.line_view.setVisibility(View.GONE);
-            }
-            holder.tv_item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!item.isSelect()) {
-                        Handler handler = new Handler();
-                        Runnable r = new Runnable() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            public void run() {
-                                notifyDataSetChanged();
-                            }
-                        };
-                        handler.postDelayed(r, 1000);
-                        holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
-                        holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getDescription());
-                    }
-                }
-            });
-
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return templateTextList.size();
-        }
-
-        public class viewholder extends RecyclerView.ViewHolder {
-            TextView tv_item;
-            View line_view;
-            ImageView im_file;
-
-            public viewholder(View view) {
-                super(view);
-                tv_item = view.findViewById(R.id.tv_item);
-                line_view = view.findViewById(R.id.line_view);
-                im_file = view.findViewById(R.id.im_file);
-            }
-        }
-    }
-
-
     private void Email_bouttomSheet() {
-      final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
-        bottomSheetDialog_templateList1= new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
+        final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
-        TextView tv_done=bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
         email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         EmailListAdepter emailListAdepter = new EmailListAdepter(getApplicationContext(), userLinkedGmailList);
@@ -582,99 +403,6 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
         bottomSheetDialog_templateList1.show();
     }
 
-    class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
-
-        public Context mCtx;
-        List<UserLinkedList.UserLinkedGmail> userLinkedGmailList;
-
-        public EmailListAdepter(Context applicationContext, List<UserLinkedList.UserLinkedGmail> userLinkedGmailList) {
-            this.mCtx = applicationContext;
-            this.userLinkedGmailList = userLinkedGmailList;
-        }
-
-        @NonNull
-        @Override
-        public EmailListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.email_select_layout, parent, false);
-            return new EmailListAdepter.viewholder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull EmailListAdepter.viewholder holder, int position) {
-
-            holder.tv_item.setText(userLinkedGmailList.get(position).getUserEmail());
-            if(holder.iv_selected.isSelected() == false){
-                holder.iv_unselected.setVisibility(View.VISIBLE);
-                holder.iv_selected.setVisibility(View.GONE);
-
-                amountOfItemsSelected++;
-            }
-            else if(holder.iv_selected.isSelected() == true){
-                holder.iv_unselected.setVisibility(View.GONE);
-                holder.iv_selected.setVisibility(View.VISIBLE);
-                amountOfItemsSelected--;
-            }
-
-            if (amountOfItemsSelected>1){
-
-            }
-            if (userLinkedGmailList.get(position).getIsDefault().toString().equals("1"))
-            {
-                holder.iv_dufult.setVisibility(View.VISIBLE);
-            }
-            else {
-                holder.iv_dufult.setVisibility(View.GONE);
-            }
-
-
-            holder.iv_selected.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    holder.iv_selected.setVisibility(View.GONE);
-                    holder.iv_unselected.setVisibility(View.VISIBLE);
-                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
-                    defult_id=userLinkedGmailList.get(position).getId();
-                   // notifyDataSetChanged();
-                }
-            });
-            holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    select_userLinkedGmailList.clear();
-                    holder.iv_selected.setVisibility(View.VISIBLE);
-                    holder.iv_unselected.setVisibility(View.GONE);
-                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
-                  //  notifyDataSetChanged();
-                }
-            });
-
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return userLinkedGmailList.size();
-        }
-
-        public class viewholder extends RecyclerView.ViewHolder {
-            TextView tv_item;
-            View line_view;
-            ImageView iv_dufult,iv_selected,iv_unselected;
-
-            public viewholder(View view) {
-                super(view);
-                tv_item = view.findViewById(R.id.tv_item);
-                line_view = view.findViewById(R.id.line_view);
-                iv_dufult = view.findViewById(R.id.iv_dufult);
-                iv_selected=view.findViewById(R.id.iv_selected);
-                iv_unselected=view.findViewById(R.id.iv_unselected);
-             }
-        }
-    }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -691,10 +419,9 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
         }
     }
 
-
     private void Mail_list() throws JSONException {
 
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -702,7 +429,7 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -712,19 +439,24 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<UserLinkedList>() {
                     }.getType();
-                    UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
-                    userLinkedGmailList=userLinkedGmail.getUserLinkedGmail();
-                    Log.e("Size is",""+userLinkedGmailList.size());
-                    for (int i=0;i<userLinkedGmailList.size();i++)
-                    {
-                        if (userLinkedGmailList.get(i).getIsDefault().toString().equals("1"))
-                        {
+                    UserLinkedList userLinkedGmail = new Gson().fromJson(headerString, listType);
+                    userLinkedGmailList = userLinkedGmail.getUserLinkedGmail();
+                    Log.e("Size is", "" + userLinkedGmailList.size());
+                    if (userLinkedGmailList.size() == 1) {
+                        iv_more.setVisibility(View.GONE);
+                    } else if (userLinkedGmailList.size() == 1) {
+                        iv_more.setVisibility(View.GONE);
+                    } else {
+                        iv_more.setVisibility(View.VISIBLE);
+                    }
+                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
+                        if (userLinkedGmailList.get(i).getIsDefault().toString().equals("1")) {
                             ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
-                            defult_id=userLinkedGmailList.get(i).getId();
+                            defult_id = userLinkedGmailList.get(i).getId();
                         }
                     }
-                    Log.e("List Is",new Gson().toJson(userLinkedGmailList));
-                }else {
+                    Log.e("List Is", new Gson().toJson(userLinkedGmailList));
+                } else {
                     startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
@@ -859,6 +591,266 @@ public class EmailSend_Activity extends AppCompatActivity implements  View.OnCli
                 loadingDialog.cancelLoading();
             }
         });
+    }
+
+    class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
+
+        public Context mCtx;
+        List<TemplateList.Template> templateTextList1;
+        TemplateClick interfaceClick;
+
+        public TemplateAdepter(Context applicationContext, List<TemplateList.Template> templateTextList1, TemplateClick interfaceClick) {
+            this.mCtx = applicationContext;
+            this.templateTextList1 = templateTextList1;
+            this.interfaceClick = interfaceClick;
+        }
+
+        @NonNull
+        @Override
+        public TemplateAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.select_templet_layout, parent, false);
+            return new TemplateAdepter.viewholder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
+            TemplateList.Template item = templateTextList1.get(position);
+            holder.tv_item.setText(item.getTemplateName());
+            //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+
+            if (item.isSelect()) {
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
+                holder.line_view.setVisibility(View.VISIBLE);
+            } else {
+                holder.line_view.setVisibility(View.GONE);
+            }
+
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (holder.tv_item.getText().toString().equals("Save Current as template")) {
+                        showAlertDialogButtonClicked(view);
+                    } else {
+                        interfaceClick.OnClick(item);
+                    }
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return templateTextList1.size();
+        }
+
+        public class viewholder extends RecyclerView.ViewHolder {
+            TextView tv_item;
+            View line_view;
+
+            public viewholder(View view) {
+                super(view);
+                tv_item = view.findViewById(R.id.selected_broadcast);
+                line_view = view.findViewById(R.id.line_view);
+            }
+        }
+    }
+
+    class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
+
+        public Context mCtx;
+        List<HastagList.TemplateText> templateTextList;
+        TextClick interfaceClick;
+
+        public PicUpTextAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList, TextClick interfaceClick) {
+            this.mCtx = applicationContext;
+            this.templateTextList = templateTextList;
+            this.interfaceClick = interfaceClick;
+        }
+
+        @NonNull
+        @Override
+        public PicUpTextAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.template_text_selecte, parent, false);
+            return new PicUpTextAdepter.viewholder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
+            HastagList.TemplateText item = templateTextList.get(position);
+            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            if (item.getFile() != 0) {
+                holder.im_file.setVisibility(View.VISIBLE);
+                holder.tv_item.setVisibility(View.GONE);
+                holder.im_file.setImageDrawable(mCtx.getDrawable(item.getFile()));
+                holder.line_view.setVisibility(View.GONE);
+
+            } else {
+
+                holder.im_file.setVisibility(View.GONE);
+                holder.tv_item.setVisibility(View.VISIBLE);
+
+            }
+            if (position == 0) {
+
+                holder.line_view.setVisibility(View.GONE);
+
+            } else if (position == 1) {
+                holder.line_view.setVisibility(View.GONE);
+            } else {
+
+            }
+            holder.im_file.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (position == 1) {
+                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                        chooseFile.setType("*/*");
+                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                    }
+                }
+            });
+            if (item.isSelect()) {
+                holder.tv_item.setBackground(null);
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+                holder.line_view.setVisibility(View.VISIBLE);
+            } else {
+                holder.line_view.setVisibility(View.GONE);
+            }
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!item.isSelect()) {
+                        Handler handler = new Handler();
+                        Runnable r = new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            public void run() {
+                                notifyDataSetChanged();
+                            }
+                        };
+                        handler.postDelayed(r, 1000);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
+                        holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
+                        interfaceClick.OnClick(item.getDescription());
+                    }
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return templateTextList.size();
+        }
+
+        public class viewholder extends RecyclerView.ViewHolder {
+            TextView tv_item;
+            View line_view;
+            ImageView im_file;
+
+            public viewholder(View view) {
+                super(view);
+                tv_item = view.findViewById(R.id.tv_item);
+                line_view = view.findViewById(R.id.line_view);
+                im_file = view.findViewById(R.id.im_file);
+            }
+        }
+    }
+
+    class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
+
+        public Context mCtx;
+        List<UserLinkedList.UserLinkedGmail> userLinkedGmailList;
+
+        public EmailListAdepter(Context applicationContext, List<UserLinkedList.UserLinkedGmail> userLinkedGmailList) {
+            this.mCtx = applicationContext;
+            this.userLinkedGmailList = userLinkedGmailList;
+        }
+
+        @NonNull
+        @Override
+        public EmailListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.email_select_layout, parent, false);
+            return new EmailListAdepter.viewholder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull EmailListAdepter.viewholder holder, int position) {
+
+            holder.tv_item.setText(userLinkedGmailList.get(position).getUserEmail());
+            if (holder.iv_selected.isSelected() == false) {
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+                holder.iv_selected.setVisibility(View.GONE);
+
+                amountOfItemsSelected++;
+            } else if (holder.iv_selected.isSelected() == true) {
+                holder.iv_unselected.setVisibility(View.GONE);
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                amountOfItemsSelected--;
+            }
+
+            if (amountOfItemsSelected > 1) {
+
+            }
+            if (userLinkedGmailList.get(position).getIsDefault().toString().equals("1")) {
+                holder.iv_dufult.setVisibility(View.VISIBLE);
+            } else {
+                holder.iv_dufult.setVisibility(View.GONE);
+            }
+
+
+            holder.iv_selected.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    holder.iv_selected.setVisibility(View.GONE);
+                    holder.iv_unselected.setVisibility(View.VISIBLE);
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
+                    defult_id = userLinkedGmailList.get(position).getId();
+                    // notifyDataSetChanged();
+                }
+            });
+            holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    select_userLinkedGmailList.clear();
+                    holder.iv_selected.setVisibility(View.VISIBLE);
+                    holder.iv_unselected.setVisibility(View.GONE);
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
+                    //  notifyDataSetChanged();
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return userLinkedGmailList.size();
+        }
+
+        public class viewholder extends RecyclerView.ViewHolder {
+            TextView tv_item;
+            View line_view;
+            ImageView iv_dufult, iv_selected, iv_unselected;
+
+            public viewholder(View view) {
+                super(view);
+                tv_item = view.findViewById(R.id.tv_item);
+                line_view = view.findViewById(R.id.line_view);
+                iv_dufult = view.findViewById(R.id.iv_dufult);
+                iv_selected = view.findViewById(R.id.iv_selected);
+                iv_unselected = view.findViewById(R.id.iv_unselected);
+            }
+        }
     }
 
 

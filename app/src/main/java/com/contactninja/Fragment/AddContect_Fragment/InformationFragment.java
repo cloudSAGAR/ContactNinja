@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,9 +32,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.TimezoneModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.WorkTypeData;
 import com.contactninja.R;
@@ -47,6 +50,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hbb20.CountryCodePicker;
@@ -55,6 +59,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -70,7 +75,8 @@ import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 public class InformationFragment extends Fragment implements View.OnClickListener {
 
-
+    List<TimezoneModel> timezoneModels=new ArrayList<>();
+    BottomSheetDialog bottomSheetDialog_time;
     EditText ev_address, ev_city, ev_zip, ev_zoom, ev_note,
             ev_company_url, ev_state, ev_job, ev_bob, ev_fb, ev_twitter, ev_breakout,
             ev_linkedin, ev_company;
@@ -420,6 +426,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.GONE);
         }
+        try {
+            Timezoneget();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         layout_bod.setOnClickListener(new View.OnClickListener() {
@@ -730,9 +741,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         select_label_zone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                zone_txt.setText(TimeZone.getDefault().getID());
-                addcontectModel.setTime(String.valueOf(TimeZone.getDefault().getID()));
-                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                showBottomSheetDialog_For_TimeZone();
+
             }
         });
 
@@ -1751,11 +1761,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
                 String getFirstletter = String.valueOf(item.getEmail_number().charAt(0));
-                if (!getFirstletter.equals("+")) {
-                    holder.edt_mobile_no.setText("+" + item.getEmail_number());
-                } else {
-                    holder.edt_mobile_no.setText(item.getEmail_number());
-                }
+
+                holder.edt_mobile_no.setText(item.getEmail_number());
                 holder.phone_txt.setText(item.getLabel());
                 holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -1882,7 +1889,18 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
-                String main_data = item.getEmail_number().replace("+91", "");
+                TelephonyManager tm = (TelephonyManager)getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
+                String country = tm.getNetworkCountryIso();
+                int countryCode = 0;
+                PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(getActivity());
+                try {
+                    // phone must begin with '+'
+                    Phonenumber.PhoneNumber numberProto = phoneUtil.parse(item.getEmail_number(), country.toUpperCase());
+                    countryCode = numberProto.getCountryCode();
+                } catch (NumberParseException e) {
+                    System.err.println("NumberParseException was thrown: " + e.toString());
+                }
+                String main_data = item.getEmail_number().replace("+"+countryCode, "");
 
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
@@ -2397,5 +2415,145 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         }
 
     }
+
+
+
+    private void Timezoneget() throws JSONException {
+
+        loadingDialog.showLoadingDialog();
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getContext());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JsonObject obj = new JsonObject();
+
+        JsonObject paramObject = new JsonObject();
+
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("team_id", "1");
+        obj.add("data", paramObject);
+
+      /*  JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is",new Gson().toJson(gsonObject));
+*/
+
+        retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken< List<TimezoneModel>>() {
+                    }.getType();
+                    List<TimezoneModel> timezoon = new Gson().fromJson(headerString, listType);
+                    timezoneModels.addAll(timezoon);
+                    loadingDialog.cancelLoading();
+                    for (int i=0;i<timezoon.size();i++)
+                    {
+                        if (zone_txt.getText().toString().equals(timezoon.get(i).getValue().toString()))
+                        {
+                            zone_txt.setText(timezoon.get(i).getText());
+                            Log.e("No Same Data","NO");
+                        }
+                        else {
+                            Log.e("No Same Data","Yes");
+                        }
+                    }
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+    void showBottomSheetDialog_For_TimeZone() {
+        bottomSheetDialog_time = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
+        bottomSheetDialog_time.setContentView(R.layout.bottom_sheet_dialog_for_home);
+        RecyclerView home_type_list = bottomSheetDialog_time.findViewById(R.id.home_type_list);
+        TextView tv_item=bottomSheetDialog_time.findViewById(R.id.tv_item);
+        tv_item.setText("Please select Timezone");
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        home_type_list.setLayoutManager(layoutManager);
+
+        TimezoneAdapter timezoneAdapter = new TimezoneAdapter(getActivity(), timezoneModels);
+        home_type_list.setAdapter(timezoneAdapter);
+
+        bottomSheetDialog_time.show();
+    }
+
+    public class TimezoneAdapter extends RecyclerView.Adapter<TimezoneAdapter.InviteListDataclass> {
+
+        public Context mCtx;
+        TextView phone_txt;
+        Contactdetail item;
+        private List<TimezoneModel> timezoneModels;
+
+        public TimezoneAdapter(Context context, List<TimezoneModel> timezoneModels) {
+            this.mCtx = context;
+            this.timezoneModels = timezoneModels;
+        }
+
+        @NonNull
+        @Override
+        public InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.work_type_selecte, parent, false);
+            return new InviteListDataclass(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
+            TimezoneModel WorkData = timezoneModels.get(position);
+            holder.tv_item.setText(WorkData.getText());
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                            bottomSheetDialog_time.cancel();
+                            zone_txt.setText(holder.tv_item.getText().toString());
+                            addcontectModel.setTime(String.valueOf(WorkData.getValue()));
+                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return timezoneModels.size();
+        }
+
+        public void updateList(List<TimezoneModel> list) {
+            timezoneModels = list;
+            notifyDataSetChanged();
+        }
+
+        public class InviteListDataclass extends RecyclerView.ViewHolder {
+            TextView tv_item;
+
+            public InviteListDataclass(@NonNull View itemView) {
+                super(itemView);
+                tv_item = itemView.findViewById(R.id.tv_item);
+            }
+
+        }
+
+    }
+
+
+
 
 }

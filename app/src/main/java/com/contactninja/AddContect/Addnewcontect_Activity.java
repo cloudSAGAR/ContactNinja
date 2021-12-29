@@ -685,7 +685,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("state", state);
         paramObject.put("team_id", "1");
         // addcontectModel.getTime()
-        paramObject.put("timezone_id", "2");
+        paramObject.put("timezone_id", addcontectModel.getTime());
         paramObject.put("twitter_link", addcontectModel.getTwitter());
         paramObject.put("user_id", user_id);
         paramObject.put("zipcode", zip_code);
@@ -805,7 +805,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("state", state);
         paramObject.put("team_id", Contect_data.getTeamId());
         // addcontectModel.getTime()
-        paramObject.put("timezone_id", "2");
+        paramObject.put("timezone_id", addcontectModel.getTime());
         paramObject.put("twitter_link", addcontectModel.getTwitter());
         paramObject.put("user_id", user_id);
         paramObject.put("zipcode", zip_code);

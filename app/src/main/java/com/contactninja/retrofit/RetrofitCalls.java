@@ -250,6 +250,13 @@ public class RetrofitCalls {
 
     }
 
+    public void Timezone_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Timezone_list(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
 
 
 
