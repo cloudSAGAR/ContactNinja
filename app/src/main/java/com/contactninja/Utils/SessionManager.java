@@ -169,9 +169,9 @@ public class SessionManager {
 
 
 
-    public  String getcontectexits() {
+    public  static String getcontectexits() {
 
-        String type= pref.getString(Contectexits_token, "");
+        String type= pref.getString(Contectexits_token, "0");
         return  type;
 
     }

@@ -3,7 +3,6 @@ package com.contactninja.Fragment.GroupFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,10 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.R;
-import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.LoadingDialog;
 import com.google.gson.Gson;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
@@ -105,7 +102,7 @@ public class MembersFragment extends Fragment {
     }
     private void IntentUI(View view) {
         contect_search = view.findViewById(R.id.contect_search);
-        rvinviteuserdetails=view.findViewById(R.id.contect_list);
+        rvinviteuserdetails=view.findViewById(R.id.contact_list);
         fastscroller=view.findViewById(R.id.fastscroller);
         fastscroller_thumb=view.findViewById(R.id.fastscroller_thumb);
 

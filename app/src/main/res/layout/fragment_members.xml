@@ -48,7 +48,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_weight="4"
 
-            android:id="@+id/contect_list"
+            android:id="@+id/contact_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false" />

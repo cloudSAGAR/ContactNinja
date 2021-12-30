@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,7 +48,6 @@ import com.contactninja.Model.Csv_InviteListData;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
-import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -281,7 +279,7 @@ public class ContectFragment extends Fragment {
             num_count.setText(contectListData.size()+" Contacts");
           /*  GetContactsIntoArrayList();*/
         } else {
-            /*GetContactsIntoArrayList();*/
+           /* GetContactsIntoArrayList();*/
         }
         //  getAllContect();
 
@@ -495,7 +493,7 @@ public class ContectFragment extends Fragment {
 
     private void IntentUI(View content_view) {
         mMainLayout = content_view.findViewById(R.id.mMainLayout);
-        rvinviteuserdetails = content_view.findViewById(R.id.contect_list);
+        rvinviteuserdetails = content_view.findViewById(R.id.contact_list);
         fastscroller = content_view.findViewById(R.id.fastscroller);
         fastscroller_thumb = content_view.findViewById(R.id.fastscroller_thumb);
         contect_search = content_view.findViewById(R.id.contect_search);
@@ -613,13 +611,13 @@ public class ContectFragment extends Fragment {
             if(SessionManager.getContectList(getActivity()).get(0).getContacts().size()!=
               csv_inviteListData.size()){
                 limit = csv_inviteListData.size();
-               // splitdata(csv_inviteListData);
+                splitdata(csv_inviteListData);
             }else {
                 contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
             }
         } else {
             limit = csv_inviteListData.size();
-           // splitdata(csv_inviteListData);
+            splitdata(csv_inviteListData);
         }
         //limit=csv_inviteListData.size();
         // splitdata(csv_inviteListData);

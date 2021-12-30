@@ -398,7 +398,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             loadingDialog.cancelLoading();
             //Log.e("Csv Size is ","0");
         } else {
-            if (Global.getcontectexits(sessionManager).equals("0")) {
+            String isContact= SessionManager.getcontectexits();
+            if (isContact.equals("0")) {
                 //Not Upload Contect Then If Call
                 if (Is_contact_exist.equals("0")) {
                     limit = csv_inviteListData.size();
@@ -905,8 +906,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_campaign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
-                startActivity(intent);
+               Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
+               startActivity(intent);
                 bottomSheetDialog.dismiss();
             }
         });
@@ -1100,7 +1101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
                 }*/
 
-                Log.e(  "Contect List Update Size", " : " + taskList.size());
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
                     List<Csv_InviteListData> csv_inviteListData1 = new ArrayList<>();

@@ -150,8 +150,8 @@ public class Global extends Application   {
     public static CircularProgressDrawable setplaceholder (Context context) {
         CircularProgressDrawable circularProgressDrawable;
         circularProgressDrawable = new CircularProgressDrawable(context);
-        circularProgressDrawable.setStrokeWidth(5f);
-        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.setStrokeWidth(1f);
+        circularProgressDrawable.setCenterRadius(15f);
         circularProgressDrawable.start();
         return circularProgressDrawable;
     }
@@ -237,11 +237,13 @@ public class Global extends Application   {
     }
 
 
+/*
     public static String getcontectexits(SessionManager sessionManager){
 
         String token=sessionManager.getcontectexits();
         return token;
     }
+*/
 
 
 }
