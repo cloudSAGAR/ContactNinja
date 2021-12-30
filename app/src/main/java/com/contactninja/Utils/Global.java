@@ -61,6 +61,7 @@ public class Global extends Application   {
         return date;
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();

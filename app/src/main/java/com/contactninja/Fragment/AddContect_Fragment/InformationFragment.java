@@ -205,6 +205,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                         rv_email.setAdapter(emailAdapter);
 
+
+                     /*   if (emaildetails_list.size()==0)
+                        {
+                            EmailViewAdd();
+                        }*/
+
+
                     } else {
                         Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
                         Contactdetail contactdetail = new Contactdetail();
@@ -227,6 +234,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     }
                 }
             }
+            if (emaildetails_list.size()==0)
+            {
+                EmailViewAdd();
+            }
+
 
         } else if (flag.equals("read")) {
             media_link.setVisibility(View.VISIBLE);

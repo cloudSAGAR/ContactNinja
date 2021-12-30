@@ -123,6 +123,7 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
+                                android:text="1"
                                 android:padding="5dp"
                                 android:textColor="@color/purple_200"
                                 android:textSize="@dimen/_16sdp"
@@ -163,6 +164,7 @@
                                 android:imeOptions="actionDone"
                                 android:inputType="number"
                                 android:maxLength="3"
+                                android:text="00"
                                 android:maxLines="1"
                                 android:padding="5dp"
                                 android:textColor="@color/purple_200"
@@ -308,6 +310,7 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
+                                android:text="1"
                                 android:padding="5dp"
                                 android:textColor="@color/purple_200"
                                 android:textSize="@dimen/_16sdp"
@@ -349,6 +352,7 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
+                                android:text="00"
                                 android:padding="5dp"
                                 android:textColor="@color/purple_200"
                                 android:textSize="@dimen/_16sdp"
@@ -402,6 +406,7 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/iv_back_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"

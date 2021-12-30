@@ -66,6 +66,9 @@ public class SessionManager {
     public static final String campaign_type="campaign_type";
     public static final String campaign_type_name="campaign_type_name";
 
+    public static final String campaign_day="campaign_day";
+    public static final String campaign_minute="campaign_minute";
+
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -571,5 +574,32 @@ public class SessionManager {
         }
         return contectList;
 
+    }
+
+
+
+    public static String getCampaign_Day(Context context) {
+
+        String type= pref.getString(campaign_day, "");
+        return  type;
+
+    }
+
+    public static void setCampaign_Day(String campaign_day1) {
+        editor.putString(campaign_day, campaign_day1);
+        editor.commit();
+    }
+
+
+    public static String getCampaign_minute(Context context) {
+
+        String type= pref.getString(campaign_minute, "");
+        return  type;
+
+    }
+
+    public static void setCampaign_minute(String campaign_minte1) {
+        editor.putString(campaign_minute, campaign_minte1);
+        editor.commit();
     }
 }

@@ -53,7 +53,6 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
-
         SampleFragmentPagerAdapter pagerAdapter =
                 new SampleFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -113,17 +112,57 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.save_button:
-               Log.e("Type",sessionManager.getCampaign_type_name(getApplicationContext()));
-               Log.e("Type 1",sessionManager.getCampaign_type(getApplicationContext()));
                if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,"EMAIL OR SMS select",false);
                 }
                else if (sessionManager.getCampaign_type(getApplicationContext()).equals("Email")){
-                   startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+                   if (SessionManager.getTask(getApplicationContext()).equals(null))
+                   {
+                       startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+                   }
+                   else {
+                       if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
+                       {
+                           Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Day",false);
+                       }
+                       else if (SessionManager.getCampaign_minute(getApplicationContext()).equals(""))
+                       {
+                           Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Minute",false);
+                       }
+                       else {
+
+                           startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+
+                       }
+                   }
+
                }
                else {
-                   startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+                   if (SessionManager.getTask(getApplicationContext()).equals(null))
+                   {
+                       startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+                   }
+                   else {
+                       if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
+                       {
+                           Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Day",false);
+                       }
+                       else  if (SessionManager.getCampaign_Day(getApplicationContext()).equals("0"))
+                       {
+                           Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Day",false);
+                       }
+                       else if (SessionManager.getCampaign_minute(getApplicationContext()).equals(""))
+                       {
+                           Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Minute",false);
+                       }
+                       else {
+
+                           startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+
+                       }
+                   }
+
                }
 
 

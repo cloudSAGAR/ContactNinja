@@ -43,7 +43,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     RecyclerView item_list;
     Campaign_OverviewAdapter campaign_overviewAdapter;
    /* List<String> stringList;*/
-    List<CampaignTask> campaignTasks=new ArrayList<>();
+    List<CampaignTask.SequenceTask> campaignTasks=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        campaignTasks.addAll(sessionManager.getTask(getApplicationContext()));
+        List<CampaignTask> camp_main_data=sessionManager.getTask(getApplicationContext());
+        campaignTasks.addAll(camp_main_data.get(0).getSequenceTask());
         /*stringList = new ArrayList<>();
         stringList.add("One ");
         stringList.add("Two");
@@ -102,7 +103,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         private static final int LOADING = 0;
         private static final int ITEM = 1;
         private final Context context;
-        private List<CampaignTask> movieList;
+        private List<CampaignTask.SequenceTask> movieList;
         private boolean isLoadingAdded = false;
 
         public Campaign_OverviewAdapter(Context context) {
@@ -111,7 +112,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         }
 
 
-        public void setMovieList(List<CampaignTask> movieList) {
+        public void setMovieList(List<CampaignTask.SequenceTask> movieList) {
             this.movieList = movieList;
         }
 
@@ -137,7 +138,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-            CampaignTask movieList_data = movieList.get(position);
+            CampaignTask.SequenceTask movieList_data = movieList.get(position);
             switch (getItemViewType(position)) {
                 case ITEM:
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
@@ -176,16 +177,28 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     {
                         String step_id= String.valueOf(SessionManager.getTask(getApplicationContext()).size()+1);
                         String stpe_tyep=SessionManager.getCampaign_type_name(getApplicationContext());
-                        movieViewHolder.tv_title.setText("Step#"+step_id+"("+stpe_tyep+" "+SessionManager.getCampaign_type(getApplicationContext())+")");
+                        movieViewHolder.tv_title.setText("Step#"+movieList.get(position).getStepNo()+"("+movieList.get(position).getManageBy()+" "+movieList.get(position).getType()+")");
                     }
                     else {
                         String step_id= String.valueOf(SessionManager.getTask(getApplicationContext()).size()+1);
                         String stpe_tyep=SessionManager.getCampaign_type_name(getApplicationContext());
-                        movieViewHolder.tv_title.setText("Step#"+step_id+"("+stpe_tyep+" "+SessionManager.getCampaign_type(getApplicationContext())+")");
+                        movieViewHolder.tv_title.setText("Step#"+movieList.get(position).getStepNo()+"("+movieList.get(position).getManageBy()+" "+movieList.get(position).getType()+")");
 
                     }
                /*     movieViewHolder.tv_title.setText("");*/
-                    movieViewHolder.tv_detail.setText(movieList.get(position).getSeqName());
+                    movieViewHolder.tv_detail.setText(movieList.get(position).getContentBody());
+
+                    movieViewHolder.tv_add_new_step_num.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SessionManager.setCampaign_type("");
+                            SessionManager.setCampaign_type_name("");
+                            SessionManager.setCampaign_minute("00");
+                            SessionManager.setCampaign_Day("1");
+                            Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                            startActivity(intent);
+                        }
+                    });
                     break;
 
                 case LOADING:
@@ -214,7 +227,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             isLoadingAdded = false;
 
             int position = movieList.size() - 1;
-            CampaignTask result = getItem(position);
+            CampaignTask.SequenceTask result = getItem(position);
 
             if (result != null) {
                 movieList.remove(position);
@@ -222,18 +235,18 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             }
         }
 
-        public void add(CampaignTask movie) {
+        public void add(CampaignTask.SequenceTask movie) {
             movieList.add(movie);
             notifyItemInserted(movieList.size() - 1);
         }
 
-        public void addAll(List<CampaignTask> moveResults) {
-            for (CampaignTask result : moveResults) {
+        public void addAll(List<CampaignTask.SequenceTask> moveResults) {
+            for (CampaignTask.SequenceTask result : moveResults) {
                 add(result);
             }
         }
 
-        public CampaignTask getItem(int position) {
+        public CampaignTask.SequenceTask getItem(int position) {
             return movieList.get(position);
         }
 
