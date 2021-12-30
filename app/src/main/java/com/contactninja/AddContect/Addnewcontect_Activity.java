@@ -682,8 +682,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("contact_image", user_image_Url);
         paramObject.put("image_extension", File_extension);
         paramObject.put("contact_image_name", File_name);
-        paramObject.put("oldImage", olld_image);
-
+        if(olld_image!=null){
+            paramObject.put("oldImage", olld_image);
+        }
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();

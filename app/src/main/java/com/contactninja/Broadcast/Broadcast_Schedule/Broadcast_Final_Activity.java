@@ -1,4 +1,4 @@
-package com.contactninja.Broadcast_Activity;
+package com.contactninja.Broadcast.Broadcast_Schedule;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -27,13 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Fragment.Broadcast_Frgment.CardClick;
+import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
+import com.contactninja.Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
@@ -98,7 +98,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
             @Override
             public void onClick(View view) {
 
-               Intent intent1= new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
+               Intent intent1= new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
                intent1.putExtra("s_name","final");
                 startActivity(intent1);
                 finish();

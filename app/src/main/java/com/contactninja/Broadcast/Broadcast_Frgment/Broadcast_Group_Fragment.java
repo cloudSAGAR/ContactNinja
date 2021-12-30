@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.Broadcast_Frgment;
+package com.contactninja.Broadcast.Broadcast_Frgment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,11 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Auth.SignupActivity;
-import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
-import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;

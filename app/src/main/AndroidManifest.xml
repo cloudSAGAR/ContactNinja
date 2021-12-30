@@ -119,35 +119,35 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Repeat_Month_Activity"
+            android:name=".Broadcast.Broadcast_Schedule.Repeat_Month_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Repeat_weekly_Activity"
+            android:name=".Broadcast.Broadcast_Schedule.Repeat_weekly_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Broadcast_Final_Activity"
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_Final_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Broadcast_time_select"
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_time_select"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Broadcast_date_select"
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_date_select"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Broadcast_to_repeat"
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_to_repeat"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Brodcsast_Tankyou"
+            android:name=".Broadcast.Brodcsast_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Fragment.Broadcast_Frgment.Broadcst_Activty"
+            android:name=".Broadcast.Broadcst_Activty"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />

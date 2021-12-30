@@ -7,7 +7,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -23,28 +22,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Broadcast_Activity.Broadcast_to_repeat;
-import com.contactninja.Broadcast_Activity.Brodcsast_Tankyou;
 import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Group_Fragment;
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcast_Group_Fragment;
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcste_Contect_Fragment;
-import com.contactninja.Fragment.Broadcast_Frgment.CardClick;
-import com.contactninja.Model.Broadcast_Data;
+import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
