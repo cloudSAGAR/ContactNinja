@@ -25,7 +25,7 @@ public class User {
     private String contactNumber;
     @SerializedName("email")
     @Expose
-    private Object email;
+    private String email;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -92,11 +92,11 @@ public class User {
         this.contactNumber = contactNumber;
     }
 
-    public Object getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(Object email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
