@@ -144,4 +144,9 @@ public interface RetrofitApiInterface {
     @POST("timezone/list")
     Call<ApiResponse>  Timezone_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
+
+
+    @POST("sequence/list")
+    Call<ApiResponse>  Sequence_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
 }

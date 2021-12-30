@@ -267,6 +267,16 @@ public class RetrofitCalls {
 
 
 
+
+    public void Task_Data_Return(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Sequence_list(RetrofitApiClient.API_Header,token,registerinfo);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {
             @Override

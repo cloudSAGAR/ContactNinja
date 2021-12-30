@@ -173,6 +173,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 layout_pulse.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
                 tv_nameLetter.setVisibility(View.VISIBLE);
+                tv_nameLetter.setOnClickListener(this);
+
                 String name = Contect_data.getFirstname();
                 String add_text = "";
                 String[] split_data = name.split(" ");
@@ -878,6 +880,12 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     captureimageDialog(true);
 
                 }
+                break;
+            case R.id.tv_nameLetter:
+                if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
+                    captureimageDialog(true);
+
+                }
 
                 break;
         }
@@ -935,11 +943,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
                         Uri selectedImage = data.getData();
+                        Log.e("Image is", String.valueOf(selectedImage));
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
                             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);

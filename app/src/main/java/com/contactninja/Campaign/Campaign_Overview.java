@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +22,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.CampaignTask;
+import com.contactninja.Model.CampaignTask_overview;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.play.core.internal.m;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import retrofit2.Response;
 
 public class Campaign_Overview extends AppCompatActivity implements View.OnClickListener {
     ImageView iv_back;
@@ -306,5 +317,72 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
        LinearLayout edit_layout=bottomSheetDialog.findViewById(R.id.edit_layout);
        bottomSheetDialog.show();
 
+    }
+
+
+    public void StepData() {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+        int sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getId();
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("sequence_id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+
+                loadingDialog.cancelLoading();
+
+                if (response.body().getStatus() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<List<CampaignTask>>() {
+                    }.getType();
+                    List<CampaignTask_overview> user_model1 = new Gson().fromJson(headerString, listType);
+                    Log.e("User Model ", new Gson().toJson(user_model1));
+                    List<CampaignTask> campaignTasks=new ArrayList<>();
+                  /*  for (int i=0;i<user_model1.size();i++)
+                    {
+                        campaignTasks.addAll(user_model1.get(i).getSequenceTask());
+                    }*/
+                    CampaignTask campaignTasks1=new CampaignTask();
+                    List<CampaignTask.SequenceTask> data=user_model1.get(0).getSequenceTask();
+                    campaignTasks1.setSequenceTask(data);
+
+                    campaignTasks1.setOrganizationId(user_model1.get(0).get0().getOrganizationId());
+                    campaignTasks1.setId(user_model1.get(0).get0().getId());
+                    campaignTasks1.setTeamId(user_model1.get(0).get0().getTeamId());
+                    campaignTasks1.setSeqName(user_model1.get(0).get0().getSeqName());
+                    campaignTasks1.setSeqType(user_model1.get(0).get0().getSeqType());
+                   // campaignTasks1.setWorkingHoursId(user_model1.get(0).get0());
+
+                    List<CampaignTask> store=new ArrayList<>();
+                    store.add(campaignTasks1);
+
+                    SessionManager.setTask(getApplicationContext(), store);
+                    startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
+                } else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                   // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
     }
 }

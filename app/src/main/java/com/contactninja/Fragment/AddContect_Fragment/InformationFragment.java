@@ -1077,6 +1077,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     }
 
     private void UpdateContect(Contactdetail id) throws JSONException {
+        Log.e("Update Api Call","Yes");
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -2169,6 +2170,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.e("Action done","Yes");
                         if (Global.emailValidator(s.toString())) {
                             holder.iv_invalid.setVisibility(View.GONE);
                             item.setEmail_number(s.toString());
@@ -2189,6 +2191,26 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                     }
                 });
+                holder.edt_email.setOnKeyListener(new View.OnKeyListener() {
+                    @Override
+                    public boolean onKey(View view, int i, KeyEvent event) {
+                        Log.e("Action done","Yes");
+                        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                            try {
+                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                                    UpdateContect(contactdetails.get(position));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            return true;
+                        }
+                        return true;
+                    }
+                });
+
+
+
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -2264,22 +2286,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-                holder.edt_email.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        if (event.getAction() == KeyEvent.ACTION_DOWN) {
 
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    UpdateContect(contactdetails.get(position));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            return true;
-                        }
-                        return false;
-                    }
-                });
 
 
             } else if (flag.equals("read")) {
@@ -2394,6 +2401,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                     }
                 });
+
 
             }
 
