@@ -1,5 +1,7 @@
 package com.contactninja.Setting;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,6 +36,7 @@ import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -42,10 +45,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.mindorks.placeholderview.ViewHolder;
 
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
@@ -66,6 +71,13 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
     TemplateClick templateClick;
     SwipeRefreshLayout swipeToRefresh;
 
+    List<TemplateList.Template> templateList=new ArrayList<>();
+
+    private int currentPage = PAGE_START;
+    int perPage = 20;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,12 +91,42 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         templateClick=this;
         IntentUI();
 
+        rv_template_list.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rv_template_list.setLayoutManager(layoutManager);
+        templateAdepter=new TemplateAdepter(TemplateActivity.this,new ArrayList<>(),templateClick);
+        rv_template_list.setAdapter(templateAdepter);
+
+
+        rv_template_list.addOnScrollListener(new PaginationListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                try {
+                    if(Global.isNetworkAvailable(TemplateActivity.this, MainActivity.mMainLayout)) {
+                        Template_list();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
     }
 
     private void Template_list() throws JSONException {
         if(!swipeToRefresh.isRefreshing()){
             loadingDialog.showLoadingDialog();
         }
+
         SignResponseModel signResponseModel= SessionManager.getGetUserdata(TemplateActivity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
@@ -92,21 +134,23 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("type", "");
+        paramObject.addProperty("perPage", perPage);
+        paramObject.addProperty("page",currentPage);
         obj.add("data", paramObject);
         retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                swipeToRefresh.setRefreshing(false);
                 if (response.body().getStatus() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
-                    TemplateList templateList=new Gson().fromJson(headerString, listType);
+                    TemplateList template=new Gson().fromJson(headerString, listType);
+                    templateList=template.getTemplate();
 
-
-                    if(templateList.getTemplate().size()==0){
+                    if(templateList.size()==0){
                         demo_layout.setVisibility(View.VISIBLE);
                         mMainLayout1.setVisibility(View.GONE);
                     }else {
@@ -114,10 +158,17 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
                         mMainLayout1.setVisibility(View.VISIBLE);
                     }
 
-                    rv_template_list.setLayoutManager(new LinearLayoutManager(TemplateActivity.this, LinearLayoutManager.VERTICAL, false));
-                    templateAdepter=new TemplateAdepter(TemplateActivity.this,templateList.getTemplate(),templateClick);
-                    rv_template_list.setAdapter(templateAdepter);
 
+                    if (currentPage != PAGE_START) templateAdepter.removeLoading();
+                    templateAdepter.addItems(templateList);
+                    swipeToRefresh.setRefreshing(false);
+                    // check weather is last page or not
+                    if (templateList.size()>=perPage) {
+                        templateAdepter.addLoading();
+                    } else {
+                        isLastPage = true;
+                    }
+                    isLoading = false;
 
                 }
             }
@@ -247,6 +298,10 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onRefresh() {
+        currentPage = PAGE_START;
+        isLastPage = false;
+        templateAdepter.clear();
+        templateList.clear();
         try {
             if(Global.isNetworkAvailable(TemplateActivity.this, MainActivity.mMainLayout)) {
                 Template_list();
@@ -259,6 +314,10 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+        currentPage = PAGE_START;
+        isLastPage = false;
+        templateList.clear();
+        templateAdepter.clear();
         try {
             if(Global.isNetworkAvailable(TemplateActivity.this, MainActivity.mMainLayout)) {
                 Template_list();
@@ -269,9 +328,13 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewData> {
+        private static final int VIEW_TYPE_LOADING = 0;
+        private static final int VIEW_TYPE_NORMAL = 1;
+        private boolean isLoaderVisible = false;
+
 
         public Context mCtx;
-        private List<TemplateList.Template> templateList;
+        private List<TemplateList.Template> templateList=new ArrayList<>();
         TemplateClick templateClick;
 
         public TemplateAdepter(Context context, List<TemplateList.Template> templateList,TemplateClick templateClick) {
@@ -283,9 +346,51 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         @NonNull
         @Override
         public TemplateAdepter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.item_templatelist, parent, false);
-            return new TemplateAdepter.viewData(view);
+
+            switch (viewType) {
+                case VIEW_TYPE_NORMAL:
+                    return new viewData(
+                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_templatelist, parent, false));
+                case VIEW_TYPE_LOADING:
+                    return new ProgressHolder(
+                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
+                default:
+                    return null;
+            }
+        }
+        @Override
+        public int getItemViewType(int position) {
+            if (isLoaderVisible) {
+                return position == templateList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
+            } else {
+                return VIEW_TYPE_NORMAL;
+            }
+        }
+        public void addItems(List<TemplateList.Template> postItems) {
+            templateList.addAll(postItems);
+            notifyDataSetChanged();
+        }
+        public void addLoading() {
+            isLoaderVisible = true;
+            templateList.add(new TemplateList.Template());
+            notifyItemInserted(templateList.size() - 1);
+        }
+        public void removeLoading() {
+            isLoaderVisible = false;
+            int position = templateList.size() - 1;
+            TemplateList.Template item = getItem(position);
+            if (item != null) {
+                templateList.remove(position);
+                notifyItemRemoved(position);
+            }
+        }
+
+        public void clear() {
+            templateList.clear();
+            notifyDataSetChanged();
+        }
+        TemplateList.Template getItem(int position) {
+            return templateList.get(position);
         }
 
         @Override
@@ -322,6 +427,13 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
                 layout_template = itemView.findViewById(R.id.layout_template);
                 iv_select_type = itemView.findViewById(R.id.iv_select_type);
             }
+        }
+
+        public class ProgressHolder extends viewData {
+            ProgressHolder(View itemView) {
+                super(itemView);
+            }
+
         }
     }
 }

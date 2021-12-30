@@ -88,6 +88,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             }
             setdata(template);
             save_button.setText(getResources().getText(R.string.update));
+            layout_title.setOnClickListener(this);
             isEdit = true;
         } else {
             if (template_type.equals("EMAIL")) {
@@ -182,7 +183,6 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
         edit_template.requestFocus();
-        layout_title.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -358,13 +358,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                 = builder.create();
 
         TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
-        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
