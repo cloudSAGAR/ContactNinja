@@ -37,6 +37,7 @@ import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.TimezoneModel;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserData.User;
 import com.contactninja.Model.WorkTypeData;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -130,6 +131,43 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         test_list.add(SessionManager.getOneCotect_deatil(getActivity()));
         // Log.e("Size is", String.valueOf(test_list));
         String flag = sessionManager.getContect_flag(getActivity());
+
+
+        //Set DATA
+
+         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        User user_data_model=user_data.getUser();
+        ContectListData.Contact set_contact=new ContectListData.Contact();
+        set_contact.setFirstname(user_data_model.getFirstName());
+        set_contact.setLastname(user_data_model.getLastName());
+        List<ContectListData.Contact.ContactDetail> contactDetails_list=new ArrayList<>();
+        ContectListData.Contact.ContactDetail contactDetail_model=new ContectListData.Contact.ContactDetail();
+        contactDetail_model.setEmailNumber(user_data_model.getContactNumber());
+        contactDetail_model.setLabel("");
+        /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
+        contactDetail_model.setContactId(user_data_model.getId());
+        contactDetail_model.setType("NUMBER");
+        contactDetail_model.setIsDefault(1);
+        contactDetail_model.setLabel("Home");
+        contactDetails_list.add(0,contactDetail_model);
+
+        ContectListData.Contact.ContactDetail contactDetail_model1=new ContectListData.Contact.ContactDetail();
+        contactDetail_model1.setEmailNumber(user_data_model.getEmail());
+        contactDetail_model1.setLabel("");
+        /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
+        contactDetail_model1.setContactId(user_data_model.getId());
+        contactDetail_model1.setType("EMAIL");
+        contactDetail_model1.setIsDefault(1);
+        contactDetail_model1.setLabel("Home");
+        contactDetails_list.add(1,contactDetail_model1);
+        set_contact.setContactDetails(contactDetails_list);
+        SessionManager.setOneCotect_deatil(getActivity(),set_contact);
+
         if (flag.equals("edit")) {
             tv_add_social.setVisibility(View.GONE);
             media_link.setVisibility(View.GONE);
@@ -234,6 +272,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         }
         else if (flag.equals("read")) {
+
+
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.VISIBLE);
             ev_company.setEnabled(false);
@@ -247,8 +287,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_bob.setEnabled(false);
             ev_note.setEnabled(false);
             tv_add_social.setVisibility(View.GONE);
-
-
             tv_add_social.setTextColor(getActivity().getColor(R.color.purple_200));
             ev_company.setTextColor(getActivity().getColor(R.color.purple_200));
             ev_company_url.setTextColor(getActivity().getColor(R.color.purple_200));
@@ -387,6 +425,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
 
+
             for (int i = 0; i < detail_contect.size(); i++) {
                 if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
@@ -428,6 +467,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 }
 
             }
+
+
 
         }
         else {

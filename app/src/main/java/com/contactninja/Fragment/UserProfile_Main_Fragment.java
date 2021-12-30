@@ -320,7 +320,6 @@ public class UserProfile_Main_Fragment extends Fragment implements View.OnClickL
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
-                        sessionManager.setContect_flag("read");
                         fragment = new User_InformationFragment();
                         break;
                     case 1:
@@ -559,6 +558,7 @@ public void EnableRuntimePermission() {
                 break;
         }
     }
+
 
     private void addContact(String given_name, String name, String mobile, String home, String email, String note) {
 
