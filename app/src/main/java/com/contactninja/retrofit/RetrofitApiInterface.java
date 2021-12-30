@@ -85,6 +85,9 @@ public interface RetrofitApiInterface {
    @POST("usergmail/list")
     Call<ApiResponse> Mail_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
 
+   @POST("smtpdefault_update")
+    Call<ApiResponse> Mail_setDefault(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+
 
 
  /*   @Multipart

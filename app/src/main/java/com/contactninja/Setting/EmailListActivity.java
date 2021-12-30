@@ -50,12 +50,12 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         ConnectivityReceiver.ConnectivityReceiverListener,  SwipeRefreshLayout.OnRefreshListener {
     ImageView iv_back;
     private BroadcastReceiver mNetworkReceiver;
-    LinearLayout mMainLayout;
+    public static LinearLayout mMainLayout;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RecyclerView rv_email_list;
-    EmailAdepter emailAdepter;
+   public static EmailAdepter emailAdepter;
 
     SwipeRefreshLayout swipeToRefresh;
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
@@ -85,7 +85,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void Mail_list() throws JSONException {
+    void Mail_list() throws JSONException {
         if(!swipeToRefresh.isRefreshing()){
             loadingDialog.showLoadingDialog();
         }
@@ -208,11 +208,25 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
             holder.tv_email_name.setText(userLinkedGmail.getUserEmail());
             if(userLinkedGmail.getIsDefault().equals(1)){
                 holder.iv_is_default.setVisibility(View.VISIBLE);
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                holder.iv_unselected.setVisibility(View.GONE);
             }else {
                 holder.iv_is_default.setVisibility(View.GONE);
-
+                holder.iv_selected.setVisibility(View.GONE);
+                holder.iv_unselected.setVisibility(View.VISIBLE);
             }
-
+            holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        if(Global.isNetworkAvailable(EmailListActivity.this, EmailListActivity.mMainLayout)) {
+                            UpdateEmail_default(String.valueOf(userLinkedGmail.getId()));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         @Override
@@ -224,7 +238,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_email_name;
             LinearLayout layout_email;
-            ImageView iv_is_default;
+            ImageView iv_is_default,iv_selected,iv_unselected;
             RoundedImageView iv_select_type;
             public viewData(@NonNull View itemView) {
                 super(itemView);
@@ -232,7 +246,45 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                 layout_email = itemView.findViewById(R.id.layout_email);
                 iv_select_type = itemView.findViewById(R.id.iv_select_type);
                 iv_is_default = itemView.findViewById(R.id.iv_is_default);
+                iv_selected = itemView.findViewById(R.id.iv_selected);
+                iv_unselected = itemView.findViewById(R.id.iv_unselected);
             }
         }
+    }
+
+    void UpdateEmail_default(String email_id) throws JSONException {
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(EmailListActivity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("model", "google_auth");
+        paramObject.addProperty("is_default", "1");
+        paramObject.addProperty("id", email_id);
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_setDefault(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    try {
+                        if(Global.isNetworkAvailable(EmailListActivity.this, MainActivity.mMainLayout)) {
+                            Mail_list();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
     }
 }
