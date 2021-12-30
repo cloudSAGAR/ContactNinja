@@ -19,6 +19,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -157,7 +158,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         sessionManager=new SessionManager(this);
         loadingDialog=new LoadingDialog(this);
         Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
-        EnableRuntimePermission();
         sessionManager = new SessionManager(this);
         save_button.setText("Save Contact");
         option_type = "save";
@@ -456,31 +456,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         iv_user.setOnClickListener(this);
     }
 
-    public void EnableRuntimePermission() {
-
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                // Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                //Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-        };
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedTitle("Contactninja would like to access your contacts")
-                .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
-                .setGotoSettingButtonText("setting")
-                .setPermissions(Manifest.permission.WRITE_CONTACTS,Manifest.permission.SEND_SMS)
-                .setRationaleConfirmText("OK")
-                .check();
-
-
-    }
 
     @Override
     public void onRequestPermissionsResult(int RC, String[] per, int[] PResult) {
@@ -919,9 +894,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
 
-                Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePicture, 0);
-
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 0);
                 bottomSheetDialog.dismiss();
             }
         });
@@ -948,32 +922,24 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        Log.e("Image is", String.valueOf(selectedImage));
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                iv_user.setVisibility(View.VISIBLE);
-                                layout_pulse.setVisibility(View.GONE);
 
-                                File file = new File(selectedImage.getPath());
-                                File_name = file.getName();
+                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
 
-                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                                String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url = "data:image/JPEG;base64," + imageString;
-                                File_extension = "JPEG";
-                                Log.e("url is", user_image_Url);
-                            }
-                        }
+
+                        iv_user.setImageBitmap(bitmap);
+                        iv_user.setVisibility(View.VISIBLE);
+                        layout_pulse.setVisibility(View.GONE);
+
+                        File_name = "Image";
+
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                        String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                        user_image_Url = "data:image/JPEG;base64," + imageString;
+                        File_extension = "JPEG";
+                        Log.e("url is", user_image_Url);
+
                     }
                     break;
                 case 1:
