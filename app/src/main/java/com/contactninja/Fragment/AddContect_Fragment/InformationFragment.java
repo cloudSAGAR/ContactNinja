@@ -241,7 +241,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
         } else if (flag.equals("read")) {
-            media_link.setVisibility(View.VISIBLE);
+            media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.VISIBLE);
             ev_company.setEnabled(false);
             ev_company_url.setEnabled(false);
@@ -302,7 +302,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             team_id = String.valueOf(Contect_data.getTeamId());
             ev_company_url.setText(Contect_data.getCompany_url());
             ev_bob.setText(Contect_data.getDob());
-            media_link.setVisibility(View.VISIBLE);
+            media_link.setVisibility(View.GONE);
             try {
 
                 if (Contect_data.getFacebook_link().equals("")) {
@@ -2266,7 +2266,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                 holder.edt_email.setOnKeyListener(new View.OnKeyListener() {
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                        if (event.getAction() == KeyEvent.ACTION_DOWN) {
 
                             try {
                                 if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {

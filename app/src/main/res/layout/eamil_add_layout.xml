@@ -163,7 +163,7 @@
                         android:text="@string/add_defult_text"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -187,6 +187,8 @@
             style="@style/tv_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:maxLines="1"
             android:background="@color/add_contect_transpernt"
             android:hint="@string/add_email_a"
             android:textColor="@color/home_list_sub_data"
