@@ -53,6 +53,14 @@ public interface RetrofitApiInterface {
                                  @Body JsonObject body,
                                  @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
 
+
+
+    @POST("contact/bulk/update")
+    Call<ApiResponse> updatecontect(@Header("Accept") String api, @Header("Authorization") String auth,
+                                 @Body JsonObject body,
+                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
+
     @POST("contact/group/add")
     Call<ApiResponse> Addgroup(@Header("Accept") String api, @Header("Authorization") String auth,
                                @Body JsonObject jsonObject,

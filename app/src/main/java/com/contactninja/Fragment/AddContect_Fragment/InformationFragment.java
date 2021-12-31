@@ -235,10 +235,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     }
                 }
             }
-            if (emaildetails_list.size()==0)
-            {
+
                 EmailViewAdd();
-            }
+                PhoneViewAdd();
+
 
 
         } else if (flag.equals("read")) {
@@ -559,15 +559,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             layout_Add_phone.setVisibility(View.VISIBLE);
 
             layout_Add_phone.setOnClickListener(v -> {
+                Log.e("On Click","Yes");
                 Contactdetail contactdetail1 = new Contactdetail();
-                contactdetail1.setId(0);
+                contactdetail1.setId(contactdetails.size());
                 contactdetail1.setEmail_number("");
                 contactdetail1.setIs_default(0);
                 contactdetail1.setLabel("Home");
                 contactdetail1.setType("NUMBER");
                 phonedetails_list.add(contactdetail1);
                 contactdetails.add(contactdetail1);
-                Log.e("Add View is", new Gson().toJson(phonedetails_list));
                 phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
                 rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_phone.setAdapter(phoneAdapter);
@@ -1652,7 +1652,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 String main_data = item.getEmail_number().replace("+91", "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
-                holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
+              /*  holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     }
@@ -1679,8 +1679,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     public void afterTextChanged(Editable s) {
 
                     }
-                });
-                holder.edt_mobile_no.setOnKeyListener(new View.OnKeyListener() {
+                });*/
+                /*holder.edt_mobile_no.setOnKeyListener(new View.OnKeyListener() {
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             try {
@@ -1697,6 +1697,48 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                             return true;
                         }
                         return false;
+                    }
+                });
+*/
+
+
+
+                holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
+                        item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
+                        String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
+                        String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
+                   /* if (countryCode.length() > 0 && phoneNumber.length() > 0) {
+                        if (Global.isValidPhoneNumber(phoneNumber)) {
+                            boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
+                            if (status) {
+                                iv_invalid.setText("");
+                                return true;
+                            } else {
+                                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                            }
+                        } else {
+                            iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                        }
+                    }*/
+                        if (contactdetails.size() <= 4) {
+                            layout_Add_phone.setVisibility(View.VISIBLE);
+                            addcontectModel.setContactdetails(contactdetails);
+                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+                        }
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
                     }
                 });
 
@@ -1773,7 +1815,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-            } else if (flag.equals("read")) {
+            }
+            else if (flag.equals("read")) {
                 EnableRuntimePermission();
                 holder.swipe_layout.setLeftSwipeEnabled(false);
                 holder.swipe_layout.setRightSwipeEnabled(false);
@@ -1909,7 +1952,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-            } else {
+            }
+            else {
 
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
@@ -2162,7 +2206,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             if (edit) {
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
-                holder.edt_email.addTextChangedListener(new TextWatcher() {
+                /*holder.edt_email.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -2190,8 +2234,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     public void afterTextChanged(Editable s) {
 
                     }
-                });
-                holder.edt_email.setOnKeyListener(new View.OnKeyListener() {
+                });*/
+               /* holder.edt_email.setOnKeyListener(new View.OnKeyListener() {
                     @Override
                     public boolean onKey(View view, int i, KeyEvent event) {
                         Log.e("Action done","Yes");
@@ -2207,9 +2251,36 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         }
                         return true;
                     }
+                });*/
+
+                holder.edt_email.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (Global.emailValidator(s.toString())) {
+                            holder.iv_invalid.setVisibility(View.GONE);
+                            item.setEmail_number(s.toString());
+                            if (contactdetails.size() <= 4) {
+                                layout_Add_email.setVisibility(View.VISIBLE);
+                            }
+                            addcontectModel.setContactdetails_email(contactdetails);
+                            //addcontectModel.setContactdetails(contactdetails);
+                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                        } else {
+                            holder.iv_invalid.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
                 });
-
-
 
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -2289,7 +2360,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
 
-            } else if (flag.equals("read")) {
+            }
+            else if (flag.equals("read")) {
                 holder.swipe_layout.setLeftSwipeEnabled(false);
                 holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_email_label.setVisibility(View.GONE);
@@ -2297,7 +2369,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.edt_email.setEnabled(false);
                 holder.edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_email.setText(holder.tv_email.getText().toString() + "(" + item.getLabel() + ")");
-            } else {
+            }
+            else {
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.edt_email.addTextChangedListener(new TextWatcher() {

@@ -254,7 +254,8 @@
                 <EditText
                     android:layout_gravity="center|left"
                     android:id="@+id/edt_mobile_no"
-                    android:gravity="left|center"                                style="@style/tv_regular"
+                    android:gravity="left|center"
+                    style="@style/tv_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/add_contect_transpernt"
