@@ -40,7 +40,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
-public class Home_Main_Fragment extends Fragment {
+public class Main_home_Fragment extends Fragment {
 
 
     RetrofitCalls retrofitCalls;

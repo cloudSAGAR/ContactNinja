@@ -20,7 +20,7 @@ import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class Contect_main_Fragment extends Fragment implements ViewPager.OnPageChangeListener {
+public class Main_contact_Fragment extends Fragment implements ViewPager.OnPageChangeListener {
 
     TabLayout tabLayout;
     ViewPager viewPager;

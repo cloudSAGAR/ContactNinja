@@ -39,10 +39,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.contactninja.Campaign.Campaign_List_Activity;
 import com.contactninja.Broadcast.Broadcst_Activty;
-import com.contactninja.Fragment.Contect_main_Fragment;
-import com.contactninja.Fragment.Home_Main_Fragment;
-import com.contactninja.Fragment.Send_Main_Fragment;
-import com.contactninja.Fragment.UserProfile_Main_Fragment;
+import com.contactninja.Fragment.Main_contact_Fragment;
+import com.contactninja.Fragment.Main_home_Fragment;
+import com.contactninja.Fragment.Main_send_Fragment;
+import com.contactninja.Fragment.Main_userProfile_Fragment;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
@@ -845,19 +845,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (navItemIndex) {
             case 0:
 
-                fragment = new Home_Main_Fragment();
+                fragment = new Main_home_Fragment();
                 shouldLoadHomeFragOnBackPress = false;
                 break;
             case 1:
-                fragment = new Send_Main_Fragment();
+                fragment = new Main_send_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 2:
-                fragment = new Contect_main_Fragment();
+                fragment = new Main_contact_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 3:
-                fragment = new UserProfile_Main_Fragment();
+                fragment = new Main_userProfile_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 4:

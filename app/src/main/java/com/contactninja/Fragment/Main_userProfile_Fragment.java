@@ -90,7 +90,7 @@ import java.util.Objects;
 
 import retrofit2.Response;
 
-public class UserProfile_Main_Fragment extends Fragment implements View.OnClickListener {
+public class Main_userProfile_Fragment extends Fragment implements View.OnClickListener {
 
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
