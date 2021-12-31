@@ -13,7 +13,7 @@ public class CampaignTask_overview {
     private _0 _0;
     @SerializedName("sequence_task")
     @Expose
-    private List<CampaignTask.SequenceTask> sequenceTask = null;
+    private List<SequenceTask> sequenceTask = null;
     @SerializedName("sequence_prospects")
     @Expose
     private List<SequenceProspect> sequenceProspects = null;
@@ -29,11 +29,11 @@ public class CampaignTask_overview {
         this._0 = _0;
     }
 
-    public List<CampaignTask.SequenceTask> getSequenceTask() {
+    public List<SequenceTask> getSequenceTask() {
         return sequenceTask;
     }
 
-    public void setSequenceTask(List<CampaignTask.SequenceTask> sequenceTask) {
+    public void setSequenceTask(List<SequenceTask> sequenceTask) {
         this.sequenceTask = sequenceTask;
     }
 
@@ -53,7 +53,7 @@ public class CampaignTask_overview {
         this.seqProspectCount = seqProspectCount;
     }
 
-/*    public class SequenceTask {
+   public class SequenceTask {
 
         @SerializedName("id")
         @Expose
@@ -199,7 +199,7 @@ public class CampaignTask_overview {
             this.activeTaskContactNumber = activeTaskContactNumber;
         }
 
-    }*/
+    }
 
 
     public class _0 {
@@ -402,10 +402,10 @@ public class CampaignTask_overview {
         private String lastname;
         @SerializedName("mcompleted_on")
         @Expose
-        private Object mcompletedOn;
+        private String mcompletedOn;
         @SerializedName("acompleted_on")
         @Expose
-        private Object acompletedOn;
+        private String acompletedOn;
         @SerializedName("status")
         @Expose
         private String status;
@@ -426,22 +426,22 @@ public class CampaignTask_overview {
         private Integer mday;
         @SerializedName("stage")
         @Expose
-        private Object stage;
+        private String stage;
         @SerializedName("astep_no")
         @Expose
-        private Object astepNo;
+        private String astepNo;
         @SerializedName("aseq_task_id")
         @Expose
-        private Object aseqTaskId;
+        private String aseqTaskId;
         @SerializedName("atype")
         @Expose
-        private Object atype;
+        private String atype;
         @SerializedName("amanage_by")
         @Expose
-        private Object amanageBy;
+        private String amanageBy;
         @SerializedName("aday")
         @Expose
-        private Object aday;
+        private String aday;
 
         public Integer getContactId() {
             return contactId;
@@ -467,19 +467,19 @@ public class CampaignTask_overview {
             this.lastname = lastname;
         }
 
-        public Object getMcompletedOn() {
+        public String getMcompletedOn() {
             return mcompletedOn;
         }
 
-        public void setMcompletedOn(Object mcompletedOn) {
+        public void setMcompletedOn(String mcompletedOn) {
             this.mcompletedOn = mcompletedOn;
         }
 
-        public Object getAcompletedOn() {
+        public String getAcompletedOn() {
             return acompletedOn;
         }
 
-        public void setAcompletedOn(Object acompletedOn) {
+        public void setAcompletedOn(String acompletedOn) {
             this.acompletedOn = acompletedOn;
         }
 
@@ -531,51 +531,51 @@ public class CampaignTask_overview {
             this.mday = mday;
         }
 
-        public Object getStage() {
+        public String getStage() {
             return stage;
         }
 
-        public void setStage(Object stage) {
+        public void setStage(String stage) {
             this.stage = stage;
         }
 
-        public Object getAstepNo() {
+        public String getAstepNo() {
             return astepNo;
         }
 
-        public void setAstepNo(Object astepNo) {
+        public void setAstepNo(String astepNo) {
             this.astepNo = astepNo;
         }
 
-        public Object getAseqTaskId() {
+        public String getAseqTaskId() {
             return aseqTaskId;
         }
 
-        public void setAseqTaskId(Object aseqTaskId) {
+        public void setAseqTaskId(String aseqTaskId) {
             this.aseqTaskId = aseqTaskId;
         }
 
-        public Object getAtype() {
+        public String getAtype() {
             return atype;
         }
 
-        public void setAtype(Object atype) {
+        public void setAtype(String atype) {
             this.atype = atype;
         }
 
-        public Object getAmanageBy() {
+        public String getAmanageBy() {
             return amanageBy;
         }
 
-        public void setAmanageBy(Object amanageBy) {
+        public void setAmanageBy(String amanageBy) {
             this.amanageBy = amanageBy;
         }
 
-        public Object getAday() {
+        public String getAday() {
             return aday;
         }
 
-        public void setAday(Object aday) {
+        public void setAday(String aday) {
             this.aday = aday;
         }
 

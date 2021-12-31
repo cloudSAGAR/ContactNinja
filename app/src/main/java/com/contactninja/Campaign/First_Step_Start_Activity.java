@@ -61,8 +61,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList = new ArrayList<>();
     CoordinatorLayout mMainLayout;
-    String step_no = "1", time = "09:00",sequence_id = "";
-    int minite = 00,day = 1;
+    String step_no = "1", time = "09:00", sequence_id = "";
+    int minite = 00, day = 1;
     TemplateClick templateClick;
     BottomSheetDialog bottomSheetDialog_templateList;
 
@@ -374,25 +374,30 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
+        try {
+            if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
 
-            CampaignTask main_data=SessionManager.getTask(getApplicationContext()).get(0);
+                CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
 
-            int step=main_data.getSequenceTask().get(main_data.getSequenceTask().size() -1 ).getStepNo() + 1 ;
-            Log.e("Step", String.valueOf(step));
-            Log.e("Step No is", String.valueOf(main_data.getSequenceTask().get(main_data.getSequenceTask().size() -1 ).getStepNo()));
-            step_no= String.valueOf(step);
-            day=Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
-            minite=Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
+                int step = main_data.getStepNo() + 1;
+                Log.e("Step", String.valueOf(step));
+                Log.e("Step No is", String.valueOf(main_data.getStepNo()));
+                step_no = String.valueOf(step);
+                day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
+                minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
 
-            if (SessionManager.getTask(getApplicationContext()).get(0).getId().toString().equals("null")) {
-                sequence_id = "null";
+                if (SessionManager.getTask(getApplicationContext()).get(0).getId().toString().equals("null")) {
+                    sequence_id = "null";
+                } else {
+                    sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getId().toString();
+                }
             } else {
-                sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getId().toString();
+                sequence_id = "null";
             }
-        } else {
+        } catch (Exception e) {
             sequence_id = "null";
         }
+
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("content_body", edit_template.getText().toString());
@@ -400,7 +405,12 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.addProperty("minute", minite);
         paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("sequence_id", sequence_id);
+
+        if (!sequence_id.equals("null"))
+        {
+            paramObject.addProperty("sequence_id", sequence_id);
+        }
+
         paramObject.addProperty("step_no", step_no);
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));

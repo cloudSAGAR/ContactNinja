@@ -147,6 +147,6 @@ public interface RetrofitApiInterface {
 
 
     @POST("sequence/list")
-    Call<ApiResponse>  Sequence_list(@Header("Accept") String api, @Header("Authorization") String auth, @Body JsonObject jsonObject);
+    Call<ApiResponse>  Sequence_list(@Header("Accept") String api, @Header("Authorization") String auth, @Header("deviceType") String deviceType , @Header("appVersion") String appVersion ,@Body JsonObject jsonObject);
 
 }

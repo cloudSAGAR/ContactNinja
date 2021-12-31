@@ -268,8 +268,8 @@ public class RetrofitCalls {
 
 
 
-    public void Task_Data_Return(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Sequence_list(RetrofitApiClient.API_Header,token,registerinfo);
+    public void Task_Data_Return(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, String device_id,String version,RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Sequence_list(RetrofitApiClient.API_Header,token,device_id,version,registerinfo);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);

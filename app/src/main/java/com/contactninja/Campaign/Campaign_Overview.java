@@ -2,6 +2,8 @@ package com.contactninja.Campaign;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,7 +51,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     RecyclerView item_list;
     Campaign_OverviewAdapter campaign_overviewAdapter;
    /* List<String> stringList;*/
-    List<CampaignTask.SequenceTask> campaignTasks=new ArrayList<>();
+    List<CampaignTask_overview.SequenceTask> campaignTasks=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +62,12 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        List<CampaignTask> camp_main_data=sessionManager.getTask(getApplicationContext());
-        campaignTasks.addAll(camp_main_data.get(0).getSequenceTask());
-        /*stringList = new ArrayList<>();
-        stringList.add("One ");
-        stringList.add("Two");
-        stringList.add("Three");
-        stringList.add("Foure");*/
+        StepData();
+       // List<CampaignTask> camp_main_data=sessionManager.getTask(getApplicationContext());
+       // campaignTasks.addAll(camp_main_data.get(0).getSequenceTask());
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
         item_list.setAdapter(campaign_overviewAdapter);
-        campaign_overviewAdapter.addAll(campaignTasks);
+        //campaign_overviewAdapter.addAll(campaignTasks);
 
     }
 
@@ -109,7 +107,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         private static final int LOADING = 0;
         private static final int ITEM = 1;
         private final Context context;
-        private List<CampaignTask.SequenceTask> movieList;
+        private List<CampaignTask_overview.SequenceTask> movieList;
         private boolean isLoadingAdded = false;
 
         public Campaign_OverviewAdapter(Context context) {
@@ -118,7 +116,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         }
 
 
-        public void setMovieList(List<CampaignTask.SequenceTask> movieList) {
+        public void setMovieList(List<CampaignTask_overview.SequenceTask> movieList) {
             this.movieList = movieList;
         }
 
@@ -144,7 +142,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-            CampaignTask.SequenceTask movieList_data = movieList.get(position);
+            CampaignTask_overview.SequenceTask movieList_data = movieList.get(position);
             switch (getItemViewType(position)) {
                 case ITEM:
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
@@ -194,7 +192,19 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                /*     movieViewHolder.tv_title.setText("");*/
                     movieViewHolder.tv_detail.setText(movieList.get(position).getContentBody());
 
-                    movieViewHolder.tv_add_new_step_num.setOnClickListener(new View.OnClickListener() {
+                   /* movieViewHolder.tv_add_new_step_num.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SessionManager.setCampaign_type("");
+                            SessionManager.setCampaign_type_name("");
+                            SessionManager.setCampaign_minute("00");
+                            SessionManager.setCampaign_Day("1");
+                            Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                            startActivity(intent);
+                        }
+                    });*/
+
+                    movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             SessionManager.setCampaign_type("");
@@ -233,7 +243,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             isLoadingAdded = false;
 
             int position = movieList.size() - 1;
-            CampaignTask.SequenceTask result = getItem(position);
+            CampaignTask_overview.SequenceTask result = getItem(position);
 
             if (result != null) {
                 movieList.remove(position);
@@ -241,18 +251,18 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             }
         }
 
-        public void add(CampaignTask.SequenceTask movie) {
+        public void add(CampaignTask_overview.SequenceTask movie) {
             movieList.add(movie);
             notifyItemInserted(movieList.size() - 1);
         }
 
-        public void addAll(List<CampaignTask.SequenceTask> moveResults) {
-            for (CampaignTask.SequenceTask result : moveResults) {
+        public void addAll(List<CampaignTask_overview.SequenceTask> moveResults) {
+            for (CampaignTask_overview.SequenceTask result : moveResults) {
                 add(result);
             }
         }
 
-        public CampaignTask.SequenceTask getItem(int position) {
+        public CampaignTask_overview.SequenceTask getItem(int position) {
             return movieList.get(position);
         }
 
@@ -260,7 +270,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         public class MovieViewHolder extends RecyclerView.ViewHolder {
 
             TextView tv_add_new_step_num,tv_item_num,tv_title,tv_detail,
-                    tv_email_title,tv_email_detail;
+                    tv_email_title,tv_email_detail,tv_add_new_step;
             View line_one;
             LinearLayout add_new_step_layout,run_time_layout,email_layout,run_time_email_layout;
             ImageView iv_manu,iv_email_manu;
@@ -271,6 +281,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 super(itemView);
                 add_new_step_layout=itemView.findViewById(R.id.add_new_step);
                 tv_add_new_step_num=itemView.findViewById(R.id.tv_add_new_step_num);
+                tv_add_new_step=itemView.findViewById(R.id.tv_add_new_step);
                 line_one=itemView.findViewById(R.id.line_one);
                 tv_item_num=itemView.findViewById(R.id.tv_item_num);
                 tv_title=itemView.findViewById(R.id.tv_title);
@@ -322,15 +333,25 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        int sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getId();
+        int sequence_id = 98;/*SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();*/
+
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("sequence_id", sequence_id);
+        paramObject.addProperty("id", sequence_id);
         paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("id", user_id);
+        paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
-        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+        PackageManager pm = getApplicationContext().getPackageManager();
+        String pkgName = getApplicationContext().getPackageName();
+        PackageInfo pkgInfo = null;
+        try {
+            pkgInfo = pm.getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String ver = pkgInfo.versionName;
+        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog,ver,"APP_ANDR",Global.getToken(sessionManager), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -342,35 +363,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<List<CampaignTask>>() {
+                    Type listType = new TypeToken<CampaignTask_overview>() {
                     }.getType();
-                    List<CampaignTask_overview> user_model1 = new Gson().fromJson(headerString, listType);
-                    Log.e("User Model ", new Gson().toJson(user_model1));
-                    List<CampaignTask> campaignTasks=new ArrayList<>();
-                  /*  for (int i=0;i<user_model1.size();i++)
-                    {
-                        campaignTasks.addAll(user_model1.get(i).getSequenceTask());
-                    }*/
-                    CampaignTask campaignTasks1=new CampaignTask();
-                    List<CampaignTask.SequenceTask> data=user_model1.get(0).getSequenceTask();
-                    campaignTasks1.setSequenceTask(data);
-
-                    campaignTasks1.setOrganizationId(user_model1.get(0).get0().getOrganizationId());
-                    campaignTasks1.setId(user_model1.get(0).get0().getId());
-                    campaignTasks1.setTeamId(user_model1.get(0).get0().getTeamId());
-                    campaignTasks1.setSeqName(user_model1.get(0).get0().getSeqName());
-                    campaignTasks1.setSeqType(user_model1.get(0).get0().getSeqType());
-                    campaignTasks1.setWorkingHoursId(user_model1.get(0).get0().getWorkingHoursId());
-                    campaignTasks1.setStatus(user_model1.get(0).get0().getStatus());
-                    campaignTasks1.setCreatedAt(user_model1.get(0).get0().getCreatedAt());
-                    campaignTasks1.setUpdatedAt(user_model1.get(0).get0().getUpdatedAt());
-
-
-                    List<CampaignTask> store=new ArrayList<>();
-                    store.add(campaignTasks1);
-
-                    SessionManager.setTask(getApplicationContext(), store);
-                    startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
+                    CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
+                    campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
                 } else {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
