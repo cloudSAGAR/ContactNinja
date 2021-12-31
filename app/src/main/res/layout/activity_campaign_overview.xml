@@ -14,6 +14,11 @@
     <include
         layout="@layout/toolbar"></include>
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
         <ImageView
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
@@ -44,6 +49,6 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,11 +63,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         StepData();
-       // List<CampaignTask> camp_main_data=sessionManager.getTask(getApplicationContext());
-       // campaignTasks.addAll(camp_main_data.get(0).getSequenceTask());
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
         item_list.setAdapter(campaign_overviewAdapter);
-        //campaign_overviewAdapter.addAll(campaignTasks);
 
     }
 
@@ -82,17 +79,13 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         item_list = findViewById(R.id.item_list);
         item_list.setLayoutManager(new LinearLayoutManager(this));
         item_list.setItemViewCacheSize(500);
-      /*  item_list.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.campaign_list_layout,
-                R.id.textView1,
-                getResources().getStringArray(R.array.broadcast_day)));*/
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+         onBackPressed();
                 break;
             case R.id.save_button:
                 //Add Api Call
@@ -100,6 +93,13 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 break;
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+        finish();
+        super.onBackPressed();
     }
 
     public class Campaign_OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -171,26 +171,23 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         movieViewHolder.line_one.setVisibility(View.VISIBLE);
                     }
 
-                    movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            broadcast_manu();
-                        }
-                    });
-                    if (SessionManager.getTask(getApplicationContext()).size()==0)
+
+
+                    if (movieList.get(position).getType().equals("SMS"))
                     {
-                        String step_id= String.valueOf(SessionManager.getTask(getApplicationContext()).size()+1);
-                        String stpe_tyep=SessionManager.getCampaign_type_name(getApplicationContext());
-                        movieViewHolder.tv_title.setText("Step#"+movieList.get(position).getStepNo()+"("+movieList.get(position).getManageBy()+" "+movieList.get(position).getType()+")");
-                    }
-                    else {
-                        String step_id= String.valueOf(SessionManager.getTask(getApplicationContext()).size()+1);
-                        String stpe_tyep=SessionManager.getCampaign_type_name(getApplicationContext());
+                        movieViewHolder.edit_minutes.setText(movieList.get(position).getMinute().toString());
+                        movieViewHolder.edit_day.setText(movieList_data.getDay().toString());
+                        movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                broadcast_manu();
+                            }
+                        });
+
+
                         movieViewHolder.tv_title.setText("Step#"+movieList.get(position).getStepNo()+"("+movieList.get(position).getManageBy()+" "+movieList.get(position).getType()+")");
 
-                    }
-               /*     movieViewHolder.tv_title.setText("");*/
-                    movieViewHolder.tv_detail.setText(movieList.get(position).getContentBody());
+                        movieViewHolder.tv_detail.setText(movieList.get(position).getContentBody().toString());
 
                    /* movieViewHolder.tv_add_new_step_num.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -204,7 +201,38 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         }
                     });*/
 
-                    movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
+                        movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                SessionManager.setCampaign_type("");
+                                SessionManager.setCampaign_type_name("");
+                                SessionManager.setCampaign_minute("00");
+                                SessionManager.setCampaign_Day("1");
+                                Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    else {
+
+                        movieViewHolder.email_layout.setVisibility(View.VISIBLE);
+
+
+                        movieViewHolder.edit_email_minutes.setText(movieList.get(position).getMinute());
+                        movieViewHolder.edit_email_day.setText(movieList_data.getDay());
+                        movieViewHolder.iv_email_manu.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                broadcast_manu();
+                            }
+                        });
+
+
+                        movieViewHolder.tv_email_title.setText("Step#"+movieList.get(position).getStepNo()+"("+movieList.get(position).getManageBy()+" "+movieList.get(position).getType()+")");
+
+                        movieViewHolder.tv_email_detail.setText(movieList.get(position).getContentBody());
+
+                   /* movieViewHolder.tv_add_new_step_num.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             SessionManager.setCampaign_type("");
@@ -214,7 +242,22 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                             Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
                             startActivity(intent);
                         }
-                    });
+                    });*/
+
+                        movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                SessionManager.setCampaign_type("");
+                                SessionManager.setCampaign_type_name("");
+                                SessionManager.setCampaign_minute("00");
+                                SessionManager.setCampaign_Day("1");
+                                Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                                startActivity(intent);
+                            }
+                        });
+
+                    }
+
                     break;
 
                 case LOADING:
@@ -333,7 +376,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        int sequence_id = 98;/*SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();*/
+        int sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+        Log.e("sequence_id", String.valueOf(sequence_id));
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -354,9 +398,6 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 Global.getVersionname(Campaign_Overview.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-
-                //Current Working
-
                 loadingDialog.cancelLoading();
 
                 if (response.body().getStatus() == 200) {

@@ -74,7 +74,7 @@ public interface RetrofitApiInterface {
     @POST("contact/list")
     Call<ApiResponse> Contect_List(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
-                                   @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                    @Header("appVersion") String appVersion,@Header("deviceType") String deviceType);
 
 
     @POST("contact/details/update")

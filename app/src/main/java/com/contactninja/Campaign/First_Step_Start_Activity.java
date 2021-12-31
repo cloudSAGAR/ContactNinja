@@ -66,6 +66,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     int minite = 00, day = 1;
     TemplateClick templateClick;
     BottomSheetDialog bottomSheetDialog_templateList;
+    public String template_id_is="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,7 +284,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.save_button:
                 //Add Api Call
@@ -316,6 +317,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     public void OnClick(TemplateList.Template template) {
         edit_template.setText(template.getContentBody());
         edit_template.setSelection(edit_template.getText().length());
+        template_id_is= String.valueOf(template.getId());
         bottomSheetDialog_templateList.dismiss();
     }
 
@@ -381,16 +383,14 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                 CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
 
                 int step = main_data.getStepNo() + 1;
-                Log.e("Step", String.valueOf(step));
-                Log.e("Step No is", String.valueOf(main_data.getStepNo()));
                 step_no = String.valueOf(step);
                 day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
                 minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
 
-                if (SessionManager.getTask(getApplicationContext()).get(0).getId().toString().equals("null")) {
+                if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
                     sequence_id = "null";
                 } else {
-                    sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getId().toString();
+                    sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString();
                 }
             } else {
                 sequence_id = "null";
@@ -406,12 +406,12 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.addProperty("minute", minite);
         paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("template_id",template_id_is);
 
         if (!sequence_id.equals("null"))
         {
             paramObject.addProperty("sequence_id", sequence_id);
         }
-
         paramObject.addProperty("step_no", step_no);
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
@@ -435,10 +435,10 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                     Log.e("User Model ", new Gson().toJson(user_model1));
                     SessionManager.setTask(getApplicationContext(), user_model1);
                     startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
+                    finish();
                 } else {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
 
                 }
             }
@@ -497,7 +497,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     }
 
-    static class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
+    class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
         public Context mCtx;
         List<HastagList.TemplateText> templateTextList;
@@ -541,6 +541,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                                 notifyDataSetChanged();
                             }
                         };
+
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
@@ -610,6 +611,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                         bottomSheetDialog_templateList.cancel();
                     } else {
                         interfaceClick.OnClick(item);
+
                         bottomSheetDialog_templateList.cancel();
                     }
                 }
@@ -635,4 +637,11 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         }
     }
 
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+        finish();
+        super.onBackPressed();
+    }
 }

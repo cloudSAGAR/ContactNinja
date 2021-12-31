@@ -142,6 +142,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                    if (SessionManager.getTask(getApplicationContext()).equals(null))
                    {
                        startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+                       finish();
                    }
                    else {
                        if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
@@ -159,6 +160,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                        else {
 
                            startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+                           finish();
 
                        }
                    }
