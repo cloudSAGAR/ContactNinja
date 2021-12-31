@@ -659,7 +659,12 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("address", address);
         paramObject.put("breakout_link", addcontectModel.getBreakoutu());
         paramObject.put("city", city);
-
+        if(olld_image!=null){
+            paramObject.put("oldImage", olld_image);
+        }
+        else {
+            paramObject.put("oldImage", "");
+        }
 
         paramObject.put("company_url", "");
         paramObject.put("dob", addcontectModel.getBirthday());
@@ -682,9 +687,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("contact_image", user_image_Url);
         paramObject.put("image_extension", File_extension);
         paramObject.put("contact_image_name", File_name);
-        if(olld_image!=null){
-            paramObject.put("oldImage", olld_image);
-        }
+
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
@@ -805,7 +808,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("contact_image", user_image_Url);
         paramObject.put("image_extension", File_extension);
         paramObject.put("contact_image_name", File_name);
-        paramObject.put("oldImage", olld_image);
+        if(olld_image!=null){
+            paramObject.put("oldImage", olld_image);
+        }
+        else {
+            paramObject.put("oldImage", "");
+        }
+
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());

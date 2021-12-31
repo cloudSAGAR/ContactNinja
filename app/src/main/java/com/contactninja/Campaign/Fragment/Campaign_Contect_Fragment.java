@@ -494,19 +494,23 @@ public class Campaign_Contect_Fragment extends Fragment  {
             return userDetails.size();
         }
 
-        public void remove_item(int item)
+        public void remove_item(int item, Integer id)
         {
-            try {
-                userDetails.remove(item);
-                notifyItemRemoved(item);
-            }
-            catch (Exception e)
-            {
 
+            for (int j=0;j<userDetails.size();j++)
+            {
+                if (id==userDetails.get(j).getId())
+                {
+                    userDetails.remove(j);
+                    notifyItemRemoved(j);
+                }
             }
+
+
 
 
         }
+
 
         public void updateList(List<ContectListData.Contact> list) {
             userDetails = list;
@@ -870,7 +874,7 @@ public class Campaign_Contect_Fragment extends Fragment  {
 
                             holder1.remove_contect_icon.setVisibility(View.GONE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                            topUserListDataAdapter.remove_item(position);
+                            topUserListDataAdapter.remove_item(position,contacts.get(position).getId());
 
                             topUserListDataAdapter.notifyDataSetChanged();
                             Log.e("Size is",new Gson().toJson(select_contectListData));

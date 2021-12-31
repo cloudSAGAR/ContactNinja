@@ -333,7 +333,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                //Log.e("Response is",new Gson().toJson(response));
+
+                //Current Working
 
                 loadingDialog.cancelLoading();
 
@@ -359,7 +360,11 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     campaignTasks1.setTeamId(user_model1.get(0).get0().getTeamId());
                     campaignTasks1.setSeqName(user_model1.get(0).get0().getSeqName());
                     campaignTasks1.setSeqType(user_model1.get(0).get0().getSeqType());
-                   // campaignTasks1.setWorkingHoursId(user_model1.get(0).get0());
+                    campaignTasks1.setWorkingHoursId(user_model1.get(0).get0().getWorkingHoursId());
+                    campaignTasks1.setStatus(user_model1.get(0).get0().getStatus());
+                    campaignTasks1.setCreatedAt(user_model1.get(0).get0().getCreatedAt());
+                    campaignTasks1.setUpdatedAt(user_model1.get(0).get0().getUpdatedAt());
+
 
                     List<CampaignTask> store=new ArrayList<>();
                     store.add(campaignTasks1);

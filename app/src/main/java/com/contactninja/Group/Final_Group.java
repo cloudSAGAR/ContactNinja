@@ -323,8 +323,14 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             }
 
             paramObject.put("group_name", group_name);
+          /*  if(old_image!=null){
+                paramObject.put("oldImage", old_image);
+            }*/
             if(old_image!=null){
                 paramObject.put("oldImage", old_image);
+            }
+            else {
+                paramObject.put("oldImage", "");
             }
             paramObject.put("image_extension", File_extension);
             paramObject.put("group_image_name", File_name);
