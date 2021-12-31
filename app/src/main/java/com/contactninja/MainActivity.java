@@ -125,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout llCreate;
     LoadingDialog loadingDialog;
     List<Csv_InviteListData> csv_inviteListData = new ArrayList<>();
+
+    List<Csv_InviteListData> csv_multiple_data = new ArrayList<>();
     int limit = 0;
     RetrofitCalls retrofitCalls;
     String userName = "", user_phone_number = "", user_image = "", user_des = "", strtext = "", old_latter = "", contect_type = "", contect_email = "",
@@ -367,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             .findFirst();
                     if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
                         // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
-
+                        csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
                         csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
 
                         csv_inviteListData.remove(indexOpt.getAsInt() + 1);
@@ -474,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + response.get(i).getContect_email() +
-                    ',' + '"' + response.get(i).getUserPhoneNumber() + '"' +
+                    ',' + '"' + response.get(i).getUserPhoneNumber() +','+ '"' +
                     ',' + ' '
             );
 
@@ -853,6 +855,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 2:
+                SessionManager.setContect_flag("read");
                 fragment = new Main_contact_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
