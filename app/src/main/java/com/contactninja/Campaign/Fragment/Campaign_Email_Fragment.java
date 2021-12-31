@@ -39,7 +39,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
         // Log.e("Frgment Call","Yes");
         Log.e("c_name", c_name);
         Log.e("c_type", c_type);
-        if (c_type.equals("Email")) {
+        if (c_type.equals("EMAIL")) {
             if (c_name.equals("AUTO")) {
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
@@ -150,7 +150,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
                 // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
                 //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
                 //Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
-                SessionManager.setCampaign_type("Email");
+                SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("AUTO");
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
@@ -176,7 +176,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.manual_layout:
 
-                SessionManager.setCampaign_type("Email");
+                SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("MANUAL");
                 select_automated.setVisibility(View.GONE);
                 select_manual.setVisibility(View.VISIBLE);
@@ -210,7 +210,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
         // Log.e("Frgment Call","Yes");
         Log.e("c_name", c_name);
         Log.e("c_type", c_type);
-        if (c_type.equals("Email")) {
+        if (c_type.equals("EMAIL")) {
             if (c_name.equals("AUTO")) {
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
@@ -232,7 +232,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
         Log.e("c_name", c_name);
         Log.e("c_type", c_type);
         /// Log.e("Frgment Call","Yes");
-        if (c_type.equals("Email")) {
+        if (c_type.equals("EMAIL")) {
             if (c_name.equals("AUTO")) {
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);

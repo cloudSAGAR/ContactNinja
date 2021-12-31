@@ -116,10 +116,11 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,"EMAIL OR SMS select",false);
                 }
-               else if (sessionManager.getCampaign_type(getApplicationContext()).equals("Email")){
+               else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
                    if (SessionManager.getTask(getApplicationContext()).equals(null))
                    {
                        startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+                        finish();
                    }
                    else {
                        if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
@@ -133,7 +134,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                        else {
 
                            startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
-
+                           finish();
                        }
                    }
 

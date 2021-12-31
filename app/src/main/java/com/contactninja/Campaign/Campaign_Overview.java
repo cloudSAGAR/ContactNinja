@@ -173,8 +173,14 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
 
 
 
-                    if (movieList.get(position).getType().equals("SMS"))
-                    {
+                    if (movieList.get(position).getType().equals("SMS")) {
+                    movieViewHolder.iv_email.setVisibility(View.GONE);
+                    movieViewHolder.iv_message.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        movieViewHolder.iv_email.setVisibility(View.VISIBLE);
+                        movieViewHolder.iv_message.setVisibility(View.GONE);
+                    }
                         movieViewHolder.edit_minutes.setText(movieList.get(position).getMinute().toString());
                         movieViewHolder.edit_day.setText(movieList_data.getDay().toString());
                         movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
@@ -184,66 +190,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                             }
                         });
 
-
                         movieViewHolder.tv_title.setText("Step#"+movieList.get(position).getStepNo()+"("+movieList.get(position).getManageBy()+" "+movieList.get(position).getType()+")");
 
                         movieViewHolder.tv_detail.setText(movieList.get(position).getContentBody().toString());
 
-                   /* movieViewHolder.tv_add_new_step_num.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SessionManager.setCampaign_type("");
-                            SessionManager.setCampaign_type_name("");
-                            SessionManager.setCampaign_minute("00");
-                            SessionManager.setCampaign_Day("1");
-                            Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
-                            startActivity(intent);
-                        }
-                    });*/
-
-                        movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                SessionManager.setCampaign_type("");
-                                SessionManager.setCampaign_type_name("");
-                                SessionManager.setCampaign_minute("00");
-                                SessionManager.setCampaign_Day("1");
-                                Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                    else {
-
-                        movieViewHolder.email_layout.setVisibility(View.VISIBLE);
-
-
-                        movieViewHolder.edit_email_minutes.setText(movieList.get(position).getMinute());
-                        movieViewHolder.edit_email_day.setText(movieList_data.getDay());
-                        movieViewHolder.iv_email_manu.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                broadcast_manu();
-                            }
-                        });
-
-
-                        movieViewHolder.tv_email_title.setText("Step#"+movieList.get(position).getStepNo()+"("+movieList.get(position).getManageBy()+" "+movieList.get(position).getType()+")");
-
-                        movieViewHolder.tv_email_detail.setText(movieList.get(position).getContentBody());
-
-                   /* movieViewHolder.tv_add_new_step_num.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SessionManager.setCampaign_type("");
-                            SessionManager.setCampaign_type_name("");
-                            SessionManager.setCampaign_minute("00");
-                            SessionManager.setCampaign_Day("1");
-                            Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
-                            startActivity(intent);
-                        }
-                    });*/
-
                         movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -256,7 +206,6 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                             }
                         });
 
-                    }
 
                     break;
 
@@ -316,12 +265,14 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     tv_email_title,tv_email_detail,tv_add_new_step;
             View line_one;
             LinearLayout add_new_step_layout,run_time_layout,email_layout,run_time_email_layout;
-            ImageView iv_manu,iv_email_manu;
+            ImageView iv_manu,iv_email_manu,iv_message,iv_email;
             EditText edit_day,edit_minutes,edit_email_day,edit_email_minutes;
 
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
+                iv_message=itemView.findViewById(R.id.iv_message);
+                iv_email=itemView.findViewById(R.id.iv_email);
                 add_new_step_layout=itemView.findViewById(R.id.add_new_step);
                 tv_add_new_step_num=itemView.findViewById(R.id.tv_add_new_step_num);
                 tv_add_new_step=itemView.findViewById(R.id.tv_add_new_step);

@@ -1613,7 +1613,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.InviteListDataclass> {
 
         public Context mCtx;
-
         List<Contactdetail> contactdetails;
         LinearLayout layout_Add_phone;
 

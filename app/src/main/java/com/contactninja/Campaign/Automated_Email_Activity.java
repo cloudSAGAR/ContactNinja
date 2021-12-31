@@ -28,6 +28,7 @@ import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -71,6 +72,9 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
     static CoordinatorLayout mMainLayout;
+    String step_no = "1", time = "09:00", sequence_id = "";
+    int minite = 00, day = 1;
+    public String template_id_is="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +109,14 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+        finish();
+
+        super.onBackPressed();
     }
 
     private void Hastag_list() throws JSONException {
@@ -195,11 +207,19 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     public void onClick(@SuppressLint("UnknownNullness") View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.save_button:
-                //Add Api Call
-                // startActivity(new Intent(getApplicationContext(),Campaign_Overview.class));
+                if (ev_subject.getText().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
+
+                }
+                else if (edit_template.getText().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
+
+                } else {
+                    StepData();
+                }
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
@@ -333,6 +353,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         ev_subject.setText(template.getContentHeader());
         edit_template.setText(template.getContentBody());
         edit_template.setSelection(edit_template.getText().length());
+        template_id_is= String.valueOf(template.getId());
         bottomSheetDialog_templateList.dismiss();
     }
 
@@ -445,6 +466,87 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             }
         });
 
+    }
+
+
+    public void StepData() {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+        try {
+            if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
+
+                CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
+
+                int step = main_data.getStepNo() + 1;
+                step_no = String.valueOf(step);
+                day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
+                minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
+
+                if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
+                    sequence_id = "null";
+                } else {
+                    sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString();
+                }
+            } else {
+                sequence_id = "null";
+            }
+        } catch (Exception e) {
+            sequence_id = "null";
+        }
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("content_body", edit_template.getText().toString());
+        paramObject.addProperty("day", day);
+        paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
+        paramObject.addProperty("minute", minite);
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("template_id",template_id_is);
+
+        if (!sequence_id.equals("null"))
+        {
+            paramObject.addProperty("sequence_id", sequence_id);
+        }
+        paramObject.addProperty("content_header",ev_subject.getText().toString());
+        paramObject.addProperty("step_no", step_no);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
+        paramObject.addProperty("time", Global.getCurrentTime());
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Automated_Email_Activity.this),Global.Device,new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+
+                loadingDialog.cancelLoading();
+
+                if (response.body().getStatus() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<List<CampaignTask>>() {
+                    }.getType();
+                    List<CampaignTask> user_model1 = new Gson().fromJson(headerString, listType);
+                    SessionManager.setTask(getApplicationContext(), user_model1);
+                    startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
+                    finish();
+                } else {
+
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
     }
     private void CreateTemplate(EditText edit_template, EditText ev_subject, EditText edt_template_name, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();
