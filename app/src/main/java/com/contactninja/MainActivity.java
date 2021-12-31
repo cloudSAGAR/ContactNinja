@@ -37,6 +37,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Campaign.Campaign_List_Activity;
 import com.contactninja.Broadcast.Broadcst_Activty;
 import com.contactninja.Fragment.Main_contact_Fragment;
@@ -543,7 +544,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody id = RequestBody.create(MediaType.parse("text/plain"), "1");
 
-        retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager), organization_id1, team_id1, user_id1, id, body, new RetrofitCallback() {
+        retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager),
+                organization_id1, team_id1, user_id1, id, body,Global.getVersionname(MainActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 sessionManager.setcontectexits("1");
@@ -609,7 +611,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj,Global.getVersionname(MainActivity.this),
+                Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -1154,7 +1157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(MainActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 

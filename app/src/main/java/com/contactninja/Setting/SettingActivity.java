@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.TemplateList;
@@ -191,7 +192,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(SettingActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();

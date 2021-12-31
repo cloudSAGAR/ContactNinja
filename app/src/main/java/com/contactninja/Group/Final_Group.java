@@ -346,7 +346,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject)jsonParser.parse(obj.toString());
           //  Log.e("Obbject data",new Gson().toJson(gsonObject));
-            retrofitCalls.AddGroup(sessionManager,gsonObject, loadingDialog,token, new RetrofitCallback() {
+            retrofitCalls.AddGroup(sessionManager,gsonObject, loadingDialog,token,Global.getVersionname(Final_Group.this),Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
 

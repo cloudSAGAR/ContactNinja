@@ -360,7 +360,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         paramObject.addProperty("password", password);
 
         obj.add("data", paramObject);
-        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, Global.getVersionname(LoginActivity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
@@ -503,7 +503,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             paramObject.addProperty("last_name", "");
             paramObject.addProperty("login_type", Login_type);
             obj.add("data", paramObject);
-            retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+            retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog,Global.getVersionname(LoginActivity.this),Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
                     //Log.e("Response is",new Gson().toJson(response));

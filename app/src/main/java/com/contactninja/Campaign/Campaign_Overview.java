@@ -350,8 +350,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        String ver = pkgInfo.versionName;
-        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog,ver,"APP_ANDR",Global.getToken(sessionManager), new RetrofitCallback() {
+        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog,Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_Overview.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 

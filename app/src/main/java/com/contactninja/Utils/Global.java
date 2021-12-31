@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -38,6 +40,7 @@ import java.util.regex.Pattern;
 @SuppressLint({"SimpleDateFormat", "StaticFieldLeak"})
 public class Global extends Application   {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
+    public static final String Device = "APP_ANDR";
     public static String about="https://contactninja.us/about/";
     public static String Email_auth="https://app.contactninja.org/email_api/callback.php";
     private static long lastClickTime = 0;
@@ -59,6 +62,17 @@ public class Global extends Application   {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String date = df.format(Calendar.getInstance().getTime());
         return date;
+    }
+
+    public static String getVersionname(Activity activity) {
+     String version="";
+        try {
+            PackageInfo pInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
+             version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return version;
     }
 
 

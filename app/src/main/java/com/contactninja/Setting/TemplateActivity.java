@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Campaign.Automated_Email_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.MainActivity;
@@ -138,7 +139,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page",currentPage);
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(TemplateActivity .this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();

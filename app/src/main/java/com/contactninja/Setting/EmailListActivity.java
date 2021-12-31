@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.TemplateList;
@@ -97,7 +98,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(EmailListActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -264,7 +265,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_setDefault(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Mail_setDefault(sessionManager,obj, loadingDialog, token,Global.getVersionname(EmailListActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
