@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.contactninja.Interface.CampaingClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Campaign_List;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -45,7 +46,8 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class Campaign_List_Activity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener  {
+public class Campaign_List_Activity extends AppCompatActivity implements View.OnClickListener,
+        SwipeRefreshLayout.OnRefreshListener, CampaingClick {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -90,7 +92,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         rv_campaign_list.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv_campaign_list.setLayoutManager(layoutManager);
-        campaingAdepter=new CampaingAdepter(Campaign_List_Activity.this,new ArrayList<>());
+        campaingAdepter=new CampaingAdepter(Campaign_List_Activity.this,new ArrayList<>(),this);
         rv_campaign_list.setAdapter(campaingAdepter);
 
 
@@ -259,7 +261,12 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         }
     }
 
-
+    @Override
+    public void OnClick(Campaign_List.Campaign campaign) {
+        Intent intent =new Intent(getApplicationContext(),Campaign_Overview.class);
+        intent.putExtra("sequence_id",campaign.getId());
+        startActivity(intent);
+    }
 
 
     public class CampaingAdepter extends RecyclerView.Adapter<CampaingAdepter.viewData> {
@@ -267,13 +274,14 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         private static final int VIEW_TYPE_NORMAL = 1;
         private boolean isLoaderVisible = false;
 
-
+        CampaingClick campaingClick;
         public Context mCtx;
         private List<Campaign_List.Campaign> campaignList=new ArrayList<>();
 
-        public CampaingAdepter(Context context, List<Campaign_List.Campaign> campaignList) {
+        public CampaingAdepter(Context context, List<Campaign_List.Campaign> campaignList,CampaingClick campaingClick) {
             this.mCtx = context;
             this.campaignList = campaignList;
+            this.campaingClick = campaingClick;
         }
 
         @NonNull
@@ -334,6 +342,12 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 setImage(mCtx.getResources().getString(R.string.Comp_I),holder);
 
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    campaingClick.OnClick(campaign);
+                }
+            });
 
         }
 
