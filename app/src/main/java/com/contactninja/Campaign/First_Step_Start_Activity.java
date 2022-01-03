@@ -62,7 +62,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList = new ArrayList<>();
     CoordinatorLayout mMainLayout;
-    String step_no = "1", time = "09:00", sequence_id = "";
+    String step_no = "1", time = "09:00", sequence_id = "",seq_task_id="";
     int minite = 00, day = 1;
     TemplateClick templateClick;
     BottomSheetDialog bottomSheetDialog_templateList;
@@ -77,6 +77,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
+
+
+
         try {
             if (Global.isNetworkAvailable(First_Step_Start_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
@@ -96,6 +99,38 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             tv_step.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
         }
+
+        Intent inten=getIntent();
+        Bundle bundle=inten.getExtras();
+        String flag=bundle.getString("flag");
+        if (flag.equals("edit"))
+        {
+            edit_template.setText(bundle.getString("body"));
+
+            seq_task_id= bundle.getString("seq_task_id");
+            sequence_id= bundle.getString("sequence_id");
+
+            step_no= String.valueOf(bundle.getInt("step"));
+
+            SessionManager.setCampaign_type(bundle.getString("type"));
+            SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
+
+            String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+            tv_step.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
+
+            try {
+                minite= bundle.getInt("minute");
+                day= bundle.getInt("day");
+                SessionManager.setCampaign_Day(String.valueOf(day));
+                SessionManager.setCampaign_minute(String.valueOf(minite));
+            }
+            catch (Exception e)
+            {
+
+            }
+
+        }
+
     }
 
     private void bouttomSheet() {
@@ -427,7 +462,24 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             obj.add("data", paramObject);
         }
         else {
-
+            SignResponseModel user_data = SessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("day", day);
+            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
+            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("organization_id", "1");
+            paramObject.addProperty("sequence_id", bundle.getString("sequence_id"));
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("seq_task_id", seq_task_id);
+            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
+            paramObject.addProperty("time", Global.getCurrentTime());
+            paramObject.addProperty("user_id", user_id);
+            paramObject.addProperty("step_no", step_no);
+            obj.add("data", paramObject);
         }
 
         retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(First_Step_Start_Activity.this),Global.Device,new RetrofitCallback() {

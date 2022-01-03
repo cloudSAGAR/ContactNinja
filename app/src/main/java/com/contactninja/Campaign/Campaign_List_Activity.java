@@ -253,16 +253,36 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 finish();
                 break;
             case R.id.demo_layout:
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                Global.count=1;
+                SessionManager.setTask(getApplicationContext(), new ArrayList<>());
                 startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+                finish();
                 break;
             case R.id.add_campaign_layout:
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                Global.count=1;
+                SessionManager.setTask(getApplicationContext(), new ArrayList<>());
                 startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+                finish();
                 break;
         }
     }
 
     @Override
     public void OnClick(Campaign_List.Campaign campaign) {
+        SessionManager.setCampaign_type("");
+        SessionManager.setCampaign_type_name("");
+        SessionManager.setCampaign_Day("");
+        SessionManager.setCampaign_minute("");
+        Global.count=1;
+        SessionManager.setTask(getApplicationContext(), new ArrayList<>());
         Intent intent =new Intent(getApplicationContext(),Campaign_Overview.class);
         intent.putExtra("sequence_id",campaign.getId());
         startActivity(intent);

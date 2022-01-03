@@ -151,7 +151,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 case ITEM:
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
 
-                    if (position == movieList.size()-1)
+                    if (position == movieList.size() - 1)
                     {
                         movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
                         int num=movieList.size()+1;
@@ -161,7 +161,6 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     }
                     else {
                         movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
-
                         movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
                         Global.count++;
                     }
@@ -350,26 +349,59 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
 
-                if (sequenceTask.getId().equals("EMAIL"))
+                if (sequenceTask.getType().equals("EMAIL"))
                 {
-
+                    if (SessionManager.getTask(getApplicationContext()).size()!=0)
+                    {
+                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+                    }
+                    else {
+                        Intent getintent=getIntent();
+                        Bundle bundle=getintent.getExtras();
+                        sequence_id=bundle.getInt("sequence_id");
+                    }
+                    Log.e("sequence id", String.valueOf(sequence_id));
+                   // Log.e("Header",sequenceTask.getContentHeader());
                     Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
                     new_task.putExtra("flag","edit");
+                    new_task.putExtra("body",sequenceTask.getContentBody());
+                    new_task.putExtra("day",sequenceTask.getDay());
+                    new_task.putExtra("manage_by",sequenceTask.getManageBy());
+                    new_task.putExtra("seq_task_id",String.valueOf(sequenceTask.getId()));
+                    new_task.putExtra("sequence_id",String.valueOf(sequence_id));
+                    new_task.putExtra("type",sequenceTask.getType());
+                    new_task.putExtra("minute",sequenceTask.getMinute());
+                    new_task.putExtra("header",sequenceTask.getContentHeader());
+                    new_task.putExtra("step",sequenceTask.getStepNo());
                     startActivity(new_task);
+                    finish();
+                    bottomSheetDialog.cancel();
 
                 }
                 else {
-
+                    if (SessionManager.getTask(getApplicationContext()).size()!=0)
+                    {
+                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+                    }
+                    else {
+                        Intent getintent=getIntent();
+                        Bundle bundle=getintent.getExtras();
+                        sequence_id=bundle.getInt("sequence_id");
+                    }
+                    Log.e("sequence id", String.valueOf(sequence_id));
                     Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
                     new_task.putExtra("flag","edit");
                     new_task.putExtra("body",sequenceTask.getContentBody());
                     new_task.putExtra("day",sequenceTask.getDay());
                     new_task.putExtra("manage_by",sequenceTask.getManageBy());
-                    new_task.putExtra("seq_task_id",sequenceTask.getId());
-                    new_task.putExtra("sequence_id",sequence_id);
+                    new_task.putExtra("seq_task_id",String.valueOf(sequenceTask.getId()));
+                    new_task.putExtra("sequence_id",String.valueOf(sequence_id));
                     new_task.putExtra("type",sequenceTask.getType());
+                    new_task.putExtra("minute",sequenceTask.getMinute());
+                    new_task.putExtra("step",sequenceTask.getStepNo());
                     startActivity(new_task);
-
+                    finish();
+                    bottomSheetDialog.cancel();
                 }
 
             }

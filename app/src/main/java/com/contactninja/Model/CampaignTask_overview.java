@@ -69,10 +69,10 @@ public class CampaignTask_overview {
         private String type;
         @SerializedName("template_id")
         @Expose
-        private Object templateId;
+        private String templateId;
         @SerializedName("content_header")
         @Expose
-        private Object contentHeader;
+        private String contentHeader;
         @SerializedName("content_body")
         @Expose
         private String contentBody;
@@ -87,13 +87,13 @@ public class CampaignTask_overview {
         private String priority;
         @SerializedName("active_task_id")
         @Expose
-        private Object activeTaskId;
+        private String activeTaskId;
         @SerializedName("active_task_email")
         @Expose
-        private Object activeTaskEmail;
+        private String activeTaskEmail;
         @SerializedName("active_task_contact_number")
         @Expose
-        private Object activeTaskContactNumber;
+        private String activeTaskContactNumber;
 
         public Integer getId() {
             return id;
@@ -131,15 +131,15 @@ public class CampaignTask_overview {
             return templateId;
         }
 
-        public void setTemplateId(Object templateId) {
+        public void setTemplateId(String templateId) {
             this.templateId = templateId;
         }
 
-        public Object getContentHeader() {
+        public String getContentHeader() {
             return contentHeader;
         }
 
-        public void setContentHeader(Object contentHeader) {
+        public void setContentHeader(String contentHeader) {
             this.contentHeader = contentHeader;
         }
 
@@ -179,7 +179,7 @@ public class CampaignTask_overview {
             return activeTaskId;
         }
 
-        public void setActiveTaskId(Object activeTaskId) {
+        public void setActiveTaskId(String activeTaskId) {
             this.activeTaskId = activeTaskId;
         }
 
@@ -187,7 +187,7 @@ public class CampaignTask_overview {
             return activeTaskEmail;
         }
 
-        public void setActiveTaskEmail(Object activeTaskEmail) {
+        public void setActiveTaskEmail(String activeTaskEmail) {
             this.activeTaskEmail = activeTaskEmail;
         }
 
@@ -195,7 +195,7 @@ public class CampaignTask_overview {
             return activeTaskContactNumber;
         }
 
-        public void setActiveTaskContactNumber(Object activeTaskContactNumber) {
+        public void setActiveTaskContactNumber(String activeTaskContactNumber) {
             this.activeTaskContactNumber = activeTaskContactNumber;
         }
 

@@ -72,7 +72,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
     static CoordinatorLayout mMainLayout;
-    String step_no = "1", time = "09:00", sequence_id = "";
+    String step_no = "1", time = "09:00", sequence_id = "",seq_task_id="";
     int minite = 00, day = 1;
     public String template_id_is="";
     @Override
@@ -109,6 +109,35 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
             }
         });
+
+        Intent inten=getIntent();
+        Bundle bundle=inten.getExtras();
+        String flag=bundle.getString("flag");
+        if (flag.equals("edit"))
+        {
+            edit_template.setText(bundle.getString("body"));
+
+            seq_task_id= bundle.getString("seq_task_id");
+            sequence_id= bundle.getString("sequence_id");
+
+            ev_subject.setText(bundle.getString("header"));
+            step_no= String.valueOf(bundle.getInt("step"));
+
+            SessionManager.setCampaign_type(bundle.getString("type"));
+            SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
+          try {
+              day= Integer.parseInt(bundle.getString("day"));
+              minite= Integer.parseInt(bundle.getString("minute"));
+              SessionManager.setCampaign_Day(String.valueOf(day));
+              SessionManager.setCampaign_minute(String.valueOf(minite));
+          }
+          catch (Exception e)
+          {
+
+          }
+
+        }
+
     }
 
     @Override
@@ -527,8 +556,26 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             obj.add("data", paramObject);
         }
         else {
+            SignResponseModel user_data = SessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("day", day);
+            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
+            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("organization_id", "1");
+            paramObject.addProperty("sequence_id", sequence_id);
+            paramObject.addProperty("seq_task_id", seq_task_id);
+            paramObject.addProperty("content_header",ev_subject.getText().toString());
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
+            paramObject.addProperty("time", Global.getCurrentTime());
+            paramObject.addProperty("user_id", user_id);
+            paramObject.addProperty("step_no", step_no);
 
-
+            obj.add("data", paramObject);
 
         }
 
