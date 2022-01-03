@@ -187,6 +187,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             TextSet();
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
+            Log.e("Contect Detail is ",new Gson().toJson(detail_contect));
             for (int i = 0; i < detail_contect.size(); i++) {
                 if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
@@ -241,7 +242,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.VISIBLE);
             ev_company.setEnabled(false);
@@ -270,6 +272,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_note.setTextColor(getActivity().getColor(R.color.purple_200));
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+            Log.e("All Contect Data",new Gson().toJson(Contect_data));
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
             addcontectModel.setJob_title(Contect_data.getJobTitle());
             addcontectModel.setState(Contect_data.getState());
@@ -394,7 +397,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             TextSet();*/
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
-
+            Log.e("Contect Detail",new Gson().toJson(detail_contect));
             for (int i = 0; i < detail_contect.size(); i++) {
                 if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
@@ -561,7 +564,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             layout_Add_phone.setOnClickListener(v -> {
                 Log.e("On Click","Yes");
                 Contactdetail contactdetail1 = new Contactdetail();
-                contactdetail1.setId(contactdetails.size());
+                //Defult id 0 Set Edit
+                contactdetail1.setId(0);
                 contactdetail1.setEmail_number("");
                 contactdetail1.setIs_default(0);
                 contactdetail1.setLabel("Home");

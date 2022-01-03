@@ -470,54 +470,68 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
 
     public void StepData() {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        try {
-            if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
-
-                CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
-
-                int step = main_data.getStepNo() + 1;
-                step_no = String.valueOf(step);
-                day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
-                minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
-
-                if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
-                    sequence_id = "null";
-                } else {
-                    sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString();
-                }
-            } else {
-                sequence_id = "null";
-            }
-        } catch (Exception e) {
-            sequence_id = "null";
-        }
+        Intent inten=getIntent();
+        Bundle bundle=inten.getExtras();
+        String flag=bundle.getString("flag");
 
         JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("content_body", edit_template.getText().toString());
-        paramObject.addProperty("day", day);
-        paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-        paramObject.addProperty("minute", minite);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("template_id",template_id_is);
-
-        if (!sequence_id.equals("null"))
+        if (flag.equals("add"))
         {
-            paramObject.addProperty("sequence_id", sequence_id);
+            loadingDialog.showLoadingDialog();
+            SignResponseModel user_data = SessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+            try {
+                if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
+
+                    CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
+
+                    int step = main_data.getStepNo() + 1;
+                    step_no = String.valueOf(step);
+                    day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
+                    minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
+
+                    if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
+                        sequence_id = "null";
+                    } else {
+                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString();
+                    }
+                } else {
+                    sequence_id = "null";
+                }
+            } catch (Exception e) {
+                sequence_id = "null";
+            }
+
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("day", day);
+            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
+            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("organization_id", "1");
+            paramObject.addProperty("template_id",template_id_is);
+
+            if (!sequence_id.equals("null"))
+            {
+                paramObject.addProperty("sequence_id", sequence_id);
+            }
+            paramObject.addProperty("content_header",ev_subject.getText().toString());
+            paramObject.addProperty("step_no", step_no);
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
+            paramObject.addProperty("time", Global.getCurrentTime());
+            paramObject.addProperty("user_id", user_id);
+            obj.add("data", paramObject);
         }
-        paramObject.addProperty("content_header",ev_subject.getText().toString());
-        paramObject.addProperty("step_no", step_no);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-        paramObject.addProperty("time", Global.getCurrentTime());
-        paramObject.addProperty("user_id", user_id);
-        obj.add("data", paramObject);
+        else {
+
+
+
+        }
+
         retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Automated_Email_Activity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {

@@ -52,6 +52,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     Campaign_OverviewAdapter campaign_overviewAdapter;
    /* List<String> stringList;*/
     List<CampaignTask_overview.SequenceTask> campaignTasks=new ArrayList<>();
+    int sequence_id;
+    BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         StepData();
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
         item_list.setAdapter(campaign_overviewAdapter);
+
+
 
     }
 
@@ -186,7 +190,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                broadcast_manu();
+                                broadcast_manu(movieList.get(position),position);
                             }
                         });
 
@@ -203,6 +207,20 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                                 SessionManager.setCampaign_Day("1");
                                 Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
                                 startActivity(intent);
+                            }
+                        });
+
+                        movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (movieViewHolder.run_time_layout.getVisibility()==View.VISIBLE)
+                                {
+                                    movieViewHolder.run_time_layout.setVisibility(View.GONE);
+                                }
+                                else {
+                                    movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);
+                                }
+
                             }
                         });
 
@@ -229,6 +247,12 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         public void addLoadingFooter() {
             isLoadingAdded = true;
             //add("");
+        }
+
+
+        public void remove_item(int position) {
+            movieList.remove(position);
+            notifyDataSetChanged();
         }
 
         public void removeLoadingFooter() {
@@ -307,16 +331,101 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
 
     }
 
-    private void broadcast_manu() {
+    private void broadcast_manu(CampaignTask_overview.SequenceTask sequenceTask, int position) {
         final View mView = getLayoutInflater().inflate(R.layout.brodcaste_campaign_manu, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Campaign_Overview.this, R.style.CoffeeDialog);
+        bottomSheetDialog = new BottomSheetDialog(Campaign_Overview.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
 
 
        LinearLayout delete_layout=bottomSheetDialog.findViewById(R.id.delete_layout);
        LinearLayout edit_layout=bottomSheetDialog.findViewById(R.id.edit_layout);
+
+        delete_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RemoveTaskData(sequenceTask.getId(),"D",position);
+            }
+        });
+        edit_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (sequenceTask.getId().equals("EMAIL"))
+                {
+
+                    Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                    new_task.putExtra("flag","edit");
+                    startActivity(new_task);
+
+                }
+                else {
+
+                    Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                    new_task.putExtra("flag","edit");
+                    new_task.putExtra("body",sequenceTask.getContentBody());
+                    new_task.putExtra("day",sequenceTask.getDay());
+                    new_task.putExtra("manage_by",sequenceTask.getManageBy());
+                    new_task.putExtra("seq_task_id",sequenceTask.getId());
+                    new_task.putExtra("sequence_id",sequence_id);
+                    new_task.putExtra("type",sequenceTask.getType());
+                    startActivity(new_task);
+
+                }
+
+            }
+        });
        bottomSheetDialog.show();
 
+    }
+
+
+
+    public void RemoveTaskData(Integer task_id, String d, int position) {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        if (SessionManager.getTask(getApplicationContext()).size()!=0)
+        {
+            sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+        }
+        else {
+            Intent getintent=getIntent();
+            Bundle bundle=getintent.getExtras();
+            sequence_id=bundle.getInt("sequence_id");
+        }
+        Log.e("sequence_id", String.valueOf(sequence_id));
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("seq_task_id", task_id);
+        paramObject.addProperty("sequence_id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("status", d);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Task_store(sessionManager, obj, loadingDialog,Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_Overview.this),Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+
+                        if (response.body().getStatus() == 200) {
+                            campaign_overviewAdapter.remove_item(position);
+                            bottomSheetDialog.cancel();
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
     }
 
 
@@ -327,7 +436,16 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        int sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+
+        if (SessionManager.getTask(getApplicationContext()).size()!=0)
+        {
+            sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+        }
+        else {
+            Intent getintent=getIntent();
+            Bundle bundle=getintent.getExtras();
+            sequence_id=bundle.getInt("sequence_id");
+        }
         Log.e("sequence_id", String.valueOf(sequence_id));
 
         JsonObject obj = new JsonObject();

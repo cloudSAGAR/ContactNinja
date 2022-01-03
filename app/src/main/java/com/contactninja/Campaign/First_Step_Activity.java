@@ -119,8 +119,12 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
                    if (SessionManager.getTask(getApplicationContext()).equals(null))
                    {
-                       startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
-                        finish();
+                       //startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+
+                       Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                       new_task.putExtra("flag","add");
+                       startActivity(new_task);
+                       finish();
                    }
                    else {
                        if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
@@ -133,7 +137,9 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                        }
                        else {
 
-                           startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+                           Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                           new_task.putExtra("flag","add");
+                           startActivity(new_task);
                            finish();
                        }
                    }
@@ -142,7 +148,10 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                else {
                    if (SessionManager.getTask(getApplicationContext()).equals(null))
                    {
-                       startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+                        Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                        new_task.putExtra("flag","add");
+                        startActivity(new_task);
+                      // startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
                        finish();
                    }
                    else {
@@ -160,7 +169,9 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                        }
                        else {
 
-                           startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
+                             Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                           new_task.putExtra("flag","add");
+                           startActivity(new_task);
                            finish();
 
                        }

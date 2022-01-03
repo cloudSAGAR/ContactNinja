@@ -856,7 +856,11 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 }
                 phone_type = contactdetails.get(i).getLabel();
                 paramObject1.put("email_number", contactdetails.get(i).getEmail_number());
-                paramObject1.put("id", contactdetails.get(i).getId());
+
+                if (contactdetails.get(i).getId()!=0)
+                {
+                    paramObject1.put("id", contactdetails.get(i).getId());
+                }
                 paramObject1.put("is_default", contactdetails.get(i).getIs_default());
                 paramObject1.put("label", contactdetails.get(i).getLabel());
                 paramObject1.put("type", contactdetails.get(i).getType());
