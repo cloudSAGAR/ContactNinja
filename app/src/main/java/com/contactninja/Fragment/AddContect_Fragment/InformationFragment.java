@@ -1647,13 +1647,26 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             if (edit) {
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
-                holder.ccp_id.setCountryForNameCode(item.getCountry_code());
                 if (contactdetails.get(position).getIs_default() == 1) {
                     holder.iv_set_default.setVisibility(View.VISIBLE);
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
-                String main_data = item.getEmail_number().replace("+91", "");
+
+                int countryCode = 0;
+                PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(getActivity());
+                try {
+                    // phone must begin with '+'
+                    Phonenumber.PhoneNumber numberProto = phoneUtil.parse(item.getEmail_number(), "");
+                    countryCode = numberProto.getCountryCode();
+                } catch (NumberParseException e) {
+                    System.err.println("NumberParseException was thrown: " + e.toString());
+                }
+
+                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(countryCode));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(countryCode);
+                holder.ccp_id.resetToDefaultCountry();
+                String main_data = item.getEmail_number().replace("+"+String.valueOf(countryCode), "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
               /*  holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {

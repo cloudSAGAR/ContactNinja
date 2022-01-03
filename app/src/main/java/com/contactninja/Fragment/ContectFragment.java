@@ -1,18 +1,14 @@
 package com.contactninja.Fragment;
 
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.text.Editable;
@@ -32,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,11 +36,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.ContectListAdapter;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
-import com.contactninja.Model.Csv_InviteListData;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -55,37 +48,27 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitApiClient;
 import com.contactninja.retrofit.RetrofitApiInterface;
-import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
 import org.json.JSONException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak")
 public class ContectFragment extends Fragment {
 
     public static final int RequestPermissionCode = 1;
