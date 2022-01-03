@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -11,10 +12,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.JsonObject;
+
+import retrofit2.Response;
 
 public class Campaign_Name_Activity extends AppCompatActivity implements View.OnClickListener {
     ImageView iv_back;
@@ -23,6 +31,8 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     EditText ev_titale;
+    int sequence_id, seq_task_id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +42,13 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        tv_remain_txt.setText("40 "+getResources().getString(R.string.camp_remaingn));
+        tv_remain_txt.setText("40 " + getResources().getString(R.string.camp_remaingn));
         ev_titale.requestFocus();
+        Intent getintent = getIntent();
+        Bundle bundle = getintent.getExtras();
+        sequence_id = bundle.getInt("sequence_id");
+        seq_task_id = bundle.getInt("seq_task_id");
+
         ev_titale.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -42,17 +57,13 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().length()<=40)
-                {
-                    int num=40-charSequence.toString().length();
-                    tv_remain_txt.setText(num+" "+getResources().getString(R.string.camp_remaingn));
+                if (charSequence.toString().length() <= 40) {
+                    int num = 40 - charSequence.toString().length();
+                    tv_remain_txt.setText(num + " " + getResources().getString(R.string.camp_remaingn));
                     tv_error.setVisibility(View.GONE);
-                }
-                else if (charSequence.toString().length()==0)
-                {
+                } else if (charSequence.toString().length() == 0) {
                     tv_error.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     tv_error.setVisibility(View.GONE);
                 }
             }
@@ -86,17 +97,71 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                 break;
             case R.id.save_button:
                 //Add Api Call
-                if (ev_titale.getText().equals(""))
-                {
+                if (ev_titale.getText().equals("")) {
                     tv_error.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     tv_error.setVisibility(View.GONE);
-                    startActivity(new Intent(getApplicationContext(), ContectAndGroup_Actvity.class));
+                    AddName();
                 }
 
                 break;
 
         }
+    }
+
+
+    public void AddName() {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        if (SessionManager.getTask(getApplicationContext()).size() != 0) {
+            sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+        } else {
+            Intent getintent = getIntent();
+            Bundle bundle = getintent.getExtras();
+            sequence_id = bundle.getInt("sequence_id");
+        }
+        Log.e("sequence_id", String.valueOf(sequence_id));
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("record_id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("seq_name", ev_titale.getText().toString());
+        obj.add("data", paramObject);
+        retrofitCalls.Sequence_settings(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_Name_Activity.this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+
+                        if (response.body().getStatus() == 200) {
+
+                            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                            intent.putExtra("sequence_id", sequence_id);
+                            /*intent.putExtra("seq_task_id",seq_task_id);*/
+                            startActivity(intent);
+                            finish();
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

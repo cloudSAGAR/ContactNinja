@@ -692,8 +692,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
             if (contactdetails.get(i).getEmail_number().equals("")) {
-
-            } else {
+    } else {
                 if (contactdetails.get(i).getType().equals("NUMBER"))
                 {
                     phone = contactdetails.get(i).getEmail_number();
@@ -709,6 +708,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         }
 
         paramObject.put("contact_detail", jsonArray);
+
 
         obj.put("data", paramObject);
 

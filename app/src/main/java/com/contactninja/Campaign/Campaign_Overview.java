@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
+import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -52,7 +53,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     Campaign_OverviewAdapter campaign_overviewAdapter;
    /* List<String> stringList;*/
     List<CampaignTask_overview.SequenceTask> campaignTasks=new ArrayList<>();
-    int sequence_id;
+    int sequence_id,sequence_task_id;
+
     BottomSheetDialog bottomSheetDialog;
 
     @Override
@@ -93,7 +95,23 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.save_button:
                 //Add Api Call
-                startActivity(new Intent(getApplicationContext(),ContectAndGroup_Actvity.class));
+
+                if (SessionManager.getTask(getApplicationContext()).size()!=0)
+                {
+                    sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+                }
+                else {
+                    Intent getintent=getIntent();
+                    Bundle bundle=getintent.getExtras();
+                    sequence_id=bundle.getInt("sequence_id");
+                }
+                SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
+                SessionManager.setGroupList(this,new ArrayList<>());
+                Intent intent=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);
+                intent.putExtra("sequence_id",sequence_id);
+                intent.putExtra("seq_task_id",sequence_task_id);
+                startActivity(intent);
+                //startActivity(new Intent(getApplicationContext(),ContectAndGroup_Actvity.class));
                 break;
 
         }
@@ -360,8 +378,6 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Log.e("sequence id", String.valueOf(sequence_id));
-                   // Log.e("Header",sequenceTask.getContentHeader());
                     Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
                     new_task.putExtra("flag","edit");
                     new_task.putExtra("body",sequenceTask.getContentBody());
@@ -507,7 +523,9 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<CampaignTask_overview>() {
                     }.getType();
+
                     CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
+                    sequence_task_id=user_model1.getSequenceTask().get(0).getId();
                     campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
                 } else {
                     Gson gson = new Gson();

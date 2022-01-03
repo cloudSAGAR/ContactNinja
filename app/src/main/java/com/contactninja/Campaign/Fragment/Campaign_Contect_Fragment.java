@@ -471,6 +471,8 @@ public class Campaign_Contect_Fragment extends Fragment  {
                     topUserListDataAdapter.notifyDataSetChanged();
 
                     num_count.setText(userDetails.size()+" Contacts");
+                    sessionManager.setGroupList(getActivity(), new ArrayList<>());
+                    sessionManager.setGroupList(getActivity(), select_contectListData);
 
 
                 }
@@ -862,7 +864,8 @@ public class Campaign_Contect_Fragment extends Fragment  {
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
                             contacts.get(position).setFlag("false");
 
-
+                            sessionManager.setGroupList(getActivity(), new ArrayList<>());
+                            sessionManager.setGroupList(getActivity(), select_contectListData);
 
 
 
@@ -881,7 +884,8 @@ public class Campaign_Contect_Fragment extends Fragment  {
                             Log.e("Size is",new Gson().toJson(select_contectListData));
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
                             contacts.get(position).setFlag("true");
-
+                            sessionManager.setGroupList(getActivity(), new ArrayList<>());
+                            sessionManager.setGroupList(getActivity(), select_contectListData);
 
                         }
                     });

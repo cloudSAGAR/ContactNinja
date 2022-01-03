@@ -217,4 +217,17 @@ public interface RetrofitApiInterface {
                                      @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
 
 
+    @POST("sequence/contact_store")
+    Call<ApiResponse>  Sequence_contact_store(@Header("Accept") String api, @Header("Authorization") String auth,
+                                  @Body JsonObject jsonObject,
+                                  @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
+
+
+    @POST("sequence/settings")
+    Call<ApiResponse> Sequence_settings(@Header("Accept") String api, @Header("Authorization") String auth,
+                                              @Body JsonObject jsonObject,
+                                              @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
+
 }

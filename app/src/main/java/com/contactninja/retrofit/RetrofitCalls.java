@@ -306,6 +306,23 @@ public class RetrofitCalls {
 
 
 
+    public void Sequence_contact_store(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Sequence_contact_store(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void Sequence_settings(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Sequence_settings(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {
             @Override

@@ -19,6 +19,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +33,30 @@ import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Group_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Model.Broadcast_image_list;
+import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Grouplist;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
 
 public class ContectAndGroup_Actvity extends AppCompatActivity implements View.OnClickListener ,CardClick,  ConnectivityReceiver.ConnectivityReceiverListener{
     TabLayout tabLayout;
@@ -56,13 +73,24 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
 
     LinearLayout main_layout;
     SessionManager sessionManager;
+    int sequence_id,seq_task_id;
+    RetrofitCalls retrofitCalls;
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contect_and_group_actvity);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
-        sessionManager=new SessionManager(this);
+        loadingDialog = new LoadingDialog(this);
+        sessionManager = new SessionManager(this);
+        retrofitCalls = new RetrofitCalls(this);
+        Intent getintent=getIntent();
+        Bundle bundle=getintent.getExtras();
+        sequence_id=bundle.getInt("sequence_id");
+        seq_task_id=bundle.getInt("seq_task_id");
+
+
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -122,10 +150,14 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
-
                 break;
             case R.id.save_button:
-                startActivity(new Intent(getApplicationContext(),Campaign_Name_Activity.class));
+                try {
+                    AddContectAndGroup(seq_task_id,sequence_id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //startActivity(new Intent(getApplicationContext(),Campaign_Name_Activity.class));
                 break;
         }
     }
@@ -207,7 +239,111 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         unregisterNetworkChanges();
     }
 
+
+
+
+
+
+    public void AddContectAndGroup(int seq_task_id, int sequence_id) throws JSONException {
+        loadingDialog.showLoadingDialog();
+
+        if (sessionManager.getGroupList(this).equals(null))
+        {
+            Global.Messageshow(getApplicationContext(),main_layout,getString(R.string.camp_select_contect).toString(),false);
+        }
+        else {
+
+            SignResponseModel user_data = SessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+            Log.e("Contect List is",new Gson().toJson(sessionManager.getGroupList(this)));
+            Log.e("Group List is",new Gson().toJson(SessionManager.getgroup_broadcste(getApplicationContext())));
+
+            if (SessionManager.getTask(getApplicationContext()).size()!=0)
+            {
+                this.sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+            }
+            else {
+                Intent getintent=getIntent();
+                Bundle bundle=getintent.getExtras();
+                this.sequence_id =bundle.getInt("sequence_id");
+            }
+            Log.e("sequence_id", String.valueOf(this.sequence_id));
+            JSONObject obj = new JSONObject();
+            JSONObject paramObject = new JSONObject();
+            paramObject.put("organization_id", "1");
+            paramObject.put("seq_task_id", seq_task_id);
+            paramObject.put("seq_id", sequence_id);
+            paramObject.put("team_id", "1");
+            paramObject.put("user_id", user_id);
+            List<ContectListData.Contact> contactdetails=sessionManager.getGroupList(this);
+            JSONArray jsonArray = new JSONArray();
+            Log.e("Contec List Size",String.valueOf(contactdetails.size()));
+            for (int i = 0; i < contactdetails.size(); i++) {
+                Log.e("Contec List Size",String.valueOf(contactdetails.get(0).getContactDetails().size()));
+                JSONObject paramObject1 = new JSONObject();
+                paramObject1.put("prospect_id",contactdetails.get(i).getId());
+                for (int j=0;j<contactdetails.get(i).getContactDetails().size();j++)
+                {
+                    if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
+                    {
+                        paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                    }
+                    else {
+                        paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                    }
+                    //break;
+                }
+
+                jsonArray.put(paramObject1);
+            }
+
+            List<Grouplist.Group> group_list=SessionManager.getgroup_broadcste(getApplicationContext());
+            JSONArray contect_array = new JSONArray();
+            for (int i =0;i<group_list.size();i++)
+            {
+                contect_array.put(group_list.get(i).getId());
+            }
+            paramObject.put("prospect_ids", jsonArray);
+            paramObject.put("contact_group_ids",contect_array);
+            obj.put("data", paramObject);
+            JsonParser jsonParser = new JsonParser();
+            JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+            Log.e("Gson Data",new Gson().toJson(gsonObject));
+            retrofitCalls.Sequence_contact_store(sessionManager, gsonObject, loadingDialog,Global.getToken(sessionManager),
+                    Global.getVersionname(ContectAndGroup_Actvity.this),Global.Device, new RetrofitCallback() {
+                        @Override
+                        public void success(Response<ApiResponse> response) {
+                            loadingDialog.cancelLoading();
+
+                            if (response.body().getStatus() == 200) {
+                                Intent intent=new Intent(getApplicationContext(),Campaign_Name_Activity.class);
+                                intent.putExtra("sequence_id",sequence_id);
+                                intent.putExtra("seq_task_id",seq_task_id);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Global.Messageshow(getApplicationContext(),main_layout,response.body().getMessage(),false);
+
+                            }
+                        }
+
+                        @Override
+                        public void error(Response<ApiResponse> response) {
+                            loadingDialog.cancelLoading();
+                        }
+                    });
+
+
+        }
+
+    }
 }
+
+
+
 
 class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
 
@@ -283,3 +419,6 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
 
 
 }
+
+
+

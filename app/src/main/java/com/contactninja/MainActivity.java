@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                    loadingDialog.showLoadingDialog();
                }
 
-              GetContactsIntoArrayList();
+             // GetContactsIntoArrayList();
 
             }
 
@@ -285,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (NumberParseException e) {
                 System.err.println("NumberParseException was thrown: " + e.toString());
             }
+
             user_phone_number=user_phone_number.replace(" ","");
             user_phone_number=user_phone_number.replace("-","");
             if(!user_phone_number.contains("+")){

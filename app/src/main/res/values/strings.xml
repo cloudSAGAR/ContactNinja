@@ -356,4 +356,5 @@ Number</string>
     <string name="Comp_I">I</string><!--Inactive-->
     <string name="Comp_C">C</string><!--Complete-->
     <string name="Comp_D">I</string><!--Delete-->
+    <string name="camp_select_contect">Select Contect Number</string>
 </resources>
