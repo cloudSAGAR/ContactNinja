@@ -97,6 +97,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
         iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
         add_detail=findViewById(R.id.add_detail);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);

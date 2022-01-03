@@ -1,5 +1,6 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -20,10 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
-import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -50,7 +49,7 @@ import java.util.List;
 
 import retrofit2.Response;
 
-
+@SuppressLint("UnknownNullness,SyntheticAccessor,SetTextI18n")
 public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
@@ -61,7 +60,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     TextView num_count;
-    int page = 1, limit = 10, totale_group;
+    int page = 1,  limit = 10, totale_group;
     PaginationAdapter paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
@@ -89,18 +88,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
-       try {
-           if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
-               GroupEvent();
-           }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
-
-        SessionManager.setGroupList(getActivity(), new ArrayList<>());
-
 
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
@@ -113,6 +103,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
+            @SuppressLint("SyntheticAccessor")
             @Override
             public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -137,6 +128,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @SuppressLint("SyntheticAccessor")
             @Override
             public void onRefresh() {
                 paginationAdapter = new PaginationAdapter(getActivity());
@@ -174,10 +166,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
+            case R.id.demo_layout:
                 SessionManager.setGroupList(getActivity(),new ArrayList<>());
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
@@ -186,15 +180,26 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             case R.id.group_name:
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
-            case R.id.demo_layout:
-                SessionManager.setGroupList(getActivity(),new ArrayList<>());
-                SessionManager.setGroupData(getActivity(),new Grouplist.Group());
-                startActivity(new Intent(getActivity(), GroupActivity.class));
-                break;
 
 
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SessionManager.setGroupList(getActivity(), new ArrayList<>());
+        paginationAdapter = new PaginationAdapter(getActivity());
+        group_recyclerView.setAdapter(paginationAdapter);
+        try {
+            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                loadingDialog.showLoadingDialog();
+                GroupEvent();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void GroupEvent() throws JSONException {
@@ -307,8 +312,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
                     num_count.setText("" + group_model.getTotal() + " Group");
 
-                } else {
-
                 }
             }
 
@@ -330,12 +333,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         private List<Grouplist.Group> movieList;
         private boolean isLoadingAdded = false;
 
-        public PaginationAdapter(Context context) {
+        public PaginationAdapter(@SuppressLint("UnknownNullness") Context context) {
             this.context = context;
             movieList = new LinkedList<>();
         }
 
-        public void setMovieList(List<Grouplist.Group> movieList) {
+        public void setMovieList(@SuppressLint("UnknownNullness") List<Grouplist.Group> movieList) {
             this.movieList = movieList;
         }
 
@@ -358,6 +361,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             return viewHolder;
         }
 
+        @SuppressLint("SyntheticAccessor")
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
@@ -457,7 +461,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
+    public abstract static class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
         private final LinearLayoutManager layoutManager;
 
@@ -466,7 +470,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
 
             int visibleItemCount = layoutManager.getChildCount();

@@ -1,26 +1,23 @@
 package com.contactninja.retrofit;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.util.Log;
-import okhttp3.RequestBody;
 
-import okhttp3.MultipartBody;
-
-import com.contactninja.Utils.SessionManager;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
+import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.util.Objects;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+@SuppressLint("UnknownNullness")
 public class RetrofitCalls {
 
     private final RetrofitApiInterface retrofitApiInterface = Objects.requireNonNull(RetrofitApiClient.getClient()).create(RetrofitApiInterface.class);
