@@ -294,6 +294,14 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
+    public void Userinfo(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
+                                 String token, String version ,String device_id,RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Userinfo(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
 
 
 

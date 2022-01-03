@@ -211,5 +211,10 @@ public interface RetrofitApiInterface {
                                      @Body JsonObject jsonObject,
                                      @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
 
+ @POST("user/info")
+    Call<ApiResponse>  Userinfo(@Header("Accept") String api, @Header("Authorization") String auth,
+                                     @Body JsonObject jsonObject,
+                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
 
 }

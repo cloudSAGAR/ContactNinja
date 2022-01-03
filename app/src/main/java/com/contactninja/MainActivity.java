@@ -863,6 +863,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 3:
+                SessionManager.setContect_flag("read");
                 fragment = new Main_userProfile_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
