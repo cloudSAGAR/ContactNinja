@@ -340,12 +340,12 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         private void setImage(String i, viewData holder) {
             switch (i){
                 case "A":
-                    holder.iv_hold.setVisibility(View.VISIBLE);
-                    holder.iv_play_icon.setVisibility(View.GONE);
-                    break;
-                case "I":
                     holder.iv_hold.setVisibility(View.GONE);
                     holder.iv_play_icon.setVisibility(View.VISIBLE);
+                    break;
+                case "I":
+                    holder.iv_hold.setVisibility(View.VISIBLE);
+                    holder.iv_play_icon.setVisibility(View.GONE);
                     break;
             }
         }
