@@ -52,11 +52,12 @@
 
                 <LinearLayout
                     android:weightSum="1"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <LinearLayout
                             android:orientation="vertical"
@@ -67,25 +68,25 @@
                             <View
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
+                                android:visibility="invisible"
                                 android:layout_width="1dp"
-                                android:id="@+id/line_one"
                                 android:layout_height="match_parent"
                                 android:background="@color/camp_line">
 
                             </View>
-                            <TextView
-                                android:id="@+id/tv_item_num"
+                            <LinearLayout
                                 android:background="@drawable/shape_primary_circle"
-                                android:textSize="@dimen/_12sdp"
-                                android:textStyle="bold"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:text="1"
-                                android:textColor="@color/white"
                                 android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp">
+                                android:layout_height="@dimen/_20sdp"
+                                android:padding="@dimen/_3sdp"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:background="@drawable/ic_small_logo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </LinearLayout>
 
-                            </TextView>
 
                             <View
                                 android:layout_gravity="center"
@@ -96,13 +97,6 @@
 
                             </View>
                         </LinearLayout>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
                         <LinearLayout
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/shape_border_gray_edit"
@@ -124,48 +118,89 @@
                                 android:textSize="@dimen/_15sdp"
                                 android:layout_height="match_parent"></EditText>
                         </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
                         <LinearLayout
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:layout_marginBottom="@dimen/_10sdp"
                             android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <View
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:layout_width="1dp"
+                                android:id="@+id/line_1"
+                                android:layout_height="match_parent"
+                                android:background="@color/camp_line">
+
+                            </View>
+                            <LinearLayout
+                                android:background="@drawable/shape_primary_circle"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:padding="@dimen/_4sdp"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:background="@drawable/ic_nav_contacts_white"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/camp_line">
+
+                            </View>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_marginBottom="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:background="@drawable/shape_border_gray_edit"
+                                 android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_marginStart="@dimen/_15sdp"
                             android:layout_marginEnd="@dimen/_15sdp"
-                            android:layout_height="@dimen/_90sdp">
+                            android:layout_height="@dimen/_110sdp">
                             <androidx.recyclerview.widget.RecyclerView
+                                android:background="@drawable/shape_border_gray_edit"
+                                android:layout_gravity="center"
                                 android:padding="@dimen/_5sdp"
                                 android:id="@+id/user_contect"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="@dimen/_90sdp"/>
 
+                            <TextView
+                                android:layout_centerHorizontal="true"
+                                android:layout_alignParentBottom="true"
+                                android:id="@+id/contect_count"
+                                style="@style/tv_regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_gravity="center"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/_15sdp"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:singleLine="true"
+                                android:text="@string/campaign_step_title"
+                                android:textColor="@color/bz_text"
+                                android:textSize="@dimen/_14sdp"
+                                android:textStyle="bold" />
 
+                        </RelativeLayout>
 
-                            </androidx.recyclerview.widget.RecyclerView>
-
-
-                        </LinearLayout>
-                        <TextView
-                            android:layout_marginTop="-42dp"
-                            android:id="@+id/contect_count"
-                            style="@style/tv_regular"
-                            android:background="@color/white"
-                            android:paddingStart="@dimen/_15sdp"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_40sdp"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:textSize="@dimen/_14sdp"
-                            android:text="@string/campaign_step_title"
-                            android:textColor="@color/bz_text"
-                            android:textStyle="bold" />
                     </LinearLayout>
-
-
 
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
