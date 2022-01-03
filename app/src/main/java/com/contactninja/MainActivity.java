@@ -273,119 +273,113 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
 
 
-
-            TelephonyManager tm = (TelephonyManager)getSystemService(getApplicationContext().TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) getSystemService(getApplicationContext().TELEPHONY_SERVICE);
             String country = tm.getNetworkCountryIso();
             int countryCode = 0;
             PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(MainActivity.this);
             try {
                 // phone must begin with '+'
                 Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
-                 countryCode = numberProto.getCountryCode();
+                countryCode = numberProto.getCountryCode();
             } catch (NumberParseException e) {
                 System.err.println("NumberParseException was thrown: " + e.toString());
             }
 
-            user_phone_number=user_phone_number.replace(" ","");
-            user_phone_number=user_phone_number.replace("-","");
-            if(!user_phone_number.contains("+")){
-                user_phone_number=String.valueOf("+"+countryCode+user_phone_number);
-            }
-            try {
-                contect_email = "";
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
-
-                contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
-                contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
-                email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
-                email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
-
-
-                country = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-                // StructuredPostal.CITY == data7
-                city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-                // StructuredPostal.REGION == data8
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-                // StructuredPostal.STREET == data4
-                street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-                // StructuredPostal.POSTCODE == data9
-                postcode = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
-                // StructuredPostal.TYPE == data2
-                postType = String.valueOf(cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE)));
-                note = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
-
-
-                firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-
-
-
-
-
-            } catch (Exception e) {
-
-            }
-
-
-
-
-            String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
-                    .substring(0, 1)
-                    .toUpperCase();
-
-            boolean found = false;
-            try {
-                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
-
-            } catch (Exception e) {
-
-            }
-
-            if (found) {
-
-            } else {
-
-
-                //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getTaskId())));
-                String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
-
-                inviteListData.add(new InviteListData("" + userName.trim(),
-                        user_phone_number.replace(" ", ""),
-                        user_image,
-                        user_des,
-                        "", ""));
-
-
-
+                user_phone_number = user_phone_number.replace(" ", "");
+                user_phone_number = user_phone_number.replace("-", "");
+                if (!user_phone_number.contains("+")) {
+                    user_phone_number = String.valueOf("+" + countryCode + user_phone_number);
+                }
 
                 try {
-                    csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                    contect_email = "";
+                    region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
+
+                    contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
+                    contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
+                    email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
+                    email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
+
+
+                    country = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+                    // StructuredPostal.CITY == data7
+                    city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+                    // StructuredPostal.REGION == data8
+                    region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                    // StructuredPostal.STREET == data4
+                    street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+                    // StructuredPostal.POSTCODE == data9
+                    postcode = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
+                    // StructuredPostal.TYPE == data2
+                    postType = String.valueOf(cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE)));
+                    note = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
+
+
+                    firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
+                    lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+
+
                 } catch (Exception e) {
 
                 }
 
-                if (csv_inviteListData.size() != 0) {
-                    OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
-                            .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
-                            .findFirst();
-                    if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
-                        // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
-                        csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
-                        csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
 
-                        csv_inviteListData.remove(indexOpt.getAsInt() + 1);
-                    }
+                String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
+                        .substring(0, 1)
+                        .toUpperCase();
 
+                boolean found = false;
+                try {
+                    found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
 
-                    //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
+                } catch (Exception e) {
 
                 }
 
+                if (found) {
+
+                } else {
+
+
+                    //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getTaskId())));
+                    String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
+
+                    inviteListData.add(new InviteListData("" + userName.trim(),
+                            user_phone_number.replace(" ", ""),
+                            user_image,
+                            user_des,
+                            "", ""));
+
+
+                    try {
+                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                    } catch (Exception e) {
+
+                    }
+
+                    if (csv_inviteListData.size() != 0) {
+                        OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
+                                .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
+                                .findFirst();
+                        if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
+                            // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
+                            csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                            csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
+
+                            csv_inviteListData.remove(indexOpt.getAsInt() + 1);
+                        }
+
+
+                        //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
+
+                    }
+
+
+                }
 
             }
 
-        }
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
@@ -828,6 +822,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.llUser:
+                SessionManager.setContect_flag("read");
                 navItemIndex = 3;
                 displayView();
 
@@ -864,7 +859,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 3:
-                SessionManager.setContect_flag("read");
                 fragment = new Main_userProfile_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;

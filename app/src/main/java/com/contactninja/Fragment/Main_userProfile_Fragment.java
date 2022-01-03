@@ -48,6 +48,7 @@ import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Fragment.UserPofile.User_BzcardFragment;
 import com.contactninja.Fragment.UserPofile.User_ExposuresFragment;
 import com.contactninja.Fragment.UserPofile.User_InformationFragment;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -55,7 +56,6 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserData.User;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
-import com.contactninja.Setting.Email_verification;
 import com.contactninja.Setting.SettingActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -163,14 +163,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         option_type = "save";
 
         try {
-            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                 Userinfo();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
 
 
         pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
@@ -196,7 +194,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     } else {
                         try {
                             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                AddContect_Api1();
+                                AddContect_Update();
                             }
 
                         } catch (JSONException e) {
@@ -246,7 +244,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         edt_lastname.setEnabled(true);
                         try {
                             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                AddContect_Api1();
+                                AddContect_Update();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -304,13 +302,13 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     private void Userinfo() throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel=  SessionManager.getGetUserdata(getActivity());
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("api", "user view");
         obj.add("data", paramObject);
-        retrofitCalls.Userinfo(sessionManager, obj, loadingDialog,Global.getToken(sessionManager),
-                Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Userinfo(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
                         if (response.body().getStatus() == 200) {
@@ -325,6 +323,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             SessionManager.setUserdata(getActivity(), user_model);
 
                             setdata();
+                            setTab();
 
                         } else {
                             loadingDialog.cancelLoading();
@@ -338,7 +337,20 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 });
     }
 
+    private void setTab() {
+        // loadingDialog = new LoadingDialog(this);
+        //Set Viewpagger
+        tabLayout.addTab(tabLayout.newTab().setText("Information"));
+        tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
+        tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
+        fragment_name = "Info";
 
+
+
+    }
+
+
+    @SuppressLint("SetTextI18n")
     private void setdata() {
 
         String flag = sessionManager.getContect_flag(getActivity());
@@ -348,12 +360,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
-        User user_data_model=user_data.getUser();
-        ContectListData.Contact set_contact=new ContectListData.Contact();
+        User user_data_model = user_data.getUser();
+        ContectListData.Contact set_contact = new ContectListData.Contact();
         set_contact.setFirstname(user_data_model.getFirstName());
         set_contact.setLastname(user_data_model.getLastName());
-        List<ContectListData.Contact.ContactDetail> contactDetails_list=new ArrayList<>();
-        ContectListData.Contact.ContactDetail contactDetail_model=new ContectListData.Contact.ContactDetail();
+        List<ContectListData.Contact.ContactDetail> contactDetails_list = new ArrayList<>();
+        ContectListData.Contact.ContactDetail contactDetail_model = new ContectListData.Contact.ContactDetail();
         contactDetail_model.setEmailNumber(user_data_model.getContactNumber());
         contactDetail_model.setLabel("");
         /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
@@ -361,9 +373,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         contactDetail_model.setType("NUMBER");
         contactDetail_model.setIsDefault(1);
         contactDetail_model.setLabel("Home");
-        contactDetails_list.add(0,contactDetail_model);
+        contactDetails_list.add(0, contactDetail_model);
 
-        ContectListData.Contact.ContactDetail contactDetail_model1=new ContectListData.Contact.ContactDetail();
+        ContectListData.Contact.ContactDetail contactDetail_model1 = new ContectListData.Contact.ContactDetail();
         contactDetail_model1.setEmailNumber(user_data_model.getEmail());
         contactDetail_model1.setLabel("");
         /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
@@ -371,9 +383,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         contactDetail_model1.setType("EMAIL");
         contactDetail_model1.setIsDefault(1);
         contactDetail_model1.setLabel("Home");
-        contactDetails_list.add(1,contactDetail_model1);
+        contactDetails_list.add(1, contactDetail_model1);
         set_contact.setContactDetails(contactDetails_list);
-        SessionManager.setOneCotect_deatil(getActivity(),set_contact);
+        SessionManager.setOneCotect_deatil(getActivity(), set_contact);
 
         if (flag.equals("edit")) {
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
@@ -467,13 +479,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         }
 
 
-        // loadingDialog = new LoadingDialog(this);
-        //Set Viewpagger
-        tabLayout.addTab(tabLayout.newTab().setText("Information"));
-        tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
-        tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
-        fragment_name = "Info";
-
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new User_InformationFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -515,7 +520,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         });
 
-
     }
 
     private void intentView(View view) {
@@ -542,8 +546,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         edit_profile = view.findViewById(R.id.edit_profile);
+        edit_profile.setOnClickListener(this);
     }
-
 
 
     @Override
@@ -793,7 +797,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -828,6 +832,161 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 loadingDialog.cancelLoading();
             }
         });
+
+    }
+
+
+    public void AddContect_Update() throws JSONException {
+        loadingDialog.showLoadingDialog();
+        f_name = edt_FirstName.getText().toString().trim();
+        l_name = edt_lastname.getText().toString().trim();
+        ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
+        zip_code = addcontectModel.getZip_code();
+        zoom_id = addcontectModel.getZoom_id();
+        address = addcontectModel.getAddress();
+        note = addcontectModel.getNote();
+        city = addcontectModel.getCity();
+        state = addcontectModel.getState();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        List<Contactdetail> contactdetails = new ArrayList<>();
+        contactdetails.addAll(addcontectModel.getContactdetails());
+
+
+        List<Contactdetail> contactdetails_email = new ArrayList<>();
+        contactdetails_email.addAll(addcontectModel.getContactdetails_email());
+        contactdetails.addAll(contactdetails_email);
+        JSONObject obj = new JSONObject();
+
+        JSONObject param_data = new JSONObject();
+        param_data.put("organization_id", 1);
+        param_data.put("team_id", 1);
+        param_data.put("user_id", Integer.parseInt(user_id));
+        JSONArray jsonArray_contect = new JSONArray();
+
+
+        JSONObject paramObject = new JSONObject();
+        //Other Company Add
+        if (addcontectModel.getCompany().equals("")) {
+            paramObject.put("company_name", "");
+            paramObject.put("company_id", addcontectModel.getCompany_id());
+        } else {
+            paramObject.put("company_name", addcontectModel.getCompany());
+            paramObject.put("company_id", "");
+        }
+        paramObject.put("id", Contect_data.getId());
+        paramObject.put("address", address);
+        paramObject.put("breakout_link", addcontectModel.getBreakoutu());
+        paramObject.put("city", city);
+
+        if (olld_image != null) {
+            paramObject.put("oldImage", olld_image);
+        } else {
+            paramObject.put("oldImage", "");
+        }
+
+        paramObject.put("company_url", "");
+        paramObject.put("dob", addcontectModel.getBirthday());
+        paramObject.put("dynamic_fields_value", "");
+        paramObject.put("facebook_link", addcontectModel.getFacebook());
+        paramObject.put("firstname", edt_FirstName.getText().toString().trim());
+        paramObject.put("lastname", l_name);
+        paramObject.put("job_title", addcontectModel.getJob_title());
+        paramObject.put("lastname", edt_lastname.getText().toString().trim());
+        paramObject.put("linkedin_link", addcontectModel.getLinkedin());
+        paramObject.put("organization_id", "1");
+        paramObject.put("state", state);
+        paramObject.put("team_id", "1");
+        // addcontectModel.getTime()
+        paramObject.put("timezone_id", addcontectModel.getTime());
+        paramObject.put("twitter_link", addcontectModel.getTwitter());
+        paramObject.put("user_id", user_id);
+        paramObject.put("zipcode", zip_code);
+        paramObject.put("zoom_id", zoom_id);
+        if (!user_image_Url.equals("")) {
+            paramObject.put("contact_image", user_image_Url);
+            paramObject.put("contact_image_name", File_name);
+        } else {
+            paramObject.put("contact_image", "");
+            paramObject.put("contact_image_name", "");
+        }
+        paramObject.put("image_extension", File_extension);
+        paramObject.put("notes", addcontectModel.getNote());
+
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < contactdetails.size(); i++) {
+            JSONObject paramObject1 = new JSONObject();
+            if (contactdetails.get(i).getEmail_number().equals("")) {
+
+            } else {
+                if (contactdetails.get(i).getType().equals("NUMBER")) {
+                    phone = contactdetails.get(i).getEmail_number();
+                }
+                phone_type = contactdetails.get(i).getLabel();
+                paramObject1.put("email_number", contactdetails.get(i).getEmail_number());
+
+                if (contactdetails.get(i).getId() != 0) {
+                    paramObject1.put("id", contactdetails.get(i).getId());
+                }
+                paramObject1.put("is_default", contactdetails.get(i).getIs_default());
+                paramObject1.put("label", contactdetails.get(i).getLabel());
+                paramObject1.put("type", contactdetails.get(i).getType());
+                paramObject1.put("contact_id", Contect_data.getId());
+                param_data.put("team_id", 1);
+            }
+            jsonArray.put(paramObject1);
+        }
+        paramObject.put("contact_details", jsonArray);
+        jsonArray_contect.put(paramObject);
+        param_data.put("contact_update", jsonArray_contect);
+
+        obj.put("data", param_data);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+
+        Log.e("Final Data is", new Gson().toJson(gsonObject));
+        retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+
+                        loadingDialog.cancelLoading();
+                        if (response.body().getStatus() == 200) {
+                            //Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
+                            //long rowContactId = getRawContactId();
+                            //insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
+                            //insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
+                            //save_button.setText("Edit Contact");
+                            //finish();
+                        } else {
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            Type listType = new TypeToken<UservalidateModel>() {
+                            }.getType();
+                            UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
+                            try {
+                                if (uservalidateModel.getFirstname().size() != 0) {
+                                    Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getFirstname().get(0), false);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
 
     }
 
@@ -891,7 +1050,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -917,6 +1076,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -937,8 +1097,18 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 break;
 
             case R.id.iv_Setting:
-                Intent i=new Intent(getActivity(), SettingActivity.class);
+                Intent i = new Intent(getActivity(), SettingActivity.class);
                 getActivity().startActivity(i);
+                break;
+
+            case R.id.edit_profile:
+                SessionManager.setContect_flag("edit");
+                save_button.setVisibility(View.VISIBLE);
+                iv_Setting.setVisibility(View.GONE);
+                save_button.setText("Save");
+                setdata();
+
+
                 break;
         }
     }

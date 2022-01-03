@@ -358,10 +358,8 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         public void onBindViewHolder(@NonNull CampaingAdepter.viewData holder, int position) {
             Campaign_List.Campaign campaign=campaignList.get(position);
             holder.campaign_name.setText(campaign.getSeqName());
-            if(campaign.getStatus().equals(mCtx.getResources().getString(R.string.Comp_I))){
-                setImage(mCtx.getResources().getString(R.string.Comp_I),holder);
+           setImage(campaign,holder);
 
-            }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -371,14 +369,21 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
         }
 
-        private void setImage(String i, viewData holder) {
-            switch (i){
+        private void setImage(Campaign_List.Campaign campaign,  viewData holder) {
+            switch (campaign.getStatus()){
                 case "A":
                     holder.iv_hold.setVisibility(View.GONE);
                     holder.iv_play_icon.setVisibility(View.VISIBLE);
+                    holder.iv_puse_icon.setVisibility(View.GONE);
                     break;
                 case "I":
-                    holder.iv_hold.setVisibility(View.VISIBLE);
+                    if(campaign.getStarted_on()!=null){
+                        holder.iv_puse_icon.setVisibility(View.VISIBLE);
+                        holder.iv_hold.setVisibility(View.GONE);
+                    }else {
+                        holder.iv_hold.setVisibility(View.VISIBLE);
+                        holder.iv_puse_icon.setVisibility(View.GONE);
+                    }
                     holder.iv_play_icon.setVisibility(View.GONE);
                     break;
             }

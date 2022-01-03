@@ -375,7 +375,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     if (flag.equals("read")) {
                         SessionManager.setContect_flag("edit");
                         Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
-                        SessionManager.setContect_flag("edit");
                         startActivity(addnewcontect);
                         finish();
                     } else {

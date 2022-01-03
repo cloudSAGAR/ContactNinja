@@ -55,6 +55,9 @@ public class Campaign_List {
         @SerializedName("status")
         @Expose
         private String status;
+        @SerializedName("started_on")
+        @Expose
+        private String started_on;
         @SerializedName("created_by_name")
         @Expose
         private String createdByName;
@@ -76,6 +79,14 @@ public class Campaign_List {
         @SerializedName("total_count")
         @Expose
         private Integer totalCount;
+
+        public String getStarted_on() {
+            return started_on;
+        }
+
+        public void setStarted_on(String started_on) {
+            this.started_on = started_on;
+        }
 
         public Integer getManualtask() {
             return manualtask;
