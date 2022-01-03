@@ -153,8 +153,8 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                 onBackPressed();
                 break;
                 case R.id.add_new_email:
-                    Global.openEmailAuth(EmailListActivity.this);
-                   // startActivity(new Intent(getApplicationContext(),Email_verification.class));
+                   // Global.openEmailAuth(EmailListActivity.this);
+                    startActivity(new Intent(getApplicationContext(),Email_verification.class));
                 break;
         }
     }

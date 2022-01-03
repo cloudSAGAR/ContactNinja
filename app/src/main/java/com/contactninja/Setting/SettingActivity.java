@@ -202,8 +202,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 }else {
 
                     /*is a email permission link open */
-                    Global.openEmailAuth(SettingActivity.this);
-                    //startActivity(new Intent(getApplicationContext(),Email_verification.class));
+                    //Global.openEmailAuth(SettingActivity.this);
+                    startActivity(new Intent(getApplicationContext(),Email_verification.class));
                 }
             }
 
