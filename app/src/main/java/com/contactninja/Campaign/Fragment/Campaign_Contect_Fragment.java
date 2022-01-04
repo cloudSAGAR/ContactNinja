@@ -110,12 +110,15 @@ public class Campaign_Contect_Fragment extends Fragment  {
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(5000);
         contectListData = new ArrayList<>();
-        GetContactsIntoArrayList();
+       /* GetContactsIntoArrayList();
         try {
             ContectEvent();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        groupContectAdapter = new GroupContectAdapter(getActivity());
+        contect_list_unselect.setAdapter(groupContectAdapter);
         contectListData.clear();
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
@@ -132,6 +135,11 @@ public class Campaign_Contect_Fragment extends Fragment  {
                 }
         );
 
+        if (SessionManager.getContectList(getActivity()).size() != 0) {
+            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+            groupContectAdapter.addAll(contectListData);
+            num_count.setText(contectListData.size()+" Contacts");
+        }
         fastscroller.setupWithRecyclerView(
                 contect_list_unselect,
                 (position) -> {

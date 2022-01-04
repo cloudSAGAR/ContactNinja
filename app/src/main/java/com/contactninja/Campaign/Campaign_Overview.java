@@ -119,7 +119,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+        //startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
         finish();
         super.onBackPressed();
     }
