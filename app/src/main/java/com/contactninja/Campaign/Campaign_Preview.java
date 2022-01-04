@@ -8,16 +8,21 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,6 +67,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     EditText tv_name;
     TextView contect_count;
     public static TopUserListDataAdapter topUserListDataAdapter;
+    ImageView iv_toolbar_manu;
+    Toolbar toolbar;
+    RelativeLayout contect_layout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +84,31 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         StepData();
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
         item_list.setAdapter(campaign_overviewAdapter);
+        toolbar.inflateMenu(R.menu.option_menu);
 
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu); //your file name
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.mv_save:
+
+                return true;
+            case R.id.mv_edit://your code
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void IntentUI() {
@@ -91,8 +125,12 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         tv_name=findViewById(R.id.tv_name);
         user_contect=findViewById(R.id.user_contect);
         user_contect.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
-
+        iv_toolbar_manu=findViewById(R.id.iv_toolbar_manu);
+        iv_toolbar_manu.setOnClickListener(this);
         contect_count=findViewById(R.id.contect_count);
+        toolbar=findViewById(R.id.toolbar);
+        contect_layout=findViewById(R.id.contect_layout);
+        contect_layout.setOnClickListener(this);
     }
 
     @Override
@@ -100,8 +138,17 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         switch (view.getId()) {
             case R.id.iv_back:
                 onBackPressed();
+
+            case R.id.iv_toolbar_manu:
+
+                 break;
+            case R.id.contect_layout :
+                Intent intent1=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);
+                intent1.putExtra("sequence_id",sequence_id);
+                intent1.putExtra("seq_task_id",sequence_task_id);
+                startActivity(intent1);
                 break;
-            case R.id.save_button:
+                case R.id.save_button:
                 //Add Api Call
 
                 if (SessionManager.getTask(getApplicationContext()).size() != 0) {
@@ -361,7 +408,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             switch (getItemViewType(position)) {
                 case ITEM:
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
-
+                    movieViewHolder.tv_add_new_step.setText(getString(R.string.txt_campaign));
                     if (position == movieList.size() - 1) {
                         movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
                         int num = movieList.size() + 1;
@@ -405,12 +452,12 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            SessionManager.setCampaign_type("");
+                           /* SessionManager.setCampaign_type("");
                             SessionManager.setCampaign_type_name("");
                             SessionManager.setCampaign_minute("00");
                             SessionManager.setCampaign_Day("1");
                             Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
-                            startActivity(intent);
+                            startActivity(intent);*/
                         }
                     });
 

@@ -207,7 +207,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_city.setText(Contect_data.getCity());
             zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
             ev_job.setText(Contect_data.getJobTitle());
-           // contect_id = Contect_data.getId();
+            try {
+                contect_id = Contect_data.getId();
+            }
+            catch (Exception e)
+            {
+
+            }
+
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
             ev_company_url.setText(Contect_data.getCompany_url());
@@ -249,7 +256,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                       // contactdetail.setId(detail_contect.get(i).getId());
+                        try {
+                            contactdetail.setId(detail_contect.get(i).getId());
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
 
@@ -265,10 +279,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     }
                 }
             }
-            if (emaildetails_list.size()==0)
-            {
-                EmailViewAdd();
-            }
+
+            EmailViewAdd();
+            PhoneViewAdd();
 
 
         }
@@ -1326,11 +1339,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
                         if (contactdetails.size() <= 12) {
                             layout_Add_phone.setVisibility(View.VISIBLE);
-                            Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
                             addcontectModel.setContactdetails(contactdetails);
-                            Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
                             SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-
                         }
 
                     }
@@ -1340,7 +1350,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                     }
                 });
-                holder.edt_mobile_no.setOnKeyListener(new View.OnKeyListener() {
+              /*  holder.edt_mobile_no.setOnKeyListener(new View.OnKeyListener() {
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             try {
@@ -1360,7 +1370,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     }
                 });
 
-
+*/
                 holder.swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
                     @Override
                     public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
@@ -1837,7 +1847,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                     }
                 });
-                holder.edt_email.setOnKeyListener(new View.OnKeyListener() {
+               /* holder.edt_email.setOnKeyListener(new View.OnKeyListener() {
                     @Override
                     public boolean onKey(View view, int i, KeyEvent event) {
                         Log.e("Action done","Yes");
@@ -1854,7 +1864,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         return true;
                     }
                 });
-
+*/
 
 
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
@@ -1943,7 +1953,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.edt_email.setEnabled(false);
                 holder.edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_email.setText(holder.tv_email.getText().toString() + "(" + item.getLabel() + ")");
-            } else {
+            }
+            else {
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.edt_email.addTextChangedListener(new TextWatcher() {

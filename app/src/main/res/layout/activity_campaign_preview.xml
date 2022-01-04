@@ -7,7 +7,6 @@
     android:background="@color/white"
     tools:context=".Campaign.Campaign_Overview">
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -163,6 +162,7 @@
                         </LinearLayout>
 
                         <RelativeLayout
+                            android:id="@+id/contect_layout"
                             android:layout_marginBottom="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_10sdp"
                                  android:layout_gravity="center"
@@ -171,14 +171,15 @@
                             android:layout_width="match_parent"
                             android:layout_marginStart="@dimen/_15sdp"
                             android:layout_marginEnd="@dimen/_15sdp"
-                            android:layout_height="@dimen/_110sdp">
+                            android:layout_height="@dimen/_100sdp">
+
                             <androidx.recyclerview.widget.RecyclerView
-                                android:background="@drawable/shape_border_gray_edit"
-                                android:layout_gravity="center"
-                                android:padding="@dimen/_5sdp"
                                 android:id="@+id/user_contect"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/_90sdp"/>
+                                android:layout_height="@dimen/_80sdp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/shape_border_gray_edit"
+                                android:padding="@dimen/_5sdp" />
 
                             <TextView
                                 android:layout_centerHorizontal="true"

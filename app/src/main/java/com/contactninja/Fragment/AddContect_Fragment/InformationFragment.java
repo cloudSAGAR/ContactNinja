@@ -1576,11 +1576,19 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                             bottomSheetDialog.cancel();
                             phone_txt.setText(holder.tv_item.getText().toString());
                             item.setLabel(holder.tv_item.getText().toString());
+                            if (contactdetails.size() <= 4) {
+                                layout_Add_phone.setVisibility(View.VISIBLE);
+                                addcontectModel.setContactdetails(contactdetails);
+                                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+                            }
 
                         } else if (type.equals("email")) {
                             bottomSheetDialog.cancel();
                             email_txt.setText(holder.tv_item.getText().toString());
                             item.setLabel(holder.tv_item.getText().toString());
+                            addcontectModel.setContactdetails_email(contactdetails);
+                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
                         } else {
 
                         }
@@ -1731,19 +1739,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
                         String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
                         String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
-                   /* if (countryCode.length() > 0 && phoneNumber.length() > 0) {
-                        if (Global.isValidPhoneNumber(phoneNumber)) {
-                            boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
-                            if (status) {
-                                iv_invalid.setText("");
-                                return true;
-                            } else {
-                                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                            }
-                        } else {
-                            iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                        }
-                    }*/
+
                         if (contactdetails.size() <= 4) {
                             layout_Add_phone.setVisibility(View.VISIBLE);
                             addcontectModel.setContactdetails(contactdetails);
@@ -1793,7 +1789,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() +holder.edt_mobile_no.getText().toString());
+                        item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
+                        String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
+                        String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
+
+
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item);
+
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {

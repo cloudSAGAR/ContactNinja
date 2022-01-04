@@ -94,7 +94,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     ImageView iv_Setting, pulse_icon;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
-    String fragment_name, user_image_Url, File_name = "", File_extension = "";
+    String fragment_name, user_image_Url="", File_name = "", File_extension = "";
     EditText edt_FirstName, edt_lastname;
     SessionManager sessionManager;
     String phone, phone_type, email, email_type,
@@ -807,9 +807,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     long rowContactId = getRawContactId();
                     insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
                     insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
-
-
-                } else {
+     } else {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<UservalidateModel>() {

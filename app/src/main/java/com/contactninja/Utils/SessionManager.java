@@ -12,6 +12,7 @@ import com.contactninja.Auth.LoginActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.CampaignTask;
+import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
@@ -68,6 +69,7 @@ public class SessionManager {
 
     public static final String campaign_day="campaign_day";
     public static final String campaign_minute="campaign_minute";
+    public static final String Campaign_overview ="campign_overview";
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -602,4 +604,30 @@ public class SessionManager {
         editor.putString(campaign_minute, campaign_minte1);
         editor.commit();
     }
+
+
+
+
+
+    public static CampaignTask_overview getCampaign_data(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Campaign_overview, "");
+        Type type = new TypeToken<CampaignTask_overview>() {
+        }.getType();
+        CampaignTask_overview signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new CampaignTask_overview();
+        }
+        return signModel;
+    }
+
+    public static void setCampaign_data(Broadcast_Data add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Campaign_overview, json);
+        editor.apply();
+    }
+
+
 }

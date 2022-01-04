@@ -283,9 +283,21 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         SessionManager.setCampaign_minute("");
         Global.count=1;
         SessionManager.setTask(getApplicationContext(), new ArrayList<>());
+        String contect_list_count= String.valueOf(campaign.getProspect());
+        if (contect_list_count.equals("0"))
+        {
+
         Intent intent =new Intent(getApplicationContext(),Campaign_Overview.class);
         intent.putExtra("sequence_id",campaign.getId());
         startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+            intent.putExtra("sequence_id",campaign.getId());
+            startActivity(intent);
+
+        }
+
     }
 
 
