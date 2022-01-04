@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:ignore="MissingConstraints,TextContrastCheck,TouchTargetSizeCheck,Autofill,RtlHardcoded,ContentDescription,UseCompoundDrawables,DisableBaselineAlignment,UselessParent,NestedWeights,RedundantNamespace,InefficientWeight"
     android:layout_height="wrap_content">
-    <ru.rambler.libs.swipe_layout.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ru.rambler.libs.swipe_layout.SwipeLayout
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:left_swipe_enabled="true"
         app:right_swipe_enabled="true"
-        tools:ignore="MissingConstraints">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,7 +105,8 @@
                                 android:text="@string/add_home"
                                 android:textColor="@color/home_list_sub_data"
                                 android:textSize="@dimen/_12sdp"
-                                android:textStyle="bold">
+                                android:textStyle="bold"
+                                tools:ignore="TextContrastCheck">
 
                             </TextView>
 
@@ -119,50 +121,54 @@
                             </ImageView>
                         </LinearLayout>
 
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/contect_msg"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
                         <LinearLayout
-                            android:id="@+id/layout_icon_call"
-                            android:background="@drawable/shape_oval_border_10_blue"
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
+                            android:id="@+id/contect_msg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center">
-                            <ImageView
+                            android:gravity="center"
+                            android:visibility="gone">
+
+                            <LinearLayout
+                                android:id="@+id/layout_icon_call"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
                                 android:layout_gravity="center"
+                                android:background="@drawable/shape_oval_border_10_blue"
+                                android:gravity="center">
 
-                                android:src="@drawable/ic_dial"
-                                android:layout_width="@dimen/_13sdp"
-                                android:layout_height="@dimen/_13sdp">
+                                <ImageView
+                                    android:layout_width="@dimen/_13sdp"
 
-                            </ImageView>
+                                    android:layout_height="@dimen/_13sdp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_dial">
+
+                                </ImageView>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/layout_icon_message"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_20sdp"
+
+                                android:background="@drawable/shape_oval_border_10_blue"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="@dimen/_13sdp"
+                                    android:layout_height="@dimen/_13sdp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_message">
+
+                                </ImageView>
+
+                            </LinearLayout>
 
                         </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/layout_icon_message"
-                            android:layout_marginStart="@dimen/_20sdp"
-                            android:background="@drawable/shape_oval_border_10_blue"
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-
-                            android:layout_gravity="center"
-                            android:gravity="center">
-                            <ImageView
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_message"
-                                android:layout_width="@dimen/_13sdp"
-                                android:layout_height="@dimen/_13sdp">
-
-                            </ImageView>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:background="@color/white"
@@ -213,7 +219,7 @@
                                 android:text="@string/add_defult_text"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold"></TextView>
+                                android:textStyle="bold"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -225,10 +231,17 @@
 
 
             <LinearLayout
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/layout_country_piker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/ccp_id"
@@ -250,21 +263,24 @@
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="@color/home_list_add_contect_view" />
+                </LinearLayout>
 
                 <EditText
-                    android:layout_gravity="center|left"
                     android:id="@+id/edt_mobile_no"
-                    android:gravity="left|center"
                     style="@style/tv_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
                     android:background="@color/add_contect_transpernt"
+                    android:gravity="left|center"
                     android:hint="@string/add_number"
                     android:inputType="number"
-                    android:textSize="@dimen/_12sdp"
+                    android:padding="@dimen/_5sdp"
                     android:textColor="@color/home_list_sub_data"
                     android:textColorHint="@color/home_list_sub_data"
-                    android:textStyle="bold"/>
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"
+                    tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
             </LinearLayout>
             <View
