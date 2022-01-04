@@ -460,10 +460,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
-                    ',' + response.get(i).getNote() +
                     ',' + ' ' +
-                    ',' + region + ' ' + response.get(i).getStreet() + ' ' + response.get(i).getCity() +
-                    ',' + response.get(i).getCity() +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
@@ -903,8 +903,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_campaign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
-               startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
+                startActivity(intent);
                 bottomSheetDialog.dismiss();
             }
         });
