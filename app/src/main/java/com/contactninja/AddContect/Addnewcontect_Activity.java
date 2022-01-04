@@ -327,10 +327,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     if (f_name.equals("")) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
 
-                    } else if (l_name.equals("")) {
+                    } /*else if (l_name.equals("")) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_last_name), false);
 
-                    }
+                    }*/
                     else {
                          try {
                              if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)) {
@@ -348,10 +348,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     if (f_name.equals("")) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
 
-                    } else if (l_name.equals("")) {
+                    } /*else if (l_name.equals("")) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_last_name), false);
 
-                    } else if (addcontectModel.getContactdetails().size() == 0) {
+                    }*/ else if (addcontectModel.getContactdetails().size() == 0) {
 
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.enter_phone), false);
 

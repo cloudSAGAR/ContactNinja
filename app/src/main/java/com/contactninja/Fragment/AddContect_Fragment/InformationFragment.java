@@ -1842,7 +1842,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_label.setVisibility(View.GONE);
                 holder.contect_msg.setVisibility(View.VISIBLE);
-                holder.ccp_id.setVisibility(View.GONE);
+                holder.layout_country_piker.setVisibility(View.GONE);
                 holder.edt_mobile_no.setEnabled(false);
                 holder.edt_mobile_no.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_phone.setText(holder.tv_phone.getText().toString() + "(" + item.getLabel() + ")");
@@ -2161,7 +2161,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ImageView iv_set_default;
             SwipeLayout swipe_layout;
             LinearLayout layout_swap, select_label, layout_defult, layout_remove, contect_msg, layout_icon_call,
-                    layout_icon_message;
+                    layout_icon_message,layout_country_piker;
             TextView phone_txt;
             CountryCodePicker ccp_id;
             TextView tv_phone;
@@ -2178,6 +2178,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 layout_remove = itemView.findViewById(R.id.layout_remove);
                 phone_txt = itemView.findViewById(R.id.phone_txt);
                 ccp_id = itemView.findViewById(R.id.ccp_id);
+                layout_country_piker = itemView.findViewById(R.id.layout_country_piker);
                 select_label = itemView.findViewById(R.id.select_label);
                 contect_msg = itemView.findViewById(R.id.contect_msg);
                 layout_icon_call = itemView.findViewById(R.id.layout_icon_call);
