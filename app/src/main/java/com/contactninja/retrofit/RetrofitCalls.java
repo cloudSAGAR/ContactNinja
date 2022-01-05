@@ -315,6 +315,13 @@ public class RetrofitCalls {
     }
 
 
+    public void SingleGroup_List(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.SingleGroup_List(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
     public void Sequence_settings(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Sequence_settings(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;

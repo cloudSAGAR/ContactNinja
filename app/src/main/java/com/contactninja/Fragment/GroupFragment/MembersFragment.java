@@ -21,18 +21,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.InviteListData;
+import com.contactninja.Model.SigleGroupModel;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Response;
 
 
 public class MembersFragment extends Fragment {
@@ -45,7 +61,7 @@ public class MembersFragment extends Fragment {
     Context mCtx;
     Cursor cursor;
     public static UserListDataAdapter userListDataAdapter;
-    public static ArrayList<InviteListData> inviteListData=new ArrayList<>();
+    public static ArrayList<SigleGroupModel.Group.ContactDetail> inviteListData=new ArrayList<>();
     RecyclerView rvinviteuserdetails;
     String userName, user_phone_number,user_image,user_des,strtext="",old_latter="",contect_type="",contect_email,
             contect_type_work="",email_type_home="",email_type_work="",country="",city="",region="",street="",
@@ -55,6 +71,9 @@ public class MembersFragment extends Fragment {
     FastScrollerThumbView fastscroller_thumb;
     EditText contect_search;
     LoadingDialog loadingDialog;
+    SessionManager sessionManager;
+    RetrofitCalls retrofitCalls;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,9 +82,17 @@ public class MembersFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_members, container, false);
         IntentUI(view);
         mCtx=getContext();
+
         loadingDialog=new LoadingDialog(getActivity());
+        sessionManager = new SessionManager(getActivity());
+        retrofitCalls = new RetrofitCalls(getActivity());
         rvinviteuserdetails.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.VERTICAL, false));
         rvinviteuserdetails.setHasFixedSize(true);
+        try {
+            Single_group();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         getAllContect();
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
@@ -89,7 +116,7 @@ public class MembersFragment extends Fragment {
                     FastScrollItemIndicator fastScrollItemIndicator= new FastScrollItemIndicator.Text(
 
 
-                            inviteListData.get(position).getUserName().substring(0, 1)
+                            inviteListData.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
@@ -151,22 +178,22 @@ public class MembersFragment extends Fragment {
         int last_postion=0;
         public Activity mCtx;
         private final Context mcntx;
-        private List<InviteListData> userDetails;
-        private List<InviteListData> userDetailsfull;
+        private List<SigleGroupModel.Group.ContactDetail> userDetails;
+        private List<SigleGroupModel.Group.ContactDetail> userDetailsfull;
         String second_latter="";
         String current_latter="",image_url="";
         private Filter exampleFilter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<InviteListData> filteredList = new ArrayList<>();
+                List<SigleGroupModel.Group.ContactDetail> filteredList = new ArrayList<>();
                 if (constraint == null || constraint.length() == 0) {
                     filteredList.addAll(userDetailsfull);
                 } else {
                     String userName = constraint.toString().toLowerCase().trim();
                     String userNumber = constraint.toString().toLowerCase().trim();
-                    for (InviteListData item : userDetailsfull) {
-                        if (item.getUserName().toLowerCase().contains(userName)
-                                || item.getUserPhoneNumber().toLowerCase().contains(userNumber)) {
+                    for (SigleGroupModel.Group.ContactDetail item : userDetailsfull) {
+                        if (item.getFirstname().toLowerCase().contains(userName)
+                                || item.getEmailNumber().toLowerCase().contains(userNumber)) {
                             filteredList.add(item);
                         }
                     }
@@ -179,12 +206,12 @@ public class MembersFragment extends Fragment {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 userDetails.clear();
-                userDetails.addAll((List<InviteListData>) results.values);
+                userDetails.addAll((List<SigleGroupModel.Group.ContactDetail>) results.values);
                 notifyDataSetChanged();
             }
         };
 
-        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<InviteListData> userDetails) {
+        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<SigleGroupModel.Group.ContactDetail> userDetails) {
             this.mcntx = mCtx;
             this.mCtx = Ctx;
             this.userDetails = userDetails;
@@ -201,22 +228,16 @@ public class MembersFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull UserListDataAdapter.InviteListDataclass holder, int position) {
-            InviteListData inviteUserDetails = userDetails.get(position);
+            SigleGroupModel.Group.ContactDetail inviteUserDetails = userDetails.get(position);
 
             last_postion=position;
 
 
-            if (inviteUserDetails.getF_latter().equals(""))
-            {
-                holder.first_latter.setVisibility(View.GONE);
-                holder.top_layout.setVisibility(View.GONE);
-            }
-            else {
+
 
                 holder.first_latter.setVisibility(View.VISIBLE);
-                holder.first_latter.setText(inviteUserDetails.getF_latter());
                 holder.top_layout.setVisibility(View.VISIBLE);
-                String first_latter=inviteUserDetails.getUserName().substring(0,1).toUpperCase();
+                String first_latter=inviteUserDetails.getFirstname().substring(0,1).toUpperCase();
 
                 if (second_latter.equals(""))
                 {
@@ -229,7 +250,6 @@ public class MembersFragment extends Fragment {
                 else if (second_latter.equals(first_latter))
                 {
                     current_latter=second_latter;
-                    inviteUserDetails.setF_latter("");
                     holder.first_latter.setVisibility(View.GONE);
                     holder.top_layout.setVisibility(View.GONE);
 
@@ -243,11 +263,11 @@ public class MembersFragment extends Fragment {
 
 
                 }
-            }
 
-            if (inviteUserDetails.getUserImageURL()==null)
+
+            if (inviteUserDetails.getContactImage()==null)
             {
-                String name =inviteUserDetails.getUserName();
+                String name =inviteUserDetails.getFirstname();
                 String add_text="";
                 String[] split_data=name.split(" ");
                 try {
@@ -275,15 +295,15 @@ public class MembersFragment extends Fragment {
             }
             else {
                 Glide.with(mCtx).
-                        load(inviteUserDetails.getUserImageURL())
+                        load(inviteUserDetails.getContactImage())
                         .placeholder(R.drawable.shape_primary_circle)
                         .error(R.drawable.shape_primary_circle)
                         .into(holder.profile_image);
                 holder.no_image.setVisibility(View.GONE);
                 holder.profile_image.setVisibility(View.VISIBLE);
             }
-            holder.userName.setText(inviteUserDetails.getUserName());
-            holder.userNumber.setText(inviteUserDetails.getUserPhoneNumber());
+            holder.userName.setText(inviteUserDetails.getFirstname());
+            holder.userNumber.setText(inviteUserDetails.getEmailNumber());
 
         }
 
@@ -298,7 +318,7 @@ public class MembersFragment extends Fragment {
             return exampleFilter;
         }
 
-        public void updateList(List<InviteListData> list){
+        public void updateList(List<SigleGroupModel.Group.ContactDetail> list){
             userDetails=list;
             notifyDataSetChanged();
         }
@@ -324,4 +344,58 @@ public class MembersFragment extends Fragment {
         }
 
     }
+
+
+
+
+    private void Single_group() throws JSONException {
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        Grouplist.Group group_data = SessionManager.getGroupData(getActivity());
+        String token = Global.getToken(sessionManager);
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("page", 1);
+        paramObject.put("perPage", 10);
+        paramObject.put("id", group_data.getId());
+        paramObject.put("q", "");
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        //Log.e("Obbject data", new Gson().toJson(gsonObject));
+        retrofitCalls.SingleGroup_List(sessionManager,gsonObject, loadingDialog, token, Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<List<SigleGroupModel>>() {
+                    }.getType();
+                    SigleGroupModel group_model = new Gson().fromJson(headerString, listType);
+
+                    inviteListData.addAll(group_model.getGroups().get(0).getContactDetails());
+                    userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
+                    rvinviteuserdetails.setAdapter(userListDataAdapter);
+                    userListDataAdapter.notifyDataSetChanged();
+                    // userListDataAdapter.addAll(grouplists);
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
 }

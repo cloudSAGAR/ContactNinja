@@ -621,7 +621,7 @@ public class SessionManager {
         return signModel;
     }
 
-    public static void setCampaign_data(Broadcast_Data add_model) {
+    public static void setCampaign_data(CampaignTask_overview add_model) {
         Gson gson = new Gson();
         String json = gson.toJson(add_model);
         SharedPreferences.Editor editor = pref.edit();

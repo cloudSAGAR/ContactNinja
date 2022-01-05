@@ -229,5 +229,10 @@ public interface RetrofitApiInterface {
                                               @Body JsonObject jsonObject,
                                               @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
 
+    @POST("contact/group/list")
+    Call<ApiResponse> SingleGroup_List(@Header("Accept") String api, @Header("Authorization") String auth,
+                                 @Body JsonObject jsonObject,
+                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
 
 }

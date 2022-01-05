@@ -175,7 +175,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         topUserListDataAdapter=new TopUserListDataAdapter(this,getApplicationContext(),select_contectListData);
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
-        GetContactsIntoArrayList();
+    //    GetContactsIntoArrayList();
+
+        groupContectAdapter = new GroupContectAdapter(this);
+        contect_list_unselect.setAdapter(groupContectAdapter);
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,7 +266,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         });*/
 
         if (SessionManager.getContectList(this).size() != 0) {
-            GetContactsIntoArrayList();
+          //  GetContactsIntoArrayList();
             contectListData.addAll(SessionManager.getContectList(this).get(0).getContacts());
             groupContectAdapter.addAll(contectListData);
             num_count.setText(contectListData.size()+" Contacts");
@@ -271,7 +274,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
 
         } else {
-            GetContactsIntoArrayList();
+           // GetContactsIntoArrayList();
             contect_list_unselect.setItemViewCacheSize(500);
 
             try {
@@ -322,76 +325,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void GetContactsIntoArrayList() {
-        cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-        while (cursor.moveToNext()) {
 
-            userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
-            user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
-
-            try {
-                contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
-                contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
-                contect_email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-                email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
-                email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
-
-
-                country = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-                // StructuredPostal.CITY == data7
-                city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-                // StructuredPostal.REGION == data8
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-                // StructuredPostal.STREET == data4
-                street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-                // StructuredPostal.POSTCODE == data9
-                postcode = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
-                // StructuredPostal.TYPE == data2
-                postType = String.valueOf(cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE)));
-                note = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
-
-
-            } catch (Exception e) {
-
-            }
-
-            String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
-                    .substring(0, 1)
-                    .toUpperCase();
-            if (old_latter.equals("")) {
-                old_latter = unik_key;
-
-            } else if (old_latter.equals(unik_key)) {
-                old_latter = "";
-            } else if (!old_latter.equals(unik_key)) {
-                old_latter = unik_key;
-            }
-            boolean found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
-
-            if (found) {
-
-            } else {
-
-
-               inviteListData.add(new GroupListData("" + userName.trim(),
-                        user_phone_number.trim(),
-                        user_image,
-                        user_des,
-                        old_latter.trim(), ""));
-               // userListDataAdapter.notifyDataSetChanged();
-
-            }
-
-        }
-
-        groupContectAdapter = new GroupContectAdapter(this);
-        contect_list_unselect.setAdapter(groupContectAdapter);
-        cursor.close();
-
-    }
 
     @Override
     public void onClick(View v) {
