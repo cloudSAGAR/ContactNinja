@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.SigleGroupModel;
@@ -376,14 +377,32 @@ public class MembersFragment extends Fragment {
                 if (response.body().getStatus() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<List<SigleGroupModel>>() {
+                    Type listType = new TypeToken<SigleGroupModel.Group>() {
                     }.getType();
-                    SigleGroupModel group_model = new Gson().fromJson(headerString, listType);
+                    SigleGroupModel.Group group_model = new Gson().fromJson(headerString, listType);
 
-                    inviteListData.addAll(group_model.getGroups().get(0).getContactDetails());
+                    Log.e("Group List is",new Gson().toJson(group_model.getContactDetails()));
+                    List<ContectListData.Contact> groupModel=new ArrayList<>();
+                    ContectListData.Contact contact=new ContectListData.Contact();
+                    for (int i=0;i<group_model.getContactDetails().size();i++)
+                    {
+                        contact.setFirstname(group_model.getContactDetails().get(i).getFirstname());
+                        contact.setLastname(group_model.getContactDetails().get(i).getLastname());
+                        contact.setContactImage(group_model.getContactDetails().get(i).getContactImage());
+                        List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
+                        ContectListData.Contact.ContactDetail contactDetail=new ContectListData.Contact.ContactDetail();
+                        contactDetail.setContactId(group_model.getContactDetails().get(i).getId());
+                        contactDetail.setEmailNumber(group_model.getContactDetails().get(i).getEmailNumber());
+                        contactDetails.add(contactDetail);
+                        contact.setContactDetails(contactDetails);
+
+                    }
+                    groupModel.add(contact);
+                    sessionManager.setGroupList(getActivity(),groupModel);
+                 /*   inviteListData.addAll(group_model.getContactDetails());
                     userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
                     rvinviteuserdetails.setAdapter(userListDataAdapter);
-                    userListDataAdapter.notifyDataSetChanged();
+                    userListDataAdapter.notifyDataSetChanged();*/
                     // userListDataAdapter.addAll(grouplists);
 
                 }

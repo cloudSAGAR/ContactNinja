@@ -111,7 +111,9 @@ public class Broadcste_Contect_Fragment extends Fragment  {
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(5000);
         contectListData = new ArrayList<>();
-        GetContactsIntoArrayList();
+        //GetContactsIntoArrayList();
+        groupContectAdapter = new GroupContectAdapter(getActivity());
+        contect_list_unselect.setAdapter(groupContectAdapter);
         try {
             ContectEvent();
         } catch (JSONException e) {
