@@ -1,26 +1,23 @@
 package com.contactninja.retrofit;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.util.Log;
-import okhttp3.RequestBody;
 
-import okhttp3.MultipartBody;
-
-import com.contactninja.Utils.SessionManager;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
+import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.util.Objects;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+@SuppressLint("UnknownNullness")
 public class RetrofitCalls {
 
     private final RetrofitApiInterface retrofitApiInterface = Objects.requireNonNull(RetrofitApiClient.getClient()).create(RetrofitApiInterface.class);
@@ -38,25 +35,16 @@ public class RetrofitCalls {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE"); }
 
-    public void SignUp_user(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Register(RetrofitApiClient.API_Header,registerinfo);
+    public void SignUp_user(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Register(RetrofitApiClient.API_Header,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
 
     }
 
-    public void Uservalidate(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Uservalidate(RetrofitApiClient.API_Header,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-    public void LoginUser(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Userlogin(RetrofitApiClient.API_Header,registerinfo);
+    public void Uservalidate(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Uservalidate(RetrofitApiClient.API_Header,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
@@ -64,9 +52,8 @@ public class RetrofitCalls {
     }
 
 
-
-    public void EmailNumberUpdate(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.EmailNumberUpdate(RetrofitApiClient.API_Header,token,registerinfo);
+    public void LoginUser(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Userlogin(RetrofitApiClient.API_Header,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
@@ -75,8 +62,8 @@ public class RetrofitCalls {
 
 
 
-    public void Addcontect(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Addcontect(RetrofitApiClient.API_Header,token,registerinfo);
+    public void EmailNumberUpdate(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.EmailNumberUpdate(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
@@ -85,153 +72,16 @@ public class RetrofitCalls {
 
 
 
-
-
-
-    public void AddGroup(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Addgroup(RetrofitApiClient.API_Header,token,registerinfo);
+    public void Addcontect(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Addcontect(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
 
     }
 
-
-
-    public void Group_List(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Group_List(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-    public void Contact_details_update(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Contect_delete(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-    public void Refress_Token(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.RefressToken(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-    public void Hastag_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Hastag_list(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-    public void Mail_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Mail_list(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-    public void Template_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Template_list(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-    public void CreateTemplate(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.CreateTemplate(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-    public void ResetPassword(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.ResetPassword(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-
-    public void update_contect(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.update_contect(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-    public void Upload_csv(SessionManager session,LoadingDialog loadingDialog, String token, RequestBody organization_id, RequestBody team_id, RequestBody user_id,RequestBody id, MultipartBody.Part import_file, RetrofitCallback retrofitCallback) {
-       call = retrofitApiInterface.Upload_csv(RetrofitApiClient.API_Header,token,import_file,team_id,user_id,organization_id,id);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-
-    public void Userexistcheck(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Userexistcheck(RetrofitApiClient.API_Header,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-
-
-    public void Working_hour(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Working_hour(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-    public void Send_SMS_Api(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Send_SMS_Api(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-    public void ForgotPassword(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.ForgotPassword(RetrofitApiClient.API_Header,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-
-    public void Task_store(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Task_store(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
-
-
-
-    public void manual_task_store(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.manual_task_store(RetrofitApiClient.API_Header,token,registerinfo);
+    public void Updatecontect(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.updatecontect(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
@@ -242,16 +92,9 @@ public class RetrofitCalls {
 
 
 
-    public void Email_execute(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Email_execute(RetrofitApiClient.API_Header,token,registerinfo);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
 
-    }
-
-    public void Timezone_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Timezone_list(RetrofitApiClient.API_Header,token,registerinfo);
+    public void AddGroup(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Addgroup(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
@@ -259,6 +102,233 @@ public class RetrofitCalls {
     }
 
 
+
+    public void Group_List(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Group_List(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void Contact_details_update(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Contect_delete(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void Refress_Token(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.RefressToken(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+    public void Hastag_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Hastag_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+    public void Mail_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Mail_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+    public void Mail_setDefault(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Mail_setDefault(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+    public void Template_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Template_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+    public void CreateTemplate(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.CreateTemplate(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+    public void ResetPassword(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.ResetPassword(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+    public void update_contect(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.update_contect(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void Upload_csv(SessionManager session,LoadingDialog loadingDialog, String token, RequestBody organization_id,
+                           RequestBody team_id, RequestBody user_id,RequestBody id, MultipartBody.Part import_file,
+                           String version ,String device_id, RetrofitCallback retrofitCallback) {
+       call = retrofitApiInterface.Upload_csv(RetrofitApiClient.API_Header,token,import_file,team_id,user_id,organization_id,id,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+    public void Userexistcheck(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Userexistcheck(RetrofitApiClient.API_Header,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+
+    public void Working_hour(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Working_hour(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+  /*  public void Send_SMS_Api(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Send_SMS_Api(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+*/
+
+    public void ForgotPassword(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.ForgotPassword(RetrofitApiClient.API_Header,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+    public void Task_store(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Task_store(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+    public void manual_task_store(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.manual_task_store(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+
+
+    public void Email_execute(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Email_execute(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+    public void Timezone_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
+                              String token, String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Timezone_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+
+    public void Task_Data_Return(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
+                                 String token, String version ,String device_id,RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Sequence_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void Gmailauth_update(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
+                                 String token, String version ,String device_id,RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Gmailauth_update(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+    public void Userinfo(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
+                                 String token, String version ,String device_id,RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Userinfo(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
+
+    public void Sequence_contact_store(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Sequence_contact_store(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+    public void SingleGroup_List(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.SingleGroup_List(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+    public void Sequence_settings(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Sequence_settings(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
 
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {

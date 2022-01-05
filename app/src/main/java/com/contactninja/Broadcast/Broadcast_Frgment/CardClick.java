@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.Broadcast_Frgment;
+package com.contactninja.Broadcast.Broadcast_Frgment;
 
 import com.contactninja.Model.Broadcast_image_list;
 

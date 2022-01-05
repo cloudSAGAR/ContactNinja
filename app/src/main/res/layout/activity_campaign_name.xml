@@ -8,9 +8,17 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <include
             layout="@layout/toolbar"></include>
+        <LinearLayout
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent">
+
         <ImageView
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
@@ -27,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="@dimen/_16sdp"
+            android:textSize="@dimen/_17sdp"
             android:text="@string/camp_done"
             android:textColor="@color/tv_medium"
             android:layout_marginBottom="@dimen/_10sdp"
@@ -40,6 +48,8 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_width="match_parent"
+            android:focusable="true"
+            style="@style/tv_Medium"
             android:layout_height="wrap_content">]
 
         </EditText>
@@ -83,7 +93,7 @@
             android:text="@string/camp_title"
             android:textColor="@color/shape_red"
             android:layout_marginBottom="@dimen/_10sdp" />
-
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

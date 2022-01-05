@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Setting.WebActivity;
@@ -343,7 +344,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", "1231220");
         obj.add("data", paramObject);
-        retrofitCalls.Uservalidate(sessionManager, obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.Uservalidate(sessionManager, obj, loadingDialog, Global.getVersionname(SignupActivity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
@@ -415,7 +416,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         paramObject.addProperty("otp", "");
         paramObject.addProperty("referred_by", referred_by);
         obj.add("data", paramObject);
-        retrofitCalls.SignUp_user(sessionManager, obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.SignUp_user(sessionManager, obj, loadingDialog,Global.getVersionname(SignupActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();

@@ -25,6 +25,11 @@ public class UservalidateModel {
     @Expose
     private List<String> template_slug = null;
 
+
+    @SerializedName("error")
+    @Expose
+    private List<String> error = null;
+
     public List<String> getTemplate_slug() {
         return template_slug;
     }
@@ -65,5 +70,11 @@ public class UservalidateModel {
         this.firstname = firstname;
     }
 
+    public List<String> getError() {
+        return error;
+    }
 
+    public void setError(List<String> error) {
+        this.error = error;
+    }
 }

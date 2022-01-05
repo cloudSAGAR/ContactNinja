@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.Broadcast_Frgment;
+package com.contactninja.Broadcast.Broadcast_Frgment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,11 +17,9 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,8 +28,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Group.Final_Group;
-import com.contactninja.Group.GroupActivity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -499,16 +496,19 @@ public class Broadcste_Contect_Fragment extends Fragment  {
             return userDetails.size();
         }
 
-        public void remove_item(int item)
+        public void remove_item(int item, Integer id)
         {
-            try {
-                userDetails.remove(item);
-                notifyItemRemoved(item);
-            }
-            catch (Exception e)
-            {
 
+            for (int j=0;j<userDetails.size();j++)
+            {
+                if (id==userDetails.get(j).getId())
+                {
+                    userDetails.remove(j);
+                    notifyItemRemoved(j);
+                }
             }
+
+
 
 
         }
@@ -569,7 +569,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj,Global.getVersionname(getActivity()),Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -639,7 +639,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
 
 
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj,Global.getVersionname(getActivity()),Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -875,7 +875,7 @@ public class Broadcste_Contect_Fragment extends Fragment  {
 
                             holder1.remove_contect_icon.setVisibility(View.GONE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                            topUserListDataAdapter.remove_item(position);
+                            topUserListDataAdapter.remove_item(position,contacts.get(position).getId());
 
                             topUserListDataAdapter.notifyDataSetChanged();
                             Log.e("Size is",new Gson().toJson(select_contectListData));

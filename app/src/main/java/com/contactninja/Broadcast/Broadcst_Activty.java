@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.Broadcast_Frgment;
+package com.contactninja.Broadcast;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -30,8 +30,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Broadcast_Activity.Broadcast_to_repeat;
-import com.contactninja.Broadcast_Activity.Brodcsast_Tankyou;
+import com.contactninja.Broadcast.Broadcast_Frgment.Broadcast_Group_Fragment;
+import com.contactninja.Broadcast.Broadcast_Frgment.Broadcste_Contect_Fragment;
+import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
+import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.R;
@@ -44,7 +46,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Broadcst_Activty extends AppCompatActivity implements View.OnClickListener ,CardClick,  ConnectivityReceiver.ConnectivityReceiverListener {
+public class Broadcst_Activty extends AppCompatActivity implements View.OnClickListener , CardClick,  ConnectivityReceiver.ConnectivityReceiverListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     EditText contect_search;
@@ -154,14 +156,13 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                         Intent intent1= new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
                         intent1.putExtra("s_name","default");
                         startActivity(intent1);
-                        finish();
+
                     }
                 });
                 lay_schedule.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
-                        finish();
                     }
                 });
                 edit_message.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +177,8 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 iv_send.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
                         Broadcast_Data broadcast_data=new Broadcast_Data();
                         broadcast_data.setLink(tv_text_link.getText().toString());
                         broadcast_data.setLink_text(edit_message.getText().toString());

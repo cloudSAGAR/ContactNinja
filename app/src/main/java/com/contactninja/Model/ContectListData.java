@@ -376,7 +376,7 @@ public class ContectListData {
         }
 
 
-        public class ContactDetail {
+        public static class ContactDetail {
 
             @SerializedName("id")
             @Expose

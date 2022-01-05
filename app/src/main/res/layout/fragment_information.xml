@@ -167,6 +167,68 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/other_company_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_otger_company"
+                        style="@style/tv_regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/other_company"
+                        android:drawableRight="@drawable/ic_down"
+                        android:textColor="@color/tv_medium"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/ev_othre_company"
+                        style="@style/tv_regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_company_a"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data"
+                        android:textStyle="bold">
+
+                    </EditText>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/company_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -195,6 +257,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_company"
+                        android:drawableRight="@drawable/ic_down"
                         android:textColor="@color/tv_medium"
                         android:textStyle="bold">
 
@@ -206,7 +269,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
-
+                        android:enabled="false"
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_company_a"
                         android:textColor="@color/home_list_sub_data"
@@ -226,6 +289,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/home_list_add_contect_view" />
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/company_url_layout"
@@ -1220,7 +1284,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <ImageView
-                            android:background="@drawable/ic_rectangle_1810"
+                            android:background="@drawable/ic_breakout"
                             android:layout_gravity="center"
                             android:padding="5dp"
                             android:layout_width="@dimen/_20sdp"
@@ -1337,7 +1401,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/img_breakout"
                 android:padding="@dimen/_5sdp"
-                android:background="@drawable/shape_primary_back"
+                android:background="@drawable/ic_breakout"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp">
 

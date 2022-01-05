@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission
         android:name="android.permission.CALL_PHONE"
         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
@@ -48,6 +48,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Campaign.Campaign_Preview"
+            android:exported="false" />
         <activity
             android:name=".Setting.EmailListActivity"
             android:exported="true"
@@ -75,7 +78,6 @@
         <activity
             android:name=".Campaign.Campaign_Overview"
             android:exported="false"
-
             android:screenOrientation="portrait" />
         <activity
             android:name=".Campaign.First_Step_Start_Activity"
@@ -119,35 +121,35 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Repeat_Month_Activity"
+            android:name=".Broadcast.Broadcast_Schedule.Repeat_Month_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Repeat_weekly_Activity"
+            android:name=".Broadcast.Broadcast_Schedule.Repeat_weekly_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Broadcast_Final_Activity"
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_Final_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Broadcast_time_select"
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_time_select"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Broadcast_date_select"
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_date_select"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Broadcast_to_repeat"
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_to_repeat"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast_Activity.Brodcsast_Tankyou"
+            android:name=".Broadcast.Brodcsast_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Fragment.Broadcast_Frgment.Broadcst_Activty"
+            android:name=".Broadcast.Broadcst_Activty"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />

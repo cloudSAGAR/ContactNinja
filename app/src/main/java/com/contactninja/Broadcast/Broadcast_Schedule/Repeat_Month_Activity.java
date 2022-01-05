@@ -1,4 +1,4 @@
-package com.contactninja.Broadcast_Activity;
+package com.contactninja.Broadcast.Broadcast_Schedule;
 
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
@@ -20,10 +20,8 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.Constraints;
 
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 

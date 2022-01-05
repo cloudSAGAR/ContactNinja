@@ -1,8 +1,7 @@
-package com.contactninja.Broadcast_Activity;
+package com.contactninja.Broadcast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -14,10 +13,8 @@ import android.os.Handler;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.Auth.LoginActivity;
 import com.contactninja.MainActivity;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 

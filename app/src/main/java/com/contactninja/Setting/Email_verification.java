@@ -1,32 +1,104 @@
 package com.contactninja.Setting;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
+import com.contactninja.Auth.ForgotPasswordActivity;
+import com.contactninja.Campaign.Campaign_List_Activity;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.JsonObject;
 
-import java.util.Objects;
+import org.json.JSONException;
 
-public class Email_verification extends AppCompatActivity {
+import java.io.UnsupportedEncodingException;
+
+import retrofit2.Response;
+
+public class Email_verification extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
     WebView webEmail;
+    LinearLayout mMainLayout;
+
+    LoadingDialog loadingDialog;
+    SessionManager sessionManager;
+    RetrofitCalls retrofitCalls;
+
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verification);
+
+        mNetworkReceiver = new ConnectivityReceiver();
+        loadingDialog=new LoadingDialog(this);
+        sessionManager=new SessionManager(this);
+        retrofitCalls = new RetrofitCalls(this);
+
+
+        mMainLayout = findViewById(R.id.mMainLayout);
         webEmail = findViewById(R.id.webEmail);
         webEmail.clearCache(true);
+        webEmail.clearHistory();
+        webEmail.loadUrl(Global.Email_auth);
         webEmail.getSettings().setJavaScriptEnabled(true);
-        webEmail.loadUrl("https://app.contactninja.org/email_api/callback.php");
+        webEmail.getSettings().setUserAgentString("contactninja");
         webEmail.setHorizontalScrollBarEnabled(false);
         webEmail.setWebViewClient(new HelloWebViewClient());
 
     }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Email_verification.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
     private class HelloWebViewClient extends WebViewClient {
 
 
@@ -39,8 +111,25 @@ public class Email_verification extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
             String hostURL = url.substring(url.lastIndexOf("/") + 1, url.length());
-            if (hostURL.equals("login")) {
-               finish();
+            String val2="";
+            // decode
+            byte[] tmp2 = Base64.decode(hostURL,Base64.DEFAULT);
+            try {
+                 val2 = new String(tmp2, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            if (Global.emailValidator(val2)) {
+
+                try {
+                    if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)) {
+                        GoogleAuth(val2);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             } else {
                 webView.loadUrl(url);
             }
@@ -54,4 +143,39 @@ public class Email_verification extends AppCompatActivity {
 
         }
     }
+    private void GoogleAuth(String val2) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel=  SessionManager.getGetUserdata(getApplicationContext());
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("email_address", val2);
+        paramObject.addProperty("is_default", "1");
+        obj.add("data", paramObject);
+        retrofitCalls.Gmailauth_update(sessionManager, obj, loadingDialog,Global.getToken(sessionManager),
+                Global.getVersionname(Email_verification.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getStatus() == 200) {
+                    loadingDialog.cancelLoading();
+                    webEmail.clearHistory();
+                    webEmail.clearFormData();
+                    webEmail.clearCache(true);
+
+                   finish();
+
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
 }

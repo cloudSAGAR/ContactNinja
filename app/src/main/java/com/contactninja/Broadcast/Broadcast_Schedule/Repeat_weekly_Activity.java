@@ -1,4 +1,4 @@
-package com.contactninja.Broadcast_Activity;
+package com.contactninja.Broadcast.Broadcast_Schedule;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -27,7 +27,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.google.android.material.bottomsheet.BottomSheetDialog;

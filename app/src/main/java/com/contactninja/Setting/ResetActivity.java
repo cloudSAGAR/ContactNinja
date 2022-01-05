@@ -166,7 +166,7 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
             paramObject.addProperty("team_id", "1");
             paramObject.addProperty("user_id",signResponseModel.getUser().getId());
             obj.add("data", paramObject);
-            retrofitCalls.ResetPassword(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+            retrofitCalls.ResetPassword(sessionManager,obj, loadingDialog, token, Global.getVersionname(ResetActivity.this),Global.Device,new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
 

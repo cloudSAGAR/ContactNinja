@@ -20,6 +20,9 @@ public class AddcontectModel {
     String twitter="";
     String Linkedin="";
     String breakoutu="";
+    String company_id="";
+    String other_company="";
+
 
     List<Contactdetail> contactdetails =new ArrayList<>();
     List<Contactdetail> contactdetails_email =new ArrayList<>();
@@ -29,7 +32,21 @@ public class AddcontectModel {
 
     }
 
+    public String getOther_company() {
+        return other_company;
+    }
 
+    public void setOther_company(String other_company) {
+        this.other_company = other_company;
+    }
+
+    public String getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(String company_id) {
+        this.company_id = company_id;
+    }
 
     public String getAddress() {
         return address;

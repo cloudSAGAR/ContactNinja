@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -29,7 +30,6 @@ import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
-import com.contactninja.Setting.Email_verification;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -97,13 +97,17 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         ev_to.setText(email);
 
         try {
-            Hastag_list();
+            if(Global.isNetworkAvailable(EmailSend_Activity.this,mMainLayout)){
+                Hastag_list();
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            Mail_list();
+            if(Global.isNetworkAvailable(EmailSend_Activity.this,mMainLayout)){
+                Mail_list();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -140,7 +144,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -252,7 +256,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
@@ -429,7 +433,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -457,7 +461,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
-                    startActivity(new Intent(getApplicationContext(), Email_verification.class));
+
+                    Global.openEmailAuth(EmailSend_Activity.this);
+                   // startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 
@@ -485,8 +491,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
         paramObject.put("manage_by", "MANUAL");
-        paramObject.put("time", "00:00");
-        paramObject.put("date", "2021-12-28");
+        paramObject.put("time", Global.getCurrentTime());
+        paramObject.put("date", Global.getCurrentDate());
         paramObject.put("assign_to", user_id);
         paramObject.put("task_description", text);
 
@@ -512,7 +518,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
@@ -574,7 +580,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Log.e("Gson Data is",new Gson().toJson(gsonObject));
 */
 
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {

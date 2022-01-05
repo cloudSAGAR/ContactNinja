@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.Broadcast_Frgment;
+package com.contactninja.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,12 +16,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
-import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class Broadcst_Fragment extends Fragment implements ViewPager.OnPageChangeListener {
+public class Main_contact_Fragment extends Fragment implements ViewPager.OnPageChangeListener {
 
     TabLayout tabLayout;
     ViewPager viewPager;

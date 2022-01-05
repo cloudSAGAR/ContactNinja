@@ -8,9 +8,9 @@
     tools:context=".Fragment.AddContect_Fragment.GroupFragment">
 
     <include
-        layout="@layout/toolbar"></include>
+        layout="@layout/toolbar"/>
     <include
-        layout="@layout/common_dialog"></include>
+        layout="@layout/common_dialog"/>
 
     <LinearLayout
         android:id="@+id/mMainLayout1"
@@ -63,41 +63,27 @@
                 android:padding="@dimen/_10sdp"
                 android:background="@drawable/shape_oval_border_10_blue"
                 android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"></ImageView>
+                android:layout_height="@dimen/_35sdp"/>
 
             <TextView
                 android:id="@+id/add_new_contect"
                 style="@style/tv_regular"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:gravity="center"
+                android:gravity="center|left"
                 android:singleLine="true"
                 android:text="@string/campaign_add"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-            <TextView
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:layout_gravity="center|end"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:id="@+id/num_count"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|end"
-                android:textColor="@color/purple_500"
-                style="@style/tv_regular"
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:text=""
-                />
 
         </LinearLayout>
         <View
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@color/home_list_back_line"
             android:layout_width="match_parent"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
 
 
         <LinearLayout
@@ -134,10 +120,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <include
-                layout="@layout/campaign_list_layout">
 
-            </include>
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/campaign_refresh"
                 android:layout_width="match_parent"

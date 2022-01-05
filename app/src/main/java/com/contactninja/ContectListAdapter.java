@@ -3,6 +3,7 @@ package com.contactninja;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Utils.SessionManager;
+import com.google.gson.Gson;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -142,6 +144,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                       @Override
                       public void onClick(View v) {
                           SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
+                          Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                           SessionManager.setOneCotect_deatil(context, Contact_data);
                           Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
                           SessionManager.setContect_flag("read");

@@ -25,6 +25,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.chaos.view.PinView;
 import com.contactninja.Auth.PlanTyep.PlanType_Screen;
+import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -406,7 +407,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         paramObject.addProperty("otp", otp);
         paramObject.addProperty("referred_by",referred_by);
         obj.add("data", paramObject);
-        retrofitCalls.SignUp_user(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.SignUp_user(sessionManager,obj, loadingDialog,Global.getVersionname(VerificationActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -507,7 +508,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp_pinview.getText().toString());
         obj.add("data", paramObject);
-        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog,Global.getVersionname(VerificationActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 // Log.e("Response is",new Gson().toJson(response));

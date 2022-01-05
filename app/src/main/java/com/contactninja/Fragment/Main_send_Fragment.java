@@ -12,10 +12,10 @@ import com.contactninja.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Send_Main_Fragment#newInstance} factory method to
+ * Use the {@link Main_send_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Send_Main_Fragment extends Fragment {
+public class Main_send_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class Send_Main_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Send_Main_Fragment() {
+    public Main_send_Fragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class Send_Main_Fragment extends Fragment {
      * @return A new instance of fragment SendFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Send_Main_Fragment newInstance(String param1, String param2) {
-        Send_Main_Fragment fragment = new Send_Main_Fragment();
+    public static Main_send_Fragment newInstance(String param1, String param2) {
+        Main_send_Fragment fragment = new Main_send_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

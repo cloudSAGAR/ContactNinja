@@ -3,7 +3,6 @@ package com.contactninja;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +20,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
-import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -41,11 +39,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Campaign.Campaign_List_Activity;
-import com.contactninja.Fragment.Broadcast_Frgment.Broadcst_Activty;
-import com.contactninja.Fragment.Contect_main_Fragment;
-import com.contactninja.Fragment.Home_Main_Fragment;
-import com.contactninja.Fragment.Send_Main_Fragment;
-import com.contactninja.Fragment.UserProfile_Main_Fragment;
+import com.contactninja.Broadcast.Broadcst_Activty;
+import com.contactninja.Fragment.Main_contact_Fragment;
+import com.contactninja.Fragment.Main_home_Fragment;
+import com.contactninja.Fragment.Main_send_Fragment;
+import com.contactninja.Fragment.Main_userProfile_Fragment;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
@@ -78,7 +76,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-import com.hbb20.CountryCodePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,7 +92,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.OptionalInt;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
@@ -130,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout llCreate;
     LoadingDialog loadingDialog;
     List<Csv_InviteListData> csv_inviteListData = new ArrayList<>();
+
+    List<Csv_InviteListData> csv_multiple_data = new ArrayList<>();
     int limit = 0;
     RetrofitCalls retrofitCalls;
     String userName = "", user_phone_number = "", user_image = "", user_des = "", strtext = "", old_latter = "", contect_type = "", contect_email = "",
@@ -212,12 +210,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-             //   if (sessionManager.getContectList(getApplicationContext()).size() == 0)
-             //   {
-             //       loadingDialog.showLoadingDialog();
-             //   }
+               if (sessionManager.getContectList(getApplicationContext()).size() == 0)
+               {
+                   loadingDialog.showLoadingDialog();
+               }
 
-                GetContactsIntoArrayList();
+             // GetContactsIntoArrayList();
 
             }
 
@@ -235,7 +233,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setGotoSettingButtonText("setting")
                 .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.SEND_SMS ,Manifest.permission.READ_PHONE_STATE)
+                        Manifest.permission.SEND_SMS
+                )
                 .setRationaleConfirmText("OK")
                 .check();
 
@@ -272,110 +271,115 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
             user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
-            TelephonyManager tm = (TelephonyManager)getSystemService(getApplicationContext().TELEPHONY_SERVICE);
+
+
+            TelephonyManager tm = (TelephonyManager) getSystemService(getApplicationContext().TELEPHONY_SERVICE);
             String country = tm.getNetworkCountryIso();
             int countryCode = 0;
             PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(MainActivity.this);
             try {
                 // phone must begin with '+'
                 Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
-                 countryCode = numberProto.getCountryCode();
+                countryCode = numberProto.getCountryCode();
             } catch (NumberParseException e) {
                 System.err.println("NumberParseException was thrown: " + e.toString());
             }
-            user_phone_number=String.valueOf("+"+countryCode+user_phone_number);
-            try {
-                contect_email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DISPLAY_NAME));
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
 
-                contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
-                contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
-                email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
-                email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
-
-
-                country = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-                // StructuredPostal.CITY == data7
-                city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-                // StructuredPostal.REGION == data8
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-                // StructuredPostal.STREET == data4
-                street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-                // StructuredPostal.POSTCODE == data9
-                postcode = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
-                // StructuredPostal.TYPE == data2
-                postType = String.valueOf(cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE)));
-                note = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
-
-
-                firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-
-
-
-
-
-            } catch (Exception e) {
-
-            }
-
-            String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
-                    .substring(0, 1)
-                    .toUpperCase();
-
-            boolean found = false;
-            try {
-                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
-
-            } catch (Exception e) {
-
-            }
-
-            if (found) {
-
-            } else {
-
-
-                //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getTaskId())));
-                String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
-
-                inviteListData.add(new InviteListData("" + userName.trim(),
-                        user_phone_number.replace(" ", ""),
-                        user_image,
-                        user_des,
-                        "", ""));
-
-
-
+                user_phone_number = user_phone_number.replace(" ", "");
+                user_phone_number = user_phone_number.replace("-", "");
+                if (!user_phone_number.contains("+")) {
+                    user_phone_number = String.valueOf("+" + countryCode + user_phone_number);
+                }
 
                 try {
-                    csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                    contect_email = "";
+                    region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
+
+                    contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
+                    contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
+                    email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
+                    email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
+
+
+                    country = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+                    // StructuredPostal.CITY == data7
+                    city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+                    // StructuredPostal.REGION == data8
+                    region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                    // StructuredPostal.STREET == data4
+                    street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+                    // StructuredPostal.POSTCODE == data9
+                    postcode = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
+                    // StructuredPostal.TYPE == data2
+                    postType = String.valueOf(cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE)));
+                    note = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
+
+
+                    firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
+                    lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+
+
                 } catch (Exception e) {
 
                 }
 
-                if (csv_inviteListData.size() != 0) {
-                    OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
-                            .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
-                            .findFirst();
-                    if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
-                        // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
 
-                        csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
+                String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
+                        .substring(0, 1)
+                        .toUpperCase();
 
-                        csv_inviteListData.remove(indexOpt.getAsInt() + 1);
-                    }
+                boolean found = false;
+                try {
+                    found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
 
-
-                    //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
+                } catch (Exception e) {
 
                 }
 
+                if (found) {
+
+                } else {
+
+
+                    //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getTaskId())));
+                    String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
+
+                    inviteListData.add(new InviteListData("" + userName.trim(),
+                            user_phone_number.replace(" ", ""),
+                            user_image,
+                            user_des,
+                            "", ""));
+
+
+                    try {
+                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                    } catch (Exception e) {
+
+                    }
+
+                    if (csv_inviteListData.size() != 0) {
+                        OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
+                                .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
+                                .findFirst();
+                        if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
+                            // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
+                            csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                            csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
+
+                            csv_inviteListData.remove(indexOpt.getAsInt() + 1);
+                        }
+
+
+                        //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
+
+                    }
+
+
+                }
 
             }
 
-        }
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
@@ -387,7 +391,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             loadingDialog.cancelLoading();
             //Log.e("Csv Size is ","0");
         } else {
-            if (Global.getcontectexits(sessionManager).equals("0")) {
+            String isContact= SessionManager.getcontectexits();
+            if (isContact.equals("0")) {
                 //Not Upload Contect Then If Call
                 if (Is_contact_exist.equals("0")) {
                     limit = csv_inviteListData.size();
@@ -455,10 +460,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
-                    ',' + response.get(i).getNote() +
                     ',' + ' ' +
-                    ',' + region + ' ' + response.get(i).getStreet() + ' ' + response.get(i).getCity() +
-                    ',' + response.get(i).getCity() +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
@@ -467,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + response.get(i).getContect_email() +
-                    ',' + '"' + response.get(i).getUserPhoneNumber() + '"' +
+                    ',' + '"' + response.get(i).getUserPhoneNumber() +','+ '"' +
                     ',' + ' '
             );
 
@@ -496,15 +501,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
 
-          /*  Intent intent = new Intent(Intent.ACTION_SEND);
+           /* Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/csv");
             intent.putExtra(Intent.EXTRA_SUBJECT, "Data");
             intent.putExtra(Intent.EXTRA_STREAM, path);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(intent, "Excel Data"));*/
-            if(Global.isNetworkAvailable(MainActivity.this,mMainLayout)) {
-                Uploadcsv(file);
-            }
+        if(Global.isNetworkAvailable(MainActivity.this,mMainLayout)) {
+            Uploadcsv(file);
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -534,7 +539,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody id = RequestBody.create(MediaType.parse("text/plain"), "1");
 
-        retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager), organization_id1, team_id1, user_id1, id, body, new RetrofitCallback() {
+        retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager),
+                organization_id1, team_id1, user_id1, id, body,Global.getVersionname(MainActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 sessionManager.setcontectexits("1");
@@ -600,7 +606,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj,Global.getVersionname(MainActivity.this),
+                Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -815,6 +822,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.llUser:
+                SessionManager.setContect_flag("read");
                 navItemIndex = 3;
                 displayView();
 
@@ -838,19 +846,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (navItemIndex) {
             case 0:
 
-                fragment = new Home_Main_Fragment();
+                fragment = new Main_home_Fragment();
                 shouldLoadHomeFragOnBackPress = false;
                 break;
             case 1:
-                fragment = new Send_Main_Fragment();
+                fragment = new Main_send_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 2:
-                fragment = new Contect_main_Fragment();
+                SessionManager.setContect_flag("read");
+                fragment = new Main_contact_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 3:
-                fragment = new UserProfile_Main_Fragment();
+                fragment = new Main_userProfile_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 4:
@@ -1089,7 +1098,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
                 }*/
 
-                Log.e(  "Contect List Update Size", " : " + taskList.size());
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
                     List<Csv_InviteListData> csv_inviteListData1 = new ArrayList<>();
@@ -1145,7 +1153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(MainActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 

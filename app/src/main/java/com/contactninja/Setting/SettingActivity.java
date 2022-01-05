@@ -8,8 +8,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,12 +23,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.MainActivity;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -40,6 +46,7 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 import retrofit2.Response;
 
@@ -185,14 +192,18 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(SettingActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getStatus() == 200) {
+                    /*is a list to email show*/
                     startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
                 }else {
-                 startActivity(new Intent(getApplicationContext(),Email_verification.class));
+
+                    /*is a email permission link open */
+                    //Global.openEmailAuth(SettingActivity.this);
+                    startActivity(new Intent(getApplicationContext(),Email_verification.class));
                 }
             }
 
@@ -227,11 +238,37 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                delete();
                 SessionManager sessionManager = new SessionManager(getApplicationContext());
                 sessionManager.logoutUser();
                 finish();
             }
         });
         dialog.show();
+    }
+
+    public void delete() {
+        class DeleteTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        .RemoveData();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                Log.e("Delete Task", "Yes");
+                super.onPostExecute(aVoid);
+
+            }
+        }
+
+        DeleteTask ut = new DeleteTask();
+        ut.execute();
     }
 }

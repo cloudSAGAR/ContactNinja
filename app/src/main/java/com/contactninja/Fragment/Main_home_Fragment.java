@@ -40,7 +40,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
-public class Home_Main_Fragment extends Fragment {
+public class Main_home_Fragment extends Fragment {
 
 
     RetrofitCalls retrofitCalls;
@@ -94,7 +94,7 @@ public class Home_Main_Fragment extends Fragment {
         paramObject.addProperty("refresh_token", ""+token);
         obj.add("data", paramObject);
         Log.e("Tokem is ",new Gson().toJson(obj));
-        retrofitCalls.Refress_Token(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Refress_Token(sessionManager,obj, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -167,7 +167,7 @@ public class Home_Main_Fragment extends Fragment {
             paramObject.addProperty("team_id","1");
             paramObject.addProperty("user_id",user_id);
             obj.add("data", paramObject);
-            retrofitCalls.Working_hour(sessionManager,obj, loadingDialog, token,new RetrofitCallback() {
+            retrofitCalls.Working_hour(sessionManager,obj, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
                     //Log.e("Response is",new Gson().toJson(response));

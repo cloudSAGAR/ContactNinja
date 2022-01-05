@@ -15,28 +15,34 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:visibility="gone"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:id="@+id/puse_icon"
-            android:src="@drawable/ic_puse_icon"
-            android:padding="@dimen/_7sdp"
+            android:id="@+id/iv_puse_icon"
+            android:src="@drawable/ic_push"
             android:layout_gravity="center"
-            android:background="@drawable/shape_red_circle"
             android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"></ImageView>
+            android:layout_height="@dimen/_25sdp"/>
 
         <ImageView
+            android:visibility="gone"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:id="@+id/play_icon"
-            android:src="@drawable/ic_play_icon"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_7sdp"
-            android:paddingBottom="@dimen/_7sdp"
-            android:paddingEnd="@dimen/_7sdp"
+            android:id="@+id/iv_play_icon"
+            android:src="@drawable/ic_play"
             android:layout_gravity="center"
-            android:background="@drawable/shape_primary_back"
             android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"></ImageView>
+            android:layout_height="@dimen/_25sdp"/>
+
+        <ImageView
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:id="@+id/iv_hold"
+            android:src="@drawable/ic_hold"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"/>
+
         <TextView
+            android:padding="@dimen/_5sdp"
             android:layout_weight="2"
             android:id="@+id/campaign_name"
             style="@style/tv_regular"

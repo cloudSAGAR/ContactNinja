@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -109,12 +110,15 @@ public class Campaign_Contect_Fragment extends Fragment  {
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(5000);
         contectListData = new ArrayList<>();
-        GetContactsIntoArrayList();
+       /* GetContactsIntoArrayList();
         try {
             ContectEvent();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        groupContectAdapter = new GroupContectAdapter(getActivity());
+        contect_list_unselect.setAdapter(groupContectAdapter);
         contectListData.clear();
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
@@ -131,6 +135,11 @@ public class Campaign_Contect_Fragment extends Fragment  {
                 }
         );
 
+        if (SessionManager.getContectList(getActivity()).size() != 0) {
+            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+            groupContectAdapter.addAll(contectListData);
+            num_count.setText(contectListData.size()+" Contacts");
+        }
         fastscroller.setupWithRecyclerView(
                 contect_list_unselect,
                 (position) -> {
@@ -470,6 +479,8 @@ public class Campaign_Contect_Fragment extends Fragment  {
                     topUserListDataAdapter.notifyDataSetChanged();
 
                     num_count.setText(userDetails.size()+" Contacts");
+                    sessionManager.setGroupList(getActivity(), new ArrayList<>());
+                    sessionManager.setGroupList(getActivity(), select_contectListData);
 
 
                 }
@@ -494,19 +505,23 @@ public class Campaign_Contect_Fragment extends Fragment  {
             return userDetails.size();
         }
 
-        public void remove_item(int item)
+        public void remove_item(int item, Integer id)
         {
-            try {
-                userDetails.remove(item);
-                notifyItemRemoved(item);
-            }
-            catch (Exception e)
-            {
 
+            for (int j=0;j<userDetails.size();j++)
+            {
+                if (id==userDetails.get(j).getId())
+                {
+                    userDetails.remove(j);
+                    notifyItemRemoved(j);
+                }
             }
+
+
 
 
         }
+
 
         public void updateList(List<ContectListData.Contact> list) {
             userDetails = list;
@@ -564,7 +579,7 @@ public class Campaign_Contect_Fragment extends Fragment  {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj,Global.getVersionname(getActivity()),Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -634,7 +649,7 @@ public class Campaign_Contect_Fragment extends Fragment  {
 
 
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj,Global.getVersionname(getActivity()),Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -857,7 +872,8 @@ public class Campaign_Contect_Fragment extends Fragment  {
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
                             contacts.get(position).setFlag("false");
 
-
+                            sessionManager.setGroupList(getActivity(), new ArrayList<>());
+                            sessionManager.setGroupList(getActivity(), select_contectListData);
 
 
 
@@ -870,13 +886,14 @@ public class Campaign_Contect_Fragment extends Fragment  {
 
                             holder1.remove_contect_icon.setVisibility(View.GONE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                            topUserListDataAdapter.remove_item(position);
+                            topUserListDataAdapter.remove_item(position,contacts.get(position).getId());
 
                             topUserListDataAdapter.notifyDataSetChanged();
                             Log.e("Size is",new Gson().toJson(select_contectListData));
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
                             contacts.get(position).setFlag("true");
-
+                            sessionManager.setGroupList(getActivity(), new ArrayList<>());
+                            sessionManager.setGroupList(getActivity(), select_contectListData);
 
                         }
                     });

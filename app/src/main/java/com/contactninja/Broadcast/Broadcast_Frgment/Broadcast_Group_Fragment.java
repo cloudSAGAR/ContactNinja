@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.Broadcast_Frgment;
+package com.contactninja.Broadcast.Broadcast_Frgment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,10 +21,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Auth.SignupActivity;
-import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
-import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -211,7 +209,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -276,7 +274,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 

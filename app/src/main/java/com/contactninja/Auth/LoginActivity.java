@@ -7,12 +7,10 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,7 +23,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.contactninja.Auth.PlanTyep.PlanType_Screen;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
@@ -54,14 +51,13 @@ import com.hbb20.CountryCodePicker;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
-
+@SuppressLint("UnknownNullness")
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "LoginActivity";
     public String fcmToken = "";
@@ -360,7 +356,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         paramObject.addProperty("password", password);
 
         obj.add("data", paramObject);
-        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, Global.getVersionname(LoginActivity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
@@ -503,7 +499,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             paramObject.addProperty("last_name", "");
             paramObject.addProperty("login_type", Login_type);
             obj.add("data", paramObject);
-            retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+            retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog,Global.getVersionname(LoginActivity.this),Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
                     //Log.e("Response is",new Gson().toJson(response));

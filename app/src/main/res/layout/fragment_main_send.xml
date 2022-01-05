@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".Fragment.Send_Main_Fragment">
+    tools:context=".Fragment.Main_send_Fragment">
 
   <!-- TODO: Update blank fragment layout -->
   <ImageView

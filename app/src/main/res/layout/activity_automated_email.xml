@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent">
     <LinearLayout
         android:orientation="vertical"
@@ -41,22 +42,50 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:textStyle="bold" />
         </LinearLayout>
-        <EditText
-            android:id="@+id/ev_subject"
-            android:layout_marginTop="@dimen/_10sdp"
-            style="@style/tv_regular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|left"
-            android:gravity="center|left"
-            android:textSize="@dimen/_14sdp"
-            android:background="@color/add_contect_transpernt"
-            android:text="@string/mail_subject"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:textStyle="bold"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:textColor="@color/purple_200"
-            />
+
+  <LinearLayout
+        android:layout_below="@+id/layout_title"
+        android:id="@+id/layout_email_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@string/Subject"
+                android:textColor="@color/purple_200"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ev_subject"
+                style="@style/tv_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center|left"
+                android:hint="@string/Enter_subject_here"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/tv_medium"
+                android:textColorHint="@color/otp_header_text_color"
+                android:textStyle="bold"
+                tools:ignore="Autofill,RtlHardcoded" />
+
+
+        </LinearLayout>
+  </LinearLayout>
         <View
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/line_camp"

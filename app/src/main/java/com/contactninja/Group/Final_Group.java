@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -117,12 +118,19 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             Grouplist.Group group_data = SessionManager.getGroupData(this);
             add_new_contect.setText(group_data.getGroupName());
             add_detail.setText(group_data.getDescription());
-            iv_user.setVisibility(View.VISIBLE);
-            Glide.with(getApplicationContext()).
-                    load(group_data.getGroupImage()).
-                    placeholder(R.drawable.shape_primary_back).
-                    error(R.drawable.shape_primary_back).into(iv_user);
-            iv_dummy.setVisibility(View.GONE);
+            if(group_data.getGroupImage()!=null){
+                iv_user.setVisibility(View.VISIBLE);
+                Glide.with(getApplicationContext()).
+                        load(group_data.getGroupImage()).
+                        placeholder(R.drawable.shape_primary_back).
+                        error(R.drawable.shape_primary_back).into(iv_user);
+                iv_dummy.setVisibility(View.GONE);
+            }else {
+                iv_user.setVisibility(View.GONE);
+                iv_dummy.setVisibility(View.VISIBLE);
+            }
+
+
             old_image=group_data.getGroupImage();
 
             group_id= String.valueOf(group_data.getId());
@@ -138,7 +146,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             else {
                 group_id=group_id;
             }
-
 
 
         }
@@ -236,6 +243,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         mMainLayout=findViewById(R.id.mMainLayout);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -261,8 +269,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.iv_dummy:
                 if(checkAndRequestPermissions(Final_Group.this)){
-                    captureimageDialog(true);
-
+                    captureimageDialog(false);
                 }
 
 
@@ -271,7 +278,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             case R.id.iv_user:
                 if(checkAndRequestPermissions(Final_Group.this)){
                     captureimageDialog(true);
-
                 }
 
 
@@ -283,6 +289,8 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     }
 
     private void SaveEvent() throws JSONException {
+
+        loadingDialog.showLoadingDialog();
 
         group_name=add_new_contect.getText().toString();
         group_description=add_detail.getText().toString();
@@ -316,7 +324,15 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             }
 
             paramObject.put("group_name", group_name);
-            paramObject.put("oldImage", old_image);
+          /*  if(old_image!=null){
+                paramObject.put("oldImage", old_image);
+            }*/
+            if(old_image!=null){
+                paramObject.put("oldImage", old_image);
+            }
+            else {
+                paramObject.put("oldImage", "");
+            }
             paramObject.put("image_extension", File_extension);
             paramObject.put("group_image_name", File_name);
             paramObject.put("group_image", user_image_Url);
@@ -331,7 +347,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject)jsonParser.parse(obj.toString());
           //  Log.e("Obbject data",new Gson().toJson(gsonObject));
-            retrofitCalls.AddGroup(sessionManager,gsonObject, loadingDialog,token, new RetrofitCallback() {
+            retrofitCalls.AddGroup(sessionManager,gsonObject, loadingDialog,token,Global.getVersionname(Final_Group.this),Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
 
@@ -387,35 +403,24 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-               //         Log.e("Uri is ", String.valueOf(selectedImage));
-                      //  filePath.substring(filePath.lastIndexOf(".") + 1); // Without dot jpg, png
 
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
+                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
 
-                                //user_image_Url = encodeFileToBase64Binary(picturePath);
-                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                iv_user.setVisibility(View.VISIBLE);
-                                iv_dummy.setVisibility(View.GONE);
-                                File file= new File(selectedImage.getPath());
-                                File_name=file.getName();
 
-                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                                String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url="data:image/JPEG;base64,"+imageString;
-                                File_extension="JPEG";
-                          //      Log.e("url is",user_image_Url);
-                            }
-                        }
+                        iv_user.setImageBitmap(bitmap);
+                        iv_user.setVisibility(View.VISIBLE);
+                        iv_dummy.setVisibility(View.GONE);
+
+                        File_name = "Image";
+
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                        String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                        user_image_Url = "data:image/JPEG;base64," + imageString;
+                        File_extension = "JPEG";
+                        Log.e("url is", user_image_Url);
+
                     }
                     break;
                 case 1:
@@ -603,9 +608,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
 
                 holder.first_latter.setVisibility(View.VISIBLE);
-                holder.first_latter.setText(inviteUserDetails.getFirstname());
                 holder.top_layout.setVisibility(View.VISIBLE);
                 String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+            holder.first_latter.setText(first_latter);
 
                 if (second_latter.equals("")) {
                     current_latter = first_latter;
@@ -783,6 +788,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
+        SessionManager.setGroupList(getApplicationContext(),new ArrayList<>());
         SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
         super.onBackPressed();
     }

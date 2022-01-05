@@ -7,12 +7,24 @@
     android:background="@color/white"
     tools:context=".Campaign.Campaign_Overview">
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".Campaign.First_Step_Start_Activity">
     <include
         layout="@layout/toolbar"></include>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
 
         <ImageView
             android:layout_gravity="center"
@@ -43,7 +55,7 @@
             android:layout_height="match_parent">
 
         </androidx.recyclerview.widget.RecyclerView>
-
-
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

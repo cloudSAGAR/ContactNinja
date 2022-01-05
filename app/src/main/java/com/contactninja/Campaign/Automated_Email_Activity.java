@@ -20,16 +20,21 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.TemplateCreateActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -66,6 +71,10 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     String filePath;
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
+    static CoordinatorLayout mMainLayout;
+    String step_no = "1", time = "09:00", sequence_id = "",seq_task_id="";
+    int minite = 00, day = 1;
+    public String template_id_is="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +109,43 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
             }
         });
+
+        Intent inten=getIntent();
+        Bundle bundle=inten.getExtras();
+        String flag=bundle.getString("flag");
+        if (flag.equals("edit"))
+        {
+            edit_template.setText(bundle.getString("body"));
+
+            seq_task_id= bundle.getString("seq_task_id");
+            sequence_id= bundle.getString("sequence_id");
+
+            ev_subject.setText(bundle.getString("header"));
+            step_no= String.valueOf(bundle.getInt("step"));
+
+            SessionManager.setCampaign_type(bundle.getString("type"));
+            SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
+          try {
+              day= Integer.parseInt(bundle.getString("day"));
+              minite= Integer.parseInt(bundle.getString("minute"));
+              SessionManager.setCampaign_Day(String.valueOf(day));
+              SessionManager.setCampaign_minute(String.valueOf(minite));
+          }
+          catch (Exception e)
+          {
+
+          }
+
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+        finish();
+
+        super.onBackPressed();
     }
 
     private void Hastag_list() throws JSONException {
@@ -112,7 +158,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -169,6 +215,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
@@ -189,11 +236,19 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     public void onClick(@SuppressLint("UnknownNullness") View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.save_button:
-                //Add Api Call
-                // startActivity(new Intent(getApplicationContext(),Campaign_Overview.class));
+                if (ev_subject.getText().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
+
+                }
+                else if (edit_template.getText().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
+
+                } else {
+                    StepData();
+                }
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
@@ -235,7 +290,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
@@ -298,7 +353,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
 
                     templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick);
+                    templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick,edit_template,ev_subject);
                     templet_list.setAdapter(templateAdepter);
 
                 }
@@ -327,6 +382,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         ev_subject.setText(template.getContentHeader());
         edit_template.setText(template.getContentBody());
         edit_template.setSelection(edit_template.getText().length());
+        template_id_is= String.valueOf(template.getId());
         bottomSheetDialog_templateList.dismiss();
     }
 
@@ -335,11 +391,15 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         public Context mCtx;
         List<TemplateList.Template> templateTextList1;
         TemplateClick interfaceClick;
+        EditText edit_template,ev_subject;
 
-        public TemplateAdepter(Context applicationContext, List<TemplateList.Template> templateTextList1, TemplateClick interfaceClick) {
+        public TemplateAdepter(Context applicationContext, List<TemplateList.Template> templateTextList1,
+                               TemplateClick interfaceClick, EditText edit_template, EditText ev_subject) {
             this.mCtx = applicationContext;
             this.templateTextList1 = templateTextList1;
             this.interfaceClick = interfaceClick;
+            this.edit_template = edit_template;
+            this.ev_subject = ev_subject;
         }
 
         @NonNull
@@ -367,8 +427,8 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (holder.tv_item.getText().toString().equals("Save Current as template")) {
-                        showAlertDialogButtonClicked(view);
+                    if (holder.tv_item.getText().toString().equals("Save current as template")) {
+                        showAlertDialogButtonClicked(view,edit_template);
                     }else {
                         interfaceClick.OnClick(item);
                     }
@@ -395,7 +455,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         }
     }
 
-    public void showAlertDialogButtonClicked(View view) {
+    public void showAlertDialogButtonClicked(View view, EditText edit_template) {
 
         // Create an alert builder
         AlertDialog.Builder builder
@@ -406,7 +466,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                         R.layout.add_titale_for_templet,
                         null);
         builder.setView(customLayout);
-        EditText editText = customLayout.findViewById(R.id.editText);
+        EditText edt_template_name = customLayout.findViewById(R.id.editText);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
         TextView tv_add = customLayout.findViewById(R.id.tv_add);
         AlertDialog dialog
@@ -414,10 +474,18 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
         dialog.show();
         tv_add.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SyntheticAccessor")
             @Override
             public void onClick(View v) {
+                try {
+                    if (Global.isNetworkAvailable(Automated_Email_Activity.this, Automated_Email_Activity.mMainLayout)) {
+                        if (isValidation(edit_template,ev_subject,edt_template_name))
+                            CreateTemplate(edit_template,ev_subject,edt_template_name,dialog);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                dialog.dismiss();
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
@@ -427,6 +495,182 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             }
         });
 
+    }
+
+
+    public void StepData() {
+
+        Intent inten=getIntent();
+        Bundle bundle=inten.getExtras();
+        String flag=bundle.getString("flag");
+
+        JsonObject obj = new JsonObject();
+        if (flag.equals("add"))
+        {
+            loadingDialog.showLoadingDialog();
+            SignResponseModel user_data = SessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+            try {
+                if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
+
+                    CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
+
+                    int step = main_data.getStepNo() + 1;
+                    step_no = String.valueOf(step);
+                    day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
+                    minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
+
+                    if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
+                        sequence_id = "null";
+                    } else {
+                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString();
+                    }
+                } else {
+                    sequence_id = "null";
+                }
+            } catch (Exception e) {
+                sequence_id = "null";
+            }
+
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("day", day);
+            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
+            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("organization_id", "1");
+            paramObject.addProperty("template_id",template_id_is);
+
+            if (!sequence_id.equals("null"))
+            {
+                paramObject.addProperty("sequence_id", sequence_id);
+            }
+            paramObject.addProperty("content_header",ev_subject.getText().toString());
+            paramObject.addProperty("step_no", step_no);
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
+            paramObject.addProperty("time", Global.getCurrentTime());
+            paramObject.addProperty("user_id", user_id);
+            obj.add("data", paramObject);
+        }
+        else {
+            SignResponseModel user_data = SessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("day", day);
+            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
+            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("organization_id", "1");
+            paramObject.addProperty("sequence_id", sequence_id);
+            paramObject.addProperty("seq_task_id", seq_task_id);
+            paramObject.addProperty("content_header",ev_subject.getText().toString());
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
+            paramObject.addProperty("time", Global.getCurrentTime());
+            paramObject.addProperty("user_id", user_id);
+            paramObject.addProperty("step_no", step_no);
+
+            obj.add("data", paramObject);
+
+        }
+
+        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Automated_Email_Activity.this),Global.Device,new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+
+                loadingDialog.cancelLoading();
+
+                if (response.body().getStatus() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<List<CampaignTask>>() {
+                    }.getType();
+                    List<CampaignTask> user_model1 = new Gson().fromJson(headerString, listType);
+                    SessionManager.setTask(getApplicationContext(), user_model1);
+                    startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
+                    finish();
+                } else {
+
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+    private void CreateTemplate(EditText edit_template, EditText ev_subject, EditText edt_template_name, AlertDialog dialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("template_name", edt_template_name.getText().toString().trim());
+        paramObject.addProperty("content_header", ev_subject.getText().toString().trim());
+        String template_slug = edt_template_name.getText().toString().toUpperCase().replace(" ", "_");
+        paramObject.addProperty("template_slug", template_slug);
+        paramObject.addProperty("content_body", edit_template.getText().toString().trim());
+        paramObject.addProperty("type", "EMAIL");
+
+        obj.add("data", paramObject);
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    dialog.dismiss();
+                } else {
+                    dialog.dismiss();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                "The template title has already been taken.", false);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                dialog.dismiss();
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
+    }
+
+    private boolean isValidation(EditText editTemplate, EditText ev_subject, EditText edt_template_name) {
+        if (edt_template_name.getText().toString().equals("")) {
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+        }
+        if (ev_subject.getText().toString().equals("")) {
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
+        }
+        if (editTemplate.getText().toString().equals("")) {
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+        } else {
+            return true;
+        }
+        return false;
     }
 
 

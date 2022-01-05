@@ -112,7 +112,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("last_name", "");
         paramObject.addProperty("login_type","EMAIL");
         obj.add("data", paramObject);
-        retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog,Global.getVersionname(ForgotPasswordActivity.this),Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -146,7 +146,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("email", txt_email);
         obj.add("data", paramObject);
-        retrofitCalls.ForgotPassword(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.ForgotPassword(sessionManager,obj, loadingDialog, Global.getVersionname(ForgotPasswordActivity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
