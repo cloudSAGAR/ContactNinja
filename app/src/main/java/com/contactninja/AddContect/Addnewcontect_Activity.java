@@ -19,7 +19,6 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -43,8 +42,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Auth.LoginActivity;
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
@@ -52,11 +49,8 @@ import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
-import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
-import com.contactninja.Setting.Email_verification;
-import com.contactninja.Setting.SettingActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -71,8 +65,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.json.JSONArray;
@@ -606,6 +598,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     public void AddContect_Api() throws JSONException {
 
+        loadingDialog.showLoadingDialog();
 
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
@@ -629,15 +622,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         List<Contactdetail> contactdetails_email = new ArrayList<>();
         contactdetails_email.addAll(addcontectModel.getContactdetails_email());
         contactdetails.addAll(contactdetails_email);
-      /* for(int j=0;j<2;j++){
-           Contactdetail contactdetail=new Contactdetail();
-           contactdetail.setId(0);
-           contactdetail.setEmail_number("shirish@intericare.net");
-           contactdetail.setIs_default(0);
-           contactdetail.setLabel("Shirish");
-           contactdetail.setType("Homme");
-           contactdetails.add(j,contactdetail);
-       }*/
 
 
 
@@ -896,9 +880,15 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }.getType();
                     UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
                     try{
-                        if(uservalidateModel.getFirstname().size()!=0){
-                            Global.Messageshow(getApplicationContext(), mMainLayout, uservalidateModel.getFirstname().get(0).toString(), false);
+                        String message="";
+                        if(uservalidateModel.getEmail_number().size()!=0){
+                            message= uservalidateModel.getEmail_number().get(0).toString();
                         }
+                        if(uservalidateModel.getFirstname().size()!=0){
+                            message= uservalidateModel.getFirstname().get(0).toString();
+                        }
+                        Global.Messageshow(getApplicationContext(), mMainLayout, message, false);
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }

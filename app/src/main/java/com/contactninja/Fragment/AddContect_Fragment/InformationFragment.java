@@ -110,6 +110,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     boolean edit = false;
     private int mYear, mMonth, mDay, mHour, mMinute;
     EditText ev_othre_company;
+    public int PhoneFieldNumber=0;// total Phone add count
+    public int emailFieldNumber=0;// total email add count
 
 
 
@@ -498,7 +500,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         String flag = sessionManager.getContect_flag(getActivity());
         if (flag.equals("edit")) {
-            layout_Add_email.setVisibility(View.VISIBLE);
+            for(int i=0;i<contactdetails.size();i++){
+                if(contactdetails.get(i).getType().equals("EMAIL")){
+                    emailFieldNumber++;
+                                   }
+            }
+            if(emailFieldNumber<5){
+                layout_Add_email.setVisibility(View.VISIBLE);
+            }
             layout_Add_email.setOnClickListener(v -> {
                 Contactdetail contactdetail1 = new Contactdetail();
                 contactdetail1.setId(0);
@@ -558,8 +567,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         String flag = sessionManager.getContect_flag(getActivity());
         if (flag.equals("edit")) {
-
-            layout_Add_phone.setVisibility(View.VISIBLE);
+            for(int i=0;i<contactdetails.size();i++){
+                if(contactdetails.get(i).getType().equals("NUMBER")){
+                    PhoneFieldNumber++;
+                }
+            }
+            if(PhoneFieldNumber<5){
+                layout_Add_phone.setVisibility(View.VISIBLE);
+            }
 
             layout_Add_phone.setOnClickListener(v -> {
                 Log.e("On Click","Yes");
@@ -1576,12 +1591,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                             bottomSheetDialog.cancel();
                             phone_txt.setText(holder.tv_item.getText().toString());
                             item.setLabel(holder.tv_item.getText().toString());
-                            if (contactdetails.size() <= 4) {
-                                layout_Add_phone.setVisibility(View.VISIBLE);
-                                addcontectModel.setContactdetails(contactdetails);
-                                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                            addcontectModel.setContactdetails(contactdetails);
+                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
-                            }
 
                         } else if (type.equals("email")) {
                             bottomSheetDialog.cancel();
@@ -1589,8 +1601,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                             item.setLabel(holder.tv_item.getText().toString());
                             addcontectModel.setContactdetails_email(contactdetails);
                             SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-                        } else {
-
                         }
 
                     }
@@ -1740,11 +1750,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
                         String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
 
-                        if (contactdetails.size() <= 4) {
-                            layout_Add_phone.setVisibility(View.VISIBLE);
+
                             addcontectModel.setContactdetails(contactdetails);
                             SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
+                        if(PhoneFieldNumber < 5){
+                            layout_Add_phone.setVisibility(View.VISIBLE);
+                        }else {
+                            layout_Add_phone.setVisibility(View.GONE);
                         }
 
                     }
@@ -1868,13 +1881,16 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
                         String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
                         String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
-                        if (contactdetails.size() <= 12) {
-                            layout_Add_phone.setVisibility(View.VISIBLE);
-                            Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
-                            addcontectModel.setContactdetails(contactdetails);
-                            Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
+                        Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
+                        addcontectModel.setContactdetails(contactdetails);
+                        Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
+                        SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+                        if(PhoneFieldNumber < 5){
+                            layout_Add_phone.setVisibility(View.VISIBLE);
+                        }else {
+                            layout_Add_phone.setVisibility(View.GONE);
                         }
 
                     }
