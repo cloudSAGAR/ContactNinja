@@ -1,16 +1,18 @@
 
 package com.contactninja.Model.UserData;
 
+import android.annotation.SuppressLint;
+
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@SuppressLint("UnknownNullness")
 public class User {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private Integer id=0;
     @SerializedName("is_contact_exist")
     @Expose
     private Integer is_contact_exist;
@@ -40,7 +42,7 @@ public class User {
     private Userprofile userprofile;
     @SerializedName("working_hours_list")
     @Expose
-    private List<Object> workingHoursList = null;
+    private List<WorkingHours> workingHoursList = null;
     @SerializedName("reference_code")
     @Expose
     private String referenceCode;
@@ -58,7 +60,7 @@ public class User {
     private List<RoleAccess> roleAccess = null;
     @SerializedName("affiliate_info")
     @Expose
-    private List<Object> affiliateInfo = null;
+    private List<AffiliateInfo> affiliateInfo = null;
 
     public Integer getId() {
         return id;
@@ -132,11 +134,11 @@ public class User {
         this.userprofile = userprofile;
     }
 
-    public List<Object> getWorkingHoursList() {
+    public List<WorkingHours> getWorkingHoursList() {
         return workingHoursList;
     }
 
-    public void setWorkingHoursList(List<Object> workingHoursList) {
+    public void setWorkingHoursList(List<WorkingHours> workingHoursList) {
         this.workingHoursList = workingHoursList;
     }
 
@@ -180,11 +182,11 @@ public class User {
         this.roleAccess = roleAccess;
     }
 
-    public List<Object> getAffiliateInfo() {
+    public List<AffiliateInfo> getAffiliateInfo() {
         return affiliateInfo;
     }
 
-    public void setAffiliateInfo(List<Object> affiliateInfo) {
+    public void setAffiliateInfo(List<AffiliateInfo> affiliateInfo) {
         this.affiliateInfo = affiliateInfo;
     }
 

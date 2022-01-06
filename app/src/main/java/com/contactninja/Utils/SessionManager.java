@@ -83,7 +83,7 @@ public class SessionManager {
 
 
     public void login() {
-        editor.putBoolean(IS_LOGIN, true);
+        editor.putBoolean(IS_LOGIN, false);
         editor.commit();
     }
 
@@ -255,8 +255,8 @@ public class SessionManager {
 
     public void checkLogin() {
         // Check login status
-        if (!this.isLoggedIn()) {
-          if (this.isAppIntroIn()) {
+        if (isLoggedIn()) {
+          if (isAppIntroIn()) {
               Intent i = new Intent(_context, AppIntroActivity.class);
               _context.startActivity(i);
            }else {
@@ -301,7 +301,7 @@ public class SessionManager {
 
     // Get Login State
     public boolean isLoggedIn() {
-        return pref.getBoolean(IS_LOGIN, false);
+        return pref.getBoolean(IS_LOGIN, true);
     }
     public boolean isAppIntroIn() {
         return pref.getBoolean(IS_APPITRO, false);

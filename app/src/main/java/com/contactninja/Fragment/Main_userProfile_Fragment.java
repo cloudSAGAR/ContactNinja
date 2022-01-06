@@ -48,7 +48,6 @@ import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Fragment.UserPofile.User_BzcardFragment;
 import com.contactninja.Fragment.UserPofile.User_ExposuresFragment;
 import com.contactninja.Fragment.UserPofile.User_InformationFragment;
-import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -85,6 +84,8 @@ import java.util.List;
 
 import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
+
 public class Main_userProfile_Fragment extends Fragment implements View.OnClickListener {
 
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
@@ -94,7 +95,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     ImageView iv_Setting, pulse_icon;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
-    String fragment_name, user_image_Url="", File_name = "", File_extension = "";
+    String fragment_name, user_image_Url = "", File_name = "", File_extension = "";
     EditText edt_FirstName, edt_lastname;
     SessionManager sessionManager;
     String phone, phone_type, email, email_type,
@@ -158,7 +159,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
-        //Global.checkConnectivity(getActivity(), mMainLayout);
         sessionManager = new SessionManager(getActivity());
         option_type = "save";
 
@@ -346,7 +346,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         fragment_name = "Info";
 
 
-
     }
 
 
@@ -413,7 +412,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
                 tv_nameLetter.setText(add_text);
 
@@ -459,7 +458,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
                 tv_nameLetter.setText(add_text);
 
@@ -556,10 +555,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         super.onRequestPermissionsResult(RC, per, PResult);
         if (RC == RequestPermissionCode) {
             if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             } else {
                 Global.Messageshow(getActivity(), mMainLayout, "Permission Canceled, Now your application cannot access CONTACTS", false);
                 startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
@@ -567,20 +563,18 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
             }
         }
-        switch (RC) {
-            case REQUEST_ID_MULTIPLE_PERMISSIONS:
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(),
-                            "Requires Access to Camara.", Toast.LENGTH_SHORT)
-                            .show();
-                } else if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(),
-                            "Requires Access to Your Storage.",
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
+        if (RC == REQUEST_ID_MULTIPLE_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(),
+                        "Requires Access to Camara.", Toast.LENGTH_SHORT)
+                        .show();
+            } else if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(),
+                        "Requires Access to Your Storage.",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -630,16 +624,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 .withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
                 .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
                 .build());
-
-
-      /*  //Note
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Note.DATA1, note)
-                .withValue(ContactsContract.CommonDataKinds.Note.DATA1, ContactsContract.CommonDataKinds.Note.DATA1)
-                .build());
-        */
 
 
         try {
@@ -719,15 +703,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         List<Contactdetail> contactdetails_email = new ArrayList<>();
         contactdetails_email.addAll(addcontectModel.getContactdetails_email());
         contactdetails.addAll(contactdetails_email);
-      /* for(int j=0;j<2;j++){
-           Contactdetail contactdetail=new Contactdetail();
-           contactdetail.setId(0);
-           contactdetail.setEmail_number("shirish@intericare.net");
-           contactdetail.setIs_default(0);
-           contactdetail.setLabel("Shirish");
-           contactdetail.setType("Homme");
-           contactdetails.add(j,contactdetail);
-       }*/
 
 
         JSONObject obj = new JSONObject();
@@ -807,7 +782,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     long rowContactId = getRawContactId();
                     insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
                     insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
-     } else {
+                } else {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<UservalidateModel>() {
@@ -956,12 +931,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
                         loadingDialog.cancelLoading();
                         if (response.body().getStatus() == 200) {
-                            //Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
-                            //long rowContactId = getRawContactId();
-                            //insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
-                            //insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
-                            //save_button.setText("Edit Contact");
-                            //finish();
+
                         } else {
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());
