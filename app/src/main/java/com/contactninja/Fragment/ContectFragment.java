@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -68,42 +67,32 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("StaticFieldLeak")
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged")
 public class ContectFragment extends Fragment {
 
-    public static final int RequestPermissionCode = 1;
-    private static final int PERMISSION_REQUEST_CODE = 100;
     private final static String[] DATA_COLS = {
 
             ContactsContract.Data.MIMETYPE,
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
-    public static UserListDataAdapter userListDataAdapter;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
-    public static ArrayList<InviteListData> csv_ListData = new ArrayList<>();
     ConstraintLayout mMainLayout;
     Context mCtx;
-    Cursor cursor;
     RecyclerView rvinviteuserdetails;
-    String userName = "", user_phone_number = "", user_image = "", user_des = "", strtext = "", old_latter = "", contect_type = "", contect_email = "",
-            contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
-            postcode = "", postType = "", note = "";
+    String  strtext = "";
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
     SearchView contect_search;
     TextView add_new_contect, num_count;
-    Handler mHandler = new Handler();
     ImageView add_new_contect_icon;
     View view1;
     FragmentActivity fragmentActivity;
     LinearLayout add_new_contect_layout;
-    int c = 0;
     LoadingDialog loadingDialog;
-    StringBuilder data;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-    int page = 1, limit = 0, totale_group;
+    int  limit = 0, totale_group;
     ContectListAdapter paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
@@ -177,8 +166,6 @@ public class ContectFragment extends Fragment {
 
             for (ContentProviderResult result : results) {
                 Log.e("Upadte Contect", result.toString());
-
-                Log.d("Update Result", result.toString());
             }
 
             return true;
@@ -343,8 +330,6 @@ public class ContectFragment extends Fragment {
                         // Log.e("Same Data ",d.getUserName());
                     }
                 }
-            /*groupContectAdapter = new GroupContectAdapter(getActivity());
-            contect_list_unselect.setAdapter(groupContectAdapter);*/
                 paginationAdapter.updateList(temp);
                 //groupContectAdapter.notifyDataSetChanged();
             }
@@ -368,11 +353,6 @@ public class ContectFragment extends Fragment {
                     }
                     catch (Exception e)
                     {
-                      /*  FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-                                inviteListData.get(position).getUserName().substring(0, 1)
-                                        .substring(0, 1)
-                                        .toUpperCase()// Grab the first letter and capitalize it
-                        );*/
                         return null;
                     }
 
@@ -707,7 +687,7 @@ public class ContectFragment extends Fragment {
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
 
@@ -744,7 +724,7 @@ public class ContectFragment extends Fragment {
             notifyDataSetChanged();
         }
 
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
 
             TextView no_image;
             TextView userName, userNumber, first_latter;
@@ -767,7 +747,7 @@ public class ContectFragment extends Fragment {
     }
 
 
-    public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
+    public abstract static class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
         private final LinearLayoutManager layoutManager;
 

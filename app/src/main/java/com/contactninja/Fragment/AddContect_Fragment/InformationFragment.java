@@ -32,8 +32,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.Auth.SignupActivity;
-import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -61,13 +59,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -75,19 +70,19 @@ import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class InformationFragment extends Fragment implements View.OnClickListener {
 
     List<TimezoneModel> timezoneModels=new ArrayList<>();
     BottomSheetDialog bottomSheetDialog_time,bottomSheetDialog_company;
     EditText ev_address, ev_city, ev_zip, ev_zoom, ev_note,
             ev_company_url, ev_state, ev_job, ev_bob, ev_fb, ev_twitter, ev_breakout,
-            ev_linkedin, ev_company;
+            ev_linkedin;
     LinearLayout select_state, add_mobile_Number,
             layout_Add_phone, layout_Add_email, layout_mobile, fb_layout;
     TextView tv_phone, tv_more_field, tv_company_url, tv_job,
-            zone_txt, tv_add_social;
-    ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout;
+            zone_txt, tv_add_social,ev_company;
+    ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout,image_list_show;
     String Name = "", job_titel = "";
     SessionManager sessionManager;
     AddcontectModel addcontectModel;
@@ -138,9 +133,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         // Log.e("Size is", String.valueOf(test_list));
         String flag = sessionManager.getContect_flag(getActivity());
         if (flag.equals("edit")) {
+            company_layout.setEnabled(true);
+            image_list_show.setVisibility(View.VISIBLE);
             tv_add_social.setVisibility(View.GONE);
             media_link.setVisibility(View.GONE);
-            ev_company.setEnabled(true);
             ev_company_url.setEnabled(true);
             ev_job.setEnabled(true);
             ev_zoom.setEnabled(true);
@@ -184,8 +180,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_fb.setText(Contect_data.getFacebook_link());
             ev_linkedin.setText(Contect_data.getLinkedin_link());
             ev_breakout.setText(Contect_data.getBreakout_link());
-          /*  PhoneViewAdd();
-            EmailViewAdd();*/
             TextSet();
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
@@ -208,12 +202,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
                         rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                         rv_email.setAdapter(emailAdapter);
-
-
-                     /*   if (emaildetails_list.size()==0)
-                        {
-                            EmailViewAdd();
-                        }*/
 
 
                     } else {
@@ -246,9 +234,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         }
         else if (flag.equals("read")) {
+            company_layout.setEnabled(false);
+            image_list_show.setVisibility(View.GONE);
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.VISIBLE);
-            ev_company.setEnabled(false);
             ev_company_url.setEnabled(false);
             ev_job.setEnabled(false);
             ev_zoom.setEnabled(false);
@@ -288,12 +277,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setLinkedin(Contect_data.getLinkedin_link());
             addcontectModel.setFacebook(Contect_data.getFacebook_link());
             addcontectModel.setBirthday(Contect_data.getDob());
-            /* addcontectModel.setTime(Contect_data.getTimezoneId());*/
-          /*  img_fb.setVisibility(View.GONE);
-            img_breakout.setVisibility(View.GONE);
-            img_linkdin.setVisibility(View.GONE);
-            img_twitter.setVisibility(View.GONE);
-*/
+
 
             ev_zip.setText(Contect_data.getZipcode());
             ev_address.setText(Contect_data.getAddress());
@@ -394,9 +378,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 }
             });
 
-       /*     PhoneViewAdd();
-            EmailViewAdd();
-            TextSet();*/
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
             Log.e("Contect Detail",new Gson().toJson(detail_contect));
@@ -500,6 +481,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         String flag = sessionManager.getContect_flag(getActivity());
         if (flag.equals("edit")) {
+
             for(int i=0;i<contactdetails.size();i++){
                 if(contactdetails.get(i).getType().equals("EMAIL")){
                     emailFieldNumber++;
@@ -765,7 +747,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         });
 
 
-        ev_company_url.addTextChangedListener(new TextWatcher() {
+        /*ev_company_url.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -781,7 +763,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        });*/
         select_label_zone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -942,7 +924,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         img_linkdin = view.findViewById(R.id.img_linkdin);
         img_breakout = view.findViewById(R.id.img_breakout);
         company_layout=view.findViewById(R.id.company_layout);
-        company_layout.setOnClickListener(this);
+        image_list_show=view.findViewById(R.id.image_list_show);
         other_company_layout=view.findViewById(R.id.other_company_layout);
         ev_othre_company=view.findViewById(R.id.ev_othre_company);
 
@@ -1354,21 +1336,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         paramObject.addProperty("team_id", "1");
         obj.add("data", paramObject);
 
-      /*  JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is",new Gson().toJson(gsonObject));
-*/
-
         retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
-                } else {
-                    loadingDialog.cancelLoading();
-                }
-
-
+                loadingDialog.cancelLoading();
             }
 
             @Override
@@ -1474,21 +1445,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         paramObject.addProperty("team_id", "1");
         obj.add("data", paramObject);
 
-      /*  JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is",new Gson().toJson(gsonObject));
-*/
-
         retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
-                } else {
-                    loadingDialog.cancelLoading();
-                }
-
-
+                loadingDialog.cancelLoading();
             }
 
             @Override
@@ -1687,55 +1647,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 String main_data = item.getEmail_number().replace("+"+String.valueOf(countryCode), "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
-              /*  holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
-                        item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
-                        String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
-                        String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
-                        if (contactdetails.size() <= 12) {
-                            layout_Add_phone.setVisibility(View.VISIBLE);
-                            Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
-                            addcontectModel.setContactdetails(contactdetails);
-                            Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-
-                        }
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });*/
-                /*holder.edt_mobile_no.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                            try {
-
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    UpdateContect(contactdetails.get(position));
-                                }
-                                //break;
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-*/
-
 
 
                 holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
@@ -1819,11 +1730,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
                                 contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
                             } else {
                                 contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
                             }
+                            notifyDataSetChanged();
                         }
                     }
                 });
@@ -1959,11 +1869,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
                                 contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
                             } else {
                                 contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
                             }
+                            notifyDataSetChanged();
                         }
                     }
                 });
@@ -2026,19 +1935,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
                         String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
                         String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
-                   /* if (countryCode.length() > 0 && phoneNumber.length() > 0) {
-                        if (Global.isValidPhoneNumber(phoneNumber)) {
-                            boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
-                            if (status) {
-                                iv_invalid.setText("");
-                                return true;
-                            } else {
-                                iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                            }
-                        } else {
-                            iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-                        }
-                    }*/
                         if (contactdetails.size() <= 4) {
                             layout_Add_phone.setVisibility(View.VISIBLE);
                             addcontectModel.setContactdetails(contactdetails);
@@ -2096,11 +1992,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
                                 contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
                             } else {
                                 contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
                             }
+                            notifyDataSetChanged();
                         }
                     }
                 });
@@ -2243,52 +2138,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             if (edit) {
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
-                /*holder.edt_email.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        Log.e("Action done","Yes");
-                        if (Global.emailValidator(s.toString())) {
-                            holder.iv_invalid.setVisibility(View.GONE);
-                            item.setEmail_number(s.toString());
-                            if (contactdetails.size() <= 4) {
-                                layout_Add_email.setVisibility(View.VISIBLE);
-                            }
-                            addcontectModel.setContactdetails_email(contactdetails);
-                            //addcontectModel.setContactdetails(contactdetails);
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-                        } else {
-                            holder.iv_invalid.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });*/
-               /* holder.edt_email.setOnKeyListener(new View.OnKeyListener() {
-                    @Override
-                    public boolean onKey(View view, int i, KeyEvent event) {
-                        Log.e("Action done","Yes");
-                        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    UpdateContect(contactdetails.get(position));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            return true;
-                        }
-                        return true;
-                    }
-                });*/
 
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -2364,11 +2213,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
                                 contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
                             } else {
                                 contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
                             }
+                            notifyDataSetChanged();
                         }
                     }
                 });
@@ -2483,11 +2331,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
                                 contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
                             } else {
                                 contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
                             }
+                            notifyDataSetChanged();
                         }
                     }
                 });
@@ -2581,10 +2428,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         paramObject.addProperty("team_id", "1");
         obj.add("data", paramObject);
 
-      /*  JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is",new Gson().toJson(gsonObject));
-*/
 
         retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override

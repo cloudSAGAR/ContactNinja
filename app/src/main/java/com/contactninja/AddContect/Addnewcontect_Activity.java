@@ -1,6 +1,7 @@
 package com.contactninja.AddContect;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentProviderOperation;
@@ -79,7 +80,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener , YourFragmentInterface {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
@@ -180,7 +181,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
                 tv_nameLetter.setText(add_text);
 
@@ -226,7 +227,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
                 tv_nameLetter.setText(add_text);
 
@@ -306,8 +307,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
                 AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
-                //  AddcontectModel addcontectModel=new AddcontectModel();
-                //    Log.e("Data is ", new Gson().toJson(addcontectModel));
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
                 address = addcontectModel.getAddress();
@@ -454,10 +453,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         super.onRequestPermissionsResult(RC, per, PResult);
         if (RC == RequestPermissionCode) {
             if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             } else {
                 Global.Messageshow(getApplicationContext(), mMainLayout, "Permission Canceled, Now your application cannot access CONTACTS", false);
                 startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
@@ -465,20 +461,18 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
             }
         }
-        switch (RC) {
-            case REQUEST_ID_MULTIPLE_PERMISSIONS:
-                if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),
-                            "Requires Access to Camara.", Toast.LENGTH_SHORT)
-                            .show();
-                } else if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),
-                            "Requires Access to Your Storage.",
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
+        if (RC == REQUEST_ID_MULTIPLE_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
+                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(),
+                        "Requires Access to Camara.", Toast.LENGTH_SHORT)
+                        .show();
+            } else if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(),
+                        "Requires Access to Your Storage.",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -527,16 +521,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 .withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
                 .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
                 .build());
-
-
-      /*  //Note
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Note.DATA1, note)
-                .withValue(ContactsContract.CommonDataKinds.Note.DATA1, ContactsContract.CommonDataKinds.Note.DATA1)
-                .build());
-        */
 
 
         try {
@@ -774,14 +758,14 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         JSONObject paramObject = new JSONObject();
         //Other Company Add
-        if (addcontectModel.getCompany().equals(""))
+        if (addcontectModel.getCompany().trim().equalsIgnoreCase(""))
         {
             paramObject.put("company_name", "");
             paramObject.put("company_id",  addcontectModel.getCompany_id());
         }
         else {
             paramObject.put("company_name", addcontectModel.getCompany());
-            paramObject.put("company_id",  "");
+            paramObject.put("company_id",   "");
         }
         paramObject.put("id", Contect_data.getId());
         paramObject.put("address", address);
@@ -1010,20 +994,15 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.iv_user:
-
-
-                if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
-                    captureimageDialog(true);
-
-                }
-                break;
             case R.id.tv_nameLetter:
+
+
                 if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
                     captureimageDialog(true);
 
                 }
-
                 break;
+
         }
     }
     // Handled permission Result

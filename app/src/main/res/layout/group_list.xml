@@ -16,13 +16,31 @@ android:layout_height="wrap_content">
         android:layout_height="wrap_content"
         >
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/group_image"
-            android:padding="1dp"
-            android:scaleType="fitXY"
-            app:riv_corner_radius="@dimen/_35sdp"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"/>
+            android:layout_height="@dimen/_35sdp"
+            android:layout_gravity="center|left"
+
+            app:civ_border_width="0dp"
+            app:civ_border_color="#FF000000"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/no_image"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            style="@style/tv_regular"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/_12sdp"
+            android:background="@drawable/shape_primary_circle"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp">
+
+        </TextView>
+
 
         <TextView
             android:layout_weight="2"

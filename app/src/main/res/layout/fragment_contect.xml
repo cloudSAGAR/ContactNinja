@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
-
+    tools:ignore="ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:layout_height="match_parent"
     android:background="@color/white">
 
@@ -29,20 +29,22 @@
                 android:layout_gravity="center|left"
                 android:src="@drawable/ic_search"
                 android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp">
+                android:layout_height="@dimen/_15sdp"
+                >
 
             </ImageView>
+
             <EditText
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_gravity="center|left"
-                android:gravity="center|left"
                 android:id="@+id/ev_search"
-                android:singleLine="true"
-                android:textColor="@color/tv_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:background="@color/add_contect_transpernt"
-                >
+                android:gravity="center|left"
+                android:singleLine="true"
+                android:textColor="@color/tv_medium"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
             </EditText>
         </LinearLayout>
@@ -60,7 +62,8 @@
                 android:layout_height="@dimen/_38sdp"
                 android:background="@drawable/shape_oval_border_10_white"
                 android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_plus1"></ImageView>
+                android:src="@drawable/ic_plus1"
+                tools:ignore="ImageContrastCheck" />
 
             <TextView
                 android:id="@+id/add_new_contect"
@@ -95,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/home_list_back_line"></View>
+            android:background="@color/home_list_back_line" />
 
 
         <androidx.appcompat.widget.SearchView
@@ -170,7 +173,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/fastscroller"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/fastscroller"
-                app:layout_constraintTop_toTopOf="@+id/fastscroller"></androidx.core.widget.NestedScrollView>
+                app:layout_constraintTop_toTopOf="@+id/fastscroller"/>
         </LinearLayout>
 
     </LinearLayout>
