@@ -390,6 +390,15 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
+
+
+        for(int i=0;i<userLinkedGmailList.size();i++){
+            if(userLinkedGmailList.get(i).getIsDefault()==1){
+                userLinkedGmailList.get(i).setEmailSelect(true);
+                break;
+            }
+        }
+
         email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         EmailListAdepter emailListAdepter = new EmailListAdepter(getApplicationContext(), userLinkedGmailList);
         email_list.setAdapter(emailListAdepter);
@@ -813,7 +822,19 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             }
 
 
-            holder.iv_selected.setOnClickListener(new View.OnClickListener() {
+            if (userLinkedGmailList.get(position).isEmailSelect())
+            {
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                holder.iv_unselected.setVisibility(View.GONE);
+            }
+            else {
+                holder.iv_selected.setVisibility(View.GONE);
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+            }
+
+
+
+ /*           holder.iv_selected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -823,10 +844,19 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     defult_id = userLinkedGmailList.get(position).getId();
                     // notifyDataSetChanged();
                 }
-            });
-            holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
+            });*/
+            holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    for(int i=0; i<userLinkedGmailList.size();i++){
+                        if (userLinkedGmailList.get(i).isEmailSelect())
+                        {
+                            userLinkedGmailList.get(i).setEmailSelect(false);
+                            break;
+                        }
+                    }
+                    userLinkedGmailList.get(position).setEmailSelect(true);
+
                     select_userLinkedGmailList.clear();
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
@@ -847,6 +877,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             TextView tv_item;
             View line_view;
             ImageView iv_dufult, iv_selected, iv_unselected;
+            LinearLayout layout_select;
 
             public viewholder(View view) {
                 super(view);
@@ -855,6 +886,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                 iv_dufult = view.findViewById(R.id.iv_dufult);
                 iv_selected = view.findViewById(R.id.iv_selected);
                 iv_unselected = view.findViewById(R.id.iv_unselected);
+                layout_select = view.findViewById(R.id.layout_select);
             }
         }
     }

@@ -31,6 +31,15 @@ public class UserLinkedList implements Serializable {
     }
 
     public class UserLinkedGmail implements Serializable {
+        private boolean isEmailSelect=false;
+
+        public boolean isEmailSelect() {
+            return isEmailSelect;
+        }
+
+        public void setEmailSelect(boolean EmailSelect) {
+            isEmailSelect = EmailSelect;
+        }
 
         @SerializedName("id")
         @Expose
