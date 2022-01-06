@@ -308,12 +308,31 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             String user_id = String.valueOf(user_data.getUser().getId());
             String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
             String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-            JSONArray contect_array = new JSONArray();
-            for (int i =0;i<inviteListData.size();i++)
-            {
-                contect_array.put(inviteListData.get(i).getId());
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < inviteListData.size(); i++) {
+                Log.e("Contec List Size",String.valueOf(inviteListData.get(0).getContactDetails().size()));
+                JSONObject paramObject1 = new JSONObject();
+                paramObject1.put("prospect_id",inviteListData.get(i).getId());
+                for (int j=0;j<inviteListData.get(i).getContactDetails().size();j++)
+                {
+                    if (inviteListData.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
+                    {
+                        paramObject1.put("mobile",inviteListData.get(i).getContactDetails().get(j).getEmailNumber());
+                    }
+                    else {
+                        if (!inviteListData.get(i).getContactDetails().get(j).getEmailNumber().equals(" "))
+                        {
+                            paramObject1.put("email",inviteListData.get(i).getContactDetails().get(j).getEmailNumber());
+
+                        }
+                    }
+                    //break;
+                }
+
+                jsonArray.put(paramObject1);
             }
-           // contect_array.put(3);
+
+            // contect_array.put(3);
             String token=Global.getToken(sessionManager);
             JSONObject obj = new JSONObject();
             JSONObject paramObject = new JSONObject();
@@ -338,7 +357,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             paramObject.put("organization_id", "1");
             paramObject.put("team_id", "1");
             paramObject.put("user_id", user_id);
-            paramObject.put("contact_ids",contect_array);
+            paramObject.put("contact_ids",jsonArray);
             paramObject.put("description", group_description);
             obj.put("data", paramObject);
             //Log.e("Data IS ",new Gson().toJson(obj));

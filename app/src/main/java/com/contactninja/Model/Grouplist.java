@@ -52,7 +52,7 @@ public class Grouplist {
         private Integer teamId;
         @SerializedName("contact_ids")
         @Expose
-        private List<Integer> contactIds = null;
+        private List<ContactId> contactIds = null;
         @SerializedName("status")
         @Expose
         private String status;
@@ -111,11 +111,11 @@ public class Grouplist {
             this.teamId = teamId;
         }
 
-        public List<Integer> getContactIds() {
+        public List<ContactId> getContactIds() {
             return contactIds;
         }
 
-        public void setContactIds(List<Integer> contactIds) {
+        public void setContactIds(List<ContactId> contactIds) {
             this.contactIds = contactIds;
         }
 
@@ -141,6 +141,44 @@ public class Grouplist {
 
         public void setUpdatedAt(String updatedAt) {
             this.updatedAt = updatedAt;
+        }
+
+        public class ContactId {
+
+            @SerializedName("prospect_id")
+            @Expose
+            private Integer prospectId;
+            @SerializedName("email")
+            @Expose
+            private String email;
+            @SerializedName("mobile")
+            @Expose
+            private String mobile;
+
+            public Integer getProspectId() {
+                return prospectId;
+            }
+
+            public void setProspectId(Integer prospectId) {
+                this.prospectId = prospectId;
+            }
+
+            public String getEmail() {
+                return email;
+            }
+
+            public void setEmail(String email) {
+                this.email = email;
+            }
+
+            public String getMobile() {
+                return mobile;
+            }
+
+            public void setMobile(String mobile) {
+                this.mobile = mobile;
+            }
+
         }
 
     }

@@ -381,18 +381,18 @@ public class MembersFragment extends Fragment {
                     }.getType();
                     SigleGroupModel.Group group_model = new Gson().fromJson(headerString, listType);
 
-                    Log.e("Group List is",new Gson().toJson(group_model.getContactDetails()));
+                    Log.e("Group List is",new Gson().toJson(group_model.getContactIds()));
                     List<ContectListData.Contact> groupModel=new ArrayList<>();
                     ContectListData.Contact contact=new ContectListData.Contact();
-                    for (int i=0;i<group_model.getContactDetails().size();i++)
+                    for (int i=0;i<group_model.getContactIds().size();i++)
                     {
-                        contact.setFirstname(group_model.getContactDetails().get(i).getFirstname());
-                        contact.setLastname(group_model.getContactDetails().get(i).getLastname());
-                        contact.setContactImage(group_model.getContactDetails().get(i).getContactImage());
+                        contact.setFirstname(group_model.getContactIds().get(i).getMobile());
+                        contact.setLastname(group_model.getContactIds().get(i).getMobile());
+                        //contact.setContactImage(group_model.getContactDetails().get(i).getContactImage());
                         List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
                         ContectListData.Contact.ContactDetail contactDetail=new ContectListData.Contact.ContactDetail();
-                        contactDetail.setContactId(group_model.getContactDetails().get(i).getId());
-                        contactDetail.setEmailNumber(group_model.getContactDetails().get(i).getEmailNumber());
+                        contactDetail.setContactId(group_model.getContactIds().get(i).getProspectId());
+                        contactDetail.setEmailNumber(group_model.getContactIds().get(i).getMobile());
                         contactDetails.add(contactDetail);
                         contact.setContactDetails(contactDetails);
 

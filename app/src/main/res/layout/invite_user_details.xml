@@ -118,7 +118,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:singleLine="true"
-                            android:text="GC Gregory Christakis"
                             android:textStyle="bold" />
 
                     </LinearLayout>

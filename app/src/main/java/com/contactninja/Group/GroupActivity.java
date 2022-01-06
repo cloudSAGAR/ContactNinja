@@ -1165,11 +1165,15 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                 Log.e("Contect Detail Size is", String.valueOf(contacts.get(position).getContactDetails().size()));
                                 List<ContectListData.Contact.ContactDetail> detailList=new ArrayList<>();
 
+                                detailList.clear();
                                 for (int i=0;i<contacts.get(position).getContactDetails().size();i++)
                                 {
                                     if (contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
                                     {
                                         detailList.add(contacts.get(position).getContactDetails().get(i));
+                                    }
+                                    else {
+                                       // detailList.add(contacts.get(position).getContactDetails().get(i));
                                     }
                                 }
                                 if (detailList.size()==1)
@@ -1184,7 +1188,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                     num_count.setText(select_contectListData.size()+" Contact Selcted");
                                     contacts.get(position).setFlag("false");
                                     save_button.setTextColor(getResources().getColor(R.color.purple_200));
-                                    Log.e("Size is","ONE");
+
                                 }
                                 else if (detailList.size()>=1)
                                 {
@@ -1194,7 +1198,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                             break;
                                         }
                                     }
-                                    Phone_bouttomSheet(detailList);
+                                    Phone_bouttomSheet(detailList,holder1,contacts,position);
                                     Log.e("Size is","More ONE");
                                 }
 
@@ -1336,7 +1340,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-    private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList) {
+    private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int position) {
         final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
         bottomSheetDialog_templateList1 = new BottomSheetDialog(GroupActivity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
@@ -1345,43 +1349,55 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         tv_txt.setText("Please select contact");
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
         email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        EmailListAdepter emailListAdepter = new EmailListAdepter(getApplicationContext(), detailList);
+        PhoneListAdepter emailListAdepter = new PhoneListAdepter(getApplicationContext(), detailList,holder1,contacts,position,
+                tv_done);
         email_list.setAdapter(emailListAdepter);
         email_list.setVisibility(View.VISIBLE);
 
 
-        tv_done.setOnClickListener(new View.OnClickListener() {
+       /* tv_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
                // ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
             }
-        });
+        });*/
 
         bottomSheetDialog_templateList1.show();
     }
 
 
-    class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
+    class PhoneListAdepter extends RecyclerView.Adapter<PhoneListAdepter.viewholder> {
 
         public Context mCtx;
         List<ContectListData.Contact.ContactDetail> userLinkedGmailList;
 
-        public EmailListAdepter(Context applicationContext, List<ContectListData.Contact.ContactDetail> userLinkedGmailList) {
+        GroupContectAdapter.MovieViewHolder holder1;
+
+        List<ContectListData.Contact> contacts;
+        int s_position;
+        TextView tv_done;
+
+
+        public PhoneListAdepter(Context applicationContext, List<ContectListData.Contact.ContactDetail> userLinkedGmailList, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int s_position, TextView tv_done) {
             this.mCtx = applicationContext;
             this.userLinkedGmailList = userLinkedGmailList;
+            this.holder1=holder1;
+            this.contacts=contacts;
+            this.s_position=s_position;
+            this.tv_done=tv_done;
         }
 
         @NonNull
         @Override
-        public EmailListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public PhoneListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.email_select_layout, parent, false);
-            return new EmailListAdepter.viewholder(view);
+            return new PhoneListAdepter.viewholder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull EmailListAdepter.viewholder holder, int position) {
+        public void onBindViewHolder(@NonNull PhoneListAdepter.viewholder holder, int position) {
 
             userLinkedGmailList.get(position).setFlag("false");
             holder.tv_item.setText("Phone("+userLinkedGmailList.get(position).getLabel()+")");
@@ -1396,16 +1412,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }
-           /* if (holder.iv_selected.isSelected() == false) {
-                holder.iv_unselected.setVisibility(View.VISIBLE);
-                holder.iv_selected.setVisibility(View.GONE);
-
-                amountOfItemsSelected++;
-            } else if (holder.iv_selected.isSelected() == true) {
-                holder.iv_unselected.setVisibility(View.GONE);
-                holder.iv_selected.setVisibility(View.VISIBLE);
-                amountOfItemsSelected--;
-            }*/
 
             if (userLinkedGmailList.get(position).getIsDefault().toString().equals("1")) {
                 holder.iv_dufult.setVisibility(View.VISIBLE);
@@ -1414,16 +1420,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
 
 
-          /*  holder.iv_selected.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    holder.iv_selected.setVisibility(View.GONE);
-                    holder.iv_unselected.setVisibility(View.VISIBLE);
-                    userLinkedGmailList.get(position).setFlag("true");
 
-                    notifyDataSetChanged();
-                }
-            });*/
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1436,6 +1433,37 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                     userLinkedGmailList.get(position).setPhoneSelect(true);
+                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+                    tv_done.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            for (int i=0;i<contacts.get(s_position).getContactDetails().size();i++)
+                            {
+                                if (contacts.get(s_position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
+                                {
+                                   // detailList.add(contacts.get(position).getContactDetails().get(i));
+                                }
+                                else {
+                                    userLinkedGmailList.add(contacts.get(s_position).getContactDetails().get(i));
+                                    break;
+                                }
+                            }
+                            List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
+                            contactDetails.add(userLinkedGmailList.get(position));
+                            contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size()-1));
+                            //Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+                            contacts.get(s_position).setContactDetails(contactDetails);
+                            select_contectListData.add(contacts.get(position));
+                            //userDetailsfull.get(position).setId(position);
+                            topUserListDataAdapter.notifyDataSetChanged();
+                            num_count.setText(select_contectListData.size()+" Contact Selcted");
+                            contacts.get(position).setFlag("false");
+                            save_button.setTextColor(getResources().getColor(R.color.purple_200));
+                            bottomSheetDialog_templateList1.cancel();
+                        }
+                    });
 
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
