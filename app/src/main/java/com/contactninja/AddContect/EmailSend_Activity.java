@@ -861,7 +861,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
                     select_userLinkedGmailList.add(userLinkedGmailList.get(position));
-                    //  notifyDataSetChanged();
+                      notifyDataSetChanged();
                 }
             });
 
