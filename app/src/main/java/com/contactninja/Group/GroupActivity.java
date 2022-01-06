@@ -1188,6 +1188,12 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                 }
                                 else if (detailList.size()>=1)
                                 {
+                                    for(int i=0;i<detailList.size();i++){
+                                        if(detailList.get(i).getIsDefault()==1){
+                                            detailList.get(i).setPhoneSelect(true);
+                                            break;
+                                        }
+                                    }
                                     Phone_bouttomSheet(detailList);
                                     Log.e("Size is","More ONE");
                                 }
@@ -1381,14 +1387,14 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             holder.tv_item.setText("Phone("+userLinkedGmailList.get(position).getLabel()+")");
             holder.tv_phone.setText(userLinkedGmailList.get(position).getEmailNumber());
             holder.tv_phone.setVisibility(View.VISIBLE);
-            if (userLinkedGmailList.get(position).getFlag().equals("true"))
+            if (userLinkedGmailList.get(position).isPhoneSelect())
             {
-                holder.iv_selected.setVisibility(View.GONE);
-                holder.iv_unselected.setVisibility(View.VISIBLE);
-            }
-            else {
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
+            }
+            else {
+                holder.iv_selected.setVisibility(View.GONE);
+                holder.iv_unselected.setVisibility(View.VISIBLE);
             }
            /* if (holder.iv_selected.isSelected() == false) {
                 holder.iv_unselected.setVisibility(View.VISIBLE);
@@ -1408,20 +1414,29 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
 
 
-            holder.iv_selected.setOnClickListener(new View.OnClickListener() {
+          /*  holder.iv_selected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     holder.iv_selected.setVisibility(View.GONE);
                     holder.iv_unselected.setVisibility(View.VISIBLE);
                     userLinkedGmailList.get(position).setFlag("true");
 
                     notifyDataSetChanged();
                 }
-            });
-            holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
+            });*/
+            holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    for(int i=0; i<userLinkedGmailList.size();i++){
+                        if (userLinkedGmailList.get(i).isPhoneSelect())
+                        {
+                            userLinkedGmailList.get(i).setPhoneSelect(false);
+                            break;
+                        }
+                    }
+                    userLinkedGmailList.get(position).setPhoneSelect(true);
+
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
                     notifyItemChanged(position);
@@ -1442,6 +1457,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             TextView tv_item,tv_phone;
             View line_view;
             ImageView iv_dufult, iv_selected, iv_unselected;
+            LinearLayout layout_select;
 
             public viewholder(View view) {
                 super(view);
@@ -1449,6 +1465,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 line_view = view.findViewById(R.id.line_view);
                 iv_dufult = view.findViewById(R.id.iv_dufult);
                 iv_selected = view.findViewById(R.id.iv_selected);
+                layout_select = view.findViewById(R.id.layout_select);
                 iv_unselected = view.findViewById(R.id.iv_unselected);
                 tv_phone=view.findViewById(R.id.tv_phone);
             }

@@ -378,6 +378,16 @@ public class ContectListData {
 
         public static class ContactDetail {
 
+            private boolean isPhoneSelect=false;
+
+            public boolean isPhoneSelect() {
+                return isPhoneSelect;
+            }
+
+            public void setPhoneSelect(boolean phoneSelect) {
+                isPhoneSelect = phoneSelect;
+            }
+
             @SerializedName("id")
             @Expose
             private Integer id;
