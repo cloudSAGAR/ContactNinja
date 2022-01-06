@@ -89,8 +89,6 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         Bundle bundle=getintent.getExtras();
         sequence_id=bundle.getInt("sequence_id");
         seq_task_id=bundle.getInt("seq_task_id");
-
-
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -340,6 +338,8 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         }
 
     }
+
+
 }
 
 

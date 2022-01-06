@@ -55,6 +55,7 @@ public class SessionManager {
 
     public static final String Contect_flag="contect_flag";
 
+    public static final String Campign_flag="campign_flag";
     public static final String Refresh_token="refresh_token";
     public static final String csv_token="csv_token";
 
@@ -194,7 +195,7 @@ public class SessionManager {
     }
 
 
-    public  String getContect_flag(Context context) {
+    public static String getContect_flag(Context context) {
 
         String type= pref.getString(Contect_flag, "");
         return  type;
@@ -205,6 +206,19 @@ public class SessionManager {
         editor.putString(Contect_flag, plantype);
         editor.commit();
     }
+
+    public static String getCampign_flag(Context context) {
+
+        String type= pref.getString( Campign_flag, "");
+        return  type;
+
+    }
+
+    public static void setCampign_flag(String plantype) {
+        editor.putString( Campign_flag, plantype);
+        editor.commit();
+    }
+
 
 
 

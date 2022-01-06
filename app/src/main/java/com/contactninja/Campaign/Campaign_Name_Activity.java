@@ -142,6 +142,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
 
                         if (response.body().getStatus() == 200) {
 
+                            SessionManager.setCampign_flag("read");
                             Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
                             intent.putExtra("sequence_id", sequence_id);
                             /*intent.putExtra("seq_task_id",seq_task_id);*/

@@ -292,6 +292,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         startActivity(intent);
         }
         else {
+            SessionManager.setCampign_flag("read");
             Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
             intent.putExtra("sequence_id",campaign.getId());
             startActivity(intent);

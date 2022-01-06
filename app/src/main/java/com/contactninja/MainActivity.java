@@ -155,13 +155,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         retrofitCalls = new RetrofitCalls(getApplicationContext());
         SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
         IntentUI();
-
-
         Calendar cal = Calendar.getInstance();
         TimeZone tz1 = cal.getTimeZone();
         Calendar calendar = Calendar.getInstance(tz1,
                 Locale.getDefault());
-
         Date currentLocalTime = calendar.getTime();
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
@@ -171,11 +168,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        //Log.e("GMT offset is %s hours", "" + TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS));
         UpdateManageCheck();
         EnableRuntimePermission();
-
         navItemIndex = 0;
         displayView();
         ImageSetLight("Home");
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -212,9 +207,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onPermissionGranted() {
                if (sessionManager.getContectList(getApplicationContext()).size() == 0)
                {
-                   loadingDialog.showLoadingDialog();
-               }
 
+                   loadingDialog.showLoadingDialog();
+
+               }
              // GetContactsIntoArrayList();
 
             }
@@ -317,13 +313,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
                     lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-
-
                 } catch (Exception e) {
 
                 }
-
-
                 String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                         .substring(0, 1)
                         .toUpperCase();
@@ -339,12 +331,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (found) {
 
                 } else {
-
-
                     //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                     Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getTaskId())));
                     String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
-
                     inviteListData.add(new InviteListData("" + userName.trim(),
                             user_phone_number.replace(" ", ""),
                             user_image,
@@ -369,8 +358,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             csv_inviteListData.remove(indexOpt.getAsInt() + 1);
                         }
-
-
                         //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
 
                     }
