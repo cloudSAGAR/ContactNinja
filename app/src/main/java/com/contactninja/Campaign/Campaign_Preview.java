@@ -217,7 +217,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
+       // startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
         finish();
         super.onBackPressed();
     }
