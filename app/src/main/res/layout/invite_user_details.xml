@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/layout_contec"
                     android:weightSum="2"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:orientation="horizontal"
