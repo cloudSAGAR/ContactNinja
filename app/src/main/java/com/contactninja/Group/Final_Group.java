@@ -312,7 +312,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             for (int i =0;i<inviteListData.size();i++)
             {
                 contect_array.put(inviteListData.get(i).getId());
-
             }
            // contect_array.put(3);
             String token=Global.getToken(sessionManager);

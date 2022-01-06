@@ -49,8 +49,13 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Campaign.Campaign_Final_Start"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".Campaign.Campaign_Preview"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Setting.EmailListActivity"
             android:exported="true"

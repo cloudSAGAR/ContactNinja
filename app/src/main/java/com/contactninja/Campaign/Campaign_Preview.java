@@ -21,16 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
 import com.contactninja.Model.CampaignTask_overview;
-import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -49,31 +40,34 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 public class Campaign_Preview extends AppCompatActivity implements View.OnClickListener {
+    public static TopUserListDataAdapter topUserListDataAdapter;
     ImageView iv_back;
     TextView save_button;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    RecyclerView item_list,user_contect;
+    RecyclerView item_list, user_contect;
     Campaign_OverviewAdapter campaign_overviewAdapter;
     /* List<String> stringList;*/
     List<CampaignTask_overview.SequenceTask> campaignTasks = new ArrayList<>();
     int sequence_id, sequence_task_id;
-
     BottomSheetDialog bottomSheetDialog;
     EditText tv_name;
     TextView contect_count;
-    public static TopUserListDataAdapter topUserListDataAdapter;
     ImageView iv_toolbar_manu;
     Toolbar toolbar;
     RelativeLayout contect_layout;
     ImageView add_icon;
     LinearLayout layout_toolbar_logo;
-
 
 
     @Override
@@ -85,14 +79,12 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
 
-        if (SessionManager.getCampign_flag(getApplicationContext()).equals("read"))
-        {
-        StepData();
-        campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
-        item_list.setAdapter(campaign_overviewAdapter);
-        toolbar.inflateMenu(R.menu.option_menu);
-        }
-        else {
+        if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
+            StepData();
+            campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
+            item_list.setAdapter(campaign_overviewAdapter);
+            toolbar.inflateMenu(R.menu.option_menu);
+        } else {
 
             save_button.setText("Done");
             save_button.setVisibility(View.VISIBLE);
@@ -116,11 +108,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
 
-        Toast.makeText(getApplicationContext(),"Manu Clcik",Toast.LENGTH_LONG).show();
-        Log.e("Option Manu is Select","Yes");
+        Toast.makeText(getApplicationContext(), "Manu Clcik", Toast.LENGTH_LONG).show();
+        Log.e("Option Manu is Select", "Yes");
         switch (item.getItemId()) {
             case R.id.mv_save:
-                startActivity(new Intent(getApplicationContext(),Campaign_List_Activity.class));
+                startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
                 return true;
             case R.id.mv_edit:
                 SessionManager.setCampign_flag("edit");
@@ -136,7 +128,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     }
 
     private void IntentUI() {
-        add_icon=findViewById(R.id.add_icon);
+        add_icon = findViewById(R.id.add_icon);
         add_icon.setVisibility(View.GONE);
         add_icon.setOnClickListener(this);
         iv_back = findViewById(R.id.iv_back);
@@ -146,25 +138,25 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Done");
-        layout_toolbar_logo=findViewById(R.id.layout_toolbar_logo);
+        layout_toolbar_logo = findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.GONE);
         save_button.setVisibility(View.GONE);
         item_list = findViewById(R.id.item_list);
         item_list.setLayoutManager(new LinearLayoutManager(this));
         item_list.setItemViewCacheSize(500);
-        tv_name=findViewById(R.id.tv_name);
-        user_contect=findViewById(R.id.user_contect);
-        user_contect.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        tv_name = findViewById(R.id.tv_name);
+        user_contect = findViewById(R.id.user_contect);
+        user_contect.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         user_contect.setOnClickListener(this);
-        iv_toolbar_manu=findViewById(R.id.iv_toolbar_manu);
+        iv_toolbar_manu = findViewById(R.id.iv_toolbar_manu);
         iv_toolbar_manu.setOnClickListener(this);
 
-        contect_count=findViewById(R.id.contect_count);
+        contect_count = findViewById(R.id.contect_count);
         contect_count.setOnClickListener(this);
-        toolbar=findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.option_menu);
         setSupportActionBar(toolbar);
-        contect_layout=findViewById(R.id.contect_layout);
+        contect_layout = findViewById(R.id.contect_layout);
         contect_layout.setOnClickListener(this);
     }
 
@@ -176,19 +168,19 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
             case R.id.iv_toolbar_manu:
 
-                 break;
+                break;
             case R.id.add_icon:
                 SessionManager.setContect_flag("edit");
-                Intent intent_two=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);
-                intent_two.putExtra("sequence_id",sequence_id);
-                intent_two.putExtra("seq_task_id",sequence_task_id);
+                Intent intent_two = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
+                intent_two.putExtra("sequence_id", sequence_id);
+                intent_two.putExtra("seq_task_id", sequence_task_id);
                 startActivity(intent_two);
                 break;
-            case R.id.contect_count :
+            case R.id.contect_count:
                 SessionManager.setContect_flag("read");
-                Intent intent1=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);
-                intent1.putExtra("sequence_id",sequence_id);
-                intent1.putExtra("seq_task_id",sequence_task_id);
+                Intent intent1 = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
+                intent1.putExtra("sequence_id", sequence_id);
+                intent1.putExtra("seq_task_id", sequence_task_id);
                 startActivity(intent1);
                 break;
 
@@ -208,7 +200,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 intent.putExtra("seq_task_id", sequence_task_id);
                 startActivity(intent);
                 break;
-                case R.id.save_button:
+            case R.id.save_button:
 
                 break;
 
@@ -217,7 +209,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-       // startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
+        // startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
         finish();
         super.onBackPressed();
     }
@@ -386,11 +378,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                             }.getType();
 
                             CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
-                            contect_count.setText(user_model1.get0().getProspect()+" Prospects");
+                            contect_count.setText(user_model1.get0().getProspect() + " Prospects");
                             sequence_task_id = user_model1.getSequenceTask().get(0).getId();
                             campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
                             tv_name.setText(user_model1.get0().getSeqName());
-                            topUserListDataAdapter=new  TopUserListDataAdapter(Campaign_Preview.this,getApplicationContext(),user_model1.getSequenceProspects());
+                            topUserListDataAdapter = new TopUserListDataAdapter(Campaign_Preview.this, getApplicationContext(), user_model1.getSequenceProspects());
                             user_contect.setAdapter(topUserListDataAdapter);
                             topUserListDataAdapter.notifyDataSetChanged();
                             SessionManager.setCampaign_data(user_model1);
@@ -399,6 +391,51 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());
                             // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
+
+    public void StartCampignApi() {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        if (SessionManager.getTask(getApplicationContext()).size() != 0) {
+            sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+        } else {
+            Intent getintent = getIntent();
+            Bundle bundle = getintent.getExtras();
+            sequence_id = bundle.getInt("sequence_id");
+        }
+        Log.e("sequence_id", String.valueOf(sequence_id));
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("record_id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("status", "A");
+        obj.add("data", paramObject);
+        retrofitCalls.Sequence_settings(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_Preview.this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+
+                        if (response.body().getStatus() == 200) {
+                            startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
+                            finish();
+                        } else {
 
                         }
                     }
@@ -455,12 +492,9 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 case ITEM:
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
 
-                    if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read"))
-
-                    {
+                    if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
                         movieViewHolder.tv_add_new_step.setText(getString(R.string.txt_campaign));
-                    }
-                    else {
+                    } else {
                         movieViewHolder.tv_add_new_step.setText("Add New Step");
                     }
 
@@ -507,28 +541,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                             }
                         });
 
-                        movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
-
-                                } else {
-                                    SessionManager.setCampaign_type("");
-                                    SessionManager.setCampaign_type_name("");
-                                    SessionManager.setCampaign_minute("00");
-                                    SessionManager.setCampaign_Day("1");
-                                    Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
-                                    startActivity(intent);
-                                }
-                           /* SessionManager.setCampaign_type("");
-                            SessionManager.setCampaign_type_name("");
-                            SessionManager.setCampaign_minute("00");
-                            SessionManager.setCampaign_Day("1");
-                            Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
-                            startActivity(intent);*/
-                            }
-                        });
 
                         movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -543,6 +555,31 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         });
 
                     }
+                    movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
+
+                                StartCampignApi();
+
+                            } else {
+                                SessionManager.setCampaign_type("");
+                                SessionManager.setCampaign_type_name("");
+                                SessionManager.setCampaign_minute("00");
+                                SessionManager.setCampaign_Day("1");
+                                Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
+                                startActivity(intent);
+                            }
+                           /* SessionManager.setCampaign_type("");
+                            SessionManager.setCampaign_type_name("");
+                            SessionManager.setCampaign_minute("00");
+                            SessionManager.setCampaign_Day("1");
+                            Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
+                            startActivity(intent);*/
+                        }
+                    });
+
                     break;
 
                 case LOADING:
@@ -649,18 +686,15 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
     }
 
-
-
-    public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass>
-    {
+    public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
+        private final List<CampaignTask_overview.SequenceProspect> userDetailsfull;
         public Activity mCtx;
         int last_postion = 0;
         String second_latter = "";
         String current_latter = "", image_url = "";
-        private List<CampaignTask_overview.SequenceProspect> userDetails;
-        private final List<CampaignTask_overview.SequenceProspect> userDetailsfull;
+        private final List<CampaignTask_overview.SequenceProspect> userDetails;
 
 
         public TopUserListDataAdapter(Activity Ctx, Context mCtx, List<CampaignTask_overview.SequenceProspect> userDetails) {
@@ -685,7 +719,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             holder.userName.setText(inviteUserDetails.getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+            String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
 
             if (second_latter.equals("")) {
                 current_latter = first_latter;
@@ -700,31 +734,28 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             }
 
 
-
-
-
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
-                String name = inviteUserDetails.getFirstname();
-                holder.profile_image.setVisibility(View.GONE);
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
+            holder.no_image.setVisibility(View.VISIBLE);
+            holder.profile_image.setVisibility(View.GONE);
+            String name = inviteUserDetails.getFirstname();
+            holder.profile_image.setVisibility(View.GONE);
+            String add_text = "";
+            String[] split_data = name.split(" ");
+            try {
+                for (int i = 0; i < split_data.length; i++) {
+                    if (i == 0) {
+                        add_text = split_data[i].substring(0, 1);
+                    } else {
+                        add_text = add_text + split_data[i].charAt(0);
+                        break;
                     }
-                } catch (Exception e) {
-
                 }
+            } catch (Exception e) {
+
+            }
 
 
-                holder.no_image.setText(add_text);
-                holder.no_image.setVisibility(View.VISIBLE);
+            holder.no_image.setText(add_text);
+            holder.no_image.setVisibility(View.VISIBLE);
 
         }
 
@@ -755,5 +786,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         }
 
     }
+
 
 }

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.contactninja.MainActivity">
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_7sdp"
+        android:background="@drawable/shape_blue_back_dialog"
+        android:orientation="vertical"
+        android:padding="@dimen/_15sdp">
+
+        <TextView
+            style="@style/tv_Medium"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cam_tv_titel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp">
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:weightSum="2"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_weight="1"
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_contect"
+                    android:gravity="center|left"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp">
+
+                </TextView>
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/tv_contect"
+                    android:gravity="left|center"
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="7"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp">
+
+                </TextView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:weightSum="2"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/tv_sms"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp">
+
+                </TextView>
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/tv_sms"
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="7"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp">
+
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="2"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_weight="1"
+                    style="@style/tv_Medium"
+                    android:gravity="right|center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/tv_email"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp">
+
+                </TextView>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/tv_email"
+                    style="@style/tv_Medium"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="7"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp">
+
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/_10sdp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/con_reach"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp">
+
+                </TextView>
+                <TextView
+                    android:layout_gravity="center|left"
+                    android:gravity="left|center"
+                    android:id="@+id/tv_contec_reach"
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp">
+
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/con_pending"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp">
+
+                </TextView>
+                <TextView
+                    android:layout_gravity="center|left"
+                    android:gravity="left|center"
+                    android:id="@+id/tv_pending"
+                    style="@style/tv_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp">
+
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        style="@style/tv_bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="@color/tv_medium"
+        app:tabTextColor="@color/bz_text"></com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/home_list_back_line"></View>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        android:layout_marginTop="@dimen/_3sdp" />
+</LinearLayout>
