@@ -493,55 +493,56 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     }
                     movieViewHolder.edit_minutes.setText(movieList.get(position).getMinute().toString());
                     movieViewHolder.edit_day.setText(movieList_data.getDay().toString());
-                    movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            broadcast_manu(movieList.get(position), position);
-                        }
-                    });
 
                     movieViewHolder.tv_title.setText("Step#" + movieList.get(position).getStepNo() + "(" + movieList.get(position).getManageBy() + " " + movieList.get(position).getType() + ")");
 
                     movieViewHolder.tv_detail.setText(movieList.get(position).getContentBody());
 
-                    movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                    if (SessionManager.getCampign_flag(getApplicationContext()).equals("edit")) {
 
-                            if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read"))
-                            {
+                        movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                broadcast_manu(movieList.get(position), position);
+                            }
+                        });
 
-                            }
-                            else {
-                                SessionManager.setCampaign_type("");
-                                SessionManager.setCampaign_type_name("");
-                                SessionManager.setCampaign_minute("00");
-                                SessionManager.setCampaign_Day("1");
-                                Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
-                                startActivity(intent);
-                            }
+                        movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
+
+                                } else {
+                                    SessionManager.setCampaign_type("");
+                                    SessionManager.setCampaign_type_name("");
+                                    SessionManager.setCampaign_minute("00");
+                                    SessionManager.setCampaign_Day("1");
+                                    Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
+                                    startActivity(intent);
+                                }
                            /* SessionManager.setCampaign_type("");
                             SessionManager.setCampaign_type_name("");
                             SessionManager.setCampaign_minute("00");
                             SessionManager.setCampaign_Day("1");
                             Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
                             startActivity(intent);*/
-                        }
-                    });
-
-                    movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (movieViewHolder.run_time_layout.getVisibility() == View.VISIBLE) {
-                                movieViewHolder.run_time_layout.setVisibility(View.GONE);
-                            } else {
-                                movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);
                             }
+                        });
 
-                        }
-                    });
+                        movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (movieViewHolder.run_time_layout.getVisibility() == View.VISIBLE) {
+                                    movieViewHolder.run_time_layout.setVisibility(View.GONE);
+                                } else {
+                                    movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);
+                                }
 
+                            }
+                        });
 
+                    }
                     break;
 
                 case LOADING:
