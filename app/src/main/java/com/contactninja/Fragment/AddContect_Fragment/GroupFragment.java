@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("UnknownNullness,SyntheticAccessor,SetTextI18n")
@@ -371,10 +372,48 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
 
                     movieViewHolder.group_name.setText(Group_data.getGroupName());
-                    Glide.with(context).
-                            load(Group_data.getGroupImage()).
-                            placeholder(R.drawable.shape_primary_back).
-                            error(R.drawable.shape_primary_back).into(movieViewHolder.group_image);
+
+
+
+                    if (Group_data.getGroupImage()==null)
+                    {
+                        String name =Group_data.getGroupName();
+                        String add_text="";
+                        String[] split_data=name.split(" ");
+                        try {
+                            for (int i=0;i<split_data.length;i++)
+                            {
+                                if (i==0)
+                                {
+                                    add_text=split_data[i].substring(0,1);
+                                }
+                                else {
+                                    add_text=add_text+split_data[i].substring(0,1);
+                                    break;
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
+
+                        movieViewHolder.no_image.setText(add_text);
+                        movieViewHolder.no_image.setVisibility(View.VISIBLE);
+                        movieViewHolder.group_image.setVisibility(View.GONE);
+                    }
+                    else {
+                        Glide.with(context).
+                                load(Group_data.getGroupImage()).
+                                placeholder(R.drawable.shape_primary_back).
+                                error(R.drawable.shape_primary_back).into(movieViewHolder.group_image);
+
+                        movieViewHolder.no_image.setVisibility(View.GONE);
+                        movieViewHolder.group_image.setVisibility(View.VISIBLE);
+                    }
+
+
                     movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -436,12 +475,13 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
         public class MovieViewHolder extends RecyclerView.ViewHolder {
-            private final TextView group_name;
-            private final RoundedImageView group_image;
+            private final TextView group_name,no_image;
+            private final CircleImageView group_image;
             LinearLayout group_layout;
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
+                no_image = itemView.findViewById(R.id.no_image);
                 group_name = itemView.findViewById(R.id.group_name);
                 group_layout = itemView.findViewById(R.id.group_layout);
                 group_image = itemView.findViewById(R.id.group_image);
