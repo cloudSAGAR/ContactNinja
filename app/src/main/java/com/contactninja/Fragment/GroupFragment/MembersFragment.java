@@ -239,7 +239,7 @@ public class MembersFragment extends Fragment {
                 holder.first_latter.setVisibility(View.VISIBLE);
                 holder.top_layout.setVisibility(View.VISIBLE);
                 String first_latter=inviteUserDetails.getEmail().substring(0,1).toUpperCase();
-
+                holder.first_latter.setText(first_latter);
                 if (second_latter.equals(""))
                 {
                     current_latter=first_latter;
@@ -266,6 +266,31 @@ public class MembersFragment extends Fragment {
                 }
 
 
+            String name =inviteUserDetails.getEmail();
+            String add_text="";
+            String[] split_data=name.split(" ");
+            try {
+                for (int i=0;i<split_data.length;i++)
+                {
+                    if (i==0)
+                    {
+                        add_text=split_data[i].substring(0,1);
+                    }
+                    else {
+                        add_text=add_text+split_data[i].substring(0,1);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            holder.no_image.setText(add_text);
+            holder.no_image.setVisibility(View.VISIBLE);
+            holder.profile_image.setVisibility(View.GONE);
          /*   if (inviteUserDetails.getContactImage()==null)
             {
                 String name =inviteUserDetails.getFirstname();
@@ -305,7 +330,7 @@ public class MembersFragment extends Fragment {
             }*/
             holder.userName.setText(inviteUserDetails.getEmail());
             holder.userNumber.setText(inviteUserDetails.getMobile());
-
+            holder.userNumber.setVisibility(View.GONE);
         }
 
         @Override
@@ -377,14 +402,17 @@ public class MembersFragment extends Fragment {
                 if (response.body().getStatus() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<SigleGroupModel.Group>() {
+                    Type listType = new TypeToken<SigleGroupModel>() {
                     }.getType();
-                    List<SigleGroupModel.Group> group_model = new Gson().fromJson(headerString, listType);
-                    Log.e("Reponse is",new Gson().toJson(group_model));
-                    /*inviteListData.addAll(group_model.getContactIds());
+                    SigleGroupModel group_model = new Gson().fromJson(headerString, listType);
+
+                    List<SigleGroupModel.Group> groups=new ArrayList<>();
+                    groups.addAll(group_model.getGroups());
+                    Log.e("Reponse is",new Gson().toJson(groups));
+                    inviteListData.addAll(groups.get(0).getContactIds());
                     userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
                     rvinviteuserdetails.setAdapter(userListDataAdapter);
-                    userListDataAdapter.notifyDataSetChanged();*/
+                    userListDataAdapter.notifyDataSetChanged();
 
                 }
             }
