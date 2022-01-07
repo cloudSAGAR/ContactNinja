@@ -142,6 +142,18 @@
             />
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_error1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="@style/tv_regular"
+            android:gravity="center"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/tv_medium"
+            />
+
+        <TextView
             android:id="@+id/tv_done"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_width="match_parent"

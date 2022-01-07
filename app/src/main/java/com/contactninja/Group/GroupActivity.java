@@ -1358,9 +1358,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         View v_phone=bottomSheetDialog_templateList1.findViewById(R.id.v_phone);
         View v_phone1=bottomSheetDialog_templateList1.findViewById(R.id.v_phone1);
         LinearLayout layout_email=bottomSheetDialog_templateList1.findViewById(R.id.layout_email);
+       LinearLayout bottom_sheet=bottomSheetDialog_templateList1.findViewById(R.id.bottom_sheet);
         View v_email=bottomSheetDialog_templateList1.findViewById(R.id.v_email);
         View v_email1=bottomSheetDialog_templateList1.findViewById(R.id.v_email1);
         TextView tv_error=bottomSheetDialog_templateList1.findViewById(R.id.tv_error);
+        TextView tv_error1=bottomSheetDialog_templateList1.findViewById(R.id.tv_error1);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         TextView tv_txt=bottomSheetDialog_templateList1.findViewById(R.id.tv_txt);
         tv_txt.setText("Pick contact details for "+contacts.get(position).getFirstname());
@@ -1386,13 +1388,17 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 if (detailList_phone.size()==0)
                 {
 
-                    tv_error.setVisibility(View.VISIBLE);
-                    tv_error.setText("seems like you don’t have any phone number ,  \n" +
+                    tv_error1.setVisibility(View.VISIBLE);
+                    tv_error.setVisibility(View.GONE);
+                    tv_error1.setText("seems like you don’t have any phone number ,  \n" +
                             "you can add that in contact section");
                     phone_list.setVisibility(View.GONE);
                 }
                 else {
                     phone_list.setVisibility(View.VISIBLE);
+                    tv_error1.setVisibility(View.GONE);
+                    tv_error1.setText("");
+                    tv_error.setVisibility(View.GONE);
                 }
                 v_phone.setVisibility(View.GONE);
                 v_phone1.setVisibility(View.VISIBLE);
@@ -1419,9 +1425,14 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     tv_error.setText("seems like you don’t have any \n" +
                             "email you can add that in contact section");
                     email_list.setVisibility(View.GONE);
+                    tv_error1.setVisibility(View.GONE);
                 }
                 else {
                     email_list.setVisibility(View.VISIBLE);
+                    tv_error.setVisibility(View.GONE);
+                    tv_error.setText("");
+                    tv_error1.setVisibility(View.GONE);
+
                 }
 
 
@@ -1438,6 +1449,18 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 if (detailList1_email.size()==0 || detailList_phone.size()==0)
                 {
 
+                    if (!tv_error.getText().equals(""))
+                    {
+                        Global.Messageshow(GroupActivity.this,mMainLayout,tv_error.getText().toString(),false);
+                        bottomSheetDialog_templateList1.cancel();
+
+                    }
+                    else if (!tv_error1.getText().equals(""))
+                    {
+
+                        Global.Messageshow(GroupActivity.this,mMainLayout,tv_error1.getText().toString(),false);
+                        bottomSheetDialog_templateList1.cancel();
+                    }
                 }
                 else {
 
