@@ -300,7 +300,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             pre_seleact.clear();
             pre_seleact.addAll(SessionManager.getGroupList(this));
             select_contectListData.addAll(pre_seleact);
-            topUserListDataAdapter.notifyDataSetChanged();
+          //  topUserListDataAdapter.notifyDataSetChanged();
 
 
 

@@ -114,6 +114,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.save_button:
                 startActivity(new Intent(getApplicationContext(),Final_Group.class));
+                finish();
                 break;
             default:
 
