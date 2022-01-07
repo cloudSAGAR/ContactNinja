@@ -368,4 +368,9 @@ Number</string>
     <string name="con_reach">Completed Out Reach</string>
     <string name="con_pending">Pending Out Reach</string>
     <string name="Please_select_your_level">Please select your level</string>
+    <string name="lavel1">Lavel 1</string>
+    <string name="lavel2">Lavel 2</string>
+    <string name="lavel3">Lavel 3</string>
+    <string name="lavel4">Lavel 4</string>
+    <string name="lavel5">Lavel 5</string>
 </resources>

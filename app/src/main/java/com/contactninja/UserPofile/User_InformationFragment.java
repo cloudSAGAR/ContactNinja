@@ -165,6 +165,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         SessionManager.setOneCotect_deatil(getActivity(),set_contact);
 
         if (flag.equals("edit")) {
+            company_layout.setEnabled(true);
             tv_add_social.setVisibility(View.GONE);
             media_link.setVisibility(View.GONE);
             ev_company.setEnabled(true);
@@ -282,7 +283,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         }
         else if (flag.equals("read")) {
 
-
+            company_layout.setEnabled(false);
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.VISIBLE);
             ev_company.setEnabled(false);

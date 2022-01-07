@@ -7,14 +7,14 @@ import android.annotation.SuppressLint;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 @SuppressLint("UnknownNullness")
-public class Level1 {
+public class LevelModel {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
     @SerializedName("referred_by")
     @Expose
     private Integer referredBy;
-    @SerializedName("name")
+    @SerializedName("first_name")
     @Expose
     private String name;
     @SerializedName("referred_name")
