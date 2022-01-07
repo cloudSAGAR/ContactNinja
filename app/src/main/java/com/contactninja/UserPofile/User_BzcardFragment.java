@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.UserPofile;
+package com.contactninja.UserPofile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

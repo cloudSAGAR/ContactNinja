@@ -108,10 +108,6 @@ public class Main_home_Fragment extends Fragment {
                     sessionManager.setRefresh_token(data.getTokenType()+" "+data.getAccessToken());
                     //   sessionManager.setUserdata(getApplicationContext(),data);
 
-                } else {
-                //   Toast.makeText(getActivity(),"Token :(",Toast.LENGTH_SHORT).show();
-
-
                 }
             }
 

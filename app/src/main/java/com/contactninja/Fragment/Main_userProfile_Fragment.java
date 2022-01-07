@@ -45,9 +45,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Fragment.UserPofile.User_BzcardFragment;
-import com.contactninja.Fragment.UserPofile.User_ExposuresFragment;
-import com.contactninja.Fragment.UserPofile.User_InformationFragment;
+import com.contactninja.UserPofile.User_BzcardFragment;
+import com.contactninja.UserPofile.User_ExposuresFragment;
+import com.contactninja.UserPofile.User_InformationFragment;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;

@@ -3,6 +3,7 @@ package com.contactninja.Model.UserData;
 
 import android.annotation.SuppressLint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
@@ -15,52 +16,52 @@ public class User {
     private Integer id=0;
     @SerializedName("is_contact_exist")
     @Expose
-    private Integer is_contact_exist;
+    private Integer is_contact_exist=0;
     @SerializedName("first_name")
     @Expose
-    private String firstName;
+    private String firstName="";
     @SerializedName("last_name")
     @Expose
-    private String lastName;
+    private String lastName="";
     @SerializedName("contact_number")
     @Expose
-    private String contactNumber;
+    private String contactNumber="";
     @SerializedName("email")
     @Expose
-    private String email;
+    private String email="";
     @SerializedName("created_at")
     @Expose
-    private String createdAt;
+    private String createdAt="";
     @SerializedName("updated_at")
     @Expose
-    private String updatedAt;
+    private String updatedAt="";
     @SerializedName("deleted_at")
     @Expose
-    private Object deletedAt;
+    private String deletedAt="";
     @SerializedName("userprofile")
     @Expose
-    private Userprofile userprofile;
+    private Userprofile userprofile=new Userprofile();
     @SerializedName("working_hours_list")
     @Expose
-    private List<WorkingHours> workingHoursList = null;
+    private List<WorkingHours> workingHoursList = new ArrayList<>();
     @SerializedName("reference_code")
     @Expose
-    private String referenceCode;
+    private String referenceCode="";
     @SerializedName("role_id")
     @Expose
-    private Integer roleId;
+    private Integer roleId=0;
     @SerializedName("role_name")
     @Expose
-    private String roleName;
+    private String roleName="";
     @SerializedName("user_organizations")
     @Expose
-    private List<UserOrganization> userOrganizations = null;
+    private List<UserOrganization> userOrganizations = new ArrayList<>();
     @SerializedName("role_access")
     @Expose
-    private List<RoleAccess> roleAccess = null;
+    private List<RoleAccess> roleAccess = new ArrayList<>();
     @SerializedName("affiliate_info")
     @Expose
-    private List<AffiliateInfo> affiliateInfo = null;
+    private AffiliateInfo affiliateInfo = new AffiliateInfo();
 
     public Integer getId() {
         return id;
@@ -118,11 +119,11 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public Object getDeletedAt() {
+    public String getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Object deletedAt) {
+    public void setDeletedAt(String deletedAt) {
         this.deletedAt = deletedAt;
     }
 
@@ -182,11 +183,11 @@ public class User {
         this.roleAccess = roleAccess;
     }
 
-    public List<AffiliateInfo> getAffiliateInfo() {
+    public AffiliateInfo getAffiliateInfo() {
         return affiliateInfo;
     }
 
-    public void setAffiliateInfo(List<AffiliateInfo> affiliateInfo) {
+    public void setAffiliateInfo(AffiliateInfo affiliateInfo) {
         this.affiliateInfo = affiliateInfo;
     }
 

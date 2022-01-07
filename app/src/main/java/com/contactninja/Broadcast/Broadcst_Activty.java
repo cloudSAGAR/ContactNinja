@@ -132,7 +132,6 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.save_button:
 
-
                 final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Broadcst_Activty.this, R.style.DialogStyle);
                 bottomSheetDialog.setContentView(mView);
@@ -258,7 +257,6 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 });
 
                 bottomSheetDialog.show();
-
 
                 break;
         }
