@@ -132,6 +132,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         test_list.add(SessionManager.getOneCotect_deatil(getActivity()));
         // Log.e("Size is", String.valueOf(test_list));
         String flag = sessionManager.getContect_flag(getActivity());
+        Showlayout();
         if (flag.equals("edit")) {
             company_layout.setEnabled(true);
             image_list_show.setVisibility(View.VISIBLE);
@@ -476,7 +477,19 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         return view;
     }
+    private void Showlayout() {
+        tv_more_field.setVisibility(View.GONE);
+        media_layout.setVisibility(View.VISIBLE);
 
+        company_url_layout.setVisibility(View.VISIBLE);
+        job_layout.setVisibility(View.VISIBLE);
+        zoom_layout.setVisibility(View.VISIBLE);
+        city_layout.setVisibility(View.VISIBLE);
+        state_layout.setVisibility(View.VISIBLE);
+        time_layout.setVisibility(View.VISIBLE);
+        layout_bod.setVisibility(View.VISIBLE);
+        note_layout.setVisibility(View.VISIBLE);
+    }
     private void EmailViewAdd() {
 
         String flag = sessionManager.getContect_flag(getActivity());

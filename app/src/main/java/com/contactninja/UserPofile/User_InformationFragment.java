@@ -164,6 +164,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         set_contact.setContactDetails(contactDetails_list);
         SessionManager.setOneCotect_deatil(getActivity(),set_contact);
 
+        Showlayout();
         if (flag.equals("edit")) {
             company_layout.setEnabled(true);
             tv_add_social.setVisibility(View.GONE);
@@ -208,7 +209,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             }
             catch (Exception e)
             {
-
+                e.printStackTrace();
             }
 
             organization_id = String.valueOf(Contect_data.getOrganizationId());
@@ -533,6 +534,20 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         });
 
         return view;
+    }
+
+    private void Showlayout() {
+        tv_more_field.setVisibility(View.GONE);
+        media_layout.setVisibility(View.VISIBLE);
+
+        company_url_layout.setVisibility(View.VISIBLE);
+        job_layout.setVisibility(View.VISIBLE);
+        zoom_layout.setVisibility(View.VISIBLE);
+        city_layout.setVisibility(View.VISIBLE);
+        state_layout.setVisibility(View.VISIBLE);
+        time_layout.setVisibility(View.VISIBLE);
+        layout_bod.setVisibility(View.VISIBLE);
+        note_layout.setVisibility(View.VISIBLE);
     }
 
     private void EmailViewAdd() {
