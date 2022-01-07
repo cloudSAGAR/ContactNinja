@@ -53,6 +53,10 @@
             android:name=".UserPofile.Affiliate_Report_LavelActivity"
             android:exported="true" />
         <activity
+            android:name=".Campaign.Campaign_Viewcontect"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".Campaign.Campaign_Final_Start"
             android:exported="false"
             android:screenOrientation="portrait" />

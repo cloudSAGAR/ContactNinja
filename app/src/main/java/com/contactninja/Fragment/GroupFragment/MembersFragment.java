@@ -62,7 +62,7 @@ public class MembersFragment extends Fragment {
     Context mCtx;
     Cursor cursor;
     public static UserListDataAdapter userListDataAdapter;
-    public static ArrayList<SigleGroupModel.Group.ContactDetail> inviteListData=new ArrayList<>();
+    public static ArrayList<SigleGroupModel.Group.ContactId> inviteListData=new ArrayList<>();
     RecyclerView rvinviteuserdetails;
     String userName, user_phone_number,user_image,user_des,strtext="",old_latter="",contect_type="",contect_email,
             contect_type_work="",email_type_home="",email_type_work="",country="",city="",region="",street="",
@@ -117,7 +117,7 @@ public class MembersFragment extends Fragment {
                     FastScrollItemIndicator fastScrollItemIndicator= new FastScrollItemIndicator.Text(
 
 
-                            inviteListData.get(position).getFirstname().substring(0, 1)
+                            inviteListData.get(position).getEmail().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
@@ -179,22 +179,22 @@ public class MembersFragment extends Fragment {
         int last_postion=0;
         public Activity mCtx;
         private final Context mcntx;
-        private List<SigleGroupModel.Group.ContactDetail> userDetails;
-        private List<SigleGroupModel.Group.ContactDetail> userDetailsfull;
+        private List<SigleGroupModel.Group.ContactId> userDetails;
+        private List<SigleGroupModel.Group.ContactId> userDetailsfull;
         String second_latter="";
         String current_latter="",image_url="";
         private Filter exampleFilter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<SigleGroupModel.Group.ContactDetail> filteredList = new ArrayList<>();
+                List<SigleGroupModel.Group.ContactId> filteredList = new ArrayList<>();
                 if (constraint == null || constraint.length() == 0) {
                     filteredList.addAll(userDetailsfull);
                 } else {
                     String userName = constraint.toString().toLowerCase().trim();
                     String userNumber = constraint.toString().toLowerCase().trim();
-                    for (SigleGroupModel.Group.ContactDetail item : userDetailsfull) {
-                        if (item.getFirstname().toLowerCase().contains(userName)
-                                || item.getEmailNumber().toLowerCase().contains(userNumber)) {
+                    for (SigleGroupModel.Group.ContactId item : userDetailsfull) {
+                        if (item.getEmail().toLowerCase().contains(userName)
+                                || item.getEmail().toLowerCase().contains(userNumber)) {
                             filteredList.add(item);
                         }
                     }
@@ -207,12 +207,12 @@ public class MembersFragment extends Fragment {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 userDetails.clear();
-                userDetails.addAll((List<SigleGroupModel.Group.ContactDetail>) results.values);
+                userDetails.addAll((List<SigleGroupModel.Group.ContactId>) results.values);
                 notifyDataSetChanged();
             }
         };
 
-        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<SigleGroupModel.Group.ContactDetail> userDetails) {
+        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<SigleGroupModel.Group.ContactId> userDetails) {
             this.mcntx = mCtx;
             this.mCtx = Ctx;
             this.userDetails = userDetails;
@@ -229,7 +229,7 @@ public class MembersFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull UserListDataAdapter.InviteListDataclass holder, int position) {
-            SigleGroupModel.Group.ContactDetail inviteUserDetails = userDetails.get(position);
+            SigleGroupModel.Group.ContactId inviteUserDetails = userDetails.get(position);
 
             last_postion=position;
 
@@ -238,7 +238,7 @@ public class MembersFragment extends Fragment {
 
                 holder.first_latter.setVisibility(View.VISIBLE);
                 holder.top_layout.setVisibility(View.VISIBLE);
-                String first_latter=inviteUserDetails.getFirstname().substring(0,1).toUpperCase();
+                String first_latter=inviteUserDetails.getEmail().substring(0,1).toUpperCase();
 
                 if (second_latter.equals(""))
                 {
@@ -266,7 +266,7 @@ public class MembersFragment extends Fragment {
                 }
 
 
-            if (inviteUserDetails.getContactImage()==null)
+         /*   if (inviteUserDetails.getContactImage()==null)
             {
                 String name =inviteUserDetails.getFirstname();
                 String add_text="";
@@ -302,9 +302,9 @@ public class MembersFragment extends Fragment {
                         .into(holder.profile_image);
                 holder.no_image.setVisibility(View.GONE);
                 holder.profile_image.setVisibility(View.VISIBLE);
-            }
-            holder.userName.setText(inviteUserDetails.getFirstname());
-            holder.userNumber.setText(inviteUserDetails.getEmailNumber());
+            }*/
+            holder.userName.setText(inviteUserDetails.getEmail());
+            holder.userNumber.setText(inviteUserDetails.getMobile());
 
         }
 
@@ -315,11 +315,11 @@ public class MembersFragment extends Fragment {
 
         @Override
         public Filter getFilter() {
-            Log.e("Fillter is",new Gson().toJson(exampleFilter));
+            //Log.e("Fillter is",new Gson().toJson(exampleFilter));
             return exampleFilter;
         }
 
-        public void updateList(List<SigleGroupModel.Group.ContactDetail> list){
+        public void updateList(List<SigleGroupModel.Group.ContactId> list){
             userDetails=list;
             notifyDataSetChanged();
         }
@@ -379,31 +379,12 @@ public class MembersFragment extends Fragment {
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<SigleGroupModel.Group>() {
                     }.getType();
-                    SigleGroupModel.Group group_model = new Gson().fromJson(headerString, listType);
-
-                    Log.e("Group List is",new Gson().toJson(group_model.getContactIds()));
-                    List<ContectListData.Contact> groupModel=new ArrayList<>();
-                    ContectListData.Contact contact=new ContectListData.Contact();
-                    for (int i=0;i<group_model.getContactIds().size();i++)
-                    {
-                        contact.setFirstname(group_model.getContactIds().get(i).getMobile());
-                        contact.setLastname(group_model.getContactIds().get(i).getMobile());
-                        //contact.setContactImage(group_model.getContactDetails().get(i).getContactImage());
-                        List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
-                        ContectListData.Contact.ContactDetail contactDetail=new ContectListData.Contact.ContactDetail();
-                        contactDetail.setContactId(group_model.getContactIds().get(i).getProspectId());
-                        contactDetail.setEmailNumber(group_model.getContactIds().get(i).getMobile());
-                        contactDetails.add(contactDetail);
-                        contact.setContactDetails(contactDetails);
-
-                    }
-                    groupModel.add(contact);
-                    sessionManager.setGroupList(getActivity(),groupModel);
-                 /*   inviteListData.addAll(group_model.getContactDetails());
+                    List<SigleGroupModel.Group> group_model = new Gson().fromJson(headerString, listType);
+                    Log.e("Reponse is",new Gson().toJson(group_model));
+                    /*inviteListData.addAll(group_model.getContactIds());
                     userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
                     rvinviteuserdetails.setAdapter(userListDataAdapter);
                     userListDataAdapter.notifyDataSetChanged();*/
-                    // userListDataAdapter.addAll(grouplists);
 
                 }
             }

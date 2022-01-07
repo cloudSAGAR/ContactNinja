@@ -105,6 +105,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     Bundle bundle=getintent.getExtras();
                     sequence_id=bundle.getInt("sequence_id");
                 }
+                SessionManager.setContect_flag("");
                 SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
                 SessionManager.setGroupList(this,new ArrayList<>());
                 Intent intent=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);

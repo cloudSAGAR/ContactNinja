@@ -137,7 +137,12 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
                 finish();
                 break;
             case R.id.save_button:
-
+                Intent getintent=getIntent();
+                Bundle bundle=getintent.getExtras();
+                sequence_id=bundle.getInt("sequence_id");
+                Intent intent = new Intent(getApplicationContext(), Campaign_Viewcontect.class);
+                intent.putExtra("sequence_id", sequence_id);
+                startActivity(intent);
                 break;
         }
     }
