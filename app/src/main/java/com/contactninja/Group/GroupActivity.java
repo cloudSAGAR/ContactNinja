@@ -186,25 +186,25 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
+            /*    Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
                 SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);
+                startActivity(addnewcontect);*/
             }
         });
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
+                /*Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
                 SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);
+                startActivity(addnewcontect);*/
             }
         });
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
+              /*  Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
                 SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);
+                startActivity(addnewcontect);*/
                 // splitdata(inviteListData);
             }
         });
