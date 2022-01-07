@@ -1466,6 +1466,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     topUserListDataAdapter.notifyDataSetChanged();
                     num_count.setText(select_contectListData.size()+" Contact Selcted");
                     contacts.get(position).setFlag("false");
+                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);
                     save_button.setTextColor(getResources().getColor(R.color.purple_200));
                     bottomSheetDialog_templateList1.cancel();
                 }
@@ -1544,8 +1546,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                     userLinkedGmailList.get(position).setPhoneSelect(true);
-                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+                    /*holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);*/
 
                    /* tv_done.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1658,8 +1660,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                     userLinkedGmailList1.get(position).setPhoneSelect(true);
-                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+                    /*holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);*/
 //                    tv_done.setOnClickListener(new View.OnClickListener() {
 //                        @Override
 //                        public void onClick(View view) {
