@@ -1446,7 +1446,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 contactDetails.clear();
                 userLinkedGmailList.clear();
 
-                if (detailList1_email.size()==0 || detailList_phone.size()==0)
+                if (detailList_phone.size()==0)
                 {
 
                     if (!tv_error.getText().equals(""))

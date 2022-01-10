@@ -79,6 +79,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
 
+
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
             StepData();
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());

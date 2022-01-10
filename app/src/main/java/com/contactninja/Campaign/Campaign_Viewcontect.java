@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -33,12 +34,14 @@ import com.contactninja.Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Campaign.Fragment.View_Contect_Fragment;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
+import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +58,6 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
     List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
     CardListAdepter cardListAdepter;
     private BroadcastReceiver mNetworkReceiver;
-
     LinearLayout main_layout;
     SessionManager sessionManager;
     @Override
@@ -67,6 +69,8 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
         sessionManager=new SessionManager(this);
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
+
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
                 tabLayout.getTabCount(), strtext);
@@ -126,8 +130,6 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
 
                 break;
             case R.id.save_button:
-
-
                 final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Campaign_Viewcontect.this, R.style.DialogStyle);
                 bottomSheetDialog.setContentView(mView);
@@ -144,7 +146,6 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
                 CoordinatorLayout layout_select_image=bottomSheetDialog.findViewById(R.id.layout_select_image);
                 LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
                 LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
-
                 lay_sendnow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

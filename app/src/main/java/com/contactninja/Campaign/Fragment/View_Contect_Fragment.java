@@ -14,7 +14,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,24 +21,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Broadcast.Broadcast_Frgment.Broadcste_Contect_Fragment;
+import com.contactninja.Campaign.Campaign_view_per_contect_Detail;
+import com.contactninja.Campaign.ContectAndGroup_Actvity;
+import com.contactninja.Model.CampaignTask_overview;
+import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
+import com.contactninja.Model.TimezoneModel;
 import com.contactninja.R;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
-import com.google.gson.Gson;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -59,7 +60,7 @@ public class View_Contect_Fragment extends Fragment {
     FastScrollerThumbView fastscroller_thumb;
     EditText contect_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon;
+    ImageView add_new_contect_icon,filter_icon;
     LinearLayout add_new_contect_layout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
@@ -72,9 +73,12 @@ public class View_Contect_Fragment extends Fragment {
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
     boolean isLastPage = false;
-    List<ContectListData.Contact> contectListData;
-    List<ContectListData.Contact> select_contectListData;
+
     Activity activity;
+    BottomSheetDialog bottomSheetDialog_step;
+    CampaignTask_overview contect_list_data;
+    List<CampaignTask_overview.SequenceProspect> sequenceProspects=new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,18 +89,18 @@ public class View_Contect_Fragment extends Fragment {
         sessionManager=new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
-        select_contectListData=new ArrayList<>();
+
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(5000);
-        contectListData = new ArrayList<>();
-        //GetContactsIntoArrayList();
+
+
+         contect_list_data=SessionManager.getCampaign_data(getActivity());
+         sequenceProspects.addAll(contect_list_data.getSequenceProspects());
+
         groupContectAdapter = new GroupContectAdapter(getActivity());
         contect_list_unselect.setAdapter(groupContectAdapter);
-        if (SessionManager.getContectList(getActivity()).size() != 0) {
-            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-            groupContectAdapter.addAll(contectListData);
-            num_count.setText(contectListData.size()+" Contacts");
-        }
+        groupContectAdapter.addAll(sequenceProspects);
+        num_count.setText(contect_list_data.getSeqProspectCount().getTotal()+" Contacts");
 
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
@@ -120,7 +124,7 @@ public class View_Contect_Fragment extends Fragment {
                     FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
 
 
-                            contectListData.get(position).getFirstname().substring(0, 1)
+                            sequenceProspects.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
@@ -132,26 +136,24 @@ public class View_Contect_Fragment extends Fragment {
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);
+                showBottomSheetDialog_For_TimeZone();
             }
         });
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);
+                showBottomSheetDialog_For_TimeZone();
             }
         });
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
+
+                showBottomSheetDialog_For_TimeZone();
+               /* Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                 SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
-                // splitdata(inviteListData);
+                // splitdata(inviteListData);*/
             }
         });
 
@@ -168,8 +170,8 @@ public class View_Contect_Fragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                List<ContectListData.Contact> temp = new ArrayList();
-                for(ContectListData.Contact d: contectListData){
+                List<CampaignTask_overview.SequenceProspect> temp = new ArrayList();
+                for(CampaignTask_overview.SequenceProspect d: sequenceProspects){
                     if(d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())){
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
@@ -237,9 +239,109 @@ public class View_Contect_Fragment extends Fragment {
         num_count = view.findViewById(R.id.num_count);
         add_new_contect_icon = view.findViewById(R.id.add_new_contect_icon);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
+        filter_icon=view.findViewById(R.id.filter_icon);
 
     }
 
+
+
+
+    void showBottomSheetDialog_For_TimeZone() {
+        bottomSheetDialog_step = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
+        bottomSheetDialog_step.setContentView(R.layout.bottom_sheet_dialog_for_home);
+        RecyclerView home_type_list = bottomSheetDialog_step.findViewById(R.id.home_type_list);
+        TextView tv_item=bottomSheetDialog_step.findViewById(R.id.tv_item);
+        tv_item.setText("Please select Timezone");
+        tv_item.setVisibility(View.GONE);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        home_type_list.setLayoutManager(layoutManager);
+
+        List<CampaignTask_overview.SequenceTask> task_list=contect_list_data.getSequenceTask();
+
+        TimezoneAdapter timezoneAdapter = new TimezoneAdapter(getActivity(), task_list);
+        home_type_list.setAdapter(timezoneAdapter);
+
+        bottomSheetDialog_step.show();
+    }
+
+
+    public class TimezoneAdapter extends RecyclerView.Adapter<TimezoneAdapter.InviteListDataclass> {
+
+        public Context mCtx;
+        TextView phone_txt;
+        Contactdetail item;
+        private List<CampaignTask_overview.SequenceTask> timezoneModels;
+
+        public TimezoneAdapter(Context context, List<CampaignTask_overview.SequenceTask> timezoneModels) {
+            this.mCtx = context;
+            this.timezoneModels = timezoneModels;
+        }
+
+        @NonNull
+        @Override
+        public TimezoneAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.step_type_selecte, parent, false);
+            return new TimezoneAdapter.InviteListDataclass(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull TimezoneAdapter.InviteListDataclass holder, int position) {
+            CampaignTask_overview.SequenceTask Data = timezoneModels.get(position);
+            holder.tv_item.setText("Step#"+Data.getStepNo()+"("+Data.getManageBy()+Data.getType()+")");
+            if (Data.getType().equals("SMS"))
+            {
+                holder.iv_email.setVisibility(View.GONE);
+                holder.iv_message.setVisibility(View.VISIBLE);
+            }
+            else {
+
+                holder.iv_email.setVisibility(View.VISIBLE);
+                holder.iv_message.setVisibility(View.GONE);
+
+            }
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SessionManager.setContect_flag("check");
+                    SessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
+                    SessionManager.setGroupList(getActivity(),new ArrayList<>());
+                    Intent intent=new Intent(getActivity(), ContectAndGroup_Actvity.class);
+                    intent.putExtra("sequence_id",contect_list_data.get0().getId());
+                    intent.putExtra("seq_task_id",Data.getId());
+                    startActivity(intent);
+                    getActivity().finish();
+                    bottomSheetDialog_step.cancel();
+
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return timezoneModels.size();
+        }
+
+        public void updateList(List<CampaignTask_overview.SequenceTask> list) {
+            timezoneModels = list;
+            notifyDataSetChanged();
+        }
+
+        public class InviteListDataclass extends RecyclerView.ViewHolder {
+            TextView tv_item;
+            ImageView iv_message,iv_email;
+
+            public InviteListDataclass(@NonNull View itemView) {
+                super(itemView);
+                tv_item = itemView.findViewById(R.id.tv_item);
+                iv_message=itemView.findViewById(R.id.iv_message);
+                iv_email=itemView.findViewById(R.id.iv_email);
+            }
+
+        }
+
+    }
 
     public class GroupContectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -248,7 +350,7 @@ public class View_Contect_Fragment extends Fragment {
         private final Context context;
         String second_latter = "";
         String current_latter = "", image_url = "";
-        private List<ContectListData.Contact> contacts;
+        private List<CampaignTask_overview.SequenceProspect> contacts;
         private boolean isLoadingAdded = false;
 
         public GroupContectAdapter(Context context) {
@@ -256,7 +358,7 @@ public class View_Contect_Fragment extends Fragment {
             contacts = new LinkedList<>();
         }
 
-        public void setContactList(List<ContectListData.Contact> contacts) {
+        public void setContactList(List<CampaignTask_overview.SequenceProspect> contacts) {
             this.contacts = contacts;
         }
 
@@ -282,16 +384,26 @@ public class View_Contect_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-            ContectListData.Contact Contact_data = contacts.get(position);
-            Log.e("Selcete List Is",new Gson().toJson(select_contectListData));
+            CampaignTask_overview.SequenceProspect Contact_data = contacts.get(position);
             switch (getItemViewType(position)) {
                 case ITEM:
                     GroupContectAdapter.MovieViewHolder holder1 = (GroupContectAdapter.MovieViewHolder) holder;
-                    contacts.get(position).setFlag("true");
+                  /*  contacts.get(position).setFlag("true");*/
                     holder1.userName.setText(Contact_data.getFirstname());
                     holder1.userNumber.setVisibility(View.GONE);
+                    holder1.tv_step.setText("Step#"+Contact_data.getAstepNo());
 
-                    if (Contact_data.getContactImage() == null) {
+                    if (Contact_data.getAtype().equals("SMS"))
+                    {
+                        holder1.iv_email.setVisibility(View.GONE);
+                        holder1.iv_mesage.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        holder1.iv_email.setVisibility(View.VISIBLE);
+                        holder1.iv_mesage.setVisibility(View.GONE);
+                    }
+
+
                         String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
                         String add_text = "";
                         String[] split_data = name.split(" ");
@@ -309,25 +421,17 @@ public class View_Contect_Fragment extends Fragment {
                         }
 
 
+                        holder1.main_layout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(getActivity(), Campaign_view_per_contect_Detail.class);
+                                intent.putExtra("position",String.valueOf(position));
+                                startActivity(intent);
+                            }
+                        });
                         holder1.no_image.setText(add_text);
                         holder1.no_image.setVisibility(View.VISIBLE);
                         holder1.profile_image.setVisibility(View.GONE);
-                    } else {
-                        Glide.with(context).
-                                load(Contact_data.getContactImage())
-                                .placeholder(R.drawable.shape_primary_circle)
-                                .error(R.drawable.shape_primary_circle)
-                                .into(holder1.profile_image);
-                        holder1.no_image.setVisibility(View.GONE);
-                        holder1.profile_image.setVisibility(View.VISIBLE);
-                    }
-
-
-
-
-
-
-
 
                     break;
 
@@ -337,7 +441,7 @@ public class View_Contect_Fragment extends Fragment {
                     break;
             }
         }
-        public void updateList(List<ContectListData.Contact> list) {
+        public void updateList(List<CampaignTask_overview.SequenceProspect> list) {
             contacts = list;
             notifyDataSetChanged();
         }
@@ -354,14 +458,14 @@ public class View_Contect_Fragment extends Fragment {
 
         public void addLoadingFooter() {
             isLoadingAdded = true;
-            add(new ContectListData.Contact());
+            add(new CampaignTask_overview.SequenceProspect());
         }
 
         public void removeLoadingFooter() {
             isLoadingAdded = false;
 
             int position = contacts.size() - 1;
-            ContectListData.Contact result = getItem(position);
+            CampaignTask_overview.SequenceProspect result = getItem(position);
 
             if (result != null) {
                 contacts.remove(position);
@@ -369,21 +473,21 @@ public class View_Contect_Fragment extends Fragment {
             }
         }
 
-        public void add(ContectListData.Contact contact) {
+        public void add(CampaignTask_overview.SequenceProspect contact) {
             contacts.add(contact);
             notifyItemInserted(contacts.size() - 1);
             //  notifyDataSetChanged();
         }
 
-        public void addAll(List<ContectListData.Contact> contact) {
-            for (ContectListData.Contact result : contact) {
+        public void addAll(List<CampaignTask_overview.SequenceProspect> contact) {
+            for (CampaignTask_overview.SequenceProspect result : contact) {
 
                 add(result);
             }
 
         }
 
-        public ContectListData.Contact getItem(int position) {
+        public CampaignTask_overview.SequenceProspect getItem(int position) {
             return contacts.get(position);
         }
 
@@ -393,6 +497,7 @@ public class View_Contect_Fragment extends Fragment {
             TextView userName, userNumber,tv_step;
             CircleImageView profile_image;
             ImageView iv_email,iv_mesage;
+            RelativeLayout main_layout;
             public MovieViewHolder(View itemView) {
                 super(itemView);
                 userName = itemView.findViewById(R.id.username);
@@ -403,6 +508,7 @@ public class View_Contect_Fragment extends Fragment {
                 tv_step=itemView.findViewById(R.id.tv_step);
                 iv_email=itemView.findViewById(R.id.iv_email);
                 iv_mesage=itemView.findViewById(R.id.iv_mesage);
+                main_layout=itemView.findViewById(R.id.main_layout);
             }
         }
 

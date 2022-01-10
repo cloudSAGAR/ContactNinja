@@ -389,7 +389,7 @@ public class CampaignTask_overview {
 
     }
 
-    public class SequenceProspect {
+    public static class SequenceProspect {
 
         @SerializedName("contact_id")
         @Expose

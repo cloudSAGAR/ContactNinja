@@ -317,11 +317,22 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                             loadingDialog.cancelLoading();
 
                             if (response.body().getStatus() == 200) {
-                                Intent intent=new Intent(getApplicationContext(),Campaign_Name_Activity.class);
-                                intent.putExtra("sequence_id",sequence_id);
-                                intent.putExtra("seq_task_id",seq_task_id);
-                                startActivity(intent);
-                                finish();
+
+                               if (SessionManager.getContect_flag(getApplicationContext()).equals("check"))
+                               {
+                                   Intent intent = new Intent(getApplicationContext(), Campaign_Viewcontect.class);
+                                   intent.putExtra("sequence_id", sequence_id);
+                                   startActivity(intent);
+                                   finish();
+                               }
+                              else {
+                                   Intent intent=new Intent(getApplicationContext(),Campaign_Name_Activity.class);
+                                   intent.putExtra("sequence_id",sequence_id);
+                                   intent.putExtra("seq_task_id",seq_task_id);
+                                   startActivity(intent);
+                                   finish();
+                               }
+
                             } else {
                                 Global.Messageshow(getApplicationContext(),main_layout,response.body().getMessage(),false);
 
