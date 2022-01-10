@@ -434,4 +434,10 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }
