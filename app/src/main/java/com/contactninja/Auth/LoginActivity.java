@@ -371,7 +371,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }.getType();
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
-                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
+                    sessionManager.setRefresh_token(user_model.getRefreshToken());
+                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());
                     try {
                         if (user_model.getUser().getContactNumber().equals(""))
                         {
@@ -420,6 +421,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Log.e("String is",response.body().getMessage());
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
+                    try{
+
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
                     if (Login_type.equals("EMAIL"))
                     {
@@ -433,6 +436,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
 
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 else {
                     Gson gson = new Gson();

@@ -57,6 +57,7 @@ public class SessionManager {
 
     public static final String Campign_flag="campign_flag";
     public static final String Refresh_token="refresh_token";
+    public static final String Access_token="access_token";
     public static final String csv_token="csv_token";
 
     public static final String Contect_List ="contectlist";
@@ -167,6 +168,18 @@ public class SessionManager {
 
     public  void setRefresh_token(String efresh_token) {
         editor.putString(Refresh_token, efresh_token);
+        editor.commit();
+    }
+
+    public  String getAccess_token() {
+
+        String type= pref.getString(Access_token, "");
+        return  type;
+
+    }
+
+    public  void setAccess_token(String access_token) {
+        editor.putString(Access_token, access_token);
         editor.commit();
     }
 

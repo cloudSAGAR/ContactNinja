@@ -55,7 +55,7 @@ public class ApiResponse {
         }
     }*/
 
-    public Integer getStatus() {
+    public Integer  getStatus() {
         return status;
     }
 

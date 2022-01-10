@@ -440,7 +440,8 @@ public class ContectFragment extends Fragment {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
                Log.e("Reponse is", new Gson().toJson(response.body()));
-                if (response.body().getStatus() == 200) {
+               try{
+             //   if (response.body().getStatus() == 200) {
                     SessionManager.setContectList(getActivity(), new ArrayList<>());
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -464,8 +465,10 @@ public class ContectFragment extends Fragment {
                     num_count.setText("" + contectListData1.getTotal() + " Contacts");
 
                     totale_group = contectListData1.getTotal();
-                }
-
+            //    }
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
             }
 
             @Override

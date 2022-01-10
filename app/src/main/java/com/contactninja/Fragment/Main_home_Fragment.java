@@ -88,10 +88,11 @@ public class Main_home_Fragment extends Fragment {
     private void Refreess_token() throws JSONException {
 
 
-        String token = Global.getToken(sessionManager);
+        String token = sessionManager.getAccess_token();
+        String Refresh_token = sessionManager.getRefresh_token();
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("refresh_token", ""+token);
+        paramObject.addProperty("refresh_token", sessionManager.getRefresh_token());
         obj.add("data", paramObject);
         Log.e("Tokem is ",new Gson().toJson(obj));
         retrofitCalls.Refress_Token(sessionManager,obj, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
@@ -99,16 +100,25 @@ public class Main_home_Fragment extends Fragment {
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<Grouplist>() {
-                    }.getType();
-                    SignResponseModel data= new Gson().fromJson(headerString, listType);
-                    sessionManager.setRefresh_token(data.getTokenType()+" "+data.getAccessToken());
-                    //   sessionManager.setUserdata(getApplicationContext(),data);
+                ApiResponse apiResponse=response.body();
+                try{
+                    if (apiResponse.getStatus() == 200) {
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Type listType = new TypeToken<SignResponseModel>() {
+                        }.getType();
+                        SignResponseModel data= new Gson().fromJson(headerString, listType);
+                        sessionManager.setRefresh_token(data.getRefreshToken());
+                        sessionManager.setAccess_token(data.getTokenType()+" "+data.getAccessToken());
 
+                        Log.e("Access_token",data.getTokenType()+" "+data.getAccessToken());
+                        Log.e("Refresh_token",data.getRefreshToken());
+
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
             }
 
             @Override

@@ -420,8 +420,8 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     }.getType();
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
-                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-
+                    sessionManager.setRefresh_token(user_model.getRefreshToken());
+                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());
                     if (login_type.equals("EMAIL"))
                     {
 
@@ -526,8 +526,9 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     // Log.e("Reponse is",gson.toJson(response.body().getData()));
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
-                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-                   try {
+                    sessionManager.setRefresh_token(user_model.getRefreshToken());
+                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());                   try {
+
                        if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                            intent.putExtra("login_type", login_type);
