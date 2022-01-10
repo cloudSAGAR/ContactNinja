@@ -561,19 +561,19 @@ public class ContectFragment extends Fragment {
             paginationAdapter.notifyDataSetChanged();
             sessionManager.setContectList(getActivity(),new ArrayList<>());
 
-            /*try {
+            try {
                 ContectEvent();
             } catch (JSONException e) {
                 e.printStackTrace();
-            }*/
+            }
         }
         catch (Exception e)
         {
-            /*try {
+            try {
                 ContectEvent();
             } catch (JSONException e1) {
                 e1.printStackTrace();
-            }*/
+            }
         }
 
         super.onResume();
