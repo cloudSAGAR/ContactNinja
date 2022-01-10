@@ -251,10 +251,10 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
                             }.getType();
 
                             CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
-                            Log.e("User Model",new Gson().toJson(user_model1));
+                            //Log.e("User Model",new Gson().toJson(user_model1));
                             SessionManager.setCampaign_data(user_model1);
-                            Log.e("Email Task",user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
-                            Log.e("SMS",user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
+                          //  Log.e("Email Task",user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
+                           // Log.e("SMS",user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
 
                           //  tv_email.setText(user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
                             //tv_sms.setText(user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());

@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -107,6 +108,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     EditText ev_othre_company;
     public int PhoneFieldNumber=0;// total Phone add count
     public int emailFieldNumber=0;// total email add count
+    ImageView iv_down;
 
 
 
@@ -149,6 +151,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_note.setEnabled(true);
             // Log.e("Null", "No Call");
             edit = true;
+            iv_down.setVisibility(View.VISIBLE);
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
             addcontectModel.setJob_title(Contect_data.getJobTitle());
@@ -170,7 +173,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_company.setText(Contect_data.getCompanyName());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
-            zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null"))
+            {
+                String time_zone= TimeZone.getDefault().getID();
+                zone_txt.setText(time_zone);
+            }
+            else {
+                zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            }
             ev_job.setText(Contect_data.getJobTitle());
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
@@ -235,6 +245,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         }
         else if (flag.equals("read")) {
+            iv_down.setVisibility(View.GONE);
+
             company_layout.setEnabled(false);
             image_list_show.setVisibility(View.GONE);
             media_link.setVisibility(View.GONE);
@@ -286,7 +298,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_company.setText(Contect_data.getCompanyName());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
-            zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null"))
+            {
+                String time_zone= TimeZone.getDefault().getID();
+                zone_txt.setText(time_zone);
+            }
+            else {
+                zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            }
+
             ev_job.setText(Contect_data.getJobTitle());
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
@@ -425,6 +445,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
 
         } else {
+            iv_down.setVisibility(View.VISIBLE);
             PhoneViewAdd();
             EmailViewAdd();
             TextSet();
@@ -940,7 +961,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         image_list_show=view.findViewById(R.id.image_list_show);
         other_company_layout=view.findViewById(R.id.other_company_layout);
         ev_othre_company=view.findViewById(R.id.ev_othre_company);
-
+        iv_down=view.findViewById(R.id.iv_down);
     }
 
 
@@ -1826,15 +1847,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.edt_mobile_no.setOnKeyListener(new View.OnKeyListener() {
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    UpdateContect(contactdetails.get(position));
+                             /*try {
+                               if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                                    //UpdateContect(contactdetails.get(position));
                                 }
                                 //break;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
+*/
 
                             return true;
                         }

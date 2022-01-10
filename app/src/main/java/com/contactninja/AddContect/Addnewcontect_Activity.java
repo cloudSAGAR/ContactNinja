@@ -161,8 +161,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
+            iv_user.setOnClickListener(this);
             if(Contect_data.getContactImage()==null){
                 iv_user.setVisibility(View.GONE);
+
                 layout_pulse.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
                 tv_nameLetter.setVisibility(View.VISIBLE);
@@ -195,7 +197,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         into(iv_user);
             }
             olld_image = Contect_data.getContactImage();
-
             save_button.setText("Save Contact");
 
 
@@ -203,6 +204,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         } else if (flag.equals("read")) {
             edt_FirstName.setEnabled(false);
             edt_lastname.setEnabled(false);
+            iv_user.setOnClickListener(null);
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
             edt_FirstName.setText(Contect_data.getFirstname());
@@ -443,7 +445,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         iv_user = findViewById(R.id.iv_user);
         pulse_icon.setOnClickListener(this);
-        iv_user.setOnClickListener(this);
+
     }
 
 
@@ -659,7 +661,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
             if (contactdetails.get(i).getEmail_number().equals("")) {
-    } else {
+            }
+            else {
                 if (contactdetails.get(i).getType().equals("NUMBER"))
                 {
                     phone = contactdetails.get(i).getEmail_number();

@@ -822,11 +822,13 @@
 
                     <LinearLayout
                         android:id="@+id/select_label_zone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_27sdp"
+                        android:paddingTop="@dimen/_4sdp"
+                        android:paddingBottom="@dimen/_4sdp"
+                        android:layout_width="@dimen/_170sdp"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/shape_border_ccc"
-                        android:paddingStart="@dimen/_20sdp"
-                        android:paddingEnd="@dimen/_20sdp">
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             android:id="@+id/zone_txt"
@@ -844,6 +846,7 @@
                         </TextView>
 
                         <ImageView
+                            android:id="@+id/iv_down"
                             android:layout_width="@dimen/_12sdp"
                             android:layout_height="@dimen/_12sdp"
                             android:layout_gravity="center"

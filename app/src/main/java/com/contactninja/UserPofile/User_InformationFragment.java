@@ -60,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -102,9 +103,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     boolean edit = false;
     private int mYear, mMonth, mDay, mHour, mMinute;
     EditText ev_othre_company;
-
-
-
+    ImageView iv_down;
     public User_InformationFragment() {
         // Required empty public constructor
     }
@@ -181,6 +180,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_note.setEnabled(true);
             // Log.e("Null", "No Call");
             edit = true;
+            iv_down.setVisibility(View.VISIBLE);
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
             addcontectModel.setJob_title(Contect_data.getJobTitle());
@@ -202,7 +202,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_company.setText(Contect_data.getCompanyName());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
-            zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null"))
+            {
+                String time_zone= TimeZone.getDefault().getID();
+                zone_txt.setText(time_zone);
+            }
+            else {
+                zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            }
             ev_job.setText(Contect_data.getJobTitle());
             try {
                 contect_id = Contect_data.getId();
@@ -289,6 +296,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             tv_add_social.setVisibility(View.VISIBLE);
             ev_company.setEnabled(false);
             ev_company_url.setEnabled(false);
+            iv_down.setVisibility(View.GONE);
             ev_job.setEnabled(false);
             ev_zoom.setEnabled(false);
             ev_address.setEnabled(false);
@@ -337,8 +345,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_company.setText(Contect_data.getCompanyName());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
-            zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
-            ev_job.setText(Contect_data.getJobTitle());
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null"))
+            {
+                String time_zone= TimeZone.getDefault().getID();
+                zone_txt.setText(time_zone);
+            }
+            else {
+                zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            }            ev_job.setText(Contect_data.getJobTitle());
            // contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
@@ -486,6 +500,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             PhoneViewAdd();
             EmailViewAdd();
             TextSet();
+            iv_down.setVisibility(View.VISIBLE);
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.GONE);
         }
@@ -929,6 +944,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     }
 
     private void IntentUI(View view) {
+        iv_down=view.findViewById(R.id.iv_down);
         tv_phone = view.findViewById(R.id.tv_phone);
         ev_address = view.findViewById(R.id.ev_address);
         ev_city = view.findViewById(R.id.ev_city);

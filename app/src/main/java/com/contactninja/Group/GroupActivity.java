@@ -1180,7 +1180,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                 }
                                 Log.e("DATALIST",new Gson().toJson(detailList));
                                 Log.e("DATALIST 1" ,new Gson().toJson(detailList1));
-                                if (detailList.size()==1 && detailList1.size()==1)
+                                if (detailList.size()==1)
                                 {
                                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                     holder1.add_new_contect_icon.setVisibility(View.GONE);
@@ -1192,7 +1192,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                     save_button.setTextColor(getResources().getColor(R.color.purple_200));
 
                                 }
-                                else if (detailList.size()>=1 || detailList1.size()>=1)
+                                else if (detailList.size()>=1 )
                                 {
                                     for(int i=0;i<detailList.size();i++){
                                         if(detailList.get(i).getIsDefault()==1){
