@@ -122,7 +122,7 @@ public class MembersFragment extends Fragment {
                     FastScrollItemIndicator fastScrollItemIndicator= new FastScrollItemIndicator.Text(
 
 
-                            inviteListData.get(position).getEmail().substring(0, 1)
+                            contectListData.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
