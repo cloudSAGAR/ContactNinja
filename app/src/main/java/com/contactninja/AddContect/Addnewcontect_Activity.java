@@ -775,12 +775,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("breakout_link", addcontectModel.getBreakoutu());
         paramObject.put("city", city);
 
-        if(olld_image!=null){
-            paramObject.put("oldImage", olld_image);
-        }
-        else {
-            paramObject.put("oldImage", "");
-        }
 
         paramObject.put("company_url", "");
         paramObject.put("dob", addcontectModel.getBirthday());
@@ -804,12 +798,21 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         {
             paramObject.put("contact_image", user_image_Url);
             paramObject.put("contact_image_name", File_name);
+            paramObject.put("image_extension", File_extension);
+            if(olld_image!=null){
+                paramObject.put("oldImage", olld_image);
+            }
+            else {
+                paramObject.put("oldImage", "");
+            }
+
         }
         else {
-            paramObject.put("contact_image", "");
-            paramObject.put("contact_image_name", "");
+            paramObject.put("contact_image", olld_image);
+         //   paramObject.put("contact_image", "");
+         //   paramObject.put("contact_image_name", "");
         }
-        paramObject.put("image_extension", File_extension);
+
         paramObject.put("notes",addcontectModel.getNote());
 
 

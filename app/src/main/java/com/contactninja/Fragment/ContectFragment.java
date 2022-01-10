@@ -555,27 +555,25 @@ public class ContectFragment extends Fragment {
     public void onResume() {
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-
-
         try {
             contectListData.clear();
             paginationAdapter.removeloist();
             paginationAdapter.notifyDataSetChanged();
             sessionManager.setContectList(getActivity(),new ArrayList<>());
 
-            try {
+            /*try {
                 ContectEvent();
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
         catch (Exception e)
         {
-            try {
+            /*try {
                 ContectEvent();
             } catch (JSONException e1) {
                 e1.printStackTrace();
-            }
+            }*/
         }
 
         super.onResume();

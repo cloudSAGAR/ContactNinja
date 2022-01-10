@@ -2,6 +2,8 @@ package com.contactninja.Campaign.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.contactninja.Campaign.Automated_Email_Activity;
+import com.contactninja.Campaign.Campaign_Final_Start;
 import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.Campaign.First_Step_Activity;
 import com.contactninja.Campaign.First_Step_Start_Activity;
@@ -34,8 +37,11 @@ import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,15 +59,14 @@ public class Campaign_Step_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       View view=inflater.inflate(R.layout.fragment_campaign__step_, container, false);
+        View view=inflater.inflate(R.layout.fragment_campaign__step_, container, false);
         IntentUI(view);
         loadingDialog = new LoadingDialog(getActivity());
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getContext());
         item_list.setAdapter(campaign_overviewAdapter);
-        CampaignTask_overview user_model1=SessionManager.getCampaign_data(getContext());
-        campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
+        StepData();
         return view;
     }
 
@@ -427,5 +432,83 @@ public class Campaign_Step_Fragment extends Fragment {
                     }
                 });
     }
+
+
+    public void StepData() {
+       // loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        if (SessionManager.getTask(getActivity()).size() != 0) {
+            sequence_id = SessionManager.getTask(getActivity()).get(0).getSequenceId();
+        } else {
+            Intent getintent = getActivity().getIntent();
+            Bundle bundle = getintent.getExtras();
+            sequence_id = bundle.getInt("sequence_id");
+        }
+        Log.e("sequence_id", String.valueOf(sequence_id));
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        PackageManager pm = getActivity().getPackageManager();
+        String pkgName = getActivity().getPackageName();
+        PackageInfo pkgInfo = null;
+        try {
+            pkgInfo = pm.getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+
+                        if (response.body().getStatus() == 200) {
+
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            Type listType = new TypeToken<CampaignTask_overview>() {
+                            }.getType();
+
+                            CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
+                            //Log.e("User Model",new Gson().toJson(user_model1));
+                            SessionManager.setCampaign_data(user_model1);
+
+                            //CampaignTask_overview user_model1=SessionManager.getCampaign_data(getContext());
+                            campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
+
+                            //  Log.e("Email Task",user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
+                            // Log.e("SMS",user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
+
+                            //  tv_email.setText(user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
+                            //tv_sms.setText(user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
+
+
+
+
+                        } else {
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
+
 
 }

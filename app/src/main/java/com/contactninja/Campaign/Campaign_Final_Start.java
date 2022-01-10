@@ -15,6 +15,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -53,6 +55,7 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
     TabLayout tabLayout;
     ViewPager viewPager;
     String strtext = "";
+    Campaign_Step_Fragment campaign_step_fragment;
     ViewpaggerAdapter adapter;
     ImageView iv_back, iv_Setting;
     TextView save_button;
@@ -165,9 +168,8 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
 
             switch (position) {
                 case 0:
-                    Campaign_Step_Fragment campaign_step_fragment = new Campaign_Step_Fragment();
+                    campaign_step_fragment = new Campaign_Step_Fragment();
                     return campaign_step_fragment;
-
                 case 1:
                     Campaign_Stats_Fragment c_Fragment = new Campaign_Stats_Fragment();
                     return c_Fragment;

@@ -284,9 +284,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         String contect_list_count = String.valueOf(campaign.getProspect());
         if (campaign.getStatus().equals("A"))
         {
-        //    Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
-          //  intent.putExtra("sequence_id", campaign.getId());
-            //startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
+            intent.putExtra("sequence_id", campaign.getId());
+            startActivity(intent);
         }else if (contect_list_count.equals("0")) {
 
             Intent intent = new Intent(getApplicationContext(), Campaign_Overview.class);
