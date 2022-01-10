@@ -1483,7 +1483,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                     contactDetails.addAll(userLinkedGmailList);
-                    Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+                  //  Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
                     contacts.get(position).setContactDetails(contactDetails);
                     select_contectListData.add(contacts.get(position));
                     topUserListDataAdapter.notifyDataSetChanged();

@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     loadingDialog.showLoadingDialog();
 
                 }
-                GetContactsIntoArrayList();
+               // GetContactsIntoArrayList();
 
             }
 
@@ -349,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
                             csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
                             csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
-
                             csv_inviteListData.remove(indexOpt.getAsInt() + 1);
                         }
                         //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
