@@ -1,19 +1,22 @@
 package com.contactninja.UserPofile;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.contactninja.R;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class User_BzcardFragment extends Fragment {
 
-
-
+    LinearLayout demo_layout;
+    TextView tv_create;
     public User_BzcardFragment() {
         // Required empty public constructor
     }
@@ -28,6 +31,10 @@ public class User_BzcardFragment extends Fragment {
     }
 
     private void IntentUI(View view) {
-
+        demo_layout=view.findViewById(R.id.demo_layout);
+        tv_create=view.findViewById(R.id.tv_create);
+        demo_layout.setVisibility(View.VISIBLE);
+        tv_create.setText("Click to create\n" +
+                " BZcard");
     }
 }

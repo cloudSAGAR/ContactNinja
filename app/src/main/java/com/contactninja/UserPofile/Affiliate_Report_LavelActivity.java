@@ -7,9 +7,12 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.AffiliateInfo;
 import com.contactninja.Model.UserData.LevelModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -51,6 +55,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
     AffiliateInfo affiliateInfo=new AffiliateInfo();
     List<String> lavelName=new ArrayList<>();
     LinearLayout select_label_zone;
+    EditText contect_search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +121,34 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
             lavelAdapter = new LavelAdapter(Affiliate_Report_LavelActivity.this,level1List);
             rv_lavel_list.setAdapter(lavelAdapter);
 
+
+            List<LevelModel> finalLevel1List = level1List;
+            contect_search.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    List<LevelModel> temp=new ArrayList<>();
+                    for(LevelModel d: finalLevel1List){
+                        if(d.getName().toLowerCase().contains(s.toString().toLowerCase())){
+                            temp.add(d);
+                            // Log.e("Same Data ",d.getUserName());
+                        }
+                    }
+                    lavelAdapter.updateList(temp);
+                    //groupContectAdapter.notifyDataSetChanged();
+                    contect_search.setText("");
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
         }
 
     }
@@ -135,6 +168,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
         bottomSheetDialog.show();
     }
     private void IntentView() {
+        contect_search =findViewById(R.id.contect_search);
         rv_lavel_list =findViewById(R.id.lavel_list);
         tv_lavel_name =findViewById(R.id.tv_lavel_name);
         select_label_zone =findViewById(R.id.select_label_zone);
@@ -346,7 +380,10 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
     public int getItemCount() {
         return level1List.size();
     }
-
+    public void updateList(List<LevelModel> list) {
+        level1List = list;
+        notifyDataSetChanged();
+    }
     public static class viewholder extends RecyclerView.ViewHolder {
         TextView tv_user_name,no_image,tv_Referrer_by;
 

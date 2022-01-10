@@ -56,7 +56,7 @@ android:layout_height="wrap_content">
             android:gravity="center|left"
             android:singleLine="true"
             android:text="@string/add_new_group_name"
-            android:textColor="@color/otp_header_text_color"
+            android:textColor="@color/home_list_sub_data"
             android:textStyle="bold"
           />
 

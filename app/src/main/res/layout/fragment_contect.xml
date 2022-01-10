@@ -43,6 +43,7 @@
                 android:background="@color/add_contect_transpernt"
                 android:gravity="center|left"
                 android:singleLine="true"
+                android:hint="@string/search_hint"
                 android:textColor="@color/tv_medium"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 

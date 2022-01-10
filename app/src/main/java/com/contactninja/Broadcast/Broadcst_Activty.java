@@ -45,6 +45,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class Broadcst_Activty extends AppCompatActivity implements View.OnClickListener , CardClick,  ConnectivityReceiver.ConnectivityReceiverListener {
     TabLayout tabLayout;
@@ -401,7 +402,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
         return broadcast_image_list.size();
     }
 
-    public class cardListData extends RecyclerView.ViewHolder {
+    public static class cardListData extends RecyclerView.ViewHolder {
 
         ImageView iv_card;
         LinearLayout layout_select_image;

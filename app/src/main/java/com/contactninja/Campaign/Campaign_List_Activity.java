@@ -44,6 +44,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Response;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class Campaign_List_Activity extends AppCompatActivity implements View.OnClickListener,
         SwipeRefreshLayout.OnRefreshListener, CampaingClick {
@@ -303,7 +304,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     }
 
 
-    public class CampaingAdepter extends RecyclerView.Adapter<CampaingAdepter.viewData> {
+    public static class CampaingAdepter extends RecyclerView.Adapter<CampaingAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
@@ -413,7 +414,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         }
 
 
-        public class viewData extends RecyclerView.ViewHolder {
+        public static class viewData extends RecyclerView.ViewHolder {
             TextView campaign_name;
             ImageView iv_hold, iv_puse_icon, iv_play_icon;
 

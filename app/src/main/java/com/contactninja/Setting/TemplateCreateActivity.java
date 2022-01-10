@@ -24,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.HastagList;
@@ -50,6 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
+
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class TemplateCreateActivity extends AppCompatActivity implements View.OnClickListener, TextClick, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
@@ -114,6 +115,11 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         edit_template_name.setText(template.getTemplateName());
         edit_template.setText(template.getContentBody());
         edit_template.setSelection(edit_template.getText().length());
+        try {
+            edit_template_subject.setText(template.getContentHeader());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void Hastag_list() throws JSONException {
