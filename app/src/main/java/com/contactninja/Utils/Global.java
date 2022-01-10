@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 public class Global extends Application   {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static final String Device = "APP_ANDR";
+    public static String AppVersion = "";
     public static String about="https://contactninja.us/about/";
     public static String Email_auth="https://app.contactninja.org/email_api/callback.php";
     private static long lastClickTime = 0;
@@ -69,6 +70,7 @@ public class Global extends Application   {
         try {
             PackageInfo pInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
              version = pInfo.versionName;
+            AppVersion=version;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

@@ -56,13 +56,13 @@ public class Main_home_Fragment extends Fragment {
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog=new LoadingDialog(getActivity());
         sessionManager=new SessionManager(getActivity());
-        try {
+     /*   try {
             if(Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 Refreess_token();
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         try {
             if(Global.isNetworkAvailable(getActivity(),MainActivity.mMainLayout)) {
                 TimeZooneUpdate();
