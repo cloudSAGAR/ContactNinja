@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
+    android:id="@+id/mMainLayout"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Group.GroupActivity">
     <LinearLayout
         android:layout_marginTop="@dimen/_5sdp"
@@ -69,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center|left"
-            android:hint="Search"
+            android:hint="@string/search_hint"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:background="@color/add_contect_transpernt"
@@ -90,7 +92,7 @@
             android:padding="@dimen/_10sdp"
             android:background="@drawable/shape_oval_border_10_blue"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"></ImageView>
+            android:layout_height="@dimen/_35sdp"/>
 
         <TextView
             android:id="@+id/add_new_contect"
@@ -124,7 +126,7 @@
         android:layout_marginTop="@dimen/_12sdp"
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"></View>
+        android:layout_height="1dp"/>
 
 
 

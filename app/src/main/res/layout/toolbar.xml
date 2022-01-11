@@ -4,6 +4,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_50sdp"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:background="@color/white">
 
 
@@ -31,17 +32,7 @@
 
     </TextView>
 
-    <ImageView
-        android:id="@+id/iv_Setting"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="end"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:padding="@dimen/_5sdp"
-        android:src="@drawable/ic_setting"
-        android:visibility="gone"
-        tools:ignore="ContentDescription" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -85,7 +76,17 @@
             android:src="@drawable/ic_more"
             tools:ignore="ContentDescription" />
     </LinearLayout>
-
+    <ImageView
+        android:id="@+id/iv_Setting"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:src="@drawable/ic_setting"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/layout_toolbar_logo"

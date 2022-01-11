@@ -68,7 +68,7 @@ import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class User_InformationFragment extends Fragment implements View.OnClickListener {
 
     List<TimezoneModel> timezoneModels=new ArrayList<>();
@@ -265,7 +265,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         }
                         catch (Exception e)
                         {
-
+e.printStackTrace();
                         }
 
                         contactdetail.setLabel(detail_contect.get(i).getLabel());

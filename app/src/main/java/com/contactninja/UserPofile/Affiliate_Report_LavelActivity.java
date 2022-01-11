@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.AffiliateInfo;
 import com.contactninja.Model.UserData.LevelModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -380,6 +379,7 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
     public int getItemCount() {
         return level1List.size();
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void updateList(List<LevelModel> list) {
         level1List = list;
         notifyDataSetChanged();

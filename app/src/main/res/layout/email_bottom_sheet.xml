@@ -60,7 +60,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:background="@drawable/shape_primary_back"
-            android:layout_height="@dimen/_40sdp"></TextView>
+            android:layout_height="@dimen/_40sdp"/>
 
     </LinearLayout>
 

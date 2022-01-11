@@ -1,5 +1,6 @@
 package com.contactninja.Broadcast.Broadcast_Schedule;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -28,7 +29,7 @@ import com.contactninja.Utils.Global;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Repeat_Month_Activity extends AppCompatActivity implements  ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back, iv_Setting;
     TextView save_button, date_spinner, tv_day;

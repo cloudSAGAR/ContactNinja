@@ -3,6 +3,7 @@ package com.contactninja.Fragment.AddContect_Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +37,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -50,7 +50,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-@SuppressLint("UnknownNullness,SyntheticAccessor,SetTextI18n")
+@SuppressLint("UnknownNullness,SyntheticAccessor,SetTextI18n,StaticFieldLeak")
 public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
@@ -193,16 +193,45 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
-        try {
-            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
-                loadingDialog.showLoadingDialog();
-                GroupEvent();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                //loadingDialog.showLoadingDialog();
+                MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                myAsyncTasks.execute();
+
     }
 
+
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                    GroupEvent();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
+    }
     private void GroupEvent() throws JSONException {
 
 
@@ -395,7 +424,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                         }
                         catch (Exception e)
                         {
-
+                            e.printStackTrace();
                         }
 
 

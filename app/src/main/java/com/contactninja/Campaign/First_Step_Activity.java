@@ -1,27 +1,31 @@
 package com.contactninja.Campaign;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.contactninja.Campaign.Fragment.Campaign_Email_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Sms_Fragment;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -29,7 +33,8 @@ import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
 
-public class First_Step_Activity extends AppCompatActivity implements View.OnClickListener {
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
+public class First_Step_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -42,6 +47,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
             R.drawable.ic_message_tab,
     };
     LinearLayout mMainLayout;
+    private BroadcastReceiver mNetworkReceiver;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -49,6 +55,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_step);
+        mNetworkReceiver = new ConnectivityReceiver();
         loadingDialog=new LoadingDialog(this);
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -184,8 +191,41 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                 break;
 
         }
+
+
     }
-public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(First_Step_Activity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
+    public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     private String tabTitles[] = new String[] { "Email ", "SMS" };
     private int[] imageResId = { R.drawable.ic_email, R.drawable.ic_message_tab };
     final int PAGE_COUNT = 2;
@@ -197,9 +237,9 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     public View getTabView(int position) {
         // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
         View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.custom_tab_campagin, null);
-        TextView tv = (TextView) v.findViewById(R.id.tabContent);
+        TextView tv = v.findViewById(R.id.tabContent);
         tv.setText(tabTitles[position]);
-        ImageView img = (ImageView) v.findViewById(R.id.image_view);
+        ImageView img =  v.findViewById(R.id.image_view);
         img.setImageResource(imageResId[position]);
         return v;
     }

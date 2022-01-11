@@ -1,5 +1,6 @@
 package com.contactninja.Broadcast.Broadcast_Frgment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,7 +21,7 @@ import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Broadcst_Fragment extends Fragment implements ViewPager.OnPageChangeListener {
 
     TabLayout tabLayout;

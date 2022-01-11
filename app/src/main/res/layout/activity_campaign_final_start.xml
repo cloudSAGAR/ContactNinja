@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context="com.contactninja.MainActivity">
     <include
         android:id="@+id/include2"
@@ -212,12 +213,12 @@
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/tv_medium"
-        app:tabTextColor="@color/bz_text"></com.google.android.material.tabs.TabLayout>
+        app:tabTextColor="@color/bz_text"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/home_list_back_line"></View>
+        android:background="@color/home_list_back_line"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

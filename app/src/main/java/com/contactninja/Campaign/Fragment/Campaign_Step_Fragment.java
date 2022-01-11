@@ -1,17 +1,11 @@
 package com.contactninja.Campaign.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Response;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Campaign.Automated_Email_Activity;
-import com.contactninja.Campaign.Campaign_Final_Start;
-import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.Campaign.First_Step_Activity;
 import com.contactninja.Campaign.First_Step_Start_Activity;
 import com.contactninja.Model.CampaignTask_overview;
@@ -45,7 +42,9 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
+import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Campaign_Step_Fragment extends Fragment {
 
     RecyclerView item_list;

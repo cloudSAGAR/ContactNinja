@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.contactninja"
-    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,     AllowBackup,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
+    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,AllowBackup,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -49,8 +49,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Campaign.Campaign_view_per_contect_Detail"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserPofile.Affiliate_Report_LavelActivity"
             android:exported="true"

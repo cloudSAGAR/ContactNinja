@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -66,7 +68,6 @@
                     android:layout_height="wrap_content">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/profile_image"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
@@ -132,7 +133,7 @@
                         android:layout_gravity="center"
                         android:background="@drawable/shape_oval_border_10_blue"
                         android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"></ImageView>
+                        android:layout_height="@dimen/_25sdp"/>
 
                     <ImageView
                         android:visibility="gone"
@@ -143,7 +144,7 @@
                         android:layout_gravity="center"
                         android:background="@drawable/shape_blue_back_dialog"
                         android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"></ImageView>
+                        android:layout_height="@dimen/_25sdp"/>
 
                 </LinearLayout>
 
@@ -152,7 +153,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@color/home_list_back_line"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"></View>
+                    android:layout_height="1dp"/>
 
 
                 </LinearLayout>

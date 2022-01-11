@@ -1,10 +1,16 @@
 package com.contactninja.Campaign;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +20,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.contactninja.Interface.CampaingClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Campaign_List;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.PaginationListener;
@@ -36,24 +50,17 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Response;
 
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
-
 public class Campaign_List_Activity extends AppCompatActivity implements View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener, CampaingClick {
+        SwipeRefreshLayout.OnRefreshListener, CampaingClick, ConnectivityReceiver.ConnectivityReceiverListener  {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back;
     TextView tv_create, sub_txt;
-    LinearLayout demo_layout, add_campaign_layout, mMainLayout1;
+    LinearLayout demo_layout, add_campaign_layout, mMainLayout1,mMainLayout;
     EditText ev_search;
     SwipeRefreshLayout swipeToRefresh;
     RecyclerView rv_campaign_list;
@@ -66,11 +73,13 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     private boolean isLastPage = false;
     private boolean isLoading = false;
 
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaign_list);
+        mNetworkReceiver = new ConnectivityReceiver();
         retrofitCalls = new RetrofitCalls(Campaign_List_Activity.this);
         loadingDialog = new LoadingDialog(Campaign_List_Activity.this);
         sessionManager = new SessionManager(Campaign_List_Activity.this);
@@ -116,6 +125,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         mMainLayout1 = findViewById(R.id.mMainLayout1);
         rv_campaign_list = findViewById(R.id.campaign_list);
         iv_back = findViewById(R.id.iv_back);
@@ -150,6 +160,36 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Campaign_List_Activity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     @Override
@@ -426,7 +466,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             }
         }
 
-        public class ProgressHolder extends viewData {
+        public static class ProgressHolder extends viewData {
             ProgressHolder(View itemView) {
                 super(itemView);
             }

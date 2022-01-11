@@ -1,17 +1,11 @@
 package com.contactninja.Fragment.GroupFragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +16,14 @@ import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
-import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.SigleGroupModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -55,7 +53,7 @@ import java.util.stream.IntStream;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class MembersFragment extends Fragment {
     private List<ContectListData.Contact> contectListData=new ArrayList<>();
     private List<ContectListData.Contact> selected_contectListData=new ArrayList<>();
@@ -193,7 +191,7 @@ public class MembersFragment extends Fragment {
         public UserListDataAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.invite_user_details, parent, false);
-            return new UserListDataAdapter.InviteListDataclass(view);
+            return new InviteListDataclass(view);
         }
 
         @Override
@@ -253,50 +251,13 @@ public class MembersFragment extends Fragment {
             }
             catch (Exception e)
             {
-
+                e.printStackTrace();
             }
 
 
             holder.no_image.setText(add_text);
             holder.no_image.setVisibility(View.VISIBLE);
             holder.profile_image.setVisibility(View.GONE);
-         /*   if (inviteUserDetails.getContactImage()==null)
-            {
-                String name =inviteUserDetails.getFirstname();
-                String add_text="";
-                String[] split_data=name.split(" ");
-                try {
-                    for (int i=0;i<split_data.length;i++)
-                    {
-                        if (i==0)
-                        {
-                            add_text=split_data[i].substring(0,1);
-                        }
-                        else {
-                            add_text=add_text+split_data[i].substring(0,1);
-                            break;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-
-                }
-
-
-                holder.no_image.setText(add_text);
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
-            }
-            else {
-                Glide.with(mCtx).
-                        load(inviteUserDetails.getContactImage())
-                        .placeholder(R.drawable.shape_primary_circle)
-                        .error(R.drawable.shape_primary_circle)
-                        .into(holder.profile_image);
-                holder.no_image.setVisibility(View.GONE);
-                holder.profile_image.setVisibility(View.VISIBLE);
-            }*/
             holder.userName.setText(inviteUserDetails.getFirstname());
             //holder.userNumber.setText(inviteUserDetails.getMobile());
             holder.userNumber.setVisibility(View.GONE);
@@ -318,7 +279,7 @@ public class MembersFragment extends Fragment {
             notifyDataSetChanged();
         }
 
-        public  class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
 
             TextView no_image;
             TextView userName, userNumber,first_latter;

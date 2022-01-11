@@ -1,17 +1,11 @@
 package com.contactninja.Campaign.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,13 +18,17 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Campaign.Campaign_view_per_contect_Detail;
 import com.contactninja.Campaign.ContectAndGroup_Actvity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
-import com.contactninja.Model.TimezoneModel;
 import com.contactninja.R;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -46,6 +44,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class View_Contect_Fragment extends Fragment implements View.OnClickListener {
 
 
@@ -293,7 +294,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
         home_type_list.setAdapter(timezoneAdapter);
 
 
-        Filtter_select_Adapter filtter_select_adapter=new Filtter_select_Adapter(getActivity(),filtter_list_normal);
+        Filtter_select_Adapter filtter_select_adapter= new Filtter_select_Adapter(getActivity(), filtter_list_normal);
         home_type_list_general.setAdapter(filtter_select_adapter);
         bottomSheetDialog_fillter.show();
     }
@@ -301,13 +302,8 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        switch (view.getId())
-        {
-            case R.id.filter_icon:
-                showBottomSheetDialog_Filtter();
-                break;
-
-
+        if (view.getId() == R.id.filter_icon) {
+            showBottomSheetDialog_Filtter();
         }
     }
 
@@ -464,7 +460,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                                 }
                             }
                         } catch (Exception e) {
-
+e.printStackTrace();
                         }
 
 
@@ -573,7 +569,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
     }
 
 
-    public class FiltterAdapter extends RecyclerView.Adapter<FiltterAdapter.InviteListDataclass> {
+    public static class FiltterAdapter extends RecyclerView.Adapter<FiltterAdapter.InviteListDataclass> {
 
         public Context mCtx;
         TextView phone_txt;
@@ -590,7 +586,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
         public FiltterAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.step_type_selecte1, parent, false);
-            return new FiltterAdapter.InviteListDataclass(view);
+            return new InviteListDataclass(view);
         }
 
         @Override
@@ -618,7 +614,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
             notifyDataSetChanged();
         }
 
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
             TextView tv_item;
             ImageView iv_message,iv_email;
 
@@ -633,7 +629,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
 
     }
 
-    public class Filtter_select_Adapter extends RecyclerView.Adapter<Filtter_select_Adapter.InviteListDataclass> {
+    public static class Filtter_select_Adapter extends RecyclerView.Adapter<Filtter_select_Adapter.InviteListDataclass> {
 
         public Context mCtx;
         TextView phone_txt;
@@ -650,7 +646,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
         public Filtter_select_Adapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.step_type_selecte_list, parent, false);
-            return new Filtter_select_Adapter.InviteListDataclass(view);
+            return new InviteListDataclass(view);
         }
 
         @Override
@@ -692,7 +688,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
             notifyDataSetChanged();
         }
 
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
             TextView tv_item;
             ImageView iv_unselected,iv_selected;
 

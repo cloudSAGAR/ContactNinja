@@ -1,5 +1,6 @@
 package com.contactninja.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.contactninja.R;
  * Use the {@link Main_send_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Main_send_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

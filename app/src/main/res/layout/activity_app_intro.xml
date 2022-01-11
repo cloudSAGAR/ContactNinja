@@ -6,6 +6,7 @@
     android:background="@color/purple_200"
     android:layout_height="match_parent"
     android:id="@+id/mMainLayout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Auth.AppIntroActivity">
 
 
@@ -29,7 +30,7 @@
         android:layout_above="@+id/tab_layout"
         android:layout_below="@+id/tv_skip"
         android:overScrollMode="never"
-        tools:ignore="MissingConstraints"></androidx.viewpager.widget.ViewPager>
+        tools:ignore="MissingConstraints"/>
 
   <!--  <TextView
         android:id="@+id/tv_dis"

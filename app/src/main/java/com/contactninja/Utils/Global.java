@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@SuppressLint({"SimpleDateFormat", "StaticFieldLeak"})
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Global extends Application   {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static final String Device = "APP_ANDR";

@@ -1,10 +1,13 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
+@SuppressLint("UnknownNullness")
 
 public class UserLinkedList implements Serializable {
     @SerializedName("total")

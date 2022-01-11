@@ -1,5 +1,6 @@
 package com.contactninja.Fragment;
 
+import android.annotation.SuppressLint;
 import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Main_home_Fragment extends Fragment {
 
 
@@ -147,7 +149,7 @@ public class Main_home_Fragment extends Fragment {
                 Locale.getDefault());
 
         Date currentLocalTime = calendar.getTime();
-        DateFormat date = new SimpleDateFormat("Z");
+        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
         String  offset = localTime.substring(0, 1);
 

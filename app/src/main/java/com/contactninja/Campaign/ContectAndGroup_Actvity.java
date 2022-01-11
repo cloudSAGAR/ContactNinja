@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class ContectAndGroup_Actvity extends AppCompatActivity implements View.OnClickListener ,CardClick,  ConnectivityReceiver.ConnectivityReceiverListener{
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -379,7 +379,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
     @Override
     public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
-        return new CardListAdepter.cardListData(view);
+        return new cardListData(view);
     }
 
     @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
@@ -416,7 +416,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
         return broadcast_image_list.size();
     }
 
-    public class cardListData extends RecyclerView.ViewHolder {
+    public static class cardListData extends RecyclerView.ViewHolder {
 
         ImageView iv_card;
         LinearLayout layout_select_image;

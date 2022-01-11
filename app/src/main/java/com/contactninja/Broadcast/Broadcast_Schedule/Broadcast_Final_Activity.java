@@ -1,12 +1,5 @@
 package com.contactninja.Broadcast.Broadcast_Schedule;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -25,6 +18,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
@@ -45,21 +45,23 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Broadcast_Final_Activity extends AppCompatActivity implements View.OnClickListener ,CardClick, ConnectivityReceiver.ConnectivityReceiverListener {
-    ImageView iv_back, iv_Setting;
-    TextView save_button,tv_start,tv_repite,tv_ends;
-    RecyclerView add_contect_list,add_group_list;
-    LinearLayoutManager layoutManager,layoutManager1;
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Broadcast_Final_Activity extends AppCompatActivity implements View.OnClickListener, CardClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public TopUserListDataAdapter topUserListDataAdapter;
+    ImageView iv_back, iv_Setting;
+    TextView save_button, tv_start, tv_repite, tv_ends;
+    RecyclerView add_contect_list, add_group_list;
+    LinearLayoutManager layoutManager, layoutManager1;
     List<ContectListData.Contact> select_contectListData;
     SessionManager sessionManager;
     List<Grouplist.Group> select_group;
     GroupDataAdapter groupDataAdapter;
-    String start_date="",end_date="",time="",type="";
-    List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
+    String start_date = "", end_date = "", time = "", type = "";
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
     CardListAdepter cardListAdepter;
-    private BroadcastReceiver mNetworkReceiver;
     LinearLayout main_layout;
+    private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,47 +69,46 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
 
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        start_date=bundle.getString("start_date","");
-        end_date=bundle.getString("end_date","");
-        type=bundle.getString("type","");
-        time=bundle.getString("time","");
-        tv_start.setText(""+start_date+" @ "+time);
-        tv_ends.setText(""+end_date);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        start_date = bundle.getString("start_date", "");
+        end_date = bundle.getString("end_date", "");
+        type = bundle.getString("type", "");
+        time = bundle.getString("time", "");
+        tv_start.setText("" + start_date + " @ " + time);
+        tv_ends.setText("" + end_date);
         tv_repite.setText(type);
-        sessionManager=new SessionManager(this);
+        sessionManager = new SessionManager(this);
 
-        select_contectListData=new ArrayList<>();
+        select_contectListData = new ArrayList<>();
         select_contectListData.addAll(sessionManager.getContectList_broadcste(this));
 
-        topUserListDataAdapter=new TopUserListDataAdapter(this,getApplicationContext(),select_contectListData);
+        topUserListDataAdapter = new TopUserListDataAdapter(this, getApplicationContext(), select_contectListData);
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
-        select_group=new ArrayList<>();
+        select_group = new ArrayList<>();
         select_group.addAll(sessionManager.getgroup_broadcste(this));
-        Log.e("Group List",new Gson().toJson(sessionManager.getgroup_broadcste(this)));
+        Log.e("Group List", new Gson().toJson(sessionManager.getgroup_broadcste(this)));
 
 
-        groupDataAdapter=new GroupDataAdapter(this,getApplicationContext(),select_group);
+        groupDataAdapter = new GroupDataAdapter(this, getApplicationContext(), select_group);
         add_group_list.setAdapter(groupDataAdapter);
         broadcast_image_list.addAll(sessionManager.getAdd_Broadcast_Data(getApplicationContext()).getBroadcast_image_lists());
 
         alertbox();
-       save_button.setOnClickListener(new View.OnClickListener() {
+        save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-               Intent intent1= new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
-               intent1.putExtra("s_name","final");
+                Intent intent1 = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
+                intent1.putExtra("s_name", "final");
                 startActivity(intent1);
                 finish();
             }
         });
     }
 
-    public void alertbox()
-    {
+    public void alertbox() {
         final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.DialogStyle);
         bottomSheetDialog.setContentView(mView);
@@ -121,21 +122,21 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
         EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
-        CoordinatorLayout layout_select_image=bottomSheetDialog.findViewById(R.id.layout_select_image);
+        CoordinatorLayout layout_select_image = bottomSheetDialog.findViewById(R.id.layout_select_image);
         LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
         LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
 
-        Broadcast_Data b_Data= sessionManager.getAdd_Broadcast_Data(getApplicationContext());
+        Broadcast_Data b_Data = sessionManager.getAdd_Broadcast_Data(getApplicationContext());
 
-        Log.e("Data Is ",new Gson().toJson(b_Data));
+        Log.e("Data Is ", new Gson().toJson(b_Data));
         edit_message.setText(b_Data.getLink_text());
         tv_text_link.setText(b_Data.getLink());
         lay_sendnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent1= new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
-                intent1.putExtra("s_name","default");
+                Intent intent1 = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
+                intent1.putExtra("s_name", "default");
                 startActivity(intent1);
                 finish();
             }
@@ -160,7 +161,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         iv_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Broadcast_Data broadcast_data=new Broadcast_Data();
+                Broadcast_Data broadcast_data = new Broadcast_Data();
                 broadcast_data.setLink(tv_text_link.getText().toString());
                 broadcast_data.setLink_text(edit_message.getText().toString());
                 broadcast_data.setBroadcast_image_lists(broadcast_image_list);
@@ -171,15 +172,14 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         });
 
 
-
         broadcast_image_list.clear();
-        for (int i=0;i<=20;i++){
-            Broadcast_image_list item=new Broadcast_image_list();
-            if(i%2 == 0){
+        for (int i = 0; i <= 20; i++) {
+            Broadcast_image_list item = new Broadcast_image_list();
+            if (i % 2 == 0) {
                 item.setId(i);
                 item.setScelect(false);
                 item.setImagename("card_1");
-            }else {
+            } else {
                 item.setId(i);
                 item.setScelect(false);
                 item.setImagename("card_2");
@@ -189,7 +189,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         rv_image_card.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
         rv_image_card.setHasFixedSize(true);
-        cardListAdepter = new CardListAdepter(this, broadcast_image_list,iv_selected,this,layout_select_image);
+        cardListAdepter = new CardListAdepter(this, broadcast_image_list, iv_selected, this, layout_select_image);
         rv_image_card.setAdapter(cardListAdepter);
 
 
@@ -207,14 +207,14 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
                 if (v.isSelected()) {
 
 
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
 
                     iv_card_list.setImageResource(R.drawable.ic_card_blank);
                     rv_image_card.setVisibility(View.GONE);
                     iv_card_list.setSelected(false);
-                }else {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                } else {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
 
                     iv_card_list.setImageResource(R.drawable.ic_card_fill);
@@ -229,8 +229,8 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
             @Override
             public void onClick(View v) {
                 layout_select_image.setVisibility(View.GONE);
-                for(int i=0;i<broadcast_image_list.size();i++){
-                    if(broadcast_image_list.get(i).isScelect()){
+                for (int i = 0; i < broadcast_image_list.size(); i++) {
+                    if (broadcast_image_list.get(i).isScelect()) {
                         broadcast_image_list.get(i).setScelect(false);
                         break;
                     }
@@ -242,6 +242,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
 
 
     }
+
     private void IntentUI() {
         main_layout = findViewById(R.id.main_layout);
         iv_back = findViewById(R.id.iv_back);
@@ -252,14 +253,14 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         save_button.setOnClickListener(this);
         save_button.setVisibility(View.VISIBLE);
         save_button.setText("Next");
-        tv_start=findViewById(R.id.tv_start);
-        tv_repite=findViewById(R.id.tv_repite);
-        tv_ends=findViewById(R.id.tv_ends);
+        tv_start = findViewById(R.id.tv_start);
+        tv_repite = findViewById(R.id.tv_repite);
+        tv_ends = findViewById(R.id.tv_ends);
         save_button.setTextColor(getResources().getColor(R.color.purple_200));
         layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
         add_contect_list = findViewById(R.id.add_contect_list);
         add_contect_list.setLayoutManager(layoutManager);
-        add_group_list=findViewById(R.id.add_group_list);
+        add_group_list = findViewById(R.id.add_group_list);
         layoutManager1 = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
         add_group_list.setLayoutManager(layoutManager1);
     }
@@ -269,29 +270,134 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
     public void onClick(View view) {
 
     }
+
     @Override
     public void Onclick(Broadcast_image_list broadcastImageList) {
-        for(int i=0;i<broadcast_image_list.size();i++){
-            if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
+        for (int i = 0; i < broadcast_image_list.size(); i++) {
+            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
                 broadcast_image_list.get(i).setScelect(true);
-            }else {
+            } else {
                 broadcast_image_list.get(i).setScelect(false);
             }
         }
         cardListAdepter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Broadcast_Final_Activity.this, main_layout);
+    }
 
-    public class GroupDataAdapter extends RecyclerView.Adapter<GroupDataAdapter.InviteListDataclass>
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
+    static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        ImageView iv_selected;
+        CardClick cardClick;
+        CoordinatorLayout layout_select_image;
+
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               ImageView iv_selected, CardClick cardClick, CoordinatorLayout coordinatorLayout) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.iv_selected = iv_selected;
+            this.cardClick = cardClick;
+            this.layout_select_image = coordinatorLayout;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                layout_select_image.setVisibility(View.VISIBLE);
+                int resID1 = activity.getResources().getIdentifier(item.getImagename()
+                        .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+                if (resID1 != 0) {
+                    Glide.with(activity.getApplicationContext()).load(resID1).into(iv_selected);
+                }
+            });
+            if (item.isScelect()) {
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_blue_10);
+            } else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public static class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
+    }
+
+    public class GroupDataAdapter extends RecyclerView.Adapter<GroupDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
+        private final List<Grouplist.Group> userDetailsfull;
         public Activity mCtx;
         int last_postion = 0;
         String second_latter = "";
         String current_latter = "", image_url = "";
         private List<Grouplist.Group> userDetails;
-        private final List<Grouplist.Group> userDetailsfull;
 
 
         public GroupDataAdapter(Activity Ctx, Context mCtx, List<Grouplist.Group> userDetails) {
@@ -316,7 +422,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
             holder.userName.setText(select_group.get(position).getGroupName());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            String first_latter =select_group.get(position).getGroupName().substring(0, 1).toUpperCase();
+            String first_latter = select_group.get(position).getGroupName().substring(0, 1).toUpperCase();
 
             if (second_latter.equals("")) {
                 current_latter = first_latter;
@@ -329,7 +435,6 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
                 current_latter = first_latter;
                 second_latter = first_latter;
             }
-
 
 
             String file = "" + select_group.get(position).getGroupImage();
@@ -350,7 +455,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
 
@@ -395,15 +500,12 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
             return userDetails.size();
         }
 
-        public void remove_item(int item)
-        {
+        public void remove_item(int item) {
             try {
                 userDetails.remove(item);
                 notifyItemRemoved(item);
-            }
-            catch (Exception e)
-            {
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }
@@ -435,47 +537,16 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
         }
 
     }
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Broadcast_Final_Activity.this, main_layout);
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void registerNetworkBroadcastForNougat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    protected void unregisterNetworkChanges() {
-        try {
-            unregisterReceiver(mNetworkReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterNetworkChanges();
-    }
-
-    public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass>
-    {
+    public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
+        private final List<ContectListData.Contact> userDetailsfull;
         public Activity mCtx;
         int last_postion = 0;
         String second_latter = "";
         String current_latter = "", image_url = "";
         private List<ContectListData.Contact> userDetails;
-        private final List<ContectListData.Contact> userDetailsfull;
 
 
         public TopUserListDataAdapter(Activity Ctx, Context mCtx, List<ContectListData.Contact> userDetails) {
@@ -500,7 +571,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
             holder.userName.setText(select_contectListData.get(position).getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            String first_latter =select_contectListData.get(position).getFirstname().substring(0, 1).toUpperCase();
+            String first_latter = select_contectListData.get(position).getFirstname().substring(0, 1).toUpperCase();
 
             if (second_latter.equals("")) {
                 current_latter = first_latter;
@@ -513,7 +584,6 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
                 current_latter = first_latter;
                 second_latter = first_latter;
             }
-
 
 
             String file = "" + select_contectListData.get(position).getContactImage();
@@ -534,7 +604,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
 
@@ -592,14 +662,12 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
                 }
             });
 */
-            if (userDetails.get(position).getFlag().equals("true"))
-            {
-                Log.e("Call","Yes");
+            if (userDetails.get(position).getFlag().equals("true")) {
+                Log.e("Call", "Yes");
                 holder.top_layout.setVisibility(View.GONE);
 
 
-            }
-            else {
+            } else {
                 holder.top_layout.setVisibility(View.VISIBLE);
 
             }
@@ -611,8 +679,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
             return userDetails.size();
         }
 
-        public void remove_item(int item)
-        {
+        public void remove_item(int item) {
             userDetails.remove(item);
             notifyItemRemoved(item);
 
@@ -643,83 +710,6 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
             }
 
         }
-
-    }
-
-
-
-    class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
-
-        Activity activity;
-        List<Broadcast_image_list> broadcast_image_list;
-        ImageView iv_selected;
-        CardClick cardClick;
-        CoordinatorLayout layout_select_image;
-
-
-        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
-                               ImageView iv_selected,CardClick cardClick,CoordinatorLayout coordinatorLayout) {
-            this.activity = activity;
-            this.broadcast_image_list = broadcast_image_list;
-            this.iv_selected = iv_selected;
-            this.cardClick = cardClick;
-            this.layout_select_image = coordinatorLayout;
-        }
-
-
-        @NonNull
-        @Override
-        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
-            return new CardListAdepter.cardListData(view);
-        }
-
-        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
-        @Override
-        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
-            Broadcast_image_list item = this.broadcast_image_list.get(position);
-
-
-            int resID = activity.getResources().getIdentifier(item.getImagename()
-                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-            if (resID != 0) {
-                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
-            }
-            holder.layout_select_image.setOnClickListener(v -> {
-                cardClick.Onclick(item);
-                item.setScelect(true);
-                layout_select_image.setVisibility(View.VISIBLE);
-                int resID1 = activity.getResources().getIdentifier(item.getImagename()
-                        .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-                if (resID1 != 0) {
-                    Glide.with(activity.getApplicationContext()).load(resID1).into(iv_selected);
-                }
-            });
-            if(item.isScelect()){
-                holder.layout_select_image.setBackgroundResource(R.drawable.shape_blue_10);
-            }else {
-                holder.layout_select_image.setBackground(null);
-            }
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return broadcast_image_list.size();
-        }
-
-        public class cardListData extends RecyclerView.ViewHolder {
-
-            ImageView iv_card;
-            LinearLayout layout_select_image;
-
-            public cardListData(@NonNull View itemView) {
-                super(itemView);
-                iv_card = itemView.findViewById(R.id.iv_card);
-                layout_select_image = itemView.findViewById(R.id.layout_select_image);
-            }
-        }
-
 
     }
 }

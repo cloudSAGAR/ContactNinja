@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
+    android:id="@+id/mMainLayout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Campaign.Campaign_view_per_contect_Detail">
     <include
         android:id="@+id/include2"
@@ -98,7 +100,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"></View>
+        android:layout_height="@dimen/_1sdp"/>
 
 
         <LinearLayout
@@ -123,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:text="Step#1 (Manual Sms)"
                     android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"></TextView>
+                    android:textSize="@dimen/_15sdp"/>
 
                 <ImageView
                     android:id="@+id/iv_message"
@@ -172,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:text="4"
                         android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"></TextView>
+                        android:textSize="@dimen/_15sdp"/>
 
                     <TextView
                         style="@style/tv_Medium"
@@ -181,7 +183,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Total "
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"></TextView>
+                        android:textSize="@dimen/_12sdp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -199,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:text="4"
                         android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"></TextView>
+                        android:textSize="@dimen/_15sdp"/>
 
                     <TextView
                         style="@style/tv_Medium"
@@ -208,7 +210,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Pending "
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"></TextView>
+                        android:textSize="@dimen/_12sdp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -226,7 +228,7 @@
                         android:layout_height="wrap_content"
                         android:text="4"
                         android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"></TextView>
+                        android:textSize="@dimen/_15sdp"/>
 
                     <TextView
                         style="@style/tv_Medium"
@@ -235,7 +237,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Pushed "
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"></TextView>
+                        android:textSize="@dimen/_12sdp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -253,7 +255,7 @@
                         android:layout_height="wrap_content"
                         android:text="4"
                         android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"></TextView>
+                        android:textSize="@dimen/_15sdp"/>
 
                     <TextView
                         style="@style/tv_Medium"
@@ -262,7 +264,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Finished "
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"></TextView>
+                        android:textSize="@dimen/_12sdp"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -292,7 +294,7 @@
                         android:layout_height="wrap_content"
                         android:text="4"
                         android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"></TextView>
+                        android:textSize="@dimen/_15sdp"/>
 
                     <TextView
                         style="@style/tv_Medium"
@@ -301,7 +303,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Open"
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"></TextView>
+                        android:textSize="@dimen/_12sdp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -319,7 +321,7 @@
                         android:layout_height="wrap_content"
                         android:text="4"
                         android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"></TextView>
+                        android:textSize="@dimen/_15sdp"/>
 
                     <TextView
                         style="@style/tv_Medium"
@@ -328,7 +330,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Replied"
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"></TextView>
+                        android:textSize="@dimen/_12sdp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -346,7 +348,7 @@
                         android:layout_height="wrap_content"
                         android:text="4"
                         android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"></TextView>
+                        android:textSize="@dimen/_15sdp"/>
 
                     <TextView
                         style="@style/tv_Medium"
@@ -355,7 +357,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Failed"
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"></TextView>
+                        android:textSize="@dimen/_12sdp"/>
                 </LinearLayout>
 
             </LinearLayout>

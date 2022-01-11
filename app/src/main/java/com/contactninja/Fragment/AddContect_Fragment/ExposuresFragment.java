@@ -1,5 +1,6 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.contactninja.R;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class ExposuresFragment extends Fragment {
 
     public ExposuresFragment() {

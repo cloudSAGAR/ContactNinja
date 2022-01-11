@@ -1,5 +1,9 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
+@SuppressLint("UnknownNullness")
+
 public class InviteUserDetails {
 
     private String userimageUrl;

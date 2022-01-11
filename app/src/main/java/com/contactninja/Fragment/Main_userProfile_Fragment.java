@@ -176,8 +176,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             @Override
             public void onClick(View v) {
                 AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
-                //  AddcontectModel addcontectModel=new AddcontectModel();
-                //    Log.e("Data is ", new Gson().toJson(addcontectModel));
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
                 address = addcontectModel.getAddress();
@@ -301,7 +299,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     }
 
     private void Userinfo() throws JSONException {
-        loadingDialog.showLoadingDialog();
+      //  loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Group.GroupActivity">
 
 
@@ -66,7 +67,7 @@
             android:padding="@dimen/_10sdp"
             android:background="@drawable/shape_oval_border_10_blue"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"></ImageView>
+            android:layout_height="@dimen/_35sdp"/>
 
         <TextView
             android:id="@+id/add_new_contect"
@@ -100,7 +101,7 @@
         android:layout_marginTop="@dimen/_12sdp"
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"></View>
+        android:layout_height="1dp"/>
 
 
 

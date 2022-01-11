@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Broadcast_to_repeat extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
 
     ImageView iv_back, iv_Setting;
@@ -43,11 +44,7 @@ public class Broadcast_to_repeat extends AppCompatActivity implements Connectivi
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (day_txt.equals(""))
-                {
-
-                }
-               else if (day_txt.equals("Daily"))
+             if (day_txt.equals("Daily"))
                 {
                     Intent intent=new Intent(getApplicationContext(),Broadcast_date_select.class);
                     intent.putExtra("type",day_txt);

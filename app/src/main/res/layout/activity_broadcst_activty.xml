@@ -7,7 +7,7 @@
     tools:context="com.contactninja.MainActivity"
     android:background="@color/white"
     android:id="@+id/main_layout"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"   xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />

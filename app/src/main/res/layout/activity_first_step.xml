@@ -7,9 +7,10 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:id="@+id/mMainLayout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Campaign.First_Step_Activity">
     <include
-        layout="@layout/toolbar"></include>
+        layout="@layout/toolbar"/>
     <TextView
         android:id="@+id/add_new_contect"
         style="@style/tv_regular"
@@ -40,7 +41,7 @@
     <View
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"></View>
+        android:layout_height="1dp"/>
     <androidx.viewpager.widget.ViewPager
         android:layout_marginTop="@dimen/_3sdp"
         android:id="@+id/viewPager"

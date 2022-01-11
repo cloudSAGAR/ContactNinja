@@ -1,5 +1,6 @@
 package com.contactninja.Auth;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,11 +16,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.contactninja.MainActivity;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Thankyou_Screen extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener  {
 
     TextView start_button;

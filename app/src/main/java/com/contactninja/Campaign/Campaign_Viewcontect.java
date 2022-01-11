@@ -1,5 +1,20 @@
 package com.contactninja.Campaign;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -10,42 +25,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.contactninja.Broadcast.Broadcast_Frgment.Broadcast_Group_Fragment;
-import com.contactninja.Broadcast.Broadcast_Frgment.Broadcste_Contect_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
-import com.contactninja.Broadcast.Broadcst_Activty;
 import com.contactninja.Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Campaign.Fragment.View_Contect_Fragment;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
-import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Campaign_Viewcontect extends AppCompatActivity implements View.OnClickListener , CardClick,  ConnectivityReceiver.ConnectivityReceiverListener  {
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -272,7 +269,7 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
         cardListAdepter.notifyDataSetChanged();
     }
 
-    class ViewpaggerAdapter extends FragmentPagerAdapter {
+    static class ViewpaggerAdapter extends FragmentPagerAdapter {
 
         Context context;
         int totalTabs;

@@ -1,5 +1,6 @@
 package com.contactninja.Auth;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -8,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.contactninja.R;
 import com.contactninja.Utils.SessionManager;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class SplashActivity extends AppCompatActivity {
     SessionManager securityManager;
     Handler  mHandler=new Handler();

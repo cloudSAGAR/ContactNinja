@@ -1,9 +1,12 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+@SuppressLint("UnknownNullness")
 
 public class CampaignTask_overview {
 
@@ -53,7 +56,7 @@ public class CampaignTask_overview {
         this.seqProspectCount = seqProspectCount;
     }
 
-   public class SequenceTask {
+   public static class SequenceTask {
 
         @SerializedName("id")
         @Expose
@@ -202,7 +205,7 @@ public class CampaignTask_overview {
     }
 
 
-    public class _0 {
+    public static class _0 {
 
         @SerializedName("manualtask")
         @Expose

@@ -103,6 +103,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -161,9 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
         String offset = localTime.substring(0, 1);
-        //Log.e("offset", offset);
-        // Log.e("Show Local ", localTime);
-        //Log.e("GMT offset is %s hours", "" + TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS));
+
         UpdateManageCheck();
         EnableRuntimePermission();
         navItemIndex = 0;
@@ -204,11 +203,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onPermissionGranted() {
                 if (sessionManager.getContectList(getApplicationContext()).size() == 0) {
-
                     loadingDialog.showLoadingDialog();
-
+                    GetContactsIntoArrayList();
                 }
-                GetContactsIntoArrayList();
 
             }
 
@@ -311,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
                 lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
             String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                     .substring(0, 1)
@@ -338,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try {
                         csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
 
                     if (csv_inviteListData.size() != 0) {
@@ -365,8 +362,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
-        //Log.e("is exits", Is_contact_exist);
-        //Log.e("Global.getcontectexits(sessionManager)", Global.getcontectexits(sessionManager));
 
         if (csv_inviteListData.size() == 0) {
             loadingDialog.cancelLoading();
@@ -391,23 +386,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         }
-
-
-     /*   if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
-            if(SessionManager.getContectList(getApplicationContext()).get(0).getContacts().size()!=
-                    csv_inviteListData.size()){
-                limit = csv_inviteListData.size();
-                splitdata(csv_inviteListData);
-            }else {
-                contectListData.addAll(SessionManager.getContectList(getApplicationContext()).get(0).getContacts());
-            }
-        } else {
-            limit = csv_inviteListData.size();
-            splitdata(csv_inviteListData);
-        }*/
-        //limit=csv_inviteListData.size();
-        // splitdata(csv_inviteListData);
-
         cursor.close();
 
     }
@@ -417,9 +395,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         System.out.println("GET DATA IS " + response);
 
-        // response will have a @ symbol so that we can split individual user data
-        //  String res_data[] = response.split("@");
-        //StringBuilder  to store the data
         data = new StringBuilder();
 
         data.append("Firstname" +
@@ -482,12 +457,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
 
-           /* Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/csv");
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Data");
-            intent.putExtra(Intent.EXTRA_STREAM, path);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(intent, "Excel Data"));*/
+
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
                 Uploadcsv(file);
             }
@@ -525,7 +495,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void success(Response<ApiResponse> response) {
                         sessionManager.setcontectexits("1");
-                        //Log.e("Reponse is", new Gson().toJson(response.body()));
                         if (response.body().getStatus() == 200) {
 
                             SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
@@ -539,7 +508,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            sessionManager.setCsv_token();
                         } else {
                             loadingDialog.cancelLoading();
                             try {
@@ -547,8 +515,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            sessionManager.setCsv_token();
                         }
+                        sessionManager.setCsv_token();
 
 
                     }
@@ -1033,8 +1001,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Duplicate_remove();
                 } else if (taskList.size() == 1) {
                     loadingDialog.cancelLoading();
-                    //Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
-                    //check_list_for_Update(userName,last_name,userPhoneNumber);
                 } else {
                     loadingDialog.cancelLoading();
                 }
@@ -1063,20 +1029,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .getAppDatabase()
                         .taskDao()
                         .getSameValue_Firstorlastname(userPhoneNumber);
-                /*if (taskList.size()==0)
-                {
-                    List<Csv_InviteListData> csv_inviteListData1=new ArrayList<>();
-                    csv_inviteListData1.add(new Csv_InviteListData(userName,userPhoneNumber,"","","","","","",last_name));
-                    splitdata(csv_inviteListData1);
-                }
-                else if (taskList.size()!=1)
-                {
-                    delete();
-                }
-                else if (taskList.size()==1)
-                {
-                    Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
-                }*/
 
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
@@ -1113,7 +1065,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void AddContect_Api1(String userName, String last_name, String userPhoneNumber, String contect_id, Integer contactId) throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+//        loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
         JSONObject obj = new JSONObject();
@@ -1217,26 +1169,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SaveTask st = new SaveTask();
         st.execute();
     }
-
-    /*public void updatedata(InviteListData inviteListData) {
-        class UpdateTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .taskDao()
-                        .updatevalue(inviteListData.getUserName(), inviteListData.getUserPhoneNumber(), inviteListData.getFlag());
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-            }
-        }
-
-        UpdateTask ut = new UpdateTask();
-        ut.execute();
-    }*/
 }

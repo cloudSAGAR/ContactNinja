@@ -2,8 +2,12 @@ package com.contactninja.Campaign;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,12 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -30,6 +34,7 @@ import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -49,7 +54,8 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class First_Step_Start_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick {
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
+public class First_Step_Start_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick , ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back;
     TextView save_button, tv_use_tamplet, tv_step;
     SessionManager sessionManager;
@@ -67,19 +73,18 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
     TemplateClick templateClick;
     BottomSheetDialog bottomSheetDialog_templateList;
     public String template_id_is="";
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_step_start);
+        mNetworkReceiver = new ConnectivityReceiver();
         templateClick = First_Step_Start_Activity.this;
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
-
-
-
         try {
             if (Global.isNetworkAvailable(First_Step_Start_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
@@ -126,7 +131,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             }
             catch (Exception e)
             {
-
+                e.printStackTrace();
             }
 
         }
@@ -155,6 +160,38 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
 
     }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(First_Step_Start_Activity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
 
     private void Template_list(RecyclerView templet_list) throws JSONException {
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(First_Step_Start_Activity.this);
@@ -561,7 +598,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     }
 
-    class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
+    static class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
         public Context mCtx;
         List<HastagList.TemplateText> templateTextList;
@@ -578,7 +615,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         public PicUpTextAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.template_text_selecte, parent, false);
-            return new PicUpTextAdepter.viewholder(view);
+            return new viewholder(view);
         }
 
         @Override
@@ -622,7 +659,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             return templateTextList.size();
         }
 
-        public class viewholder extends RecyclerView.ViewHolder {
+        public static class viewholder extends RecyclerView.ViewHolder {
             TextView tv_item;
             View line_view;
 
@@ -658,7 +695,6 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
-            //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));

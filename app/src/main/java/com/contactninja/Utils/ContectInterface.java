@@ -1,19 +1,18 @@
 package com.contactninja.Utils;
 
 
+import android.annotation.SuppressLint;
+
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
-
 
 import com.contactninja.Model.Contect_Db;
-import com.contactninja.Model.InviteListData;
 
 import java.util.List;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 @Dao
 public interface ContectInterface {
 

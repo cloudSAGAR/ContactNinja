@@ -1,5 +1,6 @@
 package com.contactninja.Campaign.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
 import com.contactninja.Model.Grouplist;
@@ -35,7 +35,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -49,6 +48,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Campaign_Group_Fragment extends Fragment implements View.OnClickListener {
 
     LinearLayout main_layout, add_new_contect_layout, group_name;
@@ -379,7 +379,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                         }
                         catch (Exception e)
                         {
-
+e.printStackTrace();
                         }
 
 
@@ -600,7 +600,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                         }
                     }
                 } catch (Exception e) {
-
+e.printStackTrace();
                 }
 
 
@@ -653,7 +653,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             }
             catch (Exception e)
             {
-
+e.printStackTrace();
             }
 
         }

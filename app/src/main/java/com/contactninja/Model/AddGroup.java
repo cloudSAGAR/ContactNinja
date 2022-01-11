@@ -1,10 +1,13 @@
 
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@SuppressLint("UnknownNullness")
 
 public class AddGroup {
 

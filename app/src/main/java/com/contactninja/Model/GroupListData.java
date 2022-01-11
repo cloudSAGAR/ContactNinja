@@ -1,9 +1,12 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+@SuppressLint("UnknownNullness")
 
 public class GroupListData implements Serializable {
     private int id;

@@ -1,5 +1,6 @@
 package com.contactninja.Campaign.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.contactninja.R;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Campaign_Stats_Fragment extends Fragment {
 
 

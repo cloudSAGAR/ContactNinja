@@ -1,5 +1,6 @@
 package com.contactninja.Group;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,19 +27,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.Auth.LoginActivity;
-import com.contactninja.Auth.SignupActivity;
-import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
-import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -57,7 +51,6 @@ import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
@@ -70,6 +63,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class GroupActivity extends AppCompatActivity implements View.OnClickListener ,ConnectivityReceiver.ConnectivityReceiverListener{
     BottomSheetDialog bottomSheetDialog_templateList1;
     private int amountOfItemsSelected = 0;
@@ -718,7 +712,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 } catch (Exception e) {
-
+e.printStackTrace();
                 }
 
 
@@ -796,7 +790,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
             for (int j=0;j<userDetails.size();j++)
             {
-                if (id==userDetails.get(j).getId())
+                if (id.equals(userDetails.get(j).getId()))
                 {
                     userDetails.remove(j);
                     notifyItemRemoved(j);
@@ -907,7 +901,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 }
                 catch (Exception e)
                 {
-
+e.printStackTrace();
                 }
 
 
@@ -1101,7 +1095,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                     }
                                 }
                             } catch (Exception e) {
-
+e.printStackTrace();
                             }
 
 

@@ -1,9 +1,14 @@
 package com.contactninja.Campaign;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +21,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
-import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -43,7 +49,8 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class Campaign_Overview extends AppCompatActivity implements View.OnClickListener {
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
+public class Campaign_Overview extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button;
     SessionManager sessionManager;
@@ -56,11 +63,13 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     int sequence_id,sequence_task_id;
 
     BottomSheetDialog bottomSheetDialog;
-
+    private BroadcastReceiver mNetworkReceiver;
+    ConstraintLayout mMainLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaign_overview);
+        mNetworkReceiver = new ConnectivityReceiver();
 
         IntentUI();
         loadingDialog = new LoadingDialog(this);
@@ -75,6 +84,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
@@ -123,6 +133,36 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         //startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
         finish();
         super.onBackPressed();
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Campaign_Overview.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     public class Campaign_OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -175,14 +215,12 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
                         int num=movieList.size()+1;
                         movieViewHolder.tv_add_new_step_num.setText(String.valueOf(num));
-                        movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
-                        Global.count++;
                     }
                     else {
                         movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
-                        movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
-                        Global.count++;
                     }
+                    movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
+                    Global.count++;
 
                     if (position==0)
                     {
@@ -391,8 +429,6 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     new_task.putExtra("header",sequenceTask.getContentHeader());
                     new_task.putExtra("step",sequenceTask.getStepNo());
                     startActivity(new_task);
-                    finish();
-                    bottomSheetDialog.cancel();
 
                 }
                 else {
@@ -417,9 +453,9 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     new_task.putExtra("minute",sequenceTask.getMinute());
                     new_task.putExtra("step",sequenceTask.getStepNo());
                     startActivity(new_task);
-                    finish();
-                    bottomSheetDialog.cancel();
                 }
+                finish();
+                bottomSheetDialog.cancel();
 
             }
         });
@@ -518,21 +554,16 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
 
+                Gson gson = new Gson();
+                String headerString = gson.toJson(response.body().getData());
                 if (response.body().getStatus() == 200) {
 
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<CampaignTask_overview>() {
                     }.getType();
 
                     CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
                     sequence_task_id=user_model1.getSequenceTask().get(0).getId();
                     campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
-                } else {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                   // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
-
                 }
             }
 

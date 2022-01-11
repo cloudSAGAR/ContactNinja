@@ -1,7 +1,10 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import java.util.ArrayList;
 import java.util.List;
+@SuppressLint("UnknownNullness")
 
 public class AddcontectModel {
 

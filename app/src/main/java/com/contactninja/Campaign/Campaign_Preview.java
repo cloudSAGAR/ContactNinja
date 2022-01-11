@@ -1,10 +1,15 @@
 package com.contactninja.Campaign;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,9 +26,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -40,15 +54,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-public class Campaign_Preview extends AppCompatActivity implements View.OnClickListener {
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Campaign_Preview extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static TopUserListDataAdapter topUserListDataAdapter;
     ImageView iv_back;
     TextView save_button;
@@ -68,12 +78,14 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     RelativeLayout contect_layout;
     ImageView add_icon;
     LinearLayout layout_toolbar_logo;
-
+    private BroadcastReceiver mNetworkReceiver;
+    ConstraintLayout mMainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaign_preview);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
@@ -131,6 +143,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         add_icon = findViewById(R.id.add_icon);
         add_icon.setVisibility(View.GONE);
         add_icon.setOnClickListener(this);
@@ -162,7 +175,36 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         contect_layout = findViewById(R.id.contect_layout);
         contect_layout.setOnClickListener(this);
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Campaign_Preview.this, mMainLayout);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -212,7 +254,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        // startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
         finish();
         super.onBackPressed();
     }
@@ -393,7 +434,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         } else {
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());
-                            // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
 
                         }
                     }
@@ -505,13 +545,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
                         int num = movieList.size() + 1;
                         movieViewHolder.tv_add_new_step_num.setText(String.valueOf(num));
-                        movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
-                        Global.count++;
                     } else {
                         movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
-                        movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
-                        Global.count++;
                     }
+                    movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
+                    Global.count++;
 
                     if (position == 0) {
                         movieViewHolder.line_one.setVisibility(View.VISIBLE);
@@ -574,12 +612,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                                 Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
                                 startActivity(intent);
                             }
-                           /* SessionManager.setCampaign_type("");
-                            SessionManager.setCampaign_type_name("");
-                            SessionManager.setCampaign_minute("00");
-                            SessionManager.setCampaign_Day("1");
-                            Intent intent = new Intent(getApplicationContext(), First_Step_Activity.class);
-                            startActivity(intent);*/
+
                         }
                     });
 
@@ -604,7 +637,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
         public void addLoadingFooter() {
             isLoadingAdded = true;
-            //add("");
         }
 
 
@@ -689,7 +721,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
     }
 
-    public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass> {
+    public static class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
         private final List<CampaignTask_overview.SequenceProspect> userDetailsfull;
@@ -712,7 +744,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         public TopUserListDataAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.top_user_details, parent, false);
-            return new TopUserListDataAdapter.InviteListDataclass(view);
+            return new InviteListDataclass(view);
         }
 
         @Override
@@ -753,7 +785,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     }
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
 
 
@@ -767,7 +799,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             return userDetails.size();
         }
 
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
 
             TextView no_image;
             TextView userName;

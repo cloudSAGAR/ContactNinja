@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -91,6 +92,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
     List<ContectListData.Contact> contectListData;
     List<ContectListData.Contact> select_contectListData;
     Activity activity;
+    LinearLayout mMainLayout;
 
     public Broadcste_Contect_Fragment(Activity activity0) {
         this.activity = activity0;
@@ -113,11 +115,12 @@ public class Broadcste_Contect_Fragment extends Fragment {
         //GetContactsIntoArrayList();
         groupContectAdapter = new GroupContectAdapter(getActivity());
         contect_list_unselect.setAdapter(groupContectAdapter);
-        try {
-            ContectEvent();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+        myAsyncTasks.execute();
+
+
+
         contectListData.clear();
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
@@ -258,6 +261,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
     private void IntentUI(View view) {
         layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         add_contect_list = view.findViewById(R.id.add_contect_list);
+        mMainLayout = view.findViewById(R.id.mMainLayout);
         add_contect_list.setLayoutManager(layoutManager);
         contect_list_unselect = view.findViewById(R.id.contect_list_unselect);
         layoutManager1 = new LinearLayoutManager(getActivity());
@@ -340,6 +344,39 @@ public class Broadcste_Contect_Fragment extends Fragment {
         groupContectAdapter = new GroupContectAdapter(getActivity());
         contect_list_unselect.setAdapter(groupContectAdapter);
         cursor.close();
+
+    }
+
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                    ContectEvent();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
 
     }
 

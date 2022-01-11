@@ -26,7 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int LOADING = 0;
@@ -55,11 +55,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (viewType) {
             case ITEM:
                 View viewItem = inflater.inflate(R.layout.invite_user_details, parent, false);
-                viewHolder = new ContectListAdapter.MovieViewHolder(viewItem);
+                viewHolder = new MovieViewHolder(viewItem);
                 break;
             case LOADING:
                 View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
-                viewHolder = new ContectListAdapter.LoadingViewHolder(viewLoading);
+                viewHolder = new LoadingViewHolder(viewLoading);
 
                 break;
         }
@@ -122,7 +122,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                               }
                           }
                       } catch (Exception e) {
-
+                        e.printStackTrace();
                       }
 
 
@@ -225,7 +225,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
+    public static class MovieViewHolder extends RecyclerView.ViewHolder {
         TextView no_image;
         TextView userName, userNumber, first_latter;
         CircleImageView profile_image;
@@ -244,7 +244,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
+    public static class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         private final ProgressBar progressBar;
 

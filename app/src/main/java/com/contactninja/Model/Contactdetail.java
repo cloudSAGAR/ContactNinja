@@ -1,5 +1,9 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
+@SuppressLint("UnknownNullness")
+
 public class Contactdetail {
     String email_number;
     int id;

@@ -1,5 +1,9 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
+@SuppressLint("UnknownNullness")
+
 public class Broadcast_image_list {
     int id=0;
     String Imagename="";
