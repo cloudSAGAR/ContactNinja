@@ -422,14 +422,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
                     try{
-
-                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    Log.e("Login_type",Login_type);
                     if (Login_type.equals("EMAIL"))
                     {
-                        if (response.body().getMessage().equals("Invalid Password."))
+                        if (response.body().getMessage().toString().equals("Invalid Password."))
                         {
                             iv_password_invalid.setText(getResources().getString(R.string.invalid_password));
                             iv_password_invalid.setVisibility(View.VISIBLE);
+                           //Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+
                         }
                         else {
                             iv_invalid.setVisibility(View.VISIBLE);
