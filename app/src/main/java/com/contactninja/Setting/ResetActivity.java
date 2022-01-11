@@ -39,7 +39,7 @@ import org.json.JSONException;
 import java.lang.reflect.Type;
 
 import retrofit2.Response;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class ResetActivity extends AppCompatActivity implements View.OnClickListener ,ConnectivityReceiver.ConnectivityReceiverListener {
 
     TextView btn_Create_password,iv_invalid;

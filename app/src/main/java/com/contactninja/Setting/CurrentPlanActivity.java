@@ -32,7 +32,7 @@ import com.contactninja.Utils.Global;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class CurrentPlanActivity extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back;
     ViewPager2 viewPager2;
@@ -387,12 +387,8 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(@SuppressLint("UnknownNullness") View v) {
-        switch (v.getId()){
-
-            case R.id.iv_back:
-                onBackPressed();
-                break;
-
+        if (v.getId() == R.id.iv_back) {
+            onBackPressed();
         }
     }
 
@@ -468,7 +464,7 @@ holder.tv_text.setText(plandetail.getPlan_description());
             return plandetailslist.size();
         }
 
-        public class viewholder extends RecyclerView.ViewHolder {
+        public static class viewholder extends RecyclerView.ViewHolder {
             RecyclerView plan_condition;
             TextView tv_title,tv_prise,tv_text;
             public viewholder(View view) {
@@ -480,7 +476,7 @@ holder.tv_text.setText(plandetail.getPlan_description());
 
             }
         }
-        public class PlanDataAdapter extends RecyclerView.Adapter<PlanDataAdapter.PlanDataclass> {
+        public static class PlanDataAdapter extends RecyclerView.Adapter<PlanDataAdapter.PlanDataclass> {
 
             public Activity mCtx;
             private final Context mcntx;
@@ -523,7 +519,7 @@ holder.tv_text.setText(plandetail.getPlan_description());
             }
 
 
-            public class PlanDataclass extends RecyclerView.ViewHolder {
+            public static class PlanDataclass extends RecyclerView.ViewHolder {
 
                 ImageView plan_selected_or_not, plan_selected_or_not1;
                 TextView check_text, check_text1;

@@ -1,4 +1,4 @@
-package com.contactninja.Fragment.UserPofile;
+package com.contactninja.UserPofile;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -31,8 +29,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -56,7 +52,6 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hbb20.CountryCodePicker;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -72,7 +68,7 @@ import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class User_InformationFragment extends Fragment implements View.OnClickListener {
 
     List<TimezoneModel> timezoneModels=new ArrayList<>();
@@ -107,9 +103,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     boolean edit = false;
     private int mYear, mMonth, mDay, mHour, mMinute;
     EditText ev_othre_company;
-
-
-
+    ImageView iv_down;
     public User_InformationFragment() {
         // Required empty public constructor
     }
@@ -169,7 +163,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         set_contact.setContactDetails(contactDetails_list);
         SessionManager.setOneCotect_deatil(getActivity(),set_contact);
 
+        Showlayout();
         if (flag.equals("edit")) {
+            company_layout.setEnabled(true);
             tv_add_social.setVisibility(View.GONE);
             media_link.setVisibility(View.GONE);
             ev_company.setEnabled(true);
@@ -184,6 +180,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_note.setEnabled(true);
             // Log.e("Null", "No Call");
             edit = true;
+            iv_down.setVisibility(View.VISIBLE);
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
             addcontectModel.setJob_title(Contect_data.getJobTitle());
@@ -205,14 +202,21 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_company.setText(Contect_data.getCompanyName());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
-            zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null"))
+            {
+                String time_zone= TimeZone.getDefault().getID();
+                zone_txt.setText(time_zone);
+            }
+            else {
+                zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            }
             ev_job.setText(Contect_data.getJobTitle());
             try {
                 contect_id = Contect_data.getId();
             }
             catch (Exception e)
             {
-
+                e.printStackTrace();
             }
 
             organization_id = String.valueOf(Contect_data.getOrganizationId());
@@ -261,7 +265,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         }
                         catch (Exception e)
                         {
-
+e.printStackTrace();
                         }
 
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
@@ -287,11 +291,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         }
         else if (flag.equals("read")) {
 
-
+            company_layout.setEnabled(false);
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.VISIBLE);
             ev_company.setEnabled(false);
             ev_company_url.setEnabled(false);
+            iv_down.setVisibility(View.GONE);
             ev_job.setEnabled(false);
             ev_zoom.setEnabled(false);
             ev_address.setEnabled(false);
@@ -340,8 +345,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_company.setText(Contect_data.getCompanyName());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
-            zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
-            ev_job.setText(Contect_data.getJobTitle());
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null"))
+            {
+                String time_zone= TimeZone.getDefault().getID();
+                zone_txt.setText(time_zone);
+            }
+            else {
+                zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+            }            ev_job.setText(Contect_data.getJobTitle());
            // contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
@@ -489,6 +500,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             PhoneViewAdd();
             EmailViewAdd();
             TextSet();
+            iv_down.setVisibility(View.VISIBLE);
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.GONE);
         }
@@ -537,6 +549,20 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         });
 
         return view;
+    }
+
+    private void Showlayout() {
+        tv_more_field.setVisibility(View.GONE);
+        media_layout.setVisibility(View.VISIBLE);
+
+        company_url_layout.setVisibility(View.VISIBLE);
+        job_layout.setVisibility(View.VISIBLE);
+        zoom_layout.setVisibility(View.VISIBLE);
+        city_layout.setVisibility(View.VISIBLE);
+        state_layout.setVisibility(View.VISIBLE);
+        time_layout.setVisibility(View.VISIBLE);
+        layout_bod.setVisibility(View.VISIBLE);
+        note_layout.setVisibility(View.VISIBLE);
     }
 
     private void EmailViewAdd() {
@@ -918,6 +944,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     }
 
     private void IntentUI(View view) {
+        iv_down=view.findViewById(R.id.iv_down);
         tv_phone = view.findViewById(R.id.tv_phone);
         ev_address = view.findViewById(R.id.ev_address);
         ev_city = view.findViewById(R.id.ev_city);
@@ -1451,7 +1478,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_label.setVisibility(View.GONE);
                 holder.contect_msg.setVisibility(View.GONE);
-                holder.ccp_id.setVisibility(View.GONE);
+                holder.layout_country_piker.setVisibility(View.GONE);
                 holder.edt_mobile_no.setEnabled(false);
                 holder.edt_mobile_no.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_phone.setText(holder.tv_phone.getText().toString() + "(" + item.getLabel() + ")");
@@ -1753,7 +1780,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ImageView iv_set_default;
             SwipeLayout swipe_layout;
             LinearLayout layout_swap, select_label, layout_defult, layout_remove, contect_msg, layout_icon_call,
-                    layout_icon_message;
+                    layout_icon_message,layout_country_piker;
             TextView phone_txt;
             CountryCodePicker ccp_id;
             TextView tv_phone;
@@ -1770,6 +1797,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 layout_remove = itemView.findViewById(R.id.layout_remove);
                 phone_txt = itemView.findViewById(R.id.phone_txt);
                 ccp_id = itemView.findViewById(R.id.ccp_id);
+                layout_country_piker = itemView.findViewById(R.id.layout_country_piker);
                 select_label = itemView.findViewById(R.id.select_label);
                 contect_msg = itemView.findViewById(R.id.contect_msg);
                 layout_icon_call = itemView.findViewById(R.id.layout_icon_call);

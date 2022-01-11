@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/white"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_marginStart="@dimen/_5sdp"
@@ -747,7 +748,7 @@
                   android:background="@drawable/ic_note"
                   android:layout_width="@dimen/_35sdp"
                   android:layout_height="@dimen/_35sdp"
-                  android:orientation="horizontal"></LinearLayout>
+                  android:orientation="horizontal"/>
 
             </LinearLayout>
 

@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,15 +20,9 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.MainActivity;
-import com.contactninja.Model.ContectListData;
-import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
-import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.DatabaseClient;
@@ -39,14 +32,9 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
-
-import java.lang.reflect.Type;
-import java.util.List;
 
 import retrofit2.Response;
 
@@ -248,6 +236,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void delete() {
+        @SuppressLint("StaticFieldLeak")
         class DeleteTask extends AsyncTask<Void, Void, Void> {
 
             @Override

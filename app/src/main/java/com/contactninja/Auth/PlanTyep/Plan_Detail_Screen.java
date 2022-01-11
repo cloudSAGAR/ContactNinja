@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Auth.Thankyou_Screen;
 import com.contactninja.Model.Plandetail;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
@@ -34,6 +33,7 @@ import com.contactninja.Utils.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Plan_Detail_Screen extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     TextView tv_main_text, tv_sub_titale, start_button;
     RecyclerView plan_condition;

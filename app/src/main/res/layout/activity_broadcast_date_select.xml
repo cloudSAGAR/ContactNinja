@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:id="@+id/mMainLayout"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    tools:context=".Auth.Thankyou_Screen">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"  tools:context=".Auth.Thankyou_Screen">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -15,7 +15,7 @@
         android:orientation="vertical"
         >
 
-        <include layout="@layout/toolbar"></include>
+        <include layout="@layout/toolbar"/>
 
         <TextView
             style="@style/tv_bold"

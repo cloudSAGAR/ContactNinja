@@ -1,8 +1,11 @@
 
 package com.contactninja.Model.UserData;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+@SuppressLint("UnknownNullness")
 
 public class RoleAccess {
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+            android:paddingTop="@dimen/_12sdp"
+            android:paddingBottom="@dimen/_12sdp"
+            android:id="@+id/tv_item"
+            style="@style/tv_regular"
+            android:text="Phone"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_gravity="center|left"
+            android:gravity="center|left"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/bz_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_message"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_message"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_height="@dimen/_18sdp">
+
+        </ImageView>
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_email"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_email"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp">
+
+        </ImageView>
+    </LinearLayout>
+    <View
+        android:visibility="gone"
+        android:background="@color/home_list_add_contect_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </View>
+</LinearLayout>
+
+

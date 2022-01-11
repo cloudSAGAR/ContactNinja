@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class ContectAndGroup_Actvity extends AppCompatActivity implements View.OnClickListener ,CardClick,  ConnectivityReceiver.ConnectivityReceiverListener{
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -317,11 +317,22 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                             loadingDialog.cancelLoading();
 
                             if (response.body().getStatus() == 200) {
-                                Intent intent=new Intent(getApplicationContext(),Campaign_Name_Activity.class);
-                                intent.putExtra("sequence_id",sequence_id);
-                                intent.putExtra("seq_task_id",seq_task_id);
-                                startActivity(intent);
-                                finish();
+
+                               if (SessionManager.getContect_flag(getApplicationContext()).equals("check"))
+                               {
+                                   Intent intent = new Intent(getApplicationContext(), Campaign_Viewcontect.class);
+                                   intent.putExtra("sequence_id", sequence_id);
+                                   startActivity(intent);
+                                   finish();
+                               }
+                              else {
+                                   Intent intent=new Intent(getApplicationContext(),Campaign_Name_Activity.class);
+                                   intent.putExtra("sequence_id",sequence_id);
+                                   intent.putExtra("seq_task_id",seq_task_id);
+                                   startActivity(intent);
+                                   finish();
+                               }
+
                             } else {
                                 Global.Messageshow(getApplicationContext(),main_layout,response.body().getMessage(),false);
 
@@ -368,7 +379,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
     @Override
     public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
-        return new CardListAdepter.cardListData(view);
+        return new cardListData(view);
     }
 
     @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
@@ -405,7 +416,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
         return broadcast_image_list.size();
     }
 
-    public class cardListData extends RecyclerView.ViewHolder {
+    public static class cardListData extends RecyclerView.ViewHolder {
 
         ImageView iv_card;
         LinearLayout layout_select_image;

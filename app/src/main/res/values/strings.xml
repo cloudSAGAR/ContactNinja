@@ -357,8 +357,20 @@ Number</string>
     <string name="Comp_C">C</string><!--Complete-->
     <string name="Comp_D">I</string><!--Delete-->
     <string name="camp_select_contect">Select Contect Number</string>
-    <string name="manu_name1" > Save as draft</string>
-    <string name="manu_name2" > Edit </string>
+    <string name="manu_name1"> Save as draft</string>
+    <string name="manu_name2"> Edit </string>
     <string name="txt_campaign">Start  Campaign</string>
-
+    <string name="view_contect">View Contacts</string>
+    <string name="tv_contect">Contacts</string>
+    <string name="tv_sms">SMS</string>
+    <string name="tv_email">Emails</string>
+    <string name="cam_tv_titel">Conatc Ninja campaign for new mebers</string>
+    <string name="con_reach">Completed Out Reach</string>
+    <string name="con_pending">Pending Out Reach</string>
+    <string name="Please_select_your_level">Please select your level</string>
+    <string name="lavel1">Lavel 1</string>
+    <string name="lavel2">Lavel 2</string>
+    <string name="lavel3">Lavel 3</string>
+    <string name="lavel4">Lavel 4</string>
+    <string name="lavel5">Lavel 5</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.contactninja.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,7 +20,7 @@ import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Main_contact_Fragment extends Fragment implements ViewPager.OnPageChangeListener {
 
     TabLayout tabLayout;

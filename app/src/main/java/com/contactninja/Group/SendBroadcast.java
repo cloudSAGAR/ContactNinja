@@ -1,13 +1,6 @@
 package com.contactninja.Group;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,24 +11,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.bumptech.glide.Glide;
-import com.contactninja.Auth.LoginActivity;
-import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
-import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.Fragment.GroupFragment.ExposuresFragment;
 import com.contactninja.Fragment.GroupFragment.MembersFragment;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener  , ConnectivityReceiver.ConnectivityReceiverListener {
     TextView save_button;
     ImageView iv_Setting, iv_back;
@@ -71,7 +68,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         tabLayout.addTab(tabLayout.newTab().setText("Members"));
         tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        adapter = new ViewpaggerAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount());
+        adapter = new ViewpaggerAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -114,6 +111,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.save_button:
                 startActivity(new Intent(getApplicationContext(),Final_Group.class));
+                finish();
                 break;
             default:
 
@@ -139,7 +137,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
 
 
 
-    class ViewpaggerAdapter extends FragmentPagerAdapter {
+    static class ViewpaggerAdapter extends FragmentPagerAdapter {
 
         Context context;
         int totalTabs;

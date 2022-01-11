@@ -2,9 +2,13 @@ package com.contactninja.AddContect;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,11 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -30,6 +34,7 @@ import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -52,7 +57,8 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class EmailSend_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick {
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
+public class EmailSend_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -77,11 +83,13 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_send);
+        mNetworkReceiver = new ConnectivityReceiver();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -199,7 +207,36 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(EmailSend_Activity.this, mMainLayout);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -390,6 +427,15 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
+
+
+        for(int i=0;i<userLinkedGmailList.size();i++){
+            if(userLinkedGmailList.get(i).getIsDefault()==1){
+                userLinkedGmailList.get(i).setEmailSelect(true);
+                break;
+            }
+        }
+
         email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         EmailListAdepter emailListAdepter = new EmailListAdepter(getApplicationContext(), userLinkedGmailList);
         email_list.setAdapter(emailListAdepter);
@@ -410,16 +456,13 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case PICKFILE_RESULT_CODE:
-                if (resultCode == -1) {
-                    Uri fileUri = data.getData();
-                    filePath = fileUri.getPath();
-                    Log.e("File Pathe uis ", filePath);
+        if (requestCode == PICKFILE_RESULT_CODE) {
+            if (resultCode == -1) {
+                Uri fileUri = data.getData();
+                filePath = fileUri.getPath();
+                Log.e("File Pathe uis ", filePath);
 
-                }
-
-                break;
+            }
         }
     }
 
@@ -555,7 +598,6 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
 
         loadingDialog.showLoadingDialog();
-        //From Id Is defult_id
         Log.e("Defuilt id", String.valueOf(defult_id));
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
@@ -575,21 +617,10 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", "1");
         obj.add("data", paramObject);
 
-      /*  JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is",new Gson().toJson(gsonObject));
-*/
-
         retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
-                } else {
-                    loadingDialog.cancelLoading();
-                }
-
-
+                loadingDialog.cancelLoading();
             }
 
             @Override
@@ -813,25 +844,34 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             }
 
 
-            holder.iv_selected.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            if (userLinkedGmailList.get(position).isEmailSelect())
+            {
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                holder.iv_unselected.setVisibility(View.GONE);
+            }
+            else {
+                holder.iv_selected.setVisibility(View.GONE);
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+            }
 
-                    holder.iv_selected.setVisibility(View.GONE);
-                    holder.iv_unselected.setVisibility(View.VISIBLE);
-                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
-                    defult_id = userLinkedGmailList.get(position).getId();
-                    // notifyDataSetChanged();
-                }
-            });
-            holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
+
+            holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    for(int i=0; i<userLinkedGmailList.size();i++){
+                        if (userLinkedGmailList.get(i).isEmailSelect())
+                        {
+                            userLinkedGmailList.get(i).setEmailSelect(false);
+                            break;
+                        }
+                    }
+                    userLinkedGmailList.get(position).setEmailSelect(true);
+
                     select_userLinkedGmailList.clear();
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
                     select_userLinkedGmailList.add(userLinkedGmailList.get(position));
-                    //  notifyDataSetChanged();
+                      notifyDataSetChanged();
                 }
             });
 
@@ -847,6 +887,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             TextView tv_item;
             View line_view;
             ImageView iv_dufult, iv_selected, iv_unselected;
+            LinearLayout layout_select;
 
             public viewholder(View view) {
                 super(view);
@@ -855,6 +896,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                 iv_dufult = view.findViewById(R.id.iv_dufult);
                 iv_selected = view.findViewById(R.id.iv_selected);
                 iv_unselected = view.findViewById(R.id.iv_unselected);
+                layout_select = view.findViewById(R.id.layout_select);
             }
         }
     }

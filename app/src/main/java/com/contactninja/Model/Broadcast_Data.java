@@ -1,6 +1,9 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import java.util.List;
+@SuppressLint("UnknownNullness")
 
 public class Broadcast_Data {
     String link;

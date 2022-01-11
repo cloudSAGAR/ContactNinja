@@ -7,9 +7,9 @@ import android.content.ContentProviderResult;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -68,50 +68,40 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("StaticFieldLeak")
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged")
 public class ContectFragment extends Fragment {
 
-    public static final int RequestPermissionCode = 1;
-    private static final int PERMISSION_REQUEST_CODE = 100;
     private final static String[] DATA_COLS = {
 
             ContactsContract.Data.MIMETYPE,
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
-    public static UserListDataAdapter userListDataAdapter;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
-    public static ArrayList<InviteListData> csv_ListData = new ArrayList<>();
     ConstraintLayout mMainLayout;
     Context mCtx;
-    Cursor cursor;
     RecyclerView rvinviteuserdetails;
-    String userName = "", user_phone_number = "", user_image = "", user_des = "", strtext = "", old_latter = "", contect_type = "", contect_email = "",
-            contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
-            postcode = "", postType = "", note = "";
+    String strtext = "";
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
     SearchView contect_search;
     TextView add_new_contect, num_count;
-    Handler mHandler = new Handler();
     ImageView add_new_contect_icon;
     View view1;
     FragmentActivity fragmentActivity;
     LinearLayout add_new_contect_layout;
-    int c = 0;
     LoadingDialog loadingDialog;
-    StringBuilder data;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-    int page = 1, limit = 0, totale_group;
+    int limit = 0, totale_group;
     ContectListAdapter paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
     boolean isLastPage = false;
     LinearLayoutManager layoutManager;
-    private List<ContectListData.Contact> contectListData;
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
+    private List<ContectListData.Contact> contectListData;
 
 
     public ContectFragment(String strtext, View view, FragmentActivity activity) {
@@ -177,8 +167,6 @@ public class ContectFragment extends Fragment {
 
             for (ContentProviderResult result : results) {
                 Log.e("Upadte Contect", result.toString());
-
-                Log.d("Update Result", result.toString());
             }
 
             return true;
@@ -252,13 +240,10 @@ public class ContectFragment extends Fragment {
         );
 
 
-
-
-
         if (SessionManager.getContectList(getActivity()).size() != 0) {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
             paginationAdapter.addAll(contectListData);
-            num_count.setText(contectListData.size()+" Contacts");
+            num_count.setText(contectListData.size() + " Contacts");
         }
         //  getAllContect();
 
@@ -270,27 +255,18 @@ public class ContectFragment extends Fragment {
 
 
                 try {
-                    contectListData.clear();
-                    paginationAdapter.removeloist();
-                    paginationAdapter.notifyDataSetChanged();
-                    sessionManager.setContectList(getActivity(),new ArrayList<>());
-
                     try {
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-                catch (Exception e)
-                {
-                      try {
+                } catch (Exception e) {
+                    try {
                         ContectEvent();
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
                 }
-
-
 
 
             }
@@ -325,8 +301,6 @@ public class ContectFragment extends Fragment {
         });
 
 
-
-
         ev_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -337,14 +311,12 @@ public class ContectFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 List<ContectListData.Contact> temp = new ArrayList();
-                for(ContectListData.Contact d: contectListData){
-                    if(d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())){
+                for (ContectListData.Contact d : contectListData) {
+                    if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
                     }
                 }
-            /*groupContectAdapter = new GroupContectAdapter(getActivity());
-            contect_list_unselect.setAdapter(groupContectAdapter);*/
                 paginationAdapter.updateList(temp);
                 //groupContectAdapter.notifyDataSetChanged();
             }
@@ -365,14 +337,7 @@ public class ContectFragment extends Fragment {
                                         .toUpperCase()// Grab the first letter and capitalize it
                         );
                         return fastScrollItemIndicator;
-                    }
-                    catch (Exception e)
-                    {
-                      /*  FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-                                inviteListData.get(position).getUserName().substring(0, 1)
-                                        .substring(0, 1)
-                                        .toUpperCase()// Grab the first letter and capitalize it
-                        );*/
+                    } catch (Exception e) {
                         return null;
                     }
 
@@ -384,7 +349,7 @@ public class ContectFragment extends Fragment {
     }
 
     void filter(String text, View view, FragmentActivity activity) {
-        Log.e("Text is",text);
+        Log.e("Text is", text);
         if (!text.equals("")) {
             List<ContectListData.Contact> temp = new ArrayList();
             for (ContectListData.Contact d : contectListData) {
@@ -410,18 +375,9 @@ public class ContectFragment extends Fragment {
         num_count = content_view.findViewById(R.id.num_count);
         add_new_contect_icon = content_view.findViewById(R.id.add_new_contect_icon);
         add_new_contect_layout = content_view.findViewById(R.id.add_new_contect_layout);
-        swipeToRefresh=content_view.findViewById(R.id.swipeToRefresh);
-        ev_search=content_view.findViewById(R.id.ev_search);
+        swipeToRefresh = content_view.findViewById(R.id.swipeToRefresh);
+        ev_search = content_view.findViewById(R.id.ev_search);
     }
-
-
-
-
-
-
-
-
-
 
 
     public void update(String strtext1, View view, FragmentActivity activity) {
@@ -431,7 +387,7 @@ public class ContectFragment extends Fragment {
 
 
     private void ContectEvent() throws JSONException {
-        loadingDialog.showLoadingDialog();
+        //  loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -453,14 +409,24 @@ public class ContectFragment extends Fragment {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj,Global.getVersionname(getActivity()),Global.Device);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(getActivity()), Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
-               Log.e("Reponse is", new Gson().toJson(response.body()));
-                if (response.body().getStatus() == 200) {
+
+
+                Log.e("Reponse is", new Gson().toJson(response.body()));
+                try {
+                    //   if (response.body().getStatus() == 200) {.
+
+                    contectListData.clear();
+                    paginationAdapter.removeloist();
+                    paginationAdapter.notifyDataSetChanged();
+                    sessionManager.setContectList(getActivity(), new ArrayList<>());
+
+
                     SessionManager.setContectList(getActivity(), new ArrayList<>());
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -469,6 +435,7 @@ public class ContectFragment extends Fragment {
                     ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                     contectListData.addAll(contectListData1.getContacts());
                     paginationAdapter.addAll(contectListData);
+                    paginationAdapter.notifyDataSetChanged();
                     List<ContectListData> contectListData_store = new ArrayList<>();
                     contectListData_store.add(contectListData1);
                     SessionManager.setContectList(getActivity(), contectListData_store);
@@ -484,8 +451,10 @@ public class ContectFragment extends Fragment {
                     num_count.setText("" + contectListData1.getTotal() + " Contacts");
 
                     totale_group = contectListData1.getTotal();
+                    //    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
             }
 
             @Override
@@ -525,7 +494,7 @@ public class ContectFragment extends Fragment {
 
 
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj,Global.getVersionname(getActivity()),Global.Device);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(getActivity()), Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -566,33 +535,17 @@ public class ContectFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onResume() {
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-
-
         try {
-            contectListData.clear();
-            paginationAdapter.removeloist();
-            paginationAdapter.notifyDataSetChanged();
-            sessionManager.setContectList(getActivity(),new ArrayList<>());
+            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+            myAsyncTasks.execute();
 
-            try {
-                ContectEvent();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e)
-        {
-            try {
-                ContectEvent();
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
+        } catch (Exception e) {
+            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+            myAsyncTasks.execute();
         }
 
         super.onResume();
@@ -707,7 +660,7 @@ public class ContectFragment extends Fragment {
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
 
@@ -744,7 +697,7 @@ public class ContectFragment extends Fragment {
             notifyDataSetChanged();
         }
 
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
 
             TextView no_image;
             TextView userName, userNumber, first_latter;
@@ -766,8 +719,7 @@ public class ContectFragment extends Fragment {
 
     }
 
-
-    public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
+    public abstract static class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
         private final LinearLayoutManager layoutManager;
 
@@ -796,6 +748,38 @@ public class ContectFragment extends Fragment {
         public abstract boolean isLastPage();
 
         public abstract boolean isLoading();
+
+    }
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                    ContectEvent();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
 
     }
 

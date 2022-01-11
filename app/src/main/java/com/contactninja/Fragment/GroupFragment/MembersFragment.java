@@ -1,15 +1,11 @@
 package com.contactninja.Fragment.GroupFragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +16,14 @@ import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
-import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.SigleGroupModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -47,13 +47,16 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class MembersFragment extends Fragment {
-
+    private List<ContectListData.Contact> contectListData=new ArrayList<>();
+    private List<ContectListData.Contact> selected_contectListData=new ArrayList<>();
 
 
     public MembersFragment() {
@@ -62,7 +65,7 @@ public class MembersFragment extends Fragment {
     Context mCtx;
     Cursor cursor;
     public static UserListDataAdapter userListDataAdapter;
-    public static ArrayList<SigleGroupModel.Group.ContactDetail> inviteListData=new ArrayList<>();
+    public static ArrayList<SigleGroupModel.Group.ContactId> inviteListData=new ArrayList<>();
     RecyclerView rvinviteuserdetails;
     String userName, user_phone_number,user_image,user_des,strtext="",old_latter="",contect_type="",contect_email,
             contect_type_work="",email_type_home="",email_type_work="",country="",city="",region="",street="",
@@ -94,7 +97,7 @@ public class MembersFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        getAllContect();
+
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
         fastscroller.getItemIndicatorSelectedCallbacks().add(
@@ -117,7 +120,7 @@ public class MembersFragment extends Fragment {
                     FastScrollItemIndicator fastScrollItemIndicator= new FastScrollItemIndicator.Text(
 
 
-                            inviteListData.get(position).getFirstname().substring(0, 1)
+                            contectListData.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
@@ -135,42 +138,6 @@ public class MembersFragment extends Fragment {
         fastscroller_thumb=view.findViewById(R.id.fastscroller_thumb);
 
     }
-    private void getAllContect() {
-        // loadingDialog.showLoadingDialog();
-       /* class GetTasks extends AsyncTask<Void, Void, List<InviteListData>> {
-            @Override
-            protected List<InviteListData> doInBackground(Void... voids) {
-                List<InviteListData> taskList = DatabaseClient
-                        .getInstance(getActivity())
-                        .getAppDatabase()
-                        .taskDao()
-                        .getvalue1();
-
-                return taskList;
-            }
-
-            @Override
-            protected void onPostExecute(List<InviteListData> tasks) {
-                if (tasks.size()==0)
-                {
-                    loadingDialog.cancelLoading();
-                   // getAllContect();
-                }
-                else {
-                    loadingDialog.cancelLoading();
-                    inviteListData.addAll(tasks);
-                    userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
-                    rvinviteuserdetails.setAdapter(userListDataAdapter);
-                    userListDataAdapter.notifyDataSetChanged();
-                    super.onPostExecute(tasks);
-                }
-
-            }
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();*/
-    }
 
 
     public static class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
@@ -179,22 +146,22 @@ public class MembersFragment extends Fragment {
         int last_postion=0;
         public Activity mCtx;
         private final Context mcntx;
-        private List<SigleGroupModel.Group.ContactDetail> userDetails;
-        private List<SigleGroupModel.Group.ContactDetail> userDetailsfull;
+        private List<ContectListData.Contact> userDetails;
+        private List<ContectListData.Contact> userDetailsfull;
         String second_latter="";
         String current_latter="",image_url="";
         private Filter exampleFilter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<SigleGroupModel.Group.ContactDetail> filteredList = new ArrayList<>();
+                List<ContectListData.Contact> filteredList = new ArrayList<>();
                 if (constraint == null || constraint.length() == 0) {
                     filteredList.addAll(userDetailsfull);
                 } else {
                     String userName = constraint.toString().toLowerCase().trim();
                     String userNumber = constraint.toString().toLowerCase().trim();
-                    for (SigleGroupModel.Group.ContactDetail item : userDetailsfull) {
+                    for (ContectListData.Contact item : userDetailsfull) {
                         if (item.getFirstname().toLowerCase().contains(userName)
-                                || item.getEmailNumber().toLowerCase().contains(userNumber)) {
+                                || item.getFirstname().toLowerCase().contains(userNumber)) {
                             filteredList.add(item);
                         }
                     }
@@ -207,12 +174,12 @@ public class MembersFragment extends Fragment {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 userDetails.clear();
-                userDetails.addAll((List<SigleGroupModel.Group.ContactDetail>) results.values);
+                userDetails.addAll((List<ContectListData.Contact>) results.values);
                 notifyDataSetChanged();
             }
         };
 
-        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<SigleGroupModel.Group.ContactDetail> userDetails) {
+        public UserListDataAdapter(Activity Ctx, Context mCtx, List<ContectListData.Contact> userDetails) {
             this.mcntx = mCtx;
             this.mCtx = Ctx;
             this.userDetails = userDetails;
@@ -224,12 +191,12 @@ public class MembersFragment extends Fragment {
         public UserListDataAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.invite_user_details, parent, false);
-            return new UserListDataAdapter.InviteListDataclass(view);
+            return new InviteListDataclass(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull UserListDataAdapter.InviteListDataclass holder, int position) {
-            SigleGroupModel.Group.ContactDetail inviteUserDetails = userDetails.get(position);
+            ContectListData.Contact inviteUserDetails = userDetails.get(position);
 
             last_postion=position;
 
@@ -239,7 +206,7 @@ public class MembersFragment extends Fragment {
                 holder.first_latter.setVisibility(View.VISIBLE);
                 holder.top_layout.setVisibility(View.VISIBLE);
                 String first_latter=inviteUserDetails.getFirstname().substring(0,1).toUpperCase();
-
+                holder.first_latter.setText(first_latter);
                 if (second_latter.equals(""))
                 {
                     current_latter=first_latter;
@@ -266,46 +233,34 @@ public class MembersFragment extends Fragment {
                 }
 
 
-            if (inviteUserDetails.getContactImage()==null)
-            {
-                String name =inviteUserDetails.getFirstname();
-                String add_text="";
-                String[] split_data=name.split(" ");
-                try {
-                    for (int i=0;i<split_data.length;i++)
+            String name =inviteUserDetails.getFirstname();
+            String add_text="";
+            String[] split_data=name.split(" ");
+            try {
+                for (int i=0;i<split_data.length;i++)
+                {
+                    if (i==0)
                     {
-                        if (i==0)
-                        {
-                            add_text=split_data[i].substring(0,1);
-                        }
-                        else {
-                            add_text=add_text+split_data[i].substring(0,1);
-                            break;
-                        }
+                        add_text=split_data[i].substring(0,1);
+                    }
+                    else {
+                        add_text=add_text+split_data[i].substring(0,1);
+                        break;
                     }
                 }
-                catch (Exception e)
-                {
-
-                }
-
-
-                holder.no_image.setText(add_text);
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
             }
-            else {
-                Glide.with(mCtx).
-                        load(inviteUserDetails.getContactImage())
-                        .placeholder(R.drawable.shape_primary_circle)
-                        .error(R.drawable.shape_primary_circle)
-                        .into(holder.profile_image);
-                holder.no_image.setVisibility(View.GONE);
-                holder.profile_image.setVisibility(View.VISIBLE);
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
+
+
+            holder.no_image.setText(add_text);
+            holder.no_image.setVisibility(View.VISIBLE);
+            holder.profile_image.setVisibility(View.GONE);
             holder.userName.setText(inviteUserDetails.getFirstname());
-            holder.userNumber.setText(inviteUserDetails.getEmailNumber());
-
+            //holder.userNumber.setText(inviteUserDetails.getMobile());
+            holder.userNumber.setVisibility(View.GONE);
         }
 
         @Override
@@ -315,16 +270,16 @@ public class MembersFragment extends Fragment {
 
         @Override
         public Filter getFilter() {
-            Log.e("Fillter is",new Gson().toJson(exampleFilter));
+            //Log.e("Fillter is",new Gson().toJson(exampleFilter));
             return exampleFilter;
         }
 
-        public void updateList(List<SigleGroupModel.Group.ContactDetail> list){
+        public void updateList(List<ContectListData.Contact> list){
             userDetails=list;
             notifyDataSetChanged();
         }
 
-        public  class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
 
             TextView no_image;
             TextView userName, userNumber,first_latter;
@@ -370,6 +325,7 @@ public class MembersFragment extends Fragment {
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
         retrofitCalls.SingleGroup_List(sessionManager,gsonObject, loadingDialog, token, Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -377,34 +333,34 @@ public class MembersFragment extends Fragment {
                 if (response.body().getStatus() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<SigleGroupModel.Group>() {
+                    Type listType = new TypeToken<SigleGroupModel>() {
                     }.getType();
-                    SigleGroupModel.Group group_model = new Gson().fromJson(headerString, listType);
+                    SigleGroupModel group_model = new Gson().fromJson(headerString, listType);
 
-                    Log.e("Group List is",new Gson().toJson(group_model.getContactDetails()));
-                    List<ContectListData.Contact> groupModel=new ArrayList<>();
-                    ContectListData.Contact contact=new ContectListData.Contact();
-                    for (int i=0;i<group_model.getContactDetails().size();i++)
+                    List<SigleGroupModel.Group> groups=new ArrayList<>();
+                    groups.addAll(group_model.getGroups());
+                    Log.e("Reponse is",new Gson().toJson(groups));
+
+
+                    if (SessionManager.getContectList(getActivity()).size() != 0) {
+                        contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+                    }
+                    for (int p=0;p<groups.get(0).getContactIds().size();p++)
                     {
-                        contact.setFirstname(group_model.getContactDetails().get(i).getFirstname());
-                        contact.setLastname(group_model.getContactDetails().get(i).getLastname());
-                        contact.setContactImage(group_model.getContactDetails().get(i).getContactImage());
-                        List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
-                        ContectListData.Contact.ContactDetail contactDetail=new ContectListData.Contact.ContactDetail();
-                        contactDetail.setContactId(group_model.getContactDetails().get(i).getId());
-                        contactDetail.setEmailNumber(group_model.getContactDetails().get(i).getEmailNumber());
-                        contactDetails.add(contactDetail);
-                        contact.setContactDetails(contactDetails);
+                        String p_id= String.valueOf(groups.get(0).getContactIds().get(p).getProspectId());
+                        OptionalInt indexOpt = IntStream.range(0, contectListData.size())
+                                .filter(i -> p_id.equals(String.valueOf(contectListData.get(i).getId())))
+                                .findFirst();
+                        Log.e("Matech Index", String.valueOf(indexOpt.getAsInt()));
+                        contectListData.get(indexOpt.getAsInt()).setFlag("false");
+                        selected_contectListData.add(contectListData.get(indexOpt.getAsInt()));
 
                     }
-                    groupModel.add(contact);
-                    sessionManager.setGroupList(getActivity(),groupModel);
-                 /*   inviteListData.addAll(group_model.getContactDetails());
-                    userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), inviteListData);
+                    sessionManager.setGroupList(getActivity(),selected_contectListData);
+                    inviteListData.addAll(groups .get(0).getContactIds());
+                    userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), selected_contectListData);
                     rvinviteuserdetails.setAdapter(userListDataAdapter);
-                    userListDataAdapter.notifyDataSetChanged();*/
-                    // userListDataAdapter.addAll(grouplists);
-
+                    userListDataAdapter.notifyDataSetChanged();
                 }
             }
 

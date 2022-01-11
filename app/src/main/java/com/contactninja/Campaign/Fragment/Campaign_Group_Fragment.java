@@ -1,5 +1,6 @@
 package com.contactninja.Campaign.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Auth.SignupActivity;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
 import com.contactninja.Model.Grouplist;
@@ -35,7 +35,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -49,6 +48,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Campaign_Group_Fragment extends Fragment implements View.OnClickListener {
 
     LinearLayout main_layout, add_new_contect_layout, group_name;
@@ -359,11 +359,43 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                     MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
 
                     movieViewHolder.group_name.setText(Group_data.getGroupName());
-                    Glide.with(context).
-                            load(Group_data.getGroupImage()).
-                            placeholder(R.drawable.shape_primary_back).
-                            error(R.drawable.shape_primary_back).into(movieViewHolder.group_image);
-                    movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
+                    if (Group_data.getGroupImage()==null)
+                    {
+                        String name =Group_data.getGroupName();
+                        String add_text="";
+                        String[] split_data=name.split(" ");
+                        try {
+                            for (int i=0;i<split_data.length;i++)
+                            {
+                                if (i==0)
+                                {
+                                    add_text=split_data[i].substring(0,1);
+                                }
+                                else {
+                                    add_text=add_text+split_data[i].substring(0,1);
+                                    break;
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+e.printStackTrace();
+                        }
+
+
+                        movieViewHolder.no_image.setText(add_text);
+                        movieViewHolder.no_image.setVisibility(View.VISIBLE);
+                        movieViewHolder.group_image.setVisibility(View.GONE);
+                    }
+                    else {
+                        Glide.with(context).
+                                load(Group_data.getGroupImage()).
+                                placeholder(R.drawable.shape_primary_back).
+                                error(R.drawable.shape_primary_back).into(movieViewHolder.group_image);
+
+                        movieViewHolder.no_image.setVisibility(View.GONE);
+                        movieViewHolder.group_image.setVisibility(View.VISIBLE);
+                    } movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             SessionManager.setGroupData(context, Group_data);
@@ -468,13 +500,14 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
 
         public class MovieViewHolder extends RecyclerView.ViewHolder {
-            private final TextView group_name;
-            private final RoundedImageView group_image;
+            private final TextView group_name,no_image;
+            private final CircleImageView group_image;
             LinearLayout group_layout;
             ImageView add_new_contect_icon,remove_contect_icon;
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
+                no_image = itemView.findViewById(R.id.no_image);
                 group_name = itemView.findViewById(R.id.group_name);
                 group_layout = itemView.findViewById(R.id.group_layout);
                 group_image = itemView.findViewById(R.id.group_image);
@@ -567,7 +600,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                         }
                     }
                 } catch (Exception e) {
-
+e.printStackTrace();
                 }
 
 
@@ -620,7 +653,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             }
             catch (Exception e)
             {
-
+e.printStackTrace();
             }
 
         }

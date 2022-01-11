@@ -2,12 +2,12 @@
 package com.contactninja.Model.UserData;
 
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-
-public class Level3 {
-
+@SuppressLint("UnknownNullness")
+public class LevelModel {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
@@ -16,7 +16,10 @@ public class Level3 {
     private Integer referredBy;
     @SerializedName("first_name")
     @Expose
-    private String firstName;
+    private String name;
+    @SerializedName("referred_name")
+    @Expose
+    private String referredName;
 
     public Integer getUserId() {
         return userId;
@@ -34,12 +37,19 @@ public class Level3 {
         this.referredBy = referredBy;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getReferredName() {
+        return referredName;
+    }
+
+    public void setReferredName(String referredName) {
+        this.referredName = referredName;
+    }
 }

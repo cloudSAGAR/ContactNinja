@@ -30,7 +30,7 @@
         android:textColor="@color/otp_header_text_color"
         android:textSize="@dimen/_14sdp" />
     <LinearLayout
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:gravity="end"
         android:layout_gravity="center"
         android:orientation="horizontal"

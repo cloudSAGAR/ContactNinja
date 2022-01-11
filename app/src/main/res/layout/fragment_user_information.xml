@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:background="@color/white">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/_5sdp"
@@ -857,8 +857,10 @@
 
                     <LinearLayout
                         android:id="@+id/select_label_zone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_27sdp"
+                        android:layout_width="@dimen/_170sdp"
+                        android:paddingTop="@dimen/_4sdp"
+                        android:paddingBottom="@dimen/_4sdp"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/shape_border_ccc"
                         android:paddingStart="@dimen/_20sdp"
                         android:paddingEnd="@dimen/_20sdp">
@@ -879,6 +881,7 @@
                         </TextView>
 
                         <ImageView
+                            android:id="@+id/iv_down"
                             android:layout_width="@dimen/_12sdp"
                             android:layout_height="@dimen/_12sdp"
                             android:layout_gravity="center"
@@ -1029,7 +1032,7 @@
                     android:background="@drawable/ic_note"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
-                    android:orientation="horizontal"></LinearLayout>
+                    android:orientation="horizontal"/>
 
 
             </LinearLayout>

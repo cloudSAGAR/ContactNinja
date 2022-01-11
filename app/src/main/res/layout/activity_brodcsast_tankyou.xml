@@ -7,6 +7,7 @@
     android:background="@color/white"
     android:id="@+id/mMainLayout"
     android:layout_gravity="center"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".MainActivity">
     <LinearLayout
         android:background="@drawable/shape_border_10_white"

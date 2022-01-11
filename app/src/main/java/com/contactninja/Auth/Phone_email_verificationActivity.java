@@ -1,5 +1,6 @@
 package com.contactninja.Auth;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -51,7 +52,7 @@ import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Phone_email_verificationActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static RetrofitApiInterface apiService;
     TextView btn_getStarted, iv_invalid;
@@ -222,11 +223,8 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_getStarted:
-                check_login_type1();
-
-                break;
+        if (v.getId() == R.id.btn_getStarted) {
+            check_login_type1();
         }
     }
 

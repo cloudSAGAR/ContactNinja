@@ -3,13 +3,22 @@ package com.contactninja.retrofit;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 import okhttp3.MultipartBody;
@@ -182,6 +191,13 @@ public class RetrofitCalls {
 
     }
 
+    public void Contect_List(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Contect_List(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
 
     public void Upload_csv(SessionManager session,LoadingDialog loadingDialog, String token, RequestBody organization_id,
                            RequestBody team_id, RequestBody user_id,RequestBody id, MultipartBody.Part import_file,
@@ -340,7 +356,15 @@ public class RetrofitCalls {
                         session.logoutUser();
                     }else
                     {
-                        retrofitCallback.error(response);
+                        if(response.code()==401&&response.message().equals("Unauthenticated.")){
+                            try {
+                                Refreess_token(session,loadingDialog);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            retrofitCallback.error(response);
+                        }
                     }
                 } else {
                     retrofitCallback.success(response);
@@ -354,5 +378,60 @@ public class RetrofitCalls {
         });
     }
 
+    void Refreess_token(SessionManager sessionManager, LoadingDialog loadingDialog) throws JSONException {
+
+
+        String token = sessionManager.getAccess_token();
+        String Refresh_token = sessionManager.getRefresh_token();
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("refresh_token", sessionManager.getRefresh_token());
+        obj.add("data", paramObject);
+        Log.e("Tokem is ",new Gson().toJson(obj));
+        retrofitCalls.Refress_Token(sessionManager,obj, loadingDialog, token, Global.AppVersion,Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                ApiResponse apiResponse=response.body();
+                try{
+                    if (apiResponse.getStatus() == 200) {
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Type listType = new TypeToken<SignResponseModel>() {
+                        }.getType();
+                        SignResponseModel data= new Gson().fromJson(headerString, listType);
+                        sessionManager.setRefresh_token(data.getRefreshToken());
+                        sessionManager.setAccess_token(data.getTokenType()+" "+data.getAccessToken());
+
+                        Log.e("Access_token",data.getTokenType()+" "+data.getAccessToken());
+                        Log.e("Refresh_token",data.getRefreshToken());
+
+                        Toast.makeText(context,context.getResources().getString(R.string.tryAgain),Toast.LENGTH_SHORT).show();
+
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
+
+
+
+
+
+
+    }
 
 }
+

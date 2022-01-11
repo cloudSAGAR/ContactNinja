@@ -1,9 +1,12 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+@SuppressLint("UnknownNullness")
 
 public class ContectListData {
 
@@ -378,6 +381,16 @@ public class ContectListData {
 
         public static class ContactDetail {
 
+            private boolean isPhoneSelect=false;
+
+            public boolean isPhoneSelect() {
+                return isPhoneSelect;
+            }
+
+            public void setPhoneSelect(boolean phoneSelect) {
+                isPhoneSelect = phoneSelect;
+            }
+
             @SerializedName("id")
             @Expose
             private Integer id;
@@ -423,6 +436,19 @@ public class ContectListData {
             @SerializedName("deleted_at")
             @Expose
             private Object deletedAt;
+
+            @SerializedName("flag")
+            @Expose
+            private String flag;
+
+
+            public String getFlag() {
+                return flag;
+            }
+
+            public void setFlag(String flag) {
+                this.flag = flag;
+            }
 
             public Integer getId() {
                 return id;

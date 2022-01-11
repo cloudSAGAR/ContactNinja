@@ -38,7 +38,6 @@
 
     <application
         android:name=".Utils.Global"
-        android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
@@ -49,8 +48,25 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Campaign.Campaign_view_per_contect_Detail"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserPofile.Affiliate_Report_LavelActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_Viewcontect"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_Final_Start"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Campaign.Campaign_Preview"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.EmailListActivity"
             android:exported="true"

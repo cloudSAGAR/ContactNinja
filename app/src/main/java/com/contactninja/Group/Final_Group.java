@@ -1,13 +1,5 @@
 package com.contactninja.Group;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -37,18 +29,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Auth.LoginActivity;
-import com.contactninja.Auth.SignupActivity;
-import com.contactninja.Model.AddGroup;
-import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -77,17 +71,18 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-public class Final_Group extends AppCompatActivity implements View.OnClickListener ,ConnectivityReceiver.ConnectivityReceiverListener{
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Final_Group extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
+    public static UserListDataAdapter userListDataAdapter;
+    public static List<ContectListData.Contact> inviteListData = new ArrayList<>();
     GroupListData groupListData;
     TextView save_button;
     ImageView iv_Setting, iv_back;
-    String fragment_name,user_image_Url;
-    EditText add_new_contect,add_detail,contect_search;
+    String fragment_name, user_image_Url;
+    EditText add_new_contect, add_detail, contect_search;
     LinearLayout add_new_member;
-    public static UserListDataAdapter userListDataAdapter;
-    public static List<ContectListData.Contact> inviteListData = new ArrayList<>();
-    RecyclerView  contect_list_unselect;
+    RecyclerView contect_list_unselect;
     RecyclerView.LayoutManager layoutManager;
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
@@ -95,13 +90,69 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     SessionManager sessionManager;
     RoundedImageView iv_user;
     ImageView iv_dummy;
-    String group_name,group_description, File_name,File_extension;
+    String group_name, group_description, File_name, File_extension;
     LinearLayout mMainLayout;
     RetrofitCalls retrofitCalls;
-    String old_image="",group_id="";
+    String old_image = "", group_id = "";
 
     private BroadcastReceiver mNetworkReceiver;
 
+    // function to check permission
+    public static boolean checkAndRequestPermissions(final Activity context) {
+        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int cameraPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded
+                    .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(context, listPermissionsNeeded
+                            .toArray(new String[listPermissionsNeeded.size()]),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+
+    public static String encodeFileToBase64Binary(String str) {
+        try {
+            return new String(Base64.decode(str, 0), "UTF-8");
+        } catch (UnsupportedEncodingException | IllegalArgumentException unused) {
+            return "";
+        }
+    }
+
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if (dir != null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,40 +162,35 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         Global.checkConnectivity(Final_Group.this, mMainLayout);
-        sessionManager=new SessionManager(this);
+        sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        if (SessionManager.getGroupData(this)!=null)
-        {
+        if (SessionManager.getGroupData(this) != null) {
             Grouplist.Group group_data = SessionManager.getGroupData(this);
             add_new_contect.setText(group_data.getGroupName());
             add_detail.setText(group_data.getDescription());
-            if(group_data.getGroupImage()!=null){
+            if (group_data.getGroupImage() != null) {
                 iv_user.setVisibility(View.VISIBLE);
                 Glide.with(getApplicationContext()).
                         load(group_data.getGroupImage()).
                         placeholder(R.drawable.shape_primary_back).
                         error(R.drawable.shape_primary_back).into(iv_user);
                 iv_dummy.setVisibility(View.GONE);
-            }else {
+            } else {
                 iv_user.setVisibility(View.GONE);
                 iv_dummy.setVisibility(View.VISIBLE);
             }
 
 
-            old_image=group_data.getGroupImage();
+            old_image = group_data.getGroupImage();
 
-            group_id= String.valueOf(group_data.getId());
-            Log.e("Group id is",group_id);
-            if (group_id.equals(""))
-            {
-                group_id="";
-            }
-            else if (group_id.equals("null"))
-            {
-                group_id="";
-            }
-            else {
-                group_id=group_id;
+            group_id = String.valueOf(group_data.getId());
+            Log.e("Group id is", group_id);
+            if (group_id.equals("")) {
+                group_id = "";
+            } else if (group_id.equals("null")) {
+                group_id = "";
+            } else {
+                group_id = group_id;
             }
 
 
@@ -157,7 +203,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         save_button.setText("Save");
         save_button.setVisibility(View.VISIBLE);
         inviteListData.addAll(sessionManager.getGroupList(this));
-     //   Log.e("Data Is ",new Gson().toJson(sessionManager.getGroupList(this)));
+        //   Log.e("Data Is ",new Gson().toJson(sessionManager.getGroupList(this)));
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
         fastscroller.getItemIndicatorSelectedCallbacks().add(
@@ -203,8 +249,8 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 List<ContectListData.Contact> temp = new ArrayList();
-                for(ContectListData.Contact d: inviteListData){
-                    if(d.getFirstname().contains(s.toString())){
+                for (ContectListData.Contact d : inviteListData) {
+                    if (d.getFirstname().contains(s.toString())) {
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
                     }
@@ -222,25 +268,26 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         });
         deleteCache(this);
     }
+    // Handled permission Result
 
     private void IntentUI() {
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
-        add_new_contect=findViewById(R.id.add_new_contect);
-        add_detail=findViewById(R.id.add_detail);
-        add_new_member=findViewById(R.id.add_new_member);
-        layoutManager=new LinearLayoutManager(this);
-        contect_list_unselect=findViewById(R.id.contect_list_unselect);
+        add_new_contect = findViewById(R.id.add_new_contect);
+        add_detail = findViewById(R.id.add_detail);
+        add_new_member = findViewById(R.id.add_new_member);
+        layoutManager = new LinearLayoutManager(this);
+        contect_list_unselect = findViewById(R.id.contect_list_unselect);
         contect_list_unselect.setLayoutManager(layoutManager);
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
-        contect_search=findViewById(R.id.contect_search);
-        iv_user=findViewById(R.id.iv_user);
-        iv_dummy=findViewById(R.id.iv_dummy);
+        contect_search = findViewById(R.id.contect_search);
+        iv_user = findViewById(R.id.iv_user);
+        iv_dummy = findViewById(R.id.iv_dummy);
         iv_dummy.setOnClickListener(this);
-        mMainLayout=findViewById(R.id.mMainLayout);
+        mMainLayout = findViewById(R.id.mMainLayout);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -248,12 +295,12 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
+                SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
                 finish();
                 break;
             case R.id.save_button:
                 try {
-                    if(Global.isNetworkAvailable(Final_Group.this,mMainLayout)) {
+                    if (Global.isNetworkAvailable(Final_Group.this, mMainLayout)) {
                         SaveEvent();
                     }
                 } catch (JSONException e) {
@@ -268,7 +315,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
                 break;
             case R.id.iv_dummy:
-                if(checkAndRequestPermissions(Final_Group.this)){
+                if (checkAndRequestPermissions(Final_Group.this)) {
                     captureimageDialog(false);
                 }
 
@@ -276,7 +323,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 break;
 
             case R.id.iv_user:
-                if(checkAndRequestPermissions(Final_Group.this)){
+                if (checkAndRequestPermissions(Final_Group.this)) {
                     captureimageDialog(true);
                 }
 
@@ -292,34 +339,43 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
         loadingDialog.showLoadingDialog();
 
-        group_name=add_new_contect.getText().toString();
-        group_description=add_detail.getText().toString();
-        if (group_name.equals(""))
-        {
-            Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.add_group_txt),false);
-        }
-        else if (group_description.equals(""))
-        {
-            Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.add_group_description),false);
-        }
-        else {
+        group_name = add_new_contect.getText().toString();
+        group_description = add_detail.getText().toString();
+        if (group_name.equals("")) {
+            Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_txt), false);
+        } else if (group_description.equals("")) {
+            Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_description), false);
+        } else {
 
             SignResponseModel user_data = sessionManager.getGetUserdata(this);
             String user_id = String.valueOf(user_data.getUser().getId());
             String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
             String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-            JSONArray contect_array = new JSONArray();
-            for (int i =0;i<inviteListData.size();i++)
-            {
-                contect_array.put(inviteListData.get(i).getId());
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < inviteListData.size(); i++) {
+                Log.e("Contec List Size", String.valueOf(inviteListData.get(0).getContactDetails().size()));
+                JSONObject paramObject1 = new JSONObject();
+                paramObject1.put("prospect_id", inviteListData.get(i).getId());
+                for (int j = 0; j < inviteListData.get(i).getContactDetails().size(); j++) {
+                    if (inviteListData.get(i).getContactDetails().get(j).getType().equals("NUMBER")) {
+                        paramObject1.put("mobile", inviteListData.get(i).getContactDetails().get(j).getEmailNumber());
+                    } else {
+                        if (!inviteListData.get(i).getContactDetails().get(j).getEmailNumber().equals(" ")) {
+                            paramObject1.put("email", inviteListData.get(i).getContactDetails().get(j).getEmailNumber());
 
+                        }
+                    }
+                    //break;
+                }
+
+                jsonArray.put(paramObject1);
             }
-           // contect_array.put(3);
-            String token=Global.getToken(sessionManager);
+
+            // contect_array.put(3);
+            String token = Global.getToken(sessionManager);
             JSONObject obj = new JSONObject();
             JSONObject paramObject = new JSONObject();
-            if (!group_id.equals(""))
-            {
+            if (!group_id.equals("")) {
                 paramObject.put("id", group_id);
             }
 
@@ -327,10 +383,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
           /*  if(old_image!=null){
                 paramObject.put("oldImage", old_image);
             }*/
-            if(old_image!=null){
+            if (old_image != null) {
                 paramObject.put("oldImage", old_image);
-            }
-            else {
+            } else {
                 paramObject.put("oldImage", "");
             }
             paramObject.put("image_extension", File_extension);
@@ -339,24 +394,24 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             paramObject.put("organization_id", "1");
             paramObject.put("team_id", "1");
             paramObject.put("user_id", user_id);
-            paramObject.put("contact_ids",contect_array);
+            paramObject.put("contact_ids", jsonArray);
             paramObject.put("description", group_description);
             obj.put("data", paramObject);
             //Log.e("Data IS ",new Gson().toJson(obj));
 
             JsonParser jsonParser = new JsonParser();
-            JsonObject gsonObject = (JsonObject)jsonParser.parse(obj.toString());
-          //  Log.e("Obbject data",new Gson().toJson(gsonObject));
-            retrofitCalls.AddGroup(sessionManager,gsonObject, loadingDialog,token,Global.getVersionname(Final_Group.this),Global.Device, new RetrofitCallback() {
+            JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+            //  Log.e("Obbject data",new Gson().toJson(gsonObject));
+            retrofitCalls.AddGroup(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(Final_Group.this), Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
 
                     loadingDialog.cancelLoading();
                     if (response.body().getStatus() == 200) {
-                        Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),true);
+                        Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
                         finish();
                     } else {
-                        Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                        Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                     }
                 }
 
@@ -371,30 +426,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
 
     }
-
-    // function to check permission
-    public static boolean checkAndRequestPermissions(final Activity context) {
-        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int cameraPermission = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.CAMERA);
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CAMERA);
-        }
-        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded
-                    .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(context, listPermissionsNeeded
-                            .toArray(new String[listPermissionsNeeded.size()]),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS);
-            return false;
-        }
-        return true;
-    }
-    // Handled permission Result
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -426,7 +457,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
                         Uri selectedImage = data.getData();
-                    //    Log.e("Uri is ", String.valueOf(selectedImage));
+                        //    Log.e("Uri is ", String.valueOf(selectedImage));
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
                             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -436,7 +467,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                                 String picturePath = cursor.getString(columnIndex);
 
                                 //user_image_Url = encodeFileToBase64Binary(picturePath);
-                               // Log.e("Image Url is ",user_image_Url);
+                                // Log.e("Image Url is ",user_image_Url);
 
                                 iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                                 cursor.close();
@@ -448,16 +479,16 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
                                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
                                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url="data:image/JPEG;base64,"+imageString;
-                             //   Log.e("url is",user_image_Url);
-                                File_extension="JPEG";
+                                user_image_Url = "data:image/JPEG;base64," + imageString;
+                                //   Log.e("url is",user_image_Url);
+                                File_extension = "JPEG";
 
 
                                 iv_user.setVisibility(View.VISIBLE);
                                 iv_dummy.setVisibility(View.GONE);
 
-                                File file= new File(selectedImage.getPath());
-                                File_name=file.getName();
+                                File file = new File(selectedImage.getPath());
+                                File_name = file.getName();
 
 
                             }
@@ -468,7 +499,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-
     private void captureimageDialog(boolean remove) {
         final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Final_Group.this, R.style.CoffeeDialog);
@@ -476,9 +506,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
         TextView cameraId = bottomSheetDialog.findViewById(R.id.cameraId);
         TextView tv_remove = bottomSheetDialog.findViewById(R.id.tv_remove);
-        if(remove){
+        if (remove) {
             tv_remove.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tv_remove.setVisibility(View.GONE);
         }
         tv_remove.setOnClickListener(new View.OnClickListener() {
@@ -506,7 +536,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , 1);
+                startActivityForResult(pickPhoto, 1);
                 bottomSheetDialog.dismiss();
 
             }
@@ -516,25 +546,59 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
     }
 
-    public static String encodeFileToBase64Binary(String str) {
-        try {
-            return new String(Base64.decode(str, 0), "UTF-8");
-        } catch (UnsupportedEncodingException | IllegalArgumentException unused) {
-            return "";
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
+        SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Final_Group.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
     public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
+        private final List<ContectListData.Contact> userDetailsfull;
         public Activity mCtx;
         int last_postion = 0;
         String second_latter = "";
         String current_latter = "", image_url = "";
         private List<ContectListData.Contact> userDetails;
-        private final List<ContectListData.Contact> userDetailsfull;
+
         public UserListDataAdapter(Activity Ctx, Context mCtx, List<ContectListData.Contact> userDetails) {
             this.mcntx = mCtx;
             this.mCtx = Ctx;
@@ -554,18 +618,18 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         public void onBindViewHolder(@NonNull UserListDataAdapter.InviteListDataclass holder, int position) {
             ContectListData.Contact inviteUserDetails = userDetailsfull.get(position);
             last_postion = position;
-                //Log.e("Size is", String.valueOf(userDetailsfull.size()));
+            //Log.e("Size is", String.valueOf(userDetailsfull.size()));
 
             holder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                  //  Log.e("Posirion is", String.valueOf(position));
+                    //  Log.e("Posirion is", String.valueOf(position));
                     userDetails.get(position).setFlag("true");
                     removeite(position);
-                  //  Log.e("Main Data Is",new Gson().toJson(inviteListData));
-                   /* holder.main_layout.setVisibility(View.GONE);
-                  */
+                    //  Log.e("Main Data Is",new Gson().toJson(inviteListData));
+                    /* holder.main_layout.setVisibility(View.GONE);
+                     */
 
                 }
             });
@@ -575,17 +639,15 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     holder.add_new_contect_icon.setVisibility(View.GONE);
                 }
                 else */
-            if (userDetailsfull.get(position).getFlag().equals("false"))
-                {
-                    holder.remove_contect_icon.setVisibility(View.VISIBLE);
-                    holder.add_new_contect_icon1.setVisibility(View.GONE);
-                }
-                else {
-                    holder.remove_contect_icon.setVisibility(View.GONE);
-                    holder.add_new_contect_icon1.setVisibility(View.VISIBLE);
+            if (userDetailsfull.get(position).getFlag().equals("false")) {
+                holder.remove_contect_icon.setVisibility(View.VISIBLE);
+                holder.add_new_contect_icon1.setVisibility(View.GONE);
+            } else {
+                holder.remove_contect_icon.setVisibility(View.GONE);
+                holder.add_new_contect_icon1.setVisibility(View.VISIBLE);
 
 
-                }
+            }
 
 
 
@@ -605,35 +667,32 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 */
 
 
-
-
-                holder.first_latter.setVisibility(View.VISIBLE);
-                holder.top_layout.setVisibility(View.VISIBLE);
-                String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+            holder.first_latter.setVisibility(View.VISIBLE);
+            holder.top_layout.setVisibility(View.VISIBLE);
+            String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
             holder.first_latter.setText(first_latter);
 
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
+            if (second_latter.equals("")) {
+                current_latter = first_latter;
+                second_latter = first_latter;
+                holder.first_latter.setVisibility(View.VISIBLE);
+                holder.top_layout.setVisibility(View.VISIBLE);
 
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                    //inviteUserDetails.setF_latter("");
-                    holder.first_latter.setVisibility(View.GONE);
-                    holder.top_layout.setVisibility(View.GONE);
+            } else if (second_latter.equals(first_latter)) {
+                current_latter = second_latter;
+                //inviteUserDetails.setF_latter("");
+                holder.first_latter.setVisibility(View.GONE);
+                holder.top_layout.setVisibility(View.GONE);
 
-                } else {
+            } else {
 
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
+                current_latter = first_latter;
+                second_latter = first_latter;
+                holder.first_latter.setVisibility(View.VISIBLE);
+                holder.top_layout.setVisibility(View.VISIBLE);
 
 
-                }
-
+            }
 
 
             String file = "" + inviteUserDetails.getContactImage();
@@ -654,7 +713,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
 
@@ -688,22 +747,17 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 }
 
             }
-           try {
-               if (inviteUserDetails.getLastname().equals(""))
-               {
-                   holder.userName.setText(inviteUserDetails.getFirstname());
-               }
-               else {
-                   holder.userName.setText(inviteUserDetails.getFirstname()+" "+inviteUserDetails.getLastname());
-               }
-           }
-           catch (Exception e)
-           {
-               holder.userName.setText(inviteUserDetails.getFirstname());
-           }
+            try {
+                if (inviteUserDetails.getLastname().equals("")) {
+                    holder.userName.setText(inviteUserDetails.getFirstname());
+                } else {
+                    holder.userName.setText(inviteUserDetails.getFirstname() + " " + inviteUserDetails.getLastname());
+                }
+            } catch (Exception e) {
+                holder.userName.setText(inviteUserDetails.getFirstname());
+            }
 
-           // holder.userNumber.setText();
-
+            // holder.userNumber.setText();
 
 
         }
@@ -718,8 +772,8 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             userDetails = list;
             notifyDataSetChanged();
         }
-        public void removeite(int value)
-        {
+
+        public void removeite(int value) {
             inviteListData.remove(value);
             userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
             contect_list_unselect.setAdapter(userListDataAdapter);
@@ -734,7 +788,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             TextView userName, userNumber, first_latter;
             CircleImageView profile_image;
             LinearLayout top_layout;
-            ImageView add_new_contect_icon1,remove_contect_icon;
+            ImageView add_new_contect_icon1, remove_contect_icon;
             RelativeLayout main_layout;
 
 
@@ -746,81 +800,15 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 profile_image = itemView.findViewById(R.id.profile_image);
                 no_image = itemView.findViewById(R.id.no_image);
                 top_layout = itemView.findViewById(R.id.top_layout);
-                add_new_contect_icon1=itemView.findViewById(R.id.add_new_contect_icon);
-                remove_contect_icon=itemView.findViewById(R.id.remove_contect_icon);
+                add_new_contect_icon1 = itemView.findViewById(R.id.add_new_contect_icon);
+                remove_contect_icon = itemView.findViewById(R.id.remove_contect_icon);
                 add_new_contect_icon1.setVisibility(View.VISIBLE);
-                main_layout=itemView.findViewById(R.id.main_layout);
+                main_layout = itemView.findViewById(R.id.main_layout);
 
             }
 
         }
 
-    }
-
-    public static void deleteCache(Context context) {
-        try {
-            File dir = context.getCacheDir();
-            deleteDir(dir);
-        } catch (Exception e) { e.printStackTrace();}
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-            return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
-            return dir.delete();
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onBackPressed() {
-        SessionManager.setGroupList(getApplicationContext(),new ArrayList<>());
-        SessionManager.setGroupData(getApplicationContext(),new Grouplist.Group());
-        super.onBackPressed();
-    }
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Final_Group.this, mMainLayout);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void registerNetworkBroadcastForNougat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    protected void unregisterNetworkChanges() {
-        try {
-            unregisterReceiver(mNetworkReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterNetworkChanges();
     }
 
 }

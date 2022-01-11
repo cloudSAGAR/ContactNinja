@@ -10,7 +10,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +20,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.contactninja.Auth.SignupActivity;
-import com.contactninja.Campaign.Automated_Email_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.TemplateList;
@@ -46,7 +41,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.mindorks.placeholderview.ViewHolder;
 
 import org.json.JSONException;
 
@@ -55,6 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
+
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class TemplateActivity extends AppCompatActivity implements View.OnClickListener,
         ConnectivityReceiver.ConnectivityReceiverListener,TemplateClick, SwipeRefreshLayout.OnRefreshListener {
@@ -95,7 +91,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         rv_template_list.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv_template_list.setLayoutManager(layoutManager);
-        templateAdepter=new TemplateAdepter(TemplateActivity.this,new ArrayList<>(),templateClick);
+        templateAdepter= new TemplateAdepter(TemplateActivity.this, new ArrayList<>(), templateClick);
         rv_template_list.setAdapter(templateAdepter);
 
 
@@ -328,7 +324,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewData> {
+    public static class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         private boolean isLoaderVisible = false;
@@ -418,7 +414,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         }
 
 
-        public class viewData extends RecyclerView.ViewHolder {
+        public static class viewData extends RecyclerView.ViewHolder {
             TextView tv_template_name;
             LinearLayout layout_template;
             ImageView iv_select_type;
@@ -430,7 +426,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
             }
         }
 
-        public class ProgressHolder extends viewData {
+        public static class ProgressHolder extends viewData {
             ProgressHolder(View itemView) {
                 super(itemView);
             }

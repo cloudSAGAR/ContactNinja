@@ -9,8 +9,6 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,11 +23,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.chaos.view.PinView;
 import com.contactninja.Auth.PlanTyep.PlanType_Screen;
-import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -58,18 +54,12 @@ import com.gun0912.tedpermission.TedPermission;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class VerificationActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "VerificationActivity";
     public static CountDownTimer countDownTimer;
@@ -126,11 +116,6 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                 } else {
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
-
-                    //Show Code
-
-                    //  PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
-                    //signInWithCredential(credential);
 
                         tc_wrong.setVisibility(View.GONE);
                         loadingDialog.showLoadingDialog();
@@ -267,24 +252,12 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                             }
 
 
-                        } else {
-                            try {
-                                //     iosDialog.dismiss();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            //   Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_otp), Toast.LENGTH_LONG).show();
                         }
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        try {
-                            //    iosDialog.dismiss();
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
                         otp_pinview.setText("");
                     }
                 });
@@ -370,7 +343,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     public void showTimer() {
         Log.e("Show TImmer","Yes");
         countDownTimer = new CountDownTimer(60 * 1000, 1000) {
-            @SuppressLint("NewApi")
+            @SuppressLint({"NewApi", "DefaultLocale"})
             @Override
             public void onTick(long millisUntilFinished) {
                 second++;
@@ -420,8 +393,8 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     }.getType();
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
-                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-
+                    sessionManager.setRefresh_token(user_model.getRefreshToken());
+                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());
                     if (login_type.equals("EMAIL"))
                     {
 
@@ -526,8 +499,9 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     // Log.e("Reponse is",gson.toJson(response.body().getData()));
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
-                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-                   try {
+                    sessionManager.setRefresh_token(user_model.getRefreshToken());
+                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());                   try {
+
                        if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                            intent.putExtra("login_type", login_type);

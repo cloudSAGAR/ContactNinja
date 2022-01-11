@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -24,7 +25,7 @@ import com.contactninja.Utils.Global;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Broadcast_date_select extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back, iv_Setting;
     TextView save_button;
@@ -66,12 +67,12 @@ public class Broadcast_date_select extends AppCompatActivity implements Connecti
         current.add(Calendar.MONTH, 1);
         calendar.setCurrentMonth(current);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String formatedDate = sdf.format(startSelectedDate.getTime());
         Log.e("start Date",formatedDate);
 
 
-        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
         String formatedDate1 = sdf1.format(endSelectedDate.getTime());
         Log.e("End Date",formatedDate1);
 

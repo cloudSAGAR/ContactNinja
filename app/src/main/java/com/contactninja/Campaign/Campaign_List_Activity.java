@@ -2,17 +2,15 @@ package com.contactninja.Campaign;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +20,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.contactninja.Interface.CampaingClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Campaign_List;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.PaginationListener;
@@ -46,53 +52,49 @@ import java.util.List;
 
 import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Campaign_List_Activity extends AppCompatActivity implements View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener, CampaingClick {
+        SwipeRefreshLayout.OnRefreshListener, CampaingClick, ConnectivityReceiver.ConnectivityReceiverListener  {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back;
-    TextView tv_create,sub_txt;
-    LinearLayout demo_layout,add_campaign_layout,mMainLayout1;
+    TextView tv_create, sub_txt;
+    LinearLayout demo_layout, add_campaign_layout, mMainLayout1,mMainLayout;
     EditText ev_search;
     SwipeRefreshLayout swipeToRefresh;
     RecyclerView rv_campaign_list;
 
 
-
     CampaingAdepter campaingAdepter;
-    List<Campaign_List.Campaign> campaignList=new ArrayList<>();
-
-    private int currentPage = PAGE_START;
+    List<Campaign_List.Campaign> campaignList = new ArrayList<>();
     int perPage = 20;
+    private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
 
-
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaign_list);
+        mNetworkReceiver = new ConnectivityReceiver();
         retrofitCalls = new RetrofitCalls(Campaign_List_Activity.this);
-        loadingDialog=new LoadingDialog(Campaign_List_Activity.this);
-        sessionManager=new SessionManager(Campaign_List_Activity.this);
+        loadingDialog = new LoadingDialog(Campaign_List_Activity.this);
+        sessionManager = new SessionManager(Campaign_List_Activity.this);
 
-        loadingDialog=new LoadingDialog(this);
-        sessionManager=new SessionManager(this);
+        loadingDialog = new LoadingDialog(this);
+        sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
         iv_back.setOnClickListener(this);
         demo_layout.setOnClickListener(this);
         add_campaign_layout.setOnClickListener(this);
-
-
-
-
         rv_campaign_list.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv_campaign_list.setLayoutManager(layoutManager);
-        campaingAdepter=new CampaingAdepter(Campaign_List_Activity.this,new ArrayList<>(),this);
+        campaingAdepter = new CampaingAdepter(Campaign_List_Activity.this, new ArrayList<>(), this);
         rv_campaign_list.setAdapter(campaingAdepter);
 
 
@@ -102,33 +104,37 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 isLoading = true;
                 currentPage++;
                 try {
-                    if(Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
+                    if (Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
                         Campaing_list();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public boolean isLastPage() {
                 return isLastPage;
             }
+
             @Override
             public boolean isLoading() {
                 return isLoading;
             }
         });
     }
+
     private void IntentUI() {
-        mMainLayout1=findViewById(R.id.mMainLayout1);
-        rv_campaign_list=findViewById(R.id.campaign_list);
-        iv_back=findViewById(R.id.iv_back);
+        mMainLayout = findViewById(R.id.mMainLayout);
+        mMainLayout1 = findViewById(R.id.mMainLayout1);
+        rv_campaign_list = findViewById(R.id.campaign_list);
+        iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
-        demo_layout=findViewById(R.id.demo_layout);
-        tv_create=findViewById(R.id.tv_create);
-        sub_txt=findViewById(R.id.sub_txt);
-        ev_search=findViewById(R.id.ev_search);
-        add_campaign_layout=findViewById(R.id.add_campaign_layout);
+        demo_layout = findViewById(R.id.demo_layout);
+        tv_create = findViewById(R.id.tv_create);
+        sub_txt = findViewById(R.id.sub_txt);
+        ev_search = findViewById(R.id.ev_search);
+        add_campaign_layout = findViewById(R.id.add_campaign_layout);
         tv_create.setText(getString(R.string.campaign_alert_txt));
         sub_txt.setText(getString(R.string.campaign_alert_sub_txt));
 
@@ -148,7 +154,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         campaignList.clear();
         campaingAdepter.clear();
         try {
-            if(Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
                 Campaing_list();
             }
         } catch (JSONException e) {
@@ -156,21 +162,53 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         }
     }
     @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Campaign_List_Activity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
+    @Override
     public void onRefresh() {
         currentPage = PAGE_START;
         isLastPage = false;
         campaingAdepter.clear();
         campaignList.clear();
         try {
-            if(Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
                 Campaing_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     private void Campaing_list() throws JSONException {
-        if(!swipeToRefresh.isRefreshing()){
+        if (!swipeToRefresh.isRefreshing()) {
             loadingDialog.showLoadingDialog();
         }
 
@@ -193,8 +231,8 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog,Global.getToken(sessionManager),
-                Global.getVersionname(Campaign_List_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_List_Activity.this), Global.Device, new RetrofitCallback() {
                     @SuppressLint("SyntheticAccessor")
                     @Override
                     public void success(Response<ApiResponse> response) {
@@ -207,13 +245,13 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
                             Type listType = new TypeToken<Campaign_List>() {
                             }.getType();
-                            Campaign_List campaign=new Gson().fromJson(headerString, listType);
-                            campaignList=campaign.getCampaignList();
+                            Campaign_List campaign = new Gson().fromJson(headerString, listType);
+                            campaignList = campaign.getCampaignList();
 
-                            if(campaignList.size()==0){
+                            if (campaignList.size() == 0) {
                                 demo_layout.setVisibility(View.VISIBLE);
                                 mMainLayout1.setVisibility(View.GONE);
-                            }else {
+                            } else {
                                 demo_layout.setVisibility(View.GONE);
                                 mMainLayout1.setVisibility(View.VISIBLE);
                             }
@@ -223,7 +261,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             campaingAdepter.addItems(campaignList);
                             swipeToRefresh.setRefreshing(false);
                             // check weather is last page or not
-                            if (campaignList.size()>=perPage) {
+                            if (campaignList.size() >= perPage) {
                                 campaingAdepter.addLoading();
                             } else {
                                 isLastPage = true;
@@ -248,7 +286,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
@@ -257,20 +295,20 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
-                Global.count=1;
+                Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
-                finish();
+                startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
+                //finish();
                 break;
             case R.id.add_campaign_layout:
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
-                Global.count=1;
+                Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
-                finish();
+                startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
+                // finish();
                 break;
         }
     }
@@ -281,20 +319,23 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         SessionManager.setCampaign_type_name("");
         SessionManager.setCampaign_Day("");
         SessionManager.setCampaign_minute("");
-        Global.count=1;
+        Global.count = 1;
         SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-        String contect_list_count= String.valueOf(campaign.getProspect());
-        if (contect_list_count.equals("0"))
+        String contect_list_count = String.valueOf(campaign.getProspect());
+        if (campaign.getStatus().equals("A"))
         {
+            Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
+            intent.putExtra("sequence_id", campaign.getId());
+            startActivity(intent);
+        }else if (contect_list_count.equals("0")) {
 
-        Intent intent =new Intent(getApplicationContext(),Campaign_Overview.class);
-        intent.putExtra("sequence_id",campaign.getId());
-        startActivity(intent);
-        }
-        else {
+            Intent intent = new Intent(getApplicationContext(), Campaign_Overview.class);
+            intent.putExtra("sequence_id", campaign.getId());
+            startActivity(intent);
+        } else {
             SessionManager.setCampign_flag("read");
             Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-            intent.putExtra("sequence_id",campaign.getId());
+            intent.putExtra("sequence_id", campaign.getId());
             startActivity(intent);
 
         }
@@ -302,16 +343,15 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     }
 
 
-    public class CampaingAdepter extends RecyclerView.Adapter<CampaingAdepter.viewData> {
+    public static class CampaingAdepter extends RecyclerView.Adapter<CampaingAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
-        private boolean isLoaderVisible = false;
-
-        CampaingClick campaingClick;
         public Context mCtx;
-        private List<Campaign_List.Campaign> campaignList=new ArrayList<>();
+        CampaingClick campaingClick;
+        private boolean isLoaderVisible = false;
+        private List<Campaign_List.Campaign> campaignList = new ArrayList<>();
 
-        public CampaingAdepter(Context context, List<Campaign_List.Campaign> campaignList,CampaingClick campaingClick) {
+        public CampaingAdepter(Context context, List<Campaign_List.Campaign> campaignList, CampaingClick campaingClick) {
             this.mCtx = context;
             this.campaignList = campaignList;
             this.campaingClick = campaingClick;
@@ -332,6 +372,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     return null;
             }
         }
+
         @Override
         public int getItemViewType(int position) {
             if (isLoaderVisible) {
@@ -340,15 +381,18 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 return VIEW_TYPE_NORMAL;
             }
         }
+
         public void addItems(List<Campaign_List.Campaign> postItems) {
             campaignList.addAll(postItems);
             notifyDataSetChanged();
         }
+
         public void addLoading() {
             isLoaderVisible = true;
             campaignList.add(new Campaign_List.Campaign());
             notifyItemInserted(campaignList.size() - 1);
         }
+
         public void removeLoading() {
             isLoaderVisible = false;
             int position = campaignList.size() - 1;
@@ -363,15 +407,16 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             campaignList.clear();
             notifyDataSetChanged();
         }
+
         Campaign_List.Campaign getItem(int position) {
             return campaignList.get(position);
         }
 
         @Override
         public void onBindViewHolder(@NonNull CampaingAdepter.viewData holder, int position) {
-            Campaign_List.Campaign campaign=campaignList.get(position);
+            Campaign_List.Campaign campaign = campaignList.get(position);
             holder.campaign_name.setText(campaign.getSeqName());
-           setImage(campaign,holder);
+            setImage(campaign, holder);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -382,18 +427,18 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
         }
 
-        private void setImage(Campaign_List.Campaign campaign,  viewData holder) {
-            switch (campaign.getStatus()){
+        private void setImage(Campaign_List.Campaign campaign, viewData holder) {
+            switch (campaign.getStatus()) {
                 case "A":
                     holder.iv_hold.setVisibility(View.GONE);
                     holder.iv_play_icon.setVisibility(View.VISIBLE);
                     holder.iv_puse_icon.setVisibility(View.GONE);
                     break;
                 case "I":
-                    if(campaign.getStarted_on()!=null){
+                    if (campaign.getStarted_on() != null) {
                         holder.iv_puse_icon.setVisibility(View.VISIBLE);
                         holder.iv_hold.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         holder.iv_hold.setVisibility(View.VISIBLE);
                         holder.iv_puse_icon.setVisibility(View.GONE);
                     }
@@ -408,9 +453,10 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         }
 
 
-        public class viewData extends RecyclerView.ViewHolder {
+        public static class viewData extends RecyclerView.ViewHolder {
             TextView campaign_name;
-            ImageView iv_hold,iv_puse_icon,iv_play_icon;
+            ImageView iv_hold, iv_puse_icon, iv_play_icon;
+
             public viewData(@NonNull View itemView) {
                 super(itemView);
                 campaign_name = itemView.findViewById(R.id.campaign_name);
@@ -420,11 +466,17 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             }
         }
 
-        public class ProgressHolder extends viewData {
+        public static class ProgressHolder extends viewData {
             ProgressHolder(View itemView) {
                 super(itemView);
             }
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

@@ -1,8 +1,11 @@
 package com.contactninja.retrofit;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+@SuppressLint("UnknownNullness")
 
 public class ApiResponse {
 
@@ -55,7 +58,7 @@ public class ApiResponse {
         }
     }*/
 
-    public Integer getStatus() {
+    public Integer  getStatus() {
         return status;
     }
 

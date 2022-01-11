@@ -7,24 +7,23 @@
     android:gravity="center"
     android:background="@color/white"
     android:orientation="vertical"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Fragment.AddContect_Fragment.BzcardFragment">
-    <ImageView
-        android:layout_gravity="center"
-        android:src="@drawable/ic_group_otp_logo"
-        android:layout_width="@dimen/_55sdp"
-        android:layout_height="@dimen/_55sdp"></ImageView>
+
     <TextView
+        android:id="@+id/button_Affiliate_Report"
+        android:padding="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/add_exposures_text"
+        android:text="View Detailed Affiliate Report"
         android:layout_width="match_parent"
         style="@style/tv_regular"
-        android:textColor="@color/bz_text"
+        android:textColor="@color/purple_200"
         android:textSize="@dimen/_14sdp"
         android:textStyle="bold"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_40sdp"
-        ></TextView>
+        />
 
 </LinearLayout>

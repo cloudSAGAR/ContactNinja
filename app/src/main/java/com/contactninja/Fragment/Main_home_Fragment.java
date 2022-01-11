@@ -1,5 +1,6 @@
 package com.contactninja.Fragment;
 
+import android.annotation.SuppressLint;
 import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Main_home_Fragment extends Fragment {
 
 
@@ -56,13 +58,13 @@ public class Main_home_Fragment extends Fragment {
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog=new LoadingDialog(getActivity());
         sessionManager=new SessionManager(getActivity());
-        try {
+     /*   try {
             if(Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 Refreess_token();
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         try {
             if(Global.isNetworkAvailable(getActivity(),MainActivity.mMainLayout)) {
                 TimeZooneUpdate();
@@ -88,10 +90,11 @@ public class Main_home_Fragment extends Fragment {
     private void Refreess_token() throws JSONException {
 
 
-        String token = Global.getToken(sessionManager);
+        String token = sessionManager.getAccess_token();
+        String Refresh_token = sessionManager.getRefresh_token();
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("refresh_token", ""+token);
+        paramObject.addProperty("refresh_token", sessionManager.getRefresh_token());
         obj.add("data", paramObject);
         Log.e("Tokem is ",new Gson().toJson(obj));
         retrofitCalls.Refress_Token(sessionManager,obj, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
@@ -99,20 +102,25 @@ public class Main_home_Fragment extends Fragment {
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<Grouplist>() {
-                    }.getType();
-                    SignResponseModel data= new Gson().fromJson(headerString, listType);
-                    sessionManager.setRefresh_token(data.getTokenType()+" "+data.getAccessToken());
-                    //   sessionManager.setUserdata(getApplicationContext(),data);
+                ApiResponse apiResponse=response.body();
+                try{
+                    if (apiResponse.getStatus() == 200) {
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Type listType = new TypeToken<SignResponseModel>() {
+                        }.getType();
+                        SignResponseModel data= new Gson().fromJson(headerString, listType);
+                        sessionManager.setRefresh_token(data.getRefreshToken());
+                        sessionManager.setAccess_token(data.getTokenType()+" "+data.getAccessToken());
 
-                } else {
-                //   Toast.makeText(getActivity(),"Token :(",Toast.LENGTH_SHORT).show();
+                        Log.e("Access_token",data.getTokenType()+" "+data.getAccessToken());
+                        Log.e("Refresh_token",data.getRefreshToken());
 
-
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
             }
 
             @Override
@@ -141,7 +149,7 @@ public class Main_home_Fragment extends Fragment {
                 Locale.getDefault());
 
         Date currentLocalTime = calendar.getTime();
-        DateFormat date = new SimpleDateFormat("Z");
+        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
         String  offset = localTime.substring(0, 1);
 

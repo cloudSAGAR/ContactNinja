@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_txt"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="10dp"
@@ -59,7 +60,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:background="@drawable/shape_primary_back"
-            android:layout_height="@dimen/_40sdp"></TextView>
+            android:layout_height="@dimen/_40sdp"/>
 
     </LinearLayout>
 

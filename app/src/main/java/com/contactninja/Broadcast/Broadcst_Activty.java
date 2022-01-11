@@ -45,6 +45,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class Broadcst_Activty extends AppCompatActivity implements View.OnClickListener , CardClick,  ConnectivityReceiver.ConnectivityReceiverListener {
     TabLayout tabLayout;
@@ -131,7 +132,6 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.save_button:
-
 
                 final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Broadcst_Activty.this, R.style.DialogStyle);
@@ -258,7 +258,6 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
                 });
 
                 bottomSheetDialog.show();
-
 
                 break;
         }
@@ -403,7 +402,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
         return broadcast_image_list.size();
     }
 
-    public class cardListData extends RecyclerView.ViewHolder {
+    public static class cardListData extends RecyclerView.ViewHolder {
 
         ImageView iv_card;
         LinearLayout layout_select_image;

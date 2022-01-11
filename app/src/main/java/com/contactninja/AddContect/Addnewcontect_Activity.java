@@ -1,6 +1,7 @@
 package com.contactninja.AddContect;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentProviderOperation;
@@ -79,7 +80,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener , YourFragmentInterface {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
@@ -160,8 +161,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
+            iv_user.setOnClickListener(this);
             if(Contect_data.getContactImage()==null){
                 iv_user.setVisibility(View.GONE);
+
                 layout_pulse.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
                 tv_nameLetter.setVisibility(View.VISIBLE);
@@ -180,7 +183,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
                 tv_nameLetter.setText(add_text);
 
@@ -194,7 +197,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         into(iv_user);
             }
             olld_image = Contect_data.getContactImage();
-
             save_button.setText("Save Contact");
 
 
@@ -202,6 +204,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         } else if (flag.equals("read")) {
             edt_FirstName.setEnabled(false);
             edt_lastname.setEnabled(false);
+            iv_user.setOnClickListener(null);
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
             edt_FirstName.setText(Contect_data.getFirstname());
@@ -226,7 +229,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
                 tv_nameLetter.setText(add_text);
 
@@ -306,8 +309,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
                 AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
-                //  AddcontectModel addcontectModel=new AddcontectModel();
-                //    Log.e("Data is ", new Gson().toJson(addcontectModel));
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
                 address = addcontectModel.getAddress();
@@ -444,7 +445,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         iv_user = findViewById(R.id.iv_user);
         pulse_icon.setOnClickListener(this);
-        iv_user.setOnClickListener(this);
+
     }
 
 
@@ -454,10 +455,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         super.onRequestPermissionsResult(RC, per, PResult);
         if (RC == RequestPermissionCode) {
             if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             } else {
                 Global.Messageshow(getApplicationContext(), mMainLayout, "Permission Canceled, Now your application cannot access CONTACTS", false);
                 startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
@@ -465,20 +463,18 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
             }
         }
-        switch (RC) {
-            case REQUEST_ID_MULTIPLE_PERMISSIONS:
-                if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),
-                            "Requires Access to Camara.", Toast.LENGTH_SHORT)
-                            .show();
-                } else if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),
-                            "Requires Access to Your Storage.",
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
+        if (RC == REQUEST_ID_MULTIPLE_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
+                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(),
+                        "Requires Access to Camara.", Toast.LENGTH_SHORT)
+                        .show();
+            } else if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(),
+                        "Requires Access to Your Storage.",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -527,16 +523,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 .withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
                 .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
                 .build());
-
-
-      /*  //Note
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Note.DATA1, note)
-                .withValue(ContactsContract.CommonDataKinds.Note.DATA1, ContactsContract.CommonDataKinds.Note.DATA1)
-                .build());
-        */
 
 
         try {
@@ -675,7 +661,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
             if (contactdetails.get(i).getEmail_number().equals("")) {
-    } else {
+            }
+            else {
                 if (contactdetails.get(i).getType().equals("NUMBER"))
                 {
                     phone = contactdetails.get(i).getEmail_number();
@@ -774,26 +761,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         JSONObject paramObject = new JSONObject();
         //Other Company Add
-        if (addcontectModel.getCompany().equals(""))
+        if (addcontectModel.getCompany().trim().equalsIgnoreCase(""))
         {
             paramObject.put("company_name", "");
             paramObject.put("company_id",  addcontectModel.getCompany_id());
         }
         else {
             paramObject.put("company_name", addcontectModel.getCompany());
-            paramObject.put("company_id",  "");
+            paramObject.put("company_id",   "");
         }
         paramObject.put("id", Contect_data.getId());
         paramObject.put("address", address);
         paramObject.put("breakout_link", addcontectModel.getBreakoutu());
         paramObject.put("city", city);
 
-        if(olld_image!=null){
-            paramObject.put("oldImage", olld_image);
-        }
-        else {
-            paramObject.put("oldImage", "");
-        }
 
         paramObject.put("company_url", "");
         paramObject.put("dob", addcontectModel.getBirthday());
@@ -817,12 +798,21 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         {
             paramObject.put("contact_image", user_image_Url);
             paramObject.put("contact_image_name", File_name);
+            paramObject.put("image_extension", File_extension);
+            if(olld_image!=null){
+                paramObject.put("oldImage", olld_image);
+            }
+            else {
+                paramObject.put("oldImage", "");
+            }
+
         }
         else {
-            paramObject.put("contact_image", "");
-            paramObject.put("contact_image_name", "");
+            paramObject.put("contact_image", olld_image);
+         //   paramObject.put("contact_image", "");
+         //   paramObject.put("contact_image_name", "");
         }
-        paramObject.put("image_extension", File_extension);
+
         paramObject.put("notes",addcontectModel.getNote());
 
 
@@ -1010,20 +1000,15 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.iv_user:
-
-
-                if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
-                    captureimageDialog(true);
-
-                }
-                break;
             case R.id.tv_nameLetter:
+
+
                 if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
                     captureimageDialog(true);
 
                 }
-
                 break;
+
         }
     }
     // Handled permission Result

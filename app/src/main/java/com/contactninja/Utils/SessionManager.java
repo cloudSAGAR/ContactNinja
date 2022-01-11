@@ -57,6 +57,7 @@ public class SessionManager {
 
     public static final String Campign_flag="campign_flag";
     public static final String Refresh_token="refresh_token";
+    public static final String Access_token="access_token";
     public static final String csv_token="csv_token";
 
     public static final String Contect_List ="contectlist";
@@ -83,7 +84,7 @@ public class SessionManager {
 
 
     public void login() {
-        editor.putBoolean(IS_LOGIN, true);
+        editor.putBoolean(IS_LOGIN, false);
         editor.commit();
     }
 
@@ -167,6 +168,18 @@ public class SessionManager {
 
     public  void setRefresh_token(String efresh_token) {
         editor.putString(Refresh_token, efresh_token);
+        editor.commit();
+    }
+
+    public  String getAccess_token() {
+
+        String type= pref.getString(Access_token, "");
+        return  type;
+
+    }
+
+    public  void setAccess_token(String access_token) {
+        editor.putString(Access_token, access_token);
         editor.commit();
     }
 
@@ -255,8 +268,8 @@ public class SessionManager {
 
     public void checkLogin() {
         // Check login status
-        if (!this.isLoggedIn()) {
-          if (this.isAppIntroIn()) {
+        if (isLoggedIn()) {
+          if (isAppIntroIn()) {
               Intent i = new Intent(_context, AppIntroActivity.class);
               _context.startActivity(i);
            }else {
@@ -301,7 +314,7 @@ public class SessionManager {
 
     // Get Login State
     public boolean isLoggedIn() {
-        return pref.getBoolean(IS_LOGIN, false);
+        return pref.getBoolean(IS_LOGIN, true);
     }
     public boolean isAppIntroIn() {
         return pref.getBoolean(IS_APPITRO, false);
