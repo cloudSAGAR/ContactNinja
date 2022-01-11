@@ -1069,12 +1069,6 @@ e.printStackTrace();
                                 Phone_bouttomSheet(detailList,holder1,contacts,position);
                                 Log.e("Size is","More ONE");
                             }
-
-
-
-
-
-
                         }
                     });
                     holder1.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
@@ -1285,8 +1279,8 @@ e.printStackTrace();
                         }
                     }
                     userLinkedGmailList.get(position).setPhoneSelect(true);
-                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+                   /* holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);*/
                     tv_done.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -1314,7 +1308,8 @@ e.printStackTrace();
                             topUserListDataAdapter.notifyDataSetChanged();
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
                             contacts.get(position).setFlag("false");
-
+                            holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                            holder1.add_new_contect_icon.setVisibility(View.GONE);
                             bottomSheetDialog_templateList1.cancel();
                         }
                     });
