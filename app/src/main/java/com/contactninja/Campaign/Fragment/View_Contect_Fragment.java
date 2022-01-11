@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class View_Contect_Fragment extends Fragment {
+public class View_Contect_Fragment extends Fragment implements View.OnClickListener {
 
 
     public static ArrayList<GroupListData> inviteListData = new ArrayList<>();
@@ -75,7 +75,8 @@ public class View_Contect_Fragment extends Fragment {
     boolean isLastPage = false;
 
     Activity activity;
-    BottomSheetDialog bottomSheetDialog_step;
+    BottomSheetDialog bottomSheetDialog_step,bottomSheetDialog_fillter;
+
     CampaignTask_overview contect_list_data;
     List<CampaignTask_overview.SequenceProspect> sequenceProspects=new ArrayList<>();
 
@@ -179,10 +180,8 @@ public class View_Contect_Fragment extends Fragment {
                 }
                     /*groupContectAdapter = new GroupContectAdapter(getActivity());
                     contect_list_unselect.setAdapter(groupContectAdapter);*/
-                groupContectAdapter.updateList(temp);
-                //groupContectAdapter.notifyDataSetChanged();
-
-
+                    groupContectAdapter.updateList(temp);
+                   //groupContectAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -240,6 +239,7 @@ public class View_Contect_Fragment extends Fragment {
         add_new_contect_icon = view.findViewById(R.id.add_new_contect_icon);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         filter_icon=view.findViewById(R.id.filter_icon);
+        filter_icon.setOnClickListener(this);
 
     }
 
@@ -262,6 +262,53 @@ public class View_Contect_Fragment extends Fragment {
         home_type_list.setAdapter(timezoneAdapter);
 
         bottomSheetDialog_step.show();
+    }
+
+
+    void showBottomSheetDialog_Filtter() {
+        bottomSheetDialog_fillter = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
+        bottomSheetDialog_fillter.setContentView(R.layout.bottom_sheet_dialog_for_fillter);
+        RecyclerView home_type_list = bottomSheetDialog_fillter.findViewById(R.id.home_type_list);
+        RecyclerView home_type_list_general=bottomSheetDialog_fillter.findViewById(R.id.home_type_list_general);
+        home_type_list_general.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView home_type_list_sort=bottomSheetDialog_fillter.findViewById(R.id.home_type_list_sort);
+        home_type_list_sort.setLayoutManager(new LinearLayoutManager(getActivity()));
+        TextView tv_item=bottomSheetDialog_fillter.findViewById(R.id.tv_item);
+        List<String> filtter_list=new ArrayList<>();
+        filtter_list.add("General");
+        filtter_list.add("Sort");
+
+
+        List<String> filtter_list_normal=new ArrayList<>();
+        filtter_list_normal.add("Finished");
+        filtter_list_normal.add("Pending");
+        filtter_list_normal.add("Replied");
+        filtter_list_normal.add("Failed");
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        home_type_list.setLayoutManager(layoutManager);
+
+
+        FiltterAdapter timezoneAdapter = new FiltterAdapter(getActivity(), filtter_list);
+        home_type_list.setAdapter(timezoneAdapter);
+
+
+        Filtter_select_Adapter filtter_select_adapter=new Filtter_select_Adapter(getActivity(),filtter_list_normal);
+        home_type_list_general.setAdapter(filtter_select_adapter);
+        bottomSheetDialog_fillter.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId())
+        {
+            case R.id.filter_icon:
+                showBottomSheetDialog_Filtter();
+                break;
+
+
+        }
     }
 
 
@@ -521,6 +568,141 @@ public class View_Contect_Fragment extends Fragment {
                 progressBar = itemView.findViewById(R.id.idPBLoading);
 
             }
+        }
+
+    }
+
+
+    public class FiltterAdapter extends RecyclerView.Adapter<FiltterAdapter.InviteListDataclass> {
+
+        public Context mCtx;
+        TextView phone_txt;
+        Contactdetail item;
+        private List<String> timezoneModels;
+
+        public FiltterAdapter(Context context, List<String> timezoneModels) {
+            this.mCtx = context;
+            this.timezoneModels = timezoneModels;
+        }
+
+        @NonNull
+        @Override
+        public FiltterAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.step_type_selecte1, parent, false);
+            return new FiltterAdapter.InviteListDataclass(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull FiltterAdapter.InviteListDataclass holder, int position) {
+            String Data = timezoneModels.get(position);
+            holder.tv_item.setText(Data);
+
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return timezoneModels.size();
+        }
+
+        public void updateList(List<String> list) {
+            timezoneModels = list;
+            notifyDataSetChanged();
+        }
+
+        public class InviteListDataclass extends RecyclerView.ViewHolder {
+            TextView tv_item;
+            ImageView iv_message,iv_email;
+
+            public InviteListDataclass(@NonNull View itemView) {
+                super(itemView);
+                tv_item = itemView.findViewById(R.id.tv_item);
+                iv_message=itemView.findViewById(R.id.iv_message);
+                iv_email=itemView.findViewById(R.id.iv_email);
+            }
+
+        }
+
+    }
+
+    public class Filtter_select_Adapter extends RecyclerView.Adapter<Filtter_select_Adapter.InviteListDataclass> {
+
+        public Context mCtx;
+        TextView phone_txt;
+        Contactdetail item;
+        private List<String> timezoneModels;
+
+        public Filtter_select_Adapter(Context context, List<String> timezoneModels) {
+            this.mCtx = context;
+            this.timezoneModels = timezoneModels;
+        }
+
+        @NonNull
+        @Override
+        public Filtter_select_Adapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.step_type_selecte_list, parent, false);
+            return new Filtter_select_Adapter.InviteListDataclass(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull Filtter_select_Adapter.InviteListDataclass holder, int position) {
+            String Data = timezoneModels.get(position);
+            holder.tv_item.setText(Data);
+
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
+            holder.iv_selected.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.iv_unselected.setVisibility(View.VISIBLE);
+                    holder.iv_selected.setVisibility(View.GONE);
+                }
+            });
+            holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.iv_unselected.setVisibility(View.GONE);
+                    holder.iv_selected.setVisibility(View.VISIBLE);
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return timezoneModels.size();
+        }
+
+        public void updateList(List<String> list) {
+            timezoneModels = list;
+            notifyDataSetChanged();
+        }
+
+        public class InviteListDataclass extends RecyclerView.ViewHolder {
+            TextView tv_item;
+            ImageView iv_unselected,iv_selected;
+
+            public InviteListDataclass(@NonNull View itemView) {
+                super(itemView);
+                tv_item = itemView.findViewById(R.id.tv_item);
+                iv_unselected=itemView.findViewById(R.id.iv_unselected);
+                iv_selected=itemView.findViewById(R.id.iv_selected);
+            }
+
         }
 
     }

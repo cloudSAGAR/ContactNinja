@@ -1178,8 +1178,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                         detailList1.add(contacts.get(position).getContactDetails().get(i));
                                     }
                                 }
-                                Log.e("DATALIST",new Gson().toJson(detailList));
-                                Log.e("DATALIST 1" ,new Gson().toJson(detailList1));
+                               // Log.e("DATALIST",new Gson().toJson(detailList));
+                              ///  Log.e("DATALIST 1" ,new Gson().toJson(detailList1));
                                 if (detailList.size()==1)
                                 {
                                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
@@ -1207,7 +1207,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                         }
                                     }
                                     Phone_bouttomSheet(detailList,holder1,contacts,position,detailList1);
-                                    Log.e("Size is","More ONE");
+                                 //   Log.e("Size is","More ONE");
                                 }
 
 
@@ -1220,7 +1220,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         holder1.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Log.e("On Click Remove ","Remove");
+                            //    Log.e("On Click Remove ","Remove");
 
                                 holder1.remove_contect_icon.setVisibility(View.GONE);
                                 holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
@@ -1358,7 +1358,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         View v_phone=bottomSheetDialog_templateList1.findViewById(R.id.v_phone);
         View v_phone1=bottomSheetDialog_templateList1.findViewById(R.id.v_phone1);
         LinearLayout layout_email=bottomSheetDialog_templateList1.findViewById(R.id.layout_email);
-       LinearLayout bottom_sheet=bottomSheetDialog_templateList1.findViewById(R.id.bottom_sheet);
+        LinearLayout bottom_sheet=bottomSheetDialog_templateList1.findViewById(R.id.bottom_sheet);
         View v_email=bottomSheetDialog_templateList1.findViewById(R.id.v_email);
         View v_email1=bottomSheetDialog_templateList1.findViewById(R.id.v_email1);
         TextView tv_error=bottomSheetDialog_templateList1.findViewById(R.id.tv_error);

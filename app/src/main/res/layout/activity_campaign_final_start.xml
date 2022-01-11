@@ -8,7 +8,6 @@
     android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.contactninja.MainActivity">
-
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />
@@ -17,7 +16,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_7sdp"
+        android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/shape_blue_back_dialog"
         android:orientation="vertical"
         android:padding="@dimen/_15sdp">
@@ -177,6 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:paddingStart="10dp"
                     style="@style/tv_Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,6 +186,7 @@
 
                 </TextView>
                 <TextView
+                    android:paddingStart="10dp"
                     android:layout_gravity="center|left"
                     android:gravity="left|center"
                     android:id="@+id/tv_pending"
