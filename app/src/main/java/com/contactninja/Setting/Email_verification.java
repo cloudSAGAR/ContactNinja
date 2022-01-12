@@ -33,7 +33,7 @@ import java.io.UnsupportedEncodingException;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Email_verification extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
+public class Email_verification extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     WebView webEmail;
     LinearLayout mMainLayout;
 
@@ -49,8 +49,8 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         setContentView(R.layout.activity_email_verification);
 
         mNetworkReceiver = new ConnectivityReceiver();
-        loadingDialog=new LoadingDialog(this);
-        sessionManager=new SessionManager(this);
+        loadingDialog = new LoadingDialog(this);
+        sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
 
 
@@ -97,6 +97,41 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         unregisterNetworkChanges();
     }
 
+    private void GoogleAuth(String val2) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getApplicationContext());
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("email_address", val2);
+        paramObject.addProperty("is_default", "1");
+        obj.add("data", paramObject);
+        retrofitCalls.Gmailauth_update(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Email_verification.this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        if (response.body().getStatus() == 200) {
+                            loadingDialog.cancelLoading();
+                            webEmail.clearHistory();
+                            webEmail.clearFormData();
+                            webEmail.clearCache(true);
+
+                            finish();
+
+                        } else {
+                            loadingDialog.cancelLoading();
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
+
     private class HelloWebViewClient extends WebViewClient {
 
 
@@ -109,19 +144,22 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
             String hostURL = url.substring(url.lastIndexOf("/") + 1, url.length());
-            String val2="";
+            String val2 = "";
             // decode
-            byte[] tmp2 = Base64.decode(hostURL,Base64.DEFAULT);
-            try {
-                 val2 = new String(tmp2, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            String substring = hostURL.substring(Math.max(hostURL.length() - 2, 0));
+            if (substring.equals("==")) {
+                try {
+                    byte[] tmp2 = Base64.decode(hostURL, Base64.DEFAULT);
+                    val2 = new String(tmp2, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
 
             if (Global.emailValidator(val2)) {
 
                 try {
-                    if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)) {
+                    if (Global.isNetworkAvailable(Email_verification.this, mMainLayout)) {
                         GoogleAuth(val2);
                     }
                 } catch (JSONException e) {
@@ -140,40 +178,6 @@ public class Email_verification extends AppCompatActivity implements Connectivit
             super.onPageFinished(view, url);
 
         }
-    }
-    private void GoogleAuth(String val2) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel=  SessionManager.getGetUserdata(getApplicationContext());
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("email_address", val2);
-        paramObject.addProperty("is_default", "1");
-        obj.add("data", paramObject);
-        retrofitCalls.Gmailauth_update(sessionManager, obj, loadingDialog,Global.getToken(sessionManager),
-                Global.getVersionname(Email_verification.this),Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
-                    webEmail.clearHistory();
-                    webEmail.clearFormData();
-                    webEmail.clearCache(true);
-
-                   finish();
-
-                } else {
-                    loadingDialog.cancelLoading();
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
     }
 
 }
