@@ -55,8 +55,8 @@
             app:dotsSpacing="5dp"
             app:dotsWidthFactor="0"
             app:selectedDotColor="@color/otp_background"
-            app:progressMode="true"
-            android:layout_marginBottom="@dimen/_10sdp"
+            app:progressMode="false"
+            android:layout_marginBottom="@dimen/_15sdp"
             />
 
     </LinearLayout>
