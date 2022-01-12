@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.contactninja"
-    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,AllowBackup,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
+    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
 
     <uses-feature
         android:name="android.hardware.camera"

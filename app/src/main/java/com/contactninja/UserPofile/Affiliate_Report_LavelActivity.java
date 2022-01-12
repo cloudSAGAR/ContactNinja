@@ -39,22 +39,20 @@ import java.util.List;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Affiliate_Report_LavelActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
-    private BroadcastReceiver mNetworkReceiver;
-
     LinearLayout mMainLayout;
     ImageView iv_back;
     TextView tv_lavel_name;
-
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-
     RecyclerView rv_lavel_list;
     LavelAdapter lavelAdapter;
-    AffiliateInfo affiliateInfo=new AffiliateInfo();
-    List<String> lavelName=new ArrayList<>();
+    AffiliateInfo affiliateInfo = new AffiliateInfo();
+    List<String> lavelName = new ArrayList<>();
     LinearLayout select_label_zone;
     EditText contect_search;
+    private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +68,6 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
         mNetworkReceiver = new ConnectivityReceiver();
 
 
-
-
     }
 
     private void setdate() {
@@ -80,44 +76,48 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
 
         affiliateInfo = user_data.getUser().getAffiliateInfo();
         lavelName.clear();
-        if(affiliateInfo!=null){
-            if(affiliateInfo.getLevel1()!=null&&affiliateInfo.getLevel1().size()!=0){
+        if (affiliateInfo != null) {
+            if (affiliateInfo.getLevel1() != null) {
                 lavelName.add(getResources().getString(R.string.lavel1));
             }
-            if(affiliateInfo.getLevel2()!=null&&affiliateInfo.getLevel2().size()!=0){
+            if (affiliateInfo.getLevel2() != null) {
                 lavelName.add(getResources().getString(R.string.lavel2));
             }
-            if(affiliateInfo.getLevel3()!=null&&affiliateInfo.getLevel3().size()!=0){
+            if (affiliateInfo.getLevel3() != null) {
                 lavelName.add(getResources().getString(R.string.lavel3));
             }
-            if(affiliateInfo.getLevel4()!=null&&affiliateInfo.getLevel4().size()!=0){
+            if (affiliateInfo.getLevel4() != null) {
                 lavelName.add(getResources().getString(R.string.lavel4));
             }
-            if(affiliateInfo.getLevel5()!=null&&affiliateInfo.getLevel5().size()!=0){
+            if (affiliateInfo.getLevel5() != null) {
                 lavelName.add(getResources().getString(R.string.lavel5));
             }
 
 
             tv_lavel_name.setText(lavelName.get(0));
-            List<LevelModel> level1List=new ArrayList<>();
-            switch (lavelName.get(0)){
-                case "Lavel 1":
-                    level1List=affiliateInfo.getLevel1();
-                    break;
-                case "Lavel 2":
-                    level1List=affiliateInfo.getLevel2();
-                    break;
-                case "Lavel 3":
-                    level1List=affiliateInfo.getLevel3();
-                    break;
-                case "Lavel 4":
-                    level1List=affiliateInfo.getLevel4();
-                    break;
-                case "Lavel 5":
-                    level1List=affiliateInfo.getLevel5();
-                    break;
+            List<LevelModel> level1List = new ArrayList<>();
+            try {
+                switch (lavelName.get(0)) {
+                    case "Lavel 1":
+                        level1List = affiliateInfo.getLevel1();
+                        break;
+                    case "Lavel 2":
+                        level1List = affiliateInfo.getLevel2();
+                        break;
+                    case "Lavel 3":
+                        level1List = affiliateInfo.getLevel3();
+                        break;
+                    case "Lavel 4":
+                        level1List = affiliateInfo.getLevel4();
+                        break;
+                    case "Lavel 5":
+                        level1List = affiliateInfo.getLevel5();
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            lavelAdapter = new LavelAdapter(Affiliate_Report_LavelActivity.this,level1List);
+            lavelAdapter = new LavelAdapter(Affiliate_Report_LavelActivity.this, level1List);
             rv_lavel_list.setAdapter(lavelAdapter);
             List<LevelModel> finalLevel1List = level1List;
             contect_search.addTextChangedListener(new TextWatcher() {
@@ -129,9 +129,9 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    List<LevelModel> temp=new ArrayList<>();
-                    for(LevelModel d: finalLevel1List){
-                        if(d.getName().toLowerCase().contains(s.toString().toLowerCase())){
+                    List<LevelModel> temp = new ArrayList<>();
+                    for (LevelModel d : finalLevel1List) {
+                        if (d.getName().toLowerCase().contains(s.toString().toLowerCase())) {
                             temp.add(d);
                             // Log.e("Same Data ",d.getUserName());
                         }
@@ -149,8 +149,9 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
         }
 
     }
+
     void showBottomSheetDialog(List<String> lavelName, TextView tv_lavel_name) {
-        BottomSheetDialog  bottomSheetDialog = new BottomSheetDialog(Affiliate_Report_LavelActivity.this,
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Affiliate_Report_LavelActivity.this,
                 R.style.BottomSheetDialog);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_for_home);
         RecyclerView home_type_list = bottomSheetDialog.findViewById(R.id.home_type_list);
@@ -159,21 +160,22 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
 
 
         LavelSelectAdapter workAdapter = new LavelSelectAdapter(Affiliate_Report_LavelActivity.this,
-                lavelName,affiliateInfo, rv_lavel_list,bottomSheetDialog,tv_lavel_name);
+                lavelName, affiliateInfo, rv_lavel_list, bottomSheetDialog, tv_lavel_name);
         home_type_list.setAdapter(workAdapter);
 
         bottomSheetDialog.show();
     }
+
     private void IntentView() {
-        contect_search =findViewById(R.id.contect_search);
-        rv_lavel_list =findViewById(R.id.lavel_list);
-        tv_lavel_name =findViewById(R.id.tv_lavel_name);
-        select_label_zone =findViewById(R.id.select_label_zone);
+        contect_search = findViewById(R.id.contect_search);
+        rv_lavel_list = findViewById(R.id.lavel_list);
+        tv_lavel_name = findViewById(R.id.tv_lavel_name);
+        select_label_zone = findViewById(R.id.select_label_zone);
         select_label_zone.setOnClickListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(Affiliate_Report_LavelActivity.this);
         rv_lavel_list.setLayoutManager(layoutManager);
-        mMainLayout=findViewById(R.id.mMainLayout);
-        iv_back=findViewById(R.id.iv_back);
+        mMainLayout = findViewById(R.id.mMainLayout);
+        iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
     }
@@ -211,12 +213,12 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_back:
-                 onBackPressed();
+                onBackPressed();
                 break;
-                case R.id.select_label_zone:
-                    showBottomSheetDialog(lavelName,tv_lavel_name);
+            case R.id.select_label_zone:
+                showBottomSheetDialog(lavelName, tv_lavel_name);
                 break;
         }
     }
@@ -228,8 +230,6 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
     }
 
 
-
-
 }
 
 class LavelSelectAdapter extends RecyclerView.Adapter<LavelSelectAdapter.InviteListDataclass> {
@@ -239,9 +239,10 @@ class LavelSelectAdapter extends RecyclerView.Adapter<LavelSelectAdapter.InviteL
     List<String> list;
     LavelAdapter lavelAdapter;
     RecyclerView rv_lavel_list;
-    List<LevelModel> level1List=new ArrayList<>();
+    List<LevelModel> level1List = new ArrayList<>();
     BottomSheetDialog bottomSheetDialog;
     TextView tv_lavel_name;
+
     public LavelSelectAdapter(Context context, List<String> list, AffiliateInfo affiliateInfo,
                               RecyclerView rv_lavel_list, BottomSheetDialog bottomSheetDialog, TextView tv_lavel_name) {
         this.mCtx = context;
@@ -263,33 +264,33 @@ class LavelSelectAdapter extends RecyclerView.Adapter<LavelSelectAdapter.InviteL
 
     @Override
     public void onBindViewHolder(@NonNull LavelSelectAdapter.InviteListDataclass holder, int position) {
-        String name =list.get(position);
+        String name = list.get(position);
         holder.tv_item.setText(name);
         holder.tv_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 level1List.clear();
                 tv_lavel_name.setText(name);
-                switch (name){
+                switch (name) {
                     case "Lavel 1":
-                        level1List=affiliateInfo.getLevel1();
-                    break;
+                        level1List = affiliateInfo.getLevel1();
+                        break;
                     case "Lavel 2":
-                        level1List=affiliateInfo.getLevel2();
+                        level1List = affiliateInfo.getLevel2();
                         break;
                     case "Lavel 3":
-                        level1List=affiliateInfo.getLevel3();
+                        level1List = affiliateInfo.getLevel3();
                         break;
                     case "Lavel 4":
-                        level1List=affiliateInfo.getLevel4();
+                        level1List = affiliateInfo.getLevel4();
                         break;
                     case "Lavel 5":
-                        level1List=affiliateInfo.getLevel5();
+                        level1List = affiliateInfo.getLevel5();
                         break;
                 }
 
 
-                lavelAdapter = new LavelAdapter(mCtx,level1List);
+                lavelAdapter = new LavelAdapter(mCtx, level1List);
                 rv_lavel_list.setAdapter(lavelAdapter);
                 bottomSheetDialog.dismiss();
             }
@@ -314,13 +315,15 @@ class LavelSelectAdapter extends RecyclerView.Adapter<LavelSelectAdapter.InviteL
     }
 
 }
+
 class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
 
     public Context mCtx;
 
     List<LevelModel> level1List;
     LevelModel item;
-    public LavelAdapter(Context applicationContext,List<LevelModel> level1List) {
+
+    public LavelAdapter(Context applicationContext, List<LevelModel> level1List) {
         this.mCtx = applicationContext;
         this.level1List = level1List;
 
@@ -337,39 +340,34 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LavelAdapter.viewholder holder, int position) {
-        item=level1List.get(position);
+        item = level1List.get(position);
         holder.tv_user_name.setText(item.getName());
 
-        String name =item.getName();
-        String add_text="";
-        String[] split_data=name.split(" ");
+        String name = item.getName();
+        String add_text = "";
+        String[] split_data = name.split(" ");
         try {
-            for (int i=0;i<split_data.length;i++)
-            {
-                if (i==0)
-                {
-                    add_text=split_data[i].substring(0,1);
-                }
-                else {
-                    add_text=add_text+split_data[i].substring(0,1);
+            for (int i = 0; i < split_data.length; i++) {
+                if (i == 0) {
+                    add_text = split_data[i].substring(0, 1);
+                } else {
+                    add_text = add_text + split_data[i].substring(0, 1);
                     break;
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         holder.no_image.setText(add_text);
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(mCtx);
-        String namebyreferrer="";
-        if(signResponseModel.getUser().getId().equals(item.getReferredBy())){
-            namebyreferrer="you";
-        }else {
-            namebyreferrer=item.getReferredName();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(mCtx);
+        String namebyreferrer = "";
+        if (signResponseModel.getUser().getId().equals(item.getReferredBy())) {
+            namebyreferrer = "you";
+        } else {
+            namebyreferrer = item.getReferredName();
         }
-        holder.tv_Referrer_by.setText("Referrer by "+namebyreferrer);
+        holder.tv_Referrer_by.setText("Referrer by " + namebyreferrer);
 
     }
 
@@ -377,13 +375,15 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
     public int getItemCount() {
         return level1List.size();
     }
+
     @SuppressLint("NotifyDataSetChanged")
     public void updateList(List<LevelModel> list) {
         level1List = list;
         notifyDataSetChanged();
     }
+
     public static class viewholder extends RecyclerView.ViewHolder {
-        TextView tv_user_name,no_image,tv_Referrer_by;
+        TextView tv_user_name, no_image, tv_Referrer_by;
 
 
         public viewholder(@SuppressLint("UnknownNullness") View view) {

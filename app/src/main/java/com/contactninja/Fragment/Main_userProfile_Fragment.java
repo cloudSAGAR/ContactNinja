@@ -478,7 +478,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new User_InformationFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
         fragmentTransaction.commitAllowingStateLoss();
@@ -539,7 +539,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         iv_user.setOnClickListener(this);
         save_button = view.findViewById(R.id.save_button);
         save_button.setOnClickListener(this);
-        save_button.setVisibility(View.VISIBLE);
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         edit_profile = view.findViewById(R.id.edit_profile);
