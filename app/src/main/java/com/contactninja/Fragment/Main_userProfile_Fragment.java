@@ -92,7 +92,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
-    ImageView iv_Setting, pulse_icon;
+    ImageView iv_Setting, pulse_icon,iv_back;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
     String fragment_name, user_image_Url = "", File_name = "", File_extension = "";
@@ -525,6 +525,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
         iv_Setting.setOnClickListener(this);
+        iv_back=view.findViewById(R.id.iv_back);
         tabLayout = view.findViewById(R.id.tabLayout);
         frameContainer = view.findViewById(R.id.frameContainer);
         pulse_icon = view.findViewById(R.id.pulse_icon);
@@ -543,6 +544,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         edit_profile = view.findViewById(R.id.edit_profile);
         edit_profile.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
     }
 
 
@@ -1067,6 +1069,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 break;
 
             case R.id.edit_profile:
+                layout_toolbar_logo.setVisibility(View.GONE);
+                iv_back.setVisibility(View.VISIBLE);
                 SessionManager.setContect_flag("edit");
                 save_button.setVisibility(View.VISIBLE);
                 iv_Setting.setVisibility(View.GONE);
@@ -1075,6 +1079,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
 
                 break;
+            case R.id.iv_back:
+                layout_toolbar_logo.setVisibility(View.VISIBLE);
+                iv_back.setVisibility(View.GONE);
+                SessionManager.setContect_flag("read");
+                save_button.setVisibility(View.GONE);
+                iv_Setting.setVisibility(View.VISIBLE);
+                save_button.setText("Save");
+                setdata();
         }
     }
     // Handled permission Result
