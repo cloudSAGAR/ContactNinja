@@ -47,6 +47,7 @@
     <com.google.android.material.tabs.TabLayout
         android:layout_marginTop="@dimen/_5sdp"
         android:id="@+id/tabLayout"
+        android:visibility="gone"
         style="@style/tv_bold"
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabSelectedTextColor="@color/tv_medium"
@@ -58,14 +59,23 @@
     </com.google.android.material.tabs.TabLayout>
 
     <View
+        android:visibility="gone"
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
         android:layout_height="1dp" />
     <androidx.viewpager.widget.ViewPager
         android:layout_marginTop="@dimen/_3sdp"
         android:id="@+id/viewPager"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tabLayout"
         />
+
+    <FrameLayout
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llFooter" />
+
 </LinearLayout>

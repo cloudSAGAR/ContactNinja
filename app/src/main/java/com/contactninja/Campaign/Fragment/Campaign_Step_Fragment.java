@@ -136,7 +136,9 @@ public class Campaign_Step_Fragment extends Fragment {
                         movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
                         Global.count++;
                     }*/
-
+                    if(position==(getItemCount()-1)){
+                     movieViewHolder.cam_line.setVisibility(View.INVISIBLE);
+                    }
                     if (position==0)
                     {
                         movieViewHolder.line_one.setVisibility(View.INVISIBLE);
@@ -257,7 +259,7 @@ public class Campaign_Step_Fragment extends Fragment {
 
             TextView tv_add_new_step_num,tv_item_num,tv_title,tv_detail,
                     tv_email_title,tv_email_detail,tv_add_new_step;
-            View line_one;
+            View line_one,cam_line;
             LinearLayout add_new_step_layout,run_time_layout,email_layout,run_time_email_layout;
             ImageView iv_manu,iv_email_manu,iv_message,iv_email;
             EditText edit_day,edit_minutes,edit_email_day,edit_email_minutes;
@@ -285,6 +287,7 @@ public class Campaign_Step_Fragment extends Fragment {
                 run_time_email_layout=itemView.findViewById(R.id.run_time_email_layout);
                 edit_email_day=itemView.findViewById(R.id.edit_email_day);
                 edit_email_minutes=itemView.findViewById(R.id.edit_email_minutes);
+                cam_line=itemView.findViewById(R.id.cam_line);
             }
         }
 

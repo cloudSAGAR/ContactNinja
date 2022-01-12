@@ -269,6 +269,8 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
     void showBottomSheetDialog_Filtter() {
         bottomSheetDialog_fillter = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
         bottomSheetDialog_fillter.setContentView(R.layout.bottom_sheet_dialog_for_fillter);
+        TextView tv_clear=bottomSheetDialog_fillter.findViewById(R.id.tv_clear);
+        TextView tv_done=bottomSheetDialog_fillter.findViewById(R.id.tv_done);
         RecyclerView home_type_list = bottomSheetDialog_fillter.findViewById(R.id.home_type_list);
         RecyclerView home_type_list_general=bottomSheetDialog_fillter.findViewById(R.id.home_type_list_general);
         home_type_list_general.setLayoutManager(new LinearLayoutManager(getActivity()));

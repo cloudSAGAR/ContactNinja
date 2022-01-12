@@ -21,6 +21,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -30,6 +31,7 @@ import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
 import com.contactninja.Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Campaign.Fragment.View_Contect_Fragment;
+import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.R;
@@ -65,8 +67,12 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
         IntentUI();
         sessionManager=new SessionManager(this);
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
-        tabLayout.addTab(tabLayout.newTab().setText("Groups"));
-
+       // tabLayout.addTab(tabLayout.newTab().setText("Groups"));
+        Fragment fragment = new View_Contect_Fragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+        fragmentTransaction.commitAllowingStateLoss();
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
@@ -113,7 +119,7 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
         iv_Setting.setVisibility(View.GONE);
         iv_back.setOnClickListener(this);
         save_button.setOnClickListener(this);
-        save_button.setVisibility(View.VISIBLE);
+        save_button.setVisibility(View.GONE);
         save_button.setText("Next");
         save_button.setTextColor(getResources().getColor(R.color.purple_200));
     }
@@ -290,9 +296,9 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
                     View_Contect_Fragment contectFragment = new View_Contect_Fragment();
                     return contectFragment;
 
-                case 1:
+            /*    case 1:
                     Broadcast_Group_Fragment c_Fragment = new Broadcast_Group_Fragment();
-                    return c_Fragment;
+                    return c_Fragment;*/
                 default:
                     return null;
             }

@@ -99,6 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="7"
+                    android:layout_marginEnd="@dimen/_8sdp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp">
 
@@ -131,6 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="7"
+                    android:layout_marginStart="@dimen/_20sdp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp">
 

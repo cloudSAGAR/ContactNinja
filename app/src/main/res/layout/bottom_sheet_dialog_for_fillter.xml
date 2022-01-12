@@ -11,13 +11,15 @@
         android:orientation="vertical"
         android:layout_height="match_parent">
         <LinearLayout
+            android:weightSum="2"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:layout_weight="1"
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_12sdp"
                 android:id="@+id/tv_item"
@@ -28,6 +30,22 @@
                 android:layout_gravity="center"
                 android:gravity="center|left"
                 android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:layout_weight="1"
+                android:paddingTop="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                android:id="@+id/tv_clear"
+                style="@style/tv_regular"
+                android:textStyle="bold"
+                android:textSize="@dimen/_13sdp"
+                android:text="Clear Filters"
+                android:layout_gravity="center"
+                android:gravity="center|end"
+                android:textColor="@color/purple_200"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -92,7 +110,23 @@
 
 
         </LinearLayout>
+        <TextView
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:id="@+id/tv_done"
+            style="@style/tv_regular"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@drawable/shape_blue_10"
+            android:textSize="@dimen/_13sdp"
+            android:text="Apply"
+            android:layout_gravity="center|end"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_30sdp">
 
+        </TextView>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
