@@ -119,8 +119,6 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
             }
             lavelAdapter = new LavelAdapter(Affiliate_Report_LavelActivity.this,level1List);
             rv_lavel_list.setAdapter(lavelAdapter);
-
-
             List<LevelModel> finalLevel1List = level1List;
             contect_search.addTextChangedListener(new TextWatcher() {
                 @Override

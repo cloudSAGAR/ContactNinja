@@ -418,11 +418,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else if (response.body().getStatus()==404){
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Log.e("String is",response.body().getMessage());
+                   // Log.e("String is",response.body().getMessage());
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
                     try{
-                    Log.e("Login_type",Login_type);
+                    //Log.e("Login_type",Login_type);
                     if (Login_type.equals("EMAIL"))
                     {
                         if (response.body().getMessage().toString().equals("Invalid Password."))

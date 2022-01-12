@@ -164,7 +164,7 @@ public class Main_home_Fragment extends Fragment {
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        Log.e("Size is",new Gson().toJson(user_data.getUser().getWorkingHoursList()));
+//        Log.e("Size is",new Gson().toJson(user_data.getUser().getWorkingHoursList()));
         if (user_data.getUser().getWorkingHoursList().size()==0)
         {
             JsonObject obj = new JsonObject();

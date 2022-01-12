@@ -119,7 +119,6 @@ public class Campaign_Step_Fragment extends Fragment {
             switch (getItemViewType(position)) {
                 case ITEM:
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
-
                     movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
                     movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
                     Global.count++;
@@ -148,9 +147,6 @@ public class Campaign_Step_Fragment extends Fragment {
                         movieViewHolder.edit_minutes.setEnabled(false);
                         movieViewHolder.line_one.setVisibility(View.VISIBLE);
                     }
-
-
-
                     if (movieList.get(position).getType().equals("SMS")) {
                         movieViewHolder.iv_email.setVisibility(View.GONE);
                         movieViewHolder.iv_message.setVisibility(View.VISIBLE);
