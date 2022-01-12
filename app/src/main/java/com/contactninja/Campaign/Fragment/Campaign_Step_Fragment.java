@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Campaign.Automated_Email_Activity;
 import com.contactninja.Campaign.First_Step_Activity;
 import com.contactninja.Campaign.First_Step_Start_Activity;
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -39,6 +40,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -143,12 +145,12 @@ public class Campaign_Step_Fragment extends Fragment {
                     {
                         movieViewHolder.line_one.setVisibility(View.INVISIBLE);
                     }
-                    else {
+                   /* else {
                         movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);
                         movieViewHolder.edit_day.setEnabled(false);
                         movieViewHolder.edit_minutes.setEnabled(false);
                         movieViewHolder.line_one.setVisibility(View.VISIBLE);
-                    }
+                    }*/
                     if (movieList.get(position).getType().equals("SMS")) {
                         movieViewHolder.iv_email.setVisibility(View.GONE);
                         movieViewHolder.iv_message.setVisibility(View.VISIBLE);
@@ -170,6 +172,22 @@ public class Campaign_Step_Fragment extends Fragment {
 
                     movieViewHolder.tv_detail.setText(movieList.get(position).getContentBody().toString());
 
+                    movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                           if (position==0)
+                           {
+
+                           }
+                           else {
+                               movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);
+                               movieViewHolder.edit_day.setEnabled(false);
+                               movieViewHolder.edit_minutes.setEnabled(false);
+                               movieViewHolder.line_one.setVisibility(View.VISIBLE);
+                           }
+
+                        }
+                    });
                     movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -334,7 +352,8 @@ public class Campaign_Step_Fragment extends Fragment {
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Intent new_task=new Intent(getActivity(), Automated_Email_Activity.class);
+                    Log.e("Sequence is is", String.valueOf(sequence_id));
+                /*    Intent new_task=new Intent(getActivity(), Automated_Email_Activity.class);
                     new_task.putExtra("flag","edit");
                     new_task.putExtra("body",sequenceTask.getContentBody());
                     new_task.putExtra("day",sequenceTask.getDay());
@@ -345,23 +364,49 @@ public class Campaign_Step_Fragment extends Fragment {
                     new_task.putExtra("minute",sequenceTask.getMinute());
                     new_task.putExtra("header",sequenceTask.getContentHeader());
                     new_task.putExtra("step",sequenceTask.getStepNo());
-                    startActivity(new_task);
+                    startActivity(new_task);*/
+                   /* List<CampaignTask> campaignTasks1=new ArrayList<>();
+                    CampaignTask campaignTask=new CampaignTask();
+                    campaignTask.setId(sequenceTask.getId());
+                    campaignTask.setOrganizationId(1);
+                    campaignTask.setTeamId(1);
+                    campaignTask.setSequenceId(sequence_id);
+                    campaignTask.setType(sequenceTask.getType());
+                    campaignTask.setContentHeader(sequenceTask.getContentHeader());
+                    campaignTask.setContentBody(sequenceTask.getContentBody());
+                    campaignTask.setManageBy(sequenceTask.getManageBy());
+                    campaignTask.setDay(sequenceTask.getDay());
+                    campaignTask.setMinute(sequenceTask.getMinute());
+                    campaignTask.setPriority(sequenceTask.getPriority());
+                    campaignTask.setStepNo(sequenceTask.getStepNo());;
+
+                    campaignTasks1.add(campaignTask);*/
+                    Intent intent=new Intent(getActivity(),First_Step_Activity.class);
+                    intent.putExtra("flag","edit");
+                    intent.putExtra("body",sequenceTask.getContentBody());
+                    intent.putExtra("day",sequenceTask.getDay());
+                    intent.putExtra("manage_by",sequenceTask.getManageBy());
+                    intent.putExtra("seq_task_id",sequenceTask.getId());
+                    intent.putExtra("sequence_id",sequence_id);
+                    intent.putExtra("type",sequenceTask.getType());
+                    intent.putExtra("minute",sequenceTask.getMinute());
+                    intent.putExtra("header",sequenceTask.getContentHeader());
+                    intent.putExtra("step",sequenceTask.getStepNo());
+                    startActivity(intent);
+                   // startActivity(new Intent(getActivity(),First_Step_Activity.class));
+                    SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
+                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
+                    SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
+                    SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
+
                     getActivity().finish();
                     bottomSheetDialog.cancel();
 
                 }
                 else {
-                    if (SessionManager.getTask(getActivity()).size()!=0)
-                    {
-                        sequence_id = SessionManager.getTask(getActivity()).get(0).getSequenceId();
-                    }
-                    else {
-                        Intent getintent=getActivity().getIntent();
-                        Bundle bundle=getintent.getExtras();
-                        sequence_id=bundle.getInt("sequence_id");
-                    }
+
                     Log.e("sequence id", String.valueOf(sequence_id));
-                    Intent new_task=new Intent(getActivity(), First_Step_Start_Activity.class);
+                /*    Intent new_task=new Intent(getActivity(), First_Step_Start_Activity.class);
                     new_task.putExtra("flag","edit");
                     new_task.putExtra("body",sequenceTask.getContentBody());
                     new_task.putExtra("day",sequenceTask.getDay());
@@ -371,7 +416,56 @@ public class Campaign_Step_Fragment extends Fragment {
                     new_task.putExtra("type",sequenceTask.getType());
                     new_task.putExtra("minute",sequenceTask.getMinute());
                     new_task.putExtra("step",sequenceTask.getStepNo());
-                    startActivity(new_task);
+                    startActivity(new_task);*/
+/*
+                    List<CampaignTask> campaignTasks1=new ArrayList<>();
+                    CampaignTask campaignTask=new CampaignTask();
+                    campaignTask.setId(sequenceTask.getId());
+                    campaignTask.setOrganizationId(1);
+                    campaignTask.setTeamId(1);
+                    campaignTask.setSequenceId(sequence_id);
+                    campaignTask.setType(sequenceTask.getType());
+                    campaignTask.setContentHeader(sequenceTask.getContentHeader());
+                    campaignTask.setContentBody(sequenceTask.getContentBody());
+                    campaignTask.setManageBy(sequenceTask.getManageBy());
+                    campaignTask.setDay(sequenceTask.getDay());
+                    campaignTask.setMinute(sequenceTask.getMinute());
+                    campaignTask.setPriority(sequenceTask.getPriority());
+                    campaignTask.setStepNo(sequenceTask.getStepNo());;
+
+                    campaignTasks1.add(campaignTask);*/
+
+                    Log.e("Sequence is is", String.valueOf(sequence_id));
+                    if (SessionManager.getTask(getActivity()).size()!=0)
+                    {
+                        sequence_id = SessionManager.getTask(getActivity()).get(0).getSequenceId();
+                    }
+                    else {
+                        Intent getintent=getActivity().getIntent();
+                        Bundle bundle=getintent.getExtras();
+                        sequence_id=bundle.getInt("sequence_id");
+                    }
+                    Intent intent=new Intent(getActivity(),First_Step_Activity.class);
+                    intent.putExtra("flag","edit");
+                    intent.putExtra("body",sequenceTask.getContentBody());
+                    intent.putExtra("day",sequenceTask.getDay());
+                    intent.putExtra("manage_by",sequenceTask.getManageBy());
+                    intent.putExtra("seq_task_id",sequenceTask.getId());
+                    intent.putExtra("sequence_id",sequence_id);
+                    intent.putExtra("type",sequenceTask.getType());
+                    intent.putExtra("minute",sequenceTask.getMinute());
+                    intent.putExtra("step",sequenceTask.getStepNo());
+                    startActivity(intent);
+                  //  SessionManager.setTask(getActivity(),campaignTasks1);
+                    SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
+                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
+                    SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
+                    SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
+
+                    getActivity().finish();
+                    bottomSheetDialog.cancel();
+
+
                     getActivity().finish();
                     bottomSheetDialog.cancel();
                 }

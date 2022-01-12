@@ -297,7 +297,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_minute("");
                 Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
+                Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                intent.putExtra("flag","new");
+                startActivity(intent);
                 //finish();
                 break;
             case R.id.add_campaign_layout:
@@ -307,7 +309,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_minute("");
                 Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
+                Intent intent1=new Intent(getApplicationContext(),First_Step_Activity.class);
+                intent1.putExtra("flag","new");
+                startActivity(intent1);
                 // finish();
                 break;
         }

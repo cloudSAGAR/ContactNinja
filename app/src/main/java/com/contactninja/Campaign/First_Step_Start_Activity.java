@@ -112,13 +112,13 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         {
             edit_template.setText(bundle.getString("body"));
 
-            seq_task_id= bundle.getString("seq_task_id");
-            sequence_id= bundle.getString("sequence_id");
+            seq_task_id= String.valueOf(bundle.getInt("seq_task_id"));
+            sequence_id= String.valueOf(bundle.getInt("sequence_id"));
 
             step_no= String.valueOf(bundle.getInt("step"));
 
-            SessionManager.setCampaign_type(bundle.getString("type"));
-            SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
+          //  SessionManager.setCampaign_type(bundle.getString("type"));
+            //SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
 
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
@@ -126,8 +126,8 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             try {
                 minite= bundle.getInt("minute");
                 day= bundle.getInt("day");
-                SessionManager.setCampaign_Day(String.valueOf(day));
-                SessionManager.setCampaign_minute(String.valueOf(minite));
+                //SessionManager.setCampaign_Day(String.valueOf(day));
+               // SessionManager.setCampaign_minute(String.valueOf(minite));
             }
             catch (Exception e)
             {
@@ -740,7 +740,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+        Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+        intent.putExtra("flag","new");
+        startActivity(intent);
         finish();
         super.onBackPressed();
     }
