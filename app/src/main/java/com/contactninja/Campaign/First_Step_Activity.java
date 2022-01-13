@@ -42,6 +42,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     ImageView iv_back;
     TextView save_button;
     TabLayout tabLayout;
+    TextView add_new_contect;
+
     ViewPager viewPager;
     private int[] tabIcons = {
             R.drawable.ic_email,
@@ -61,6 +63,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
+
+
         SampleFragmentPagerAdapter pagerAdapter =
                 new SampleFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -89,13 +93,28 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             tab.setCustomView(pagerAdapter.getTabView(i));
         }
+
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        String flag=bundle.getString("flag");
+        if (flag.equals("edit"))
+        {
+            add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + bundle.getInt("step"));
+
+        }
+        else {
+            if (SessionManager.getTask(getApplicationContext()).size() == 0) {
+                String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
+                String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+                add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + step_id);
+            } else {
+                String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
+                String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+                add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + step_id );
+
+            }
+        }
     }
-
-
-
-
-
-
 
     private void IntentUI() {
         iv_back=findViewById(R.id.iv_back);
@@ -107,6 +126,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
+        add_new_contect=findViewById(R.id.add_new_contect);
         mMainLayout=findViewById(R.id.mMainLayout);
 
 

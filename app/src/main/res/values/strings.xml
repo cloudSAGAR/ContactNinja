@@ -310,7 +310,7 @@ Number</string>
     <string name="campaign_add">Create New Campaign</string>
     <string name="campaign_alert_txt">Click to create \n Campaign</string>
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or SMSes sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
-    <string name="campaign_step_one">Select your first step</string>
+    <string name="campaign_step_one">Select your step</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
 
     <string name="campaign_step_one_email">Automated Email</string>
