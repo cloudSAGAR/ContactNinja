@@ -1,5 +1,7 @@
 package com.contactninja.Fragment.Home;
 
+import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,39 +10,46 @@ import androidx.fragment.app.Fragment;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView;
 import com.contactninja.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
-public class Contact_Growth_Fragment extends Fragment implements View.OnClickListener {
 
+public class Dashboard_Fragment extends Fragment implements View.OnClickListener {
     Calendar calendar;
     CalendarView calendarView;
     ImageView prevMonth,nextMonth;
     TextView currentMonth;
     private Calendar _calendar;
-    private int month, year;
+    private int month, year,current_month,current_year;
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_contact__growth_, container, false);
+        View view=inflater.inflate(R.layout.fragment_dashboard_, container, false);
         IntentUI(view);
+
 
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
         year = _calendar.get(Calendar.YEAR);
-
+        current_month=month;
+        current_year=year;
+       // Log.e("Current Mothe", String.valueOf(month));
         setGridCellAdapterToDate(month, year);
         calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, Calendar.NOVEMBER);
@@ -48,7 +57,6 @@ public class Contact_Growth_Fragment extends Fragment implements View.OnClickLis
         calendar.set(Calendar.YEAR, 2012);
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         calendar.add(Calendar.YEAR, 1);
-        Log.e("Current Mothe", String.valueOf(month));
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
@@ -56,11 +64,10 @@ public class Contact_Growth_Fragment extends Fragment implements View.OnClickLis
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
-
         return view;
     }
-    private void IntentUI(View view) {
 
+    private void IntentUI(View view) {
         calendarView = view.findViewById(R.id.calendarView);
         prevMonth=view.findViewById(R.id.prevMonth);
         currentMonth=view.findViewById(R.id.currentMonth);
@@ -68,6 +75,7 @@ public class Contact_Growth_Fragment extends Fragment implements View.OnClickLis
         prevMonth.setOnClickListener(this);
         nextMonth.setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View view) {
@@ -106,5 +114,4 @@ public class Contact_Growth_Fragment extends Fragment implements View.OnClickLis
         _calendar.set(year, month - 1, _calendar.get(Calendar.DAY_OF_MONTH));
         currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
     }
-
 }

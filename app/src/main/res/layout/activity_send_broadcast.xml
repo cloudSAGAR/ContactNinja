@@ -34,7 +34,20 @@
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"/>
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/no_image"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                style="@style/tv_regular"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/_12sdp"
+                android:background="@drawable/shape_primary_circle"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp">
 
+            </TextView>
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_gravity="center|left"
