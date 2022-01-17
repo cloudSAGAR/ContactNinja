@@ -225,18 +225,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
         add_new_member.setOnClickListener(this);
 
-        fastscroller.setupWithRecyclerView(
-                contect_list_unselect,
-                (position) -> {
-                    // ItemModel item = data.get(position);
-                    FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-                            inviteListData.get(position).getFirstname().substring(0, 1)
-                                    .substring(0, 1)
-                                    .toUpperCase()// Grab the first letter and capitalize it
-                    );
-                    return fastScrollItemIndicator;
-                }
-        );
 
 
         userListDataAdapter = new UserListDataAdapter(this, getApplicationContext(), inviteListData);
@@ -259,9 +247,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                         // Log.e("Same Data ",d.getUserName());
                     }
                 }
-                userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
-                contect_list_unselect.setAdapter(userListDataAdapter);
-                userListDataAdapter.notifyDataSetChanged();
                 userListDataAdapter.updateList(temp);
             }
 
@@ -270,6 +255,20 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
             }
         });
+
+        fastscroller.setupWithRecyclerView(
+                contect_list_unselect,
+                (position) -> {
+                    // ItemModel item = data.get(position);
+                    FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                            userListDataAdapter.getItem(position).getFirstname().substring(0, 1)
+                                    .substring(0, 1)
+                                    .toUpperCase()// Grab the first letter and capitalize it
+                    );
+                    return fastScrollItemIndicator;
+                }
+        );
+
         deleteCache(this);
     }
     // Handled permission Result
@@ -783,6 +782,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             notifyDataSetChanged();
         }
 
+        public ContectListData.Contact getItem(int position) {
+            return userDetails.get(position);
+        }
         public void removeite(int value) {
             inviteListData.remove(value);
             userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);

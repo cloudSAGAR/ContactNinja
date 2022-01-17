@@ -283,7 +283,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                         FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
 
 
-                                contectListData.get(position).getFirstname().substring(0, 1)
+                                groupContectAdapter.getItem(position).getFirstname().substring(0, 1)
                                         .substring(0, 1)
                                         .toUpperCase()// Grab the first letter and capitalize it
                         );
