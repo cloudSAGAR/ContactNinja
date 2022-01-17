@@ -92,7 +92,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
-    ImageView iv_Setting, pulse_icon,iv_back;
+    ImageView iv_Setting, pulse_icon,iv_back,iv_edit;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
     String fragment_name, user_image_Url = "", File_name = "", File_extension = "";
@@ -319,9 +319,48 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             }.getType();
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
-
                             setdata();
                             setTab();
+
+
+
+                        } else {
+                            loadingDialog.cancelLoading();
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
+
+    private void Userinfo1() throws JSONException {
+        //  loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("api", "user view");
+        obj.add("data", paramObject);
+        retrofitCalls.Userinfo(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        if (response.body().getStatus() == 200) {
+                            loadingDialog.cancelLoading();
+                            SessionManager.setUserdata(getActivity(), new SignResponseModel());
+
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            Type listType = new TypeToken<SignResponseModel>() {
+                            }.getType();
+                            SignResponseModel user_model = new Gson().fromJson(headerString, listType);
+                            SessionManager.setUserdata(getActivity(), user_model);
+                            setdata();
+                            //setTab();
+
+
 
                         } else {
                             loadingDialog.cancelLoading();
@@ -357,6 +396,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
+
         User user_data_model = user_data.getUser();
         ContectListData.Contact set_contact = new ContectListData.Contact();
         set_contact.setFirstname(user_data_model.getFirstName());
@@ -385,12 +425,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         SessionManager.setOneCotect_deatil(getActivity(), set_contact);
 
         if (flag.equals("edit")) {
+            iv_edit.setVisibility(View.VISIBLE);
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            edt_FirstName.setText(Contect_data.getFirstname() + " " + Contect_data.getLastname());
+            edt_FirstName.setText(Contect_data.getFirstname());
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            if (Contect_data.getContactImage() == null) {
+
+            if (user_data.getUser().getUserprofile().getProfilePic() == null) {
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
@@ -418,7 +460,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
                 Glide.with(getActivity()).
-                        load(Contect_data.getContactImage())
+                        load(user_data.getUser().getUserprofile().getProfilePic())
                         .placeholder(R.drawable.shape_primary_back)
                         .error(R.drawable.shape_primary_back).
                         into(iv_user);
@@ -428,7 +470,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             save_button.setText("Save");
 
 
-        } else if (flag.equals("read")) {
+        }
+
+        else if (flag.equals("read")) {
+
+
             save_button.setVisibility(View.GONE);
             edt_FirstName.setEnabled(false);
             edt_lastname.setEnabled(false);
@@ -438,7 +484,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            if (Contect_data.getContactImage() == null) {
+            if (user_data.getUser().getUserprofile().getProfilePic() == null) {
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
@@ -464,7 +510,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
                 Glide.with(getActivity()).
-                        load(Contect_data.getContactImage())
+                        load(user_data.getUser().getUserprofile().getProfilePic())
                         .placeholder(R.drawable.shape_primary_back)
                         .error(R.drawable.shape_primary_back).
                         into(iv_user);
@@ -521,7 +567,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     private void intentView(View view) {
 
-
+        iv_edit=view.findViewById(R.id.iv_edit);
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
         iv_Setting.setOnClickListener(this);
@@ -578,60 +624,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     }
 
 
-    private void addContact(String given_name, String name, String mobile, String home, String email, String note) {
-
-        Log.e("Name", name);
-        Log.e("mobile", mobile);
-        Log.e("home", home);
-        Log.e("email", email);
-        Log.e("Note", note);
-
-        ArrayList<ContentProviderOperation> contact = new ArrayList<ContentProviderOperation>();
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-                .build());
-
-        // first and last names
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, given_name)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, name)
-                .build());
-
-        // Contact No Mobile
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, mobile)
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                .build());
-
-        // Contact Home
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, home)
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
-                .build());
-
-        // Email    `
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
-                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
-                .build());
-
-
-        try {
-            ContentProviderResult[] results = getActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, contact);
-            Log.e("Contect Result", new Gson().toJson(results));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private long getRawContactId() {
         // Inser an empty contact.
@@ -771,7 +763,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+       /* retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -804,7 +796,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 loadingDialog.cancelLoading();
             }
         });
-
+*/
     }
 
 
@@ -831,6 +823,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         String contect_number=user_data.getUser().getContactNumber();
 
         List<Contactdetail> contactdetails = new ArrayList<>();
+
+        List<Contactdetail> contactdetails1 = new ArrayList<>();
         contactdetails.addAll(addcontectModel.getContactdetails());
 
 
@@ -884,21 +878,22 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("user_id", user_id);
         param_data.put("zipcode", zip_code);
         param_data.put("zoom_id", zoom_id);
+
         if (!user_image_Url.equals(""))
         {
-            param_data.put("contact_image", user_image_Url);
-            param_data.put("contact_image_name", File_name);
-            param_data.put("image_extension", File_extension);
+            param_data.put("profile_pic", user_image_Url);
+            param_data.put("pic_name", File_name);
+            param_data.put("pic_extension", File_extension);
             if(olld_image!=null){
-                param_data.put("oldImage", olld_image);
+                param_data.put("old_pic_name", olld_image);
             }
             else {
-                param_data.put("oldImage", "");
+                param_data.put("old_pic_name", "");
             }
 
         }
         else {
-            param_data.put("contact_image", olld_image);
+            param_data.put("profile_pic", olld_image);
             //   paramObject.put("contact_image", "");
             //   paramObject.put("contact_image_name", "");
         }
@@ -907,20 +902,48 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
 
 
-        JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
-            JSONObject paramObject1 = new JSONObject();
+
             if (contactdetails.get(i).getEmail_number().equals("")) {
 
             } else {
-                if (contactdetails.get(i).getType().equals("NUMBER"))
+                if (contactdetails.get(i).getEmail_number().equals(user_data.getUser().getContactNumber()) || contactdetails.get(i).getEmail_number().equals(user_data.getUser().getEmail()))
                 {
-                    phone = contactdetails.get(i).getEmail_number();
+
                 }
-                phone_type = contactdetails.get(i).getLabel();
-                paramObject1.put("email_number", contactdetails.get(i).getEmail_number());
-                paramObject1.put("label", contactdetails.get(i).getLabel());
-                paramObject1.put("type", contactdetails.get(i).getType());
+                else {
+                    if (contactdetails.get(i).getType().equals("NUMBER"))
+                    {
+                        phone = contactdetails.get(i).getEmail_number();
+                    }
+                    phone_type = contactdetails.get(i).getLabel();
+
+                    contactdetails1.add(contactdetails.get(i));
+                }
+
+            }
+
+        }
+        JSONArray jsonArray = new JSONArray();
+        JSONObject paramObject1 = null;
+
+        for (int i = 0; i < contactdetails1.size(); i++) {
+            paramObject1 = new JSONObject();
+            if (contactdetails1.get(i).getEmail_number().equals("")) {
+
+            } else {
+
+
+                    if (contactdetails.get(i).getType().equals("NUMBER"))
+                    {
+                        phone = contactdetails.get(i).getEmail_number();
+                    }
+                    phone_type = contactdetails1.get(i).getLabel();
+                    paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
+                    paramObject1.put("label", contactdetails1.get(i).getLabel());
+                    paramObject1.put("type", contactdetails1.get(i).getType());
+
+
 
             }
             jsonArray.put(paramObject1);
@@ -937,6 +960,23 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getStatus() == 200) {
+
+
+                    layout_toolbar_logo.setVisibility(View.VISIBLE);
+                    iv_back.setVisibility(View.GONE);
+                    SessionManager.setContect_flag("read");
+                    save_button.setVisibility(View.GONE);
+                    iv_Setting.setVisibility(View.VISIBLE);
+                    save_button.setText("Save");
+                    edit_profile.setVisibility(View.VISIBLE);
+                    edt_lastname.setVisibility(View.GONE);
+                    edt_FirstName.setEnabled(false);
+                    edt_lastname.setEnabled(false);
+                    try {
+                        Userinfo1();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 } else {
                     Gson gson = new Gson();

@@ -59,6 +59,11 @@ public class Userprofile {
         this.id = id;
     }
 
+
+    @SerializedName("contact_details")
+    @Expose
+    private List<ContactDetail> contactDetails = null;
+
     public Integer getUserId() {
         return userId;
     }
@@ -105,6 +110,14 @@ public class Userprofile {
 
     public void setAffiliateJson(List<Integer> affiliateJson) {
         this.affiliateJson = affiliateJson;
+    }
+
+    public List<ContactDetail> getContactDetails() {
+        return contactDetails;
+    }
+
+    public void setContactDetails(List<ContactDetail> contactDetails) {
+        this.contactDetails = contactDetails;
     }
 
     public Object getProfilePic() {

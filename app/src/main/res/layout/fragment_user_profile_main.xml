@@ -26,13 +26,26 @@
             android:gravity="center"
             android:layout_marginStart="@dimen/_15sdp"
             tools:ignore="Orientation">
-            <ImageView
-                android:padding="@dimen/_18sdp"
-                android:id="@+id/pulse_icon"
-                android:src="@drawable/ic_plus"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:ignore="UseAppTint"/>
+          <androidx.coordinatorlayout.widget.CoordinatorLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+                  <ImageView
+                      android:padding="@dimen/_18sdp"
+                      android:id="@+id/pulse_icon"
+                      android:src="@drawable/ic_plus"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      tools:ignore="UseAppTint"/>
+
+              </LinearLayout>
+
+
+          </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
             <TextView
                 android:textSize="@dimen/_20sdp"
                 style="@style/tv_Medium"
@@ -60,7 +73,16 @@
             app:riv_border_width="0dp"
             app:riv_corner_radius="@dimen/_50sdp"
             app:riv_oval="false" />
+        <ImageView
+            android:id="@+id/iv_edit"
+            android:visibility="gone"
+            android:layout_marginStart="-25dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_edit_profile"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp">
 
+        </ImageView>
 
         <LinearLayout
             android:layout_marginEnd="@dimen/_10sdp"
