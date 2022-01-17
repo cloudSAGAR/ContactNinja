@@ -424,6 +424,11 @@ public class ContectFragment extends Fragment {
                     contectListData.clear();
                     paginationAdapter.removeloist();
                     paginationAdapter.notifyDataSetChanged();
+
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
+                    paginationAdapter = new ContectListAdapter(getActivity());
+                    rvinviteuserdetails.setAdapter(paginationAdapter);
+
                     sessionManager.setContectList(getActivity(), new ArrayList<>());
 
 
