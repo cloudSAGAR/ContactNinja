@@ -74,7 +74,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     BottomSheetDialog bottomSheetDialog_time, bottomSheetDialog_company;
     EditText ev_address, ev_city, ev_zip, ev_zoom, ev_note,
             ev_company_url, ev_state, ev_job, ev_bob, ev_fb, ev_twitter, ev_breakout,
-            ev_linkedin, ev_company;
+            ev_linkedin, ev_company,edt_email;
     LinearLayout select_state, add_mobile_Number,
             layout_Add_phone, layout_Add_email, layout_mobile, fb_layout;
     TextView tv_phone, tv_more_field, tv_company_url, tv_job,
@@ -102,6 +102,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     boolean edit = false;
     EditText ev_othre_company;
     ImageView iv_down;
+EditText edt_mobile_no;
+LinearLayout layout_country_piker;
+
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     public User_InformationFragment() {
@@ -137,6 +140,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
 
         User user_data_model = user_data.getUser();
+
         ContectListData.Contact set_contact = new ContectListData.Contact();
         set_contact.setFirstname(user_data_model.getFirstName());
         set_contact.setLastname(user_data_model.getLastName());
@@ -144,29 +148,29 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         List<Contactdetail> contactdetails = new ArrayList<>();
 
-        ContectListData.Contact.ContactDetail contactDetail_model = new ContectListData.Contact.ContactDetail();
+ /*       ContectListData.Contact.ContactDetail contactDetail_model = new ContectListData.Contact.ContactDetail();
         contactDetail_model.setEmailNumber(user_data_model.getContactNumber());
         contactDetail_model.setLabel("");
-        /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
+        *//*contactDetail_model.setEmailNumber(user_data_model.getEmail());*//*
         contactDetail_model.setContactId(user_data_model.getId());
         contactDetail_model.setType("NUMBER");
         contactDetail_model.setIsDefault(1);
         contactDetail_model.setLabel("Home");
-        contactDetails_list.add(0, contactDetail_model);
+        contactDetails_list.add(0, contactDetail_model);*/
 
-        Contactdetail contactdetail12 = new Contactdetail();
+     /*   Contactdetail contactdetail12 = new Contactdetail();
         contactdetail12.setEmail_number(user_data_model.getContactNumber());
         contactdetail12.setType("NUMBER");
         contactdetail12.setIs_default(1);
         contactdetail12.setLabel("Home");
 
 
-        contactdetails.add(0, contactdetail12);
+        contactdetails.add(0, contactdetail12);*/
 
-        ContectListData.Contact.ContactDetail contactDetail_model1 = new ContectListData.Contact.ContactDetail();
+       /* ContectListData.Contact.ContactDetail contactDetail_model1 = new ContectListData.Contact.ContactDetail();
         contactDetail_model1.setEmailNumber(user_data_model.getEmail());
         contactDetail_model1.setLabel("");
-        /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
+        *//*contactDetail_model.setEmailNumber(user_data_model.getEmail());*//*
         contactDetail_model1.setContactId(user_data_model.getId());
         contactDetail_model1.setType("EMAIL");
         contactDetail_model1.setIsDefault(1);
@@ -178,9 +182,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         contactdetail1.setType("EMAIL");
         contactdetail1.setIs_default(1);
         contactdetail1.setLabel("Home");
-
-
-        contactdetails.add(1, contactdetail1);
+        contactdetails.add(1, contactdetail1);*/
 
 
         if (user_data.getUser().getUserprofile().getContactDetails() != null) {
@@ -193,14 +195,13 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 // contactDetail_model2.setContactId(user_data_model.getId());
                 contactDetail_model2.setType(user_data.getUser().getUserprofile().getContactDetails().get(i).getType());
                 contactDetail_model2.setIsDefault(0);
-                contactDetails_list.add(i + 2, contactDetail_model2);
-
+                contactDetails_list.add(i, contactDetail_model2);
                 Contactdetail contactdetail2 = new Contactdetail();
                 contactdetail2.setEmail_number(user_data.getUser().getUserprofile().getContactDetails().get(i).getEmailNumber());
                 contactdetail2.setType(user_data.getUser().getUserprofile().getContactDetails().get(i).getType());
                 contactdetail2.setIs_default(0);
                 contactdetail2.setLabel(user_data.getUser().getUserprofile().getContactDetails().get(i).getLabel());
-                contactdetails.add(i + 2, contactdetail2);
+                contactdetails.add(i, contactdetail2);
 
 
             }
@@ -225,6 +226,13 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_zip.setEnabled(true);
             ev_bob.setEnabled(true);
             ev_note.setEnabled(true);
+
+            edt_mobile_no.setEnabled(false);
+            edt_mobile_no.setText(user_data_model.getContactNumber());
+            edt_email.setText(user_data_model.getEmail());
+            edt_email.setEnabled(false);
+            layout_country_piker.setVisibility(View.VISIBLE);
+
             // Log.e("Null", "No Call");
             edit = true;
             iv_down.setVisibility(View.VISIBLE);
@@ -329,6 +337,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         } else if (flag.equals("read")) {
 
+            edt_mobile_no.setEnabled(false);
+            edt_mobile_no.setText(user_data_model.getContactNumber());
+            edt_email.setText(user_data_model.getEmail());
+            edt_email.setEnabled(false);
+            layout_country_piker.setVisibility(View.GONE);
+
             company_layout.setEnabled(false);
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.VISIBLE);
@@ -344,6 +358,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_bob.setEnabled(false);
             ev_note.setEnabled(false);
             tv_add_social.setVisibility(View.GONE);
+            edt_mobile_no.setTextColor(getActivity().getColor(R.color.purple_200));
+            edt_email.setTextColor(getActivity().getColor(R.color.purple_200));
+
+
             tv_add_social.setTextColor(getActivity().getColor(R.color.purple_200));
             ev_company.setTextColor(getActivity().getColor(R.color.purple_200));
             ev_company_url.setTextColor(getActivity().getColor(R.color.purple_200));
@@ -882,6 +900,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         });
 
 
+
         ev_fb.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -958,6 +977,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         });
 
 
+
         ev_job.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -980,6 +1000,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     }
 
     private void IntentUI(View view) {
+        layout_country_piker=view.findViewById(R.id.layout_country_piker);
+        edt_email=view.findViewById(R.id.edt_email);
+        edt_mobile_no=view.findViewById(R.id.edt_mobile_no);
         iv_down = view.findViewById(R.id.iv_down);
         tv_phone = view.findViewById(R.id.tv_phone);
         ev_address = view.findViewById(R.id.ev_address);
@@ -1499,14 +1522,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             holder.ccp_id.setVisibility(View.VISIBLE);
             holder.edt_mobile_no.setEnabled(true);
             if (edit) {
-                if (position == 0) {
-                    holder.ccp_id.setOnCountryChangeListener(null);
-                    holder.edt_mobile_no.setEnabled(false);
-                    holder.select_label.setVisibility(View.GONE);
-                } else {
-                    holder.select_label.setVisibility(View.VISIBLE);
-                    holder.edt_mobile_no.setEnabled(true);
-                }
+
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.ccp_id.setCountryForNameCode(item.getCountry_code());
@@ -2010,14 +2026,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
 
             if (edit) {
-                if (position == 0) {
 
-                    holder.edt_email.setEnabled(false);
-                    holder.select_email_label.setVisibility(View.GONE);
-                } else {
-                    holder.select_email_label.setVisibility(View.VISIBLE);
-                    holder.edt_email.setEnabled(true);
-                }
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.edt_email.addTextChangedListener(new TextWatcher() {

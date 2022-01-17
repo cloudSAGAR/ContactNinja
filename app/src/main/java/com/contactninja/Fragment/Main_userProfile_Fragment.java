@@ -1053,10 +1053,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 save_button.setVisibility(View.GONE);
                 iv_Setting.setVisibility(View.VISIBLE);
                 save_button.setText("Save");
+                iv_edit.setVisibility(View.GONE);
+                edt_lastname.setVisibility(View.GONE);
+                edit_profile.setVisibility(View.VISIBLE);
                 setdata();
         }
     }
     // Handled permission Result
+
 
     private void captureimageDialog(boolean remove) {
         final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
