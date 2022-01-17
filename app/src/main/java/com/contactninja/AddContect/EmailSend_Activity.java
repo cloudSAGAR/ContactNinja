@@ -23,6 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,7 +34,9 @@ import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.TemplateCreateActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -65,7 +68,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     LoadingDialog loadingDialog;
     ImageView iv_back;
     TextView save_button, tv_use_tamplet;
-    LinearLayout mMainLayout;
+    CoordinatorLayout mMainLayout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
     PicUpTextAdepter picUpTextAdepter;
@@ -304,7 +307,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
                     TemplateList list = new Gson().fromJson(headerString, listType);
-                    String CurrentType = SessionManager.getCampaign_type(getApplicationContext());
+                   // String CurrentType = SessionManager.getCampaign_type(getApplicationContext());
 
                     TemplateList.Template template2 = new TemplateList.Template();
                     template2.setTemplateName("Please select template");
@@ -312,7 +315,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     templateList.add(0, template2);
 
                     for (int i = 0; i < list.getTemplate().size(); i++) {
-                        if (CurrentType.equals("Email")) {
+                       // if (CurrentType.equals("Email")) {
                             if (list.getTemplate().get(i).getType().equals("EMAIL")) {
                                 TemplateList.Template template = new TemplateList.Template();
                                 template.setId(list.getTemplate().get(i).getId());
@@ -328,24 +331,24 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                                 template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
                                 templateList.add(template);
                             }
-                        } else {
-                            if (list.getTemplate().get(i).getType().equals("SMS")) {
-                                TemplateList.Template template = new TemplateList.Template();
-                                template.setId(list.getTemplate().get(i).getId());
-                                template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
-                                template.setTeamId(list.getTemplate().get(i).getTeamId());
-                                template.setTemplateName(list.getTemplate().get(i).getTemplateName());
-                                template.setTemplateSlug(list.getTemplate().get(i).getTemplateSlug());
-                                template.setContentHeader(list.getTemplate().get(i).getContentHeader());
-                                template.setType(list.getTemplate().get(i).getType());
-                                template.setContentBody(list.getTemplate().get(i).getContentBody());
-                                template.setStatus(list.getTemplate().get(i).getStatus());
-                                template.setCreatedAt(list.getTemplate().get(i).getCreatedAt());
-                                template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
-                                templateList.add(template);
-                            }
+                      //  } else {
+                      //      if (list.getTemplate().get(i).getType().equals("SMS")) {
+                      //          TemplateList.Template template = new TemplateList.Template();
+                      //          template.setId(list.getTemplate().get(i).getId());
+                      //          template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
+                      //          template.setTeamId(list.getTemplate().get(i).getTeamId());
+                      //          template.setTemplateName(list.getTemplate().get(i).getTemplateName());
+                      //          template.setTemplateSlug(list.getTemplate().get(i).getTemplateSlug());
+                      //          template.setContentHeader(list.getTemplate().get(i).getContentHeader());
+                      //          template.setType(list.getTemplate().get(i).getType());
+                      //          template.setContentBody(list.getTemplate().get(i).getContentBody());
+                      //          template.setStatus(list.getTemplate().get(i).getStatus());
+                      //          template.setCreatedAt(list.getTemplate().get(i).getCreatedAt());
+                      //          template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
+                      //         // templateList.add(template);
+                      //      }
                         }
-                    }
+                  //  }
 
 
                     TemplateList.Template template1 = new TemplateList.Template();
@@ -408,7 +411,16 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                try {
+                    if (Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
+                        if (isValidation(editText.getText().toString().trim(),dialog))
+                        {
+                            CreateTemplate(editText.getText().toString().trim());
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         });
@@ -418,6 +430,77 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                 dialog.dismiss();
             }
         });
+
+    }
+     private boolean isValidation(String name, AlertDialog dialog) {
+
+            if (name.equals("")) {
+                dialog.dismiss();
+                bottomSheetDialog_templateList.dismiss();
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+            }else
+            if (ev_subject.getText().toString().equals("")) {
+                dialog.dismiss();
+                bottomSheetDialog_templateList.dismiss();
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
+            }else
+            if (edit_template.getText().toString().equals("")) {
+                bottomSheetDialog_templateList.dismiss();
+                dialog.dismiss();
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+            } else {
+                return true;
+            }
+
+        return false;
+    }
+
+    private void CreateTemplate(String template_name) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("template_name", template_name);
+        paramObject.addProperty("content_header", ev_subject.getText().toString().trim());
+        String template_slug = template_name.toUpperCase().replace(" ", "_");
+        paramObject.addProperty("template_slug", template_slug);
+        paramObject.addProperty("content_body", edit_template.getText().toString().trim());
+        paramObject.addProperty("type", "EMAIL");
+
+        obj.add("data", paramObject);
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getStatus() == 200) {
+                    onBackPressed();
+
+                } else {
+                    bottomSheetDialog_templateList.dismiss();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
 
     }
 
@@ -566,7 +649,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getStatus() == 200) {
-                    loadingDialog.cancelLoading();
+                  //  loadingDialog.cancelLoading();
                     String jsonRawData = new Gson().toJson(response.body());
 
                     try {
@@ -598,7 +681,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+      //  loadingDialog.showLoadingDialog();
         Log.e("Defuilt id", String.valueOf(defult_id));
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
@@ -622,6 +705,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
+                finish();
             }
 
             @Override

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mMainLayout"
     tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".AddContect.EmailSend_Activity">
     <LinearLayout
@@ -25,7 +26,7 @@
                 style="@style/tv_Medium"
                 android:textSize="@dimen/_14sdp"
                 android:text="@string/from"
-                android:textColor="@color/shape_red"
+                android:textColor="@color/purple_200"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -40,7 +41,7 @@
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:paddingStart="@dimen/_15sdp"
                 android:textColor="@color/tv_medium"
@@ -77,7 +78,7 @@
                 style="@style/tv_Medium"
                 android:textSize="@dimen/_14sdp"
                 android:text="@string/to"
-                android:textColor="@color/shape_red"
+                android:textColor="@color/purple_200"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -127,6 +128,7 @@
             </TextView>
 
             <EditText
+                android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/ev_subject"
                 style="@style/tv_regular"
                 android:layout_width="match_parent"
@@ -134,7 +136,7 @@
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:hint="@string/ComposeEmail"
                 android:textColor="@color/tv_medium"

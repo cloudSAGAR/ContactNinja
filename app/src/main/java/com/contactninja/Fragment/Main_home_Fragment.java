@@ -3,8 +3,6 @@ package com.contactninja.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.contactninja.Fragment.Home.Affiliate_Groth_Fragment;
 import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
@@ -41,10 +43,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
@@ -126,7 +124,7 @@ public class Main_home_Fragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
     }
 
-    class ViewpaggerAdapter extends FragmentPagerAdapter {
+    static class ViewpaggerAdapter extends FragmentPagerAdapter {
 
         Context context;
         int totalTabs;

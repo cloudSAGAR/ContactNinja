@@ -767,7 +767,7 @@ public class ContectFragment extends Fragment {
             String current = "";
             try {
                 if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                   // ContectEvent();
+                    ContectEvent();
                 }
 
             } catch (Exception e) {
