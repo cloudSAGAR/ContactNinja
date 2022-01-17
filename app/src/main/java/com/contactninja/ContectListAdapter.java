@@ -76,7 +76,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case ITEM:
                 ContectListAdapter.MovieViewHolder holder1 = (ContectListAdapter.MovieViewHolder) holder;
               try {
-                  holder1.userName.setText(Contact_data.getFirstname());
+                  holder1.userName.setText(Contact_data.getFirstname()+" "+Contact_data.getLastname());
                   holder1.userNumber.setVisibility(View.GONE);
 
                   holder1.first_latter.setVisibility(View.VISIBLE);

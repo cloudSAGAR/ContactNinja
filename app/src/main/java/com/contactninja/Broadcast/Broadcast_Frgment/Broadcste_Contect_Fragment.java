@@ -549,7 +549,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
         public void onBindViewHolder(@NonNull TopUserListDataAdapter.InviteListDataclass holder, int position) {
             ContectListData.Contact inviteUserDetails = userDetails.get(position);
             last_postion = position;
-            holder.userName.setText(select_contectListData.get(position).getFirstname());
+            holder.userName.setText(select_contectListData.get(position).getFirstname()+" "+select_contectListData.get(position).getLastname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
             String first_latter = select_contectListData.get(position).getFirstname().substring(0, 1).toUpperCase();
@@ -756,7 +756,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
 
 
                     Log.e("List is", new Gson().toJson(select_contectListData));
-                    holder1.userName.setText(Contact_data.getFirstname());
+                    holder1.userName.setText(Contact_data.getFirstname()+" "+Contact_data.getLastname());
                     holder1.userNumber.setVisibility(View.GONE);
 
                     holder1.first_latter.setVisibility(View.VISIBLE);

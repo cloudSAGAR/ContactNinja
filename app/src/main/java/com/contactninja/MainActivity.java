@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (sessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
-                //GetContactsIntoArrayList();
+                GetContactsIntoArrayList();
 
             }
 
