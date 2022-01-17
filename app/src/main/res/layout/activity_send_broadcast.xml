@@ -58,6 +58,7 @@
                 <EditText
                     android:id="@+id/add_new_contect"
                     style="@style/tv_regular"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
@@ -80,14 +81,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"/>
             </LinearLayout>
-
-
-
-
         </LinearLayout>
         <EditText
             android:id="@+id/add_detail"
             style="@style/tv_regular"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"
             android:layout_gravity="center|left"

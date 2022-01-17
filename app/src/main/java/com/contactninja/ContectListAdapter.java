@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import de.hdodenhof.circleimageview.CircleImageView;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -130,6 +131,12 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                       holder1.no_image.setVisibility(View.VISIBLE);
                       holder1.profile_image.setVisibility(View.GONE);
                   } else {
+
+                    /*  CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context.getApplicationContext());
+                      circularProgressDrawable.setStrokeWidth(6f);
+                      circularProgressDrawable.setCenterRadius(20f);
+                      circularProgressDrawable.setColorSchemeColors(context.getResources().getColor(R.color.purple_200),context.getResources().getColor(R.color.purple_200),context.getResources().getColor(R.color.purple_200));
+                      circularProgressDrawable.start();*/
                       Glide.with(context).
                               load(Contact_data.getContactImage())
                               .placeholder(R.drawable.shape_primary_circle)

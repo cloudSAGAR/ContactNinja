@@ -270,6 +270,7 @@
                 android:id="@+id/ic_profile"
                 android:layout_width="@dimen/_38sdp"
                 android:layout_height="@dimen/_38sdp"
+                app:civ_border_overlay="true"
                 android:background="@drawable/shape_primary_back"
                 android:src="@drawable/shape_primary_back">
 

@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -108,8 +109,6 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             {
                 e.printStackTrace();
             }
-
-
             no_image.setText(add_text);
             no_image.setVisibility(View.VISIBLE);
             add_new_contect_icon.setVisibility(View.GONE);

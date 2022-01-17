@@ -48,6 +48,9 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AddContect.Message_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Campaign.Campaign_view_per_contect_Detail"
             android:exported="false"
             android:screenOrientation="portrait" />

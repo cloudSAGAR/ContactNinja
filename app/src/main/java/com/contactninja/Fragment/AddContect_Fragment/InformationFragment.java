@@ -32,6 +32,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.AddContect.Message_Activity;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -1265,8 +1267,16 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showAlertDialogButtonClicked1(p_num, id, "app");
-                dialog.dismiss();
+
+
+           Intent intent=new Intent(getActivity(), Message_Activity.class);
+           intent.putExtra("number",p_num);
+           intent.putExtra("id",id);
+           intent.putExtra("type","app");
+           startActivity(intent);
+
+         //  showAlertDialogButtonClicked1(p_num, id, "app");
+
 
 
             }
