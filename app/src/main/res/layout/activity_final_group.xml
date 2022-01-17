@@ -173,7 +173,7 @@
             android:layout_gravity="center|left"
             android:gravity="center|left"
             android:textColor="@color/tv_medium"
-
+            android:hint="@string/search_hint"
             android:id="@+id/contect_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

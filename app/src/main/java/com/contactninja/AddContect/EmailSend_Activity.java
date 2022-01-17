@@ -36,7 +36,6 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
-import com.contactninja.Setting.TemplateCreateActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -103,6 +102,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Bundle bundle = intent.getExtras();
         email = bundle.getString("email");
         id = bundle.getString("id");
+
         Log.e("Id is", id);
         Log.e("email", email);
         ev_to.setText(email);
@@ -514,7 +514,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
         for(int i=0;i<userLinkedGmailList.size();i++){
             if(userLinkedGmailList.get(i).getIsDefault()==1){
+                select_userLinkedGmailList.clear();
                 userLinkedGmailList.get(i).setEmailSelect(true);
+                select_userLinkedGmailList.add(userLinkedGmailList.get(i));
                 break;
             }
         }
@@ -529,7 +531,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
-                ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
+                if(select_userLinkedGmailList.size()!=0){
+                    ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
+                }
             }
         });
 
@@ -583,6 +587,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                         if (userLinkedGmailList.get(i).getIsDefault().toString().equals("1")) {
                             ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
                             defult_id = userLinkedGmailList.get(i).getId();
+                            select_userLinkedGmailList.add(userLinkedGmailList.get(i));
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
@@ -699,11 +704,14 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "EMAIL");
         paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_ggmail_id", select_userLinkedGmailList.get(0).getId());
+        paramObject.addProperty("email_recipients", select_userLinkedGmailList.get(0).getUserEmail());
         obj.add("data", paramObject);
 
         retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+
                 loadingDialog.cancelLoading();
                 finish();
             }
