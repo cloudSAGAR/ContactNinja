@@ -972,13 +972,35 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     edt_lastname.setVisibility(View.GONE);
                     edt_FirstName.setEnabled(false);
                     edt_lastname.setEnabled(false);
+                    iv_edit.setVisibility(View.GONE);
                     try {
                         Userinfo1();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                } else {
+                }
+             else    if (response.body().getStatus() == 404) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
+                    try {
+                        if (uservalidateModel.getLast_name().size() != 0) {
+                            Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getLast_name().get(0), false);
+                        }
+                        else if (uservalidateModel.getFirstname().size() != 0) {
+                            Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getFirstname().get(0), false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+                else {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<UservalidateModel>() {
