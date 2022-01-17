@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/mMainLayout"
     tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".AddContect.EmailSend_Activity">
     <LinearLayout
@@ -75,8 +77,11 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/shape_border_gray1"
             android:id="@+id/ev_txt"
+            android:textSize="@dimen/_15sdp"
             android:textColor="@color/tv_medium"
             style="@style/tv_Medium"
+            android:paddingStart="@dimen/_15sdp"
+            android:hint="Enter Your Message"
             android:padding="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -86,9 +91,10 @@
             android:id="@+id/iv_submit"
             android:background="@drawable/shape_primary_circle"
             android:layout_width="@dimen/_35sdp"
-            android:padding="@dimen/_12sdp"
-            android:tint="@color/white"
-            android:src="@drawable/ic_send_line"
+            android:padding="@dimen/_11sdp"
+
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/ic_send_message"
             android:layout_height="@dimen/_35sdp"
             tools:ignore="UseAppTint">
 

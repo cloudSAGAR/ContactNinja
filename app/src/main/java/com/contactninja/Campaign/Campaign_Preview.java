@@ -123,8 +123,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
 
-        Toast.makeText(getApplicationContext(), "Manu Clcik", Toast.LENGTH_LONG).show();
-        Log.e("Option Manu is Select", "Yes");
+      //  Toast.makeText(getApplicationContext(), "Manu Clcik", Toast.LENGTH_LONG).show();
+        //Log.e("Option Manu is Select", "Yes");
         switch (item.getItemId()) {
             case R.id.mv_save:
                 startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));

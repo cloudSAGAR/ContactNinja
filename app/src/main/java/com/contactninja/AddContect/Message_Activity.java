@@ -3,6 +3,7 @@ package com.contactninja.AddContect;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Response;
@@ -61,9 +62,11 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
+    CoordinatorLayout mMainLayout;
+
     ImageView iv_back;
     TextView save_button, tv_use_tamplet;
-    LinearLayout mMainLayout;
+
     TemplateAdepter templateAdepter;
     ImageView iv_submit;
     RecyclerView rv_direct_list;
@@ -125,12 +128,12 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
-        mMainLayout = findViewById(R.id.mMainLayout);
         tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
         tv_use_tamplet.setOnClickListener(this);
         rv_direct_list = findViewById(R.id.rv_direct_list);
      /*   iv_more = findViewById(R.id.iv_more);
         iv_more.setOnClickListener(this);*/
+        mMainLayout=findViewById(R.id.mMainLayout);
         edit_template=findViewById(R.id.ev_txt);
         iv_submit=findViewById(R.id.iv_submit);
         iv_submit.setOnClickListener(this);
@@ -240,12 +243,20 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.iv_submit:
+                Log.e("Text is",edit_template.getText().toString());
+                if (edit_template.getText().toString().equals(""))
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Message",false);
+                }
+                else {
                 try {
                     SMSAPI(edit_template.getText().toString(), Integer.parseInt(id), p_number);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                }
+
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
@@ -280,9 +291,10 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         for (int i = 0; i < 1; i++) {
             JSONObject paramObject1 = new JSONObject();
             paramObject1.put("prospect_id", id);
-            JSONArray contect_array = new JSONArray();
+            paramObject1.put("mobile", email);
+           /* JSONArray contect_array = new JSONArray();
             contect_array.put(email);
-            paramObject1.put("email_mobile", contect_array);
+            paramObject1.put("mobile", contect_array);*/
             jsonArray.put(paramObject1);
             break;
         }
@@ -352,6 +364,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+                edit_template.setText("");
                 loadingDialog.cancelLoading();
             }
 

@@ -543,9 +543,10 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         for (int i = 0; i < 1; i++) {
             JSONObject paramObject1 = new JSONObject();
             paramObject1.put("prospect_id", id);
-            JSONArray contect_array = new JSONArray();
+            paramObject1.put("email", email);
+           /* JSONArray contect_array = new JSONArray();
             contect_array.put(email);
-            paramObject1.put("email_mobile", contect_array);
+            paramObject1.put("email_mobile", contect_array);*/
             jsonArray.put(paramObject1);
             break;
         }

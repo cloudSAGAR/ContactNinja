@@ -100,6 +100,16 @@ public class RetrofitCalls {
 
 
 
+    public void UpdateUser_Profile(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.update_user_profiel(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
 
 
     public void AddGroup(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
@@ -267,11 +277,6 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
-
-
-
-
-
     public void Email_execute(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Email_execute(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;

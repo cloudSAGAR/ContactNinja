@@ -55,10 +55,18 @@ public interface RetrofitApiInterface {
 
 
 
-    @POST("contact/bulk/update")
-    Call<ApiResponse> updatecontect(@Header("Accept") String api, @Header("Authorization") String auth,
+    @POST("user/profile/update")
+    Call<ApiResponse> update_user_profiel(@Header("Accept") String api, @Header("Authorization") String auth,
                                  @Body JsonObject body,
                                  @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
+
+
+    @POST("contact/bulk/update")
+    Call<ApiResponse> updatecontect(@Header("Accept") String api, @Header("Authorization") String auth,
+                                    @Body JsonObject body,
+                                    @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
 
 
     @POST("contact/group/add")
