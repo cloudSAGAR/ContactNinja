@@ -835,6 +835,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
+                sessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
+
                 Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
                 startActivity(intent);
                 //finish();
