@@ -144,6 +144,11 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
             String hostURL = url.substring(url.lastIndexOf("/") + 1, url.length());
+
+            String AccessURL = url.substring(url.lastIndexOf("/")- 2, url.length());
+            String[] bits = AccessURL.split("/");
+            String access = bits[bits.length-2];
+
             String val2 = "";
             // decode
             String substring = hostURL.substring(Math.max(hostURL.length() - 2, 0));
@@ -160,7 +165,11 @@ public class Email_verification extends AppCompatActivity implements Connectivit
 
                 try {
                     if (Global.isNetworkAvailable(Email_verification.this, mMainLayout)) {
-                        GoogleAuth(val2);
+                        if(access.equals("1")){
+                            GoogleAuth(val2);
+                        }else {
+
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
