@@ -2,6 +2,7 @@ package com.contactninja.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Notification.NotificationListActivity;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -46,13 +48,13 @@ import java.util.concurrent.TimeUnit;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Main_home_Fragment extends Fragment {
+public class Main_home_Fragment extends Fragment implements View.OnClickListener {
 
 
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
-    ImageView iv_toolbar_mail, iv_toolbar_select;
+    ImageView iv_toolbar_mail, iv_toolbar_select,iv_toolbar_notification;
     LinearLayout layout_toolbar_logo;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -114,6 +116,8 @@ public class Main_home_Fragment extends Fragment {
     }
 
     private void intentView(View view) {
+        iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
+        iv_toolbar_notification.setVisibility(View.VISIBLE);
         iv_toolbar_mail = view.findViewById(R.id.iv_toolbar_mail);
         iv_toolbar_mail.setVisibility(View.VISIBLE);
         iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
@@ -122,6 +126,17 @@ public class Main_home_Fragment extends Fragment {
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager = view.findViewById(R.id.viewPager);
+        iv_toolbar_notification.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_toolbar_notification:
+                Intent intent=new Intent(getActivity(),NotificationListActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     static class ViewpaggerAdapter extends FragmentPagerAdapter {

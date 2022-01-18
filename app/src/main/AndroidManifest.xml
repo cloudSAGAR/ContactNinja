@@ -48,6 +48,13 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Notification.Notification_task_acceptActivity"
+            android:screenOrientation="portrait" android:exported="false" />
+        <activity
+            android:name=".Notification.NotificationListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".AddContect.Message_Activity"
             android:exported="false" />
         <activity

@@ -28,10 +28,22 @@
         android:textColor="@color/purple_200"
         android:textSize="@dimen/_14sdp"
         android:textStyle="bold"
-        android:visibility="gone">
-
-    </TextView>
-
+        android:padding="@dimen/_5sdp"
+        android:visibility="gone"/>
+    <TextView
+        android:padding="@dimen/_5sdp"
+        android:id="@+id/btn_cancle"
+        style="@style/tv_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:gravity="end|center"
+        android:textColor="@color/home_list_sub_data"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
+        android:text="@string/cancel"
+        android:visibility="gone"/>
 
 
     <LinearLayout
@@ -42,37 +54,45 @@
 
         <ImageView
             android:visibility="gone"
-            android:id="@+id/iv_toolbar_mail"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
+            android:id="@+id/iv_toolbar_notification"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:padding="@dimen/_5sdp"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_notification"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_toolbar_mail"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_line_mail"
             tools:ignore="ContentDescription" />
 
         <ImageView
             android:visibility="gone"
             android:id="@+id/iv_toolbar_select"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:padding="@dimen/_5sdp"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_line_select"
             tools:ignore="ContentDescription" />
 
         <ImageView
             android:visibility="gone"
             android:id="@+id/iv_toolbar_manu"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:padding="@dimen/_5sdp"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_more"
             tools:ignore="ContentDescription" />
     </LinearLayout>
