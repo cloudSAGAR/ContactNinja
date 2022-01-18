@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Broadcast.Broadcast_Frgment.Broadcste_Contect_Fragment;
+import com.contactninja.Group.GroupActivity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
@@ -75,13 +76,14 @@ public class Campaign_Contect_Fragment extends Fragment {
     List<ContectListData.Contact> pre_seleact = new ArrayList<>();
     RecyclerView add_contect_list, contect_list_unselect;
     LinearLayoutManager layoutManager, layoutManager1;
+
     Cursor cursor;
     FastScrollerView fastscroller;
     int sequence_id;
     FastScrollerThumbView fastscroller_thumb;
     EditText contect_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon;
+    ImageView add_new_contect_icon,add_new_contect_icon1;
     LinearLayout add_new_contect_layout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
@@ -218,9 +220,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                 public void onClick(View v) {
                     groupContectAdapter.addAll_item(contectListData);
 
-                 /*   Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                    SessionManager.setContect_flag("save");
-                    startActivity(addnewcontect);*/
+
                 }
             });
             add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
@@ -228,9 +228,6 @@ public class Campaign_Contect_Fragment extends Fragment {
                 public void onClick(View v) {
                     groupContectAdapter.addAll_item(contectListData);
 
-                   /* Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                    SessionManager.setContect_flag("save");
-                    startActivity(addnewcontect);*/
                 }
             });
             add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
@@ -238,23 +235,11 @@ public class Campaign_Contect_Fragment extends Fragment {
                 public void onClick(View v) {
                     groupContectAdapter.addAll_item(contectListData);
 
-//                    Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-//                    SessionManager.setContect_flag("save");
-//                    startActivity(addnewcontect);
-                    // splitdata(inviteListData);
                 }
             });
         } else {
 
             Log.e("Main Method", "NO");
-       /* GetContactsIntoArrayList();
-        try {
-            ContectEvent();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
-
             fastscroller_thumb.setupWithFastScroller(fastscroller);
             fastscroller.setUseDefaultScroller(false);
             fastscroller.getItemIndicatorSelectedCallbacks().add(
@@ -301,7 +286,24 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    groupContectAdapter.addAll_item(contectListData);
+                    if (add_new_contect_icon1.getVisibility()==View.GONE)
+                    {
+                        add_new_contect_icon1.setVisibility(View.VISIBLE);
+                        add_new_contect_icon.setVisibility(View.GONE);
+                        groupContectAdapter.addAll_item(contectListData);
+                        add_new_contect.setText(getString(R.string.remove_new_contect1));
+                    }
+                    else {
+                        add_new_contect_icon1.setVisibility(View.GONE);
+                        add_new_contect_icon.setVisibility(View.VISIBLE);
+                        select_contectListData.clear();
+                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                        add_contect_list.setAdapter(topUserListDataAdapter);
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        group_flag="true";
+                        groupContectAdapter.notifyDataSetChanged();
+                        add_new_contect.setText(getString(R.string.add_new_contect1));
+                    }
 
                     /*Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                     SessionManager.setContect_flag("save");
@@ -311,22 +313,47 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    groupContectAdapter.addAll_item(contectListData);
-
-                   /* Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                    SessionManager.setContect_flag("save");
-                    startActivity(addnewcontect);*/
+                    if (add_new_contect_icon1.getVisibility()==View.GONE)
+                    {
+                        add_new_contect_icon1.setVisibility(View.VISIBLE);
+                        add_new_contect_icon.setVisibility(View.GONE);
+                        groupContectAdapter.addAll_item(contectListData);
+                        add_new_contect.setText(getString(R.string.remove_new_contect1));
+                    }
+                    else {
+                        add_new_contect_icon1.setVisibility(View.GONE);
+                        add_new_contect_icon.setVisibility(View.VISIBLE);
+                        select_contectListData.clear();
+                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                        add_contect_list.setAdapter(topUserListDataAdapter);
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        group_flag="true";
+                        groupContectAdapter.notifyDataSetChanged();
+                        add_new_contect.setText(getString(R.string.add_new_contect1));
+                    }
                 }
             });
             add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    groupContectAdapter.addAll_item(contectListData);
-
-                  /*  Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                    SessionManager.setContect_flag("save");
-                    startActivity(addnewcontect);*/
-                    // splitdata(inviteListData);
+                    if (add_new_contect_icon1.getVisibility()==View.GONE)
+                    {
+                        add_new_contect_icon1.setVisibility(View.VISIBLE);
+                        add_new_contect_icon.setVisibility(View.GONE);
+                        groupContectAdapter.addAll_item(contectListData);
+                        add_new_contect.setText(getString(R.string.remove_new_contect1));
+                    }
+                    else {
+                        add_new_contect_icon1.setVisibility(View.GONE);
+                        add_new_contect_icon.setVisibility(View.VISIBLE);
+                        select_contectListData.clear();
+                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                        add_contect_list.setAdapter(topUserListDataAdapter);
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        group_flag="true";
+                        groupContectAdapter.notifyDataSetChanged();
+                        add_new_contect.setText(getString(R.string.add_new_contect1));
+                    }
                 }
             });
 
@@ -418,6 +445,7 @@ public class Campaign_Contect_Fragment extends Fragment {
     }
 
     private void IntentUI(View view) {
+        add_new_contect_icon1=view.findViewById(R.id.add_new_contect_icon1);
         layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         add_contect_list = view.findViewById(R.id.add_contect_list);
         add_contect_list.setLayoutManager(layoutManager);
@@ -725,30 +753,12 @@ e.printStackTrace();
                 holder.no_image.setVisibility(View.VISIBLE);
 
             } else {
-                image_url = select_contectListData.get(position).getContactImage();
-
-                if (holder.profile_image.getDrawable() == null) {
-                    Glide.with(mCtx).
+                  Glide.with(mCtx).
                             load(select_contectListData.get(position).getContactImage())
                             .placeholder(R.drawable.shape_primary_circle)
                             .error(R.drawable.shape_primary_circle)
                             .into(holder.profile_image);
-                    //Log.e("Image ","View "+position);
-                } else {
-                    holder.profile_image.setVisibility(View.GONE);
-                    String name = select_contectListData.get(position).getFirstname();
-                    String add_text = "";
-                    String[] split_data = name.split(" ");
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                        }
-                    }
-                    holder.no_image.setText(add_text);
-                    holder.no_image.setVisibility(View.VISIBLE);
-                }
+
 
             }
 

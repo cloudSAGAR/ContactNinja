@@ -161,6 +161,12 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
+
+    @Override
     public void Onclick(Broadcast_image_list broadcastImageList) {
         for(int i=0;i<broadcast_image_list.size();i++){
             if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
@@ -427,6 +433,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
             layout_select_image = itemView.findViewById(R.id.layout_select_image);
         }
     }
+
 
 
 }

@@ -94,6 +94,14 @@
             android:background="@drawable/shape_oval_border_10_blue"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"/>
+        <ImageView
+            android:id="@+id/add_new_contect_icon1"
+            android:src="@drawable/ic_done"
+            android:visibility="gone"
+            android:padding="@dimen/_10sdp"
+            android:background="@drawable/shape_primary_circle"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"/>
 
         <TextView
             android:id="@+id/add_new_contect"

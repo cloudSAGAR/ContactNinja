@@ -83,7 +83,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     FastScrollerThumbView fastscroller_thumb;
     EditText contect_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon;
+    ImageView add_new_contect_icon,add_new_contect_icon1;
     LinearLayout add_new_contect_layout,mMainLayout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
@@ -257,31 +257,74 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
 
-
-                groupContectAdapter.addAll_item(contectListData);
-              /*  Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
-                SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);*/
-                // splitdata(inviteListData);
+                if (add_new_contect_icon1.getVisibility()==View.GONE)
+                {
+                    add_new_contect_icon1.setVisibility(View.VISIBLE);
+                    add_new_contect_icon.setVisibility(View.GONE);
+                    groupContectAdapter.addAll_item(contectListData);
+                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+                }
+                else {
+                    add_new_contect_icon1.setVisibility(View.GONE);
+                    add_new_contect_icon.setVisibility(View.VISIBLE);
+                    select_contectListData.clear();
+                    topUserListDataAdapter=new TopUserListDataAdapter(GroupActivity.this,getApplicationContext(),select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    groupContectAdapter = new GroupContectAdapter(getApplicationContext());
+                    contect_list_unselect.setAdapter(groupContectAdapter);
+                    group_flag="true";
+                    //groupContectAdapter.addAll(contectListData);
+                    groupContectAdapter.notifyDataSetChanged();
+                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                }
             }
         });
 
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                groupContectAdapter.addAll_item(contectListData);
-            /*    Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
-                SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);*/
+                if (add_new_contect_icon1.getVisibility()==View.GONE)
+                {
+                    add_new_contect_icon1.setVisibility(View.VISIBLE);
+                    add_new_contect_icon.setVisibility(View.GONE);
+                    groupContectAdapter.addAll_item(contectListData);
+                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+                }
+                else {
+                    add_new_contect_icon1.setVisibility(View.GONE);
+                    add_new_contect_icon.setVisibility(View.VISIBLE);
+                    select_contectListData.clear();
+                    topUserListDataAdapter=new TopUserListDataAdapter(GroupActivity.this,getApplicationContext(),select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    group_flag="true";
+                    groupContectAdapter.notifyDataSetChanged();
+                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                }
             }
         });
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                groupContectAdapter.addAll_item(contectListData);
-                /*Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
-                SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);*/
+                if (add_new_contect_icon1.getVisibility()==View.GONE)
+                {
+                    add_new_contect_icon1.setVisibility(View.VISIBLE);
+                    add_new_contect_icon.setVisibility(View.GONE);
+                    groupContectAdapter.addAll_item(contectListData);
+                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+                }
+                else {
+                    add_new_contect_icon1.setVisibility(View.GONE);
+                    add_new_contect_icon.setVisibility(View.VISIBLE);
+                    select_contectListData.clear();
+                    topUserListDataAdapter=new TopUserListDataAdapter(GroupActivity.this,getApplicationContext(),select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    group_flag="true";
+                    groupContectAdapter.notifyDataSetChanged();
+                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                }
             }
         });
 
@@ -305,6 +348,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void IntentUI() {
+        add_new_contect_icon1=findViewById(R.id.add_new_contect_icon1);
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_back = findViewById(R.id.iv_back);

@@ -94,6 +94,7 @@ Number</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_contect">Add New Contact</string>
     <string name="add_new_contect1">Add all contacts</string>
+    <string name="remove_new_contect1">Remove all contacts</string>
     <string name="add_new">Add new</string>
     //Add Contect
     <string name="f_name">First name </string>

@@ -59,6 +59,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     RecyclerView item_list;
+    int seq_prospect_count=0;
     Campaign_OverviewAdapter campaign_overviewAdapter;
    /* List<String> stringList;*/
     List<CampaignTask_overview.SequenceTask> campaignTasks=new ArrayList<>();
@@ -120,10 +121,23 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 SessionManager.setContect_flag("");
                 SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
                 SessionManager.setGroupList(this,new ArrayList<>());
-                Intent intent=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);
-                intent.putExtra("sequence_id",sequence_id);
-                intent.putExtra("seq_task_id",sequence_task_id);
-                startActivity(intent);
+
+               if (seq_prospect_count==0)
+               {
+                   Intent intent=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);
+                   intent.putExtra("sequence_id",sequence_id);
+                   intent.putExtra("seq_task_id",sequence_task_id);
+                   startActivity(intent);
+               }
+               else {
+                   SessionManager.setCampign_flag("read");
+                   Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                   intent.putExtra("sequence_id", sequence_id);
+                   /*intent.putExtra("seq_task_id",seq_task_id);*/
+                   startActivity(intent);
+                   finish();
+               }
+
                 //startActivity(new Intent(getApplicationContext(),ContectAndGroup_Actvity.class));
                 break;
 
@@ -712,6 +726,14 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     }.getType();
 
                     CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
+                    if (user_model1.getSeqProspectCount()==null)
+                    {
+                        seq_prospect_count=0;
+
+                    }
+                    else {
+                        seq_prospect_count=user_model1.getSeqProspectCount().getTotal();
+                    }
                     sequence_task_id=user_model1.getSequenceTask().get(0).getId();
                     campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
                 }
@@ -722,5 +744,14 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 loadingDialog.cancelLoading();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        loadingDialog.cancelLoading();
+        StepData();
+        campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
+        item_list.setAdapter(campaign_overviewAdapter);
+        super.onResume();
     }
 }
