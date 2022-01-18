@@ -14,8 +14,11 @@ import android.widget.LinearLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.contactninja.Email.Email_List_Activity;
+import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.Fragment.Home.Affiliate_Groth_Fragment;
 import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
@@ -64,6 +67,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main_home, container, false);
+
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         sessionManager = new SessionManager(getActivity());
@@ -81,7 +86,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        View view = inflater.inflate(R.layout.fragment_main_home, container, false);
         intentView(view);
         tabLayout.addTab(tabLayout.newTab().setText("Dashboard"));
         tabLayout.addTab(tabLayout.newTab().setText("Affiliate Groth"));
@@ -120,6 +124,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         iv_toolbar_notification.setVisibility(View.VISIBLE);
         iv_toolbar_mail = view.findViewById(R.id.iv_toolbar_mail);
         iv_toolbar_mail.setVisibility(View.VISIBLE);
+        iv_toolbar_mail.setOnClickListener(this);
         iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
         iv_toolbar_select.setVisibility(View.VISIBLE);
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
@@ -136,8 +141,14 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 Intent intent=new Intent(getActivity(),NotificationListActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.iv_toolbar_mail:
+                startActivity(new Intent(getActivity(), Email_List_Activity.class));
+                //getActivity().finish();
+                break;
         }
     }
+
+
 
     static class ViewpaggerAdapter extends FragmentPagerAdapter {
 

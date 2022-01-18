@@ -117,7 +117,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(this);
         contect_list_unselect.setHasFixedSize(true);
-        contect_list_unselect.setItemViewCacheSize(500);
+        contect_list_unselect.setItemViewCacheSize(5000);
 
 
         contectListData.clear();
@@ -724,14 +724,15 @@ e.printStackTrace();
             } else {
                 image_url = select_contectListData.get(position).getContactImage();
 
-                if (holder.profile_image.getDrawable() == null) {
+              /*  if (holder.profile_image.getDrawable() == null) {*/
                     Glide.with(mCtx).
                             load(select_contectListData.get(position).getContactImage())
                             .placeholder(R.drawable.shape_primary_circle)
                             .error(R.drawable.shape_primary_circle)
                             .into(holder.profile_image);
                     //Log.e("Image ","View "+position);
-                } else {
+            /*    }
+            else {
                     holder.profile_image.setVisibility(View.GONE);
                     String name = select_contectListData.get(position).getFirstname();
                     String add_text = "";
@@ -745,7 +746,7 @@ e.printStackTrace();
                     }
                     holder.no_image.setText(add_text);
                     holder.no_image.setVisibility(View.VISIBLE);
-                }
+                }*/
 
             }
 

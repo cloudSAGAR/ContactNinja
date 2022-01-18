@@ -48,15 +48,29 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Email.Mail_Send_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".Notification.Notification_task_acceptActivity"
-            android:screenOrientation="portrait" android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Notification.NotificationListActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Email.Email_Selction_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Email.Email_List_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".AddContect.Message_Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Campaign.Campaign_view_per_contect_Detail"
             android:exported="false"
