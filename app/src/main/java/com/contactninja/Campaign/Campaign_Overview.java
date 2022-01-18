@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -27,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -261,8 +263,31 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                                 SessionManager.setCampaign_type_name("");
                                 SessionManager.setCampaign_minute("00");
                                 SessionManager.setCampaign_Day("1");
+
+                                if(position==(getItemCount()-1)){
+                                    CampaignTask campaignTask=new CampaignTask();
+                                    CampaignTask_overview.SequenceTask Data=movieList.get(position);
+                                    //Toast.makeText(getApplicationContext(),"Step"+Data.getStepNo(),Toast.LENGTH_LONG).show();
+
+                                    campaignTask.setId(Data.getId());
+                                    campaignTask.setDay(Data.getDay());
+                                    campaignTask.setStepNo(Data.getStepNo());
+                                    campaignTask.setType(Data.getType());
+                                    campaignTask.setPriority(Data.getPriority());
+                                    campaignTask.setMinute(Data.getMinute());
+                                    campaignTask.setContentHeader(Data.getContentHeader());
+                                    campaignTask.setContentBody(Data.getContentBody());
+                                    campaignTask.setSequenceId(sequence_id);
+                                    campaignTask.setManageBy(Data.getManageBy());
+                                    List<CampaignTask> campaignTaskList=new ArrayList<>();
+                                    campaignTaskList.add(campaignTask);
+                                    SessionManager.setTask(getApplicationContext(), campaignTaskList);
+                                }
                                 Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                                intent.putExtra("flag","new");
                                 startActivity(intent);
+                                finish();
+
                             }
                         });
 

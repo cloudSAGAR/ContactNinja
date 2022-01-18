@@ -127,6 +127,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         iv_toolbar_mail.setOnClickListener(this);
         iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
         iv_toolbar_select.setVisibility(View.VISIBLE);
+        iv_toolbar_select.setOnClickListener(this);
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         tabLayout = view.findViewById(R.id.tabLayout);
@@ -145,6 +146,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 startActivity(new Intent(getActivity(), Email_List_Activity.class));
                 //getActivity().finish();
                 break;
+            case R.id.iv_toolbar_select:
         }
     }
 

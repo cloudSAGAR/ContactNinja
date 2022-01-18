@@ -25,6 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Campaign.Fragment.Campaign_Email_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Sms_Fragment;
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -33,6 +34,8 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class First_Step_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
@@ -108,7 +111,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                 String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
                 add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + step_id);
             } else {
-                String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
+                List<CampaignTask> step=   SessionManager.getTask(getApplicationContext());
+                int step_id = step.get(0).getStepNo() + 1;
                 String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
                 add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + step_id );
 

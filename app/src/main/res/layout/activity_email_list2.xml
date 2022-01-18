@@ -100,80 +100,82 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/layout_contec"
-        android:weightSum="2"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="vertical"
+        android:weightSum="2">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:background="@drawable/shape_primary_circle"
             android:id="@+id/profile_image"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            android:layout_gravity="center|left" />
+            android:layout_gravity="center|left"
+            android:background="@drawable/shape_primary_circle" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/no_image"
-            android:textStyle="bold"
-            android:textColor="@color/white"
             style="@style/tv_regular"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="@dimen/_12sdp"
-            android:background="@drawable/shape_primary_circle"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp">
+            android:layout_height="@dimen/_35sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_primary_circle"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            android:visibility="gone">
 
         </TextView>
 
         <LinearLayout
-            android:layout_gravity="center"
-            android:gravity="center|left"
-            android:layout_weight="2"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:gravity="center|left"
+            android:orientation="vertical">
+
             <TextView
-                android:layout_marginStart="@dimen/_12sdp"
                 android:id="@+id/username"
+                style="@style/tv_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center|left"
-                android:textColor="@color/black"
-                style="@style/tv_regular"
-                android:singleLine="true"
-                android:textStyle="bold"
-                android:text="Adam Smith"
-                />
-            <TextView
-                android:textColor="@color/home_list_sub_data"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginStart="@dimen/_12sdp"
+                android:gravity="center|left"
+                android:singleLine="true"
+                android:text="Adam Smith"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/user_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:gravity="center"
-                android:text="Hey , Everyone check this out ..."
                 android:singleLine="true"
+                android:text="Hey , Everyone check this out ..."
+                android:textColor="@color/home_list_sub_data"
                 android:textStyle="bold" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/tv_time"
-            android:textStyle="bold"
-            android:textColor="@color/tv_medium"
             style="@style/tv_regular"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:gravity="center"
             android:text="45min"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:textColor="@color/tv_medium"
             android:textSize="@dimen/_10sdp"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp">
+            android:textStyle="bold">
 
         </TextView>
     </LinearLayout>

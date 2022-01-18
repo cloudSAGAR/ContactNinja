@@ -99,7 +99,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
         } else {
-            String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
+            List<CampaignTask> step=   SessionManager.getTask(getApplicationContext());
+
+            int step_id = step.get(0).getStepNo()+1;
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
