@@ -19,10 +19,47 @@
     </LinearLayout>
 
     <LinearLayout
+        
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_45sdp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+        <EditText
+
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/shape_border_gray1"
+            android:id="@+id/ev_txt"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/tv_medium"
+            style="@style/tv_Medium"
+            android:paddingStart="@dimen/_15sdp"
+            android:hint="Enter Your Message"
+            android:padding="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </EditText>
+        <ImageView
+            android:id="@+id/iv_submit"
+            android:background="@drawable/shape_primary_circle"
+            android:layout_width="@dimen/_35sdp"
+            android:padding="@dimen/_11sdp"
+
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/ic_send_message"
+            android:layout_height="@dimen/_35sdp"
+            tools:ignore="UseAppTint">
+
+        </ImageView>
+    </LinearLayout>
+    <LinearLayout
 
 
         android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/_60sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -62,42 +99,5 @@
 
 
     </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:weightSum="1"
-        android:gravity="center"
 
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_70sdp">
-        <EditText
-
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/shape_border_gray1"
-            android:id="@+id/ev_txt"
-            android:textSize="@dimen/_15sdp"
-            android:textColor="@color/tv_medium"
-            style="@style/tv_Medium"
-            android:paddingStart="@dimen/_15sdp"
-            android:hint="Enter Your Message"
-            android:padding="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </EditText>
-        <ImageView
-            android:id="@+id/iv_submit"
-            android:background="@drawable/shape_primary_circle"
-            android:layout_width="@dimen/_35sdp"
-            android:padding="@dimen/_11sdp"
-
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/ic_send_message"
-            android:layout_height="@dimen/_35sdp"
-            tools:ignore="UseAppTint">
-
-        </ImageView>
-    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

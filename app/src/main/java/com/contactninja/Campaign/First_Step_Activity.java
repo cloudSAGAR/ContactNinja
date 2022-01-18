@@ -55,7 +55,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     LinearLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
 
-
+    TabLayout.Tab tab;
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +93,23 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         });
         // Iterate over all tabs and set the custom view
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            tab = tabLayout.getTabAt(i);
             tab.setCustomView(pagerAdapter.getTabView(i));
         }
-
         Intent intent=getIntent();
         Bundle bundle=intent.getExtras();
         String flag=bundle.getString("flag");
         if (flag.equals("edit"))
         {
             add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + bundle.getInt("step"));
-
+            String type=bundle.getString("type");
+            if (type.equals("SMS"))
+            {
+                tabLayout.getTabAt(1).select();
+            }
+            else {
+                tabLayout.getTabAt(0).select();
+            }
         }
         else {
             if (SessionManager.getTask(getApplicationContext()).size() == 0) {
@@ -118,6 +124,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
 
             }
         }
+
+
     }
 
     private void IntentUI() {

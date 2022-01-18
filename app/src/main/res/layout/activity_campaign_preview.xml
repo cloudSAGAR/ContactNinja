@@ -45,7 +45,7 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:textSize="@dimen/_16sdp"
-                    android:text="@string/campaign_step_title"
+                    android:text="Campaign Preview"
                     android:textColor="@color/tv_medium"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:textStyle="bold" />
