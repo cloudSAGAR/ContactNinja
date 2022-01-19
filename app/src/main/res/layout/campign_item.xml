@@ -67,7 +67,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:background="@drawable/shape_border_ccc"
@@ -562,7 +561,7 @@
         </LinearLayout>
         <LinearLayout
 
-            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

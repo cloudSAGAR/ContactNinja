@@ -48,7 +48,8 @@
                     android:text="Campaign Preview"
                     android:textColor="@color/tv_medium"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
 
                 <LinearLayout
                     android:weightSum="1"
@@ -99,10 +100,9 @@
                         </LinearLayout>
                         <LinearLayout
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:background="@drawable/shape_border_gray_edit"
+                            android:background="@drawable/shape_border_ccc"
                             android:layout_width="match_parent"
-                            android:layout_marginStart="@dimen/_15sdp"
-                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
                             android:layout_height="@dimen/_50sdp">
                             <EditText
                                 android:id="@+id/tv_name"
@@ -170,12 +170,11 @@
                             android:gravity="center"
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_marginStart="@dimen/_15sdp"
-                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
                             android:layout_height="@dimen/_100sdp">
 
                     <LinearLayout
-                        android:background="@drawable/shape_border_gray_edit"
+                        android:background="@drawable/shape_border_ccc"
                         android:layout_width="match_parent"
                         android:gravity="center"
                         android:layout_height="wrap_content">
@@ -208,7 +207,7 @@
                                 android:id="@+id/contect_count"
                                 style="@style/tv_regular"
                                 android:layout_width="wrap_content"
-                                android:layout_height="@dimen/_40sdp"
+                                android:layout_height="@dimen/_30sdp"
                                 android:layout_alignParentBottom="true"
                                 android:layout_centerHorizontal="true"
                                 android:layout_gravity="center"

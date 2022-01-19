@@ -668,8 +668,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
                     if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
                         movieViewHolder.tv_add_new_step.setText(getString(R.string.txt_campaign));
+                        movieViewHolder.iv_manu.setVisibility(View.GONE);
                     } else {
                         movieViewHolder.tv_add_new_step.setText("Add New Step");
+                        movieViewHolder.iv_manu.setVisibility(View.VISIBLE);
                     }
 
                     if (position == movieList.size() - 1) {
