@@ -12,9 +12,11 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -122,6 +124,17 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 return isLoading;
             }
         });
+
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                     onResume();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void IntentUI() {
@@ -194,6 +207,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
     @Override
     public void onRefresh() {
+        ev_search.setText("");
         currentPage = PAGE_START;
         isLastPage = false;
         campaingAdepter.clear();
@@ -222,6 +236,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("q", ev_search.getText().toString());
         obj.add("data", paramObject);
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();

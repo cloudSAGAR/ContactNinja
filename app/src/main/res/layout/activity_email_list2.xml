@@ -4,20 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/mMainLayout"
     tools:context=".Fragment.Email_Fragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:textColor="@color/black"
-        style="@style/tv_Medium"
-        android:textSize="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
+    <include
+        layout="@layout/toolbar"/>
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/composse_email" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
@@ -99,86 +92,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_contec"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:orientation="vertical"
-        android:weightSum="2">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_gravity="center|left"
-            android:background="@drawable/shape_primary_circle" />
-
-        <TextView
-            android:id="@+id/no_image"
-            style="@style/tv_regular"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_gravity="center"
-            android:background="@drawable/shape_primary_circle"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-            android:textStyle="bold"
-            android:visibility="gone">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="2"
-            android:gravity="center|left"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/username"
-                style="@style/tv_regular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:gravity="center|left"
-                android:singleLine="true"
-                android:text="Adam Smith"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/user_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="Hey , Everyone check this out ..."
-                android:textColor="@color/home_list_sub_data"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_time"
-            style="@style/tv_regular"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:gravity="center"
-            android:text="45min"
-            android:textColor="@color/tv_medium"
-            android:textSize="@dimen/_10sdp"
-            android:textStyle="bold">
-
-        </TextView>
-    </LinearLayout>
 
     <View
         android:layout_marginBottom="@dimen/_10sdp"
@@ -186,12 +99,19 @@
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/email_list"
-        android:layout_marginTop="@dimen/_10sdp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/email_list"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </LinearLayout>

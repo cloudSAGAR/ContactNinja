@@ -71,11 +71,6 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-            <ProgressBar
-                android:visibility="gone"
-                android:id="@+id/idPBLoading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>

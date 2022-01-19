@@ -46,6 +46,8 @@
                 android:textColor="@color/tv_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionSearch"
                 android:background="@color/add_contect_transpernt"
                 >
 

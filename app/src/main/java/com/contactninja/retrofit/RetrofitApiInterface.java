@@ -129,6 +129,10 @@ public interface RetrofitApiInterface {
     Call<ApiResponse> Mail_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                 @Body JsonObject jsonObject,
                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+ @POST("manual_task/list")
+    Call<ApiResponse> Mail_Activiy_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
 
    @POST("smtpdefault_update")
     Call<ApiResponse> Mail_setDefault(@Header("Accept") String api, @Header("Authorization") String auth,

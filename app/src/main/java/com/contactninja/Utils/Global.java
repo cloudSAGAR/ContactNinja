@@ -30,6 +30,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -260,6 +261,14 @@ public class Global extends Application   {
         return token;
     }
 */
+public static String getDate(long time) throws ParseException {
+    Calendar cal = Calendar.getInstance();
+    cal.setTimeInMillis(time * 1000);
+    Date date = cal.getTime();
+    SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    String date1 = format1.format(date);
 
+    return String.valueOf(date1);
+}
 
 }

@@ -1,23 +1,15 @@
 package com.contactninja.Email;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,15 +23,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.Broadcast.Broadcast_Frgment.Broadcste_Contect_Fragment;
-import com.contactninja.ContectListAdapter;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
-import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -56,7 +52,6 @@ import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
@@ -64,7 +59,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Email_Selction_Activity extends AppCompatActivity implements View.OnClickListener {
+import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
+public class Email_Selction_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button;
 
@@ -73,7 +73,7 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
     public static ArrayList<GroupListData> inviteListData = new ArrayList<>();
     public static List<GroupListData> select_inviteListData = new ArrayList<>();
     List<ContectListData.Contact> pre_seleact = new ArrayList<>();
-    RecyclerView add_contect_list, contect_list_unselect;
+    RecyclerView  contect_list_unselect;
     LinearLayoutManager layoutManager, layoutManager1;
     Cursor cursor;
     FastScrollerView fastscroller;
@@ -96,15 +96,16 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
     List<ContectListData.Contact> contectListData;
     List<ContectListData.Contact> select_contectListData;
     Activity activity;
-    LinearLayout mMainLayout;
 
-
+    ConstraintLayout mMainLayout;
+    private BroadcastReceiver mNetworkReceiver;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_selction);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
@@ -153,37 +154,6 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
         );
 
 
-      /*  add_new_contect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                groupContectAdapter.addAll_item(contectListData);
-
-            *//*    Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);*//*
-            }
-        });
-        add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                groupContectAdapter.addAll_item(contectListData);
-
-               *//* Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);*//*
-            }
-        });
-        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                groupContectAdapter.addAll_item(contectListData);
-              *//*  Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
-                SessionManager.setContect_flag("save");
-                startActivity(addnewcontect);*//*
-                // splitdata(inviteListData);
-            }
-        });
-*/
 
         contect_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -235,33 +205,7 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
             num_count.setText(contectListData.size() + " Contacts");
         }
 
-       /* contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
 
-            @Override
-            public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int visibleItem = layoutManager1.getChildCount();
-                int totalItem = layoutManager1.getItemCount();
-                int firstVisibleItemPosition = layoutManager1.findFirstVisibleItemPosition();
-                if (!isLoading && !isLastPage) {
-                    if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
-                        try {
-                            currentPage = currentPage + 1;
-                            Log.e("Current Page is", String.valueOf(currentPage));
-                            ContectEventnext();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
-*/
 
         call_updatedata();
     }
@@ -290,9 +234,7 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
         save_button.setVisibility(View.GONE);
 
         layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        add_contect_list = findViewById(R.id.add_contect_list);
         mMainLayout = findViewById(R.id.mMainLayout);
-        add_contect_list.setLayoutManager(layoutManager);
         contect_list_unselect = findViewById(R.id.contect_list_unselect);
         layoutManager1 = new LinearLayoutManager(this);
         contect_list_unselect.setLayoutManager(layoutManager1);
@@ -307,6 +249,36 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
 
 
 
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Email_Selction_Activity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     @Override

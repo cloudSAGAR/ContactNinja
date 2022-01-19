@@ -377,6 +377,6 @@ Number</string>
     <string name="lavel4">Lavel 4</string>
     <string name="lavel5">Lavel 5</string>
     <string name="composse_email">Compose Email</string>
-    <string name="email_txt">click here to send  \n an email </string>
+    <string name="email_txt">click here to send \n an email </string>
     <string name="create_new_email">Create new email</string>
 </resources>
