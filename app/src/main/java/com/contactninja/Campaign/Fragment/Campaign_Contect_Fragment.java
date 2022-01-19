@@ -3,7 +3,6 @@ package com.contactninja.Campaign.Fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,9 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Broadcast.Broadcast_Frgment.Broadcste_Contect_Fragment;
-import com.contactninja.Group.GroupActivity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
@@ -549,7 +545,7 @@ public class Campaign_Contect_Fragment extends Fragment {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 //Log.e("Reponse is", new Gson().toJson(response.body()));
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -615,7 +611,7 @@ public class Campaign_Contect_Fragment extends Fragment {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
 
                     Gson gson = new Gson();
@@ -717,7 +713,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                         public void success(Response<ApiResponse> response) {
                             loadingDialog.cancelLoading();
 
-                            if (response.body().getStatus() == 200) {
+                            if (response.body().getHttp_status() == 200) {
 
                             } else {
 

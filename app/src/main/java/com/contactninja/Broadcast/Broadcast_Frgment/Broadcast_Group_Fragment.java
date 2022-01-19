@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Campaign.Fragment.Campaign_Group_Fragment;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
 import com.contactninja.Model.Grouplist;
@@ -231,7 +230,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
@@ -296,7 +295,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {

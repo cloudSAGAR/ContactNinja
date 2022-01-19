@@ -12,15 +12,12 @@ import android.util.Base64;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -118,7 +115,7 @@ public class Email_verification extends AppCompatActivity implements Connectivit
                 Global.getVersionname(Email_verification.this), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
                             loadingDialog.cancelLoading();
                             webEmail.clearHistory();
                             webEmail.clearFormData();

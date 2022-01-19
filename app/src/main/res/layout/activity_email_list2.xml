@@ -10,6 +10,13 @@
     <!-- TODO: Update blank fragment layout -->
     <include
         layout="@layout/toolbar"/>
+    <include
+        layout="@layout/common_dialog"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/mMainLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,8 +51,7 @@
 
         </EditText>
     </LinearLayout>
-    <include
-        layout="@layout/common_dialog"/>
+
     <LinearLayout
         android:id="@+id/add_new_contect_layout"
         android:layout_width="match_parent"
@@ -113,5 +119,6 @@
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
 </LinearLayout>

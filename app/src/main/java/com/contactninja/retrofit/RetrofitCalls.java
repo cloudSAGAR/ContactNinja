@@ -407,7 +407,7 @@ public class RetrofitCalls {
                 loadingDialog.cancelLoading();
                 ApiResponse apiResponse=response.body();
                 try{
-                    if (apiResponse.getStatus() == 200) {
+                    if (apiResponse.getHttp_status() == 200) {
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
                         Type listType = new TypeToken<SignResponseModel>() {

@@ -357,7 +357,7 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 //Log.e("Reponse is", new Gson().toJson(response.body()));
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -423,7 +423,7 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
 
                     Gson gson = new Gson();

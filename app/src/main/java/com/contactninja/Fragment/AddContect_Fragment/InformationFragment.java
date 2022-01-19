@@ -33,7 +33,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.AddContect.Message_Activity;
-import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -1100,7 +1099,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), response.body().getStatus() == 200);
+                Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), response.body().getHttp_status() == 200);
             }
 
             @Override
@@ -1148,7 +1147,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), response.body().getStatus() == 200);
+                Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), response.body().getHttp_status() == 200);
             }
 
             @Override
@@ -1332,7 +1331,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     String jsonRawData = new Gson().toJson(response.body());
 
@@ -1441,7 +1440,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     String jsonRawData = new Gson().toJson(response.body());
 
@@ -2478,7 +2477,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());

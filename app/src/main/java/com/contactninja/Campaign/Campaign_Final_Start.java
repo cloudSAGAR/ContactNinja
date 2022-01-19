@@ -240,7 +240,7 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
 
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
 
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());

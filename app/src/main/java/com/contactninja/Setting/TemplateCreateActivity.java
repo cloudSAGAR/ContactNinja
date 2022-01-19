@@ -136,7 +136,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     templateTextList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -280,7 +280,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     onBackPressed();
                 } else {
                     Gson gson = new Gson();
@@ -325,7 +325,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     onBackPressed();
 
                 } else {

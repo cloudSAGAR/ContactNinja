@@ -184,7 +184,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     /*is a list to email show*/
                     startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
                 }else {

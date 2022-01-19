@@ -504,7 +504,7 @@ public class ContectFragment extends Fragment {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 paginationAdapter.removeLoadingFooter();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
 
                     Gson gson = new Gson();

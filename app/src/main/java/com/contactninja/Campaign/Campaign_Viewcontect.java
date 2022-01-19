@@ -30,12 +30,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import retrofit2.Response;
 
-import com.contactninja.Broadcast.Broadcast_Frgment.Broadcast_Group_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
 import com.contactninja.Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Campaign.Fragment.View_Contect_Fragment;
-import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.CampaignTask_overview;
@@ -185,7 +183,7 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
                     public void success(Response<ApiResponse> response) {
 
 
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
 
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());

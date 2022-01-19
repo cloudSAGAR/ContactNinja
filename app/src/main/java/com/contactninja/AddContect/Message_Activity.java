@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.contactninja.Interface.TemplateClick;
@@ -156,7 +155,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     templateTextList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -313,7 +312,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     String jsonRawData = new Gson().toJson(response.body());
 
@@ -409,7 +408,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Message_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     templateList.clear();
                     Gson gson = new Gson();

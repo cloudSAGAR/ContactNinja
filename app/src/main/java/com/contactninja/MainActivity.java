@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-
                 EnableRuntimePermission();
             }
 
@@ -487,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void success(Response<ApiResponse> response) {
                         sessionManager.setcontectexits("1");
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
 
                             SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
                             user_data.getUser().setIs_contact_exist(1);
@@ -554,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     SessionManager.setContectList(getApplicationContext(), new ArrayList<>());
                     Gson gson = new Gson();
@@ -1085,7 +1084,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     try {
                         ContectEvent();
                     } catch (JSONException e) {

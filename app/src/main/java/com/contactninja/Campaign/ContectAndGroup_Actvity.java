@@ -322,7 +322,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                         public void success(Response<ApiResponse> response) {
                             loadingDialog.cancelLoading();
 
-                            if (response.body().getStatus() == 200) {
+                            if (response.body().getHttp_status() == 200) {
 
                                if (SessionManager.getContect_flag(getApplicationContext()).equals("check"))
                                {

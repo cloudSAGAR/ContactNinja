@@ -691,7 +691,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
                     long rowContactId = getRawContactId();
                     insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
@@ -856,7 +856,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
                     long rowContactId = getRawContactId();
                     insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
@@ -966,7 +966,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
                     long rowContactId = getRawContactId();
                     save_button.setText("Save Contact");

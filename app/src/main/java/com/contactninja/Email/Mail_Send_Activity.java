@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -165,7 +164,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     templateTextList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -304,7 +303,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Mail_Send_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     templateList.clear();
                     Gson gson = new Gson();
@@ -481,7 +480,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     onBackPressed();
 
                 } else {
@@ -572,7 +571,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     userLinkedGmailList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -658,7 +657,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(Mail_Send_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     //  loadingDialog.cancelLoading();
                     String jsonRawData = new Gson().toJson(response.body());
 

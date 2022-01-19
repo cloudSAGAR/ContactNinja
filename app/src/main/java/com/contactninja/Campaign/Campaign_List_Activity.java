@@ -255,7 +255,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
 
 
                             Type listType = new TypeToken<Campaign_List>() {

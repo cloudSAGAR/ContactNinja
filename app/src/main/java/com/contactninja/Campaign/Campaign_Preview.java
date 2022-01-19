@@ -24,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -492,7 +491,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
 
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
                             campaign_overviewAdapter.remove_item(position);
                             bottomSheetDialog.cancel();
                         } else {
@@ -545,7 +544,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
 
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
 
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());
@@ -606,7 +605,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
 
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
                             startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
                             finish();
                         } else {

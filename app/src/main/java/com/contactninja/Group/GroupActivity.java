@@ -924,7 +924,7 @@ e.printStackTrace();
 
                 try {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus()==200) {
+                if (response.body().getHttp_status()==200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<ContectListData>() {
@@ -997,7 +997,7 @@ e.printStackTrace();
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.body().getStatus()==200) {
+                if (response.body().getHttp_status()==200) {
 
 
                     Gson gson = new Gson();

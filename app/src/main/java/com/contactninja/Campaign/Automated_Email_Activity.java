@@ -202,7 +202,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     templateTextList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -332,7 +332,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     templateList.clear();
                     Gson gson = new Gson();
@@ -630,7 +630,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
                 loadingDialog.cancelLoading();
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -674,7 +674,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     dialog.dismiss();
                 } else {
                     dialog.dismiss();

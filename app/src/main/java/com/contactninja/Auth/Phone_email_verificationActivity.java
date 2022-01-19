@@ -261,7 +261,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(Phone_email_verificationActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     sessionManager.Email_Update();
                     loadingDialog.cancelLoading();
@@ -270,7 +270,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                     //Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
 
                 }
-                else if (response.body().getStatus()==404)
+                else if (response.body().getHttp_status()==404)
                 {
                     loadingDialog.cancelLoading();
                     Gson gson = new Gson();
@@ -347,14 +347,14 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(Phone_email_verificationActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
 
                     sessionManager.Email_Update();
                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                     finish();
                 }
-                else if (response.body().getStatus()==404)
+                else if (response.body().getHttp_status()==404)
                 {
                     loadingDialog.cancelLoading();
                     Gson gson = new Gson();

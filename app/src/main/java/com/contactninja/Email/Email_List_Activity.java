@@ -50,7 +50,7 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class Email_List_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, SwipeRefreshLayout.OnRefreshListener {
-    LinearLayout demo_layout, add_new_contect_layout, mMainLayout;
+    LinearLayout demo_layout, add_new_contect_layout, mMainLayout,mMainLayout1;
     TextView tv_create;
     RecyclerView rv_email_list;
     SwipeRefreshLayout swipeToRefresh;
@@ -79,6 +79,7 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
         iv_back.setOnClickListener(this);
         demo_layout = findViewById(R.id.demo_layout);
         mMainLayout = findViewById(R.id.mMainLayout);
+        mMainLayout1 = findViewById(R.id.mMainLayout1);
         demo_layout.setOnClickListener(this);
         tv_create = findViewById(R.id.tv_create);
         tv_create.setText(getString(R.string.email_txt));
@@ -147,7 +148,9 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
+                    demo_layout.setVisibility(View.GONE);
+                    mMainLayout1.setVisibility(View.VISIBLE);
                     manualTaskModelList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -162,6 +165,9 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
                     rv_email_list.setAdapter(emailAdepter);
 
 
+                }else {
+                    demo_layout.setVisibility(View.VISIBLE);
+                    mMainLayout1.setVisibility(View.GONE);
                 }
             }
 
@@ -294,5 +300,4 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
             }
         }
     }
-
 }

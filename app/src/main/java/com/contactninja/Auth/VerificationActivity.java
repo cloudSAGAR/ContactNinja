@@ -385,7 +385,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 Log.e("Response is",new Gson().toJson(response.body()));
-                if (response.body().getStatus()==200) {
+                if (response.body().getHttp_status()==200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -488,7 +488,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                 loadingDialog.cancelLoading();
 
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());

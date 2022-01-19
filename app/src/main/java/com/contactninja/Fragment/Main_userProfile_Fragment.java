@@ -4,8 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -309,7 +307,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
                             loadingDialog.cancelLoading();
                             SessionManager.setUserdata(getActivity(), new SignResponseModel());
 
@@ -348,7 +346,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
                             loadingDialog.cancelLoading();
                             SessionManager.setUserdata(getActivity(), new SignResponseModel());
 
@@ -960,7 +958,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
 
                     layout_toolbar_logo.setVisibility(View.VISIBLE);
@@ -981,7 +979,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     }
 
                 }
-             else    if (response.body().getStatus() == 404) {
+             else    if (response.body().getHttp_status() == 404) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<UservalidateModel>() {

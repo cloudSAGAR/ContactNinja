@@ -3,7 +3,6 @@ package com.contactninja.Broadcast.Broadcast_Frgment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,9 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
-import com.contactninja.Group.GroupActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -460,7 +456,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 //Log.e("Reponse is", new Gson().toJson(response.body()));
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -526,7 +522,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
 
                     Gson gson = new Gson();

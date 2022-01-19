@@ -104,7 +104,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     userLinkedGmailList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -297,7 +297,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     try {
                         if(Global.isNetworkAvailable(EmailListActivity.this, MainActivity.mMainLayout)) {
                             Mail_list();

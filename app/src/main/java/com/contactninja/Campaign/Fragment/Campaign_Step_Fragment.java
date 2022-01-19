@@ -21,10 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Campaign.Automated_Email_Activity;
 import com.contactninja.Campaign.First_Step_Activity;
-import com.contactninja.Campaign.First_Step_Start_Activity;
-import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -40,7 +37,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -510,7 +506,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
 
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
                             campaign_overviewAdapter.remove_item(position);
                             bottomSheetDialog.cancel();
                         } else {
@@ -564,7 +560,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
 
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
 
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());

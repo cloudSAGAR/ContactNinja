@@ -349,7 +349,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 //Log.e("Response is",new Gson().toJson(response));
 
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     if (!login_type.equals("EMAIL")) {
                         VerifyPhone(edit_Mobile.getText().toString());

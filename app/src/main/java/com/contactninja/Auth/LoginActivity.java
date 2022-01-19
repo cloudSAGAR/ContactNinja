@@ -363,7 +363,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 loadingDialog.cancelLoading();
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -415,7 +415,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }*/
 
 
-                } else if (response.body().getStatus()==404){
+                } else if (response.body().getHttp_status()==404){
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                    // Log.e("String is",response.body().getMessage());
@@ -512,7 +512,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //Log.e("Response is",new Gson().toJson(response));
 
 
-                    if (response.body().getStatus() == 200) {
+                    if (response.body().getHttp_status() == 200) {
 
                         if(!Login_type.equals("EMAIL")){
                           /*  try {

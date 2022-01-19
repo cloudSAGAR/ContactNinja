@@ -411,7 +411,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 public void success(Response<ApiResponse> response) {
 
                     loadingDialog.cancelLoading();
-                    if (response.body().getStatus() == 200) {
+                    if (response.body().getHttp_status() == 200) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
                         finish();
                     } else {

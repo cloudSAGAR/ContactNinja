@@ -11,7 +11,7 @@ public class ApiResponse {
 
     @SerializedName("http_status")
     @Expose
-    private Integer status;
+    private Integer http_status;
     @SerializedName("message")
     @Expose
     private String message;
@@ -58,12 +58,12 @@ public class ApiResponse {
         }
     }*/
 
-    public Integer  getStatus() {
-        return status;
+    public Integer getHttp_status() {
+        return http_status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setHttp_status(Integer http_status) {
+        this.http_status = http_status;
     }
 
     public String getMessage() {

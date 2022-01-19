@@ -13,14 +13,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.contactninja.Auth.SignupActivity;
-import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -30,13 +27,9 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
-
-import java.lang.reflect.Type;
 
 import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
@@ -172,7 +165,7 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
 
                     loadingDialog.cancelLoading();
 
-                    if (response.body().getStatus() == 200) {
+                    if (response.body().getHttp_status() == 200) {
                         Global.Messageshow(getApplication(),mMainLayout,response.body().getMessage(),true);
                         Runnable mRunnable = () -> {
                             onBackPressed();

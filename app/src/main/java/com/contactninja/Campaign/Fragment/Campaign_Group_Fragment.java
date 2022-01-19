@@ -20,10 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Broadcast.Broadcast_Frgment.Broadcast_Group_Fragment;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
-import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -237,7 +235,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
@@ -302,7 +300,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
