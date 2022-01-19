@@ -319,6 +319,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             }.getType();
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
+                            Log.e("Main Data Is ",new Gson().toJson(user_model));
                             setdata();
                             setTab();
 
@@ -849,19 +850,19 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         //Other Company Add
         if (addcontectModel.getCompany().trim().equalsIgnoreCase(""))
         {
-            param_data.put("company_name", "");
-            param_data.put("company_id",  addcontectModel.getCompany_id());
+            param_data.put("company_name", addcontectModel.getCompany());
+            //param_data.put("company_id",  addcontectModel.getCompany_id());
         }
         else {
             param_data.put("company_name", addcontectModel.getCompany());
-            param_data.put("company_id",   "");
+           // param_data.put("company_id",   addcontectModel.getCompany_id());
         }
         param_data.put("address", address);
         param_data.put("breakout_link", addcontectModel.getBreakoutu());
         param_data.put("city", city);
 
 
-        param_data.put("company_url", "");
+        param_data.put("company_url", addcontectModel.getCompany_url());
         param_data.put("dob", addcontectModel.getBirthday());
         param_data.put("dynamic_fields_value", "");
         param_data.put("facebook_link", addcontectModel.getFacebook());
@@ -876,8 +877,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("timezone_id", addcontectModel.getTime());
         param_data.put("twitter_link", addcontectModel.getTwitter());
         param_data.put("user_id", user_id);
-        param_data.put("zipcode", zip_code);
-        param_data.put("zoom_id", zoom_id);
+        param_data.put("zipcode", addcontectModel.getZip_code());
+        param_data.put("zoom_id", addcontectModel.getZoom_id());
 
         if (!user_image_Url.equals(""))
         {
