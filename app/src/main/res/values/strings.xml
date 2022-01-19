@@ -159,6 +159,8 @@ Number</string>
 
     <string name="group_to">To</string>
     <string name="add_new_group">Add New Group</string>
+    <string name="add_new_group_all">Add All Group</string>
+    <string name="remove_new_group_all">Add All Group</string>
     <string name="add_new_group_name">Intricare technologies</string>
     <string name="group_broadcast">Send Broadcast</string>
     <string name="group_broadcast_group">Group Text</string>

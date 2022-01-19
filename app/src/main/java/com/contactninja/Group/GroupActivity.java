@@ -801,7 +801,10 @@ e.printStackTrace();
                     {
                         if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId()))
                         {
+
                             groupContectAdapter.notifyItemChanged(i);
+                            contectListData.get(i).setFlag("true");
+
                         }
                     }
                     userDetails.remove(position);
@@ -1334,6 +1337,7 @@ e.printStackTrace();
                 groupContectAdapter.addAll(contectListData);
                 groupContectAdapter.notifyDataSetChanged();
                 select_contectListData.add(contectListData.get(i));
+                add_contect_list.setItemViewCacheSize(5000);
                 topUserListDataAdapter.notifyDataSetChanged();
                 save_button.setTextColor(getResources().getColor(R.color.purple_200));
 

@@ -825,6 +825,8 @@ e.printStackTrace();
                     for (int i = 0; i < contectListData.size(); i++) {
                         if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId())) {
                             groupContectAdapter.notifyItemChanged(i);
+                            contectListData.get(i).setFlag("true");
+
                         }
                     }
                     userDetails.remove(position);

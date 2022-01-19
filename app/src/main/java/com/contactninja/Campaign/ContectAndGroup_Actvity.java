@@ -326,7 +326,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
 
                                if (SessionManager.getContect_flag(getApplicationContext()).equals("check"))
                                {
-                                   Intent intent = new Intent(getApplicationContext(), Campaign_Viewcontect.class);
+                                   Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
                                    intent.putExtra("sequence_id", sequence_id);
                                    startActivity(intent);
                                    finish();

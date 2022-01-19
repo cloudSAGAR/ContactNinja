@@ -5,9 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -25,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+import retrofit2.Response;
 
 import com.contactninja.Broadcast.Broadcast_Frgment.Broadcast_Group_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
@@ -34,13 +38,23 @@ import com.contactninja.Campaign.Fragment.View_Contect_Fragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
+import com.contactninja.Model.CampaignTask_overview;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +62,8 @@ import java.util.List;
 public class Campaign_Viewcontect extends AppCompatActivity implements View.OnClickListener , CardClick,  ConnectivityReceiver.ConnectivityReceiverListener  {
     TabLayout tabLayout;
     ViewPager viewPager;
+    RetrofitCalls retrofitCalls;
+    LoadingDialog loadingDialog;
     EditText contect_search;
     String strtext = "";
     ViewpaggerAdapter adapter;
@@ -59,11 +75,14 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
     private BroadcastReceiver mNetworkReceiver;
     LinearLayout main_layout;
     SessionManager sessionManager;
+    int sequence_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaign_viewcontect);
         mNetworkReceiver = new ConnectivityReceiver();
+        sessionManager = new SessionManager(this);
+        retrofitCalls = new RetrofitCalls(this);
         IntentUI();
         sessionManager=new SessionManager(this);
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
@@ -124,6 +143,90 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
         save_button.setTextColor(getResources().getColor(R.color.purple_200));
     }
 
+    @Override
+    protected void onResume() {
+        StepData();
+        super.onResume();
+    }
+    public void StepData() {
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        if (SessionManager.getTask(getApplicationContext()).size() != 0) {
+            sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+        } else {
+            Intent getintent = getIntent();
+            Bundle bundle = getintent.getExtras();
+            sequence_id = bundle.getInt("sequence_id");
+        }
+        Log.e("sequence_id", String.valueOf(sequence_id));
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        PackageManager pm = getApplicationContext().getPackageManager();
+        String pkgName = getApplicationContext().getPackageName();
+        PackageInfo pkgInfo = null;
+        try {
+            pkgInfo = pm.getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_Viewcontect.this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+
+
+                        if (response.body().getStatus() == 200) {
+
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            Type listType = new TypeToken<CampaignTask_overview>() {
+                            }.getType();
+
+                            CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
+                            //Log.e("User Model",new Gson().toJson(user_model1));
+                            SessionManager.setCampaign_data(user_model1);
+                            //  Log.e("Email Task",user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
+                            // Log.e("SMS",user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
+
+                            //  tv_email.setText(user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
+                            //tv_sms.setText(user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
+                            int sms_count=0;
+                            int email_count=0;
+                            for (int i=0;i<user_model1.getSequenceTask().size();i++)
+                            {
+                                if (user_model1.getSequenceTask().get(i).getType().equals("SMS"))
+                                {
+                                    sms_count=sms_count+1;
+                                }
+                                else {
+                                    email_count=email_count+1;
+                                }
+                            }
+
+                        } else {
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+
+                    }
+                });
+    }
     @Override
     public void onClick(View view) {
 
@@ -339,5 +442,7 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
         super.onDestroy();
         unregisterNetworkChanges();
     }
+
+
 
 }

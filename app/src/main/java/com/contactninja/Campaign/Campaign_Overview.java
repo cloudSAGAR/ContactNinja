@@ -12,6 +12,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +57,7 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class Campaign_Overview extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+    Toolbar toolbar;
     ImageView iv_back;
     TextView save_button;
     SessionManager sessionManager;
@@ -68,6 +73,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     BottomSheetDialog bottomSheetDialog;
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
+    ImageView iv_toolbar_manu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,15 +84,45 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        /*StepData();
+
+        toolbar.inflateMenu(R.menu.option_menu1);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        StepData();
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
         item_list.setAdapter(campaign_overviewAdapter);
-*/
+
 
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu1, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        //  Toast.makeText(getApplicationContext(), "Manu Clcik", Toast.LENGTH_LONG).show();
+        //Log.e("Option Manu is Select", "Yes");
+
+        switch (item.getItemId()) {
+            case R.id.mv_save:
+                //startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void IntentUI() {
+        iv_toolbar_manu = findViewById(R.id.iv_toolbar_manu);
+        iv_toolbar_manu.setOnClickListener(this);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.option_menu);
+        setSupportActionBar(toolbar);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -94,7 +130,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText("Add prospects");
         item_list = findViewById(R.id.item_list);
         item_list.setLayoutManager(new LinearLayoutManager(this));
         item_list.setItemViewCacheSize(500);
@@ -373,6 +409,11 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             }
         }
 
+        public void removeall()
+        {
+            movieList.clear();
+            notifyDataSetChanged();
+        }
         public CampaignTask_overview.SequenceTask getItem(int position) {
             return movieList.get(position);
         }
@@ -745,13 +786,78 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             }
         });
     }
+    public void StepData1() {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        if (SessionManager.getTask(getApplicationContext()).size()!=0)
+        {
+            sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+        }
+        else {
+            Intent getintent=getIntent();
+            Bundle bundle=getintent.getExtras();
+            sequence_id=bundle.getInt("sequence_id");
+        }
+        Log.e("sequence_id", String.valueOf(sequence_id));
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        PackageManager pm = getApplicationContext().getPackageManager();
+        String pkgName = getApplicationContext().getPackageName();
+        PackageInfo pkgInfo = null;
+        try {
+            pkgInfo = pm.getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog,Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_Overview.this),Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        if (response.body().getStatus() == 200) {
+
+                            Type listType = new TypeToken<CampaignTask_overview>() {
+                            }.getType();
+
+                            CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
+                            if (user_model1.getSeqProspectCount()==null)
+                            {
+                                seq_prospect_count=0;
+
+                            }
+                            else {
+                                seq_prospect_count=user_model1.getSeqProspectCount().getTotal();
+                            }
+                            sequence_task_id=user_model1.getSequenceTask().get(0).getId();
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
 
     @Override
     protected void onResume() {
         loadingDialog.cancelLoading();
-        StepData();
-        campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
-        item_list.setAdapter(campaign_overviewAdapter);
+            StepData1();
+
         super.onResume();
     }
 }

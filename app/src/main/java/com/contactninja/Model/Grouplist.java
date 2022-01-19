@@ -35,6 +35,9 @@ public class Grouplist {
 
     public static class Group {
 
+        String flag;
+
+
         @SerializedName("id")
         @Expose
         private Integer id;
@@ -104,6 +107,14 @@ public class Grouplist {
 
         public void setOrganizationId(Integer organizationId) {
             this.organizationId = organizationId;
+        }
+
+        public String getFlag() {
+            return flag;
+        }
+
+        public void setFlag(String flag) {
+            this.flag = flag;
         }
 
         public Integer getTeamId() {
