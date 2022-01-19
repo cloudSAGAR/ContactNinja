@@ -278,14 +278,14 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                 onBackPressed();
                 break;
             case R.id.save_button:
-                if (ev_subject.getText().equals("")) {
+                if (ev_subject.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
-
                 }
-                else if (edit_template.getText().equals("")) {
+                else if (edit_template.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
-                } else {
+                }
+                else {
                     StepData();
                 }
                 break;
