@@ -78,10 +78,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        StepData();
+        /*StepData();
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
         item_list.setAdapter(campaign_overviewAdapter);
-
+*/
 
 
     }

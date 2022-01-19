@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -71,6 +72,9 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     public static TopUserListDataAdapter topUserListDataAdapter;
     TextView tv_create;
     LinearLayout mMainLayout;
+    ImageView add_new_contect_icon1,add_new_contect_icon;
+    TextView add_new_contect;
+
 
 
 
@@ -161,8 +165,9 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         layoutManager1=new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
         add_contect_list.setLayoutManager(layoutManager1);
         tv_create=view.findViewById(R.id.tv_create);
-
-
+        add_new_contect_icon1=view.findViewById(R.id.add_new_contect_icon1);
+        add_new_contect_icon=view.findViewById(R.id.add_new_contect_icon);
+        add_new_contect=view.findViewById(R.id.add_new_contect);
     }
 
 
@@ -170,9 +175,25 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
-                SessionManager.setGroupData(getActivity(),new Grouplist.Group());
-                startActivity(new Intent(getActivity(), GroupActivity.class));
-                /*  getActivity().finish();*/
+                if (add_new_contect_icon1.getVisibility()==View.GONE)
+                {
+                    add_new_contect_icon1.setVisibility(View.VISIBLE);
+                    add_new_contect_icon.setVisibility(View.GONE);
+                    paginationAdapter.addAll_item(grouplists);
+                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+                }
+                else {
+                    add_new_contect_icon1.setVisibility(View.GONE);
+                    add_new_contect_icon.setVisibility(View.VISIBLE);
+                    select_contectListData.clear();
+                    topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                    topUserListDataAdapter.notifyDataSetChanged();
+
+                    paginationAdapter.notifyDataSetChanged();
+                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                }
+
                 break;
             case R.id.group_name:
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
@@ -379,7 +400,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                         }
                         catch (Exception e)
                         {
-e.printStackTrace();
+                               e.printStackTrace();
                         }
 
 
@@ -492,6 +513,29 @@ e.printStackTrace();
             for (Grouplist.Group result : moveResults) {
                 add(result);
             }
+        }
+        public void addAll_item(List<Grouplist.Group> movieList1)
+        {
+            select_contectListData.clear();
+            movieList.clear();
+            for (int i=0;i<movieList1.size();i++)
+            {
+
+                paginationAdapter = new PaginationAdapter(getContext());
+                group_recyclerView.setAdapter(paginationAdapter);
+                //group_flag="false";
+                //movieList1.get(i).set
+                paginationAdapter.addAll(movieList1);
+                paginationAdapter.notifyDataSetChanged();
+                select_contectListData.add(movieList1.get(i));
+                topUserListDataAdapter.notifyDataSetChanged();
+                sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
+                sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
+
+                //  save_button.setTextColor(getResources().getColor(R.color.purple_200));
+
+            }
+
         }
 
         public Grouplist.Group getItem(int position) {

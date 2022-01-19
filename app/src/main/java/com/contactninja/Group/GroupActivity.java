@@ -118,7 +118,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         retrofitCalls = new RetrofitCalls(this);
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(5000);
-
+        add_contect_list.setItemViewCacheSize(5000);
 
         contectListData.clear();
         iv_Setting.setVisibility(View.GONE);
