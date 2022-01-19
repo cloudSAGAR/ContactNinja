@@ -54,7 +54,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     };
     LinearLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
-
+    SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -67,8 +67,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
 
-
-        SampleFragmentPagerAdapter pagerAdapter =
+ pagerAdapter =
                 new SampleFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
@@ -105,10 +104,24 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
             String type=bundle.getString("type");
             if (type.equals("SMS"))
             {
-                tabLayout.getTabAt(1).select();
+                viewPager.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        viewPager.setCurrentItem(1);
+                    }
+                }, 10);
+
             }
             else {
-                tabLayout.getTabAt(0).select();
+                viewPager.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        viewPager.setCurrentItem(0);
+                    }
+                }, 10);
+
             }
         }
         else {

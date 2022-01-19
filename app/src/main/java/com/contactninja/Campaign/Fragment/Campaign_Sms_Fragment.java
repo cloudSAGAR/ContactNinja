@@ -242,7 +242,7 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
     @Override
     public void fragmentBecameVisible() {
 
-        sessionManager=new SessionManager(getActivity());
+      //  sessionManager=new SessionManager(getActivity());
         c_name=SessionManager.getCampaign_type_name(getActivity());
         c_type=SessionManager.getCampaign_type(getActivity());
         /*Log.e("c_name",c_name);

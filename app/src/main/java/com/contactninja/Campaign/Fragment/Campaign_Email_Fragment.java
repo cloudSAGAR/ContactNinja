@@ -226,7 +226,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
 
     @Override
     public void fragmentBecameVisible() {
-        sessionManager = new SessionManager(getActivity());
+       // sessionManager = new SessionManager(getActivity());
         c_name = SessionManager.getCampaign_type_name(getActivity());
         c_type = SessionManager.getCampaign_type(getActivity());
 

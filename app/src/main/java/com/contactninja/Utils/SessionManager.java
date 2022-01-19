@@ -9,69 +9,59 @@ import android.util.Log;
 
 import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
-import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
-import com.contactninja.Model.SignModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.contactninja.MainActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("UnknownNullness")
 public class SessionManager {
+    public static final String KEY_User = "User";
+    public static final String KEY_Token = "token";
+    public static final String Plan_type = "plan_type";
+    public static final String Login_type = "login_type";
+    public static final String Sign_Model = "sign_model";
+    public static final String Task_Model = "task_model";
+    public static final String Contect_Name = "contect_name";
+    public static final String Contect_Type = "contect_type";
+    public static final String Add_Contect_Detail = "contect_detail";
+    public static final String Fcm_Token = "fcm_token";
+    public static final String GroupListData = "grouplistdata";
+    public static final String Group_Model = "group_model";
+    public static final String Contect_Model = "contect_model";
+    public static final String Contect_flag = "contect_flag";
+    public static final String Campign_flag = "campign_flag";
+    public static final String Refresh_token = "refresh_token";
+    public static final String Access_token = "access_token";
+    public static final String csv_token = "csv_token";
+    public static final String Contect_List = "contectlist";
+    public static final String brodcaste_Contect_List = "brod_contectlist";
+    public static final String brodcaste_group = "brod_group";
+    public static final String Broadcast_Data_save = " broadcast_data";
+    public static final String Contectexits_token = "contect_token";
+    public static final String campaign_type = "campaign_type";
+    public static final String campaign_type_name = "campaign_type_name";
+    public static final String campaign_day = "campaign_day";
+    public static final String campaign_minute = "campaign_minute";
+    public static final String Campaign_overview = "campign_overview";
     private static final String PREF_NAME = "jainaPref";
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String IS_APPITRO = "Isintro";
-    public static   SharedPreferences pref;
+    private static final String IS_Email_Update = "IsEmailUpdate";
+    private static final String IS_Payment_Type_Select = "Ispaymenttypeselect";
+    public static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
     private final Context _context;
-
-    public static final String KEY_User = "User";
-    public static final String KEY_Token = "token";
-    public static final String Plan_type ="plan_type";
-    public static final String Login_type ="login_type";
-    public static final String Sign_Model ="sign_model";
-    public static final String Task_Model ="task_model";
-    public static final String Contect_Name="contect_name";
-    public static final String Contect_Type="contect_type";
-    public static final String Add_Contect_Detail="contect_detail";
-    public static final String Fcm_Token="fcm_token";
-    private static final String IS_Email_Update = "IsEmailUpdate";
-    private static final String IS_Payment_Type_Select= "Ispaymenttypeselect";
-
-    public static final String GroupListData ="grouplistdata";
-
-    public static final String Group_Model ="group_model";
-
-    public static final String Contect_Model ="contect_model";
-
-    public static final String Contect_flag="contect_flag";
-
-    public static final String Campign_flag="campign_flag";
-    public static final String Refresh_token="refresh_token";
-    public static final String Access_token="access_token";
-    public static final String csv_token="csv_token";
-
-    public static final String Contect_List ="contectlist";
-    public static final String brodcaste_Contect_List ="brod_contectlist";
-    public static final String brodcaste_group ="brod_group";
-    public static final String Broadcast_Data_save=" broadcast_data";
-    public  static final String Contectexits_token="contect_token";
-
-    public static final String campaign_type="campaign_type";
-    public static final String campaign_type_name="campaign_type_name";
-
-    public static final String campaign_day="campaign_day";
-    public static final String campaign_minute="campaign_minute";
-    public static final String Campaign_overview ="campign_overview";
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -82,60 +72,10 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-
-    public void login() {
-        editor.putBoolean(IS_LOGIN, false);
-        editor.commit();
-    }
-
-
-    public void Payment_Type_Select() {
-        editor.putBoolean(IS_Payment_Type_Select, true);
-        editor.commit();
-    }
-
-    public void Email_Update() {
-        editor.putBoolean(IS_Email_Update, true);
-        editor.commit();
-    }
-
-
-    public boolean isEmail_Update() {
-        return pref.getBoolean(IS_Email_Update, false);
-    }
-
-    public boolean isPayment_Type_Select() {
-        return pref.getBoolean(IS_Payment_Type_Select, false);
-    }
-
-
-    public void appIntro() {
-        editor.putBoolean(IS_APPITRO, false);
-        editor.commit();
-    }
-
-
-
-
-    public  String getContect_Name(Context context) {
-
-        String type= pref.getString(Contect_Name, "");
-        return  type;
-
-    }
-
-    public  void setContect_Name(String plantype) {
-        editor.putString(Contect_Name, plantype);
-        editor.commit();
-    }
-
-
-
-
     public static String getCampaign_type(Context context) {
 
-        String type= pref.getString(campaign_type, "");
-        return  type;
+        String type = pref.getString(campaign_type, "");
+        return type;
 
     }
 
@@ -144,11 +84,10 @@ public class SessionManager {
         editor.commit();
     }
 
-
     public static String getCampaign_type_name(Context context) {
 
-        String type= pref.getString(campaign_type_name, "");
-        return  type;
+        String type = pref.getString(campaign_type_name, "");
+        return type;
 
     }
 
@@ -157,61 +96,17 @@ public class SessionManager {
         editor.commit();
     }
 
+    public static String getcontectexits() {
 
-
-    public  String getRefresh_token() {
-
-        String type= pref.getString(Refresh_token, "");
-        return  type;
+        String type = pref.getString(Contectexits_token, "0");
+        return type;
 
     }
-
-    public  void setRefresh_token(String efresh_token) {
-        editor.putString(Refresh_token, efresh_token);
-        editor.commit();
-    }
-
-    public  String getAccess_token() {
-
-        String type= pref.getString(Access_token, "");
-        return  type;
-
-    }
-
-    public  void setAccess_token(String access_token) {
-        editor.putString(Access_token, access_token);
-        editor.commit();
-    }
-
-
-
-    public  static String getcontectexits() {
-
-        String type= pref.getString(Contectexits_token, "0");
-        return  type;
-
-    }
-
-    public  void setcontectexits(String efresh_token) {
-        editor.putString(Contectexits_token, efresh_token);
-        editor.commit();
-    }
-
-
-    public  boolean getCsv_token() {
-        return  pref.getBoolean(csv_token, false);
-    }
-
-    public  void setCsv_token() {
-        editor.putBoolean(csv_token, true);
-        editor.commit();
-    }
-
 
     public static String getContect_flag(Context context) {
 
-        String type= pref.getString(Contect_flag, "");
-        return  type;
+        String type = pref.getString(Contect_flag, "");
+        return type;
 
     }
 
@@ -222,113 +117,13 @@ public class SessionManager {
 
     public static String getCampign_flag(Context context) {
 
-        String type= pref.getString( Campign_flag, "");
-        return  type;
+        String type = pref.getString(Campign_flag, "");
+        return type;
 
     }
 
     public static void setCampign_flag(String plantype) {
-        editor.putString( Campign_flag, plantype);
-        editor.commit();
-    }
-
-
-
-
-    public  String getContect_Type(Context context) {
-
-        String type= pref.getString(Contect_Type, "");
-        return  type;
-
-    }
-
-    public  void setContect_Type(String plantype) {
-        editor.putString(Contect_Type, plantype);
-        editor.commit();
-    }
-
-
-
-
-
-    public  String getFcm_Token(Context context) {
-
-        String type= pref.getString(Fcm_Token, "");
-        return  type;
-
-    }
-
-    public  void setFcm_Token(String fcm_token) {
-        editor.putString(Fcm_Token, fcm_token);
-        editor.commit();
-    }
-
-
-
-
-    public void checkLogin() {
-        // Check login status
-        if (isLoggedIn()) {
-          if (isAppIntroIn()) {
-              Intent i = new Intent(_context, AppIntroActivity.class);
-              _context.startActivity(i);
-           }else {
-              Intent i = new Intent(_context, LoginActivity.class);
-              _context.startActivity(i);
-          }
-
-        } else {
-            Intent i = new Intent(_context, MainActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            _context.startActivity(i);
-        }
-    }
-
- /*   public HashMap<String, String> getUserDetails() {
-        HashMap<String, String> user = new HashMap<>();
-        user.put(KEY_Token, pref.getString(KEY_Token, ""));
-        return user;
-    }*/
-
-
-
-    public void logoutUser() {
-        NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
-        // Clearing all data from Shared Preferences
-        editor.clear();
-        editor.commit();
-
-        // After logout redirect user to Loing Activity
-        Intent i = new Intent(_context, LoginActivity.class);
-        // Closing all the Activities
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // Add new Flag to start new Activity
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // Staring Login Activity
-        _context.startActivity(i);
-    }
-
-    // Get Login State
-    public boolean isLoggedIn() {
-        return pref.getBoolean(IS_LOGIN, true);
-    }
-    public boolean isAppIntroIn() {
-        return pref.getBoolean(IS_APPITRO, false);
-    }
-
-    public  String getlogin_type(Context context) {
-
-        String type= pref.getString(Login_type, "");
-        return  type;
-
-    }
-
-    public  void setlogin_type(String plantype) {
-        editor.putString(Login_type, plantype);
+        editor.putString(Campign_flag, plantype);
         editor.commit();
     }
 
@@ -349,28 +144,16 @@ public class SessionManager {
         String json = gson.toJson(signModel);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Sign_Model, json);
-        Log.e("Sessioin data",new Gson().toJson(signModel));
+        Log.e("Sessioin data", new Gson().toJson(signModel));
         editor.apply();
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     public static ContectListData.Contact getOneCotect_deatil(Context context) {
         Gson gson = new Gson();
         String json = pref.getString(Contect_Model, "");
         Type type = new TypeToken<ContectListData.Contact>() {
         }.getType();
-        ContectListData.Contact  contect= gson.fromJson(json, type);
+        ContectListData.Contact contect = gson.fromJson(json, type);
         if (contect == null) {
             contect = new ContectListData.Contact();
         }
@@ -386,28 +169,26 @@ public class SessionManager {
         editor.apply();
     }
 
-
     public static Grouplist.Group getGroupData(Context context) {
         Gson gson = new Gson();
         String json = pref.getString(Group_Model, "");
         Type type = new TypeToken<Grouplist.Group>() {
         }.getType();
-        Grouplist.Group  group= gson.fromJson(json, type);
+        Grouplist.Group group = gson.fromJson(json, type);
         if (group == null) {
             group = new Grouplist.Group();
         }
         return group;
     }
 
-    public static void setGroupData(Context context,  Grouplist.Group group) {
+    public static void setGroupData(Context context, Grouplist.Group group) {
         Gson gson = new Gson();
         String json = gson.toJson(group);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Group_Model, json);
-        Log.e("Sessioin data",new Gson().toJson(group));
+        Log.e("Sessioin data", new Gson().toJson(group));
         editor.apply();
     }
-
 
     public static List<ContectListData.Contact> getGroupList(Context context) {
 
@@ -427,20 +208,9 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(groupModel);
         editor.putString(GroupListData, json);
-        Log.e("Sessioin data",new Gson().toJson(groupModel));
+        Log.e("Sessioin data", new Gson().toJson(groupModel));
         editor.apply();
     }
-
-
-
-
-
-
-
-
-
-
-
 
     public static AddcontectModel getAdd_Contect_Detail(Context context) {
         Gson gson = new Gson();
@@ -454,18 +224,13 @@ public class SessionManager {
         return signModel;
     }
 
-    public static void setAdd_Contect_Detail(Context context,AddcontectModel add_model) {
+    public static void setAdd_Contect_Detail(Context context, AddcontectModel add_model) {
         Gson gson = new Gson();
         String json = gson.toJson(add_model);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Add_Contect_Detail, json);
         editor.apply();
     }
-
-
-
-
-
 
     public static List<ContectListData> getContectList(Context context) {
 
@@ -485,7 +250,7 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(groupModel);
         editor.putString(Contect_List, json);
-        Log.e("Sessioin data",new Gson().toJson(groupModel));
+        Log.e("Sessioin data", new Gson().toJson(groupModel));
         editor.apply();
     }
 
@@ -510,7 +275,6 @@ public class SessionManager {
         editor.apply();
     }
 
-
     public static List<Grouplist.Group> getgroup_broadcste(Context context) {
 
         Gson gson = new Gson();
@@ -525,16 +289,12 @@ public class SessionManager {
 
     }
 
-    public static void setgroup_broadcste(Context context,List<Grouplist.Group> groupModel) {
+    public static void setgroup_broadcste(Context context, List<Grouplist.Group> groupModel) {
         Gson gson = new Gson();
         String json = gson.toJson(groupModel);
         editor.putString(brodcaste_group, json);
         editor.apply();
     }
-
-
-
-
 
     public static Broadcast_Data getAdd_Broadcast_Data(Context context) {
         Gson gson = new Gson();
@@ -554,6 +314,167 @@ public class SessionManager {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Broadcast_Data_save, json);
         editor.apply();
+    }
+
+    public static void setTask(Context context, List<CampaignTask> groupModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(groupModel);
+        editor.putString(Task_Model, json);
+        editor.apply();
+    }
+
+    public static List<CampaignTask> getTask(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(Task_Model, null);
+        Type type = new TypeToken<ArrayList<CampaignTask>>() {
+        }.getType();
+        List<CampaignTask> contectList = gson.fromJson(json, type);
+        if (contectList == null) {
+            contectList = new ArrayList<>();
+        }
+        return contectList;
+
+    }
+
+ /*   public HashMap<String, String> getUserDetails() {
+        HashMap<String, String> user = new HashMap<>();
+        user.put(KEY_Token, pref.getString(KEY_Token, ""));
+        return user;
+    }*/
+
+    public static String getCampaign_Day(Context context) {
+
+        String type = pref.getString(campaign_day, "");
+        return type;
+
+    }
+
+    public static void setCampaign_Day(String campaign_day1) {
+        editor.putString(campaign_day, campaign_day1);
+        editor.commit();
+    }
+
+    public static String getCampaign_minute(Context context) {
+
+        String type = pref.getString(campaign_minute, "");
+        return type;
+
+    }
+
+    public static void setCampaign_minute(String campaign_minte1) {
+        editor.putString(campaign_minute, campaign_minte1);
+        editor.commit();
+    }
+
+    public static CampaignTask_overview getCampaign_data(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Campaign_overview, "");
+        Type type = new TypeToken<CampaignTask_overview>() {
+        }.getType();
+        CampaignTask_overview signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new CampaignTask_overview();
+        }
+        return signModel;
+    }
+
+    public static void setCampaign_data(CampaignTask_overview add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Campaign_overview, json);
+        editor.apply();
+    }
+
+    public void login() {
+        editor.putBoolean(IS_LOGIN, false);
+        editor.commit();
+    }
+
+    public void Payment_Type_Select() {
+        editor.putBoolean(IS_Payment_Type_Select, true);
+        editor.commit();
+    }
+
+    public void Email_Update() {
+        editor.putBoolean(IS_Email_Update, true);
+        editor.commit();
+    }
+
+    public boolean isEmail_Update() {
+        return pref.getBoolean(IS_Email_Update, false);
+    }
+
+    public boolean isPayment_Type_Select() {
+        return pref.getBoolean(IS_Payment_Type_Select, false);
+    }
+
+    public void appIntro() {
+        editor.putBoolean(IS_APPITRO, false);
+        editor.commit();
+    }
+
+    public String getContect_Name(Context context) {
+
+        String type = pref.getString(Contect_Name, "");
+        return type;
+
+    }
+
+    public void setContect_Name(String plantype) {
+        editor.putString(Contect_Name, plantype);
+        editor.commit();
+    }
+
+    public String getRefresh_token() {
+
+        String type = pref.getString(Refresh_token, "");
+        return type;
+
+    }
+
+    public void setRefresh_token(String efresh_token) {
+        editor.putString(Refresh_token, efresh_token);
+        editor.commit();
+    }
+
+    public String getAccess_token() {
+
+        String type = pref.getString(Access_token, "");
+        return type;
+
+    }
+
+    public void setAccess_token(String access_token) {
+        editor.putString(Access_token, access_token);
+        editor.commit();
+    }
+
+    public void setcontectexits(String efresh_token) {
+        editor.putString(Contectexits_token, efresh_token);
+        editor.commit();
+    }
+
+    public boolean getCsv_token() {
+        return pref.getBoolean(csv_token, false);
+    }
+
+    public void setCsv_token() {
+        editor.putBoolean(csv_token, true);
+        editor.commit();
+    }
+
+    public String getContect_Type(Context context) {
+
+        String type = pref.getString(Contect_Type, "");
+        return type;
+
+    }
+
+    public void setContect_Type(String plantype) {
+        editor.putString(Contect_Type, plantype);
+        editor.commit();
     }
 
 
@@ -581,79 +502,75 @@ public class SessionManager {
         editor.apply();
     }*/
 
+    public String getFcm_Token(Context context) {
 
-
-    public static void setTask(Context context, List<CampaignTask> groupModel) {
-        Gson gson = new Gson();
-        String json = gson.toJson(groupModel);
-        editor.putString(Task_Model, json);
-        editor.apply();
-    }
-
-
-    public static List<CampaignTask> getTask(Context context) {
-
-        Gson gson = new Gson();
-        String json = pref.getString(Task_Model, null);
-        Type type = new TypeToken<ArrayList<CampaignTask>>() {
-        }.getType();
-        List<CampaignTask> contectList = gson.fromJson(json, type);
-        if (contectList == null) {
-            contectList = new ArrayList<>();
-        }
-        return contectList;
+        String type = pref.getString(Fcm_Token, "");
+        return type;
 
     }
 
-
-
-    public static String getCampaign_Day(Context context) {
-
-        String type= pref.getString(campaign_day, "");
-        return  type;
-
-    }
-
-    public static void setCampaign_Day(String campaign_day1) {
-        editor.putString(campaign_day, campaign_day1);
+    public void setFcm_Token(String fcm_token) {
+        editor.putString(Fcm_Token, fcm_token);
         editor.commit();
     }
 
+    public void checkLogin() {
+        // Check login status
+        if (isLoggedIn()) {
+            if (isAppIntroIn()) {
+                Intent i = new Intent(_context, AppIntroActivity.class);
+                _context.startActivity(i);
+            } else {
+                Intent i = new Intent(_context, LoginActivity.class);
+                _context.startActivity(i);
+            }
 
-    public static String getCampaign_minute(Context context) {
-
-        String type= pref.getString(campaign_minute, "");
-        return  type;
-
-    }
-
-    public static void setCampaign_minute(String campaign_minte1) {
-        editor.putString(campaign_minute, campaign_minte1);
-        editor.commit();
-    }
-
-
-
-
-
-    public static CampaignTask_overview getCampaign_data(Context context) {
-        Gson gson = new Gson();
-        String json = pref.getString(Campaign_overview, "");
-        Type type = new TypeToken<CampaignTask_overview>() {
-        }.getType();
-        CampaignTask_overview signModel = gson.fromJson(json, type);
-        if (signModel == null) {
-            signModel = new CampaignTask_overview();
+        } else {
+            Intent i = new Intent(_context, MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            _context.startActivity(i);
         }
-        return signModel;
     }
 
-    public static void setCampaign_data(CampaignTask_overview add_model) {
-        Gson gson = new Gson();
-        String json = gson.toJson(add_model);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(Campaign_overview, json);
-        editor.apply();
+    public void logoutUser() {
+        NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+        // Clearing all data from Shared Preferences
+        editor.clear();
+        editor.commit();
+
+        // After logout redirect user to Loing Activity
+        Intent i = new Intent(_context, LoginActivity.class);
+        // Closing all the Activities
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        // Add new Flag to start new Activity
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Staring Login Activity
+        _context.startActivity(i);
+    }
+
+    // Get Login State
+    public boolean isLoggedIn() {
+        return pref.getBoolean(IS_LOGIN, true);
+    }
+
+    public boolean isAppIntroIn() {
+        return pref.getBoolean(IS_APPITRO, false);
+    }
+
+    public String getlogin_type(Context context) {
+
+        String type = pref.getString(Login_type, "");
+        return type;
+
+    }
+
+    public void setlogin_type(String plantype) {
+        editor.putString(Login_type, plantype);
+        editor.commit();
     }
 
 

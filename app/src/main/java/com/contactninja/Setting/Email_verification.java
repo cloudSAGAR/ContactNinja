@@ -1,6 +1,7 @@
 package com.contactninja.Setting;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -8,13 +9,18 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -163,17 +169,17 @@ public class Email_verification extends AppCompatActivity implements Connectivit
 
             if (Global.emailValidator(val2)) {
 
-                try {
-                    if (Global.isNetworkAvailable(Email_verification.this, mMainLayout)) {
-                        if(access.equals("1")){
-                            GoogleAuth(val2);
-                        }else {
-
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+               try {
+                   if (Global.isNetworkAvailable(Email_verification.this, mMainLayout)) {
+                       if(access.equals("1")){
+                           GoogleAuth(val2);
+                       }else {
+                           showAlertDialogButtonClicked(val2);
+                       }
+                   }
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
 
             } else {
                 webView.loadUrl(url);
@@ -188,5 +194,34 @@ public class Email_verification extends AppCompatActivity implements Connectivit
 
         }
     }
+    public void showAlertDialogButtonClicked(String val2) {
 
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this, R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.item_aleart_email_access,
+                        null);
+        builder.setView(customLayout);
+        TextView tv_add = customLayout.findViewById(R.id.tv_add);
+        TextView tv_aleartMessage = customLayout.findViewById(R.id.tv_aleartMessage);
+        tv_aleartMessage.setText(val2);
+        AlertDialog dialog
+                = builder.create();
+
+        dialog.show();
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                  finish();
+
+                dialog.dismiss();
+            }
+        });
+
+
+    }
 }
