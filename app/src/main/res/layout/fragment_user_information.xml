@@ -87,7 +87,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -104,7 +104,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="bottom"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:orientation="vertical">
@@ -143,13 +143,13 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:visibility="gone"
                                 android:id="@+id/select_label"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/_27sdp"
                                 android:background="@drawable/shape_5_white_ccc_line"
                                 android:paddingStart="@dimen/_20sdp"
-                                android:paddingEnd="@dimen/_20sdp">
+                                android:paddingEnd="@dimen/_20sdp"
+                                android:visibility="gone">
 
                                 <TextView
                                     android:id="@+id/phone_txt"
@@ -440,7 +440,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
@@ -452,7 +452,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
 
@@ -460,7 +460,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
+                            android:gravity="bottom"
                             android:orientation="vertical">
 
                             <TextView
@@ -752,7 +752,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
-                        android:enabled="false"
+                         android:enabled="false"
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_company_a"
                         android:textColor="@color/home_list_sub_data"
