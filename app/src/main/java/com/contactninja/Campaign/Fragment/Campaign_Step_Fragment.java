@@ -140,6 +140,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     if (position==0)
                     {
                         movieViewHolder.line_one.setVisibility(View.INVISIBLE);
+                    movieViewHolder.run_time_layout.setVisibility(View.GONE);
                     }
                    /* else {
                         movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);

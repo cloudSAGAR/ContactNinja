@@ -67,8 +67,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
 
- pagerAdapter =
-                new SampleFragmentPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
 
@@ -184,12 +183,12 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                            Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
                            new_task.putExtra("flag","edit");
                            new_task.putExtra("body",bundle.getString("body"));
-                           new_task.putExtra("day",bundle.getInt("day"));
+                           new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
                            new_task.putExtra("manage_by",bundle.getString("manage_by"));
                            new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
                            new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
                            new_task.putExtra("type",bundle.getString("type"));
-                           new_task.putExtra("minute",bundle.getInt("minute"));
+                           new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
                            new_task.putExtra("header",bundle.getString("header"));
                            new_task.putExtra("step",bundle.getInt("step"));
                            startActivity(new_task);
@@ -224,12 +223,12 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                                Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
                                new_task.putExtra("flag","edit");
                                new_task.putExtra("body",bundle.getString("body"));
-                               new_task.putExtra("day",bundle.getInt("day"));
+                               new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
                                new_task.putExtra("manage_by",bundle.getString("manage_by"));
                                new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
                                new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
                                new_task.putExtra("type",bundle.getString("type"));
-                               new_task.putExtra("minute",bundle.getInt("minute"));
+                               new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
                                new_task.putExtra("header",bundle.getString("header"));
                                new_task.putExtra("step",bundle.getInt("step"));
                                startActivity(new_task);
@@ -261,12 +260,12 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                            Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
                            new_task.putExtra("flag","edit");
                            new_task.putExtra("body",bundle.getString("body"));
-                           new_task.putExtra("day",bundle.getInt("day"));
+                           new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
                            new_task.putExtra("manage_by",bundle.getString("manage_by"));
                            new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
                            new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
                            new_task.putExtra("type",bundle.getString("type"));
-                           new_task.putExtra("minute",bundle.getInt("minute"));
+                           new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
                            new_task.putExtra("step",bundle.getInt("step"));
                            startActivity(new_task);
                            finish();
@@ -304,12 +303,12 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                                Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
                                new_task.putExtra("flag","edit");
                                new_task.putExtra("body",bundle.getString("body"));
-                               new_task.putExtra("day",bundle.getInt("day"));
+                               new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
                                new_task.putExtra("manage_by",bundle.getInt("manage_by"));
                                new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
                                new_task.putExtra("sequence_id",String.valueOf(bundle.getInt("sequence_id")));
                                new_task.putExtra("type",bundle.getString("type"));
-                               new_task.putExtra("minute",bundle.getInt("minute"));
+                               new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
                                new_task.putExtra("step",bundle.getInt("step"));
                                startActivity(new_task);
                                finish();

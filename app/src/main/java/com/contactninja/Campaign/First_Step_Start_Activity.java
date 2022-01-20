@@ -126,10 +126,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             tv_step.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
             try {
-                minite= bundle.getInt("minute");
-                day= bundle.getInt("day");
-                //SessionManager.setCampaign_Day(String.valueOf(day));
-               // SessionManager.setCampaign_minute(String.valueOf(minite));
+               // minite= bundle.getInt("minute");
+                //day= bundle.getInt("day");
+
             }
             catch (Exception e)
             {
@@ -507,9 +506,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
             JsonObject paramObject = new JsonObject();
             paramObject.addProperty("content_body", edit_template.getText().toString());
-            paramObject.addProperty("day", day);
+            paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
             paramObject.addProperty("organization_id", "1");
             paramObject.addProperty("sequence_id", bundle.getString("sequence_id"));
             paramObject.addProperty("team_id", "1");

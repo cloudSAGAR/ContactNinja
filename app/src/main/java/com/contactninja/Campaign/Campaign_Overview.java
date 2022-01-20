@@ -80,6 +80,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         mNetworkReceiver = new ConnectivityReceiver();
 
         IntentUI();
+        Global.count=1;
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -276,6 +277,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     if (position==0)
                     {
                         movieViewHolder.line_one.setVisibility(View.INVISIBLE);
+                        movieViewHolder.run_time_layout.setVisibility(View.GONE);
                     }
                     else {
 
@@ -340,7 +342,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                             }
                         });
 
-                        movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
+                      /*  movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (movieViewHolder.run_time_layout.getVisibility()==View.VISIBLE)
@@ -353,7 +355,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
 
                             }
                         });
-
+*/
 
                     break;
 
@@ -774,6 +776,12 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         }
                         else {
                             seq_prospect_count=user_model1.getSeqProspectCount().getTotal();
+                            SessionManager.setCampign_flag("read");
+                            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                            intent.putExtra("sequence_id", sequence_id);
+                            /*intent.putExtra("seq_task_id",seq_task_id);*/
+                            startActivity(intent);
+                            finish();
                         }
                     }
                     sequence_task_id=user_model1.getSequenceTask().get(0).getId();

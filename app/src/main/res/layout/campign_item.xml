@@ -142,20 +142,20 @@
         <TextView
             android:id="@+id/tv_detail"
             style="@style/tv_regular"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:gravity="center|left"
             android:text="@string/campaign_sub_txt"
             android:textColor="@color/tv_medium"
             android:textSize="@dimen/_13sdp" />
 
         <LinearLayout
-            android:visibility="gone"
+
             android:id="@+id/run_time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -206,6 +206,7 @@
 
 
                     <EditText
+                        android:enabled="false"
                         android:id="@+id/edit_day"
                         style="@style/tv_regular"
                         android:layout_width="86dp"
@@ -249,6 +250,7 @@
 
 
                     <EditText
+                        android:enabled="false"
                         android:id="@+id/edit_minutes"
                         style="@style/tv_regular"
                         android:layout_width="match_parent"

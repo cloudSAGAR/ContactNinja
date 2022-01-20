@@ -71,6 +71,7 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
         setContentView(R.layout.activity_campaign_final_start);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
+        Global.count=1;
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);

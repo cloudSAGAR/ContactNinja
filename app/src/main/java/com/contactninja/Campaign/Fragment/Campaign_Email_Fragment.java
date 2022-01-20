@@ -1,6 +1,7 @@
 package com.contactninja.Campaign.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,9 +38,6 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
         sessionManager = new SessionManager(getActivity());
         c_name = SessionManager.getCampaign_type_name(getActivity());
         c_type = SessionManager.getCampaign_type(getActivity());
-        // Log.e("Frgment Call","Yes");
-        Log.e("c_name", c_name);
-        Log.e("c_type", c_type);
         if (c_type.equals("EMAIL")) {
             if (c_name.equals("AUTO")) {
                 select_automated.setVisibility(View.VISIBLE);
@@ -50,6 +48,50 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
             }
 
         }
+        Intent intent=getActivity().getIntent();
+        Bundle bundle=intent.getExtras();
+        String flag=bundle.getString("flag");
+        if (flag.equals("edit")) {
+
+            int step= bundle.getInt("step");
+            Log.e("Step", String.valueOf(bundle.getString("manage_by")));
+            if (step >= 1) {
+                String manege_by=bundle.getString("manage_by");
+                if (manege_by.equals("AUTO"))
+                {
+                    //Log.e("Visible is","Yes");
+                    layout_email_second_automated.setVisibility(View.VISIBLE);
+                    edit_day.setText(String.valueOf(bundle.getInt("day")));
+                    edit_minutes.setText(String.valueOf(bundle.getInt("minute")));
+
+                    SessionManager.setCampaign_Day(edit_day.getText().toString());
+                    SessionManager.setCampaign_minute(edit_minutes.getText().toString());
+                    iv_back_image.setVisibility(View.GONE);
+
+                }
+                else {
+
+                   // Log.e("Visible is","Yes");
+                    edit_day_manual.setText(String.valueOf(bundle.getInt("day")));
+                    edit_minutes_manual.setText(String.valueOf(bundle.getInt("minute")));
+
+                    layout_email_second_manual.setVisibility(View.VISIBLE);
+                    SessionManager.setCampaign_Day(edit_day_manual.getText().toString());
+                    SessionManager.setCampaign_minute(edit_minutes_manual.getText().toString());
+                    iv_back_image.setVisibility(View.GONE);
+                }
+
+
+
+
+            } else {
+                Log.e("Visible is","No");
+                layout_email_second_manual.setVisibility(View.GONE);
+                layout_email_second_automated.setVisibility(View.GONE);
+                iv_back_image.setVisibility(View.VISIBLE);
+            }
+        }
+
         auto_layout.setOnClickListener(this);
         manual_layout.setOnClickListener(this);
 
@@ -87,7 +129,6 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
 
             }
         });
-
         edit_day_manual.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -133,10 +174,8 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
         select_automated = view.findViewById(R.id.select_automated);
         layout_email_second_automated = view.findViewById(R.id.layout_email_second_automated);
         layout_email_second_manual = view.findViewById(R.id.layout_email_second_manual);
-
         edit_day = view.findViewById(R.id.edit_day);
         edit_minutes = view.findViewById(R.id.edit_minutes);
-
         edit_day_manual = view.findViewById(R.id.edit_day_manual);
         edit_minutes_manual = view.findViewById(R.id.edit_minutes_manual);
         iv_back_image=view.findViewById(R.id.iv_back_image);

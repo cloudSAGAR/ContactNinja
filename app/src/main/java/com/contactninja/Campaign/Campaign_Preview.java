@@ -90,7 +90,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-
+        Global.count=1;
 
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
             StepData();
@@ -684,6 +684,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     Global.count++;
 
                     if (position == 0) {
+                        movieViewHolder.run_time_layout.setVisibility(View.GONE);
                         movieViewHolder.line_one.setVisibility(View.VISIBLE);
                     } else {
 

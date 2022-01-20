@@ -604,9 +604,9 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
             JsonObject paramObject = new JsonObject();
             paramObject.addProperty("content_body", edit_template.getText().toString());
-            paramObject.addProperty("day", day);
+            paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
             paramObject.addProperty("organization_id", "1");
             Log.e("S_id",sequence_id);
             Log.e("S_task",seq_task_id);
