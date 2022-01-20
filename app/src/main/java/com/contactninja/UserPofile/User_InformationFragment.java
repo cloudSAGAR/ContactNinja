@@ -77,13 +77,13 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     BottomSheetDialog bottomSheetDialog_time, bottomSheetDialog_company;
     EditText ev_address, ev_city, ev_zip, ev_zoom, ev_note,
             ev_company_url, ev_state, ev_job, ev_bob, ev_fb, ev_twitter, ev_breakout,
-            ev_linkedin, ev_company,edt_email;
+            ev_linkedin, ev_company, edt_email;
     LinearLayout select_state, add_mobile_Number,
             layout_Add_phone, layout_Add_email, layout_mobile, fb_layout;
     TextView tv_phone, tv_more_field, tv_company_url, tv_job,
             zone_txt, tv_add_social;
     ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout;
-    String Name = "", job_titel = "",time_zone_id;
+    String Name = "", job_titel = "", time_zone_id;
     SessionManager sessionManager;
     AddcontectModel addcontectModel;
     BottomSheetDialog bottomSheetDialog;
@@ -105,8 +105,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     boolean edit = false;
     EditText ev_othre_company;
     ImageView iv_down;
-EditText edt_mobile_no;
-LinearLayout layout_country_piker;
+    EditText edt_mobile_no;
+    LinearLayout layout_country_piker;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -204,7 +204,7 @@ LinearLayout layout_country_piker;
             edit = true;
             iv_down.setVisibility(View.VISIBLE);
             //ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            Userprofile Contect_data=user_data_model.getUserprofile();
+            Userprofile Contect_data = user_data_model.getUserprofile();
 
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
             addcontectModel.setJob_title(Contect_data.getJob_title());
@@ -231,7 +231,7 @@ LinearLayout layout_country_piker;
                 zone_txt.setText(time_zone_id);
 
             } else {
-/*                zone_txt.setText());*/
+                /*                zone_txt.setText());*/
 
               /*  for (int i = 0; i < timezoneModels.size(); i++) {
                     if (String.valueOf(Contect_data.getTimezoneId()).equals(timezoneModels.get(i).getValue().toString())) {
@@ -260,65 +260,70 @@ LinearLayout layout_country_piker;
             EmailViewAdd();*/
             TextSet();
 
-            List<ContactDetail> detail_contect = Contect_data.getContactDetails();
-            for (int i = 0; i < detail_contect.size(); i++) {
-                if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
-                    if (detail_contect.get(i).getType().equals("EMAIL")) {
-                        Contactdetail contactdetail = new Contactdetail();
+            try {
+                List<ContactDetail> detail_contect = Contect_data.getContactDetails();
+
+                for (int i = 0; i < detail_contect.size(); i++) {
+                    if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
+                        if (detail_contect.get(i).getType().equals("EMAIL")) {
+                            Contactdetail contactdetail = new Contactdetail();
 /*
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
 */
-                        contactdetail.setType(detail_contect.get(i).getType());
-                        contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        contactdetail.setId(0);
-                        contactdetail.setLabel(detail_contect.get(i).getLabel());
-                        contactdetail.setIs_default(0);
-                        emaildetails_list.add(contactdetail);
-                        Collections.reverse(emaildetails_list);
-                        contactdetails.add(contactdetail);
+                            contactdetail.setType(detail_contect.get(i).getType());
+                            contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                            contactdetail.setId(0);
+                            contactdetail.setLabel(detail_contect.get(i).getLabel());
+                            contactdetail.setIs_default(0);
+                            emaildetails_list.add(contactdetail);
+                            Collections.reverse(emaildetails_list);
+                            contactdetails.add(contactdetail);
 
-                        layout_Add_email.setVisibility(View.GONE);
-                        emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
-                        rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        rv_email.setAdapter(emailAdapter);
+                            layout_Add_email.setVisibility(View.GONE);
+                            emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+                            rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            rv_email.setAdapter(emailAdapter);
 
 
-                    } else {
-                    //    Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
-                        Contactdetail contactdetail = new Contactdetail();
-/*                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());*/
-                        contactdetail.setType(detail_contect.get(i).getType());
-                        contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        try {
-    //                        contactdetail.setId(detail_contect.get(i).getId());
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } else {
+                            //    Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
+                            Contactdetail contactdetail = new Contactdetail();
+                            /*                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());*/
+                            contactdetail.setType(detail_contect.get(i).getType());
+                            contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                            try {
+                                //                        contactdetail.setId(detail_contect.get(i).getId());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            contactdetail.setLabel(detail_contect.get(i).getLabel());
+                            contactdetail.setIs_default(0);
+
+                            phonedetails_list.add(contactdetail);
+                            Collections.reverse(phonedetails_list);
+                            contactdetails.add(contactdetail);
+
+                            phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                            rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            rv_phone.setAdapter(phoneAdapter);
+
+
                         }
-
-                        contactdetail.setLabel(detail_contect.get(i).getLabel());
-                        contactdetail.setIs_default(0);
-
-                        phonedetails_list.add(contactdetail);
-                        Collections.reverse(phonedetails_list);
-                        contactdetails.add(contactdetail);
-
-                        phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
-                        rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        rv_phone.setAdapter(phoneAdapter);
-
-
                     }
                 }
+            } catch (Exception e) {
+
             }
+
 
             EmailViewAdd();
             PhoneViewAdd();
 
 
-        }
-        else if (flag.equals("read")) {
+        } else if (flag.equals("read")) {
 
-            Log.e("Model Data",new Gson().toJson(user_data_model));
+            Log.e("Model Data", new Gson().toJson(user_data_model));
             edt_mobile_no.setEnabled(false);
             edt_mobile_no.setText(user_data_model.getContactNumber());
             edt_email.setText(user_data_model.getEmail());
@@ -356,8 +361,8 @@ LinearLayout layout_country_piker;
             ev_bob.setTextColor(getActivity().getColor(R.color.purple_200));
             ev_note.setTextColor(getActivity().getColor(R.color.purple_200));
 
-           // ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            Userprofile Contect_data=user_data_model.getUserprofile();
+            // ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+            Userprofile Contect_data = user_data_model.getUserprofile();
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
             addcontectModel.setJob_title(Contect_data.getJob_title());
             addcontectModel.setState(Contect_data.getState());
@@ -404,7 +409,7 @@ LinearLayout layout_country_piker;
             }
             ev_job.setText(Contect_data.getJob_title());
             // contect_id = Contect_data.getId();
-/*            organization_id = String.valueOf(Contect_data.getOrg));*/
+            /*            organization_id = String.valueOf(Contect_data.getOrg));*/
             //team_id = String.valueOf(Contect_data.getTeamId());
             ev_company_url.setText(Contect_data.getCompany_url());
             ev_bob.setText(Contect_data.getDob());
@@ -497,46 +502,51 @@ LinearLayout layout_country_piker;
        /*     PhoneViewAdd();
             EmailViewAdd();
             TextSet();*/
+            try {
+                List<ContactDetail> detail_contect = Contect_data.getContactDetails();
+                for (int i = 0; i < detail_contect.size(); i++) {
+                    if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
+                        if (detail_contect.get(i).getType().equals("EMAIL")) {
+                            Contactdetail contactdetail = new Contactdetail();
+                            // contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
+                            contactdetail.setType(detail_contect.get(i).getType());
+                            contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                            //contactdetail.setId(detail_contect.get(i).getId());
+                            contactdetail.setLabel(detail_contect.get(i).getLabel());
+                            contactdetail.setIs_default(0);
+                            emaildetails_list.add(contactdetail);
+                            Collections.reverse(emaildetails_list);
+                            contactdetails.add(contactdetail);
 
-            List<ContactDetail> detail_contect = Contect_data.getContactDetails();
-            for (int i = 0; i < detail_contect.size(); i++) {
-                if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
-                    if (detail_contect.get(i).getType().equals("EMAIL")) {
-                        Contactdetail contactdetail = new Contactdetail();
-                       // contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
-                        contactdetail.setType(detail_contect.get(i).getType());
-                        contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        //contactdetail.setId(detail_contect.get(i).getId());
-                        contactdetail.setLabel(detail_contect.get(i).getLabel());
-                        contactdetail.setIs_default(0);
-                        emaildetails_list.add(contactdetail);
-                        Collections.reverse(emaildetails_list);
-                        contactdetails.add(contactdetail);
-
-                        layout_Add_email.setVisibility(View.GONE);
-
-
-                    } else {
-/*                        Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));*/
-                        Contactdetail contactdetail = new Contactdetail();
-/*                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());*/
-                        contactdetail.setType(detail_contect.get(i).getType());
-                        contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        //contactdetail.setId(detail_contect.get(i).getId());
-                        contactdetail.setLabel(detail_contect.get(i).getLabel());
-                        contactdetail.setIs_default(0);
-
-                        phonedetails_list.add(contactdetail);
-                        Collections.reverse(phonedetails_list);
-                        contactdetails.add(contactdetail);
-
-                        Log.e("Contect List Is",new Gson().toJson(phonedetails_list));
+                            layout_Add_email.setVisibility(View.GONE);
 
 
+                        } else {
+                            /*                        Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));*/
+                            Contactdetail contactdetail = new Contactdetail();
+                            /*                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());*/
+                            contactdetail.setType(detail_contect.get(i).getType());
+                            contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                            //contactdetail.setId(detail_contect.get(i).getId());
+                            contactdetail.setLabel(detail_contect.get(i).getLabel());
+                            contactdetail.setIs_default(0);
+
+                            phonedetails_list.add(contactdetail);
+                            Collections.reverse(phonedetails_list);
+                            contactdetails.add(contactdetail);
+
+                            Log.e("Contect List Is", new Gson().toJson(phonedetails_list));
+
+
+                        }
                     }
+
                 }
 
+            } catch (Exception e) {
+
             }
+
             phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
             rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
             rv_phone.setAdapter(phoneAdapter);
@@ -553,7 +563,6 @@ LinearLayout layout_country_piker;
             media_link.setVisibility(View.GONE);
             tv_add_social.setVisibility(View.GONE);
         }
-
 
 
         layout_bod.setOnClickListener(new View.OnClickListener() {
@@ -898,7 +907,6 @@ LinearLayout layout_country_piker;
         });
 
 
-
         ev_fb.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -975,7 +983,6 @@ LinearLayout layout_country_piker;
         });
 
 
-
         ev_job.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -998,9 +1005,9 @@ LinearLayout layout_country_piker;
     }
 
     private void IntentUI(View view) {
-        layout_country_piker=view.findViewById(R.id.layout_country_piker);
-        edt_email=view.findViewById(R.id.edt_email);
-        edt_mobile_no=view.findViewById(R.id.edt_mobile_no);
+        layout_country_piker = view.findViewById(R.id.layout_country_piker);
+        edt_email = view.findViewById(R.id.edt_email);
+        edt_mobile_no = view.findViewById(R.id.edt_mobile_no);
         iv_down = view.findViewById(R.id.iv_down);
         tv_phone = view.findViewById(R.id.tv_phone);
         ev_address = view.findViewById(R.id.ev_address);
@@ -1315,23 +1322,28 @@ LinearLayout layout_country_piker;
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<List<TimezoneModel>>() {
                     }.getType();
-                     timezoon = new Gson().fromJson(headerString, listType);
-                     timezoneModels.addAll(timezoon);
+                    timezoon = new Gson().fromJson(headerString, listType);
+                    timezoneModels.addAll(timezoon);
+
                     SignResponseModel user_data1 = SessionManager.getGetUserdata(getActivity());
-                    String t_id=user_data1.getUser().getUserprofile().getTimezoneId().toString();
-                      for (int i = 0; i < timezoneModels.size(); i++) {
+                    if (String.valueOf(user_data1.getUser().getUserprofile().getTimezoneId()).equals("null")) {
+                        time_zone_id = TimeZone.getDefault().getID();
+                        zone_txt.setText(time_zone_id);
 
-                   Log.e("Id is",t_id);
-                   Log.e("Second Id",timezoneModels.get(i).getValue().toString());
-                    if (String.valueOf(t_id).equals(timezoneModels.get(i).getValue().toString()+".0")) {
-                        zone_txt.setText(timezoneModels.get(i).getText());
-
-                        Log.e("No Same Data", "NO");
-                        break;
                     } else {
-                        Log.e("No Same Data", "Yes");
+                        String t_id = user_data1.getUser().getUserprofile().getTimezoneId().toString();
+                        for (int i = 0; i < timezoneModels.size(); i++) {
+                            if (t_id.equals(timezoneModels.get(i).getValue().toString() + ".0")) {
+                                zone_txt.setText(timezoneModels.get(i).getText());
+
+                                Log.e("No Same Data", "NO");
+                                break;
+                            } else {
+                                Log.e("No Same Data", "Yes");
+                            }
+                        }
                     }
-                }
+
                     loadingDialog.cancelLoading();
 
                 } else {

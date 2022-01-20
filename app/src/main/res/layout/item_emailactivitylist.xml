@@ -46,6 +46,20 @@
             android:orientation="vertical">
 
             <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_status"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:gravity="center|left"
+                android:singleLine="true"
+                android:text="Adam Smith"
+                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/tv_username"
                 style="@style/tv_regular"
                 android:layout_width="match_parent"

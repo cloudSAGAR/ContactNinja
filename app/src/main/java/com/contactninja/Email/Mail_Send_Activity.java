@@ -251,11 +251,20 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.save_button:
-                try {
+                if (ev_subject.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
+                }
+                else if (edit_template.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
-                    EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }
+                else {
+                    try {
+
+                        EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case R.id.tv_use_tamplet:

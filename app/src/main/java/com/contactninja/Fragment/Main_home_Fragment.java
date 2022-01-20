@@ -146,7 +146,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 //getActivity().finish();
                 break;
             case R.id.iv_toolbar_select:
-//                startActivity(new Intent(getActivity(), Email_Sms_List_Activty.class));
+                startActivity(new Intent(getActivity(), Email_Sms_List_Activty.class));
 
                 break;
 

@@ -16,6 +16,7 @@ import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
+import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,6 +63,7 @@ public class SessionManager {
     public static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
     private final Context _context;
+    private static final String ManualTaskmodel="ManualTaskmodel";
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -386,6 +388,33 @@ public class SessionManager {
         editor.putString(Campaign_overview, json);
         editor.apply();
     }
+
+
+
+
+
+
+    public static ManualTaskModel getManualTaskModel(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(ManualTaskmodel, "");
+        Type type = new TypeToken<ManualTaskModel>() {
+        }.getType();
+        ManualTaskModel signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new ManualTaskModel();
+        }
+        return signModel;
+    }
+
+    public static void setManualTaskModel(ManualTaskModel add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(ManualTaskmodel, json);
+        editor.apply();
+    }
+
+
 
     public void login() {
         editor.putBoolean(IS_LOGIN, false);

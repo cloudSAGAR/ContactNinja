@@ -162,6 +162,7 @@ Number</string>
     <string name="add_new_group_all">Add All Group</string>
     <string name="remove_new_group_all">Add All Group</string>
     <string name="add_task_email">Create a new \n email task</string>
+    <string name="add_task_sms">Create a new \n SMS  task</string>
     <string name="add_new_group_name">Intricare technologies</string>
     <string name="group_broadcast">Send Broadcast</string>
     <string name="group_broadcast_group">Group Text</string>
@@ -176,6 +177,9 @@ Number</string>
     <string name="brodcaste_tank_you">Your Broadcast \n has been sent!</string>
     <string name="broadcast_Send_Now">Send Now</string>
     <string name="broadcast_Schedule">Schedule</string>
+
+    <string name="email_Send_Now">Send task now</string>
+    <string name="email_Schedule">Schedule task</string>
 
     <array name="broadcast_repeat_list">
         <item>Daily</item>
@@ -380,4 +384,8 @@ Number</string>
     <string name="composse_email">Compose Email</string>
     <string name="email_txt">click here to send \n an email </string>
     <string name="create_new_email">Create new email</string>
+    <string name="create_new_sms">Create new sms task</string>
+    <string name="email_task_txt">Schedule my task</string>
+    <string name="email_date">Please Select date</string>
+    <string name="email_time">Select time</string>
 </resources>
