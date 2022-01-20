@@ -388,4 +388,5 @@ Number</string>
     <string name="email_task_txt">Schedule my task</string>
     <string name="email_date">Please Select date</string>
     <string name="email_time">Select time</string>
+    <string name="sms_txt">Message</string>
 </resources>

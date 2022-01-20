@@ -48,11 +48,25 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Manual_email_and_sms.Sms_Detail_Activty"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Manual_Sms_TaskActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Manual_Sms_Send_Activty"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Manual_email_and_sms.Email_Detail_activty"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Manual_email_and_sms.Manual_Sms_Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Manual_email_and_sms.Manual_Email_TaskActivity_"
             android:exported="false"

@@ -23,6 +23,9 @@ import android.widget.TextView;
 
 import com.contactninja.Email.Email_Selction_Activity;
 import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_and_sms.Email_Detail_activty;
+import com.contactninja.Manual_email_and_sms.Manual_Sms_Activity;
+import com.contactninja.Manual_email_and_sms.Sms_Detail_Activty;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -100,12 +103,12 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
         switch (view.getId()) {
             case R.id.add_new_contect_layout:
                 SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                startActivity(new Intent(getActivity(), Email_Selction_Activity.class));
+                startActivity(new Intent(getActivity(), Manual_Sms_Activity.class));
                 //finish();
                 break;
             case R.id.demo_layout:
                 SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                startActivity(new Intent(getActivity(), Email_Selction_Activity.class));
+                startActivity(new Intent(getActivity(), Manual_Sms_Activity.class));
                 //  finish();
                 break;
 
@@ -237,6 +240,14 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             holder.no_image.setText(add_text);
             holder.no_image.setVisibility(View.VISIBLE);
             holder.profile_image.setVisibility(View.GONE);
+            holder.layout_contec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SessionManager.setManualTaskModel(item);
+                    Intent intent=new Intent(getActivity(), Sms_Detail_Activty.class);
+                    startActivity(intent);
+                }
+            });
 
         }
 
@@ -249,6 +260,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_username, tv_task_description, tv_time,no_image,tv_status;
             CircleImageView profile_image;
+            LinearLayout layout_contec;
             public viewData(@NonNull View itemView) {
                 super(itemView);
                 tv_username = itemView.findViewById(R.id.tv_username);
@@ -258,6 +270,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
                 profile_image = itemView.findViewById(R.id.profile_image);
                 tv_status=itemView.findViewById(R.id.tv_status);
                 tv_status.setVisibility(View.VISIBLE);
+                layout_contec=itemView.findViewById(R.id.layout_contec);
             }
         }
     }

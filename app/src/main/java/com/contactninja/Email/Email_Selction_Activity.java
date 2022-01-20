@@ -587,6 +587,7 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
                             {
                               /*  holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                 holder1.add_new_contect_icon.setVisibility(View.GONE);*/
+                                contacts.get(position).setContactDetails(detailList);
                                 select_contectListData.add(contacts.get(position));
                                 num_count.setText(select_contectListData.size() + " Contact Selcted");
                                 contacts.get(position).setFlag("false");
