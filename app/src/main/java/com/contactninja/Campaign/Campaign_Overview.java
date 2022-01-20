@@ -766,13 +766,15 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     }.getType();
 
                     CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
-                    if (user_model1.getSeqProspectCount()==null)
-                    {
-                        seq_prospect_count=0;
+                    if(user_model1.getSequenceProspects().size()!=0){
+                        if (user_model1.getSeqProspectCount()==null)
+                        {
+                            seq_prospect_count=0;
 
-                    }
-                    else {
-                        seq_prospect_count=user_model1.getSeqProspectCount().getTotal();
+                        }
+                        else {
+                            seq_prospect_count=user_model1.getSeqProspectCount().getTotal();
+                        }
                     }
                     sequence_task_id=user_model1.getSequenceTask().get(0).getId();
                     campaign_overviewAdapter.addAll(user_model1.getSequenceTask());

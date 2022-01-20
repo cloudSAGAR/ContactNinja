@@ -29,7 +29,7 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/shape_border_eee">
+                android:background="@drawable/shape_25_white_eee_line">
                 <ImageView
                     android:id="@+id/search_icon"
                     android:layout_marginStart="@dimen/_15sdp"

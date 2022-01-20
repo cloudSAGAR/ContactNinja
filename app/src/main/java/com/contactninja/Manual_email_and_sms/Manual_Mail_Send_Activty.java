@@ -28,9 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.Broadcast.Broadcst_Activty;
-import com.contactninja.Campaign.Campaign_List_Activity;
-import com.contactninja.Email.Mail_Send_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -917,7 +914,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                             }
                         };
                         handler.postDelayed(r, 1000);
-                        holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
                         interfaceClick.OnClick(item.getDescription());
                     }

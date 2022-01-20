@@ -25,7 +25,7 @@ android:visibility="gone"
         android:layout_marginTop="@dimen/_40sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingStart="@dimen/_10sdp"
-        android:background="@drawable/shape_blue_back_dialog"
+        android:background="@drawable/shape_15_blue"
         android:orientation="vertical">
 
         <TextView

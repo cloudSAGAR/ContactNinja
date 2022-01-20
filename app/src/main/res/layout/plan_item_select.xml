@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 <LinearLayout
     android:padding="@dimen/_10sdp"
-    android:background="@drawable/shape_blue_10"
+    android:background="@drawable/shape_10_blue"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">

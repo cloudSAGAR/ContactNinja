@@ -168,6 +168,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         campaingAdepter.clear();
         try {
             if (Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
+                if (!swipeToRefresh.isRefreshing()) {
+                    loadingDialog.showLoadingDialog();
+                }
                 Campaing_list();
             }
         } catch (JSONException e) {
@@ -214,6 +217,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         campaignList.clear();
         try {
             if (Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
+                if (!swipeToRefresh.isRefreshing()) {
+                    loadingDialog.showLoadingDialog();
+                }
                 Campaing_list();
             }
         } catch (JSONException e) {
@@ -222,9 +228,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     }
 
     private void Campaing_list() throws JSONException {
-        if (!swipeToRefresh.isRefreshing()) {
-            loadingDialog.showLoadingDialog();
-        }
+
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -237,6 +241,8 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
         paramObject.addProperty("q", ev_search.getText().toString());
+        paramObject.addProperty("perPage", perPage);
+        paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();
@@ -276,7 +282,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             campaingAdepter.addItems(campaignList);
                             swipeToRefresh.setRefreshing(false);
                             // check weather is last page or not
-                            if (campaignList.size() >= perPage) {
+                            if (campaign.getTotal() > campaingAdepter.getItemCount()) {
                                 campaingAdepter.addLoading();
                             } else {
                                 isLastPage = true;
@@ -346,19 +352,26 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
             intent.putExtra("sequence_id", campaign.getId());
             startActivity(intent);
-        }else if (contect_list_count.equals("0")) {
+        }else if (campaign.getStatus().equals("I")){
+            if(campaign.getStarted_on()!=null&&!campaign.getStarted_on().equals("")&&campaign.getProspect()!=0){
+                Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
+                intent.putExtra("sequence_id", campaign.getId());
+                startActivity(intent);
+            }else{
+                if (contect_list_count.equals("0")) {
+                    Intent intent = new Intent(getApplicationContext(), Campaign_Overview.class);
+                    intent.putExtra("sequence_id", campaign.getId());
+                    startActivity(intent);
+                    //   finish();
+                } else {
+                    SessionManager.setCampign_flag("read");
+                    Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                    intent.putExtra("sequence_id", campaign.getId());
+                    startActivity(intent);
+                    //finish();
 
-            Intent intent = new Intent(getApplicationContext(), Campaign_Overview.class);
-            intent.putExtra("sequence_id", campaign.getId());
-            startActivity(intent);
-         //   finish();
-        } else {
-            SessionManager.setCampign_flag("read");
-            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-            intent.putExtra("sequence_id", campaign.getId());
-            startActivity(intent);
-            //finish();
-
+                }
+            }
         }
 
     }
@@ -436,15 +449,17 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         @Override
         public void onBindViewHolder(@NonNull CampaingAdepter.viewData holder, int position) {
             Campaign_List.Campaign campaign = campaignList.get(position);
-            holder.campaign_name.setText(campaign.getSeqName());
-            setImage(campaign, holder);
+            if(Global.IsNotNull(campaign.getSeqName())){
+                holder.campaign_name.setText(campaign.getSeqName());
+                setImage(campaign, holder);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        campaingClick.OnClick(campaign);
+                    }
+                });
+            }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    campaingClick.OnClick(campaign);
-                }
-            });
 
         }
 
@@ -456,7 +471,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     holder.iv_puse_icon.setVisibility(View.GONE);
                     break;
                 case "I":
-                    if (campaign.getStarted_on() != null) {
+                    if (campaign.getStarted_on() != null&&!campaign.getStarted_on().equals("")&&campaign.getProspect()!=0) {
                         holder.iv_puse_icon.setVisibility(View.VISIBLE);
                         holder.iv_hold.setVisibility(View.GONE);
                     } else {

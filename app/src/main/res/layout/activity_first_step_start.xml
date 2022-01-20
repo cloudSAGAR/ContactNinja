@@ -46,7 +46,7 @@
         android:layout_below="@+id/line_view"
         android:layout_gravity="center"
         android:layout_margin="@dimen/_25sdp"
-        android:background="@drawable/shape_border_gray_edit"
+        android:background="@drawable/shape_10_white_gray_line"
         android:focusable="true"
         android:gravity="left"
 
@@ -79,7 +79,7 @@
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
-            android:background="@drawable/shape_blue_back"
+            android:background="@drawable/shape_5_blue"
             android:textSize="@dimen/_12sdp"
             android:layout_width="wrap_content"
             android:layout_gravity="center"

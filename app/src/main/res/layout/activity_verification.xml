@@ -82,7 +82,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/_13sdp"
             android:textColor="@color/otp_background"
-            android:background="@drawable/shape_white_25_corner"
+            android:background="@drawable/shape_25_white_blue_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"/>
 

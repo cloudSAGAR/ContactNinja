@@ -69,7 +69,7 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@drawable/shape_border_ccc"
+        android:background="@drawable/shape_5_white_ccc_line"
         android:orientation="vertical">
 
         <LinearLayout
@@ -297,7 +297,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@drawable/shape_border_ccc"
+            android:background="@drawable/shape_5_white_ccc_line"
             android:orientation="vertical">
 
             <LinearLayout
@@ -569,7 +569,7 @@
             android:id="@+id/tv_add_new_step"
             style="@style/tv_regular"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/shape_blue_back"
+            android:background="@drawable/shape_5_blue"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:textSize="@dimen/_14sdp"

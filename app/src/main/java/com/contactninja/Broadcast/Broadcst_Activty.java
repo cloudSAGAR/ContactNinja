@@ -390,7 +390,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
             }
         });
         if(item.isScelect()){
-            holder.layout_select_image.setBackgroundResource(R.drawable.shape_blue_10);
+            holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
         }else {
             holder.layout_select_image.setBackground(null);
         }

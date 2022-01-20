@@ -304,7 +304,7 @@
     <LinearLayout
         android:visibility="gone"
         android:layout_marginStart="@dimen/_55sdp"
-        android:background="@drawable/shape_border_cccc"
+        android:background="@drawable/shape_15_white_cccc_line"
         android:layout_width="match_parent"
         android:padding="@dimen/_10sdp"
         android:orientation="vertical"

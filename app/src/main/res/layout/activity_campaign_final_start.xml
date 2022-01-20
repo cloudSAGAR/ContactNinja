@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
-        android:background="@drawable/shape_blue_back_dialog"
+        android:background="@drawable/shape_15_blue"
         android:orientation="vertical"
         android:padding="@dimen/_15sdp">
 

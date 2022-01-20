@@ -117,7 +117,7 @@
             android:textStyle="bold"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@drawable/shape_blue_10"
+            android:background="@drawable/shape_10_blue"
             android:textSize="@dimen/_13sdp"
             android:text="Apply"
             android:layout_gravity="center|end"

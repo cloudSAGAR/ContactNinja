@@ -191,7 +191,7 @@
                     android:src="@drawable/ic_done"
                     android:padding="@dimen/_5sdp"
                     android:layout_gravity="center"
-                    android:background="@drawable/shape_blue_back_dialog"
+                    android:background="@drawable/shape_15_blue"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"/>
 

@@ -147,7 +147,7 @@
                                 android:id="@+id/select_label"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/_27sdp"
-                                android:background="@drawable/shape_border_ccc"
+                                android:background="@drawable/shape_5_white_ccc_line"
                                 android:paddingStart="@dimen/_20sdp"
                                 android:paddingEnd="@dimen/_20sdp">
 
@@ -265,7 +265,7 @@
                                 android:layout_height="@dimen/_40sdp"
                                 android:layout_gravity="center|top"
                                 android:layout_marginStart="@dimen/_5sdp"
-                                android:background="@drawable/shape_blue_back"
+                                android:background="@drawable/shape_5_blue"
                                 android:gravity="center|top">
 
                                 <TextView
@@ -481,7 +481,7 @@
                             android:id="@+id/select_email_label"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_27sdp"
-                            android:background="@drawable/shape_border_ccc"
+                            android:background="@drawable/shape_5_white_ccc_line"
                             android:paddingStart="@dimen/_20sdp"
                             android:paddingEnd="@dimen/_20sdp"
                             android:visibility="gone">
@@ -1138,7 +1138,7 @@
                     android:id="@+id/select_state"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_27sdp"
-                    android:background="@drawable/shape_border_ccc"
+                    android:background="@drawable/shape_5_white_ccc_line"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
                     android:visibility="gone">
@@ -1300,7 +1300,7 @@
                         android:paddingTop="@dimen/_4sdp"
                         android:paddingBottom="@dimen/_4sdp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_border_ccc"
+                        android:background="@drawable/shape_5_white_ccc_line"
                         android:paddingStart="@dimen/_20sdp"
                         android:paddingEnd="@dimen/_20sdp">
 

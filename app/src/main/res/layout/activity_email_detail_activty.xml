@@ -184,7 +184,7 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:background="@drawable/shape_blue_50"
+        android:background="@drawable/shape_50_blue"
         android:layout_width="match_parent"
         android:textSize="@dimen/_15sdp"
         style="@style/tv_Medium"

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:background="@drawable/shape_border_20_white"
+        android:background="@drawable/shape_20_white"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_aleartMessage"
