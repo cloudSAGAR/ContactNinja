@@ -814,27 +814,32 @@ e.printStackTrace();
 
 
             }
+            if (SessionManager.getContect_flag(getActivity()).equals("read")) {
 
-            holder.top_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (int i = 0; i < contectListData.size(); i++) {
-                        if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId())) {
-                            groupContectAdapter.notifyItemChanged(i);
-                            contectListData.get(i).setFlag("true");
+            }
+            else {
+                holder.top_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for (int i = 0; i < contectListData.size(); i++) {
+                            if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId())) {
+                                groupContectAdapter.notifyItemChanged(i);
+                                contectListData.get(i).setFlag("true");
 
+                            }
                         }
+                        userDetails.remove(position);
+                        topUserListDataAdapter.notifyDataSetChanged();
+
+                        num_count.setText(userDetails.size() + " Contacts");
+                        SessionManager.setGroupList(getActivity(), new ArrayList<>());
+                        SessionManager.setGroupList(getActivity(), select_contectListData);
+
+
                     }
-                    userDetails.remove(position);
-                    topUserListDataAdapter.notifyDataSetChanged();
+                });
 
-                    num_count.setText(userDetails.size() + " Contacts");
-                    SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                    SessionManager.setGroupList(getActivity(), select_contectListData);
-
-
-                }
-            });
+            }
 
             if (userDetails.get(position).getFlag().equals("true")) {
                 Log.e("Call", "Yes");
@@ -1104,69 +1109,75 @@ e.printStackTrace();
                     }
 
 
-                    holder1.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    if (SessionManager.getContect_flag(getActivity()).equals("read")) {
 
-                            Log.e("Contect Detail Size is", String.valueOf(contacts.get(position).getContactDetails().size()));
-                            List<ContectListData.Contact.ContactDetail> detailList=new ArrayList<>();
+                    }
+                    else {
+                        holder1.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                            detailList.clear();
-                            for (int i=0;i<contacts.get(position).getContactDetails().size();i++)
-                            {
-                                if (contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
+                                Log.e("Contect Detail Size is", String.valueOf(contacts.get(position).getContactDetails().size()));
+                                List<ContectListData.Contact.ContactDetail> detailList=new ArrayList<>();
+
+                                detailList.clear();
+                                for (int i=0;i<contacts.get(position).getContactDetails().size();i++)
                                 {
-                                    detailList.add(contacts.get(position).getContactDetails().get(i));
+                                    if (contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
+                                    {
+                                        detailList.add(contacts.get(position).getContactDetails().get(i));
+                                    }
+                                    else {
+                                        // detailList.add(contacts.get(position).getContactDetails().get(i));
+                                    }
                                 }
-                                else {
-                                    // detailList.add(contacts.get(position).getContactDetails().get(i));
+                                if (detailList.size()==1)
+                                {
+                                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+                                    select_contectListData.add(contacts.get(position));
+                                    //userDetailsfull.get(position).setId(position);
+                                    topUserListDataAdapter.notifyDataSetChanged();
+                                    num_count.setText(select_contectListData.size() + " Contact Selcted");
+                                    contacts.get(position).setFlag("false");
+
+                                    SessionManager.setGroupList(getActivity(), new ArrayList<>());
+                                    SessionManager.setGroupList(getActivity(), select_contectListData);
+
+
+                                }
+                                else if (detailList.size()>=1)
+                                {
+                                    for(int i=0;i<detailList.size();i++){
+                                        if(detailList.get(i).getIsDefault()==1){
+                                            detailList.get(i).setPhoneSelect(true);
+                                            break;
+                                        }
+                                    }
+                                    Phone_bouttomSheet(detailList,holder1,contacts,position);
+                                    Log.e("Size is","More ONE");
                                 }
                             }
-                            if (detailList.size()==1)
-                            {
-                                holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                                holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                select_contectListData.add(contacts.get(position));
-                                //userDetailsfull.get(position).setId(position);
-                                topUserListDataAdapter.notifyDataSetChanged();
-                                num_count.setText(select_contectListData.size() + " Contact Selcted");
-                                contacts.get(position).setFlag("false");
+                        });
+                        holder1.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Log.e("On Click Remove ","Remove");
 
+                                holder1.remove_contect_icon.setVisibility(View.GONE);
+                                holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
+                                topUserListDataAdapter.remove_item(position, contacts.get(position).getId());
+                                topUserListDataAdapter.notifyDataSetChanged();
+                                //Log.e("Size is",new Gson().toJson(select_contectListData));
+                                num_count.setText(select_contectListData.size() + " Contact Selcted");
+                                contacts.get(position).setFlag("true");
                                 SessionManager.setGroupList(getActivity(), new ArrayList<>());
                                 SessionManager.setGroupList(getActivity(), select_contectListData);
 
-
                             }
-                            else if (detailList.size()>=1)
-                            {
-                                for(int i=0;i<detailList.size();i++){
-                                    if(detailList.get(i).getIsDefault()==1){
-                                        detailList.get(i).setPhoneSelect(true);
-                                        break;
-                                    }
-                                }
-                                Phone_bouttomSheet(detailList,holder1,contacts,position);
-                                Log.e("Size is","More ONE");
-                            }
-                        }
-                    });
-                    holder1.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // Log.e("On Click Remove ","Remove");
+                        });
 
-                            holder1.remove_contect_icon.setVisibility(View.GONE);
-                            holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                            topUserListDataAdapter.remove_item(position, contacts.get(position).getId());
-                            topUserListDataAdapter.notifyDataSetChanged();
-                            //Log.e("Size is",new Gson().toJson(select_contectListData));
-                            num_count.setText(select_contectListData.size() + " Contact Selcted");
-                            contacts.get(position).setFlag("true");
-                            SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                            SessionManager.setGroupList(getActivity(), select_contectListData);
-
-                        }
-                    });
+                    }
 
 
 
