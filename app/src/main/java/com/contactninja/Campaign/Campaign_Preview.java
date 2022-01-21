@@ -80,6 +80,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     LinearLayout layout_toolbar_logo;
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
+    List<CampaignTask_overview.SequenceTask> main_data=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         Global.count=1;
 
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
-            StepData();
+           // StepData();
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
@@ -104,7 +105,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             save_button.setVisibility(View.VISIBLE);
             add_icon.setVisibility(View.VISIBLE);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            StepData();
+            //StepData();
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
 
@@ -367,7 +368,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     campaignTask.setStepNo(sequenceTask.getStepNo());;
 
                     campaignTasks1.add(campaignTask);*/
-                    Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                    Intent intent=new Intent(getApplicationContext(),Automated_Email_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -385,7 +386,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
-                    finish();
+//                    finish();
                     bottomSheetDialog.cancel();
 
                 }
@@ -431,7 +432,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                    Intent intent=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -448,10 +449,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
-                    finish();
+    //                finish();
                     bottomSheetDialog.cancel();
                 }
-                finish();
+  //              finish();
                 bottomSheetDialog.cancel();
 
             }
@@ -554,7 +555,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                             CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
                             contect_count.setText(user_model1.get0().getProspect() + " Prospects");
                             sequence_task_id = user_model1.getSequenceTask().get(0).getId();
-                            campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
+                            main_data.clear();
+                            campaign_overviewAdapter.remove_all();
+                            main_data=user_model1.getSequenceTask();
+                            campaign_overviewAdapter.addAll(main_data);
                             tv_name.setText(user_model1.get0().getSeqName());
                             topUserListDataAdapter = new TopUserListDataAdapter(Campaign_Preview.this, getApplicationContext(), user_model1.getSequenceProspects());
                             user_contect.setAdapter(topUserListDataAdapter);
@@ -799,6 +803,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             movieList.remove(position);
             notifyDataSetChanged();
         }
+        public void remove_all() {
+            movieList.clear();
+            notifyDataSetChanged();
+        }
 
         public void removeLoadingFooter() {
             isLoadingAdded = false;
@@ -975,6 +983,12 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
         }
 
+    }
+    public void onResume() {
+        loadingDialog.cancelLoading();
+        Global.count=1;
+        StepData();
+        super.onResume();
     }
 
 

@@ -637,9 +637,19 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                     Type listType = new TypeToken<List<CampaignTask>>() {
                     }.getType();
                     List<CampaignTask> user_model1 = new Gson().fromJson(headerString, listType);
-                    SessionManager.setTask(getApplicationContext(), user_model1);
-                    startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
-                    finish();
+                    Intent inten=getIntent();
+                    Bundle bundle=inten.getExtras();
+                    String flag=bundle.getString("flag");
+                    if (flag.equals("edit"))
+                    {
+                        finish();
+                    }
+                    else {
+                        SessionManager.setTask(getApplicationContext(), user_model1);
+                        startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
+                        finish();
+                    }
+
                 } else {
 
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
