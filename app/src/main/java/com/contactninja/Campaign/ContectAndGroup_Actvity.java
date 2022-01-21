@@ -396,6 +396,15 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                                    startActivity(intent);
                                    finish();
                                }
+                               else if (SessionManager.getContect_flag(getApplicationContext()).equals("edit"))
+                               {
+                                   SessionManager.setCampign_flag("read");
+                                   Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                                   intent.putExtra("sequence_id", sequence_id);
+                                   startActivity(intent);
+                                   finish();
+
+                               }
                               else {
                                    Intent intent=new Intent(getApplicationContext(),Campaign_Name_Activity.class);
                                    intent.putExtra("sequence_id",sequence_id);
