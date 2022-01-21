@@ -138,6 +138,17 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
             fragmentTransaction.commitAllowingStateLoss();
         }
+        else if (SessionManager.getContect_flag(getApplicationContext()).equals("check"))
+        {
+            tabLayout.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
+            Fragment fragment = new Campaign_Contect_Fragment(this);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+            fragmentTransaction.commitAllowingStateLoss();
+        }
+
         else {
 
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
@@ -342,6 +353,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                 Log.e("Contec List Size",String.valueOf(contactdetails.get(0).getContactDetails().size()));
                 JSONObject paramObject1 = new JSONObject();
                 paramObject1.put("prospect_id",contactdetails.get(i).getId());
+               Log.e("Contect Detail is",new Gson().toJson(contactdetails.get(i).getContactDetails()));
                 for (int j=0;j<contactdetails.get(i).getContactDetails().size();j++)
                 {
                     if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
