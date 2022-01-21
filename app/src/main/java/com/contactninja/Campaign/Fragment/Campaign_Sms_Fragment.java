@@ -57,7 +57,7 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
             }
 
         }
-      /*  Intent intent=getActivity().getIntent();
+       Intent intent=getActivity().getIntent();
         Bundle bundle=intent.getExtras();
         String flag=bundle.getString("flag");
         if (flag.equals("edit")) {
@@ -104,7 +104,7 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
                 }
             }
 
-        }*/
+        }
 
 
 

@@ -581,7 +581,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     campaignTask.setStepNo(sequenceTask.getStepNo());;
 
                     campaignTasks1.add(campaignTask);*/
-                    Intent intent=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                    Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -645,7 +645,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Intent intent=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                    Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());

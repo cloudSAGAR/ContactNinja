@@ -389,7 +389,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     campaignTask.setStepNo(sequenceTask.getStepNo());;
 
                     campaignTasks1.add(campaignTask);*/
-                    Intent intent=new Intent(getActivity(), Automated_Email_Activity.class);
+                    Intent intent=new Intent(getActivity(), First_Step_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -453,7 +453,7 @@ public class Campaign_Step_Fragment extends Fragment {
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Intent intent=new Intent(getActivity(), First_Step_Start_Activity.class);
+                    Intent intent=new Intent(getActivity(), First_Step_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());

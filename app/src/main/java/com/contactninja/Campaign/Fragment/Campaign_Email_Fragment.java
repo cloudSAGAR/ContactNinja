@@ -48,7 +48,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
             }
 
         }
-        /*Intent intent=getActivity().getIntent();
+        Intent intent=getActivity().getIntent();
         Bundle bundle=intent.getExtras();
         String flag=bundle.getString("flag");
         if (flag.equals("edit")) {
@@ -99,7 +99,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
             }
 
 
-        }*/
+        }
 
         auto_layout.setOnClickListener(this);
         manual_layout.setOnClickListener(this);
