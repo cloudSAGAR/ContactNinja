@@ -322,7 +322,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             PhoneViewAdd();
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
 
             Log.e("Model Data", new Gson().toJson(user_data_model));
             edt_mobile_no.setEnabled(false);

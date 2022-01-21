@@ -242,7 +242,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                 finish();
                 break;
             case R.id.iv_submit:
-                Log.e("Text is",edit_template.getText().toString());
+              //  Log.e("Text is",edit_template.getText().toString());
                 if (edit_template.getText().toString().equals(""))
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,"Add Message",false);

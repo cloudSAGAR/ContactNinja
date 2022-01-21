@@ -252,8 +252,16 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                 finish();
                 break;
             case R.id.save_button:
-                broadcast_manu();
+                if (ev_subject.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
+                }
+                else if (edit_template.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
+                }
+                else {
+                    broadcast_manu();
+                }
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
@@ -275,21 +283,14 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
         lay_sendnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ev_subject.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
-                }
-                else if (edit_template.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
-                }
-                else {
                     try {
 
                         EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
+
 
             }
         });
