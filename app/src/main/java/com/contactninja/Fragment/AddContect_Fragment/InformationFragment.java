@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.AddContect.Message_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -1098,7 +1099,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), response.body().getStatus() == 200);
+                Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), response.body().getHttp_status() == 200);
             }
 
             @Override
@@ -1146,7 +1147,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), response.body().getStatus() == 200);
+                Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), response.body().getHttp_status() == 200);
             }
 
             @Override
@@ -1265,8 +1266,16 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showAlertDialogButtonClicked1(p_num, id, "app");
-                dialog.dismiss();
+
+
+           Intent intent=new Intent(getActivity(), Message_Activity.class);
+           intent.putExtra("number",p_num);
+           intent.putExtra("id",id);
+           intent.putExtra("type","app");
+           startActivity(intent);
+
+         //  showAlertDialogButtonClicked1(p_num, id, "app");
+
 
 
             }
@@ -1300,9 +1309,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         for (int i = 0; i < 1; i++) {
             JSONObject paramObject1 = new JSONObject();
             paramObject1.put("prospect_id", id);
-            JSONArray contect_array = new JSONArray();
+            paramObject1.put("mobile", email);
+           /* JSONArray contect_array = new JSONArray();
             contect_array.put(email);
-            paramObject1.put("email_mobile", contect_array);
+            paramObject1.put("email_mobile", contect_array);*/
             jsonArray.put(paramObject1);
             break;
         }
@@ -1321,7 +1331,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     String jsonRawData = new Gson().toJson(response.body());
 
@@ -1408,9 +1418,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         for (int i = 0; i < 1; i++) {
             JSONObject paramObject1 = new JSONObject();
             paramObject1.put("prospect_id", id);
-            JSONArray contect_array = new JSONArray();
+            paramObject1.put("email", email);
+          /*  JSONArray contect_array = new JSONArray();
             contect_array.put(email);
-            paramObject1.put("email_mobile", contect_array);
+            paramObject1.put("email_mobile", contect_array);*/
             jsonArray.put(paramObject1);
             break;
         }
@@ -1429,7 +1440,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     String jsonRawData = new Gson().toJson(response.body());
 
@@ -2466,7 +2477,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());

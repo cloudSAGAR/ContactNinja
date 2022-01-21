@@ -55,10 +55,18 @@ public interface RetrofitApiInterface {
 
 
 
-    @POST("contact/bulk/update")
-    Call<ApiResponse> updatecontect(@Header("Accept") String api, @Header("Authorization") String auth,
+    @POST("user/profile/update")
+    Call<ApiResponse> update_user_profiel(@Header("Accept") String api, @Header("Authorization") String auth,
                                  @Body JsonObject body,
                                  @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
+
+
+    @POST("contact/bulk/update")
+    Call<ApiResponse> updatecontect(@Header("Accept") String api, @Header("Authorization") String auth,
+                                    @Body JsonObject body,
+                                    @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
 
 
     @POST("contact/group/add")
@@ -119,6 +127,10 @@ public interface RetrofitApiInterface {
 
    @POST("usergmail/list")
     Call<ApiResponse> Mail_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+ @POST("manual_task/list")
+    Call<ApiResponse> Mail_Activiy_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                 @Body JsonObject jsonObject,
                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
 

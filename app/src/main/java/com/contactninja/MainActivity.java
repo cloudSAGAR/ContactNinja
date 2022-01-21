@@ -204,14 +204,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onPermissionGranted() {
                 if (sessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
-                    GetContactsIntoArrayList();
                 }
+             //  GetContactsIntoArrayList();
 
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-
                 EnableRuntimePermission();
             }
 
@@ -256,13 +255,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         while (cursor.moveToNext()) {
-
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
             user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
-
-
             TelephonyManager tm = (TelephonyManager) getSystemService(getApplicationContext().TELEPHONY_SERVICE);
             String country = tm.getNetworkCountryIso();
             int countryCode = 0;
@@ -271,8 +267,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // phone must begin with '+'
                 Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
                 countryCode = numberProto.getCountryCode();
-
-
                 user_phone_number = user_phone_number.replace(" ", "");
                 user_phone_number = user_phone_number.replace("-", "");
                 if (!user_phone_number.contains("+")) {
@@ -284,13 +278,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 contect_email = "";
                 region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
-
                 contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
                 contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
                 email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
                 email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
-
-
                 country = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
                 // StructuredPostal.CITY == data7
                 city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
@@ -495,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void success(Response<ApiResponse> response) {
                         sessionManager.setcontectexits("1");
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
 
                             SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
                             user_data.getUser().setIs_contact_exist(1);
@@ -562,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     SessionManager.setContectList(getApplicationContext(), new ArrayList<>());
                     Gson gson = new Gson();
@@ -843,6 +834,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
+                sessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
+
                 Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
                 startActivity(intent);
                 //finish();
@@ -1090,7 +1084,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     try {
                         ContectEvent();
                     } catch (JSONException e) {

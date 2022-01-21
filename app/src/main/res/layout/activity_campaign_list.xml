@@ -27,7 +27,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/shape_border_eee">
+            android:background="@drawable/shape_25_white_eee_line">
             <ImageView
                 android:id="@+id/search_icon"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -46,6 +46,8 @@
                 android:textColor="@color/tv_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionSearch"
                 android:background="@color/add_contect_transpernt"
                 >
 

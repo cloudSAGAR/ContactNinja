@@ -12,9 +12,12 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -122,6 +126,17 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 return isLoading;
             }
         });
+
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                     onResume();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void IntentUI() {
@@ -155,6 +170,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         campaingAdepter.clear();
         try {
             if (Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
+                if (!swipeToRefresh.isRefreshing()) {
+                    loadingDialog.showLoadingDialog();
+                }
                 Campaing_list();
             }
         } catch (JSONException e) {
@@ -194,12 +212,16 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
     @Override
     public void onRefresh() {
+        ev_search.setText("");
         currentPage = PAGE_START;
         isLastPage = false;
         campaingAdepter.clear();
         campaignList.clear();
         try {
             if (Global.isNetworkAvailable(Campaign_List_Activity.this, MainActivity.mMainLayout)) {
+                if (!swipeToRefresh.isRefreshing()) {
+                    loadingDialog.showLoadingDialog();
+                }
                 Campaing_list();
             }
         } catch (JSONException e) {
@@ -208,9 +230,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     }
 
     private void Campaing_list() throws JSONException {
-        if (!swipeToRefresh.isRefreshing()) {
-            loadingDialog.showLoadingDialog();
-        }
+
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -222,6 +242,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("q", ev_search.getText().toString());
+        paramObject.addProperty("perPage", perPage);
+        paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();
@@ -240,7 +263,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
 
 
                             Type listType = new TypeToken<Campaign_List>() {
@@ -261,7 +284,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             campaingAdepter.addItems(campaignList);
                             swipeToRefresh.setRefreshing(false);
                             // check weather is last page or not
-                            if (campaignList.size() >= perPage) {
+                            if (campaign.getTotal() > campaingAdepter.getItemCount()) {
                                 campaingAdepter.addLoading();
                             } else {
                                 isLastPage = true;
@@ -297,7 +320,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_minute("");
                 Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
+                Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                intent.putExtra("flag","new");
+                startActivity(intent);
                 //finish();
                 break;
             case R.id.add_campaign_layout:
@@ -307,7 +332,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_minute("");
                 Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                startActivity(new Intent(getApplicationContext(), First_Step_Activity.class));
+                Intent intent1=new Intent(getApplicationContext(),First_Step_Activity.class);
+                intent1.putExtra("flag","new");
+                startActivity(intent1);
                 // finish();
                 break;
         }
@@ -327,23 +354,32 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
             intent.putExtra("sequence_id", campaign.getId());
             startActivity(intent);
-        }else if (contect_list_count.equals("0")) {
+        }else if (campaign.getStatus().equals("I")){
+            if(campaign.getStarted_on()!=null&&!campaign.getStarted_on().equals("")&&campaign.getProspect()!=0){
+                Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
+                intent.putExtra("sequence_id", campaign.getId());
+                startActivity(intent);
+            }else{
+                if (contect_list_count.equals("0")) {
+                    Intent intent = new Intent(getApplicationContext(), Campaign_Overview.class);
+                    intent.putExtra("sequence_id", campaign.getId());
+                    startActivity(intent);
+                    //   finish();
+                } else {
+                    SessionManager.setCampign_flag("read");
+                    Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                    intent.putExtra("sequence_id", campaign.getId());
+                    startActivity(intent);
+                    //finish();
 
-            Intent intent = new Intent(getApplicationContext(), Campaign_Overview.class);
-            intent.putExtra("sequence_id", campaign.getId());
-            startActivity(intent);
-        } else {
-            SessionManager.setCampign_flag("read");
-            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-            intent.putExtra("sequence_id", campaign.getId());
-            startActivity(intent);
-
+                }
+            }
         }
 
     }
 
 
-    public static class CampaingAdepter extends RecyclerView.Adapter<CampaingAdepter.viewData> {
+    public class CampaingAdepter extends RecyclerView.Adapter<CampaingAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
@@ -415,15 +451,34 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         @Override
         public void onBindViewHolder(@NonNull CampaingAdepter.viewData holder, int position) {
             Campaign_List.Campaign campaign = campaignList.get(position);
-            holder.campaign_name.setText(campaign.getSeqName());
-            setImage(campaign, holder);
+            if(Global.IsNotNull(campaign.getSeqName())){
+                holder.campaign_name.setText(campaign.getSeqName());
+                setImage(campaign, holder);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    campaingClick.OnClick(campaign);
-                }
-            });
+
+
+
+                holder.campaign_name.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        campaingClick.OnClick(campaign);
+                    }
+                });
+                holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showAlertDialogButtonClicked(campaign.getId(),1);
+                    }
+                });
+                holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showAlertDialogButtonClicked(campaign.getId(),0);
+                    }
+                });
+
+            }
+
 
         }
 
@@ -435,7 +490,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     holder.iv_puse_icon.setVisibility(View.GONE);
                     break;
                 case "I":
-                    if (campaign.getStarted_on() != null) {
+                    if (campaign.getStarted_on() != null&&!campaign.getStarted_on().equals("")&&campaign.getProspect()!=0) {
                         holder.iv_puse_icon.setVisibility(View.VISIBLE);
                         holder.iv_hold.setVisibility(View.GONE);
                     } else {
@@ -453,7 +508,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         }
 
 
-        public static class viewData extends RecyclerView.ViewHolder {
+        public  class viewData extends RecyclerView.ViewHolder {
             TextView campaign_name;
             ImageView iv_hold, iv_puse_icon, iv_play_icon;
 
@@ -466,7 +521,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             }
         }
 
-        public static class ProgressHolder extends viewData {
+        public  class ProgressHolder extends viewData {
             ProgressHolder(View itemView) {
                 super(itemView);
             }
@@ -478,5 +533,77 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+
+
+    public void showAlertDialogButtonClicked(int sequence_id,int status) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this, R.style.MyDialogStyle);
+
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.campanign_aleart_dialog, null);
+        builder.setView(customLayout);
+        AlertDialog dialog
+                = builder.create();
+
+        TextView tv_message = customLayout.findViewById(R.id.tv_message);
+        if(status==1){
+            tv_message.setText("Are you sure you want to pause the campaign");
+        }else {
+            tv_message.setText("Are you sure you want to play the campaign");
+        }
+        TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartCampignApi(sequence_id,status,dialog);
+            }
+        });
+        dialog.show();
+    }
+    public void StartCampignApi(int sequence_id, int status, AlertDialog dialog) {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("record_id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        if(status==1){
+            paramObject.addProperty("status", "I");
+        }else {
+            paramObject.addProperty("status", "A");
+        }
+        obj.add("data", paramObject);
+        retrofitCalls.Sequence_settings(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_List_Activity.this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                        onResume();
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                        dialog.dismiss();
+                    }
+                });
     }
 }

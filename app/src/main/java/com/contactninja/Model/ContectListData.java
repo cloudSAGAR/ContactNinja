@@ -83,7 +83,7 @@ public class ContectListData {
         private String firstname;
         @SerializedName("lastname")
         @Expose
-        private String lastname;
+        private String lastname="";
         @SerializedName("job_title")
         @Expose
         private String jobTitle;

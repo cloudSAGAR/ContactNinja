@@ -363,7 +363,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 loadingDialog.cancelLoading();
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -415,21 +415,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }*/
 
 
-                } else if (response.body().getStatus()==404){
+                } else if (response.body().getHttp_status()==404){
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Log.e("String is",response.body().getMessage());
+                   // Log.e("String is",response.body().getMessage());
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
                     try{
-
-                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    //Log.e("Login_type",Login_type);
                     if (Login_type.equals("EMAIL"))
                     {
-                        if (response.body().getMessage().equals("Invalid Password."))
+                        if (response.body().getMessage().toString().equals("Invalid Password."))
                         {
                             iv_password_invalid.setText(getResources().getString(R.string.invalid_password));
                             iv_password_invalid.setVisibility(View.VISIBLE);
+                           //Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+
                         }
                         else {
                             iv_invalid.setVisibility(View.VISIBLE);
@@ -511,7 +512,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //Log.e("Response is",new Gson().toJson(response));
 
 
-                    if (response.body().getStatus() == 200) {
+                    if (response.body().getHttp_status() == 200) {
 
                         if(!Login_type.equals("EMAIL")){
                           /*  try {

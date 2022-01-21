@@ -257,7 +257,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             public void success(Response<ApiResponse> response) {
                 swipeToRefresh.setRefreshing(false);
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     grouplists.clear();
                     String headerString = gson.toJson(response.body().getData());
@@ -321,7 +321,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {

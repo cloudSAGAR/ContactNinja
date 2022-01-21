@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Campaign.Fragment.Campaign_Email_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Sms_Fragment;
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -33,6 +35,8 @@ import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class First_Step_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     SessionManager sessionManager;
@@ -41,6 +45,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     ImageView iv_back;
     TextView save_button;
     TabLayout tabLayout;
+    TextView add_new_contect;
+
     ViewPager viewPager;
     private int[] tabIcons = {
             R.drawable.ic_email,
@@ -48,8 +54,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     };
     LinearLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
-
-
+    SampleFragmentPagerAdapter pagerAdapter;
+    TabLayout.Tab tab;
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +66,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
-        SampleFragmentPagerAdapter pagerAdapter =
-                new SampleFragmentPagerAdapter(getSupportFragmentManager());
+
+        pagerAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
 
@@ -85,16 +91,54 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         });
         // Iterate over all tabs and set the custom view
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            tab = tabLayout.getTabAt(i);
             tab.setCustomView(pagerAdapter.getTabView(i));
         }
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        String flag=bundle.getString("flag");
+        if (flag.equals("edit"))
+        {
+            add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + bundle.getInt("step"));
+            String type=bundle.getString("type");
+            if (type.equals("SMS"))
+            {
+                viewPager.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        viewPager.setCurrentItem(1);
+                    }
+                }, 10);
+
+            }
+            else {
+                viewPager.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        viewPager.setCurrentItem(0);
+                    }
+                }, 10);
+
+            }
+        }
+        else {
+            if (SessionManager.getTask(getApplicationContext()).size() == 0) {
+                String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
+                String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+                add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + step_id);
+            } else {
+                List<CampaignTask> step=   SessionManager.getTask(getApplicationContext());
+                int step_id = step.get(0).getStepNo() + 1;
+                String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+                add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + step_id );
+
+            }
+        }
+
+
     }
-
-
-
-
-
-
 
     private void IntentUI() {
         iv_back=findViewById(R.id.iv_back);
@@ -106,6 +150,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
+        add_new_contect=findViewById(R.id.add_new_contect);
         mMainLayout=findViewById(R.id.mMainLayout);
 
 
@@ -128,10 +173,35 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                    {
                        //startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
 
-                       Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
-                       new_task.putExtra("flag","add");
-                       startActivity(new_task);
-                       finish();
+
+                       Intent intent=getIntent();
+                       Bundle bundle=intent.getExtras();
+                       String flag=bundle.getString("flag");
+                       if (flag.equals("edit"))
+                       {
+
+                           Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                           new_task.putExtra("flag","edit");
+                           new_task.putExtra("body",bundle.getString("body"));
+                           new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                           new_task.putExtra("manage_by",bundle.getString("manage_by"));
+                           new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
+                           new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
+                           new_task.putExtra("type",bundle.getString("type"));
+                           new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                           new_task.putExtra("header",bundle.getString("header"));
+                           new_task.putExtra("step",bundle.getInt("step"));
+                           startActivity(new_task);
+                           finish();
+
+                       }
+                       else {
+                           Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                           new_task.putExtra("flag","add");
+                           startActivity(new_task);
+                           finish();
+                       }
+
                    }
                    else {
                        if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
@@ -144,10 +214,35 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                        }
                        else {
 
-                           Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
-                           new_task.putExtra("flag","add");
-                           startActivity(new_task);
-                           finish();
+                           Intent intent=getIntent();
+                           Bundle bundle=intent.getExtras();
+                           String flag=bundle.getString("flag");
+                           if (flag.equals("edit"))
+                           {
+
+                               Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                               new_task.putExtra("flag","edit");
+                               new_task.putExtra("body",bundle.getString("body"));
+                               new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                               new_task.putExtra("manage_by",bundle.getString("manage_by"));
+                               new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
+                               new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
+                               new_task.putExtra("type",bundle.getString("type"));
+                               new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                               new_task.putExtra("header",bundle.getString("header"));
+                               new_task.putExtra("step",bundle.getInt("step"));
+                               startActivity(new_task);
+                               finish();
+
+                           }
+                           else {
+                               Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                               new_task.putExtra("flag","add");
+                               startActivity(new_task);
+                               finish();
+                           }
+
+
                        }
                    }
 
@@ -155,11 +250,33 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                else {
                    if (SessionManager.getTask(getApplicationContext()).equals(null))
                    {
-                        Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
-                        new_task.putExtra("flag","add");
-                        startActivity(new_task);
-                      // startActivity(new Intent(getApplicationContext(),First_Step_Start_Activity.class));
-                       finish();
+
+                       Intent intent=getIntent();
+                       Bundle bundle=intent.getExtras();
+                       String flag=bundle.getString("flag");
+                       if (flag.equals("edit"))
+                       {
+                           Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
+                           Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                           new_task.putExtra("flag","edit");
+                           new_task.putExtra("body",bundle.getString("body"));
+                           new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                           new_task.putExtra("manage_by",bundle.getString("manage_by"));
+                           new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
+                           new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
+                           new_task.putExtra("type",bundle.getString("type"));
+                           new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                           new_task.putExtra("step",bundle.getInt("step"));
+                           startActivity(new_task);
+                           finish();
+                       }
+                       else {
+                           Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                           new_task.putExtra("flag","add");
+                           startActivity(new_task);
+                           finish();
+                       }
+
                    }
                    else {
                        if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
@@ -176,10 +293,32 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                        }
                        else {
 
-                             Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
-                           new_task.putExtra("flag","add");
-                           startActivity(new_task);
-                           finish();
+                           Intent intent=getIntent();
+                           Bundle bundle=intent.getExtras();
+                           String flag=bundle.getString("flag");
+                           if (flag.equals("edit"))
+                           {
+                               Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
+
+                               Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                               new_task.putExtra("flag","edit");
+                               new_task.putExtra("body",bundle.getString("body"));
+                               new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                               new_task.putExtra("manage_by",bundle.getInt("manage_by"));
+                               new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
+                               new_task.putExtra("sequence_id",String.valueOf(bundle.getInt("sequence_id")));
+                               new_task.putExtra("type",bundle.getString("type"));
+                               new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                               new_task.putExtra("step",bundle.getInt("step"));
+                               startActivity(new_task);
+                               finish();
+                           }
+                           else {
+                               Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                               new_task.putExtra("flag","add");
+                               startActivity(new_task);
+                               finish();
+                           }
 
                        }
                    }

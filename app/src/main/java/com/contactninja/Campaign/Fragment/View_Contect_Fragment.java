@@ -269,6 +269,8 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
     void showBottomSheetDialog_Filtter() {
         bottomSheetDialog_fillter = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
         bottomSheetDialog_fillter.setContentView(R.layout.bottom_sheet_dialog_for_fillter);
+        TextView tv_clear=bottomSheetDialog_fillter.findViewById(R.id.tv_clear);
+        TextView tv_done=bottomSheetDialog_fillter.findViewById(R.id.tv_done);
         RecyclerView home_type_list = bottomSheetDialog_fillter.findViewById(R.id.home_type_list);
         RecyclerView home_type_list_general=bottomSheetDialog_fillter.findViewById(R.id.home_type_list_general);
         home_type_list_general.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -381,7 +383,6 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                 iv_message=itemView.findViewById(R.id.iv_message);
                 iv_email=itemView.findViewById(R.id.iv_email);
             }
-
         }
 
     }
@@ -435,17 +436,20 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                     holder1.userName.setText(Contact_data.getFirstname());
                     holder1.userNumber.setVisibility(View.GONE);
                     holder1.tv_step.setText("Step#"+Contact_data.getAstepNo());
-
-                    if (Contact_data.getAtype().equals("SMS"))
+                    try {
+                        if (Contact_data.getAtype().equals("SMS"))
+                        {
+                            holder1.iv_email.setVisibility(View.GONE);
+                            holder1.iv_mesage.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            holder1.iv_email.setVisibility(View.VISIBLE);
+                            holder1.iv_mesage.setVisibility(View.GONE);
+                        }
+                    }catch (Exception e)
                     {
-                        holder1.iv_email.setVisibility(View.GONE);
-                        holder1.iv_mesage.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        holder1.iv_email.setVisibility(View.VISIBLE);
-                        holder1.iv_mesage.setVisibility(View.GONE);
-                    }
 
+                    }
 
                         String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
                         String add_text = "";
@@ -462,8 +466,6 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                         } catch (Exception e) {
 e.printStackTrace();
                         }
-
-
                         holder1.main_layout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

@@ -100,6 +100,16 @@ public class RetrofitCalls {
 
 
 
+    public void UpdateUser_Profile(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.update_user_profiel(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
+
 
 
     public void AddGroup(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
@@ -146,6 +156,13 @@ public class RetrofitCalls {
     }
     public void Mail_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Mail_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+    public void Mail_Activiy_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Mail_Activiy_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
@@ -267,11 +284,6 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
-
-
-
-
-
     public void Email_execute(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Email_execute(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
@@ -395,7 +407,7 @@ public class RetrofitCalls {
                 loadingDialog.cancelLoading();
                 ApiResponse apiResponse=response.body();
                 try{
-                    if (apiResponse.getStatus() == 200) {
+                    if (apiResponse.getHttp_status() == 200) {
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
                         Type listType = new TypeToken<SignResponseModel>() {

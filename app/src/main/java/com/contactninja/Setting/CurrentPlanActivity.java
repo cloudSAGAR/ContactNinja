@@ -29,6 +29,7 @@ import com.contactninja.Model.Plandetail;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
     TextView tv_save;
     private BroadcastReceiver mNetworkReceiver;
     RelativeLayout mMainLayout;
+    DotsIndicator dots_indicator;
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -357,7 +359,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
         viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-
+        dots_indicator.setViewPager2(viewPager2);
         CompositePageTransformer compositePagerTransformer=new CompositePageTransformer();
         compositePagerTransformer.addTransformer(new MarginPageTransformer(40));
         compositePagerTransformer.addTransformer(new ViewPager2.PageTransformer() {
@@ -381,7 +383,9 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
         viewPager2 = findViewById(R.id.viewpager);
         iv_back=findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
+        dots_indicator=findViewById(R.id.dots_indicator);
         iv_back.setOnClickListener(this);
+
     }
 
     @SuppressLint("NonConstantResourceId")

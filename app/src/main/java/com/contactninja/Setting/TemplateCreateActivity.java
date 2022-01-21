@@ -136,7 +136,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     templateTextList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -280,7 +280,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     onBackPressed();
                 } else {
                     Gson gson = new Gson();
@@ -325,7 +325,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     onBackPressed();
 
                 } else {
@@ -336,7 +336,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
                     if (user_model.getTemplate_slug() != null) {
                         Global.Messageshow(getApplicationContext(), mMainLayout,
-                                "The template title has already been taken.", false);
+                                user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
                     }
                 }
             }
@@ -468,7 +468,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                             }
                         };
                         handler.postDelayed(r, 1000);
-                        holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
                         interfaceClick.OnClick(item.getDescription());
                     }

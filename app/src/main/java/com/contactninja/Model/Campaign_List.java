@@ -36,52 +36,52 @@ public class Campaign_List {
     public static class Campaign{
         @SerializedName("manualtask")
         @Expose
-        private Integer manualtask;
+        private Integer manualtask=0;
         @SerializedName("activetask")
         @Expose
-        private Integer activetask;
+        private Integer activetask=0;
         @SerializedName("prospect")
         @Expose
-        private Integer prospect;
+        private Integer prospect=0;
         @SerializedName("id")
         @Expose
-        private Integer id;
+        private Integer id=0;
         @SerializedName("seq_name")
         @Expose
-        private String seqName;
+        private String seqName="";
         @SerializedName("seq_type")
         @Expose
-        private String seqType;
+        private String seqType="";
         @SerializedName("max_prospect")
         @Expose
-        private Integer maxProspect;
+        private Integer maxProspect=0;
         @SerializedName("status")
         @Expose
-        private String status;
+        private String status="";
         @SerializedName("started_on")
         @Expose
-        private String started_on;
+        private String started_on="";
         @SerializedName("created_by_name")
         @Expose
-        private String createdByName;
+        private String createdByName="";
         @SerializedName("created_at")
         @Expose
-        private String createdAt;
+        private String createdAt="";
         @SerializedName("updated_at")
         @Expose
-        private String updatedAt;
+        private String updatedAt="";
         @SerializedName("finished_count")
         @Expose
-        private Integer finishedCount;
+        private Integer finishedCount=0;
         @SerializedName("active_count")
         @Expose
-        private Integer activeCount;
+        private Integer activeCount=0;
         @SerializedName("due_count")
         @Expose
-        private Integer dueCount;
+        private Integer dueCount=0;
         @SerializedName("total_count")
         @Expose
-        private Integer totalCount;
+        private Integer totalCount=0;
 
         public String getStarted_on() {
             return started_on;

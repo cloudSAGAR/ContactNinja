@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/mMainLayout"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    tools:context=".AddContect.EmailSend_Activity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+        <include
+            layout="@layout/toolbar"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_45sdp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+        <EditText
+
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/shape_25_white_gray_line_1"
+            android:id="@+id/ev_txt"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/tv_medium"
+            style="@style/tv_Medium"
+            android:paddingStart="@dimen/_15sdp"
+            android:hint="Enter Your Message"
+            android:padding="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </EditText>
+        <ImageView
+            android:id="@+id/iv_submit"
+            android:background="@drawable/shape_primary_circle"
+            android:layout_width="@dimen/_35sdp"
+            android:padding="@dimen/_11sdp"
+
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/ic_send_message"
+            android:layout_height="@dimen/_35sdp"
+            tools:ignore="UseAppTint">
+
+        </ImageView>
+    </LinearLayout>
+    <LinearLayout
+
+
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+
+        android:layout_alignParentBottom="true">
+
+
+        <TextView
+
+            android:id="@+id/tv_use_tamplet"
+            android:text="@string/temp_txt"
+            android:textColor="@color/white"
+            style="@style/tv_regular"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:background="@drawable/shape_10_blue"
+            android:textSize="@dimen/_12sdp"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_direct_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

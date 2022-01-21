@@ -187,7 +187,7 @@
             android:layout_marginTop="@dimen/_30sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
-            android:background="@drawable/shape_blue_back_top"
+            android:background="@drawable/shape_15_blue_top"
             android:orientation="vertical">
 
             <TextView

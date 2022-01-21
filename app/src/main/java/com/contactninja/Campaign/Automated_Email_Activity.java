@@ -124,19 +124,19 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         {
             edit_template.setText(bundle.getString("body"));
 
-            seq_task_id= bundle.getString("seq_task_id");
-            sequence_id= bundle.getString("sequence_id");
+            seq_task_id= String.valueOf(bundle.getInt("seq_task_id"));
+            sequence_id= String.valueOf(bundle.getInt("sequence_id"));
 
             ev_subject.setText(bundle.getString("header"));
             step_no= String.valueOf(bundle.getInt("step"));
 
-            SessionManager.setCampaign_type(bundle.getString("type"));
-            SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
+          //  SessionManager.setCampaign_type(bundle.getString("type"));
+           // SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
           try {
               day= Integer.parseInt(bundle.getString("day"));
               minite= Integer.parseInt(bundle.getString("minute"));
-              SessionManager.setCampaign_Day(String.valueOf(day));
-              SessionManager.setCampaign_minute(String.valueOf(minite));
+             // SessionManager.setCampaign_Day(String.valueOf(day));
+              //SessionManager.setCampaign_minute(String.valueOf(minite));
           }
           catch (Exception e)
           {
@@ -149,7 +149,9 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+        Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+        intent.putExtra("flag","new");
+        startActivity(intent);
         finish();
 
         super.onBackPressed();
@@ -200,7 +202,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     templateTextList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -276,14 +278,14 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                 onBackPressed();
                 break;
             case R.id.save_button:
-                if (ev_subject.getText().equals("")) {
+                if (ev_subject.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
-
                 }
-                else if (edit_template.getText().equals("")) {
+                else if (edit_template.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
-                } else {
+                }
+                else {
                     StepData();
                 }
                 break;
@@ -330,7 +332,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     templateList.clear();
                     Gson gson = new Gson();
@@ -597,12 +599,17 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             String user_id = String.valueOf(user_data.getUser().getId());
             String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
             String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+
             JsonObject paramObject = new JsonObject();
             paramObject.addProperty("content_body", edit_template.getText().toString());
-            paramObject.addProperty("day", day);
+            paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
             paramObject.addProperty("organization_id", "1");
+            Log.e("S_id",sequence_id);
+            Log.e("S_task",seq_task_id);
             paramObject.addProperty("sequence_id", sequence_id);
             paramObject.addProperty("seq_task_id", seq_task_id);
             paramObject.addProperty("content_header",ev_subject.getText().toString());
@@ -623,7 +630,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
                 loadingDialog.cancelLoading();
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -667,7 +674,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     dialog.dismiss();
                 } else {
                     dialog.dismiss();
@@ -788,7 +795,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                             }
                         };
                         handler.postDelayed(r, 1000);
-                        holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
                         interfaceClick.OnClick(item.getDescription());
                     }

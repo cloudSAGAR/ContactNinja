@@ -94,6 +94,7 @@ Number</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_contect">Add New Contact</string>
     <string name="add_new_contect1">Add all contacts</string>
+    <string name="remove_new_contect1">Remove all contacts</string>
     <string name="add_new">Add new</string>
     //Add Contect
     <string name="f_name">First name </string>
@@ -158,6 +159,10 @@ Number</string>
 
     <string name="group_to">To</string>
     <string name="add_new_group">Add New Group</string>
+    <string name="add_new_group_all">Add All Group</string>
+    <string name="remove_new_group_all">Add All Group</string>
+    <string name="add_task_email">Create a new \n email task</string>
+    <string name="add_task_sms">Create a new \n SMS  task</string>
     <string name="add_new_group_name">Intricare technologies</string>
     <string name="group_broadcast">Send Broadcast</string>
     <string name="group_broadcast_group">Group Text</string>
@@ -172,6 +177,9 @@ Number</string>
     <string name="brodcaste_tank_you">Your Broadcast \n has been sent!</string>
     <string name="broadcast_Send_Now">Send Now</string>
     <string name="broadcast_Schedule">Schedule</string>
+
+    <string name="email_Send_Now">Send task now</string>
+    <string name="email_Schedule">Schedule task</string>
 
     <array name="broadcast_repeat_list">
         <item>Daily</item>
@@ -310,7 +318,7 @@ Number</string>
     <string name="campaign_add">Create New Campaign</string>
     <string name="campaign_alert_txt">Click to create \n Campaign</string>
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or SMSes sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
-    <string name="campaign_step_one">Select your first step</string>
+    <string name="campaign_step_one">Select your step</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
 
     <string name="campaign_step_one_email">Automated Email</string>
@@ -373,4 +381,12 @@ Number</string>
     <string name="lavel3">Lavel 3</string>
     <string name="lavel4">Lavel 4</string>
     <string name="lavel5">Lavel 5</string>
+    <string name="composse_email">Compose Email</string>
+    <string name="email_txt">click here to send \n an email </string>
+    <string name="create_new_email">Create new email</string>
+    <string name="create_new_sms">Create new sms task</string>
+    <string name="email_task_txt">Schedule my task</string>
+    <string name="email_date">Please Select date</string>
+    <string name="email_time">Select time</string>
+    <string name="sms_txt">Message</string>
 </resources>

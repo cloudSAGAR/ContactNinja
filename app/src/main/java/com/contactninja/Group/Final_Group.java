@@ -42,6 +42,7 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -51,8 +52,10 @@ import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
@@ -65,6 +68,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -252,7 +256,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 for (ContectListData.Contact d : inviteListData) {
                     if (d.getFirstname().contains(s.toString())) {
                         temp.add(d);
-                        // Log.e("Same Data ",d.getUserName());
+                         //Log.e("Same Data ",d.getFirstname());
                     }
                 }
                 userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
@@ -407,11 +411,17 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 public void success(Response<ApiResponse> response) {
 
                     loadingDialog.cancelLoading();
-                    if (response.body().getStatus() == 200) {
+                    if (response.body().getHttp_status() == 200) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
                         finish();
                     } else {
-                        Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Log.e("String is",response.body().getMessage());
+                        Type listType = new TypeToken<UservalidateModel>() {
+                        }.getType();
+                        UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                        Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getEmail().get(0), false);
                     }
                 }
 

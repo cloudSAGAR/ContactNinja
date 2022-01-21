@@ -104,6 +104,8 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <TextView
@@ -147,7 +149,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@color/home_list_back_line"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"></View>
+                    android:layout_height="1dp"/>
 
 
             </LinearLayout>

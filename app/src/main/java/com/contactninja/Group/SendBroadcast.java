@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -43,6 +44,8 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     SessionManager sessionManager;
     RoundedImageView add_new_contect_icon;
     ConstraintLayout mMainLayout;
+    TextView no_image;
+
     private BroadcastReceiver mNetworkReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +56,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         Global.checkConnectivity(SendBroadcast.this, mMainLayout);
         sessionManager=new SessionManager(this);
         Grouplist.Group group_data = SessionManager.getGroupData(this);
-        Glide.with(getApplicationContext()).
-                load(group_data.getGroupImage()).
-                placeholder(R.drawable.shape_primary_back).
-                error(R.drawable.shape_primary_back).into(add_new_contect_icon);
+
         add_new_contect.setText(group_data.getGroupName());
         add_detail.setText(group_data.getDescription());
 
@@ -87,6 +87,44 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        if (group_data.getGroupImage()==null)
+        {
+            String name =group_data.getGroupName();
+            String add_text="";
+            String[] split_data=name.split(" ");
+            try {
+                for (int i=0;i<split_data.length;i++)
+                {
+                    if (i==0)
+                    {
+                        add_text=split_data[i].substring(0,1);
+                    }
+                    else {
+                        add_text=add_text+split_data[i].substring(0,1);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            no_image.setText(add_text);
+            no_image.setVisibility(View.VISIBLE);
+            add_new_contect_icon.setVisibility(View.GONE);
+        }
+        else {
+            Glide.with(getApplicationContext()).
+                    load(group_data.getGroupImage()).
+                    placeholder(R.drawable.shape_primary_back).
+                    error(R.drawable.shape_primary_back).into(add_new_contect_icon);
+            no_image.setVisibility(View.GONE);
+            add_new_contect_icon.setVisibility(View.VISIBLE);
+        }
+
+
+
+
         viewPager.addOnPageChangeListener(this);
     }
     private void IntentUI() {
@@ -101,6 +139,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         add_new_contect_icon=findViewById(R.id.add_new_contect_icon);
         add_new_contect=findViewById(R.id.add_new_contect);
         mMainLayout=findViewById(R.id.mMainLayout);
+        no_image=findViewById(R.id.no_image);
     }
 
     @Override

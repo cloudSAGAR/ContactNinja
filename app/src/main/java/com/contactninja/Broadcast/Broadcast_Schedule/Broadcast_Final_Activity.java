@@ -362,7 +362,7 @@ public class Broadcast_Final_Activity extends AppCompatActivity implements View.
                 }
             });
             if (item.isScelect()) {
-                holder.layout_select_image.setBackgroundResource(R.drawable.shape_blue_10);
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
             } else {
                 holder.layout_select_image.setBackground(null);
             }

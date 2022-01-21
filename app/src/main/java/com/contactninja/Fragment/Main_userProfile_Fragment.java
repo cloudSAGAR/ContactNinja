@@ -4,8 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -92,7 +90,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
-    ImageView iv_Setting, pulse_icon;
+    ImageView iv_Setting, pulse_icon,iv_back,iv_edit;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
     String fragment_name, user_image_Url = "", File_name = "", File_extension = "";
@@ -309,7 +307,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
-                        if (response.body().getStatus() == 200) {
+                        if (response.body().getHttp_status() == 200) {
                             loadingDialog.cancelLoading();
                             SessionManager.setUserdata(getActivity(), new SignResponseModel());
 
@@ -319,9 +317,49 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             }.getType();
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
-
+                            Log.e("Main Data Is ",new Gson().toJson(user_model));
                             setdata();
                             setTab();
+
+
+
+                        } else {
+                            loadingDialog.cancelLoading();
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
+
+    private void Userinfo1() throws JSONException {
+        //  loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("api", "user view");
+        obj.add("data", paramObject);
+        retrofitCalls.Userinfo(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        if (response.body().getHttp_status() == 200) {
+                            loadingDialog.cancelLoading();
+                            SessionManager.setUserdata(getActivity(), new SignResponseModel());
+
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            Type listType = new TypeToken<SignResponseModel>() {
+                            }.getType();
+                            SignResponseModel user_model = new Gson().fromJson(headerString, listType);
+                            SessionManager.setUserdata(getActivity(), user_model);
+                            setdata();
+                            //setTab();
+
+
 
                         } else {
                             loadingDialog.cancelLoading();
@@ -357,6 +395,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
+
         User user_data_model = user_data.getUser();
         ContectListData.Contact set_contact = new ContectListData.Contact();
         set_contact.setFirstname(user_data_model.getFirstName());
@@ -385,12 +424,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         SessionManager.setOneCotect_deatil(getActivity(), set_contact);
 
         if (flag.equals("edit")) {
+            iv_edit.setVisibility(View.VISIBLE);
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            edt_FirstName.setText(Contect_data.getFirstname() + " " + Contect_data.getLastname());
+            edt_FirstName.setText(Contect_data.getFirstname());
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            if (Contect_data.getContactImage() == null) {
+
+            if (user_data.getUser().getUserprofile().getProfilePic() == null) {
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
@@ -418,7 +459,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
                 Glide.with(getActivity()).
-                        load(Contect_data.getContactImage())
+                        load(user_data.getUser().getUserprofile().getProfilePic())
                         .placeholder(R.drawable.shape_primary_back)
                         .error(R.drawable.shape_primary_back).
                         into(iv_user);
@@ -428,7 +469,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             save_button.setText("Save");
 
 
-        } else if (flag.equals("read")) {
+        }
+
+        else if (flag.equals("read")) {
+
+
             save_button.setVisibility(View.GONE);
             edt_FirstName.setEnabled(false);
             edt_lastname.setEnabled(false);
@@ -438,7 +483,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            if (Contect_data.getContactImage() == null) {
+            if (user_data.getUser().getUserprofile().getProfilePic() == null) {
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
@@ -464,7 +509,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
                 Glide.with(getActivity()).
-                        load(Contect_data.getContactImage())
+                        load(user_data.getUser().getUserprofile().getProfilePic())
                         .placeholder(R.drawable.shape_primary_back)
                         .error(R.drawable.shape_primary_back).
                         into(iv_user);
@@ -478,7 +523,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new User_InformationFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
         fragmentTransaction.commitAllowingStateLoss();
@@ -521,10 +566,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     private void intentView(View view) {
 
-
+        iv_edit=view.findViewById(R.id.iv_edit);
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
         iv_Setting.setOnClickListener(this);
+        iv_back=view.findViewById(R.id.iv_back);
         tabLayout = view.findViewById(R.id.tabLayout);
         frameContainer = view.findViewById(R.id.frameContainer);
         pulse_icon = view.findViewById(R.id.pulse_icon);
@@ -539,11 +585,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         iv_user.setOnClickListener(this);
         save_button = view.findViewById(R.id.save_button);
         save_button.setOnClickListener(this);
-        save_button.setVisibility(View.VISIBLE);
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         edit_profile = view.findViewById(R.id.edit_profile);
         edit_profile.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
     }
 
 
@@ -577,60 +623,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     }
 
 
-    private void addContact(String given_name, String name, String mobile, String home, String email, String note) {
-
-        Log.e("Name", name);
-        Log.e("mobile", mobile);
-        Log.e("home", home);
-        Log.e("email", email);
-        Log.e("Note", note);
-
-        ArrayList<ContentProviderOperation> contact = new ArrayList<ContentProviderOperation>();
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-                .build());
-
-        // first and last names
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, given_name)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, name)
-                .build());
-
-        // Contact No Mobile
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, mobile)
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                .build());
-
-        // Contact Home
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, home)
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
-                .build());
-
-        // Email    `
-        contact.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
-                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
-                .build());
-
-
-        try {
-            ContentProviderResult[] results = getActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, contact);
-            Log.e("Contect Result", new Gson().toJson(results));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private long getRawContactId() {
         // Inser an empty contact.
@@ -770,7 +762,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+       /* retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -803,7 +795,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 loadingDialog.cancelLoading();
             }
         });
-
+*/
     }
 
 
@@ -819,13 +811,19 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         note = addcontectModel.getNote();
         city = addcontectModel.getCity();
         state = addcontectModel.getState();
+
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        String email_address=user_data.getUser().getEmail();
 
+        String  rol_id=user_data.getUser().getRoleId().toString();
+        String contect_number=user_data.getUser().getContactNumber();
 
         List<Contactdetail> contactdetails = new ArrayList<>();
+
+        List<Contactdetail> contactdetails1 = new ArrayList<>();
         contactdetails.addAll(addcontectModel.getContactdetails());
 
 
@@ -834,203 +832,188 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         contactdetails.addAll(contactdetails_email);
         JSONObject obj = new JSONObject();
 
-        JSONObject param_data = new JSONObject();
+        JSONObject param_data= new JSONObject();
         param_data.put("organization_id", 1);
-        param_data.put("team_id", 1);
+        param_data.put("team_id",  1);
         param_data.put("user_id", Integer.parseInt(user_id));
-        JSONArray jsonArray_contect = new JSONArray();
+        param_data.put("role_id",rol_id);
+        param_data.put("contact_number",contect_number);
+        param_data.put("email",email_address);
 
 
-        JSONObject paramObject = new JSONObject();
+       // JSONArray jsonArray_contect = new JSONArray();
+
+
+       // JSONObject paramObject = new JSONObject();
         //Other Company Add
-        if (addcontectModel.getCompany().equals("")) {
-            paramObject.put("company_name", "");
-            paramObject.put("company_id", addcontectModel.getCompany_id());
-        } else {
-            paramObject.put("company_name", addcontectModel.getCompany());
-            paramObject.put("company_id", "");
+        if (addcontectModel.getCompany().trim().equalsIgnoreCase(""))
+        {
+            param_data.put("company_name", addcontectModel.getCompany());
+            //param_data.put("company_id",  addcontectModel.getCompany_id());
         }
-        paramObject.put("id", Contect_data.getId());
-        paramObject.put("address", address);
-        paramObject.put("breakout_link", addcontectModel.getBreakoutu());
-        paramObject.put("city", city);
-
-        if (olld_image != null) {
-            paramObject.put("oldImage", olld_image);
-        } else {
-            paramObject.put("oldImage", "");
+        else {
+            param_data.put("company_name", addcontectModel.getCompany());
+           // param_data.put("company_id",   addcontectModel.getCompany_id());
         }
+        param_data.put("address", address);
+        param_data.put("breakout_link", addcontectModel.getBreakoutu());
+        param_data.put("city", city);
 
-        paramObject.put("company_url", "");
-        paramObject.put("dob", addcontectModel.getBirthday());
-        paramObject.put("dynamic_fields_value", "");
-        paramObject.put("facebook_link", addcontectModel.getFacebook());
-        paramObject.put("firstname", edt_FirstName.getText().toString().trim());
-        paramObject.put("lastname", l_name);
-        paramObject.put("job_title", addcontectModel.getJob_title());
-        paramObject.put("lastname", edt_lastname.getText().toString().trim());
-        paramObject.put("linkedin_link", addcontectModel.getLinkedin());
-        paramObject.put("organization_id", "1");
-        paramObject.put("state", state);
-        paramObject.put("team_id", "1");
+
+        param_data.put("company_url", addcontectModel.getCompany_url());
+        param_data.put("dob", addcontectModel.getBirthday());
+        param_data.put("dynamic_fields_value", "");
+        param_data.put("facebook_link", addcontectModel.getFacebook());
+        param_data.put("first_name", edt_FirstName.getText().toString().trim());
+        param_data.put("last_name", edt_lastname.getText().toString());
+        param_data.put("job_title", addcontectModel.getJob_title());
+        param_data.put("linkedin_link", addcontectModel.getLinkedin());
+        param_data.put("organization_id", "1");
+        param_data.put("state", state);
+        param_data.put("team_id", "1");
         // addcontectModel.getTime()
-        paramObject.put("timezone_id", addcontectModel.getTime());
-        paramObject.put("twitter_link", addcontectModel.getTwitter());
-        paramObject.put("user_id", user_id);
-        paramObject.put("zipcode", zip_code);
-        paramObject.put("zoom_id", zoom_id);
-        if (!user_image_Url.equals("")) {
-            paramObject.put("contact_image", user_image_Url);
-            paramObject.put("contact_image_name", File_name);
-        } else {
-            paramObject.put("contact_image", "");
-            paramObject.put("contact_image_name", "");
+        param_data.put("timezone_id", addcontectModel.getTime());
+        param_data.put("twitter_link", addcontectModel.getTwitter());
+        param_data.put("user_id", user_id);
+        param_data.put("zipcode", addcontectModel.getZip_code());
+        param_data.put("zoom_id", addcontectModel.getZoom_id());
+
+        if (!user_image_Url.equals(""))
+        {
+            param_data.put("profile_pic", user_image_Url);
+            param_data.put("pic_name", File_name);
+            param_data.put("pic_extension", File_extension);
+            if(olld_image!=null){
+                param_data.put("old_pic_name", olld_image);
+            }
+            else {
+                param_data.put("old_pic_name", "");
+            }
+
         }
-        paramObject.put("image_extension", File_extension);
-        paramObject.put("notes", addcontectModel.getNote());
+        else {
+            param_data.put("profile_pic", olld_image);
+            //   paramObject.put("contact_image", "");
+            //   paramObject.put("contact_image_name", "");
+        }
+
+        param_data.put("notes",addcontectModel.getNote());
 
 
-        JSONArray jsonArray = new JSONArray();
+
         for (int i = 0; i < contactdetails.size(); i++) {
-            JSONObject paramObject1 = new JSONObject();
+
             if (contactdetails.get(i).getEmail_number().equals("")) {
 
             } else {
-                if (contactdetails.get(i).getType().equals("NUMBER")) {
-                    phone = contactdetails.get(i).getEmail_number();
-                }
-                phone_type = contactdetails.get(i).getLabel();
-                paramObject1.put("email_number", contactdetails.get(i).getEmail_number());
+                if (contactdetails.get(i).getEmail_number().equals(user_data.getUser().getContactNumber()) || contactdetails.get(i).getEmail_number().equals(user_data.getUser().getEmail()))
+                {
 
-                if (contactdetails.get(i).getId() != 0) {
-                    paramObject1.put("id", contactdetails.get(i).getId());
                 }
-                paramObject1.put("is_default", contactdetails.get(i).getIs_default());
-                paramObject1.put("label", contactdetails.get(i).getLabel());
-                paramObject1.put("type", contactdetails.get(i).getType());
-                paramObject1.put("contact_id", Contect_data.getId());
-                param_data.put("team_id", 1);
+                else {
+                    if (contactdetails.get(i).getType().equals("NUMBER"))
+                    {
+                        phone = contactdetails.get(i).getEmail_number();
+                    }
+                    phone_type = contactdetails.get(i).getLabel();
+
+                    contactdetails1.add(contactdetails.get(i));
+                }
+
+            }
+
+        }
+        JSONArray jsonArray = new JSONArray();
+        JSONObject paramObject1 = null;
+
+        for (int i = 0; i < contactdetails1.size(); i++) {
+            paramObject1 = new JSONObject();
+            if (contactdetails1.get(i).getEmail_number().equals("")) {
+
+            } else {
+
+
+                    if (contactdetails.get(i).getType().equals("NUMBER"))
+                    {
+                        phone = contactdetails.get(i).getEmail_number();
+                    }
+                    phone_type = contactdetails1.get(i).getLabel();
+                    paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
+                    paramObject1.put("label", contactdetails1.get(i).getLabel());
+                    paramObject1.put("type", contactdetails1.get(i).getType());
+
+
+
             }
             jsonArray.put(paramObject1);
         }
-        paramObject.put("contact_details", jsonArray);
-        jsonArray_contect.put(paramObject);
-        param_data.put("contact_update", jsonArray_contect);
+        param_data.put("contact_details", jsonArray);
 
         obj.put("data", param_data);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),
-                Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-                    @Override
-                    public void success(Response<ApiResponse> response) {
-
-                        loadingDialog.cancelLoading();
-                        if (response.body().getStatus() == 200) {
-
-                        } else {
-                            Gson gson = new Gson();
-                            String headerString = gson.toJson(response.body().getData());
-                            Type listType = new TypeToken<UservalidateModel>() {
-                            }.getType();
-                            UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
-                            try {
-                                if (uservalidateModel.getFirstname().size() != 0) {
-                                    Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getFirstname().get(0), false);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-
-                        }
-                    }
-
-                    @Override
-                    public void error(Response<ApiResponse> response) {
-                        loadingDialog.cancelLoading();
-                    }
-                });
-
-    }
-
-    public void AddContect_Api1() throws JSONException {
-
-        loadingDialog.showLoadingDialog();
-        ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-        f_name = edt_FirstName.getText().toString().trim();
-        l_name = edt_lastname.getText().toString().trim();
-        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
-        zip_code = addcontectModel.getZip_code();
-        zoom_id = addcontectModel.getZoom_id();
-        address = addcontectModel.getAddress();
-        note = addcontectModel.getNote();
-        city = addcontectModel.getCity();
-        state = addcontectModel.getState();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        List<Contactdetail> contactdetails = new ArrayList<>();
-        contactdetails.addAll(addcontectModel.getContactdetails());
-
-
-        List<Contactdetail> contactdetails_email = new ArrayList<>();
-        contactdetails_email.addAll(addcontectModel.getContactdetails_email());
-        contactdetails.addAll(contactdetails_email);
-
-
-        JSONObject obj = new JSONObject();
-
-        JSONObject paramObject = new JSONObject();
-        paramObject.put("id", Contect_data.getId());
-        paramObject.put("address", address);
-        paramObject.put("breakout_link", addcontectModel.getBreakoutu());
-        paramObject.put("city", city);
-        paramObject.put("company_id", addcontectModel.getCompany_id());
-        paramObject.put("company_name", addcontectModel.getCompany());
-        paramObject.put("company_url", "");
-        paramObject.put("dob", addcontectModel.getBirthday());
-        paramObject.put("dynamic_fields_value", "");
-        paramObject.put("facebook_link", addcontectModel.getFacebook());
-        paramObject.put("firstname", edt_FirstName.getText().toString().trim());
-        paramObject.put("lastname", l_name);
-        paramObject.put("job_title", addcontectModel.getJob_title());
-        paramObject.put("lastname", edt_lastname.getText().toString().trim());
-        paramObject.put("linkedin_link", addcontectModel.getLinkedin());
-        paramObject.put("organization_id", Contect_data.getOrganizationId());
-        paramObject.put("state", state);
-        paramObject.put("team_id", Contect_data.getTeamId());
-        // addcontectModel.getTime()
-        paramObject.put("timezone_id", addcontectModel.getTime());
-        paramObject.put("twitter_link", addcontectModel.getTwitter());
-        paramObject.put("user_id", user_id);
-        paramObject.put("zipcode", zip_code);
-        paramObject.put("zoom_id", zoom_id);
-        paramObject.put("contact_image", user_image_Url);
-        paramObject.put("image_extension", File_extension);
-        paramObject.put("contact_image_name", File_name);
-        paramObject.put("oldImage", olld_image);
-        obj.put("data", paramObject);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-
-        Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+        retrofitCalls.UpdateUser_Profile(sessionManager,gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
-                    Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
-                    long rowContactId = getRawContactId();
+                if (response.body().getHttp_status() == 200) {
+
+
+                    layout_toolbar_logo.setVisibility(View.VISIBLE);
+                    iv_back.setVisibility(View.GONE);
+                    SessionManager.setContect_flag("read");
+                    save_button.setVisibility(View.GONE);
+                    iv_Setting.setVisibility(View.VISIBLE);
                     save_button.setText("Save");
-                    /*           updateContect(edt_FirstName.getText().toString(),phone,phone_type);*/
+                    edit_profile.setVisibility(View.VISIBLE);
+                    edt_lastname.setVisibility(View.GONE);
+                    edt_FirstName.setEnabled(false);
+                    edt_lastname.setEnabled(false);
+                    iv_edit.setVisibility(View.GONE);
+                    try {
+                        Userinfo1();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                    updateContactPhoneByName(edt_FirstName.getText().toString(), edt_lastname.getText().toString(), phone, phone_type);
+                }
+             else    if (response.body().getHttp_status() == 404) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
+                    try {
+                        if (uservalidateModel.getLast_name().size() != 0) {
+                            Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getLast_name().get(0), false);
+                        }
+                        else if (uservalidateModel.getFirstname().size() != 0) {
+                            Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getFirstname().get(0), false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                } else {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                }
+
+
+                else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
+                    try {
+                        if (uservalidateModel.getFirstname().size() != 0) {
+                            Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getFirstname().get(0), false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             }
 
@@ -1041,6 +1024,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         });
 
     }
+
+
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -1068,17 +1053,35 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 break;
 
             case R.id.edit_profile:
+                layout_toolbar_logo.setVisibility(View.GONE);
+                iv_back.setVisibility(View.VISIBLE);
                 SessionManager.setContect_flag("edit");
                 save_button.setVisibility(View.VISIBLE);
                 iv_Setting.setVisibility(View.GONE);
                 save_button.setText("Save");
+                edit_profile.setVisibility(View.GONE);
+                edt_lastname.setVisibility(View.VISIBLE);
+                edt_FirstName.setEnabled(true);
+                edt_lastname.setEnabled(true);
                 setdata();
 
 
                 break;
+            case R.id.iv_back:
+                layout_toolbar_logo.setVisibility(View.VISIBLE);
+                iv_back.setVisibility(View.GONE);
+                SessionManager.setContect_flag("read");
+                save_button.setVisibility(View.GONE);
+                iv_Setting.setVisibility(View.VISIBLE);
+                save_button.setText("Save");
+                iv_edit.setVisibility(View.GONE);
+                edt_lastname.setVisibility(View.GONE);
+                edit_profile.setVisibility(View.VISIBLE);
+                setdata();
         }
     }
     // Handled permission Result
+
 
     private void captureimageDialog(boolean remove) {
         final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);

@@ -665,7 +665,7 @@
                     android:id="@+id/select_state"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_27sdp"
-                    android:background="@drawable/shape_border_ccc"
+                    android:background="@drawable/shape_5_white_ccc_line"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
                     android:visibility="gone">
@@ -826,7 +826,7 @@
                         android:paddingBottom="@dimen/_4sdp"
                         android:layout_width="@dimen/_170sdp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_border_ccc"
+                        android:background="@drawable/shape_5_white_ccc_line"
                         android:paddingStart="@dimen/_5sdp"
                         android:paddingEnd="@dimen/_5sdp">
 

@@ -20,15 +20,17 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
+
             <View
+                android:id="@+id/line_one"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_width="1dp"
-                android:id="@+id/line_one"
-                android:layout_height="match_parent"
                 android:background="@color/camp_line">
 
             </View>
+
             <TextView
                 android:id="@+id/tv_item_num"
                 android:background="@drawable/shape_primary_circle"
@@ -44,10 +46,11 @@
             </TextView>
 
             <View
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:id="@+id/cam_line"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
                 android:background="@color/camp_line">
 
             </View>
@@ -64,10 +67,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@drawable/shape_border_ccc"
+        android:background="@drawable/shape_5_white_ccc_line"
         android:orientation="vertical">
 
         <LinearLayout
@@ -140,20 +142,20 @@
         <TextView
             android:id="@+id/tv_detail"
             style="@style/tv_regular"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:gravity="center|left"
             android:text="@string/campaign_sub_txt"
             android:textColor="@color/tv_medium"
             android:textSize="@dimen/_13sdp" />
 
         <LinearLayout
-            android:visibility="gone"
+
             android:id="@+id/run_time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -204,6 +206,7 @@
 
 
                     <EditText
+                        android:enabled="false"
                         android:id="@+id/edit_day"
                         style="@style/tv_regular"
                         android:layout_width="86dp"
@@ -247,6 +250,7 @@
 
 
                     <EditText
+                        android:enabled="false"
                         android:id="@+id/edit_minutes"
                         style="@style/tv_regular"
                         android:layout_width="match_parent"
@@ -295,7 +299,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@drawable/shape_border_ccc"
+            android:background="@drawable/shape_5_white_ccc_line"
             android:orientation="vertical">
 
             <LinearLayout
@@ -559,7 +563,7 @@
         </LinearLayout>
         <LinearLayout
 
-            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -567,7 +571,7 @@
             android:id="@+id/tv_add_new_step"
             style="@style/tv_regular"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/shape_blue_back"
+            android:background="@drawable/shape_5_blue"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:textSize="@dimen/_14sdp"

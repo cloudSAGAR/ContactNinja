@@ -12,7 +12,7 @@
         android:layout_marginTop="@dimen/_40sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingStart="@dimen/_10sdp"
-        android:background="@drawable/shape_border_20_white"
+        android:background="@drawable/shape_20_white"
         android:orientation="vertical">
 
         <EditText

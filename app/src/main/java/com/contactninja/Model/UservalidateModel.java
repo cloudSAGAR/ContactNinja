@@ -27,6 +27,12 @@ public class UservalidateModel {
     @Expose
     private List<String> password = new ArrayList<>();
 
+
+    @SerializedName("last_name")
+    @Expose
+    private List<String> last_name = new ArrayList<>();
+
+
     @SerializedName("template_slug")
     @Expose
     private List<String> template_slug = new ArrayList<>();
@@ -57,6 +63,14 @@ public class UservalidateModel {
 
     public void setContact_number(List<String> contact_number) {
         this.contact_number = contact_number;
+    }
+
+    public List<String> getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(List<String> last_name) {
+        this.last_name = last_name;
     }
 
     public List<String> getEmail() {

@@ -111,7 +111,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.archit.calendar:awesome-calendar:2.0.0'
 
-
+    implementation 'com.tbuonomo:dotsindicator:4.2'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.googlecode.libphonenumber:libphonenumber:7.2.2'
 

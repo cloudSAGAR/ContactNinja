@@ -332,7 +332,7 @@ public class ContectFragment extends Fragment {
 
                     try {
                         FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-                                contectListData.get(position).getFirstname().substring(0, 1)
+                                paginationAdapter.getItem(position).getFirstname().substring(0, 1)
                                         .substring(0, 1)
                                         .toUpperCase()// Grab the first letter and capitalize it
                         );
@@ -424,6 +424,11 @@ public class ContectFragment extends Fragment {
                     contectListData.clear();
                     paginationAdapter.removeloist();
                     paginationAdapter.notifyDataSetChanged();
+
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
+                    paginationAdapter = new ContectListAdapter(getActivity());
+                    rvinviteuserdetails.setAdapter(paginationAdapter);
+
                     sessionManager.setContectList(getActivity(), new ArrayList<>());
 
 
@@ -499,7 +504,7 @@ public class ContectFragment extends Fragment {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 paginationAdapter.removeLoadingFooter();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
 
                     Gson gson = new Gson();

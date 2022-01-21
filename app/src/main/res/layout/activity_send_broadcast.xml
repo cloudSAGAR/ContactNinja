@@ -34,7 +34,20 @@
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"/>
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/no_image"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                style="@style/tv_regular"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/_12sdp"
+                android:background="@drawable/shape_primary_circle"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp">
 
+            </TextView>
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_gravity="center|left"
@@ -45,6 +58,7 @@
                 <EditText
                     android:id="@+id/add_new_contect"
                     style="@style/tv_regular"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
@@ -67,21 +81,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"/>
             </LinearLayout>
-
-
-
-
         </LinearLayout>
         <EditText
             android:id="@+id/add_detail"
             style="@style/tv_regular"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"
             android:layout_gravity="center|left"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@drawable/shape_border_ccc"
+            android:background="@drawable/shape_5_white_ccc_line"
             android:gravity="top|left"
             android:hint="@string/add_group_description"
             android:paddingStart="@dimen/_10sdp"
@@ -109,7 +120,7 @@
                 android:layout_weight="1"
                 android:layout_marginTop="@dimen/_10sdp"
                 style="@style/tv_regular"
-                android:background="@drawable/shape_blue_back"
+                android:background="@drawable/shape_5_blue"
                 android:textSize="@dimen/_12sdp"
                 android:textColor="@color/white"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -126,7 +137,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 style="@style/tv_regular"
                 android:gravity="center"
-                android:background="@drawable/shape_blue_back"
+                android:background="@drawable/shape_5_blue"
                 android:textSize="@dimen/_12sdp"
                 android:textColor="@color/white"
                 android:layout_marginStart="@dimen/_10sdp"

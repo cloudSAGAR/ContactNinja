@@ -114,7 +114,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     try {
                         if(Global.isNetworkAvailable(ForgotPasswordActivity.this,mMainLayout)) {
@@ -147,7 +147,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         retrofitCalls.ForgotPassword(sessionManager,obj, loadingDialog, Global.getVersionname(ForgotPasswordActivity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
 
                     showAlertDialogButtonClicked();

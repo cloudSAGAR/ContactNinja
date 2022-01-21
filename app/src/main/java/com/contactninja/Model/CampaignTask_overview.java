@@ -75,10 +75,10 @@ public class CampaignTask_overview {
         private String templateId;
         @SerializedName("content_header")
         @Expose
-        private String contentHeader;
+        private String contentHeader="";
         @SerializedName("content_body")
         @Expose
-        private String contentBody;
+        private String contentBody="";
         @SerializedName("manage_by")
         @Expose
         private String manageBy;

@@ -55,6 +55,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     LinearLayout main_layout, add_new_contect_layout, group_name;
     SessionManager sessionManager;
     RecyclerView group_recyclerView;
+    String  group_flag="false";
     LinearLayoutManager layoutManager, layoutManager1;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -71,7 +72,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     private List<Grouplist.Group> grouplists;
     // private GroupAdapter groupAdapter;
     private ProgressBar loadingPB;
-
+    ImageView add_new_contect_icon1,add_new_contect_icon;
+    TextView add_new_contect;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,12 +102,10 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
         group_recyclerView.setHasFixedSize(true);
-        group_recyclerView.setItemViewCacheSize(500);
+        group_recyclerView.setItemViewCacheSize(5000);
         add_contect_list.setHasFixedSize(true);
-        add_contect_list.setItemViewCacheSize(500);
-
+        add_contect_list.setItemViewCacheSize(5000);
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
-
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
         main_layout.setOnClickListener(this);
@@ -159,7 +159,9 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         layoutManager1 = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         add_contect_list.setLayoutManager(layoutManager1);
         tv_create = view.findViewById(R.id.tv_create);
-
+        add_new_contect_icon1=view.findViewById(R.id.add_new_contect_icon1);
+        add_new_contect_icon=view.findViewById(R.id.add_new_contect_icon);
+        add_new_contect=view.findViewById(R.id.add_new_contect);
 
     }
 
@@ -168,9 +170,26 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
-                SessionManager.setGroupData(getActivity(), new Grouplist.Group());
-                startActivity(new Intent(getActivity(), GroupActivity.class));
-                /*  getActivity().finish();*/
+                if (add_new_contect_icon1.getVisibility()==View.GONE)
+                {
+                    add_new_contect_icon1.setVisibility(View.VISIBLE);
+                    add_new_contect_icon.setVisibility(View.GONE);
+                    paginationAdapter.addAll_item(grouplists);
+                    add_new_contect.setText(getString(R.string.remove_new_group_all));
+
+
+                }
+                else {
+                    add_new_contect_icon1.setVisibility(View.GONE);
+                    add_new_contect_icon.setVisibility(View.VISIBLE);
+                    select_contectListData.clear();
+                    topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    group_flag="false";
+                    paginationAdapter.notifyDataSetChanged();
+                    add_new_contect.setText(getString(R.string.add_new_group_all));
+                }
                 break;
             case R.id.group_name:
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
@@ -211,7 +230,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
@@ -276,7 +295,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
@@ -355,7 +374,16 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             switch (getItemViewType(position)) {
                 case ITEM:
                     PaginationAdapter.MovieViewHolder movieViewHolder = (PaginationAdapter.MovieViewHolder) holder;
-
+                    Group_data.setFlag(group_flag);
+                    if (Group_data.getFlag().equals("false"))
+                    {
+                        movieViewHolder.remove_contect_icon.setVisibility(View.GONE);
+                        movieViewHolder.add_new_contect_icon.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        movieViewHolder.remove_contect_icon.setVisibility(View.VISIBLE);
+                        movieViewHolder.add_new_contect_icon.setVisibility(View.GONE);
+                    }
                     movieViewHolder.group_name.setText(Group_data.getGroupName());
                     if (Group_data.getGroupImage() == null) {
                         String name = Group_data.getGroupName();
@@ -406,6 +434,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                             //userDetailsfull.get(position).setId(position);
                             movieViewHolder.remove_contect_icon.setVisibility(View.VISIBLE);
                             movieViewHolder.add_new_contect_icon.setVisibility(View.GONE);
+                            movieList.get(position).setFlag("false");
                             select_contectListData.add(Group_data);
                             //userDetailsfull.get(position).setId(position);
                             //  topUserListDataAdapter.notifyDataSetChanged();
@@ -425,7 +454,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                             //userDetailsfull.get(position).setId(0);
                             movieViewHolder.remove_contect_icon.setVisibility(View.GONE);
                             movieViewHolder.add_new_contect_icon.setVisibility(View.VISIBLE);
-                            topUserListDataAdapter.remove_item(position);
+                            movieList.get(position).setFlag("true");
+                            topUserListDataAdapter.remove_item(position,movieList.get(position).getId());
                             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
                             add_contect_list.setAdapter(topUserListDataAdapter);
                             // Log.e("Postionis ",String.valueOf(position));
@@ -448,6 +478,30 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             }
         }
 
+        public void addAll_item(List<Grouplist.Group> movieList1)
+        {
+            select_contectListData.clear();
+            movieList.clear();
+            for (int i=0;i<movieList1.size();i++)
+            {
+
+                paginationAdapter = new PaginationAdapter(getContext());
+                group_recyclerView.setAdapter(paginationAdapter);
+                //group_flag="false";
+                //movieList1.get(i).set
+                group_flag="true";
+                movieList1.get(i).setFlag("true");
+                paginationAdapter.addAll(movieList1);
+                paginationAdapter.notifyItemChanged(i);
+                group_recyclerView.setItemViewCacheSize(500);
+                select_contectListData.add(movieList1.get(i));
+                topUserListDataAdapter.notifyDataSetChanged();
+
+            }
+            sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
+            sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
+
+        }
         @Override
         public int getItemCount() {
             return movieList == null ? 0 : movieList.size();
@@ -611,8 +665,11 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 @Override
                 public void onClick(View v) {
                     for (int i = 0; i < grouplists.size(); i++) {
-                        if (grouplists.get(i).getId().equals(select_contectListData.get(position).getId())) {
+                        if (grouplists.get(i).getId().toString().equals(String.valueOf(select_contectListData.get(position).getId()))) {
                             paginationAdapter.notifyItemChanged(i);
+                            group_flag="false";
+                            grouplists.get(i).setFlag("false");
+
                         }
                     }
                     userDetails.remove(position);
@@ -632,13 +689,23 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             return userDetails.size();
         }
 
-        public void remove_item(int item) {
-            try {
+        public void remove_item(int item, Integer id) {
+
+            for (int i=0;i<userDetails.size();i++)
+            {
+                if (userDetails.get(i).getId().toString().equals(String.valueOf(id)))
+                {
+                    userDetails.remove(i);
+                    notifyItemRemoved(i);
+                }
+
+            }
+           /* try {
                 userDetails.remove(item);
                 notifyItemRemoved(item);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 

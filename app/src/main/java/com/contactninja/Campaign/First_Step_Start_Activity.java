@@ -99,7 +99,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
         } else {
-            String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
+            List<CampaignTask> step=   SessionManager.getTask(getApplicationContext());
+
+            int step_id = step.get(0).getStepNo()+1;
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
@@ -112,22 +114,21 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         {
             edit_template.setText(bundle.getString("body"));
 
-            seq_task_id= bundle.getString("seq_task_id");
-            sequence_id= bundle.getString("sequence_id");
+            seq_task_id= String.valueOf(bundle.getInt("seq_task_id"));
+            sequence_id= String.valueOf(bundle.getInt("sequence_id"));
 
             step_no= String.valueOf(bundle.getInt("step"));
 
-            SessionManager.setCampaign_type(bundle.getString("type"));
-            SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
+          //  SessionManager.setCampaign_type(bundle.getString("type"));
+            //SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
 
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
             try {
-                minite= bundle.getInt("minute");
-                day= bundle.getInt("day");
-                SessionManager.setCampaign_Day(String.valueOf(day));
-                SessionManager.setCampaign_minute(String.valueOf(minite));
+               // minite= bundle.getInt("minute");
+                //day= bundle.getInt("day");
+
             }
             catch (Exception e)
             {
@@ -205,7 +206,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(First_Step_Start_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     templateList.clear();
                     Gson gson = new Gson();
@@ -296,7 +297,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     templateTextList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -505,9 +506,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
             JsonObject paramObject = new JsonObject();
             paramObject.addProperty("content_body", edit_template.getText().toString());
-            paramObject.addProperty("day", day);
+            paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
             paramObject.addProperty("organization_id", "1");
             paramObject.addProperty("sequence_id", bundle.getString("sequence_id"));
             paramObject.addProperty("team_id", "1");
@@ -526,7 +527,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
                 loadingDialog.cancelLoading();
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -572,7 +573,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     // onBackPressed();
                 } else {
                     Gson gson = new Gson();
@@ -644,7 +645,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                         };
 
                         handler.postDelayed(r, 1000);
-                        holder.tv_item.setBackgroundResource(R.drawable.shape_blue_back);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
                         interfaceClick.OnClick(item.getDescription());
                     }
@@ -740,7 +741,9 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(),First_Step_Activity.class));
+        Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+        intent.putExtra("flag","new");
+        startActivity(intent);
         finish();
         super.onBackPressed();
     }

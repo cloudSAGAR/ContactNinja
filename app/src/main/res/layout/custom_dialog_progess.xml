@@ -16,7 +16,7 @@
     android:layout_height="@dimen/_30sdp"/>-->
 
     <LinearLayout
-        android:background="@drawable/shape_border_10_white"
+        android:background="@drawable/shape_10_white"
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_width="@dimen/_100sdp"

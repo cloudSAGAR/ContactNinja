@@ -161,6 +161,12 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
+
+    @Override
     public void Onclick(Broadcast_image_list broadcastImageList) {
         for(int i=0;i<broadcast_image_list.size();i++){
             if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
@@ -316,11 +322,11 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                         public void success(Response<ApiResponse> response) {
                             loadingDialog.cancelLoading();
 
-                            if (response.body().getStatus() == 200) {
+                            if (response.body().getHttp_status() == 200) {
 
                                if (SessionManager.getContect_flag(getApplicationContext()).equals("check"))
                                {
-                                   Intent intent = new Intent(getApplicationContext(), Campaign_Viewcontect.class);
+                                   Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
                                    intent.putExtra("sequence_id", sequence_id);
                                    startActivity(intent);
                                    finish();
@@ -404,7 +410,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
             }
         });
         if(item.isScelect()){
-            holder.layout_select_image.setBackgroundResource(R.drawable.shape_blue_10);
+            holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
         }else {
             holder.layout_select_image.setBackground(null);
         }
@@ -427,6 +433,7 @@ class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData>
             layout_select_image = itemView.findViewById(R.id.layout_select_image);
         }
     }
+
 
 
 }
