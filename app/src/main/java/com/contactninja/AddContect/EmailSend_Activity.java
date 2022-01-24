@@ -388,7 +388,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + "{" + s + "}";
+        String Newtext = curenttext + s ;
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
@@ -723,8 +723,23 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void success(Response<ApiResponse> response) {
 
-                loadingDialog.cancelLoading();
-                finish();
+                Log.e("Responsse",new Gson().toJson(response.body()));
+                if (response.body().getHttp_status()==200)
+                {
+                    loadingDialog.cancelLoading();
+                    finish();
+                }
+                else if (response.body().getHttp_status()==406)
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
+                    loadingDialog.cancelLoading();
+                }
+                else{
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
+                    loadingDialog.cancelLoading();
+                   /* finish();*/
+                }
+
             }
 
             @Override
