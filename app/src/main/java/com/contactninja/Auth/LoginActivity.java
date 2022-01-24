@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -91,7 +93,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         firebase();
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
         btn_chnage_forgot.setOnClickListener(this);
+        enterPhoneNumber();
+    }
 
+
+    private void enterPhoneNumber() {
+        edit_Mobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
+                String phoneNumber = edit_Mobile.getText().toString().trim();
+                if (countryCode.length() > 0 && phoneNumber.length() > 0) {
+                    if (Global.isValidPhoneNumber(phoneNumber)) {
+                        boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
+                        if (status) {
+                            iv_invalid.setText("");
+                        } else {
+                            iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                        }
+                    } else {
+                        iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                    }
+                } else {
+                    //Toast.makeText(getApplicationContext(), "Country Code and Phone Number is required", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -161,9 +198,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Phonenumber.PhoneNumber phoneNumber = null;
         try {
             phoneNumber = phoneNumberUtil.parse(phNumber, isoCode);
-        } catch (NumberParseException e) {
-            System.err.println(e);
-        }
+
 
         boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
         if (isValid) {
@@ -172,6 +207,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             return false;
         }
+        } catch (NumberParseException e) {
+            System.err.println(e);
+        }
+        return false;
     }
 
     private void initUI() {

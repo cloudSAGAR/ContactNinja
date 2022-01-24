@@ -132,6 +132,7 @@
                             android:imeOptions="actionDone"
                             android:inputType="textEmailAddress"
                             android:padding="10dp"
+                            android:textStyle="bold"
                             android:textColor="@color/otp_header_text_color"
                             android:textColorHint="@color/otp_header_text_color"
                             tools:ignore="Autofill,RtlHardcoded" />
