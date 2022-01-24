@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:layout_height="match_parent">
     <RelativeLayout
         android:paddingTop="@dimen/_10sdp"
         android:paddingBottom="@dimen/_15sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingStart="@dimen/_10sdp"
-        android:background="@drawable/shape_border_20_white"
+        android:background="@drawable/shape_20_white"
         android:orientation="vertical">
 
         <TextView
-
+            android:visibility="gone"
             android:id="@+id/tv_phone"
             style="@style/tv_regular"
             android:layout_width="match_parent"
@@ -30,6 +32,7 @@
             android:textStyle="bold" />
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/_5sdp"
@@ -44,13 +47,14 @@
             android:id="@+id/editText"
             style="@style/tv_regular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_75sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@color/add_contect_transpernt"
-            android:gravity="center"
-            android:hint="Add Message"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/shape_10_white_gray_line"
+            android:gravity="left"
+            android:hint="Type your message here..."
+            android:padding="@dimen/_10sdp"
             android:textColor="@color/otp_header_text_color"
             android:textColorHint="@color/home_list_sub_data"
             android:textSize="@dimen/_13sdp"
@@ -66,6 +70,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_15sdp"
+            android:visibility="gone"
             android:background="@color/home_list_add_contect_view" />
 
         <LinearLayout
@@ -73,20 +78,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/view_l"
             android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:gravity="end|center">
 
             <TextView
                 android:id="@+id/tv_cancel"
                 style="@style/tv_regular"
-                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
-                android:textColor="@color/home_list_sub_data"
-                android:text="Cancel">
+                android:text="Cancel"
+                android:textColor="@color/shape_red">
 
             </TextView>
 
@@ -108,13 +113,5 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_group_otp_logo">
-
-    </ImageView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

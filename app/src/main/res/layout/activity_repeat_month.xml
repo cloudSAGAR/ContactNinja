@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/mMainLayout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Auth.Thankyou_Screen">
 
     <LinearLayout
@@ -12,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar"></include>
+        <include layout="@layout/toolbar"/>
 
 
         <TextView
@@ -54,7 +56,7 @@
             </TextView>
             <LinearLayout
                 android:layout_weight="1"
-                android:background="@drawable/shape_border_ccc"
+                android:background="@drawable/shape_5_white_ccc_line"
                 android:layout_width="match_parent"
                 android:weightSum="1"
                 android:layout_height="wrap_content">
@@ -136,10 +138,10 @@
                 android:textColor="@color/tv_medium"
                 style="@style/tv_regular"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></RadioButton>
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_marginStart="@dimen/_15sdp"
-                android:background="@drawable/shape_border_ccc"
+                android:background="@drawable/shape_5_white_ccc_line"
                 android:layout_width="wrap_content"
                 android:weightSum="1"
                 android:layout_gravity="center"
@@ -185,11 +187,11 @@
                 android:textColor="@color/tv_medium"
                 style="@style/tv_regular"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></RadioButton>
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_marginStart="@dimen/_15sdp"
-                android:background="@drawable/shape_border_ccc"
+                android:background="@drawable/shape_5_white_ccc_line"
                 android:layout_width="match_parent"
                 android:weightSum="1"
                 android:layout_gravity="center"
@@ -208,7 +210,7 @@
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_marginStart="@dimen/_15sdp"
-                android:background="@drawable/shape_border_ccc"
+                android:background="@drawable/shape_5_white_ccc_line"
                 android:layout_width="match_parent"
                 android:weightSum="1"
                 android:layout_gravity="center"
@@ -286,7 +288,7 @@
 
                 android:drawableRight="@drawable/ic_down"
                 android:paddingEnd="@dimen/_10sdp"
-                android:background="@drawable/shape_border_ccc"
+                android:background="@drawable/shape_5_white_ccc_line"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingStart="@dimen/_5sdp"

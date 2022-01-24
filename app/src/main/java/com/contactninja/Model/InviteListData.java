@@ -1,5 +1,7 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,6 +9,8 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 @Entity
+@SuppressLint("UnknownNullness")
+
 public class InviteListData implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;

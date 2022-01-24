@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet"
+    style="@style/CoffeeDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/top_corner15"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_10sdp"
+            android:id="@+id/delete_layout"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                style="@style/tv_regular"
+                android:gravity="center"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                android:text="Delete"
+                android:textColor="@color/camp_delete"
+                />
+            <ImageView
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_delete"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp">
+
+            </ImageView>
+        </LinearLayout>
+
+
+        <View
+            android:background="@color/browser_actions_bg_grey"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp">
+
+        </View>
+        <LinearLayout
+            android:id="@+id/edit_layout"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                style="@style/tv_regular"
+                android:gravity="center"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                android:text="Edit"
+                android:textColor="@color/purple_200"
+                />
+            <ImageView
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_edit"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp">
+
+            </ImageView>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

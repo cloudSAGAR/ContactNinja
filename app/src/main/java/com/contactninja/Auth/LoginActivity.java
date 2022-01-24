@@ -1,14 +1,16 @@
 package com.contactninja.Auth;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,10 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.contactninja.Auth.PlanTyep.PlanType_Screen;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
@@ -49,14 +51,13 @@ import com.hbb20.CountryCodePicker;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
-
+@SuppressLint("UnknownNullness")
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "LoginActivity";
     public String fcmToken = "";
@@ -75,11 +76,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView btn_chnage_forgot,iv_password_invalid;
     RelativeLayout forgot_password;
     ImageView iv_showPassword;
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mNetworkReceiver = new ConnectivityReceiver();
         mAuth = FirebaseAuth.getInstance();
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         loadingDialog = new LoadingDialog(LoginActivity.this);
@@ -98,10 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     private void firebase() {
         FirebaseMessaging.getInstance().getToken()
@@ -250,7 +249,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             iv_password_invalid.setVisibility(View.GONE);
                             iv_invalid.setVisibility(View.GONE);
-                            Uservalidate();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                Uservalidate();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -258,7 +259,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //loadingDialog.showLoadingDialog();
                         try {
                             iv_invalid.setVisibility(View.GONE);
-                            Uservalidate();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                Uservalidate();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -353,14 +356,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         paramObject.addProperty("password", password);
 
         obj.add("data", paramObject);
-        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, Global.getVersionname(LoginActivity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
 
                 loadingDialog.cancelLoading();
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -368,7 +371,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }.getType();
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
-                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
+                    sessionManager.setRefresh_token(user_model.getRefreshToken());
+                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());
                     try {
                         if (user_model.getUser().getContactNumber().equals(""))
                         {
@@ -411,24 +415,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }*/
 
 
-                } else if (response.body().getStatus()==404){
+                } else if (response.body().getHttp_status()==404){
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Log.e("String is",response.body().getMessage());
+                   // Log.e("String is",response.body().getMessage());
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
-                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    try{
+                    //Log.e("Login_type",Login_type);
                     if (Login_type.equals("EMAIL"))
                     {
-                        if (response.body().getMessage().equals("Invalid Password."))
+                        if (response.body().getMessage().toString().equals("Invalid Password."))
                         {
+                            iv_password_invalid.setText(getResources().getString(R.string.invalid_password));
                             iv_password_invalid.setVisibility(View.VISIBLE);
+                           //Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+
                         }
                         else {
                             iv_invalid.setVisibility(View.VISIBLE);
                         }
                     }
 
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 else {
                     Gson gson = new Gson();
@@ -449,6 +460,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
 
 
@@ -464,24 +500,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  paramObject.addProperty("email", txt_email);
              }
              else {
-                 paramObject.addProperty("contact_number", txt_contect);
+                 paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+txt_contect);
              }
              paramObject.addProperty("first_name", "");
             paramObject.addProperty("last_name", "");
             paramObject.addProperty("login_type", Login_type);
             obj.add("data", paramObject);
-            retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+            retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog,Global.getVersionname(LoginActivity.this),Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
                     //Log.e("Response is",new Gson().toJson(response));
 
 
-                    if (response.body().getStatus() == 200) {
+                    if (response.body().getHttp_status() == 200) {
 
                         if(!Login_type.equals("EMAIL")){
+                          /*  try {
+                                LoginData1();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }*/
                             VerifyPhone(edit_Mobile.getText().toString());
                         }else {
-                            LoginData();
+                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                LoginData();
+                            }
                         }
                     } else {
                         loadingDialog.cancelLoading();
@@ -495,4 +538,71 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             });
         }
+
+/*
+    public void LoginData1() throws JSONException {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("email", "");
+        paramObject.addProperty("contact_number", "7874732505");
+        paramObject.addProperty("login_type", "PHONE");
+        paramObject.addProperty("otp", "123456");
+        obj.add("data", paramObject);
+        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                // Log.e("Response is",new Gson().toJson(response));
+                loadingDialog.cancelLoading();
+
+
+                if (response.body().getStatus() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<SignResponseModel>() {
+                    }.getType();
+
+
+                    // Log.e("Reponse is",gson.toJson(response.body().getData()));
+                    SignResponseModel user_model = new Gson().fromJson(headerString, listType);
+                    SessionManager.setUserdata(getApplicationContext(), user_model);
+                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
+                    try {
+                        if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
+                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                            intent.putExtra("login_type", "PHONE");
+                            startActivity(intent);
+                            finish();
+                        } else if (!sessionManager.isPayment_Type_Select()) {
+                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                        intent.putExtra("login_type", "PHONE");
+                        startActivity(intent);
+                        finish();
+                    }
+
+
+                    //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
+
+
+                } else {
+                   // verfiy_button.setEnabled(false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }*/
     }

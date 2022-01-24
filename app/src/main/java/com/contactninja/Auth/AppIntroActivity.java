@@ -1,24 +1,31 @@
 package com.contactninja.Auth;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
-import com.google.android.material.tabs.TabLayout;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
+import com.google.android.material.tabs.TabLayout;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class AppIntroActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ViewPager viewPager;
     int[] layouts;
@@ -28,6 +35,7 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
     SessionManager sessionManager;
 
     private BroadcastReceiver mNetworkReceiver;
+    RelativeLayout mMainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,7 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
     private void initUI() {
         layouts = new int[]{R.layout.welcome_slide_1, R.layout.welcome_slide_2, R.layout.welcome_slide_3};
 
+        mMainLayout = findViewById(R.id.mMainLayout);
         slider_Text = findViewById(R.id.tv_dis);
         tv_skip = findViewById(R.id.tv_skip);
         viewPager = findViewById(R.id.viewPager);
@@ -86,7 +95,33 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(AppIntroActivity.this, mMainLayout);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     class MyViewPagerAdapter extends PagerAdapter {

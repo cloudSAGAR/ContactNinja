@@ -3,14 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".Fragment.Home_Main_Fragment">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    tools:context=".Fragment.Main_home_Fragment">
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />
     <LinearLayout
+        android:visibility="gone"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,5 +40,32 @@
 
 
     </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/tabLayout"
+        style="@style/tv_bold"
+        app:tabMode="scrollable"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabSelectedTextColor="@color/tv_medium"
+        app:tabTextColor="@color/bz_text"
+        android:layout_width="match_parent"
+        app:tabIndicatorHeight="2dp"
+        android:layout_height="wrap_content"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
+        android:background="@color/white">
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <androidx.viewpager.widget.ViewPager
+        android:layout_marginTop="@dimen/_3sdp"
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        />
 
 </LinearLayout>

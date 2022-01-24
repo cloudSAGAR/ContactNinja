@@ -5,11 +5,13 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:id="@+id/mMainLayout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Fragment.AddContect_Fragment.GroupFragment">
 
     <include
         android:visibility="gone"
-        layout="@layout/common_dialog"></include>
+        layout="@layout/common_dialog"/>
     <LinearLayout
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_gravity="left|center"
@@ -60,7 +62,16 @@
             android:padding="@dimen/_10sdp"
             android:background="@drawable/shape_oval_border_10_blue"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"></ImageView>
+            android:layout_height="@dimen/_35sdp"/>
+
+        <ImageView
+            android:id="@+id/add_new_contect_icon1"
+            android:src="@drawable/ic_done"
+            android:visibility="gone"
+            android:padding="@dimen/_10sdp"
+            android:background="@drawable/shape_primary_circle"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"/>
 
         <TextView
             android:id="@+id/add_new_contect"
@@ -71,7 +82,7 @@
             android:layout_marginStart="@dimen/_12sdp"
             android:gravity="center"
             android:singleLine="true"
-            android:text="@string/add_new_group"
+            android:text="@string/add_new_group_all"
             android:textColor="@color/black"
             android:textStyle="bold" />
         <TextView
@@ -94,7 +105,7 @@
         android:layout_marginTop="@dimen/_12sdp"
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"></View>
+        android:layout_height="1dp"/>
 
 
     <LinearLayout
@@ -111,7 +122,7 @@
             android:padding="@dimen/_10sdp"
             android:background="@drawable/shape_primary_back"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"></ImageView>
+            android:layout_height="@dimen/_35sdp"/>
 
         <TextView
             style="@style/tv_regular"

@@ -1,6 +1,11 @@
 package com.contactninja.Auth;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.contactninja.Auth.PlanTyep.PlanType_Screen;
@@ -46,7 +52,7 @@ import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Phone_email_verificationActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static RetrofitApiInterface apiService;
     TextView btn_getStarted, iv_invalid;
@@ -63,11 +69,13 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
     public String fcmToken = "";
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_email_verification);
+        mNetworkReceiver = new ConnectivityReceiver();
         initUI();
         Global.checkConnectivity(Phone_email_verificationActivity.this, mMainLayout);
         mAuth = FirebaseAuth.getInstance();
@@ -168,7 +176,9 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             } else {
                 // login_type="EMAIL";
                 try {
-                    EmailUpdate();
+                    if(Global.isNetworkAvailable(Phone_email_verificationActivity.this,mMainLayout)) {
+                        EmailUpdate();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -185,7 +195,9 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
             } else {
                 // login_type="PHONE";
                 try {
-                    PhoneUpdate();
+                    if(Global.isNetworkAvailable(Phone_email_verificationActivity.this,mMainLayout)) {
+                        PhoneUpdate();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -211,11 +223,8 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_getStarted:
-                check_login_type1();
-
-                break;
+        if (v.getId() == R.id.btn_getStarted) {
+            check_login_type1();
         }
     }
 
@@ -249,10 +258,10 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
 
-        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(Phone_email_verificationActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     sessionManager.Email_Update();
                     loadingDialog.cancelLoading();
@@ -261,7 +270,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                     //Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
 
                 }
-                else if (response.body().getStatus()==404)
+                else if (response.body().getHttp_status()==404)
                 {
                     loadingDialog.cancelLoading();
                     Gson gson = new Gson();
@@ -327,7 +336,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("contact_number", edit_Mobile.getText().toString());
+        paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+edit_Mobile.getText().toString());
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", team_id);
         paramObject.addProperty("update_type", type);
@@ -335,17 +344,17 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         obj.add("data", paramObject);
         Log.e("Data is",new Gson().toJson(obj));
 
-        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager), new RetrofitCallback() {
+        retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(Phone_email_verificationActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
 
                     sessionManager.Email_Update();
                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                     finish();
                 }
-                else if (response.body().getStatus()==404)
+                else if (response.body().getHttp_status()==404)
                 {
                     loadingDialog.cancelLoading();
                     Gson gson = new Gson();
@@ -408,6 +417,31 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Phone_email_verificationActivity.this, mMainLayout);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 }
 

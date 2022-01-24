@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.contactninja"
-    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,AllowBackup,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
+    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -24,6 +24,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission
         android:name="android.permission.CALL_PHONE"
         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
@@ -37,7 +38,6 @@
 
     <application
         android:name=".Utils.Global"
-        android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
@@ -46,43 +46,190 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactNinja"
-        android:usesCleartextTraffic="true"
-        >
+        android:usesCleartextTraffic="true">
         <activity
-            android:screenOrientation="portrait"
-            android:name=".Auth.ForgotPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".Broadcast_Activity.Repeat_Month_Activity"
+            android:name=".Manual_email_and_sms.Sms_Detail_Activty"
             android:exported="false"
-            />
+            android:screenOrientation="portrait" />
         <activity
+            android:name=".Manual_email_and_sms.Manual_Sms_TaskActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Manual_Sms_Send_Activty"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Email_Detail_activty"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Manual_Sms_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Manual_Email_TaskActivity_"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Email_Tankyou"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Manual_Mail_Send_Activty"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Manual_Email_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_and_sms.Email_Sms_List_Activty"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Email.Mail_Send_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Notification.Notification_task_acceptActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Notification.NotificationListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Email.Email_Selction_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Email.Email_List_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddContect.Message_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_view_per_contect_Detail"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserPofile.Affiliate_Report_LavelActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_Viewcontect"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_Final_Start"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_Preview"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.EmailListActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.Email_verification"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddContect.EmailSend_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_Name_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.ContectAndGroup_Actvity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Automated_Email_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_Overview"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.First_Step_Start_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.WebActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.Campaign_List_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Campaign.First_Step_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.CurrentPlanActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.TemplateCreateActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:name=".Broadcast_Activity.Repeat_weekly_Activity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".Broadcast_Activity.Broadcast_Final_Activity"
-            android:exported="false" />
+            android:name=".Setting.TemplateActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".Broadcast_Activity.Broadcast_time_select"
-            android:exported="false" />
+            android:name=".Setting.ResetActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".Broadcast_Activity.Broadcast_date_select"
-            android:exported="false" />
+            android:name=".Setting.SettingActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".Broadcast_Activity.Broadcast_to_repeat"
-            android:exported="false" />
+            android:name=".Auth.ForgotPasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".Broadcast_Activity.Brodcsast_Tankyou"
-            android:exported="false" />
+            android:name=".Broadcast.Broadcast_Schedule.Repeat_Month_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".Fragment.Broadcast_Frgment.Broadcst_Activty"
+            android:name=".Broadcast.Broadcast_Schedule.Repeat_weekly_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_Final_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_time_select"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_date_select"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Broadcast.Broadcast_Schedule.Broadcast_to_repeat"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Broadcast.Brodcsast_Tankyou"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Broadcast.Broadcst_Activty"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
@@ -156,17 +303,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait" android:name=".MainActivity"
-            android:exported="true" />
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".Utils.OTP_Receiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-        <receiver  android:enabled="true" android:exported="true" android:name=".Utils.ConnectivityReceiver">
+        <receiver
+            android:name=".Utils.ConnectivityReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
                     tools:ignore="BatteryLife" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>

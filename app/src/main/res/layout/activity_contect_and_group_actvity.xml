@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.contactninja.MainActivity"
+    android:background="@color/white"
+    android:id="@+id/main_layout"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/shape_25_white_eee_line">
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_gravity="center|left"
+            android:src="@drawable/ic_search"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp">
+
+        </ImageView>
+        <EditText
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_gravity="center|left"
+            android:gravity="center|left"
+            android:id="@+id/contect_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/add_contect_transpernt"
+            >
+
+        </EditText>
+    </LinearLayout>
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/tabLayout"
+        style="@style/tv_bold"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabSelectedTextColor="@color/tv_medium"
+        app:tabTextColor="@color/bz_text"
+        android:layout_width="match_parent"
+        app:tabIndicatorHeight="2dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <androidx.viewpager.widget.ViewPager
+        android:layout_marginTop="@dimen/_3sdp"
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        />
+    <FrameLayout
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llFooter" />
+
+</LinearLayout>

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/otp_background"
     android:id="@+id/mMainLayout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Auth.Phone_email_verificationActivity">
 
     <RelativeLayout
@@ -77,7 +78,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             app:ccpDialog_showTitle="false"
-                            app:ccpDialog_textColor="@color/white"
+                            app:ccpDialog_textColor="@color/black"
                             app:ccp_autoDetectCountry="true"
                             app:ccp_contentColor="@color/otp_header_text_color"
                             app:ccp_showNameCode="false"

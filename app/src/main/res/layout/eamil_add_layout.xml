@@ -2,8 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:layout_height="wrap_content">
-    <ru.rambler.libs.swipe_layout.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ru.rambler.libs.swipe_layout.SwipeLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
@@ -18,17 +19,26 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_45sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_weight="3"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -53,7 +63,7 @@
                 android:id="@+id/select_email_label"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_27sdp"
-                android:background="@drawable/shape_border_ccc"
+                android:background="@drawable/shape_5_white_ccc_line"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp">
 
@@ -83,6 +93,7 @@
                 </ImageView>
             </LinearLayout>
 
+
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/layout_icon_email"
@@ -97,29 +108,35 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp"
-                    android:src="@drawable/ic_email" />
+                    android:tint="@color/purple_200"
+                    android:src="@drawable/ic_email"
+                    tools:ignore="UseAppTint" />
 
             </LinearLayout>
+            </LinearLayout>
+
             <LinearLayout
+                android:background="@color/white"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
                 android:id="@+id/layout_swap"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center|top"
-                android:gravity="center|top"
-                android:visibility="gone"
+                android:layout_gravity="center"
+                android:gravity="center"
                 app:bring_to_clamp="150dp"
                 android:layout_marginStart="@dimen/_10sdp"
                 app:clamp="self"
-                app:gravity="right"
+                app:gravity="center"
                 app:sticky="100dp">
 
                 <LinearLayout
                     android:id="@+id/layout_remove"
                     android:layout_width="@dimen/_60sdp"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_gravity="center|top"
+                    android:layout_gravity="center"
                     android:background="@drawable/shape_red_back"
-                    android:gravity="center|top">
+                    android:gravity="center">
 
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
@@ -133,10 +150,10 @@
                     android:id="@+id/layout_defult"
                     android:layout_width="@dimen/_60sdp"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_gravity="center|top"
+                    android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:background="@drawable/shape_blue_back"
-                    android:gravity="center|top">
+                    android:background="@drawable/shape_5_blue"
+                    android:gravity="center">
 
                     <TextView
                         style="@style/tv_regular"
@@ -147,13 +164,27 @@
                         android:text="@string/add_defult_text"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
             </LinearLayout>
+        </RelativeLayout>
 
-        </LinearLayout>
 
+        <EditText
+            android:layout_marginStart="@dimen/_10sdp"
+            android:id="@+id/edt_email"
+            style="@style/tv_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:background="@color/add_contect_transpernt"
+            android:hint="@string/add_email_a"
+            android:textColor="@color/home_list_sub_data"
+            android:textColorHint="@color/home_list_sub_data"
+            android:textStyle="bold">
+
+        </EditText>
         <TextView
             android:text="@string/invalid_email"
             android:visibility="gone"
@@ -166,19 +197,6 @@
             android:padding="@dimen/_5sdp"
             android:textColor="@color/red"
             android:textStyle="bold" />
-        <EditText
-            android:layout_marginStart="@dimen/_10sdp"
-            android:id="@+id/edt_email"
-            style="@style/tv_regular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/add_contect_transpernt"
-            android:hint="@string/add_email_a"
-            android:textColor="@color/home_list_sub_data"
-            android:textColorHint="@color/home_list_sub_data"
-            android:textStyle="bold">
-
-        </EditText>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

@@ -7,12 +7,13 @@
     android:gravity="center"
     android:background="@color/white"
     android:orientation="vertical"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Fragment.AddContect_Fragment.BzcardFragment">
     <ImageView
         android:layout_gravity="center"
         android:src="@drawable/ic_group_otp_logo"
         android:layout_width="@dimen/_55sdp"
-        android:layout_height="@dimen/_55sdp"></ImageView>
+        android:layout_height="@dimen/_55sdp"/>
     <TextView
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_gravity="center"
@@ -25,6 +26,6 @@
         android:textStyle="bold"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_40sdp"
-        ></TextView>
+        />
 
 </LinearLayout>

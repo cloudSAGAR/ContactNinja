@@ -2,8 +2,12 @@ package com.contactninja.Auth.PlanTyep;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,19 +17,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Auth.Thankyou_Screen;
 import com.contactninja.Model.Plandetail;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Plan_Detail_Screen extends AppCompatActivity {
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Plan_Detail_Screen extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     TextView tv_main_text, tv_sub_titale, start_button;
     RecyclerView plan_condition;
     RecyclerView.LayoutManager layoutManager;
@@ -36,11 +45,14 @@ public class Plan_Detail_Screen extends AppCompatActivity {
     ImageView tv_back;
     SessionManager sessionManager;
 
+    private BroadcastReceiver mNetworkReceiver;
+    ConstraintLayout mMainLayout;
 
     @Override
     public void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_detail_screen);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         sessionManager = new SessionManager(getApplicationContext());
         plan_condition.setLayoutManager(layoutManager);
@@ -356,6 +368,7 @@ public class Plan_Detail_Screen extends AppCompatActivity {
     }
 
     private void IntentUI() {
+        mMainLayout = findViewById(R.id.mMainLayout);
         tv_main_text = findViewById(R.id.tv_main_text);
         tv_sub_titale = findViewById(R.id.tv_sub_titale);
         plan_condition = findViewById(R.id.plan_condition);
@@ -365,6 +378,36 @@ public class Plan_Detail_Screen extends AppCompatActivity {
         start_button = findViewById(R.id.start_button);
         tv_back = findViewById(R.id.tv_back);
 
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Plan_Detail_Screen.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
 

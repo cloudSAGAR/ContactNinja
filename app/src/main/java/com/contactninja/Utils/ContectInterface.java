@@ -1,19 +1,18 @@
 package com.contactninja.Utils;
 
 
+import android.annotation.SuppressLint;
+
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
-
 
 import com.contactninja.Model.Contect_Db;
-import com.contactninja.Model.InviteListData;
 
 import java.util.List;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 @Dao
 public interface ContectInterface {
 
@@ -32,10 +31,15 @@ public interface ContectInterface {
         @Query("SELECT * FROM Contect_Db WHERE first_name =:first_name OR last_name =:last_name AND email_number =:phone")
         List<Contect_Db> getSameValue(String first_name,String last_name,String phone);
 
+
+
+        @Query("SELECT * FROM Contect_Db WHERE email_number =:phone")
+        List<Contect_Db> getSameValue_Firstorlastname(String phone);
+
         @Query("DELETE FROM Contect_Db")
         void RemoveData();
 
-        @Query("DELETE FROM Contect_Db WHERE id NOT IN (SELECT MIN(id) FROM Contect_Db GROUP BY email_number, first_name)")
+        @Query("DELETE FROM Contect_Db WHERE id NOT IN (SELECT MIN(id) FROM Contect_Db GROUP BY email_number)")
         void deleteDuplicates();
 
       /*  @Query("SELECT * FROM InviteListData ")

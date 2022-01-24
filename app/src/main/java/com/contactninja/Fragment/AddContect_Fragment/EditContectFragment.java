@@ -1,5 +1,6 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ import com.contactninja.Model.WorkTypeData;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class EditContectFragment extends Fragment {
 
     EditText tv_mobile_no,ev_email,ev_address,ev_city,ev_zip,ev_zoom,ev_note;
@@ -102,10 +103,10 @@ public class EditContectFragment extends Fragment {
         ev_note=view.findViewById(R.id.ev_note);
         add_mobile_Number=view.findViewById(R.id.add_mobile_Number);
         pulse_icon=view.findViewById(R.id.pulse_icon);
-        pulse_icon.setColorFilter(getActivity().getColor(R.color.purple_200));
+        pulse_icon.setColorFilter(getActivity().getResources().getColor(R.color.purple_200));
         layout_phone=view.findViewById(R.id.layout_phone);
         pulse_icon1=view.findViewById(R.id.pulse_icon1);
-        pulse_icon1.setColorFilter(getActivity().getColor(R.color.purple_200));
+        pulse_icon1.setColorFilter(getActivity().getResources().getColor(R.color.purple_200));
         layout_email=view.findViewById(R.id.layout_email);
         layout_icon_email=view.findViewById(R.id.layout_icon_email);
         layout_icon_call=view.findViewById(R.id.layout_icon_call);

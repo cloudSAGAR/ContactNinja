@@ -2,7 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:orientation="vertical">
 
 <!--<ProgressBar
@@ -14,7 +16,7 @@
     android:layout_height="@dimen/_30sdp"/>-->
 
     <LinearLayout
-        android:background="@drawable/shape_border_10_white"
+        android:background="@drawable/shape_10_white"
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_width="@dimen/_100sdp"

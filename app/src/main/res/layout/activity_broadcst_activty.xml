@@ -7,7 +7,7 @@
     tools:context="com.contactninja.MainActivity"
     android:background="@color/white"
     android:id="@+id/main_layout"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"   xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />
@@ -19,7 +19,7 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/shape_border_eee">
+        android:background="@drawable/shape_25_white_eee_line">
         <ImageView
             android:id="@+id/search_icon"
             android:layout_marginStart="@dimen/_15sdp"
@@ -59,7 +59,7 @@
     <View
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"></View>
+        android:layout_height="1dp" />
     <androidx.viewpager.widget.ViewPager
         android:layout_marginTop="@dimen/_3sdp"
         android:id="@+id/viewPager"

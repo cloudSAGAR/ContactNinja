@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/mMainLayout"
-    android:background="@color/otp_background"
-    >
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    android:background="@color/otp_background">
     <LinearLayout
         android:background="@drawable/shape_white_top_left_right_30"
         android:layout_marginTop="@dimen/_100sdp"
@@ -82,9 +82,9 @@
             android:textStyle="bold"
             android:textSize="@dimen/_13sdp"
             android:textColor="@color/otp_background"
-            android:background="@drawable/shape_white_25_corner"
+            android:background="@drawable/shape_25_white_blue_line"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"></TextView>
+            android:layout_height="@dimen/_40sdp"/>
 
 
         <LinearLayout

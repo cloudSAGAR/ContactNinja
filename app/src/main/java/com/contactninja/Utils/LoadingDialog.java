@@ -11,7 +11,7 @@ import android.view.KeyEvent;
 
 import com.contactninja.R;
 
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class LoadingDialog {
     private Activity activity = null;
     private String infoText = "";

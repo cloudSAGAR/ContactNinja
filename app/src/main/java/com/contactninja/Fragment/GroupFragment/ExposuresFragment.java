@@ -1,5 +1,6 @@
 package com.contactninja.Fragment.GroupFragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import com.contactninja.R;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class ExposuresFragment extends Fragment implements View.OnClickListener {
 
 

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:background="@color/white">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/_5sdp"
@@ -167,7 +167,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/company_layout"
+            android:visibility="gone"
+            android:id="@+id/other_company_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -190,18 +191,19 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_company"
+                        android:id="@+id/tv_otger_company"
                         style="@style/tv_regular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_company"
+                        android:text="@string/other_company"
+                        android:drawableRight="@drawable/ic_down"
                         android:textColor="@color/tv_medium"
                         android:textStyle="bold">
 
                     </TextView>
 
                     <EditText
-                        android:id="@+id/ev_company"
+                        android:id="@+id/ev_othre_company"
                         style="@style/tv_regular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -226,6 +228,78 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/home_list_add_contect_view" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/company_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:id="@+id/tv_company"
+                            style="@style/tv_regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_company"
+                            android:textColor="@color/tv_medium"
+                            android:textStyle="bold"/>
+                        <ImageView
+                            android:id="@+id/image_list_show"
+                            android:padding="@dimen/_10sdp"
+                            android:src="@drawable/ic_down"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/ev_company"
+                        style="@style/tv_regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:enabled="false"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_company_a"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/company_url_layout"
@@ -591,7 +665,7 @@
                     android:id="@+id/select_state"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_27sdp"
-                    android:background="@drawable/shape_border_ccc"
+                    android:background="@drawable/shape_5_white_ccc_line"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
                     android:visibility="gone">
@@ -740,20 +814,21 @@
                             android:layout_height="wrap_content"
                             android:text="@string/add_timezone"
                             android:textColor="@color/tv_medium"
-                            android:textStyle="bold">
+                            android:textStyle="bold"/>
 
-                        </TextView>
 
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/select_label_zone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_27sdp"
-                        android:background="@drawable/shape_border_ccc"
-                        android:paddingStart="@dimen/_20sdp"
-                        android:paddingEnd="@dimen/_20sdp">
+                        android:paddingTop="@dimen/_4sdp"
+                        android:paddingBottom="@dimen/_4sdp"
+                        android:layout_width="@dimen/_170sdp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_5_white_ccc_line"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             android:id="@+id/zone_txt"
@@ -764,13 +839,14 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="@string/add_home"
+                            android:text="@string/add_timezone"
                             android:textColor="@color/home_list_sub_data"
                             android:textStyle="bold">
 
                         </TextView>
 
                         <ImageView
+                            android:id="@+id/iv_down"
                             android:layout_width="@dimen/_12sdp"
                             android:layout_height="@dimen/_12sdp"
                             android:layout_gravity="center"
@@ -921,7 +997,7 @@
                     android:background="@drawable/ic_note"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
-                    android:orientation="horizontal"></LinearLayout>
+                    android:orientation="horizontal"/>
 
 
             </LinearLayout>
@@ -1220,7 +1296,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <ImageView
-                            android:background="@drawable/ic_rectangle_1810"
+                            android:background="@drawable/ic_breakout"
                             android:layout_gravity="center"
                             android:padding="5dp"
                             android:layout_width="@dimen/_20sdp"
@@ -1337,7 +1413,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/img_breakout"
                 android:padding="@dimen/_5sdp"
-                android:background="@drawable/shape_primary_back"
+                android:background="@drawable/ic_breakout"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp">
 

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/mMainLayout"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    tools:context=".Campaign.Campaign_Overview">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Campaign.First_Step_Start_Activity">
+        <include
+            layout="@layout/toolbar"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:src="@drawable/ic_small_logo"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp">
+
+                </ImageView>
+                <TextView
+
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/add_new_contect"
+                    style="@style/tv_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="@dimen/_16sdp"
+                    android:text="Campaign Preview"
+                    android:textColor="@color/tv_medium"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+                <LinearLayout
+                    android:weightSum="1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <View
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:visibility="invisible"
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/camp_line">
+
+                            </View>
+                            <LinearLayout
+                                android:background="@drawable/shape_primary_circle"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:padding="@dimen/_3sdp"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:background="@drawable/ic_small_logo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </LinearLayout>
+
+
+                            <View
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/camp_line">
+
+                            </View>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/shape_5_white_ccc_line"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_height="@dimen/_50sdp">
+                            <EditText
+                                android:id="@+id/tv_name"
+                                android:background="@color/add_contect_transpernt"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_width="match_parent"
+                                android:focusable="true"
+                                android:hint="@string/app_name"
+                                style="@style/tv_Medium"
+                                android:textColor="@color/tv_medium"
+                                android:textColorHint="@color/tv_medium"
+                                android:textSize="@dimen/_15sdp"
+                                android:layout_height="match_parent"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <View
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:layout_width="1dp"
+                                android:id="@+id/line_1"
+                                android:layout_height="match_parent"
+                                android:background="@color/camp_line">
+
+                            </View>
+                            <LinearLayout
+                                android:background="@drawable/shape_primary_circle"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:padding="@dimen/_4sdp"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:background="@drawable/ic_nav_contacts_white"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/camp_line">
+
+                            </View>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/contect_layout"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_height="@dimen/_100sdp">
+
+                    <LinearLayout
+                        android:background="@drawable/shape_5_white_ccc_line"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_plus"
+                            android:id="@+id/add_icon"
+                            android:tint="@color/purple_200"
+                            android:padding="@dimen/_10sdp"
+                            android:background="@drawable/shape_oval_border_10_blue"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            tools:ignore="UseAppTint">
+
+                        </ImageView>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:id="@+id/user_contect"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_80sdp"
+                            android:layout_gravity="center"
+                            android:padding="@dimen/_5sdp" />
+
+                    </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/contect_count"
+                                style="@style/tv_regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/_15sdp"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:singleLine="true"
+                                android:text="@string/campaign_step_title"
+                                android:textColor="@color/bz_text"
+                                android:textSize="@dimen/_14sdp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/item_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

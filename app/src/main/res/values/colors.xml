@@ -8,6 +8,7 @@
     <color name="teal_700">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
 
     <color name="red">#F64F50</color>
     <color name="green">#08910D</color>
@@ -33,12 +34,14 @@
     <color name="home_list_atoz">#4E90CD</color>
     <color name="home_list_add_contect_border">#C2C6CB</color>
     <color name="home_list_add_contect_view">#EEEEEE</color>
+    <color name="shape_red">#F64F50</color>
 
 
 
     <color name="home_list_add_contect__bottom_text">#007AFF</color>
     <color name="contect_bottom_sheet_color">#4848484D</color>
     <color name="bz_text">#4A4A4A</color>
+    <color name="line_camp">#1A4A4A4A</color>
 
 
     <color name="alert_color">#040404</color>
@@ -49,11 +52,14 @@
     <color name="lineView">#D8D8D8</color>
     <color name="linkView_border">#9B9B9B</color>
     <color name="spinner">#BBBBBB</color>
+    <color name="unSelect">#E9E9E9</color>
 
 
     <color name="calendar_header_title">#FFF</color>
     <color name="selected_date_circle_color_app">#FF5252</color>
     <color name="range_bg_color_app">#FFCDD2</color>
+    <color name="camp_line">#707070B2</color>
+    <color name="camp_delete">#F47F7F</color>
 
 
 

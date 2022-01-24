@@ -3,6 +3,7 @@ package com.contactninja;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,14 @@ import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Utils.SessionManager;
+import com.google.gson.Gson;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import de.hdodenhof.circleimageview.CircleImageView;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int LOADING = 0;
@@ -53,11 +56,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (viewType) {
             case ITEM:
                 View viewItem = inflater.inflate(R.layout.invite_user_details, parent, false);
-                viewHolder = new ContectListAdapter.MovieViewHolder(viewItem);
+                viewHolder = new MovieViewHolder(viewItem);
                 break;
             case LOADING:
                 View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
-                viewHolder = new ContectListAdapter.LoadingViewHolder(viewLoading);
+                viewHolder = new LoadingViewHolder(viewLoading);
 
                 break;
         }
@@ -73,7 +76,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case ITEM:
                 ContectListAdapter.MovieViewHolder holder1 = (ContectListAdapter.MovieViewHolder) holder;
               try {
-                  holder1.userName.setText(Contact_data.getFirstname());
+                  holder1.userName.setText(Contact_data.getFirstname()+" "+Contact_data.getLastname());
                   holder1.userNumber.setVisibility(View.GONE);
 
                   holder1.first_latter.setVisibility(View.VISIBLE);
@@ -120,7 +123,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                               }
                           }
                       } catch (Exception e) {
-
+                        e.printStackTrace();
                       }
 
 
@@ -128,6 +131,12 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                       holder1.no_image.setVisibility(View.VISIBLE);
                       holder1.profile_image.setVisibility(View.GONE);
                   } else {
+
+                    /*  CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context.getApplicationContext());
+                      circularProgressDrawable.setStrokeWidth(6f);
+                      circularProgressDrawable.setCenterRadius(20f);
+                      circularProgressDrawable.setColorSchemeColors(context.getResources().getColor(R.color.purple_200),context.getResources().getColor(R.color.purple_200),context.getResources().getColor(R.color.purple_200));
+                      circularProgressDrawable.start();*/
                       Glide.with(context).
                               load(Contact_data.getContactImage())
                               .placeholder(R.drawable.shape_primary_circle)
@@ -142,6 +151,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                       @Override
                       public void onClick(View v) {
                           SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
+                          Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                           SessionManager.setOneCotect_deatil(context, Contact_data);
                           Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
                           SessionManager.setContect_flag("read");
@@ -222,7 +232,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
+    public static class MovieViewHolder extends RecyclerView.ViewHolder {
         TextView no_image;
         TextView userName, userNumber, first_latter;
         CircleImageView profile_image;
@@ -241,7 +251,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
+    public static class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         private final ProgressBar progressBar;
 

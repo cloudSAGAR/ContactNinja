@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:paddingTop="@dimen/_15sdp"
+        android:paddingBottom="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:background="@drawable/shape_20_white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <EditText
+
+                android:id="@+id/ev_subject"
+                style="@style/tv_regular"
+
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/shape_10_white_gray_line"
+                android:gravity="center|left"
+                android:hint="Add Subject"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/otp_header_text_color"
+                android:textColorHint="@color/home_list_sub_data"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold">
+
+            </EditText>
+
+
+            <EditText
+
+                android:id="@+id/ev_type"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:background="@drawable/shape_10_white_gray_line"
+                android:gravity="left"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:hint="Type your message here..."
+                android:textColor="@color/otp_header_text_color"
+                android:textColorHint="@color/home_list_sub_data"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold">
+
+            </EditText>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_l"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="end|center">
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    style="@style/tv_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:gravity="center|end"
+                    android:text="Cancel"
+                    android:textColor="@color/shape_red"
+                    android:textSize="@dimen/_14sdp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_add"
+                    style="@style/tv_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:gravity="center|end"
+                    android:text="Send"
+                    android:textColor="@color/purple_200"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold">
+
+                </TextView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#00000000"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:layout_height="match_parent">
     <LinearLayout
         android:background="@drawable/shape_white_top_left_right_20"
@@ -32,6 +34,7 @@
             </TextView>
 
             <View
+                android:visibility="gone"
                 android:background="@color/home_list_add_contect_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp">

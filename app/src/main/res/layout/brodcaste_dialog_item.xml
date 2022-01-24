@@ -34,6 +34,23 @@
             android:layout_height="@dimen/_1sdp">
 
         </View>
+        <TextView
+            android:id="@+id/selected_campaign"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="10dp"
+            style="@style/tv_regular"
+            android:gravity="center"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold"
+            android:text="@string/campaign_add"
+            android:textColor="@color/tv_medium"
+            />
+        <View
+            android:background="@color/browser_actions_bg_grey"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp">
 
+        </View>
     </LinearLayout>
 </LinearLayout>

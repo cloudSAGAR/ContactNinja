@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:background="@color/purple_200"
     android:layout_height="match_parent"
+    android:id="@+id/mMainLayout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Auth.AppIntroActivity">
 
 
@@ -22,14 +24,13 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.viewpager.widget.ViewPager
-        android:layout_above="@+id/tab_layout"
-        android:layout_below="@+id/tv_skip"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/tab_layout"
+        android:layout_below="@+id/tv_skip"
         android:overScrollMode="never"
-        tools:ignore="MissingConstraints" >
-    </androidx.viewpager.widget.ViewPager>
+        tools:ignore="MissingConstraints"/>
 
   <!--  <TextView
         android:id="@+id/tv_dis"

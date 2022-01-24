@@ -1,5 +1,9 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
+@SuppressLint("UnknownNullness")
+
 public class WorkTypeData {
     private String id;
     private String titale;

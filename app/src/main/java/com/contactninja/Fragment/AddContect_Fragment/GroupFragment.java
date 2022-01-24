@@ -1,7 +1,9 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,7 +37,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -46,9 +47,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-
+@SuppressLint("UnknownNullness,SyntheticAccessor,SetTextI18n,StaticFieldLeak")
 public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
@@ -59,7 +61,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     TextView num_count;
-    int page = 1, limit = 10, totale_group;
+    int page = 1,  limit = 10, totale_group;
     PaginationAdapter paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
@@ -68,7 +70,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     // private GroupAdapter groupAdapter;
     private ProgressBar loadingPB;
     LinearLayout mMainLayout1,demo_layout;
-
+    LinearLayout mMainLayout;
     public GroupFragment() {
         // Required empty public constructor
     }
@@ -85,17 +87,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
 
+
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
-       try {
-            GroupEvent();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
-
-        SessionManager.setGroupList(getActivity(), new ArrayList<>());
-
 
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
@@ -108,6 +104,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
+            @SuppressLint("SyntheticAccessor")
             @Override
             public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -119,7 +116,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
                         try {
                             currentPage=currentPage + 1;
-                            GroupEvent1();
+                            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                                GroupEvent1();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -130,13 +129,16 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @SuppressLint("SyntheticAccessor")
             @Override
             public void onRefresh() {
                 paginationAdapter = new PaginationAdapter(getActivity());
                 group_recyclerView.setAdapter(paginationAdapter);
 
                 try {
-                    GroupEvent();
+                    if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                        GroupEvent();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -158,16 +160,20 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         loadingPB = view.findViewById(R.id.idPBLoading);
         grouplists = new ArrayList<>();
         mMainLayout1=view.findViewById(R.id.mMainLayout1);
+        mMainLayout=view.findViewById(R.id.mMainLayout);
         demo_layout=view.findViewById(R.id.demo_layout);
         swipeToRefresh=view.findViewById(R.id.swipeToRefresh);
 
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
+            case R.id.demo_layout:
+                SessionManager.setGroupList(getActivity(),new ArrayList<>());
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
               /*  getActivity().finish();*/
@@ -175,16 +181,57 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             case R.id.group_name:
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
-            case R.id.demo_layout:
-                SessionManager.setGroupData(getActivity(),new Grouplist.Group());
-                startActivity(new Intent(getActivity(), GroupActivity.class));
-                break;
 
 
         }
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SessionManager.setGroupList(getActivity(), new ArrayList<>());
+        paginationAdapter = new PaginationAdapter(getActivity());
+        group_recyclerView.setAdapter(paginationAdapter);
+                //loadingDialog.showLoadingDialog();
+                MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                myAsyncTasks.execute();
+
+    }
+
+
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                    GroupEvent();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
+    }
     private void GroupEvent() throws JSONException {
 
 
@@ -205,12 +252,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 swipeToRefresh.setRefreshing(false);
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     grouplists.clear();
                     String headerString = gson.toJson(response.body().getData());
@@ -269,12 +316,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
                 loadingDialog.cancelLoading();
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
@@ -294,8 +341,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     }
 
                     num_count.setText("" + group_model.getTotal() + " Group");
-
-                } else {
 
                 }
             }
@@ -318,12 +363,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         private List<Grouplist.Group> movieList;
         private boolean isLoadingAdded = false;
 
-        public PaginationAdapter(Context context) {
+        public PaginationAdapter(@SuppressLint("UnknownNullness") Context context) {
             this.context = context;
             movieList = new LinkedList<>();
         }
 
-        public void setMovieList(List<Grouplist.Group> movieList) {
+        public void setMovieList(@SuppressLint("UnknownNullness") List<Grouplist.Group> movieList) {
             this.movieList = movieList;
         }
 
@@ -346,6 +391,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             return viewHolder;
         }
 
+        @SuppressLint("SyntheticAccessor")
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
@@ -355,10 +401,48 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
 
                     movieViewHolder.group_name.setText(Group_data.getGroupName());
-                    Glide.with(context).
-                            load(Group_data.getGroupImage()).
-                            placeholder(R.drawable.shape_primary_back).
-                            error(R.drawable.shape_primary_back).into(movieViewHolder.group_image);
+
+
+
+                    if (Group_data.getGroupImage()==null)
+                    {
+                        String name =Group_data.getGroupName();
+                        String add_text="";
+                        String[] split_data=name.split(" ");
+                        try {
+                            for (int i=0;i<split_data.length;i++)
+                            {
+                                if (i==0)
+                                {
+                                    add_text=split_data[i].substring(0,1);
+                                }
+                                else {
+                                    add_text=add_text+split_data[i].substring(0,1);
+                                    break;
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+
+                        movieViewHolder.no_image.setText(add_text);
+                        movieViewHolder.no_image.setVisibility(View.VISIBLE);
+                        movieViewHolder.group_image.setVisibility(View.GONE);
+                    }
+                    else {
+                        Glide.with(context).
+                                load(Group_data.getGroupImage()).
+                                placeholder(R.drawable.shape_primary_back).
+                                error(R.drawable.shape_primary_back).into(movieViewHolder.group_image);
+
+                        movieViewHolder.no_image.setVisibility(View.GONE);
+                        movieViewHolder.group_image.setVisibility(View.VISIBLE);
+                    }
+
+
                     movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -420,12 +504,13 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
         public class MovieViewHolder extends RecyclerView.ViewHolder {
-            private final TextView group_name;
-            private final RoundedImageView group_image;
+            private final TextView group_name,no_image;
+            private final CircleImageView group_image;
             LinearLayout group_layout;
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
+                no_image = itemView.findViewById(R.id.no_image);
                 group_name = itemView.findViewById(R.id.group_name);
                 group_layout = itemView.findViewById(R.id.group_layout);
                 group_image = itemView.findViewById(R.id.group_image);
@@ -445,7 +530,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
+    public abstract static class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
         private final LinearLayoutManager layoutManager;
 
@@ -454,7 +539,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
 
             int visibleItemCount = layoutManager.getChildCount();

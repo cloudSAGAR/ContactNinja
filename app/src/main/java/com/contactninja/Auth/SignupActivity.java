@@ -1,7 +1,11 @@
 package com.contactninja.Auth;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -53,6 +58,7 @@ import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "SignupActivity";
     public static RetrofitApiInterface apiService;
@@ -72,6 +78,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseAuth mAuth;
     CheckBox select_code;
     View view_layout;
+    private BroadcastReceiver mNetworkReceiver;
 
     public static String getRandomNumberString() {
         // It will generate 6 digit random Number.
@@ -87,6 +94,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        mNetworkReceiver = new ConnectivityReceiver();
         retrofitCalls = new RetrofitCalls();
         mAuth = FirebaseAuth.getInstance();
         loadingDialog = new LoadingDialog(SignupActivity.this);
@@ -140,7 +148,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 last_name = edit_Last.getText().toString().trim();
                 mobile_number = edit_Mobile.getText().toString().trim();
                 email_address = edit_email.getText().toString();
-                referred_by = "t2q2";
+                referred_by = "";
                 Otp = getRandomNumberString();
                 if (first_name.equals("")) {
                     iv_invalid.setText(getResources().getString(R.string.invalid_first_name));
@@ -271,8 +279,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 if (checkVelidaction()) {
 
                     try {
-                        Uservalidate();
-                        sessionManager.setlogin_type(login_type);
+                        if(Global.isNetworkAvailable(SignupActivity.this,mMainLayout)) {
+                            Uservalidate();
+                            sessionManager.setlogin_type(login_type);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -329,23 +339,25 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         paramObject.addProperty("first_name", first_name);
         paramObject.addProperty("last_name", last_name);
         paramObject.addProperty("email", email_address);
-        paramObject.addProperty("contact_number", mobile_number);
+        paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+mobile_number);
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", "1231220");
         obj.add("data", paramObject);
-        retrofitCalls.Uservalidate(sessionManager, obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.Uservalidate(sessionManager, obj, loadingDialog, Global.getVersionname(SignupActivity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
 
 
-                if (response.body().getStatus() == 200) {
+                if (response.body().getHttp_status() == 200) {
 
                     if (!login_type.equals("EMAIL")) {
                         VerifyPhone(edit_Mobile.getText().toString());
                     } else {
                         try {
-                            SignAPI();
+                            if(Global.isNetworkAvailable(SignupActivity.this,mMainLayout)){
+                                SignAPI();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -392,9 +404,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
     private void SignAPI() throws JSONException {
         Global.getInstance().setConnectivityListener(this);
-        loadingDialog.showLoadingDialog();
 
-        // loadingDialog.showLoadingDialog();
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("first_name", first_name);
@@ -405,7 +415,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         paramObject.addProperty("otp", "");
         paramObject.addProperty("referred_by", referred_by);
         obj.add("data", paramObject);
-        retrofitCalls.SignUp_user(sessionManager, obj, loadingDialog, new RetrofitCallback() {
+        retrofitCalls.SignUp_user(sessionManager, obj, loadingDialog,Global.getVersionname(SignupActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -562,4 +572,32 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(SignupActivity.this, mMainLayout);
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
 }
