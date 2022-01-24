@@ -115,6 +115,7 @@
                 android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:visibility="gone"
                     android:id="@+id/profile_image"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
@@ -126,7 +127,6 @@
                     app:civ_border_color="#FF000000"/>
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/no_image"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -134,6 +134,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="@dimen/_12sdp"
+                    android:text="T"
                     android:background="@drawable/shape_primary_circle"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp">
