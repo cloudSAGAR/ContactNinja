@@ -49,7 +49,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Email_List_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     LinearLayout demo_layout, add_new_contect_layout, mMainLayout,layout_search;

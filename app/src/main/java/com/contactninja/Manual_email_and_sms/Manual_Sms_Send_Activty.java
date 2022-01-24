@@ -1,13 +1,5 @@
 package com.contactninja.Manual_email_and_sms;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Response;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -28,7 +20,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.AddContect.Message_Activity;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -58,6 +56,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Response;
+
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener{
     public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
@@ -104,10 +105,6 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         p_number = bundle.getString("number");
         id = String.valueOf(bundle.getInt("id"));
         String type=bundle.getString("type");
-        /*intent.putExtra("number",p_num);
-        intent.putExtra("id",id);
-        intent.putExtra("type","app");*/
-
 
         try {
             if(Global.isNetworkAvailable(Manual_Sms_Send_Activty.this,mMainLayout)){
@@ -130,9 +127,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
         tv_use_tamplet.setOnClickListener(this);
         rv_direct_list = findViewById(R.id.rv_direct_list);
-     /*   iv_more = findViewById(R.id.iv_more);
-        iv_more.setOnClickListener(this);*/
-        mMainLayout=findViewById(R.id.mMainLayout);
+       mMainLayout=findViewById(R.id.mMainLayout);
         edit_template=findViewById(R.id.ev_txt);
         iv_submit=findViewById(R.id.iv_submit);
         iv_submit.setOnClickListener(this);
@@ -319,10 +314,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
             JSONObject paramObject1 = new JSONObject();
             paramObject1.put("prospect_id", id);
             paramObject1.put("mobile", email);
-           /* JSONArray contect_array = new JSONArray();
-            contect_array.put(email);
-            paramObject1.put("mobile", contect_array);*/
-            jsonArray.put(paramObject1);
+              jsonArray.put(paramObject1);
             break;
         }
         JSONArray contact_group_ids = new JSONArray();

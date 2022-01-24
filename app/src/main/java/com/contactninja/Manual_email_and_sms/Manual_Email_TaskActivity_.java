@@ -1,12 +1,13 @@
 package com.contactninja.Manual_email_and_sms;
 
-import androidx.appcompat.app.AppCompatActivity;
-import retrofit2.Response;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -33,7 +38,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -41,7 +45,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class Manual_Email_TaskActivity_ extends AppCompatActivity implements View.OnClickListener {
+import retrofit2.Response;
+
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Manual_Email_TaskActivity_ extends AppCompatActivity implements View.OnClickListener,ConnectivityReceiver.ConnectivityReceiverListener  {
 
     TextView tc_time_zone;
     SessionManager sessionManager;
@@ -53,11 +60,13 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
     TextView tv_date,tv_time;
     private int mYear, mMonth, mDay, mHour, mMinute;
     String subject,body,id,email,gid;
-
+    private BroadcastReceiver mNetworkReceiver;
+    ConstraintLayout mMainLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_email_task);
+        mNetworkReceiver = new ConnectivityReceiver();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -83,8 +92,39 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
         //tv_time.setText(String.valueOf(currentTime.getTime()));
 
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Manual_Email_TaskActivity_.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
     private void IntentUI() {
+        mMainLayout=findViewById(R.id.mMainLayout);
         linearLayout=findViewById(R.id.linearLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
