@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -322,7 +323,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             PhoneViewAdd();
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
 
             Log.e("Model Data", new Gson().toJson(user_data_model));
             edt_mobile_no.setEnabled(false);
@@ -1070,7 +1072,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     }
 
 
-    void showBottomSheetDialog_For_Home(String moble, TextView phone_txt, TextView email_txt, Contactdetail item) {
+    void showBottomSheetDialog_For_Home(String moble, TextView phone_txt, TextView email_txt, Contactdetail item,int item_postion) {
         bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_for_home);
         RecyclerView home_type_list = bottomSheetDialog.findViewById(R.id.home_type_list);
@@ -1089,7 +1091,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         workTypeData.add(2, nameList2);
         workTypeData.add(3, nameList3);
         workTypeData.add(4, nameList4);
-        WorkAdapter workAdapter = new WorkAdapter(getActivity(), workTypeData, moble, phone_txt, email_txt, item);
+        WorkAdapter workAdapter = new WorkAdapter(getActivity(), workTypeData, moble, phone_txt, email_txt, item,item_postion);
         home_type_list.setAdapter(workAdapter);
 
         bottomSheetDialog.show();
@@ -1438,26 +1440,27 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         TextView email_txt;
         Contactdetail item;
         private List<WorkTypeData> worklist;
-
-        public WorkAdapter(Context context, List<WorkTypeData> worklist, String type, TextView phone_txt, TextView email_txt, Contactdetail item) {
+        int item_postion;
+        public WorkAdapter(Context context, List<WorkTypeData> worklist, String type, TextView phone_txt, TextView email_txt, Contactdetail item, int item_postion) {
             this.mCtx = context;
             this.worklist = worklist;
             this.type = type;
             this.phone_txt = phone_txt;
             this.email_txt = email_txt;
             this.item = item;
+            this.item_postion=item_postion;
         }
 
         @NonNull
         @Override
-        public InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public WorkAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.work_type_selecte, parent, false);
-            return new InviteListDataclass(view);
+            return new WorkAdapter.InviteListDataclass(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
+        public void onBindViewHolder(@NonNull WorkAdapter.InviteListDataclass holder, int position) {
             WorkTypeData WorkData = worklist.get(position);
             holder.tv_item.setText(WorkData.getTitale());
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
@@ -1470,12 +1473,20 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             bottomSheetDialog.cancel();
                             phone_txt.setText(holder.tv_item.getText().toString());
                             item.setLabel(holder.tv_item.getText().toString());
+                            List<Contactdetail> s= addcontectModel.getContactdetails();
+                            s.get(item_postion).setLabel(holder.tv_item.getText().toString());
+                            addcontectModel.setContactdetails(s);
+                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
 
                         } else if (type.equals("email")) {
                             bottomSheetDialog.cancel();
                             email_txt.setText(holder.tv_item.getText().toString());
                             item.setLabel(holder.tv_item.getText().toString());
-                        } else {
+                            List<Contactdetail> s= addcontectModel.getContactdetails();
+                            s.get(item_postion).setLabel(holder.tv_item.getText().toString());
+                            addcontectModel.setContactdetails(s);
+                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
                         }
 
@@ -1632,7 +1643,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item);
+                        addcontectModel.setContactdetails(contactdetails);
+                        SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
@@ -1770,7 +1784,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item);
+                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
@@ -1906,7 +1920,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item);
+                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
@@ -2100,7 +2114,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item);
+                        showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item,position);
                     }
                 });
 
@@ -2214,7 +2228,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item);
+                        showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item,position);
                     }
                 });
 

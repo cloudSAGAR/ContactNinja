@@ -7,6 +7,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -32,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Group_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
+import com.contactninja.Campaign.Fragment.View_Contect_Fragment;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
@@ -89,6 +91,66 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         Bundle bundle=getintent.getExtras();
         sequence_id=bundle.getInt("sequence_id");
         seq_task_id=bundle.getInt("seq_task_id");
+
+        if (SessionManager.getContect_flag(getApplicationContext()).equals("edit"))
+        {
+            tabLayout.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
+            Fragment fragment = new Campaign_Contect_Fragment(this);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+            fragmentTransaction.commitAllowingStateLoss();
+            /*tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
+//            tabLayout.addTab(tabLayout.newTab().setText("Groups"));
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+            adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
+                    tabLayout.getTabCount(), strtext);
+
+            viewPager.setAdapter(adapter);
+
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+*/
+        }
+        else if (SessionManager.getContect_flag(getApplicationContext()).equals("read"))
+        {
+            tabLayout.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
+            Fragment fragment = new Campaign_Contect_Fragment(this);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+            fragmentTransaction.commitAllowingStateLoss();
+        }
+        else if (SessionManager.getContect_flag(getApplicationContext()).equals("check"))
+        {
+            tabLayout.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
+            Fragment fragment = new Campaign_Contect_Fragment(this);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+            fragmentTransaction.commitAllowingStateLoss();
+        }
+
+        else {
+
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -114,6 +176,8 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
 
             }
         });
+
+        }
 
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,6 +353,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                 Log.e("Contec List Size",String.valueOf(contactdetails.get(0).getContactDetails().size()));
                 JSONObject paramObject1 = new JSONObject();
                 paramObject1.put("prospect_id",contactdetails.get(i).getId());
+               Log.e("Contect Detail is",new Gson().toJson(contactdetails.get(i).getContactDetails()));
                 for (int j=0;j<contactdetails.get(i).getContactDetails().size();j++)
                 {
                     if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
@@ -330,6 +395,15 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                                    intent.putExtra("sequence_id", sequence_id);
                                    startActivity(intent);
                                    finish();
+                               }
+                               else if (SessionManager.getContect_flag(getApplicationContext()).equals("edit"))
+                               {
+                                   SessionManager.setCampign_flag("read");
+                                   Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                                   intent.putExtra("sequence_id", sequence_id);
+                                   startActivity(intent);
+                                   finish();
+
                                }
                               else {
                                    Intent intent=new Intent(getApplicationContext(),Campaign_Name_Activity.class);

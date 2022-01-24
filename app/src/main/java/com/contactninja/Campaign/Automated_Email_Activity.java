@@ -411,7 +411,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + "{" + s + "}";
+        String Newtext = curenttext + s ;
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
@@ -637,9 +637,19 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                     Type listType = new TypeToken<List<CampaignTask>>() {
                     }.getType();
                     List<CampaignTask> user_model1 = new Gson().fromJson(headerString, listType);
-                    SessionManager.setTask(getApplicationContext(), user_model1);
-                    startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
-                    finish();
+                    Intent inten=getIntent();
+                    Bundle bundle=inten.getExtras();
+                    String flag=bundle.getString("flag");
+                    if (flag.equals("edit"))
+                    {
+                        finish();
+                    }
+                    else {
+                        SessionManager.setTask(getApplicationContext(), user_model1);
+                        startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
+                        finish();
+                    }
+
                 } else {
 
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
@@ -797,7 +807,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getDescription());
+                        interfaceClick.OnClick(item.getHashtag());
                     }
                 }
             });

@@ -428,14 +428,15 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
                         movieViewHolder.no_image.setVisibility(View.GONE);
                         movieViewHolder.group_image.setVisibility(View.VISIBLE);
-                    } movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
+                    }
+             /*       movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             SessionManager.setGroupData(context, Group_data);
                             startActivity(new Intent(getActivity(), SendBroadcast.class));
                             getActivity().finish();
                         }
-                    });
+                    });*/
 
 
 

@@ -64,7 +64,16 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         text=bundle.getString("text");
         p_number=bundle.getString("number");
 
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
 
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String formattedDate = df.format(c);
+        tv_date.setText(formattedDate);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String currentDateandTime = sdf.format(new Date());
+        tv_time.setText(currentDateandTime);
     }
 
     private void IntentUI() {
@@ -183,7 +192,7 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
 
                     }
                 }, mYear, mMonth, mDay);
-        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() + (1000 * 60 * 60));
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + (1000 * 60 * 60));
 
         datePickerDialog.show();
 

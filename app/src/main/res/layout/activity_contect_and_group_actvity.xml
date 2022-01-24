@@ -68,4 +68,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tabLayout"
         />
+    <FrameLayout
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llFooter" />
+
 </LinearLayout>

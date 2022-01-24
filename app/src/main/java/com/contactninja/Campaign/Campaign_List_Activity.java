@@ -456,8 +456,6 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 setImage(campaign, holder);
 
 
-
-
                 holder.campaign_name.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

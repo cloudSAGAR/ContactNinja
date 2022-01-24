@@ -120,9 +120,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void Template_list() throws JSONException {
-        if(!swipeToRefresh.isRefreshing()){
-            loadingDialog.showLoadingDialog();
-        }
+
 
         SignResponseModel signResponseModel= SessionManager.getGetUserdata(TemplateActivity.this);
         String token = Global.getToken(sessionManager);
@@ -131,7 +129,6 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("type", "");
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page",currentPage);
         obj.add("data", paramObject);
@@ -160,7 +157,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
                     templateAdepter.addItems(templateList);
                     swipeToRefresh.setRefreshing(false);
                     // check weather is last page or not
-                    if (templateList.size()>=perPage) {
+                    if (template.getTotal() > templateAdepter.getItemCount()) {
                         templateAdepter.addLoading();
                     } else {
                         isLastPage = true;
@@ -301,7 +298,9 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         templateList.clear();
         try {
             if(Global.isNetworkAvailable(TemplateActivity.this, MainActivity.mMainLayout)) {
-                Template_list();
+                if(!swipeToRefresh.isRefreshing()){
+                    loadingDialog.showLoadingDialog();
+                }  Template_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -317,6 +316,9 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         templateAdepter.clear();
         try {
             if(Global.isNetworkAvailable(TemplateActivity.this, MainActivity.mMainLayout)) {
+                if(!swipeToRefresh.isRefreshing()){
+                    loadingDialog.showLoadingDialog();
+                }
                 Template_list();
             }
         } catch (JSONException e) {
@@ -393,17 +395,19 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onBindViewHolder(@NonNull TemplateAdepter.viewData holder, int position) {
             TemplateList.Template template=templateList.get(position);
-            holder.tv_template_name.setText(template.getTemplateName());
-            holder.layout_template.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    templateClick.OnClick(template);
+            if(Global.IsNotNull(template.getTemplateName())){
+                holder.tv_template_name.setText(template.getTemplateName());
+                holder.layout_template.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        templateClick.OnClick(template);
+                    }
+                });
+                if(template.getType().equals("EMAIL")){
+                    holder.iv_select_type.setBackgroundResource(R.drawable.ic_email);
+                }else {
+                    holder.iv_select_type.setBackgroundResource(R.drawable.ic_message_tab);
                 }
-            });
-            if(template.getType().equals("EMAIL")){
-                holder.iv_select_type.setBackgroundResource(R.drawable.ic_email);
-            }else {
-                holder.iv_select_type.setBackgroundResource(R.drawable.ic_message_tab);
             }
 
         }

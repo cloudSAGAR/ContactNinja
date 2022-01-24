@@ -12,6 +12,9 @@
         android:orientation="vertical"
         >
         <LinearLayout
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:id="@+id/lay_sendnow"
             android:padding="@dimen/_10sdp"
             android:layout_width="match_parent"
@@ -32,6 +35,8 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:id="@+id/lay_schedule"
             android:padding="@dimen/_10sdp"
             android:layout_width="match_parent"

@@ -62,6 +62,7 @@ import java.util.List;
 public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
+    BottomSheetDialog bottomSheetDialog;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back;
@@ -252,8 +253,16 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                 finish();
                 break;
             case R.id.save_button:
-                broadcast_manu();
+                if (ev_subject.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
+                }
+                else if (edit_template.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
+                }
+                else {
+                    broadcast_manu();
+                }
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
@@ -268,28 +277,21 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
     private void broadcast_manu() {
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_bottom_sheet, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Manual_Mail_Send_Activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog = new BottomSheetDialog(Manual_Mail_Send_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         LinearLayout lay_sendnow=bottomSheetDialog.findViewById(R.id.lay_sendnow);
         LinearLayout lay_schedule=bottomSheetDialog.findViewById(R.id.lay_schedule);
         lay_sendnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ev_subject.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
-                }
-                else if (edit_template.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
-                }
-                else {
                     try {
 
                         EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
+
 
             }
         });
@@ -422,7 +424,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + "{" + s + "}";
+        String Newtext = curenttext + s;
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
@@ -756,13 +758,28 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
         retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(Manual_Mail_Send_Activty.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+                bottomSheetDialog.cancel();
+                if (response.body().getHttp_status()==200)
+                {
+                    loadingDialog.cancelLoading();
+                    Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
+                    intent.putExtra("s_name","add");
+                    startActivity(intent);
+                    finish();
+                }
+                else if (response.body().getHttp_status()==406)
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
+                    loadingDialog.cancelLoading();
+                }
+                else{
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
+                    loadingDialog.cancelLoading();
+                    /* finish();*/
+                }
 
                 Log.e("Main Response is",new Gson().toJson(response.body()));
-                loadingDialog.cancelLoading();
-                Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
-                intent.putExtra("s_name","add");
-                startActivity(intent);
-                finish();
+
             }
 
             @Override
@@ -916,7 +933,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getDescription());
+                        interfaceClick.OnClick(item.getHashtag());
                     }
                 }
             });

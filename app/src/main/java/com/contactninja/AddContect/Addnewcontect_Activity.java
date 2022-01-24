@@ -252,7 +252,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
        // loadingDialog = new LoadingDialog(this);
         //Set Viewpagger
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
-        tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
+        //tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
         tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
         fragment_name = "Info";
 
@@ -270,10 +270,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     case 0:
                         fragment = new InformationFragment();
                         break;
-                    case 1:
+                 /*   case 1:
                         fragment = new BzcardFragment();
-                        break;
-                    case 2:
+                        break;*/
+                    case 1:
                         fragment = new ExposuresFragment();
                         break;
 

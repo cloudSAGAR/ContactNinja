@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -122,6 +123,28 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                 }, 10);
 
             }
+
+
+
+
+            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
+
+                viewPager.setOnTouchListener(new View.OnTouchListener()
+                {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event)
+                    {
+                        return true;
+                    }
+                });
+            }
         }
         else {
             if (SessionManager.getTask(getApplicationContext()).size() == 0) {
@@ -136,6 +159,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
 
             }
         }
+
 
 
     }

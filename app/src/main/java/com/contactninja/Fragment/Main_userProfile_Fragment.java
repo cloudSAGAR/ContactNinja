@@ -198,31 +198,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         }
                     }
 
-                } else if (save_button.getText().toString().equals("Save")) {
-                    //Add Contect.
-                    if (f_name.equals("")) {
-                        Global.Messageshow(getActivity(), mMainLayout, getString(R.string.invalid_first_name), false);
-
-                    } else if (l_name.equals("")) {
-                        Global.Messageshow(getActivity(), mMainLayout, getString(R.string.invalid_last_name), false);
-
-                    } else if (addcontectModel.getContactdetails().size() == 0) {
-
-                        Global.Messageshow(getActivity(), mMainLayout, getString(R.string.enter_phone), false);
-
-                    } else {
-
-                        try {
-                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                AddContect_Api();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-
                 } else {
 
 
@@ -250,6 +225,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
                 }
             }
+
         });
 
         edt_FirstName.addTextChangedListener(new TextWatcher() {

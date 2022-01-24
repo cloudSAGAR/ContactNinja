@@ -223,7 +223,6 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                         e.printStackTrace();
                     }
                 }
-                finish();
                 break;
 
             case R.id.layout_title:
@@ -290,7 +289,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
                     if (user_model.getTemplate_slug() != null) {
                         Global.Messageshow(getApplicationContext(), mMainLayout,
-                                "The template title has already been taken.", false);
+                                user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
                     }
                 }
             }
@@ -380,8 +379,8 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
-        finish();
         super.onBackPressed();
+        finish();
     }
 
     @Override

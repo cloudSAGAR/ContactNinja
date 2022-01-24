@@ -57,48 +57,53 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
             }
 
         }
-        Intent intent=getActivity().getIntent();
+       Intent intent=getActivity().getIntent();
         Bundle bundle=intent.getExtras();
         String flag=bundle.getString("flag");
         if (flag.equals("edit")) {
 
             int step= bundle.getInt("step");
-            Log.e("Step", String.valueOf(bundle.getString("manage_by")));
-            if (step >= 1) {
-                String manege_by=bundle.getString("manage_by");
-                if (manege_by.equals("AUTO"))
-                {
-                    //Log.e("Visible is","Yes");
-                    layout_sms_second_automated.setVisibility(View.VISIBLE);
-                    edit_day.setText(String.valueOf(bundle.getInt("day")));
-                    edit_minutes.setText(String.valueOf(bundle.getInt("minute")));
+            String type=bundle.getString("type");
+            if (type.equals("SMS"))
+            {
+                if (step > 1) {
+                    String manege_by=bundle.getString("manage_by");
+                    if (manege_by.equals("AUTO"))
+                    {
+                        //Log.e("Visible is","Yes");
+                        layout_sms_second_automated.setVisibility(View.VISIBLE);
+                        edit_day.setText(String.valueOf(bundle.getInt("day")));
+                        edit_minutes.setText(String.valueOf(bundle.getInt("minute")));
 
-                    SessionManager.setCampaign_Day(edit_day.getText().toString());
-                    SessionManager.setCampaign_minute(edit_minutes.getText().toString());
-                    iv_back_image.setVisibility(View.GONE);
+                        SessionManager.setCampaign_Day(edit_day.getText().toString());
+                        SessionManager.setCampaign_minute(edit_minutes.getText().toString());
+                        iv_back_image.setVisibility(View.GONE);
+
+                    }
+                    else {
+
+                        // Log.e("Visible is","Yes");
+                        edit_day_manual.setText(String.valueOf(bundle.getInt("day")));
+                        edit_minutes_manual.setText(String.valueOf(bundle.getInt("minute")));
+
+                        layout_sms_second_manual.setVisibility(View.VISIBLE);
+                        SessionManager.setCampaign_Day(edit_day_manual.getText().toString());
+                        SessionManager.setCampaign_minute(edit_minutes_manual.getText().toString());
+                        iv_back_image.setVisibility(View.GONE);
+                    }
+
+
+
 
                 }
                 else {
-
-                    // Log.e("Visible is","Yes");
-                    edit_day_manual.setText(String.valueOf(bundle.getInt("day")));
-                    edit_minutes_manual.setText(String.valueOf(bundle.getInt("minute")));
-
-                    layout_sms_second_manual.setVisibility(View.VISIBLE);
-                    SessionManager.setCampaign_Day(edit_day_manual.getText().toString());
-                    SessionManager.setCampaign_minute(edit_minutes_manual.getText().toString());
-                    iv_back_image.setVisibility(View.GONE);
+                    Log.e("Visible is","No");
+                    layout_sms_second_manual.setVisibility(View.GONE);
+                    layout_sms_second_automated.setVisibility(View.GONE);
+                    iv_back_image.setVisibility(View.VISIBLE);
                 }
-
-
-
-
-            } else {
-                Log.e("Visible is","No");
-                layout_sms_second_manual.setVisibility(View.GONE);
-                layout_sms_second_automated.setVisibility(View.GONE);
-                iv_back_image.setVisibility(View.VISIBLE);
             }
+
         }
 
 

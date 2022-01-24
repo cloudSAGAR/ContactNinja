@@ -21,7 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Campaign.Automated_Email_Activity;
 import com.contactninja.Campaign.First_Step_Activity;
+import com.contactninja.Campaign.First_Step_Start_Activity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -37,6 +39,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +55,7 @@ public class Campaign_Step_Fragment extends Fragment {
     BottomSheetDialog bottomSheetDialog;
     int sequence_id,sequence_task_id;
     Campaign_OverviewAdapter campaign_overviewAdapter;
+    List<CampaignTask_overview.SequenceTask> main_data =new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +67,9 @@ public class Campaign_Step_Fragment extends Fragment {
         retrofitCalls = new RetrofitCalls(getActivity());
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getContext());
         item_list.setAdapter(campaign_overviewAdapter);
-        StepData();
+
+        Global.count=1;
+        //   StepData();
         return view;
     }
 
@@ -242,6 +248,11 @@ public class Campaign_Step_Fragment extends Fragment {
             notifyDataSetChanged();
         }
 
+        public void remove_all() {
+            movieList.clear();
+            notifyDataSetChanged();
+        }
+
         public void removeLoadingFooter() {
             isLoadingAdded = false;
 
@@ -378,7 +389,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     campaignTask.setStepNo(sequenceTask.getStepNo());;
 
                     campaignTasks1.add(campaignTask);*/
-                    Intent intent=new Intent(getActivity(),First_Step_Activity.class);
+                    Intent intent=new Intent(getActivity(), First_Step_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -396,7 +407,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
-                    getActivity().finish();
+                    //getActivity().finish();
                     bottomSheetDialog.cancel();
 
                 }
@@ -442,7 +453,7 @@ public class Campaign_Step_Fragment extends Fragment {
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Intent intent=new Intent(getActivity(),First_Step_Activity.class);
+                    Intent intent=new Intent(getActivity(), First_Step_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -459,11 +470,11 @@ public class Campaign_Step_Fragment extends Fragment {
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
-                    getActivity().finish();
+                    //getActivity().finish();
                     bottomSheetDialog.cancel();
 
 
-                    getActivity().finish();
+                    //getActivity().finish();
                     bottomSheetDialog.cancel();
                 }
 
@@ -573,7 +584,10 @@ public class Campaign_Step_Fragment extends Fragment {
                             SessionManager.setCampaign_data(user_model1);
 
                             //CampaignTask_overview user_model1=SessionManager.getCampaign_data(getContext());
-                            campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
+                             main_data.clear();
+                             campaign_overviewAdapter.remove_all();
+                             main_data=user_model1.getSequenceTask();
+                             campaign_overviewAdapter.addAll(main_data);
 
                             //  Log.e("Email Task",user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
                             // Log.e("SMS",user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
@@ -599,5 +613,10 @@ public class Campaign_Step_Fragment extends Fragment {
                 });
     }
 
-
+    public void onResume() {
+        loadingDialog.cancelLoading();
+        Global.count=1;
+        StepData();
+        super.onResume();
+    }
 }

@@ -242,7 +242,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                 finish();
                 break;
             case R.id.iv_submit:
-                Log.e("Text is",edit_template.getText().toString());
+              //  Log.e("Text is",edit_template.getText().toString());
                 if (edit_template.getText().toString().equals(""))
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,"Add Message",false);
@@ -518,7 +518,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + "{" + s + "}";
+        String Newtext = curenttext + s;
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
@@ -724,7 +724,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_10_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getDescription());
+                        interfaceClick.OnClick(item.getHashtag());
                     }
                 }
             });

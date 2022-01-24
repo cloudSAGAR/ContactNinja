@@ -46,37 +46,37 @@ public class TemplateList implements Serializable {
 
         @SerializedName("id")
         @Expose
-        private Integer id;
+        private Integer id=0;
         @SerializedName("organization_id")
         @Expose
-        private Integer organizationId;
+        private Integer organizationId=0;
         @SerializedName("team_id")
         @Expose
-        private Integer teamId;
+        private Integer teamId=0;
         @SerializedName("template_name")
         @Expose
-        private String templateName;
+        private String templateName="";
         @SerializedName("template_slug")
         @Expose
-        private String templateSlug;
+        private String templateSlug="";
         @SerializedName("content_header")
         @Expose
-        private String contentHeader;
+        private String contentHeader="";
         @SerializedName("type")
         @Expose
-        private String type;
+        private String type="";
         @SerializedName("content_body")
         @Expose
-        private String contentBody;
+        private String contentBody="";
         @SerializedName("status")
         @Expose
-        private String status;
+        private String status="";
         @SerializedName("created_at")
         @Expose
-        private String createdAt;
+        private String createdAt="";
         @SerializedName("updated_at")
         @Expose
-        private String updatedAt;
+        private String updatedAt="";
 
         public Integer getId() {
             return id;

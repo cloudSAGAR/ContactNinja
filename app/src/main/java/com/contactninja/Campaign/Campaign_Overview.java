@@ -73,6 +73,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
     ImageView iv_toolbar_manu;
+    List<CampaignTask_overview.SequenceTask> main_data=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
 
         toolbar.inflateMenu(R.menu.option_menu1);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        StepData();
+       // StepData();
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
         item_list.setAdapter(campaign_overviewAdapter);
 
@@ -376,6 +377,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             return (position == movieList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
         }
 
+        public void remove_all() {
+            movieList.clear();
+            notifyDataSetChanged();
+        }
         public void addLoadingFooter() {
             isLoadingAdded = true;
             //add("");
@@ -594,7 +599,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
-                 finish();
+                 //finish();
                     bottomSheetDialog.cancel();
 
                 }
@@ -657,10 +662,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
-                    finish();
+                //    finish();
                     bottomSheetDialog.cancel();
                 }
-                finish();
+                //finish();
                 bottomSheetDialog.cancel();
 
             }
@@ -784,8 +789,11 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                             finish();
                         }
                     }
+                    main_data.clear();
+                    campaign_overviewAdapter.removeall();
+                    main_data=  user_model1.getSequenceTask();
                     sequence_task_id=user_model1.getSequenceTask().get(0).getId();
-                    campaign_overviewAdapter.addAll(user_model1.getSequenceTask());
+                    campaign_overviewAdapter.addAll(main_data);
                 }
             }
 
@@ -862,11 +870,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 });
     }
 
-    @Override
-    protected void onResume() {
+    public void onResume() {
         loadingDialog.cancelLoading();
-            StepData1();
-
+        Global.count=1;
+        StepData();
         super.onResume();
     }
 }

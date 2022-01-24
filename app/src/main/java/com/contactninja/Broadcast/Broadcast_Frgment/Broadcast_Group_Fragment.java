@@ -416,7 +416,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                         movieViewHolder.group_image.setVisibility(View.VISIBLE);
                     }
 
-                    movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
+                   /* movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             SessionManager.setGroupData(context, Group_data);
@@ -425,7 +425,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                         }
                     });
 
-
+*/
                     movieViewHolder.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -69,6 +70,17 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
         email=bundle.getString("email");
         gid=bundle.getString("gid");
 
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String formattedDate = df.format(c);
+        tv_date.setText(formattedDate);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String currentDateandTime = sdf.format(new Date());
+        tv_time.setText(currentDateandTime);
+        //tv_time.setText(String.valueOf(currentTime.getTime()));
 
     }
 
@@ -243,11 +255,26 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
             public void success(Response<ApiResponse> response) {
 
                 Log.e("Main Response is",new Gson().toJson(response.body()));
-                loadingDialog.cancelLoading();
-                Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
-                intent.putExtra("s_name","final");
-                startActivity(intent);
-                finish();
+
+                if (response.body().getHttp_status()==200)
+                {
+                    loadingDialog.cancelLoading();
+                    Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
+                    intent.putExtra("s_name","final");
+                    startActivity(intent);
+                    finish();
+                }
+                else if (response.body().getHttp_status()==406)
+                {
+                    Global.Messageshow(getApplicationContext(),linearLayout,response.body().getMessage().toString(),false);
+                    loadingDialog.cancelLoading();
+                }
+                else{
+                    Global.Messageshow(getApplicationContext(),linearLayout,response.body().getMessage().toString(),false);
+                    loadingDialog.cancelLoading();
+                    /* finish();*/
+                }
+
             }
 
             @Override
@@ -309,7 +336,7 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
 
                     }
                 }, mYear, mMonth, mDay);
-        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() + (1000 * 60 * 60));
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + (1000 * 60 * 60));
 
         datePickerDialog.show();
 
