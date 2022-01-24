@@ -724,7 +724,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_10_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getDescription());
+                        interfaceClick.OnClick(item.getHashtag());
                     }
                 }
             });
