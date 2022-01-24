@@ -62,10 +62,10 @@ public class ManualTaskModel {
     private String userName;
     @SerializedName("contact_master_firstname")
     @Expose
-    private String contactMasterFirstname;
+    private String contactMasterFirstname="";
     @SerializedName("contact_master_lastname")
     @Expose
-    private String contactMasterLastname;
+    private String contactMasterLastname="";
     @SerializedName("content_header")
     @Expose
     private String contentHeader;
