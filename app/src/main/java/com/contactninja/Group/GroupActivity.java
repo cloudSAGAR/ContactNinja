@@ -1415,6 +1415,7 @@ e.printStackTrace();
 
     private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList_phone, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int position, List<ContectListData.Contact.ContactDetail> detailList1_email) {
 
+        Log.e("Data list is",new Gson().toJson(detailList_phone));
         final View mView = getLayoutInflater().inflate(R.layout.phone_bottom_sheet, null);
         bottomSheetDialog_templateList1 = new BottomSheetDialog(GroupActivity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
@@ -1548,7 +1549,7 @@ e.printStackTrace();
                         }
                     }
                     contactDetails.addAll(userLinkedGmailList);
-                  //  Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+                    Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
                     contacts.get(position).setContactDetails(contactDetails);
                     select_contectListData.add(contacts.get(position));
                     topUserListDataAdapter.notifyDataSetChanged();
@@ -1557,8 +1558,27 @@ e.printStackTrace();
                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                     holder1.add_new_contect_icon.setVisibility(View.GONE);
                     save_button.setTextColor(getResources().getColor(R.color.purple_200));
+
+                   for (int i=0;i<detailList_phone.size();i++)
+                   {
+                       detailList_phone.get(i).setPhoneSelect(false);
+                       if (!detailList_phone.get(i).getId().equals(userLinkedGmailList.get(0).getId()))
+                       {
+
+                           contactDetails.add(detailList_phone.get(i));
+
+                       }
+
+                   }
+                   // contacts.get(position).setContactDetails(new ArrayList<>());
+                   // contacts.get(position).setContactDetails(contactDetails);
+
                     bottomSheetDialog_templateList1.cancel();
+
+
                 }
+
+
 
                // ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
             }
@@ -1656,6 +1676,12 @@ e.printStackTrace();
 
         }
 
+        public void removeall()
+        {
+            userLinkedGmailList.clear();
+            notifyDataSetChanged();
+
+        }
         @Override
         public int getItemCount() {
             return userLinkedGmailList.size();

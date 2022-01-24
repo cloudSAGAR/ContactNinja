@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Group.GroupActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -1128,6 +1130,64 @@ public class Broadcste_Contect_Fragment extends Fragment {
                 tv_done);
         email_list.setAdapter(emailListAdepter);
         email_list.setVisibility(View.VISIBLE);
+        List<ContectListData.Contact.ContactDetail> userLinkedGmailList=new ArrayList<>();
+
+        tv_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // Toast.makeText(getActivity(),"On ",Toast.LENGTH_LONG).show();
+                List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
+                contactDetails.clear();
+                userLinkedGmailList.clear();
+
+
+
+
+                    for (int i=0;i<detailList.size();i++)
+                    {
+                        if (detailList.get(i).isPhoneSelect())
+                        {
+
+                            userLinkedGmailList.add(detailList.get(i));
+                        }
+                    }
+
+
+                    contactDetails.addAll(userLinkedGmailList);
+                    Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+                    contacts.get(position).setContactDetails(contactDetails);
+                    select_contectListData.add(contacts.get(position));
+                    SessionManager.setGroupList(getActivity(), new ArrayList<>());
+                    SessionManager.setGroupList(getActivity(), select_contectListData);
+
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    num_count.setText(select_contectListData.size()+" Contact Selcted");
+                    contacts.get(position).setFlag("false");
+                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+
+                    for (int i=0;i<detailList.size();i++)
+                    {
+                        detailList.get(i).setPhoneSelect(false);
+                        if (!detailList.get(i).getId().equals(userLinkedGmailList.get(0).getId()))
+                        {
+
+                            contactDetails.add(detailList.get(i));
+
+                        }
+
+                    }
+
+                    bottomSheetDialog_templateList1.cancel();
+
+
+
+
+
+
+                // ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
+            }
+        });
 
 
         bottomSheetDialog_templateList1.show();
@@ -1152,6 +1212,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
             this.contacts=contacts;
             this.s_position=s_position;
             this.tv_done=tv_done;
+
         }
 
         @NonNull
@@ -1199,41 +1260,6 @@ public class Broadcste_Contect_Fragment extends Fragment {
                         }
                     }
                     userLinkedGmailList.get(position).setPhoneSelect(true);
-                 /*   holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                    holder1.add_new_contect_icon.setVisibility(View.GONE);*/
-                    tv_done.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            for (int i=0;i<contacts.get(s_position).getContactDetails().size();i++)
-                            {
-                                if (contacts.get(s_position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
-                                {
-                                    // detailList.add(contacts.get(position).getContactDetails().get(i));
-                                }
-                                else {
-                                    userLinkedGmailList.add(contacts.get(s_position).getContactDetails().get(i));
-                                    break;
-                                }
-                            }
-                            List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
-                            contactDetails.add(userLinkedGmailList.get(position));
-                            contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size()-1));
-                            //Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
-                            contacts.get(s_position).setContactDetails(contactDetails);
-                            select_contectListData.add(contacts.get(position));
-                            //userDetailsfull.get(position).setId(position);
-                            SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                            SessionManager.setGroupList(getActivity(), select_contectListData);
-                            topUserListDataAdapter.notifyDataSetChanged();
-                            num_count.setText(select_contectListData.size()+" Contact Selcted");
-                            contacts.get(position).setFlag("false");
-                            holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                            holder1.add_new_contect_icon.setVisibility(View.GONE);
-                            bottomSheetDialog_templateList1.cancel();
-                        }
-                    });
-
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
                     notifyItemChanged(position);
@@ -1241,6 +1267,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
                     notifyDataSetChanged();
                 }
             });
+
 
 
         }

@@ -108,10 +108,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void run() {
                         viewPager.setCurrentItem(1);
-                        viewPager.setEnabled(false);
                     }
                 }, 10);
-
 
             }
             else {
@@ -120,7 +118,6 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void run() {
                         viewPager.setCurrentItem(0);
-                        viewPager.setEnabled(false);
                     }
                 }, 10);
 
