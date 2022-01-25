@@ -1616,8 +1616,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         // Log.e("Swipe Call ","MOveto right");
                         if (holder.layout_swap.getVisibility() == View.GONE) {
                             holder.layout_swap.setVisibility(View.VISIBLE);
+                       holder.layout_defult.setVisibility(View.GONE);
+                        holder.select_label.setVisibility(View.GONE);
                         } else {
+                            holder.layout_defult.setVisibility(View.GONE);
+
                             holder.layout_swap.setVisibility(View.GONE);
+                            holder.select_label.setVisibility(View.VISIBLE);
+
                         }
 
 
@@ -1649,21 +1655,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
                     }
                 });
-                holder.layout_defult.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.layout_swap.setVisibility(View.GONE);
-                        for (int i = 0; i < contactdetails.size(); i++) {
-                            if (item.getId() == contactdetails.get(i).getId()) {
-                                contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
-                            } else {
-                                contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
-                            }
-                        }
-                    }
-                });
 
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1671,16 +1662,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
-
-                        if (edit) {
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    RemoveContect(item.getId());
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
                     }
                 });
 
@@ -2124,7 +2105,11 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         // Log.e("Swipe Call ","MOveto right");
                         if (holder.layout_swap.getVisibility() == View.GONE) {
                             holder.layout_swap.setVisibility(View.VISIBLE);
+                            holder.layout_defult.setVisibility(View.GONE);
+                            holder.select_email_label.setVisibility(View.GONE);
                         } else {
+                            holder.layout_defult.setVisibility(View.GONE);
+                            holder.select_email_label.setVisibility(View.VISIBLE);
                             holder.layout_swap.setVisibility(View.GONE);
                         }
 
@@ -2149,21 +2134,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     }
                 });
 
-                holder.layout_defult.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.layout_swap.setVisibility(View.GONE);
-                        for (int i = 0; i < contactdetails.size(); i++) {
-                            if (item.getId() == contactdetails.get(i).getId()) {
-                                contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
-                            } else {
-                                contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
-                            }
-                        }
-                    }
-                });
 
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -2171,16 +2141,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
-
-                        if (edit) {
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    RemoveContect(item.getId());
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
 
                     }
                 });

@@ -70,6 +70,8 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -247,7 +249,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 }
         );
 
-
+        Collections.sort(inviteListData, new Comparator<ContectListData.Contact>(){
+            public int compare(ContectListData.Contact obj1, ContectListData.Contact obj2) {
+                return obj1.getFirstname().compareToIgnoreCase(obj1.getFirstname());
+            }
+        });
         userListDataAdapter = new UserListDataAdapter(this, getApplicationContext(), inviteListData);
         contect_list_unselect.setAdapter(userListDataAdapter);
         loadingDialog = new LoadingDialog(this);
@@ -268,6 +274,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                          //Log.e("Same Data ",d.getFirstname());
                     }
                 }
+
                 userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
                 contect_list_unselect.setAdapter(userListDataAdapter);
                 userListDataAdapter.notifyDataSetChanged();
