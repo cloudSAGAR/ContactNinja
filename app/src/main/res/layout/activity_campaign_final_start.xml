@@ -26,7 +26,7 @@
 
         <TextView
             style="@style/tv_Medium"
-
+            android:id="@+id/tv_camp_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/cam_tv_titel"

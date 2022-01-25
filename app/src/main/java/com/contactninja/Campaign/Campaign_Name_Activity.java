@@ -43,6 +43,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
     int sequence_id, seq_task_id;
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
+    String sequence_Name="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,11 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
         Bundle bundle = getintent.getExtras();
         sequence_id = bundle.getInt("sequence_id");
         seq_task_id = bundle.getInt("seq_task_id");
+        sequence_Name = bundle.getString("sequence_Name");
+        if(Global.IsNotNull(sequence_Name)){
+            ev_titale.setText(sequence_Name);
+            ev_titale.setSelection(ev_titale.getText().length());
+        }
 
         ev_titale.addTextChangedListener(new TextWatcher() {
             @Override

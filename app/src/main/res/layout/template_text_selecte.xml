@@ -18,7 +18,10 @@
     </ImageView>
         <TextView
             android:background="@drawable/shape_unselect_back"
-            android:padding="@dimen/_10sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
             android:id="@+id/tv_item"
             style="@style/tv_regular"
             android:textStyle="bold"

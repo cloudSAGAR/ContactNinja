@@ -2231,6 +2231,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             if (item.getId() == contactdetails.get(i).getId()) {
                                 contactdetails.get(i).setIs_default(1);
                                 notifyDataSetChanged();
+                                break;
                             } else {
                                 contactdetails.get(i).setIs_default(0);
                                 notifyDataSetChanged();

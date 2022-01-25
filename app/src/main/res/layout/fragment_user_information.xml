@@ -1243,7 +1243,6 @@
 
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1296,7 +1295,7 @@
 
                     <LinearLayout
                         android:id="@+id/select_label_zone"
-                        android:layout_width="@dimen/_170sdp"
+                        android:layout_width="wrap_content"
                         android:paddingTop="@dimen/_4sdp"
                         android:paddingBottom="@dimen/_4sdp"
                         android:layout_height="wrap_content"

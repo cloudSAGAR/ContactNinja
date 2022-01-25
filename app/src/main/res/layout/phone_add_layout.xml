@@ -178,7 +178,7 @@
                         android:visibility="gone"
                         android:id="@+id/layout_swap"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center|top"
                         android:gravity="center|top"
                         app:bring_to_clamp="150dp"

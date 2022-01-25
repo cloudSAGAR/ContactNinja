@@ -68,6 +68,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
    /* List<String> stringList;*/
     List<CampaignTask_overview.SequenceTask> campaignTasks=new ArrayList<>();
     int sequence_id,sequence_task_id;
+    String sequence_Name="";
 
     BottomSheetDialog bottomSheetDialog;
     private BroadcastReceiver mNetworkReceiver;
@@ -164,6 +165,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                    Intent intent=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);
                    intent.putExtra("sequence_id",sequence_id);
                    intent.putExtra("seq_task_id",sequence_task_id);
+                   intent.putExtra("sequence_Name",sequence_Name);
                    startActivity(intent);
                    finish();
                }
@@ -790,6 +792,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     campaign_overviewAdapter.removeall();
                     main_data=  user_model1.getSequenceTask();
                     sequence_task_id=user_model1.getSequenceTask().get(0).getId();
+                    sequence_Name=user_model1.get0().getSeqName();
                     campaign_overviewAdapter.addAll(main_data);
                 }
             }

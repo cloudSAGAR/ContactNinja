@@ -399,7 +399,7 @@ public class CampaignTask_overview {
         private Integer contactId;
         @SerializedName("firstname")
         @Expose
-        private String firstname;
+        private String firstname="";
         @SerializedName("lastname")
         @Expose
         private String lastname;
