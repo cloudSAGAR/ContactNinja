@@ -165,6 +165,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                    intent.putExtra("sequence_id",sequence_id);
                    intent.putExtra("seq_task_id",sequence_task_id);
                    startActivity(intent);
+                   finish();
                }
                else {
                    SessionManager.setCampign_flag("read");

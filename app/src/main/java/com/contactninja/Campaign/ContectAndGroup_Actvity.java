@@ -402,7 +402,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                                    Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
                                    intent.putExtra("sequence_id", sequence_id);
                                    startActivity(intent);
-                                   finish();
+                                //   finish();
 
                                }
                               else {

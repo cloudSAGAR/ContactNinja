@@ -370,7 +370,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
                     intent.putExtra("sequence_id", campaign.getId());
                     startActivity(intent);
-                    //finish();
+                    finish();
 
                 }
             }

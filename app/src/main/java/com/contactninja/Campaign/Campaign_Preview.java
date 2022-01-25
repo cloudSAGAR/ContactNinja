@@ -611,7 +611,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         loadingDialog.cancelLoading();
 
                         if (response.body().getHttp_status() == 200) {
-                            startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
+                            //startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
                             finish();
                         } else {
 
