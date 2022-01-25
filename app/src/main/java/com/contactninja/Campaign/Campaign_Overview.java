@@ -710,6 +710,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         loadingDialog.cancelLoading();
 
                         if (response.body().getHttp_status() == 200) {
+                            Global.count=1;
                             campaign_overviewAdapter.remove_item(position);
                             bottomSheetDialog.cancel();
                         } else {
@@ -781,12 +782,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         }
                         else {
                             seq_prospect_count=user_model1.getSeqProspectCount().getTotal();
-                            SessionManager.setCampign_flag("read");
-                            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-                            intent.putExtra("sequence_id", sequence_id);
-                            /*intent.putExtra("seq_task_id",seq_task_id);*/
-                            startActivity(intent);
-                            finish();
+
                         }
                     }
                     main_data.clear();

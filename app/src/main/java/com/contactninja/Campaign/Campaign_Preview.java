@@ -493,9 +493,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         loadingDialog.cancelLoading();
 
                         if (response.body().getHttp_status() == 200) {
+                            Global.count=1;
                             campaign_overviewAdapter.remove_item(position);
                             bottomSheetDialog.cancel();
-                        } else {
+                        }
+                        else {
 
                         }
                     }
@@ -506,7 +508,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
-
     public void StepData() {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);

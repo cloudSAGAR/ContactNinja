@@ -602,8 +602,6 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
-
-
         });
 
 
