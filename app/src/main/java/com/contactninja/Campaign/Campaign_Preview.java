@@ -95,6 +95,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
            // StepData();
+            tv_name.setEnabled(false);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
@@ -110,7 +111,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         }
 
         else {
-
+            tv_name.setEnabled(true);
             save_button.setText("Done");
             save_button.setVisibility(View.VISIBLE);
             add_icon.setVisibility(View.VISIBLE);
@@ -258,11 +259,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.save_button:
-                SessionManager.setCampign_flag("read");
-                Intent in = new Intent(getApplicationContext(), Campaign_Preview.class);
-                in.putExtra("sequence_id", sequence_id);
-                startActivity(in);
-                finish();
+                AddName();
+
                 break;
 
         }
@@ -1023,4 +1021,52 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     }
 
 
+
+    public void AddName() {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        if (SessionManager.getTask(getApplicationContext()).size() != 0) {
+            sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
+        } else {
+            Intent getintent = getIntent();
+            Bundle bundle = getintent.getExtras();
+            sequence_id = bundle.getInt("sequence_id");
+        }
+        Log.e("sequence_id", String.valueOf(sequence_id));
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("record_id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("seq_name", tv_name.getText().toString());
+        obj.add("data", paramObject);
+        retrofitCalls.Sequence_settings(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_Preview.this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+
+                        if (response.body().getHttp_status() == 200) {
+                            SessionManager.setCampign_flag("read");
+                            Intent in = new Intent(getApplicationContext(), Campaign_Preview.class);
+                            in.putExtra("sequence_id", sequence_id);
+                            startActivity(in);
+                            finish();
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
 }
