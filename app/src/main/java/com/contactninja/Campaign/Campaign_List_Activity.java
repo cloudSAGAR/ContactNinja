@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -320,7 +319,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_minute("");
                 Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
                 intent.putExtra("flag","new");
                 startActivity(intent);
                 //finish();
@@ -332,7 +331,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_minute("");
                 Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                Intent intent1=new Intent(getApplicationContext(),First_Step_Activity.class);
+                Intent intent1=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
                 intent1.putExtra("flag","new");
                 startActivity(intent1);
                 // finish();

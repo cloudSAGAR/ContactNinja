@@ -59,7 +59,7 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class Automated_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick ,TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
+public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick ,TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button, tv_use_tamplet;
     SessionManager sessionManager;
@@ -90,11 +90,11 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        templateClick=Automated_Email_Activity.this;
+        templateClick= Add_Camp_Email_Activity.this;
 
         IntentUI();
         try {
-            if (Global.isNetworkAvailable(Automated_Email_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
             }
         } catch (JSONException e) {
@@ -191,7 +191,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+        Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
         intent.putExtra("flag","new");
         startActivity(intent);
         finish();
@@ -200,7 +200,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Automated_Email_Activity.this, mMainLayout);
+        Global.checkConnectivity(Add_Camp_Email_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -231,7 +231,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     private void Hastag_list() throws JSONException {
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -239,7 +239,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -321,6 +321,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                 onBackPressed();
                 break;
             case R.id.save_button:
+                Global.hideKeyboard(Add_Camp_Email_Activity.this);
                 if (ev_subject.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
                 }
@@ -343,14 +344,14 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList= new BottomSheetDialog(Automated_Email_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList= new BottomSheetDialog(Add_Camp_Email_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
         try {
-            if(Global.isNetworkAvailable(Automated_Email_Activity.this, MainActivity.mMainLayout)) {
+            if(Global.isNetworkAvailable(Add_Camp_Email_Activity.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -364,7 +365,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         bottomSheetDialog_templateList.show();
     }
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -372,7 +373,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -560,7 +561,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             @Override
             public void onClick(View v) {
                 try {
-                    if (Global.isNetworkAvailable(Automated_Email_Activity.this, Automated_Email_Activity.mMainLayout)) {
+                    if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
                         if (isValidation(edit_template,ev_subject,edt_template_name))
                             CreateTemplate(edit_template,ev_subject,edt_template_name,dialog);
                     }
@@ -666,7 +667,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
         }
 
-        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Automated_Email_Activity.this),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
@@ -708,7 +709,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     }
     private void CreateTemplate(EditText edit_template, EditText ev_subject, EditText edt_template_name, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -723,7 +724,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         paramObject.addProperty("type", "EMAIL");
 
         obj.add("data", paramObject);
-        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();

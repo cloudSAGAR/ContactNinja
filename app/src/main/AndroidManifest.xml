@@ -152,7 +152,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Automated_Email_Activity"
+            android:name=".Campaign.Add_Camp_Email_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -160,7 +160,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.First_Step_Start_Activity"
+            android:name=".Campaign.Add_Camp_SMS_Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
@@ -172,7 +172,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.First_Step_Activity"
+            android:name=".Campaign.Add_Camp_First_Step_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:id="@+id/mMainLayout"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.First_Step_Activity">
+    tools:context=".Campaign.Add_Camp_First_Step_Activity">
     <include
         layout="@layout/toolbar"/>
     <com.google.android.material.tabs.TabLayout
