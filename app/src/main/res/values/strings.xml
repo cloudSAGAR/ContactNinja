@@ -368,6 +368,7 @@ Number</string>
     <string name="Comp_D">I</string><!--Delete-->
     <string name="camp_select_contect">Select contect number</string>
     <string name="manu_name1"> Save as draft</string>
+    <string name="manu_setting">setting</string>
     <string name="manu_name2"> Edit </string>
     <string name="txt_campaign">Start campaign</string>
     <string name="view_contect">View contacts</string>

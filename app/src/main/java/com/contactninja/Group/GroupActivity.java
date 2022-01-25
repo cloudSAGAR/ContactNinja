@@ -171,6 +171,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         call_updatedata();
         Log.e("Selcete List Is",new Gson().toJson(select_contectListData));
+        add_contect_list.setItemViewCacheSize(5000);
         topUserListDataAdapter=new TopUserListDataAdapter(this,getApplicationContext(),select_contectListData);
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
@@ -189,14 +190,16 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
                 List<ContectListData.Contact> temp = new ArrayList();
                 for(ContectListData.Contact d: contectListData){
-                    if(d.getFirstname().contains(s.toString())){
+                    if(d.getFirstname().toLowerCase().contains(s.toString())){
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
                     }
                 }
-                groupContectAdapter = new GroupContectAdapter(GroupActivity.this);
+           /*     groupContectAdapter = new GroupContectAdapter(GroupActivity.this);
                 contect_list_unselect.setAdapter(groupContectAdapter);
-                groupContectAdapter.notifyDataSetChanged();
+                groupContectAdapter.notifyDataSetChanged();*/
+                contect_list_unselect.setItemViewCacheSize(5000);
+                add_contect_list.setItemViewCacheSize(5000);
                 groupContectAdapter.updateList(temp);
             }
 
@@ -236,16 +239,17 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         if (SessionManager.getContectList(this).size() != 0) {
           //  GetContactsIntoArrayList();
+            contect_list_unselect.setItemViewCacheSize(5000);
             contectListData.addAll(SessionManager.getContectList(this).get(0).getContacts());
             Log.e("contectListData",new Gson().toJson(contectListData));
             groupContectAdapter.addAll(contectListData);
             num_count.setText(contectListData.size()+" Contacts");
-            contect_list_unselect.setItemViewCacheSize(500);
+
 
 
         } else {
            // GetContactsIntoArrayList();
-            contect_list_unselect.setItemViewCacheSize(500);
+            contect_list_unselect.setItemViewCacheSize(5000);
 
             try {
                 ContectEvent();
@@ -256,7 +260,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                add_contect_list.setItemViewCacheSize(5000);
                 if (add_new_contect_icon1.getVisibility()==View.GONE)
                 {
                     add_new_contect_icon1.setVisibility(View.VISIBLE);
@@ -284,6 +288,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                contect_list_unselect.setItemViewCacheSize(5000);
+                add_contect_list.setItemViewCacheSize(5000);
+
                 if (add_new_contect_icon1.getVisibility()==View.GONE)
                 {
                     add_new_contect_icon1.setVisibility(View.VISIBLE);
@@ -307,6 +314,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                contect_list_unselect.setItemViewCacheSize(5000);
+                add_contect_list.setItemViewCacheSize(5000);
+
                 if (add_new_contect_icon1.getVisibility()==View.GONE)
                 {
                     add_new_contect_icon1.setVisibility(View.VISIBLE);
@@ -335,6 +345,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     {
         if (SessionManager.getGroupList(this).size()!=0)
         {
+            contect_list_unselect.setItemViewCacheSize(5000);
+            add_contect_list.setItemViewCacheSize(5000);
+
             select_contectListData.clear();
             pre_seleact.clear();
             pre_seleact.addAll(SessionManager.getGroupList(this));
@@ -801,7 +814,7 @@ e.printStackTrace();
                     {
                         if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId()))
                         {
-
+                            group_flag="false";
                             groupContectAdapter.notifyItemChanged(i);
                             contectListData.get(i).setFlag("true");
 
@@ -816,7 +829,7 @@ e.printStackTrace();
                 }
             });
 
-            if (userDetails.get(position).getFlag().equals("true"))
+            /*if (userDetails.get(position).getFlag().equals("true"))
             {
                 Log.e("Call","Yes");
                 holder.top_layout.setVisibility(View.GONE);
@@ -826,7 +839,7 @@ e.printStackTrace();
             else {
                 holder.top_layout.setVisibility(View.VISIBLE);
 
-            }
+            }*/
 
         }
 
@@ -1145,7 +1158,7 @@ e.printStackTrace();
                                     }
                                 }
                             } catch (Exception e) {
-e.printStackTrace();
+                                    e.printStackTrace();
                             }
 
 
@@ -1228,6 +1241,7 @@ e.printStackTrace();
                                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                     holder1.add_new_contect_icon.setVisibility(View.GONE);
                                     select_contectListData.add(contacts.get(position));
+                                    sessionManager.setGroupList(getApplicationContext(),select_contectListData);
                                     //userDetailsfull.get(position).setId(position);
                                     topUserListDataAdapter.notifyDataSetChanged();
                                     num_count.setText(select_contectListData.size()+" Contact Selcted");
@@ -1271,6 +1285,7 @@ e.printStackTrace();
 
                                 topUserListDataAdapter.notifyDataSetChanged();
                                 Log.e("Size is",new Gson().toJson(select_contectListData));
+                                sessionManager.setGroupList(getApplicationContext(),select_contectListData);
                                 num_count.setText(select_contectListData.size()+" Contact Selcted");
                                 contacts.get(position).setFlag("true");
                                 if (select_contectListData.size()==0)
@@ -1552,6 +1567,7 @@ e.printStackTrace();
                     Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
                     contacts.get(position).setContactDetails(contactDetails);
                     select_contectListData.add(contacts.get(position));
+                    sessionManager.setGroupList(getApplicationContext(),select_contectListData);
                     topUserListDataAdapter.notifyDataSetChanged();
                     num_count.setText(select_contectListData.size()+" Contact Selcted");
                     contacts.get(position).setFlag("false");

@@ -99,7 +99,17 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-        } else {
+        }
+
+        else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name")) {
+            // StepData();
+            campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
+            item_list.setAdapter(campaign_overviewAdapter);
+            toolbar.inflateMenu(R.menu.option_menu);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        else {
 
             save_button.setText("Done");
             save_button.setVisibility(View.VISIBLE);
@@ -248,7 +258,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.save_button:
-
+                SessionManager.setCampign_flag("read");
+                Intent in = new Intent(getApplicationContext(), Campaign_Preview.class);
+                in.putExtra("sequence_id", sequence_id);
+                startActivity(in);
+                finish();
                 break;
 
         }
@@ -256,7 +270,24 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        finish();
+        if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
+
+            startActivity(new Intent(getApplicationContext(),Campaign_List_Activity.class));
+            finish();
+        }
+        else if (SessionManager.getCampign_flag(getApplicationContext()).equals("edit"))
+            {
+                startActivity(new Intent(getApplicationContext(),Campaign_List_Activity.class));
+                finish();
+            }
+        else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name"))
+        {
+          //  startActivity(new Intent(getApplicationContext(),Campaign_List_Activity.class));
+            finish();
+        }
+        else {
+            finish();
+        }
         super.onBackPressed();
     }
 
@@ -611,8 +642,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         loadingDialog.cancelLoading();
 
                         if (response.body().getHttp_status() == 200) {
-                            //startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
-                            finish();
+                           onBackPressed();
                         } else {
 
                         }

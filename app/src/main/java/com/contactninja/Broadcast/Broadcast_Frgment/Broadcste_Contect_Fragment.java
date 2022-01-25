@@ -691,7 +691,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
                 }
             });
 
-            if (userDetails.get(position).getFlag().equals("true"))
+           /* if (userDetails.get(position).getFlag().equals("true"))
             {
                 Log.e("Call","Yes");
                 holder.top_layout.setVisibility(View.GONE);
@@ -701,7 +701,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
             else {
                 holder.top_layout.setVisibility(View.VISIBLE);
 
-            }
+            }*/
 
         }
 

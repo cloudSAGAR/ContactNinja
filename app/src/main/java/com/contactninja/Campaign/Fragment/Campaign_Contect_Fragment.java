@@ -139,6 +139,7 @@ public class Campaign_Contect_Fragment extends Fragment {
 
             //Log.e("Data IS",new Gson().toJson(select_contectListData));
             add_contect_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+            add_contect_list.setItemViewCacheSize(5000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
             add_contect_list.setAdapter(topUserListDataAdapter);
             topUserListDataAdapter.notifyDataSetChanged();
@@ -175,6 +176,7 @@ public class Campaign_Contect_Fragment extends Fragment {
 
 
             add_contect_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+            add_contect_list.setItemViewCacheSize(5000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
             add_contect_list.setAdapter(topUserListDataAdapter);
             add_new_contect_layout.setVisibility(View.VISIBLE);
@@ -316,6 +318,7 @@ public class Campaign_Contect_Fragment extends Fragment {
 
             add_contect_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+            add_contect_list.setItemViewCacheSize(5000);
             add_contect_list.setAdapter(topUserListDataAdapter);
             add_new_contect_layout.setVisibility(View.VISIBLE);
             SessionManager.setGroupList(getActivity(), select_contectListData);
@@ -444,7 +447,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                 groupContectAdapter.addAll(contectListData);
                 num_count.setText(contectListData.size() + " Contacts");
             }
-
+            add_contect_list.setItemViewCacheSize(5000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
             add_contect_list.setAdapter(topUserListDataAdapter);
             topUserListDataAdapter.notifyDataSetChanged();
@@ -951,7 +954,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                         }
                     }
                 } catch (Exception e) {
-e.printStackTrace();
+                    e.printStackTrace();
                 }
 
 
@@ -994,7 +997,7 @@ e.printStackTrace();
 
             }
 
-            if (userDetails.get(position).getFlag().equals("true")) {
+           /* if (userDetails.get(position).getFlag().equals("true")) {
                 Log.e("Call", "Yes");
                 holder.top_layout.setVisibility(View.GONE);
 
@@ -1002,7 +1005,7 @@ e.printStackTrace();
             } else {
                 holder.top_layout.setVisibility(View.VISIBLE);
 
-            }
+            }*/
 
         }
 

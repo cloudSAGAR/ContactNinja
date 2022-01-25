@@ -658,15 +658,16 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     holder.add_new_contect_icon.setVisibility(View.GONE);
                 }
                 else */
-            if (userDetailsfull.get(position).getFlag().equals("false")) {
+         /*   if (userDetailsfull.get(position).getFlag().equals("false")) {
                 holder.remove_contect_icon.setVisibility(View.VISIBLE);
                 holder.add_new_contect_icon1.setVisibility(View.GONE);
             } else {
                 holder.remove_contect_icon.setVisibility(View.GONE);
                 holder.add_new_contect_icon1.setVisibility(View.VISIBLE);
+            }*/
 
-
-            }
+            holder.remove_contect_icon.setVisibility(View.VISIBLE);
+            holder.add_new_contect_icon1.setVisibility(View.GONE);
 
 
 
