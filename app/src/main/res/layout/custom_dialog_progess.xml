@@ -16,7 +16,6 @@
     android:layout_height="@dimen/_30sdp"/>-->
 
     <LinearLayout
-        android:background="@drawable/shape_10_white"
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_width="@dimen/_100sdp"
@@ -28,7 +27,7 @@
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="center"
-            app:SpinKit_Color="@color/purple_200" />
+            app:SpinKit_Color="@color/white" />
     </LinearLayout>
 
 </FrameLayout>

@@ -1,8 +1,14 @@
 package com.contactninja.Manual_email_and_sms;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -11,11 +17,14 @@ import android.widget.TextView;
 
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
+import com.contactninja.Utils.ConnectivityReceiver;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
-
-public class Email_Detail_activty extends AppCompatActivity implements View.OnClickListener {
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Email_Detail_activty extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -23,18 +32,50 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
     TextView save_button,bt_done;
     CoordinatorLayout mMainLayout;
     EditText ev_from,ev_to,ev_subject,edit_compose;
+    private BroadcastReceiver mNetworkReceiver;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_detail_activty);
+        mNetworkReceiver = new ConnectivityReceiver();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
 
         IntentUI();
         setData();
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Email_Detail_activty.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     private void setData() {

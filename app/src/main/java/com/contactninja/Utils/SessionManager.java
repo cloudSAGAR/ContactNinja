@@ -573,7 +573,7 @@ public class SessionManager {
         Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         // Add new Flag to start new Activity
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -587,7 +587,7 @@ public class SessionManager {
     }
 
     public boolean isAppIntroIn() {
-        return pref.getBoolean(IS_APPITRO, false);
+        return pref.getBoolean(IS_APPITRO, true);
     }
 
     public String getlogin_type(Context context) {

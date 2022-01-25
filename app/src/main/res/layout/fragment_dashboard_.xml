@@ -271,11 +271,12 @@
                 android:layout_width="@dimen/_38sdp"
                 android:layout_height="@dimen/_38sdp"
                 app:civ_border_overlay="true"
-                android:background="@drawable/shape_primary_back"
+                android:background="@drawable/worm_dot_background"
                 android:src="@drawable/shape_primary_back">
 
             </de.hdodenhof.circleimageview.CircleImageView>
             <de.hdodenhof.circleimageview.CircleImageView
+                android:visibility="gone"
                 android:layout_marginStart="-30dp"
                 android:id="@+id/ic_profile1"
                 android:layout_width="@dimen/_38sdp"

@@ -256,23 +256,28 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
 
                           //  tv_email.setText(user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
                             //tv_sms.setText(user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
-                            String prospect_count=user_model1.getSeqProspectCount().getTotal().toString();
-                            tv_contect.setText(prospect_count);
-                            int sms_count=0;
-                            int email_count=0;
-                            for (int i=0;i<user_model1.getSequenceTask().size();i++)
-                            {
-                                if (user_model1.getSequenceTask().get(i).getType().equals("SMS"))
+                            try {
+                                String prospect_count=user_model1.getSeqProspectCount().getTotal().toString();
+                                tv_contect.setText(prospect_count);
+                                int sms_count=0;
+                                int email_count=0;
+                                for (int i=0;i<user_model1.getSequenceTask().size();i++)
                                 {
-                                    sms_count=sms_count+1;
+                                    if (user_model1.getSequenceTask().get(i).getType().equals("SMS"))
+                                    {
+                                        sms_count=sms_count+1;
+                                    }
+                                    else {
+                                        email_count=email_count+1;
+                                    }
                                 }
-                                else {
-                                    email_count=email_count+1;
-                                }
-                            }
-                            tv_sms.setText(String.valueOf(sms_count));
-                            tv_email.setText(String.valueOf(email_count));
+                                tv_sms.setText(String.valueOf(sms_count));
+                                tv_email.setText(String.valueOf(email_count));
 
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
 
 
                         } else {

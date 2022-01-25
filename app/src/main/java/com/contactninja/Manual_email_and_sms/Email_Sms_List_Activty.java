@@ -1,13 +1,6 @@
 package com.contactninja.Manual_email_and_sms;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.graphics.Color;
 import android.os.Build;
@@ -18,9 +11,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.Campaign.First_Step_Activity;
-import com.contactninja.Campaign.Fragment.Campaign_Email_Fragment;
-import com.contactninja.Campaign.Fragment.Campaign_Sms_Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.contactninja.Manual_email_and_sms.Fragment.Email_List_Fragment;
 import com.contactninja.Manual_email_and_sms.Fragment.Sms_List_Fragment;
 import com.contactninja.R;
@@ -28,10 +26,10 @@ import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
 
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Email_Sms_List_Activty extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener{
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;

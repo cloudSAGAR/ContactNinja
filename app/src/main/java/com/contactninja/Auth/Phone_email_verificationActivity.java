@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -51,11 +53,14 @@ import org.json.JSONException;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
+import io.michaelrocks.libphonenumber.android.NumberParseException;
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Phone_email_verificationActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static RetrofitApiInterface apiService;
-    TextView btn_getStarted, iv_invalid;
+    TextView btn_getStarted, iv_invalid,tv_welcome;
     SessionManager sessionManager;
     LinearLayout layout_phonenumber, layout_email;
     EditText edit_Mobile, edit_email;
@@ -87,9 +92,61 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
         apiService = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
         firebase();
+        enterPhoneNumber();
     }
+    private void enterPhoneNumber() {
+        edit_Mobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
+                String phoneNumber = edit_Mobile.getText().toString().trim();
+                if (countryCode.length() > 0 && phoneNumber.length() > 0) {
+                    if (Global.isValidPhoneNumber(phoneNumber)) {
+                        boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
+                        if (status) {
+                            iv_invalid.setText("");
+                        } else {
+                            iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                        }
+                    } else {
+                        iv_invalid.setText(getResources().getString(R.string.invalid_phone));
+                    }
+                } else {
+                    //Toast.makeText(getApplicationContext(), "Country Code and Phone Number is required", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+    private boolean validateUsing_libphonenumber(String countryCode, String phNumber) {
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.createInstance(getApplicationContext());
+        String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
+        Phonenumber.PhoneNumber phoneNumber = null;
+        try {
+            phoneNumber = phoneNumberUtil.parse(phNumber, isoCode);
 
 
+            boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
+            if (isValid) {
+                String internationalFormat = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberParseException e) {
+            System.err.println(e);
+        }
+        return false;
+    }
     private void firebase() {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -145,18 +202,23 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
     private void check_login_type() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String type = bundle.getString("login_type");
-        if (type.equals("PHONE")) {
+        try {
+            String type = bundle.getString("login_type");
+            if (type.equals("PHONE")) {
+                tv_welcome.setText(getResources().getString(R.string.welcome_phone));
+                layout_email.setVisibility(View.VISIBLE);
+                layout_phonenumber.setVisibility(View.GONE);
+                u_email = edit_email.getText().toString();
 
-            layout_email.setVisibility(View.VISIBLE);
-            layout_phonenumber.setVisibility(View.GONE);
-            u_email = edit_email.getText().toString();
 
-
-        } else {
-            layout_email.setVisibility(View.GONE);
-            layout_phonenumber.setVisibility(View.VISIBLE);
-            u_mobile = edit_Mobile.getText().toString();
+            } else {
+                tv_welcome.setText(getResources().getString(R.string.welcome_Email));
+                layout_email.setVisibility(View.GONE);
+                layout_phonenumber.setVisibility(View.VISIBLE);
+                u_mobile = edit_Mobile.getText().toString();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -218,6 +280,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         iv_invalid = findViewById(R.id.iv_invalid);
         mMainLayout = findViewById(R.id.mMainLayout);
         ccp_id = findViewById(R.id.ccp_id);
+        tv_welcome = findViewById(R.id.tv_welcome);
 
     }
 

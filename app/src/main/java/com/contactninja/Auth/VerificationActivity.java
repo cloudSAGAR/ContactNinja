@@ -67,7 +67,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     PinView otp_pinview;
     TextView verfiy_button, resend_txt, tc_wrong, tvTimer;
     String phoneAuthCredential;
-    String mobile_number = "", countrycode, v_id;
+    String mobile_number = "", countrycode="", v_id="";
     int second;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
@@ -92,15 +92,20 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         Global.checkConnectivity(VerificationActivity.this, mMainLayout);
         Intent getIntent = getIntent();
         Bundle getbunBundle = getIntent.getExtras();
-        first_name = getbunBundle.getString("f_name");
-        last_name = getbunBundle.getString("l_name");
-        email_address = getbunBundle.getString("email");
-        login_type = getbunBundle.getString("login_type");
-        mobile_number = getbunBundle.getString("mobile");
-        v_id = getbunBundle.getString("v_id");
-        countrycode=getbunBundle.getString("countrycode");
-        activity_flag = getbunBundle.getString("activity_flag");
-        referred_by=getbunBundle.getString("referred_by");
+        try{
+            first_name = getbunBundle.getString("f_name");
+            last_name = getbunBundle.getString("l_name");
+            email_address = getbunBundle.getString("email");
+            login_type = getbunBundle.getString("login_type");
+            mobile_number = getbunBundle.getString("mobile");
+            v_id = getbunBundle.getString("v_id");
+            countrycode=getbunBundle.getString("countrycode");
+            activity_flag = getbunBundle.getString("activity_flag");
+            referred_by=getbunBundle.getString("referred_by");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         retrofitCalls = new RetrofitCalls();
         EnableRuntimePermission();
         firebase();
@@ -114,15 +119,19 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                 if (pin_text.equals("")) {
                     tc_wrong.setVisibility(View.VISIBLE);
                 } else {
+                    countDownTimer.cancel();
+                    Global.hideKeyboard(VerificationActivity.this);
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
 
                         tc_wrong.setVisibility(View.GONE);
                         loadingDialog.showLoadingDialog();
+                    try {
                         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                         signInWithCredential(credential);
-
-
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -150,10 +159,16 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 if (charSequence.toString().length() == 6) {
+                    countDownTimer.cancel();
+                    Global.hideKeyboard(VerificationActivity.this);
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
-                    signInWithCredential(credential);
+                    try {
+                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
+                        signInWithCredential(credential);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     verfiy_button.setEnabled(false);
 
                 }else {
@@ -197,7 +212,6 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                         if (task.isSuccessful()) {
                             tc_wrong.setVisibility(View.GONE);
                             // sessionManager.login();
-                            loadingDialog.cancelLoading();
                             if (activity_flag.equals("login")) {
                                 try {
                                     if(Global.isNetworkAvailable(VerificationActivity.this,mMainLayout)) {
@@ -219,11 +233,15 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
 
                         } else {
                             tc_wrong.setVisibility(View.VISIBLE);
-                            loadingDialog.cancelLoading();
                             Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
-                });
+                }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                loadingDialog.cancelLoading();
+            }
+        });
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
@@ -404,12 +422,11 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
-                                finish();
                             }
                             else {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                                finish();
                             }
+                            finish();
                         }
                         catch (Exception e)
                         {
@@ -429,12 +446,11 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
-                                finish();
                             }
                             else {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                                finish();
                             }
+                            finish();
                         }
                         catch (Exception e)
                         {

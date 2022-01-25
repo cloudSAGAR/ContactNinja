@@ -5,25 +5,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Response;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.contactninja.Email.Email_Selction_Activity;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_and_sms.Email_Detail_activty;
 import com.contactninja.Manual_email_and_sms.Manual_Sms_Activity;
 import com.contactninja.Manual_email_and_sms.Sms_Detail_Activty;
 import com.contactninja.Model.EmailActivityListModel;
@@ -48,7 +42,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Response;
 
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Sms_List_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     LinearLayout demo_layout, add_new_contect_layout, mMainLayout;

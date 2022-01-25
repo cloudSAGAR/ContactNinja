@@ -1,12 +1,13 @@
 package com.contactninja.Manual_email_and_sms;
 
-import androidx.appcompat.app.AppCompatActivity;
-import retrofit2.Response;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -39,7 +45,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.OnClickListener {
+import retrofit2.Response;
+
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     TextView tc_time_zone;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -50,10 +59,13 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
     TextView tv_date,tv_time;
     private int mYear, mMonth, mDay, mHour, mMinute;
     String id,text,p_number;
+    private BroadcastReceiver mNetworkReceiver;
+    ConstraintLayout mMainLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_sms_task);
+        mNetworkReceiver = new ConnectivityReceiver();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -75,8 +87,39 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         String currentDateandTime = sdf.format(new Date());
         tv_time.setText(currentDateandTime);
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Manual_Sms_TaskActivity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
     private void IntentUI() {
+        mMainLayout=findViewById(R.id.mMainLayout);
         linearLayout=findViewById(R.id.linearLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
