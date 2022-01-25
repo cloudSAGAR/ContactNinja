@@ -814,7 +814,7 @@ e.printStackTrace();
                     {
                         if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId()))
                         {
-                            group_flag="false";
+                            group_flag="true";
                             groupContectAdapter.notifyItemChanged(i);
                             contectListData.get(i).setFlag("true");
 
