@@ -58,6 +58,7 @@
 
         </View>
         <LinearLayout
+            android:layout_marginTop="@dimen/_10sdp"
             android:weightSum="1"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"

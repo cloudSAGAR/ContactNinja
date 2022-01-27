@@ -602,7 +602,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
                             from_ac="";
-                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i-1).getId());
+                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
 
                         }
                     }
