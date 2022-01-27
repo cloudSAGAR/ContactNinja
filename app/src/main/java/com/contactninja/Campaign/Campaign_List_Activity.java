@@ -270,13 +270,8 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             Campaign_List campaign = new Gson().fromJson(headerString, listType);
                             campaignList = campaign.getCampaignList();
 
-                            if (campaignList.size() == 0) {
-                                demo_layout.setVisibility(View.VISIBLE);
-                                mMainLayout1.setVisibility(View.GONE);
-                            } else {
-                                demo_layout.setVisibility(View.GONE);
-                                mMainLayout1.setVisibility(View.VISIBLE);
-                            }
+                            demo_layout.setVisibility(View.GONE);
+                            mMainLayout1.setVisibility(View.VISIBLE);
 
 
                             if (currentPage != PAGE_START) campaingAdepter.removeLoading();
@@ -292,7 +287,8 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
                         } else {
                             // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
-
+                            demo_layout.setVisibility(View.VISIBLE);
+                            mMainLayout1.setVisibility(View.GONE);
                         }
                     }
 
@@ -313,6 +309,10 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 finish();
                 break;
             case R.id.demo_layout:
+            case R.id.add_campaign_layout:
+                if(SessionManager.getContectList(Campaign_List_Activity.this).size()!=0){
+
+
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
@@ -322,19 +322,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
                 intent.putExtra("flag","new");
                 startActivity(intent);
-                //finish();
-                break;
-            case R.id.add_campaign_layout:
-                SessionManager.setCampaign_type("");
-                SessionManager.setCampaign_type_name("");
-                SessionManager.setCampaign_Day("");
-                SessionManager.setCampaign_minute("");
-                Global.count = 1;
-                SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                Intent intent1=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
-                intent1.putExtra("flag","new");
-                startActivity(intent1);
-                // finish();
+                }else {
+                    Global.Messageshow(Campaign_List_Activity.this,mMainLayout,getResources().getString(R.string.add_contact),false);
+                }
                 break;
         }
     }

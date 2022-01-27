@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -90,6 +91,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
+    CoordinatorLayout user_image;
     ImageView iv_Setting, pulse_icon,iv_back,iv_edit;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
@@ -410,7 +412,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             if (user_data.getUser().getUserprofile().getProfilePic() == null) {
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
-                pulse_icon.setVisibility(View.GONE);
+                user_image.setVisibility(View.GONE);
                 tv_nameLetter.setVisibility(View.VISIBLE);
                 tv_nameLetter.setOnClickListener(this);
 
@@ -462,7 +464,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             if (user_data.getUser().getUserprofile().getProfilePic() == null) {
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
-                pulse_icon.setVisibility(View.GONE);
+                user_image.setVisibility(View.GONE);
                 tv_nameLetter.setVisibility(View.VISIBLE);
                 String name = Contect_data.getFirstname();
                 String add_text = "";
@@ -550,6 +552,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         tabLayout = view.findViewById(R.id.tabLayout);
         frameContainer = view.findViewById(R.id.frameContainer);
         pulse_icon = view.findViewById(R.id.pulse_icon);
+        user_image = view.findViewById(R.id.user_image);
         edt_lastname = view.findViewById(R.id.edt_lastname);
         edt_FirstName = view.findViewById(R.id.edt_FirstName);
         mMainLayout = view.findViewById(R.id.frameContainer1);

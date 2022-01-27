@@ -24,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -173,9 +174,14 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
             case R.id.demo_layout:
-                SessionManager.setGroupList(getActivity(),new ArrayList<>());
-                SessionManager.setGroupData(getActivity(),new Grouplist.Group());
-                startActivity(new Intent(getActivity(), GroupActivity.class));
+                if(SessionManager.getContectList(getActivity()).size() !=0){
+                    SessionManager.setGroupList(getActivity(),new ArrayList<>());
+                    SessionManager.setGroupData(getActivity(),new Grouplist.Group());
+                    startActivity(new Intent(getActivity(), GroupActivity.class));
+                }else {
+                    Global.Messageshow(getActivity(), MainActivity.mMainLayout,getActivity().getResources().getString(R.string.add_contact),false);
+                }
+
               /*  getActivity().finish();*/
                 break;
             case R.id.group_name:

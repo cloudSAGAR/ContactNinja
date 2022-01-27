@@ -14,23 +14,23 @@ import java.io.Serializable;
 public class Csv_InviteListData implements Serializable {
     private int id;
 
-    private String userImageURL;
-    private String userName;
-    private String userPhoneNumber;
-    private String userDescription;
-    private String  country;
-    private String  city;
-    private String  region;
-    private String  street;
-    private String  postcode;
-    private String  postType;
-    private String  note;
-    private String  contect_email;
-    private String  contect_type;
-    private String  contect_type_work;
-    private String  email_type_home;
-    private String  email_type_work;
-    private String  last_name;
+    private String userImageURL="";
+    private String userName="";
+    private String userPhoneNumber="";
+    private String userDescription="";
+    private String  country="";
+    private String  city="";
+    private String  region="";
+    private String  street="";
+    private String  postcode="";
+    private String  postType="";
+    private String  note="";
+    private String  contect_email="";
+    private String  contect_type="";
+    private String  contect_type_work="";
+    private String  email_type_home="";
+    private String  email_type_work="";
+    private String  last_name="";
     public Csv_InviteListData(String userName, String userPhoneNumber,
                               String contect_email,
                               String note,

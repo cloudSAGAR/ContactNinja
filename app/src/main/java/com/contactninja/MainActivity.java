@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // StructuredPostal.CITY == data7
                 city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
                 // StructuredPostal.REGION == data8
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                //region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
                 // StructuredPostal.STREET == data4
                 street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
                 // StructuredPostal.POSTCODE == data9

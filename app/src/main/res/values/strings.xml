@@ -394,4 +394,5 @@ Number</string>
     <string name="sms_txt">Message</string>
     <string name="verifition_title_text">Enter the code We just \n texted you</string>
     <string name="enter_campaign_name">Enter campaign name</string>
+    <string name="add_contact">Add first contacts</string>
 </resources>
