@@ -22,6 +22,7 @@ import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_and_sms.Email_Sms_List_Activty;
+import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;
 import com.contactninja.R;
@@ -41,8 +42,10 @@ import org.json.JSONException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -61,8 +64,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewpaggerAdapter adapter;
-
-
+    String token_api="",user_id="",organization_id="",team_id="";
+    SignResponseModel user_data;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,6 +74,14 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         sessionManager = new SessionManager(getActivity());
+
+         token_api = Global.getToken(sessionManager);
+         user_data = SessionManager.getGetUserdata(getActivity());
+         user_id = String.valueOf(user_data.getUser().getId());
+         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
      /*   try {
             if(Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 Refreess_token();
@@ -81,6 +92,13 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         try {
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 TimeZooneUpdate();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                CompanyList();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -257,12 +275,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         String time = offset + TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS);
         Log.e("offset", time);
-        String token = Global.getToken(sessionManager);
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        //String workin_time=user_data.getUser().getWorkingHoursList();
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 //        Log.e("Size is",new Gson().toJson(user_data.getUser().getWorkingHoursList()));
         if (user_data.getUser().getWorkingHoursList().size() == 0) {
@@ -274,10 +286,44 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             paramObject.addProperty("team_id", "1");
             paramObject.addProperty("user_id", user_id);
             obj.add("data", paramObject);
-            retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
                     //Log.e("Response is",new Gson().toJson(response));
+                }
+
+                @Override
+                public void error(Response<ApiResponse> response) {
+                }
+            });
+        }
+
+
+    }
+    private void CompanyList() throws JSONException {
+
+
+        if (user_data.getUser().getWorkingHoursList().size() == 0) {
+            JsonObject obj = new JsonObject();
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("organization_id", "1");
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("user_id", user_id);
+            obj.add("data", paramObject);
+            retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+                @Override
+                public void success(Response<ApiResponse> response) {
+                    //Log.e("Response is",new Gson().toJson(response));
+                    if(response.body().getHttp_status().equals(200)){
+                        sessionManager.setCompanylist(getActivity(), new ArrayList<>());
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Type listType = new TypeToken<CompanyModel>() {
+                        }.getType();
+                        CompanyModel data = new Gson().fromJson(headerString, listType);
+                        List<CompanyModel.Company> companyList=data.getData();
+                        sessionManager.setCompanylist(getActivity(), data.getData());
+                    }
                 }
 
                 @Override

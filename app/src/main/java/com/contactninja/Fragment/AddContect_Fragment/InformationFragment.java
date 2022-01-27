@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.AddContect.Message_Activity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.TimezoneModel;
@@ -2545,9 +2546,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 ev_search.requestFocus();
             }
         });
-        List<ContectListData> List_is=SessionManager.getContectList(getContext());
-        List<ContectListData.Company> companyList=List_is.get(0).getCompany();
-        CompanyAdapter companyAdapter = new CompanyAdapter(getActivity(), companyList);
+        List<CompanyModel.Company> List_is=SessionManager.getCompanylist(getContext());
+        CompanyAdapter companyAdapter = new CompanyAdapter(getActivity(), List_is);
         home_type_list.setAdapter(companyAdapter);
         add_new.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2564,8 +2564,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                List<ContectListData.Company> temp = new ArrayList();
-                for(ContectListData.Company d: companyList){
+                List<CompanyModel.Company> temp = new ArrayList();
+                for(CompanyModel.Company d: List_is){
                     if(d.getName().toLowerCase().contains(charSequence.toString().toLowerCase())){
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
@@ -2649,9 +2649,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         public Context mCtx;
         TextView phone_txt;
         Contactdetail item;
-        private List<ContectListData.Company> companyList;
+        private List<CompanyModel.Company> companyList;
 
-        public CompanyAdapter(Context context, List<ContectListData.Company> companyList) {
+        public CompanyAdapter(Context context, List<CompanyModel.Company> companyList) {
             this.mCtx = context;
             this.companyList = companyList;
         }
@@ -2666,7 +2666,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         @Override
         public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
-            ContectListData.Company WorkData = companyList.get(position);
+            CompanyModel.Company WorkData = companyList.get(position);
             holder.tv_item.setText(WorkData.getName());
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2686,7 +2686,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             return companyList.size();
         }
 
-        public void updateList(List<ContectListData.Company> list) {
+        public void updateList(List<CompanyModel.Company> list) {
             companyList = list;
             notifyDataSetChanged();
         }
