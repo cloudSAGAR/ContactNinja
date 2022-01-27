@@ -363,8 +363,9 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
                 //Add Api Call
                 Global.hideKeyboard(Add_Camp_SMS_Activity.this);
                 Global.count = 1;
-                if (edit_template.getText().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, "ERROR", false);
+                String body=edit_template.getText().toString();
+                if (body.equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_message), false);
 
                 } else {
                     StepData();

@@ -357,7 +357,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
     private void SaveEvent() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
 
         group_name = add_new_contect.getText().toString();
         group_description = add_detail.getText().toString();
@@ -366,6 +365,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         } else if (group_description.equals("")) {
             Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_description), false);
         } else {
+            loadingDialog.showLoadingDialog();
 
             SignResponseModel user_data = sessionManager.getGetUserdata(this);
             String user_id = String.valueOf(user_data.getUser().getId());

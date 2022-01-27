@@ -394,12 +394,16 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.save_button:
                // Log.e("Main Data ",new Gson().toJson(select_inviteListData));
-
-                sessionManager.setGroupList(this,new ArrayList<>());
-                Intent intent=new Intent(getApplicationContext(),Final_Group.class);
-                startActivity(intent);
-                finish();
-                sessionManager.setGroupList(getApplicationContext(), select_contectListData);
+                if(select_contectListData.size()!=0){
+                    sessionManager.setGroupList(this,new ArrayList<>());
+                    Intent intent=new Intent(getApplicationContext(),Final_Group.class);
+                    startActivity(intent);
+                    finish();
+                    sessionManager.setGroupList(getApplicationContext(), select_contectListData);
+                }else {
+                    Global.Messageshow(getApplicationContext(),
+                            mMainLayout,getResources().getString(R.string.camp_select_contect),false);
+                }
                 break;
             default:
 

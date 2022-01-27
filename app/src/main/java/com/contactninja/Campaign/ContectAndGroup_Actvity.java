@@ -303,18 +303,53 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
 
 
     public void AddContectAndGroup(int seq_task_id, int sequence_id) throws JSONException {
-        loadingDialog.showLoadingDialog();
 
-        if (sessionManager.getGroupList(this).equals(null))
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("seq_task_id", seq_task_id);
+        paramObject.put("seq_id", sequence_id);
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        List<ContectListData.Contact> contactdetails=sessionManager.getGroupList(this);
+        JSONArray jsonArray = new JSONArray();
+        Log.e("Contec List Size",String.valueOf(contactdetails.size()));
+        for (int i = 0; i < contactdetails.size(); i++) {
+            Log.e("Contec List Size",String.valueOf(contactdetails.get(0).getContactDetails().size()));
+            JSONObject paramObject1 = new JSONObject();
+            paramObject1.put("prospect_id",contactdetails.get(i).getId());
+            Log.e("Contect Detail is",new Gson().toJson(contactdetails.get(i).getContactDetails()));
+            for (int j=0;j<contactdetails.get(i).getContactDetails().size();j++)
+            {
+                if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
+                {
+                    paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                }
+                else {
+                    paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                }
+                //break;
+            }
+
+            jsonArray.put(paramObject1);
+        }
+
+        List<Grouplist.Group> group_list=SessionManager.getgroup_broadcste(getApplicationContext());
+        JSONArray contect_array = new JSONArray();
+        for (int i =0;i<group_list.size();i++)
+        {
+            contect_array.put(group_list.get(i).getId());
+        }
+        paramObject.put("prospect_ids", jsonArray);
+        if ((jsonArray!=null&& jsonArray.length()== 0) && (contect_array!=null&& contect_array.length() == 0))
         {
             Global.Messageshow(getApplicationContext(),main_layout,getString(R.string.camp_select_contect).toString(),false);
         }
         else {
-
-            SignResponseModel user_data = SessionManager.getGetUserdata(this);
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+            loadingDialog.showLoadingDialog();
 
             Log.e("Contect List is",new Gson().toJson(sessionManager.getGroupList(this)));
             Log.e("Group List is",new Gson().toJson(SessionManager.getgroup_broadcste(getApplicationContext())));
@@ -330,42 +365,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             }
             Log.e("sequence_id", String.valueOf(this.sequence_id));
             JSONObject obj = new JSONObject();
-            JSONObject paramObject = new JSONObject();
-            paramObject.put("organization_id", "1");
-            paramObject.put("seq_task_id", seq_task_id);
-            paramObject.put("seq_id", sequence_id);
-            paramObject.put("team_id", "1");
-            paramObject.put("user_id", user_id);
-            List<ContectListData.Contact> contactdetails=sessionManager.getGroupList(this);
-            JSONArray jsonArray = new JSONArray();
-            Log.e("Contec List Size",String.valueOf(contactdetails.size()));
-            for (int i = 0; i < contactdetails.size(); i++) {
-                Log.e("Contec List Size",String.valueOf(contactdetails.get(0).getContactDetails().size()));
-                JSONObject paramObject1 = new JSONObject();
-                paramObject1.put("prospect_id",contactdetails.get(i).getId());
-               Log.e("Contect Detail is",new Gson().toJson(contactdetails.get(i).getContactDetails()));
-                for (int j=0;j<contactdetails.get(i).getContactDetails().size();j++)
-                {
-                    if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
-                    {
-                        paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
-                    }
-                    else {
-                        paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
-                    }
-                    //break;
-                }
 
-                jsonArray.put(paramObject1);
-            }
-
-            List<Grouplist.Group> group_list=SessionManager.getgroup_broadcste(getApplicationContext());
-            JSONArray contect_array = new JSONArray();
-            for (int i =0;i<group_list.size();i++)
-            {
-                contect_array.put(group_list.get(i).getId());
-            }
-            paramObject.put("prospect_ids", jsonArray);
             paramObject.put("contact_group_ids",contect_array);
             obj.put("data", paramObject);
             JsonParser jsonParser = new JsonParser();
