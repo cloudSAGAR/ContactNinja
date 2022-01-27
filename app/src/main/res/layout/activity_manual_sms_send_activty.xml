@@ -15,7 +15,115 @@
         <include
             layout="@layout/toolbar"/>
 
+        <LinearLayout
+            android:layout_marginTop="@dimen/_15sdp"
+            android:weightSum="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="center"
+                style="@style/tv_Medium"
+                android:textSize="@dimen/_14sdp"
+                android:text="Task title:"
+                android:textColor="@color/home_list_sub_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+            </TextView>
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/ev_task_title"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:imeOptions="actionDone"
+                android:paddingStart="@dimen/_15sdp"
+                android:textColor="@color/tv_medium"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+            <ImageView
+                android:visibility="gone"
+                android:padding="@dimen/_10sdp"
+                android:id="@+id/iv_more"
+                android:src="@drawable/ic_down"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@color/line_camp"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_height="1dp">
+
+        </View>
+
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_15sdp"
+            android:weightSum="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="center"
+                style="@style/tv_Medium"
+                android:textSize="@dimen/_14sdp"
+                android:text="@string/from"
+                android:textColor="@color/purple_200"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/ev_from"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:imeOptions="actionDone"
+                android:paddingStart="@dimen/_15sdp"
+                android:textColor="@color/tv_medium"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+            <ImageView
+                android:visibility="gone"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_down"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@color/line_camp"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_height="1dp">
+
+        </View>
     </LinearLayout>
 
     <LinearLayout

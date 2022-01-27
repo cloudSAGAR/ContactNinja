@@ -48,6 +48,15 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Manual_email_and_sms.Manual_Auto_Task_Name_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Manual_email_and_sms.Sms_And_Email_Auto_Manual"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".Manual_email_and_sms.Sms_Detail_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -303,7 +312,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Contect_Demo"
             android:exported="true"
             android:screenOrientation="portrait" />
 

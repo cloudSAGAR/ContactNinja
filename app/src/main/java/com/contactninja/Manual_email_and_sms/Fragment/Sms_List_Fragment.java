@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_and_sms.Manual_Sms_Activity;
+import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Manual_email_and_sms.Sms_Detail_Activty;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
@@ -99,14 +100,24 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
 
         switch (view.getId()) {
             case R.id.add_new_contect_layout:
-                SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                startActivity(new Intent(getActivity(), Manual_Sms_Activity.class));
-                //finish();
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag","edit");
+                intent1.putExtra("type","SMS");
+                startActivity(intent1); //  finish();
                 break;
             case R.id.demo_layout:
-                SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                startActivity(new Intent(getActivity(), Manual_Sms_Activity.class));
-                //  finish();
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                Intent intent=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent.putExtra("flag","edit");
+                intent.putExtra("type","SMS");
+                startActivity(intent);
                 break;
 
         }

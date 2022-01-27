@@ -573,7 +573,8 @@ public class Manual_Sms_Activity extends AppCompatActivity  implements View.OnCl
                         holder1.profile_image.setVisibility(View.VISIBLE);
                     }
 
-                    holder1.layout_contec.setOnClickListener(new View.OnClickListener() {
+                    holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
@@ -592,6 +593,8 @@ public class Manual_Sms_Activity extends AppCompatActivity  implements View.OnCl
                             if (detailList.size()==1)
                             {
 
+                                holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                holder1.add_new_contect_icon.setVisibility(View.GONE);
 
                                 contacts.get(position).setContactDetails(detailList);
                                 select_contectListData.add(contacts.get(position));
@@ -600,10 +603,15 @@ public class Manual_Sms_Activity extends AppCompatActivity  implements View.OnCl
                                 //Log.e("Selction List is",new Gson().toJson(select_contectListData));
                                // SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                                 //SessionManager.setGroupList(getApplicationContext(), select_contectListData);
+
+                                Intent data=getIntent();
+                                Bundle bundle=data.getExtras();
+                                String task_name=bundle.getString("task_name");
                                 Intent intent=new Intent(Manual_Sms_Activity.this, Manual_Sms_Send_Activty.class);
                                 intent.putExtra("number",detailList.get(0).getEmailNumber());
                                 intent.putExtra("id",detailList.get(0).getContactId());
                                 intent.putExtra("type","app");
+                                intent.putExtra("task_name",task_name);
                                 startActivity(intent);
                                 finish();
                             }
@@ -948,6 +956,10 @@ public class Manual_Sms_Activity extends AppCompatActivity  implements View.OnCl
 
                                 }
                             }
+
+                            holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                            holder1.add_new_contect_icon.setVisibility(View.GONE);
+
                             List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
                             contactDetails.add(userLinkedGmailList.get(position));
                             contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size()-1));
@@ -959,10 +971,14 @@ public class Manual_Sms_Activity extends AppCompatActivity  implements View.OnCl
                             SessionManager.setGroupList(getApplicationContext(), select_contectListData);
                             num_count.setText(select_contectListData.size()+" Contact Selcted");
                             contacts.get(position).setFlag("false");
+                            Intent data=getIntent();
+                            Bundle bundle=data.getExtras();
+                            String task_name=bundle.getString("task_name");
                             Intent intent=new Intent(Manual_Sms_Activity.this, Manual_Sms_Send_Activty.class);
                             intent.putExtra("number",userLinkedGmailList.get(0).getEmailNumber());
                             intent.putExtra("id",userLinkedGmailList.get(0).getContactId());
                             intent.putExtra("type","app");
+                            intent.putExtra("task_name",task_name);
                             startActivity(intent);
                             finish();
                             bottomSheetDialog_templateList1.cancel();

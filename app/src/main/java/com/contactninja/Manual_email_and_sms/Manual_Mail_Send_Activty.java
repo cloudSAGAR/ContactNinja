@@ -77,11 +77,11 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
 
-    EditText edit_template, ev_subject, ev_to, ev_from;
-    String email = "", id = "";
+    EditText edit_template, ev_subject, ev_to, ev_from,ev_titale;
+    String email = "", id = "",task_name="",from_ac="",from_ac_id="";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
-    int defult_id;
+    int defult_id,temaplet_id=0;
     List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
@@ -97,10 +97,10 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
         templateClick = this;
 
         IntentUI();
-        // Intent intent = getIntent();
-        //Bundle bundle = intent.getExtras();
-        //email = bundle.getString("email");
-        //id = bundle.getString("id");
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        task_name=bundle.getString("task_name");
+        ev_titale.setText(task_name);
         List<ContectListData.Contact> list_data=SessionManager.getGroupList(getApplicationContext());
         Log.e("List Data is ",new Gson().toJson(list_data));
         id= String.valueOf(list_data.get(0).getId());
@@ -148,6 +148,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
         ev_from = findViewById(R.id.ev_from);
         iv_more = findViewById(R.id.iv_more);
         iv_more.setOnClickListener(this);
+        ev_titale=findViewById(R.id.ev_titale);
 
 
     }
@@ -304,6 +305,10 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                 intent.putExtra("id",id);
                 intent.putExtra("email",email);
                 intent.putExtra("gid",String.valueOf(select_userLinkedGmailList.get(0).getId()));
+                intent.putExtra("tem_id",String.valueOf(temaplet_id));
+                intent.putExtra("task_name",task_name);
+                intent.putExtra("from_ac",from_ac);
+                intent.putExtra("from_ac_id",from_ac_id);
                 startActivity(intent);
                 finish();
             }
@@ -579,6 +584,8 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
                 if(select_userLinkedGmailList.size()!=0){
+                    from_ac="";
+                    from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
                     ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
                 }
             }
@@ -622,7 +629,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                     }.getType();
                     UserLinkedList userLinkedGmail = new Gson().fromJson(headerString, listType);
                     userLinkedGmailList = userLinkedGmail.getUserLinkedGmail();
-                    Log.e("Size is", "" + userLinkedGmailList.size());
+                    Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
                     if (userLinkedGmailList.size() == 1) {
                         iv_more.setVisibility(View.GONE);
                     } else if (userLinkedGmailList.size() == 1) {
@@ -635,6 +642,10 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                             ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+
+                            from_ac="";
+                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i-1).getId());
+
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
@@ -664,15 +675,14 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
 
         JSONObject paramObject = new JSONObject();
 
-        paramObject.put("type", "EMAIL");
+        paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
         paramObject.put("assign_to", user_id);
-        paramObject.put("task_description", text);
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < 1; i++) {
@@ -690,6 +700,21 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
 
+        paramObject.put("record_id","");
+        paramObject.put("task_name",task_name);
+        if (temaplet_id==0)
+        {
+            paramObject.put("template_id","");
+
+        }
+        else {
+            paramObject.put("template_id",temaplet_id);
+        }
+
+        paramObject.put("content_header",ev_subject.getText().toString());
+        paramObject.put("content_body",edit_template.getText().toString());
+        paramObject.put("from_ac",from_ac);
+        paramObject.put("from_ac_id",from_ac_id);
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
@@ -829,6 +854,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                     if (holder.tv_item.getText().toString().equals("Save Current as template")) {
                         showAlertDialogButtonClicked(view);
                     } else {
+                        temaplet_id=item.getId();
                         interfaceClick.OnClick(item);
                     }
                 }

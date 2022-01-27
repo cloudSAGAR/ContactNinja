@@ -79,8 +79,8 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
 
-    EditText edit_template;
-    String p_number = "", id = "";
+    EditText edit_template,ev_task_title,ev_from;
+    String p_number = "", id = "",task_name="";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
     int defult_id;
@@ -105,6 +105,10 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         p_number = bundle.getString("number");
         id = String.valueOf(bundle.getInt("id"));
         String type=bundle.getString("type");
+        task_name=bundle.getString("task_name");
+        ev_task_title.setText(task_name);
+        ev_from.setText(p_number);
+        ev_from.setEnabled(false);
 
         try {
             if(Global.isNetworkAvailable(Manual_Sms_Send_Activty.this,mMainLayout)){
@@ -127,11 +131,12 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
         tv_use_tamplet.setOnClickListener(this);
         rv_direct_list = findViewById(R.id.rv_direct_list);
-       mMainLayout=findViewById(R.id.mMainLayout);
+        mMainLayout=findViewById(R.id.mMainLayout);
         edit_template=findViewById(R.id.ev_txt);
         iv_submit=findViewById(R.id.iv_submit);
         iv_submit.setOnClickListener(this);
-
+        ev_task_title=findViewById(R.id.ev_task_title);
+        ev_from=findViewById(R.id.ev_from);
 
 
     }

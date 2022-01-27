@@ -322,6 +322,7 @@ Number</string>
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or SMSes sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
     <string name="campaign_step_one">Select your step</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
+    <string name="create_task">Create your </string>
 
     <string name="campaign_step_one_email">Automated email</string>
     <string name="campaign_step_one_email_manual">Manual email</string>
@@ -346,8 +347,11 @@ Number</string>
     <string name="mail_subject">Subject:</string>
     <string name="ComposeEmail">Compose email</string>
     <string name="camp_done">Please add title of \n  your campaign</string>
+    <string name="manual_task">Please add title \n for your task</string>
     <string name="camp_remaingn"> Characters remaining</string>
     <string name="camp_title">Enter campagin title</string>
+    <string name="task_title">Enter Task title</string>
+
     <string name="update">update</string>
     <string name="Enter_subject_here">Enter subject here…</string>
     <string name="Subject">Subject:</string>

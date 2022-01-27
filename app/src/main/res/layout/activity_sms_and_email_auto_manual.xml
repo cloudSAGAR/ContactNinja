@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:id="@+id/mMainLayout"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    tools:context=".Campaign.Add_Camp_First_Step_Activity">
+    <include
+        layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/add_new_contect"
+            style="@style/tv_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textSize="@dimen/_16sdp"
+            android:text="Create your "
+            android:textColor="@color/tv_medium"
+            android:textStyle="bold" />
+        <TextView
+            style="@style/tv_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textSize="@dimen/_16sdp"
+            android:text="Task"
+            android:textColor="@color/purple_200"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="@dimen/_25sdp"
+        android:id="@+id/tabLayout"
+        style="@style/tv_bold"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabSelectedTextColor="@color/tv_medium"
+        app:tabTextColor="@color/bz_text"
+        android:layout_width="match_parent"
+        app:tabIndicatorHeight="2dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabGravity="fill"
+        app:tabMode="fixed">
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:background="@color/home_list_back_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <androidx.viewpager.widget.ViewPager
+        android:layout_marginTop="@dimen/_3sdp"
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        />
+</LinearLayout>

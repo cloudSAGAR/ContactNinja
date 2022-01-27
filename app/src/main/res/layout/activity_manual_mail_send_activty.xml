@@ -14,7 +14,49 @@
         <include
             layout="@layout/toolbar"/>
 
+        <LinearLayout
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/tv_regular"
+                android:textSize="@dimen/_14sdp"
+                android:text="Task title:"
+                android:textColor="@color/home_list_sub_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+            </TextView>
+
+            <EditText
+                android:layout_marginStart="@dimen/_5sdp"
+                android:id="@+id/ev_titale"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:imeOptions="actionDone"
+                android:hint="@string/ComposeEmail"
+                android:textColor="@color/tv_medium"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+
+
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@color/line_camp"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_height="1dp">
+
+        </View>
         <LinearLayout
             android:weightSum="1"
             android:layout_marginStart="@dimen/_10sdp"

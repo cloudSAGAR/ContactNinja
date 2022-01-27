@@ -77,10 +77,10 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
     TemplateClick templateClick;
 
     EditText edit_template, ev_subject, ev_to, ev_from;
-    String email = "", id = "";
+    String email = "", id = "",task_name="",from_ac="",from_ac_id="";;
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
-    int defult_id;
+    int defult_id,temaplet_id=0;
     List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
@@ -546,6 +546,9 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                 bottomSheetDialog_templateList1.cancel();
                 if(select_userLinkedGmailList.size()!=0){
                     ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
+                    from_ac="";
+                    from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
+
                 }
             }
         });
@@ -601,6 +604,9 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                             ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+                            from_ac="";
+                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i-1).getId());
+
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
@@ -653,9 +659,25 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
         }
         JSONArray contact_group_ids = new JSONArray();
         contact_group_ids.put("");
+
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
 
+        paramObject.put("record_id","");
+        paramObject.put("task_name",task_name);
+        if (temaplet_id==0)
+        {
+            paramObject.put("template_id","");
+
+        }
+        else {
+            paramObject.put("template_id",temaplet_id);
+        }
+
+        paramObject.put("content_header",ev_subject.getText().toString());
+        paramObject.put("content_body",edit_template.getText().toString());
+        paramObject.put("from_ac",from_ac);
+        paramObject.put("from_ac_id",from_ac_id);
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
@@ -789,6 +811,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                     if (holder.tv_item.getText().toString().equals("Save Current as template")) {
                         showAlertDialogButtonClicked(view);
                     } else {
+                        temaplet_id=item.getId();
                         interfaceClick.OnClick(item);
                     }
                 }

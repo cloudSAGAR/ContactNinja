@@ -62,6 +62,8 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
     String subject,body,id,email,gid;
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
+    String task_name="",from_ac="",from_ac_id="",temaplet_id="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,11 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
         id=bundle.getString("id");
         email=bundle.getString("email");
         gid=bundle.getString("gid");
+
+        temaplet_id=bundle.getString("tem_id");
+        task_name=bundle.getString("task_name");
+        from_ac=bundle.getString("from_ac");
+        from_ac_id= bundle.getString("from_ac_id");
 
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
@@ -200,15 +207,15 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
 
         JSONObject paramObject = new JSONObject();
 
-        paramObject.put("type", "EMAIL");
+        paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", tv_time.getText().toString());
         paramObject.put("date", tv_date.getText().toString());
         paramObject.put("assign_to", user_id);
-        paramObject.put("task_description", text);
+
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < 1; i++) {
@@ -225,7 +232,21 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
         contact_group_ids.put("");
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
+        paramObject.put("record_id","");
+        paramObject.put("task_name",task_name);
+        if (temaplet_id.equals(""))
+        {
+            paramObject.put("template_id","");
 
+        }
+        else {
+            paramObject.put("template_id",temaplet_id);
+        }
+
+        paramObject.put("content_header",subject);
+        paramObject.put("content_body",body);
+        paramObject.put("from_ac",from_ac);
+        paramObject.put("from_ac_id",from_ac_id);
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
@@ -247,7 +268,7 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
                         JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
                         String _newid = jsonDailyObject1.getString("id");
                         Log.e("_newid", _newid);
-                        Email_execute(subject, text, id, email, _newid);
+                 //       Email_execute(subject, text, id, email, _newid);
 
                     } catch (JSONException e) {
                         e.printStackTrace();

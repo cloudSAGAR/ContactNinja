@@ -207,7 +207,6 @@ public class ContectFragment extends Fragment {
         View content_view = inflater.inflate(R.layout.fragment_contect, container, false);
         IntentUI(content_view);
         mCtx = getContext();
-
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
