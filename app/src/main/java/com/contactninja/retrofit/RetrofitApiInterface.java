@@ -176,6 +176,11 @@ public interface RetrofitApiInterface {
                                    @Body JsonObject jsonObject,
                                    @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
 
+ @POST("working_hour/add/default")
+    Call<ApiResponse> CompanyList(@Header("Accept") String api, @Header("Authorization") String auth,
+                                   @Body JsonObject jsonObject,
+                                   @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+
 
    /* @POST("manual_task/store")
     Call<ApiResponse> Send_SMS_Api(@Header("Accept") String api, @Header("Authorization") String auth,

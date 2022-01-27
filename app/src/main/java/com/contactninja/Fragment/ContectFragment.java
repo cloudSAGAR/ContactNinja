@@ -46,7 +46,6 @@ import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.ContectListAdapter;
 import com.contactninja.ContectListAdapter_demo;
-import com.contactninja.Contect_Demo;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;

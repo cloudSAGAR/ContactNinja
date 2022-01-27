@@ -136,6 +136,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
+                swipeToRefresh.setRefreshing(false);
                 if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -144,18 +145,14 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
                     TemplateList template=new Gson().fromJson(headerString, listType);
                     templateList=template.getTemplate();
 
-                    if(templateList.size()==0){
-                        demo_layout.setVisibility(View.VISIBLE);
-                        mMainLayout1.setVisibility(View.GONE);
-                    }else {
+
                         demo_layout.setVisibility(View.GONE);
                         mMainLayout1.setVisibility(View.VISIBLE);
-                    }
+
 
 
                     if (currentPage != PAGE_START) templateAdepter.removeLoading();
                     templateAdepter.addItems(templateList);
-                    swipeToRefresh.setRefreshing(false);
                     // check weather is last page or not
                     if (template.getTotal() > templateAdepter.getItemCount()) {
                         templateAdepter.addLoading();
@@ -164,6 +161,9 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
                     }
                     isLoading = false;
 
+                }else {
+                    demo_layout.setVisibility(View.VISIBLE);
+                    mMainLayout1.setVisibility(View.GONE);
                 }
             }
 

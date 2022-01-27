@@ -247,6 +247,14 @@ public class RetrofitCalls {
 
     }
 
+    public void CompanyList(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.CompanyList(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
 
   /*  public void Send_SMS_Api(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Send_SMS_Api(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
