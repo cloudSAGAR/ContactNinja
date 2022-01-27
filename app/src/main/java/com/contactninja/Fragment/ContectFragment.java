@@ -1,16 +1,21 @@
 package com.contactninja.Fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,8 +43,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.ContectListAdapter;
+import com.contactninja.ContectListAdapter_demo;
+import com.contactninja.Contect_Demo;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Csv_InviteListData;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -48,35 +57,51 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitApiClient;
 import com.contactninja.retrofit.RetrofitApiInterface;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
 import org.json.JSONException;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.michaelrocks.libphonenumber.android.NumberParseException;
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged")
 public class ContectFragment extends Fragment {
-
     private final static String[] DATA_COLS = {
 
             ContactsContract.Data.MIMETYPE,
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
+    List<ContectListData.Contact> main_store = new ArrayList<>();
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     ConstraintLayout mMainLayout;
     Context mCtx;
@@ -94,7 +119,7 @@ public class ContectFragment extends Fragment {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     int limit = 0, totale_group;
-    ContectListAdapter paginationAdapter;
+    ContectListAdapter_demo paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
     boolean isLastPage = false;
@@ -102,6 +127,15 @@ public class ContectFragment extends Fragment {
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
     private List<ContectListData.Contact> contectListData;
+
+
+    String userName = "", user_phone_number = "", user_image = "", user_des = "", old_latter = "", contect_type = "", contect_email = "",
+            contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
+            postcode = "", postType = "", note = "";
+    StringBuilder data;
+    Cursor cursor;
+    List<Csv_InviteListData> csv_inviteListData = new ArrayList<>();
+    List<Csv_InviteListData> csv_multiple_data = new ArrayList<>();
 
 
     public ContectFragment(String strtext, View view, FragmentActivity activity) {
@@ -199,6 +233,8 @@ public class ContectFragment extends Fragment {
         return id;
     }
 
+    TextView tv_upload;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -217,8 +253,9 @@ public class ContectFragment extends Fragment {
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
 
 
-        paginationAdapter = new ContectListAdapter(getActivity());
+        paginationAdapter = new ContectListAdapter_demo(getActivity());
         rvinviteuserdetails.setAdapter(paginationAdapter);
+
         //inviteListData.clear();
 
 
@@ -239,13 +276,12 @@ public class ContectFragment extends Fragment {
         );
 
 
-        if (SessionManager.getContectList(getActivity()).size() != 0) {
+     /*   if (SessionManager.getContectList(getActivity()).size() != 0) {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
             paginationAdapter.addAll(contectListData);
             num_count.setText(contectListData.size() + " Contacts");
-        }
-        //  getAllContect();
-
+        }*/
+        EnableRuntimePermission();
 
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -255,13 +291,13 @@ public class ContectFragment extends Fragment {
 
                 try {
                     try {
-                        ContectEvent();
+                        ContectEvent1(main_store);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } catch (Exception e) {
                     try {
-                        ContectEvent();
+                        ContectEvent1(main_store);
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
@@ -298,7 +334,13 @@ public class ContectFragment extends Fragment {
 
             }
         });
-
+        tv_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadingDialog.showLoadingDialog();
+                splitdata(csv_inviteListData);
+            }
+        });
 
         ev_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -310,7 +352,7 @@ public class ContectFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : contectListData) {
+                for (ContectListData.Contact d : main_store) {
                     if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
@@ -347,6 +389,404 @@ public class ContectFragment extends Fragment {
 
     }
 
+    private void splitdata(List<Csv_InviteListData> response) {
+
+        System.out.println("GET DATA IS " + response);
+
+        data = new StringBuilder();
+
+        data.append("Firstname" +
+                "," + "Lastname" +
+                "," + "Company Name" +
+                "," + "Company URL" +
+                "," + "Job Title" + "," + "Notes" + "," +
+                "DOB" + "," + "Address" + "," +
+                "City" + "," + "State" + "," +
+                "Zipcode" + "," + "Zoomid" + "," +
+                "Facebook Link" + "," + "Twitter Link" + "," +
+                "Breakout Link" + "," + "Linkedin Link" + "," +
+                "Email" + "," + "Phone" + "," +
+                "Fax");
+
+        for (int i = 0; i < response.size(); i++) {
+            data.append('\n' + response.get(i).getUserName() +
+                    ',' + response.get(i).getLast_name() +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + ' ' +
+                    ',' + response.get(i).getContect_email() +
+                    ',' + '"' + response.get(i).getUserPhoneNumber() + ',' + '"' +
+                    ',' + ' '
+            );
+
+
+        }
+        CreateCSV(data);
+    }
+
+    private void CreateCSV(StringBuilder data) {
+        Calendar calendar = Calendar.getInstance();
+        long time = calendar.getTimeInMillis();
+        try {
+            //
+            FileOutputStream out = getActivity().openFileOutput("CSV_Data_" + time + ".csv", Context.MODE_PRIVATE);
+
+            //store the data in CSV file by passing String Builder data
+            out.write(data.toString().getBytes());
+            out.close();
+            Context context = getActivity();
+            final File newFile = new File(Environment.getExternalStorageDirectory(), "SimpleCVS");
+            if (!newFile.exists()) {
+                newFile.mkdir();
+            }
+            File file = new File(context.getFilesDir(), "CSV_Data_" + time + ".csv");
+            Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
+            //once the file is ready a share option will pop up using which you can share
+            // the same CSV from via Gmail or store in Google Drive
+
+
+            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                Uploadcsv(file);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void Uploadcsv(File path) throws JSONException {
+        Log.e("File is", String.valueOf(path));
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse("csv"),
+                        path
+                );
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("import_file", path.getName(), requestFile);
+
+        RequestBody user_id1 = RequestBody.create(MediaType.parse("text/plain"), user_id);
+        RequestBody organization_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
+        RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
+        RequestBody id = RequestBody.create(MediaType.parse("text/plain"), "1");
+
+        retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager),
+                organization_id1, team_id1, user_id1, id, body, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void success(Response<ApiResponse> response)  {
+                        sessionManager.setcontectexits("1");
+                        if (response.body().getHttp_status() == 200) {
+
+                            SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+                            user_data.getUser().setIs_contact_exist(1);
+                            SessionManager.setUserdata(getActivity(), user_data);
+
+                            loadingDialog.cancelLoading();
+                            try {
+                               ContectEvent1(main_store);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            loadingDialog.cancelLoading();
+                        }
+                        sessionManager.setCsv_token();
+
+
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+
+                });
+
+
+    }
+
+
+
+    public void EnableRuntimePermission() {
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onPermissionGranted() {
+                try {
+                    GetContactsIntoArrayList();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                EnableRuntimePermission();
+            }
+
+        };
+        TedPermission.with(getActivity())
+                .setPermissionListener(permissionlistener)
+                .setDeniedTitle("Contactninja would like to access your contacts")
+                .setDeniedMessage("Contact Ninja uses your contacts to improve your business’s marketing outreach by aggrregating your contacts.")
+                .setGotoSettingButtonText("setting")
+                .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.SEND_SMS
+                )
+                .setRationaleConfirmText("OK")
+                .check();
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+
+    public void GetContactsIntoArrayList() throws JSONException {
+
+        loadingDialog.showLoadingDialog();
+        String firstname = "", lastname = "";
+
+        cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+        while (cursor.moveToNext()) {
+            userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
+            user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
+            TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
+            String country = tm.getNetworkCountryIso();
+            int countryCode = 0;
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(getActivity());
+            try {
+                // phone must begin with '+'
+                Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
+                countryCode = numberProto.getCountryCode();
+                user_phone_number = user_phone_number.replace(" ", "");
+                user_phone_number = user_phone_number.replace("-", "");
+                if (!user_phone_number.contains("+")) {
+                    user_phone_number = String.valueOf("+" + countryCode + user_phone_number);
+                }
+            } catch (NumberParseException e) {
+                System.err.println("NumberParseException was thrown: " + e.toString());
+            }
+            try {
+                contect_email = "";
+                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
+                firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
+                lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
+                    .substring(0, 1)
+                    .toUpperCase();
+
+            boolean found = false;
+            try {
+                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
+
+
+                if (found) {
+
+                } else {
+                    //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getActivity().getTaskId())));
+                    String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
+                    inviteListData.add(new InviteListData("" + userName.trim(),
+                            user_phone_number.replace(" ", ""),
+                            user_image,
+                            user_des,
+                            "", ""));
+
+
+                    try {
+                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    if (csv_inviteListData.size() != 0) {
+                        OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
+                                .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
+                                .findFirst();
+                        if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
+                            // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
+                            csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                            csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
+                            csv_inviteListData.remove(indexOpt.getAsInt() + 1);
+                        }
+                        //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
+
+                    }
+
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
+
+        if (csv_inviteListData.size() == 0) {
+            //loadingDialog.cancelLoading();
+            //Log.e("Csv Size is ","0");
+        } else {
+            main_store = new ArrayList<>();
+
+            for (int i = 0; i < csv_inviteListData.size(); i++) {
+                ContectListData.Contact contact = new ContectListData.Contact();
+                contact.setFirstname(csv_inviteListData.get(i).getUserName());
+                contact.setLastname(csv_inviteListData.get(i).getLast_name());
+                contact.setState("I");
+
+                String[] contet_data = csv_inviteListData.get(i).getUserPhoneNumber().toString().split(",");
+                List<ContectListData.Contact.ContactDetail> main_contect = new ArrayList<>();
+                for (int k = 0; k < contet_data.length; k++) {
+                    ContectListData.Contact.ContactDetail contactDetail = new ContectListData.Contact.ContactDetail();
+                    contactDetail.setEmailNumber(contet_data[k]);
+                    contactDetail.setType("NUMBER");
+                    main_contect.add(contactDetail);
+                }
+                contact.setContactDetails(main_contect);
+                main_store.add(contact);
+                //      Log.e("Contect List Is ",new Gson().toJson(main_store));
+            }
+
+            if (SessionManager.getContectList(getActivity()).size() != 0) {
+               /* num_count.setText(""+SessionManager.getContectList(getActivity()).get(0).getContacts().size() + " Contacts");
+                compareLists(SessionManager.getContectList(getActivity()).get(0).getContacts(),main_store);
+*/
+                ContectEvent1(main_store);
+            } else {
+                ContectEvent1(main_store);
+            }
+
+
+        }
+        cursor.close();
+
+    }
+
+    private void ContectEvent1(List<ContectListData.Contact> main_store) throws JSONException {
+
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("page", "1");
+        paramObject.addProperty("perPage", 0);
+        paramObject.addProperty("status", "A");
+        paramObject.addProperty("q", "");
+        paramObject.addProperty("orderBy", "firstname");
+        paramObject.addProperty("order", "asc");
+        obj.add("data", paramObject);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(getActivity()),
+                Global.Device);
+        call.enqueue(new Callback<ApiResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+              //  loadingDialog.cancelLoading();
+                swipeToRefresh.setRefreshing(false);
+                if (response.body().getHttp_status() == 200) {
+
+                    SessionManager.setContectList(getActivity(), new ArrayList<>());
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<ContectListData>() {
+                    }.getType();
+                    ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
+                    contectListData.addAll(contectListData1.getContacts());
+                    Log.e("Contect Size is", String.valueOf(contectListData.size()));
+                    num_count.setText("" + contectListData1.getTotal() + " Contacts");
+
+                    totale_group = contectListData1.getTotal();
+
+                    List<ContectListData> contectListData_store = new ArrayList<>();
+                    contectListData_store.add(contectListData1);
+                    SessionManager.setContectList(getActivity(), contectListData_store);
+                    List<ContectListData.Contact> contacts = new ArrayList<>();
+                    contacts.addAll(contectListData1.getContacts());
+                    compareLists(contacts, main_store);
+                } else {
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable throwable) {
+                Log.e("Error is", throwable.getMessage());
+                //loadingDialog.cancelLoading();
+                swipeToRefresh.setRefreshing(false);
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void compareLists(List<ContectListData.Contact> contacts, List<ContectListData.Contact> main_store) {
+        for (int i = 0; i < contacts.size(); i++) {
+
+            for (int j = 0; j < main_store.size(); j++) {
+
+                if (contacts.get(i).getFirstname().toString().equals(main_store.get(j).getFirstname().toString())) {
+                    main_store.remove(j);
+                    main_store.add(j, contacts.get(i));
+                    break;
+                } else if (main_store.size() == j + 1) {
+                    main_store.add(main_store.size(), contacts.get(i));
+                    break;
+                }
+
+            }
+        }
+
+        Collections.sort(main_store, new Comparator<ContectListData.Contact>() {
+            @Override
+            public int compare(ContectListData.Contact s1, ContectListData.Contact s2) {
+                return s1.getFirstname().compareToIgnoreCase(s2.getFirstname());
+            }
+        });
+
+
+        loadingDialog.cancelLoading();
+        rvinviteuserdetails.setItemViewCacheSize(5000);
+        paginationAdapter.addAll(main_store);
+        paginationAdapter.notifyDataSetChanged();
+    }
+
+
     void filter(String text, View view, FragmentActivity activity) {
         Log.e("Text is", text);
         if (!text.equals("")) {
@@ -376,6 +816,7 @@ public class ContectFragment extends Fragment {
         add_new_contect_layout = content_view.findViewById(R.id.add_new_contect_layout);
         swipeToRefresh = content_view.findViewById(R.id.swipeToRefresh);
         ev_search = content_view.findViewById(R.id.ev_search);
+        tv_upload=content_view.findViewById(R.id.tv_upload);
     }
 
 
@@ -420,12 +861,12 @@ public class ContectFragment extends Fragment {
                 try {
                     //   if (response.body().getStatus() == 200) {.
 
-                    contectListData.clear();
+                  /*  contectListData.clear();
                     paginationAdapter.removeloist();
                     paginationAdapter.notifyDataSetChanged();
-
+*/
                     rvinviteuserdetails.setItemViewCacheSize(5000);
-                    paginationAdapter = new ContectListAdapter(getActivity());
+                    paginationAdapter = new ContectListAdapter_demo(getActivity());
                     rvinviteuserdetails.setAdapter(paginationAdapter);
 
                     sessionManager.setContectList(getActivity(), new ArrayList<>());
@@ -541,16 +982,16 @@ public class ContectFragment extends Fragment {
 
     @Override
     public void onResume() {
-        SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
+       // SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-        try {
+       /* try {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
         } catch (Exception e) {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
-        }
+        }*/
         ev_search.setText("");
 
         super.onResume();
@@ -723,6 +1164,7 @@ public class ContectFragment extends Fragment {
         }
 
     }
+
 
     public abstract static class PaginationScrollListener extends RecyclerView.OnScrollListener {
 

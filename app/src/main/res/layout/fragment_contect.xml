@@ -95,14 +95,26 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_upload"
+            style="@style/tv_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:layout_marginStart="@dimen/_60sdp"
+            android:gravity="center|left"
+            android:singleLine="true"
+            android:text="@string/add_sink"
+            android:textColor="@color/purple_200"
+            android:textStyle="bold" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@color/home_list_back_line" />
 
-
-        <androidx.appcompat.widget.SearchView
+       <androidx.appcompat.widget.SearchView
             android:id="@+id/contect_search"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"

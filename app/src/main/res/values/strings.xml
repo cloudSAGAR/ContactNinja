@@ -94,6 +94,7 @@ Number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_contect">Add new contact</string>
+    <string name="add_sink">SINK ALL</string>
     <string name="add_new_contect1">Add all contacts</string>
     <string name="remove_new_contect1">Remove all contacts</string>
     <string name="add_new">Add new</string>
