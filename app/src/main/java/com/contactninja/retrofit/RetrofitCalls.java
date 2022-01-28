@@ -321,6 +321,15 @@ public class RetrofitCalls {
 
     }
 
+    public void working_hour(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
+                                 String token, String version ,String device_id,RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.working_hour(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
 
     public void Gmailauth_update(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
                                  String token, String version ,String device_id,RetrofitCallback retrofitCallback) {

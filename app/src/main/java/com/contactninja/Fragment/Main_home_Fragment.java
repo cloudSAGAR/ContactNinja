@@ -301,9 +301,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     }
     private void CompanyList() throws JSONException {
-
-
-        if (user_data.getUser().getWorkingHoursList().size() == 0) {
             JsonObject obj = new JsonObject();
             JsonObject paramObject = new JsonObject();
             paramObject.addProperty("organization_id", "1");
@@ -330,8 +327,5 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 public void error(Response<ApiResponse> response) {
                 }
             });
-        }
-
-
     }
 }

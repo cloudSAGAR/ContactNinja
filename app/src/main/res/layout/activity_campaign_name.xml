@@ -1,99 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mMainLayout"
-    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Campaign_Name_Activity">
+    tools:context=".Campaign.Campaign_Name_Activity"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <include
-            layout="@layout/toolbar"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar" />
+
         <LinearLayout
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:src="@drawable/ic_small_logo"
-            android:layout_width="@dimen/_45sdp"
-            android:layout_height="@dimen/_45sdp">
+            <TextView
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:gravity="center|left"
+                android:padding="@dimen/_10sdp"
+                android:singleLine="true"
+                android:text="@string/camp_name"
+                android:textColor="@color/tv_medium_75"
+                android:textSize="@dimen/_14sdp" />
 
-        </ImageView>
-        <TextView
-            android:layout_marginTop="@dimen/_10sdp"
-            android:id="@+id/add_new_contect"
-            style="@style/tv_regular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="@dimen/_17sdp"
-            android:text="@string/camp_done"
-            android:textColor="@color/tv_medium"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/ev_titale"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:background="@color/add_contect_transpernt"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_width="match_parent"
-            android:focusable="true"
-            android:layout_gravity="center"
-            android:gravity="center"
-            style="@style/tv_Medium"
-            android:layout_height="wrap_content"/>
-        <View
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:background="@color/home_list_sub_data"
-            android:layout_width="match_parent"
-            android:layout_height="1dp">
+            <EditText
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp" android:id="@+id/edt_titale"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shap_10_line_view"
+                android:hint="@string/camp_name"
+                android:inputType="textCapSentences"
+                android:maxLength="40"
+                android:padding="15dp"
+                android:textColorHint="@color/tv_medium_75"
+                tools:ignore="Autofill,HardcodedText" />
+            <TextView
+                android:id="@+id/tv_error_title"
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:singleLine="true"
+                android:text="@string/camp_title"
+                android:textColor="@color/shape_red"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="gone" />
 
-        </View>
-        <TextView
-            android:id="@+id/tv_remain_txt"
-            android:layout_marginTop="@dimen/_10sdp"
-            style="@style/tv_regular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|left"
-            android:gravity="center|left"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:singleLine="true"
-            android:textSize="@dimen/_12sdp"
-            android:text="@string/camp_remaingn"
-            android:textColor="@color/home_list_sub_data"
-            android:layout_marginBottom="@dimen/_10sdp" />
-        <TextView
-            android:id="@+id/tv_error"
-            android:layout_marginTop="@dimen/_10sdp"
-            style="@style/tv_regular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:singleLine="true"
-            android:textSize="@dimen/_14sdp"
-            android:text="@string/camp_title"
-            android:textColor="@color/shape_red"
-            android:layout_marginBottom="@dimen/_10sdp" />
+            <TextView
+                android:id="@+id/topic_remainingCharacter"
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:alpha="0.6"
+                android:gravity="center|left"
+                android:lineSpacingExtra="5sp"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/characters40"
+                android:textColor="@color/tv_medium_75"
+                />
+
+
+            <TextView
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center|left"
+                android:text="Max prospects that can be enrolled in this  campaign
+in a day"
+                android:textColor="@color/home_list_sub_data"
+                android:textSize="@dimen/_14sdp" />
+
+            <EditText
+                android:id="@+id/edt_day"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shap_10_line_view"
+                android:digits="0123456789"
+                android:maxLength="5"
+                android:inputType="number"
+                android:focusable="true"
+                android:hint="100/Day"
+                android:padding="@dimen/_10sdp"
+                 />
+            <TextView
+                android:id="@+id/tv_error_day"
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:singleLine="true"
+                android:text="Max prospects add"
+                android:textColor="@color/shape_red"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="gone" />
+
+
+
+            <TextView
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:gravity="center|left"
+                android:padding="@dimen/_10sdp"
+                android:singleLine="true"
+                android:text="Schedule Timezone"
+                android:textColor="@color/tv_medium_75"
+                android:textSize="@dimen/_14sdp" />
+
+            <LinearLayout
+                android:id="@+id/layout_time_zone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shap_10_line_view">
+
+                <TextView
+                    android:id="@+id/txt_timezon"
+                    style="@style/tv_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:singleLine="true"
+                    android:textColor="@color/tv_medium"
+                    android:textSize="@dimen/_14sdp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:src="@drawable/ic_down" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txt_Curent_time"
+                style="@style/tv_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:alpha="0.6"
+                android:gravity="center|left"
+                android:lineSpacingExtra="5sp"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/tv_medium_75"
+                />
         </LinearLayout>
     </LinearLayout>
 

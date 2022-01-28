@@ -350,6 +350,7 @@ Number</string>
     <string name="camp_done">Please add title of \n  your campaign</string>
     <string name="manual_task">Please add title \n for your task</string>
     <string name="camp_remaingn"> Characters remaining</string>
+    <string name="camp_name">Campaign name</string>
     <string name="camp_title">Enter campagin title</string>
     <string name="task_title">Enter Task title</string>
 
@@ -401,4 +402,6 @@ Number</string>
     <string name="enter_campaign_name">Enter campaign name</string>
     <string name="add_contact">Add first contacts</string>
     <string name="add_message">Add message</string>
+    <string name="characters40">40 characters remaining</string>
+
 </resources>

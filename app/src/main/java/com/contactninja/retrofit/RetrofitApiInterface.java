@@ -29,115 +29,113 @@ public interface RetrofitApiInterface {
 
     @POST("register")
     Call<ApiResponse> Register(@Header("Accept") String api, @Body JsonObject body,
-                               @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                               @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("uservalidate")
     Call<ApiResponse> Uservalidate(@Header("Accept") String api, @Body JsonObject body,
-                                   @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("login")
     Call<ApiResponse> Userlogin(@Header("Accept") String api, @Body JsonObject body,
-                                @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("emailNumberUpdate")
     Call<ApiResponse> EmailNumberUpdate(@Header("Accept") String api, @Header("Authorization") String auth,
                                         @Body JsonObject body,
-                                        @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/add")
     Call<ApiResponse> Addcontect(@Header("Accept") String api, @Header("Authorization") String auth,
                                  @Body JsonObject body,
-                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
-
+                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("user/profile/update")
     Call<ApiResponse> update_user_profiel(@Header("Accept") String api, @Header("Authorization") String auth,
-                                 @Body JsonObject body,
-                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
-
+                                          @Body JsonObject body,
+                                          @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/bulk/update")
     Call<ApiResponse> updatecontect(@Header("Accept") String api, @Header("Authorization") String auth,
                                     @Body JsonObject body,
-                                    @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
-
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/group/add")
     Call<ApiResponse> Addgroup(@Header("Accept") String api, @Header("Authorization") String auth,
                                @Body JsonObject jsonObject,
-                               @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                               @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/group/list")
     Call<ApiResponse> Group_List(@Header("Accept") String api, @Header("Authorization") String auth,
                                  @Body JsonObject jsonObject,
-                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/details/update")
     Call<ApiResponse> Contect_delete(@Header("Accept") String api, @Header("Authorization") String auth,
                                      @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                     @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/list")
     Call<ApiResponse> Contect_List(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
-                                    @Header("appVersion") String appVersion,@Header("deviceType") String deviceType);
+                                   @Header("appVersion") String appVersion, @Header("deviceType") String deviceType);
 
 
     @POST("contact/details/update")
     Call<ApiResponse> update_contect(@Header("Accept") String api, @Header("Authorization") String auth,
                                      @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                     @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("refreshToken")
     Call<ApiResponse> RefressToken(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
-                                   @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("user/changepassword")
     Call<ApiResponse> ResetPassword(@Header("Accept") String api, @Header("Authorization") String auth,
                                     @Body JsonObject jsonObject,
-                                    @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("hashtags/list")
     Call<ApiResponse> Hastag_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                   @Body JsonObject jsonObject,
-                                  @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                  @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
-     @POST("templates/list")
+    @POST("templates/list")
     Call<ApiResponse> Template_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                     @Body JsonObject jsonObject,
-                                    @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
-   @POST("templates/add")
+    @POST("templates/add")
     Call<ApiResponse> CreateTemplate(@Header("Accept") String api, @Header("Authorization") String auth,
                                      @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                     @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
-   @POST("usergmail/list")
+    @POST("usergmail/list")
     Call<ApiResponse> Mail_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                 @Body JsonObject jsonObject,
-                                @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
- @POST("manual_task/list")
-    Call<ApiResponse> Mail_Activiy_list(@Header("Accept") String api, @Header("Authorization") String auth,
-                                @Body JsonObject jsonObject,
-                                @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
-   @POST("smtpdefault_update")
+    @POST("manual_task/list")
+    Call<ApiResponse> Mail_Activiy_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                        @Body JsonObject jsonObject,
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+    @POST("smtpdefault_update")
     Call<ApiResponse> Mail_setDefault(@Header("Accept") String api, @Header("Authorization") String auth,
                                       @Body JsonObject jsonObject,
-                                      @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                      @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
 
@@ -153,33 +151,32 @@ public interface RetrofitApiInterface {
 
     @Multipart
     @POST("contact/import")
-    Call<ApiResponse>Upload_csv(
+    Call<ApiResponse> Upload_csv(
             @Header("Accept") String api,
-    @Header("Authorization") String auth,
+            @Header("Authorization") String auth,
             @Part MultipartBody.Part file,
             @Part("team_id") RequestBody team_id,
             @Part("user_id") RequestBody user_id,
             @Part("organization_id") RequestBody organization_id,
             @Part("is_phonebook") RequestBody is_phonebook,
-            @Header("deviceType") String deviceType , @Header("appVersion") String appVersion
+            @Header("deviceType") String deviceType, @Header("appVersion") String appVersion
     );
 
 
     @POST("userexistcheck")
     Call<ApiResponse> Userexistcheck(@Header("Accept") String api, @Body JsonObject body,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
-
+                                     @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("working_hour/add/default")
     Call<ApiResponse> Working_hour(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
-                                   @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
- @POST("working_hour/add/default")
+    @POST("working_hour/add/default")
     Call<ApiResponse> CompanyList(@Header("Accept") String api, @Header("Authorization") String auth,
-                                   @Body JsonObject jsonObject,
-                                   @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                  @Body JsonObject jsonObject,
+                                  @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
    /* @POST("manual_task/store")
@@ -189,67 +186,69 @@ public interface RetrofitApiInterface {
 */
 
     @POST("forgotPassword")
-    Call<ApiResponse>  ForgotPassword(@Header("Accept") String api, @Body JsonObject jsonObject,
-                                      @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+    Call<ApiResponse> ForgotPassword(@Header("Accept") String api, @Body JsonObject jsonObject,
+                                     @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("sequence/task_store")
-    Call<ApiResponse>  Task_store(@Header("Accept") String api, @Header("Authorization") String auth,
-                                  @Body JsonObject jsonObject,
-                                  @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+    Call<ApiResponse> Task_store(@Header("Accept") String api, @Header("Authorization") String auth,
+                                 @Body JsonObject jsonObject,
+                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("manual_task/store")
-    Call<ApiResponse>  manual_task_store(@Header("Accept") String api, @Header("Authorization") String auth,
-                                         @Body JsonObject jsonObject,
-                                         @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+    Call<ApiResponse> manual_task_store(@Header("Accept") String api, @Header("Authorization") String auth,
+                                        @Body JsonObject jsonObject,
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("manual_task/execute")
-    Call<ApiResponse>  Email_execute(@Header("Accept") String api, @Header("Authorization") String auth,
-                                     @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
-
+    Call<ApiResponse> Email_execute(@Header("Accept") String api, @Header("Authorization") String auth,
+                                    @Body JsonObject jsonObject,
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("timezone/list")
-    Call<ApiResponse>  Timezone_list(@Header("Accept") String api, @Header("Authorization") String auth,
-                                     @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
-
+    Call<ApiResponse> Timezone_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                    @Body JsonObject jsonObject,
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("sequence/list")
-    Call<ApiResponse>  Sequence_list(@Header("Accept") String api, @Header("Authorization") String auth,
-                                     @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+    Call<ApiResponse> Sequence_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                    @Body JsonObject jsonObject,
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+    @POST("working_hour/list")
+    Call<ApiResponse> working_hour(@Header("Accept") String api, @Header("Authorization") String auth,
+                                    @Body JsonObject jsonObject,
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("gmailauth_update")
-    Call<ApiResponse>  Gmailauth_update(@Header("Accept") String api, @Header("Authorization") String auth,
-                                     @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+    Call<ApiResponse> Gmailauth_update(@Header("Accept") String api, @Header("Authorization") String auth,
+                                       @Body JsonObject jsonObject,
+                                       @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
- @POST("user/info")
-    Call<ApiResponse>  Userinfo(@Header("Accept") String api, @Header("Authorization") String auth,
-                                     @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+    @POST("user/info")
+    Call<ApiResponse> Userinfo(@Header("Accept") String api, @Header("Authorization") String auth,
+                               @Body JsonObject jsonObject,
+                               @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("sequence/contact_store")
-    Call<ApiResponse>  Sequence_contact_store(@Header("Accept") String api, @Header("Authorization") String auth,
-                                  @Body JsonObject jsonObject,
-                                  @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
-
+    Call<ApiResponse> Sequence_contact_store(@Header("Accept") String api, @Header("Authorization") String auth,
+                                             @Body JsonObject jsonObject,
+                                             @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("sequence/settings")
     Call<ApiResponse> Sequence_settings(@Header("Accept") String api, @Header("Authorization") String auth,
-                                              @Body JsonObject jsonObject,
-                                              @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                        @Body JsonObject jsonObject,
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("contact/group/list")
     Call<ApiResponse> SingleGroup_List(@Header("Accept") String api, @Header("Authorization") String auth,
-                                 @Body JsonObject jsonObject,
-                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                       @Body JsonObject jsonObject,
+                                       @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
 }
