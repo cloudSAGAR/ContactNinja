@@ -50,6 +50,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_width="match_parent"
                 android:focusable="true"
+                android:maxLength="40"
                 style="@style/tv_Medium"
                 android:layout_height="wrap_content"/>
             <View

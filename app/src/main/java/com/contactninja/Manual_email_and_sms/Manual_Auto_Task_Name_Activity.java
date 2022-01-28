@@ -110,6 +110,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
                 finish();
                 break;
             case R.id.save_button:
+                Global.hideKeyboard(Manual_Auto_Task_Name_Activity.this);
                 //Add Api Call
                 if (ev_titale.getText().toString().equals("")) {
                     tv_error.setVisibility(View.VISIBLE);
