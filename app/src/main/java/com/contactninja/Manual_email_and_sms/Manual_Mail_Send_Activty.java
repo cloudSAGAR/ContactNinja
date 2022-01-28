@@ -269,11 +269,13 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                     }
                     else if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("one_email"))
                     {
-                        try {
+
+                        broadcast_manu();
+                       /* try {
                             EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
 
 

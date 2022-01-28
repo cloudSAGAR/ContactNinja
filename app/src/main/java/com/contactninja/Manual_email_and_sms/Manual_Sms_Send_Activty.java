@@ -328,12 +328,14 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                 else {
                     if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms"))
                     {
-                        try {
+                       /* try {
                             SMSAPI(edit_template.getText().toString(), Integer.parseInt(id), p_number);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+*/
 
+                        broadcast_manu();
                     }
                     else {
                         broadcast_manu();
