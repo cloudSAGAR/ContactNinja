@@ -133,7 +133,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
-        save_button.setVisibility(View.VISIBLE);
+        save_button.setVisibility(View.GONE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Next");

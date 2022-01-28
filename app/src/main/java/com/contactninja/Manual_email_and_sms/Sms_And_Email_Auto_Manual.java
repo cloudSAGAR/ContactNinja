@@ -189,7 +189,7 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
             case R.id.save_button:
                 if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"EMAIL OR SMS select",false);
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                 else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
                     startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));

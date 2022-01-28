@@ -403,5 +403,6 @@ Number</string>
     <string name="add_contact">Add first contacts</string>
     <string name="add_message">Add message</string>
     <string name="characters40">40 characters remaining</string>
+    <string name="select_type">Select automated or manual</string>
 
 </resources>

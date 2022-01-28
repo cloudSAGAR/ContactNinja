@@ -190,7 +190,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
             case R.id.save_button:
                if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"EMAIL OR SMS select",false);
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
                    if (SessionManager.getTask(getApplicationContext()).equals(null))
