@@ -108,7 +108,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
 
                     @Override
                     public void run() {
-                        viewPager.setCurrentItem(1);
+                        viewPager.setCurrentItem(0);
                     }
                 }, 10);
 
@@ -118,7 +118,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
 
                     @Override
                     public void run() {
-                        viewPager.setCurrentItem(0);
+                        viewPager.setCurrentItem(1);
                     }
                 }, 10);
 
@@ -389,8 +389,8 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
     }
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-    private String tabTitles[] = new String[] { "Email ", "SMS" };
-    private int[] imageResId = { R.drawable.ic_email, R.drawable.ic_message_tab };
+    private String tabTitles[] = new String[] { "SMS", "Email" };
+    private int[] imageResId = {  R.drawable.ic_message_tab,R.drawable.ic_email };
     final int PAGE_COUNT = 2;
 
     public SampleFragmentPagerAdapter(@NonNull FragmentManager fm) {
@@ -411,13 +411,11 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
+                Campaign_Sms_Fragment campaign_sms_fragment = new Campaign_Sms_Fragment();
+                return campaign_sms_fragment;
+            case 1:
                 Campaign_Email_Fragment campaign_email_fragment = new Campaign_Email_Fragment();
                 return campaign_email_fragment;
-
-            case 1:
-                Campaign_Sms_Fragment campaign_sms_fragment = new Campaign_Sms_Fragment();
-
-                return campaign_sms_fragment;
             default:
                 return null;
         }

@@ -53,8 +53,8 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
 
     ViewPager viewPager;
     private int[] tabIcons = {
-            R.drawable.ic_email,
             R.drawable.ic_message_tab,
+            R.drawable.ic_email,
     };
     LinearLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
@@ -107,7 +107,7 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
 
                     @Override
                     public void run() {
-                        viewPager.setCurrentItem(1);
+                        viewPager.setCurrentItem(0);
                     }
                 }, 10);
 
@@ -117,7 +117,7 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
 
                     @Override
                     public void run() {
-                        viewPager.setCurrentItem(0);
+                        viewPager.setCurrentItem(1);
                     }
                 }, 10);
 
@@ -242,8 +242,8 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
     }
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = new String[] { "Email ", "SMS" };
-        private int[] imageResId = { R.drawable.ic_email, R.drawable.ic_message_tab };
+        private String tabTitles[] = new String[] { "SMS", "Email" };
+        private int[] imageResId = { R.drawable.ic_message_tab,R.drawable.ic_email };
         final int PAGE_COUNT = 2;
 
         public SampleFragmentPagerAdapter(@NonNull FragmentManager fm) {
@@ -264,12 +264,11 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    Manual_Auto_Selection_Email_Fragment campaign_email_fragment = new Manual_Auto_Selection_Email_Fragment();
-                    return campaign_email_fragment;
-
-                case 1:
                     Manual_Auto_Selection_Fragment campaign_sms_fragment = new Manual_Auto_Selection_Fragment();
                     return campaign_sms_fragment;
+                case 1:
+                    Manual_Auto_Selection_Email_Fragment campaign_email_fragment = new Manual_Auto_Selection_Email_Fragment();
+                    return campaign_email_fragment;
                 default:
                     return null;
             }

@@ -282,12 +282,12 @@ public class ContectFragment extends Fragment {
         );
 
 
-     /*   if (SessionManager.getContectList(getActivity()).size() != 0) {
+    if (SessionManager.getContectList(getActivity()).size() != 0) {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
             paginationAdapter.addAll(contectListData);
             num_count.setText(contectListData.size() + " Contacts");
-        }*/
-        EnableRuntimePermission();
+        }
+ //       EnableRuntimePermission();
 
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -297,13 +297,15 @@ public class ContectFragment extends Fragment {
 
                 try {
                     try {
-                        GetContactsIntoArrayList();
+                        //GetContactsIntoArrayList();
+                        ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } catch (Exception e) {
                     try {
-                        GetContactsIntoArrayList();
+                        ContectEvent();
+                        //GetContactsIntoArrayList();
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
@@ -340,6 +342,7 @@ public class ContectFragment extends Fragment {
 
             }
         });
+        tv_upload.setVisibility(View.GONE);
         tv_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -358,7 +361,7 @@ public class ContectFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : main_store) {
+                for (ContectListData.Contact d : contectListData) {
                     if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
@@ -529,7 +532,8 @@ public class ContectFragment extends Fragment {
 
 
 
-    public void EnableRuntimePermission() {
+    public void EnableRuntimePermission()
+    {
 
         PermissionListener permissionlistener = new PermissionListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -565,6 +569,7 @@ public class ContectFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+
 
     public void GetContactsIntoArrayList() throws JSONException {
 
@@ -693,6 +698,7 @@ public class ContectFragment extends Fragment {
         cursor.close();
 
     }
+
 
     private void ContectEvent1(List<ContectListData.Contact> main_store) throws JSONException {
 
@@ -869,10 +875,9 @@ public class ContectFragment extends Fragment {
                 try {
                     //   if (response.body().getStatus() == 200) {.
 
-                  /*  contectListData.clear();
+                   contectListData.clear();
                     paginationAdapter.removeloist();
                     paginationAdapter.notifyDataSetChanged();
-*/
                     rvinviteuserdetails.setItemViewCacheSize(5000);
                     paginationAdapter = new ContectListAdapter(getActivity());
                     rvinviteuserdetails.setAdapter(paginationAdapter);
@@ -990,16 +995,16 @@ public class ContectFragment extends Fragment {
 
     @Override
     public void onResume() {
-       // SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
+        SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-       /* try {
+        try {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
         } catch (Exception e) {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
-        }*/
+        }
         ev_search.setText("");
 
         super.onResume();
@@ -1222,7 +1227,7 @@ public class ContectFragment extends Fragment {
             String current = "";
             try {
                 if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                   // ContectEvent();
+                    ContectEvent();
                 }
 
             } catch (Exception e) {
@@ -1289,13 +1294,13 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case ITEM:
                 ContectListAdapter.MovieViewHolder holder1 = (ContectListAdapter.MovieViewHolder) holder;
               try {
-                  if (Contact_data.getState().equals("I"))
+               /*   if (Contact_data.getState().equals("I"))
                   {
                       holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                   }
                   else {
                       holder1.add_new_contect_icon.setVisibility(View.GONE);
-                  }
+                  }*/
 
                   if (Contact_data.getLastname().equals("null"))
                   {
@@ -1378,7 +1383,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                   holder1.main_layout.setOnClickListener(new View.OnClickListener() {
                       @Override
                       public void onClick(View v) {
-                          if (Contact_data.getState().equals("I"))
+                         /* if (Contact_data.getState().equals("I"))
                           {
                               holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
 
@@ -1388,14 +1393,14 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                   e.printStackTrace();
                               }
                           }
-                          else {
+                          else {*/
                               SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
                               Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                               SessionManager.setOneCotect_deatil(context, Contact_data);
                               Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
                               SessionManager.setContect_flag("read");
                               context.startActivity(addnewcontect);
-                          }
+                          //}
 
 
                       }

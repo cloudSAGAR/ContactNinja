@@ -77,7 +77,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
 
-    EditText edit_template, ev_subject, ev_to, ev_from;
+    EditText edit_template, ev_subject, ev_to, ev_from,ev_titale;
     String email = "", id = "",task_name="",from_ac="",from_ac_id="";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
@@ -102,9 +102,11 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Bundle bundle = intent.getExtras();
         email = bundle.getString("email");
         id = bundle.getString("id");
-
+        task_name=bundle.getString("task_name");
+        ev_titale.setText(task_name);
+/*
         Log.e("Id is", id);
-        Log.e("email", email);
+        Log.e("email", email);*/
         ev_to.setText(email);
 
         try {
@@ -142,6 +144,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         ev_from = findViewById(R.id.ev_from);
         iv_more = findViewById(R.id.iv_more);
         iv_more.setOnClickListener(this);
+        ev_titale=findViewById(R.id.ev_titale);
 
 
     }
@@ -543,7 +546,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
                 if(select_userLinkedGmailList.size()!=0){
-                    from_ac="";
+                    from_ac=select_userLinkedGmailList.get(0).getType();
                     from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
                     ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
                 }
@@ -601,7 +604,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                             ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-                            from_ac="";
+                            from_ac=select_userLinkedGmailList.get(0).getType();
                             from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
 
                         }
@@ -633,11 +636,11 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
         JSONObject paramObject = new JSONObject();
 
-        paramObject.put("type", "EMAIL");
+        paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
         paramObject.put("assign_to", user_id);
@@ -659,7 +662,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
         paramObject.put("record_id","");
-        paramObject.put("task_name",task_name);
+        paramObject.put("task_name",ev_titale.getText().toString());
         if (temaplet_id==0)
         {
             paramObject.put("template_id","");
@@ -684,21 +687,10 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
-                  //  loadingDialog.cancelLoading();
-                    String jsonRawData = new Gson().toJson(response.body());
 
-                    try {
+                        loadingDialog.cancelLoading();
+                        finish();
 
-                        JSONObject jsonObject = new JSONObject(jsonRawData);
-                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
-                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
-                        String _newid = jsonDailyObject1.getString("id");
-                        Log.e("_newid", _newid);
-                        Email_execute(subject, text, id, email, _newid);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
                 } else {
                     loadingDialog.cancelLoading();

@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -80,14 +81,15 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
     TemplateClick templateClick;
 
     EditText edit_template,ev_task_title,ev_from;
-    String p_number = "", id = "",task_name="";
+    String p_number = "", id = "",task_name="",from_ac="",from_ac_id="";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
-    int defult_id;
-    List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
-    List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
+    int defult_id,temaplet_id=0;
+    List<ContecModel.PhoneDatum> select_userLinkedGmailList = new ArrayList<>();
+    List<ContecModel.PhoneDatum> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
     private BroadcastReceiver mNetworkReceiver;
+    ImageView iv_down;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +120,14 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        try {
+            if(Global.isNetworkAvailable(Manual_Sms_Send_Activty.this,mMainLayout)){
+                Contect_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void IntentUI() {
@@ -137,9 +147,78 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         iv_submit.setOnClickListener(this);
         ev_task_title=findViewById(R.id.ev_task_title);
         ev_from=findViewById(R.id.ev_from);
+        iv_down=findViewById(R.id.iv_down);
+        iv_down.setOnClickListener(this);
 
 
     }
+
+    private void Contect_list() throws JSONException {
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Manual_Sms_Send_Activty.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("q","");
+        paramObject.addProperty("status","");
+        paramObject.addProperty("orderBy","");
+        paramObject.addProperty("order","");
+        paramObject.addProperty("perPage","10");
+        paramObject.addProperty("page","1");
+        obj.add("data", paramObject);
+        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Manual_Sms_Send_Activty.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    userLinkedGmailList.clear();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<ContecModel>() {
+                    }.getType();
+                    ContecModel userLinkedGmail = new Gson().fromJson(headerString, listType);
+                    userLinkedGmailList = userLinkedGmail.getPhoneData();
+                    Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+                    if (userLinkedGmailList.size() == 1) {
+                        iv_down.setVisibility(View.GONE);
+                    } else if (userLinkedGmailList.size() == 1) {
+                        iv_down.setVisibility(View.GONE);
+                    } else {
+                        iv_down.setVisibility(View.VISIBLE);
+                    }
+                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
+                        if (userLinkedGmailList.get(i).getIsDefault().toString().equals("1")) {
+                            ev_from.setText(userLinkedGmailList.get(i).getPhoneNumber());
+                            defult_id = userLinkedGmailList.get(i).getId();
+                            select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+
+
+                            from_ac="USERSMS";
+                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
+
+
+                        }
+                    }
+                    Log.e("List Is", new Gson().toJson(userLinkedGmailList));
+                } else {
+
+                    //Global.openEmailAuth(from_ac.this);
+                    // startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
 
     private void Hastag_list() throws JSONException {
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Manual_Sms_Send_Activty.this);
@@ -248,16 +327,69 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                     Global.Messageshow(getApplicationContext(),mMainLayout,"Add Message",false);
                 }
                 else {
-                    broadcast_manu();
+                    if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms"))
+                    {
+                        try {
+                            SMSAPI(edit_template.getText().toString(), Integer.parseInt(id), p_number);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    else {
+                        broadcast_manu();
+                    }
+
                 }
 
                 break;
             case R.id.tv_use_tamplet:
                 bouttomSheet();
                 break;
+            case R.id.iv_down:
+                Email_bouttomSheet();
+                break;
 
 
         }
+    }
+
+    private void Email_bouttomSheet() {
+        final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(Manual_Sms_Send_Activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1.setContentView(mView);
+        TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
+
+
+        for(int i=0;i<userLinkedGmailList.size();i++){
+            if(userLinkedGmailList.get(i).getIsDefault()==1){
+                select_userLinkedGmailList.clear();
+                userLinkedGmailList.get(i).setEmailSelect(true);
+                select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+                break;
+            }
+        }
+
+        email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        EmailListAdepter emailListAdepter = new EmailListAdepter(getApplicationContext(), userLinkedGmailList);
+        email_list.setAdapter(emailListAdepter);
+        email_list.setVisibility(View.VISIBLE);
+
+
+        tv_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog_templateList1.cancel();
+                if(select_userLinkedGmailList.size()!=0){
+                  from_ac="USERSMS";
+                  from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
+                  ev_from.setText(select_userLinkedGmailList.get(0).getPhoneNumber());
+                }
+            }
+        });
+
+        bottomSheetDialog_templateList1.show();
     }
 
     private void broadcast_manu() {
@@ -286,7 +418,14 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                 intent.putExtra("text",edit_template.getText().toString());
                 intent.putExtra("id",id);
                 intent.putExtra("number",p_number);
+                intent.putExtra("tem_id",String.valueOf(temaplet_id));
+                intent.putExtra("task_name",task_name);
+                intent.putExtra("from_ac",from_ac);
+                intent.putExtra("from_ac_id",from_ac_id);
                 startActivity(intent);
+                finish();
+
+
             }
         });
         bottomSheetDialog.show();
@@ -304,15 +443,15 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
 
         JSONObject paramObject = new JSONObject();
 
-        paramObject.put("type", "SMS");
+        paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
         paramObject.put("assign_to", user_id);
-        paramObject.put("task_description", text);
+     //   paramObject.put("task_description", text);
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < 1; i++) {
@@ -326,7 +465,20 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         contact_group_ids.put("");
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
+        paramObject.put("record_id","");
+        paramObject.put("task_name",task_name);
+        if (temaplet_id==0)
+        {
+            paramObject.put("template_id","");
 
+        }
+        else {
+            paramObject.put("template_id",temaplet_id);
+        }
+        //paramObject.put("content_header","");
+        paramObject.put("content_body",edit_template.getText().toString());
+        paramObject.put("from_ac",from_ac);
+        paramObject.put("from_ac_id",from_ac_id);
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
@@ -338,20 +490,12 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
-                    loadingDialog.cancelLoading();
-                    String jsonRawData = new Gson().toJson(response.body());
-
-                    try {
-                        JSONObject jsonObject = new JSONObject(jsonRawData);
-                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
-                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
-                        String _newid = jsonDailyObject1.getString("id");
-                        Log.e("_newid", _newid);
-                        SMS_execute(text, id, email, _newid);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                        loadingDialog.cancelLoading();
+                        loadingDialog.cancelLoading();
+                        Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
+                        intent.putExtra("s_name","add");
+                        startActivity(intent);
+                        finish();
 
                 } else {
                     loadingDialog.cancelLoading();
@@ -617,6 +761,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                     if (holder.tv_item.getText().toString().equals("Save Current as template")) {
                         showAlertDialogButtonClicked(view);
                     } else {
+                        temaplet_id=item.getId();
                         interfaceClick.OnClick(item);
                     }
                 }
@@ -747,4 +892,107 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
             }
         }
     }
+
+
+
+    class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
+
+        public Context mCtx;
+        List<ContecModel.PhoneDatum> userLinkedGmailList;
+
+        public EmailListAdepter(Context applicationContext, List<ContecModel.PhoneDatum> userLinkedGmailList) {
+            this.mCtx = applicationContext;
+            this.userLinkedGmailList = userLinkedGmailList;
+        }
+
+        @NonNull
+        @Override
+        public EmailListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.email_select_layout, parent, false);
+            return new EmailListAdepter.viewholder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull EmailListAdepter.viewholder holder, int position) {
+
+            holder.tv_item.setText(userLinkedGmailList.get(position).getPhoneNumber());
+            if (holder.iv_selected.isSelected() == false) {
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+                holder.iv_selected.setVisibility(View.GONE);
+
+                amountOfItemsSelected++;
+            } else if (holder.iv_selected.isSelected() == true) {
+                holder.iv_unselected.setVisibility(View.GONE);
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                amountOfItemsSelected--;
+            }
+
+            if (amountOfItemsSelected > 1) {
+
+            }
+            if (userLinkedGmailList.get(position).getIsDefault().toString().equals("1")) {
+                holder.iv_dufult.setVisibility(View.VISIBLE);
+            } else {
+                holder.iv_dufult.setVisibility(View.GONE);
+            }
+
+
+            if (userLinkedGmailList.get(position).isEmailSelect())
+            {
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                holder.iv_unselected.setVisibility(View.GONE);
+            }
+            else {
+                holder.iv_selected.setVisibility(View.GONE);
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+            }
+
+
+            holder.layout_select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    for(int i=0; i<userLinkedGmailList.size();i++){
+                        if (userLinkedGmailList.get(i).isEmailSelect())
+                        {
+                            userLinkedGmailList.get(i).setEmailSelect(false);
+                            break;
+                        }
+                    }
+                    userLinkedGmailList.get(position).setEmailSelect(true);
+
+                    select_userLinkedGmailList.clear();
+                    holder.iv_selected.setVisibility(View.VISIBLE);
+                    holder.iv_unselected.setVisibility(View.GONE);
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
+                    notifyDataSetChanged();
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return userLinkedGmailList.size();
+        }
+
+        public class viewholder extends RecyclerView.ViewHolder {
+            TextView tv_item;
+            View line_view;
+            ImageView iv_dufult, iv_selected, iv_unselected;
+            LinearLayout layout_select;
+
+            public viewholder(View view) {
+                super(view);
+                tv_item = view.findViewById(R.id.tv_item);
+                line_view = view.findViewById(R.id.line_view);
+                iv_dufult = view.findViewById(R.id.iv_dufult);
+                iv_selected = view.findViewById(R.id.iv_selected);
+                iv_unselected = view.findViewById(R.id.iv_unselected);
+                layout_select = view.findViewById(R.id.layout_select);
+            }
+        }
+    }
+
 }

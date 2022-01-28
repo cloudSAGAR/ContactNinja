@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,10 @@ import org.json.JSONException;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -100,20 +104,28 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
 
         switch (view.getId()) {
             case R.id.add_new_contect_layout:
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
+                SessionManager.setEmail_screen_name("");
                 Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
                 intent1.putExtra("flag","edit");
                 intent1.putExtra("type","SMS");
                 startActivity(intent1); //  finish();
                 break;
             case R.id.demo_layout:
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
+                SessionManager.setEmail_screen_name("");
                 Intent intent=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
                 intent.putExtra("flag","edit");
                 intent.putExtra("type","SMS");
@@ -217,11 +229,14 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
             holder.tv_username.setText(item.getUserName());
-            holder.tv_task_description.setText(item.getTaskDescription());
+            holder.tv_task_description.setText(item.getContentBody());
             holder.tv_status.setText(item.getStatus());
             try {
                 String time =Global.getDate(item.getStartTime());
                 holder.tv_time.setText(time);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                String currentDateandTime = sdf.format(new Date());
+                compareDates(currentDateandTime,time,holder.tv_status);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -282,4 +297,73 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             }
         }
     }
+
+
+    public static void compareDates(String d1, String d2, TextView tv_status)
+    {
+        try{
+            // If you already have date objects then skip 1
+
+            //1
+            // Create 2 dates starts
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date date1 = sdf.parse(d1);
+            Date date2 = sdf.parse(d2);
+
+            Log.e("Date1",sdf.format(date1));
+            Log.e("Date2",sdf.format(date2));
+
+            // Create 2 dates ends
+            //1
+
+            // Date object is having 3 methods namely after,before and equals for comparing
+            // after() will return true if and only if date1 is after date 2
+            if(date1.after(date2)){
+                Log.e("","Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if(date1.before(date2)){
+                Log.e("","Date1 is before Date2");
+                System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if(date1.equals(date2)){
+                Log.e("","Date1 is equal Date2");
+                System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        }
+        catch(ParseException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public static void compareDates(Date date1, Date date2)
+    {
+        // if you already have date objects then skip 1
+        //1
+
+        //1
+
+        //date object is having 3 methods namely after,before and equals for comparing
+        //after() will return true if and only if date1 is after date 2
+        if(date1.after(date2)){
+            System.out.println("Date1 is after Date2");
+        }
+
+        //before() will return true if and only if date1 is before date2
+        if(date1.before(date2)){
+            System.out.println("Date1 is before Date2");
+        }
+
+        //equals() returns true if both the dates are equal
+        if(date1.equals(date2)){
+            System.out.println("Date1 is equal Date2");
+        }
+
+        System.out.println();
+    }
+
 }

@@ -128,8 +128,8 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
     }
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = new String[] { "Email ", "SMS" };
-        private int[] imageResId = { R.drawable.ic_email, R.drawable.ic_message_tab };
+        private String tabTitles[] = new String[] { "SMS", "Email" };
+        private int[] imageResId = {R.drawable.ic_message_tab, R.drawable.ic_email };
         final int PAGE_COUNT = 2;
 
         public SampleFragmentPagerAdapter(@NonNull FragmentManager fm) {
@@ -150,13 +150,13 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    Email_List_Fragment email_fragment = new Email_List_Fragment();
-                    return email_fragment;
-
-                case 1:
                     Sms_List_Fragment campaign_sms_fragment = new Sms_List_Fragment();
 
                     return campaign_sms_fragment;
+
+                case 1:
+                    Email_List_Fragment email_fragment = new Email_List_Fragment();
+                    return email_fragment;
                 default:
                     return null;
             }

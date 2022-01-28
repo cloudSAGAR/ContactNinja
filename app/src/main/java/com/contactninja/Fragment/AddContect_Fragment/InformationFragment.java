@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.AddContect.Message_Activity;
+import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
@@ -1267,13 +1268,25 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                SessionManager.setMessage_number(p_num);
+                SessionManager.setMessage_type("app");
+                SessionManager.setMessage_id(String.valueOf(id));
+                SessionManager.setEmail_screen_name("only_sms");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag","edit");
+                intent1.putExtra("type","SMS");
+                startActivity(intent1); //  finish();
 
 
-           Intent intent=new Intent(getActivity(), Message_Activity.class);
+                /*   Intent intent=new Intent(getActivity(), Message_Activity.class);
            intent.putExtra("number",p_num);
            intent.putExtra("id",id);
            intent.putExtra("type","app");
-           startActivity(intent);
+           startActivity(intent);*/
 
          //  showAlertDialogButtonClicked1(p_num, id, "app");
 
@@ -2412,10 +2425,25 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), EmailSend_Activity.class);
+                    SessionManager.setMessage_number(item.getEmail_number());
+                    SessionManager.setMessage_id(String.valueOf(item.getId()));
+
+
+                    SessionManager.setEmail_screen_name("only_email");
+                    SessionManager.setCampaign_type("");
+                    SessionManager.setCampaign_type_name("");
+                    SessionManager.setCampaign_Day("");
+                    SessionManager.setCampaign_minute("");
+                    Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                    intent1.putExtra("flag","edit");
+                    intent1.putExtra("type","EMAIL");
+                    startActivity(intent1);
+
+
+                  /*  Intent intent = new Intent(getActivity(), EmailSend_Activity.class);
                     intent.putExtra("email", item.getEmail_number());
                     intent.putExtra("id", String.valueOf(item.getId()));
-                    startActivity(intent);
+                    startActivity(intent);*/
                     //  showAlertDialogEmailMeassge(item.getEmail_number(), item.getId());
                 }
             });

@@ -66,6 +66,11 @@ public class SessionManager {
     private static SharedPreferences.Editor editor;
     private final Context _context;
     private static final String ManualTaskmodel="ManualTaskmodel";
+    private  static final String email_screen_name="email_screen_name";
+    private static final String message_number="message_number";
+
+    private static final String message_id="message_id";
+    private static final String message_type="message_type";
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -99,6 +104,63 @@ public class SessionManager {
         editor.putString(campaign_type_name, campaign_type_name1);
         editor.commit();
     }
+
+
+    public static String getEmail_screen_name(Context context) {
+
+        String type = pref.getString(email_screen_name, "");
+        return type;
+
+    }
+
+    public static void setEmail_screen_name(String email_screen_name1) {
+        editor.putString(email_screen_name, email_screen_name1);
+        editor.commit();
+    }
+
+
+
+    public static String getMessage_number(Context context) {
+
+        String type = pref.getString(message_number, "");
+        return type;
+
+    }
+
+    public static void setMessage_number(String email_screen_name1) {
+        editor.putString(message_number, email_screen_name1);
+        editor.commit();
+    }
+
+
+
+    public static String getMessage_id(Context context) {
+
+        String type = pref.getString(message_id, "");
+        return type;
+
+    }
+
+    public static void setMessage_id(String email_screen_name1) {
+        editor.putString(message_id, email_screen_name1);
+        editor.commit();
+    }
+
+
+    public static String getMessage_tyep(Context context) {
+
+        String type = pref.getString(message_type, "");
+        return type;
+
+    }
+
+    public static void setMessage_type(String email_screen_name1) {
+        editor.putString(message_type, email_screen_name1);
+        editor.commit();
+    }
+
+
+
 
     public static String getcontectexits() {
 

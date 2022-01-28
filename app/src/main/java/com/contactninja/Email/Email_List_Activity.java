@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -97,14 +98,34 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
 
         switch (view.getId()) {
             case R.id.add_new_contect_layout:
-                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                startActivity(new Intent(getApplicationContext(), Email_Selction_Activity.class));
+                SessionManager.setEmail_screen_name("one_email");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id(String.valueOf(""));
+                Intent intent=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
+                intent.putExtra("flag","edit");
+                intent.putExtra("type","EMAIL");
+                startActivity(intent);
                 //finish();
                 break;
             case R.id.demo_layout:
-                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                startActivity(new Intent(getApplicationContext(), Email_Selction_Activity.class));
-                //  finish();
+                SessionManager.setEmail_screen_name("one_email");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
+                Intent intent1=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag","edit");
+                intent1.putExtra("type","EMAIL");
+                startActivity(intent1);//  finish();
                 break;
             case R.id.iv_back:
                 onBackPressed();

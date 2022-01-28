@@ -258,21 +258,12 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
-                    //  loadingDialog.cancelLoading();
-                    String jsonRawData = new Gson().toJson(response.body());
 
-                    try {
-
-                        JSONObject jsonObject = new JSONObject(jsonRawData);
-                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
-                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
-                        String _newid = jsonDailyObject1.getString("id");
-                        Log.e("_newid", _newid);
-                 //       Email_execute(subject, text, id, email, _newid);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                        loadingDialog.cancelLoading();
+                        Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
+                        intent.putExtra("s_name","final");
+                        startActivity(intent);
+                        finish();
 
                 } else {
                     loadingDialog.cancelLoading();
@@ -289,9 +280,6 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
     }
 
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
-
-
-
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());

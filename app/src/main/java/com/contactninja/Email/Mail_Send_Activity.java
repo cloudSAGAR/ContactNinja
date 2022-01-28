@@ -633,14 +633,12 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
-
         JSONObject paramObject = new JSONObject();
-
-        paramObject.put("type", "EMAIL");
+        paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
         paramObject.put("assign_to", user_id);
@@ -699,7 +697,9 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                         JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
                         String _newid = jsonDailyObject1.getString("id");
                         Log.e("_newid", _newid);
-                        Email_execute(subject, text, id, email, _newid);
+                        loadingDialog.cancelLoading();
+                        finish();
+                        //Email_execute(subject, text, id, email, _newid);
 
                     } catch (JSONException e) {
                         e.printStackTrace();

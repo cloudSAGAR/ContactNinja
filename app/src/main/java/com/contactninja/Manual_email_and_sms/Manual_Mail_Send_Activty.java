@@ -262,7 +262,21 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
 
                 }
                 else {
-                    broadcast_manu();
+
+                    if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("manual"))
+                    {
+                        broadcast_manu();
+                    }
+                    else if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("one_email"))
+                    {
+                        try {
+                            EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
                 }
                 break;
             case R.id.tv_use_tamplet:
@@ -584,7 +598,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
                 if(select_userLinkedGmailList.size()!=0){
-                    from_ac="";
+                    from_ac=select_userLinkedGmailList.get(0).getType();
                     from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
                     ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
                 }
@@ -616,6 +630,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp","1");
         obj.add("data", paramObject);
         retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Manual_Mail_Send_Activty.this),Global.Device, new RetrofitCallback() {
             @Override
@@ -643,7 +658,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
 
-                            from_ac="";
+                            from_ac=select_userLinkedGmailList.get(0).getType();
                             from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
 
                         }
@@ -727,20 +742,11 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
                     //  loadingDialog.cancelLoading();
-                    String jsonRawData = new Gson().toJson(response.body());
-
-                    try {
-
-                        JSONObject jsonObject = new JSONObject(jsonRawData);
-                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
-                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
-                        String _newid = jsonDailyObject1.getString("id");
-                        Log.e("_newid", _newid);
-                        Email_execute(subject, text, id, email, _newid);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    loadingDialog.cancelLoading();
+                    Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
+                    intent.putExtra("s_name","add");
+                    startActivity(intent);
+                    finish();
 
                 } else {
                     loadingDialog.cancelLoading();

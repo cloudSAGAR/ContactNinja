@@ -107,6 +107,11 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
                 SessionManager.setGroupList(getActivity(), new ArrayList<>());
                // startActivity(new Intent(getActivity(), Manual_Email_Activity.class));
                 //finish();
+
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
+                SessionManager.setEmail_screen_name("manual");
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
@@ -117,6 +122,10 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
                 startActivity(intent);
                 break;
             case R.id.demo_layout:
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
+                SessionManager.setEmail_screen_name("manual");
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
@@ -227,7 +236,7 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
             ManualTaskModel item = manualTaskModelList.get(position);
             String conactname=item.getContactMasterFirstname()+" "+item.getContactMasterLastname();
             holder.tv_username.setText(conactname);
-            holder.tv_task_description.setText(item.getTaskDescription());
+            holder.tv_task_description.setText(item.getContentBody());
             holder.tv_status.setText(item.getStatus());
             try {
                 String time =Global.getDate(item.getStartTime());
