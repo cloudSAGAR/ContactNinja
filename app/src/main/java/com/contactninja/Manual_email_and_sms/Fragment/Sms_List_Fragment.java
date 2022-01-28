@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -230,7 +231,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             ManualTaskModel item = manualTaskModelList.get(position);
             holder.tv_username.setText(item.getUserName());
             holder.tv_task_description.setText(item.getContentBody());
-            holder.tv_status.setText(item.getStatus());
+           // holder.tv_status.setText(item.getStatus());
             try {
                 String time =Global.getDate(item.getStartTime());
                 holder.tv_time.setText(time);
@@ -260,7 +261,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             {
                 e.printStackTrace();
             }
-            holder.no_image.setText(add_text);
+            holder.no_image.setText(add_text.toUpperCase());
             holder.no_image.setVisibility(View.VISIBLE);
             holder.profile_image.setVisibility(View.GONE);
             holder.layout_contec.setOnClickListener(new View.OnClickListener() {
@@ -319,16 +320,23 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             // Date object is having 3 methods namely after,before and equals for comparing
             // after() will return true if and only if date1 is after date 2
             if(date1.after(date2)){
+                tv_status.setText("Due");
+                tv_status.setTextColor(Color.parseColor("#EC5454"));
                 Log.e("","Date1 is after Date2");
             }
             // before() will return true if and only if date1 is before date2
             if(date1.before(date2)){
+
+                tv_status.setText("Upcoming");
+                tv_status.setTextColor(Color.parseColor("#2DA602"));
                 Log.e("","Date1 is before Date2");
                 System.out.println("Date1 is before Date2");
             }
 
             //equals() returns true if both the dates are equal
             if(date1.equals(date2)){
+                tv_status.setText("Today");
+                tv_status.setTextColor(Color.parseColor("#EC5454"));
                 Log.e("","Date1 is equal Date2");
                 System.out.println("Date1 is equal Date2");
             }
@@ -340,30 +348,8 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    public static void compareDates(Date date1, Date date2)
-    {
-        // if you already have date objects then skip 1
-        //1
 
-        //1
 
-        //date object is having 3 methods namely after,before and equals for comparing
-        //after() will return true if and only if date1 is after date 2
-        if(date1.after(date2)){
-            System.out.println("Date1 is after Date2");
-        }
 
-        //before() will return true if and only if date1 is before date2
-        if(date1.before(date2)){
-            System.out.println("Date1 is before Date2");
-        }
-
-        //equals() returns true if both the dates are equal
-        if(date1.equals(date2)){
-            System.out.println("Date1 is equal Date2");
-        }
-
-        System.out.println();
-    }
 
 }

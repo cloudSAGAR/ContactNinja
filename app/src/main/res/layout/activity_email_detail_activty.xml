@@ -13,8 +13,50 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
-
         <LinearLayout
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/tv_Medium"
+                android:textSize="@dimen/_14sdp"
+                android:text="Task title: "
+                android:textColor="@color/home_list_sub_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/ev_titale"
+                style="@style/tv_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left"
+                android:paddingStart="@dimen/_15sdp"
+                android:imeOptions="actionDone"
+                android:textColor="@color/tv_medium"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+
+
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@color/line_camp"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_height="1dp">
+
+        </View>
+        <LinearLayout
+            android:layout_marginTop="@dimen/_15sdp"
             android:weightSum="1"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
@@ -46,7 +88,6 @@
                 android:textColor="@color/tv_medium"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
             <ImageView
-                android:visibility="gone"
                 android:padding="@dimen/_10sdp"
                 android:id="@+id/iv_more"
                 android:src="@drawable/ic_down"
@@ -153,7 +194,48 @@
             android:layout_height="1dp">
 
         </View>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/tv_regular"
+                android:textSize="@dimen/_14sdp"
+                android:text="date:  "
+                android:textColor="@color/home_list_sub_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+
+                android:id="@+id/tv_date"
+                style="@style/tv_regular"
+                android:text=""
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:layout_gravity="center|right"
+                android:id="@+id/tv_status"
+                android:gravity="center|right"
+                style="@style/tv_regular"
+                android:textStyle="bold"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/home_list_sub_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+
+
+
+        </LinearLayout>
         <EditText
+            android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/edit_compose"
             style="@style/tv_regular"
             android:layout_width="match_parent"
@@ -177,6 +259,43 @@
         android:layout_height="@dimen/_100sdp">
 
     </ImageView>
+    </LinearLayout>
+    <LinearLayout
+
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_80sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+
+        <TextView
+            android:id="@+id/tv_use_tamplet"
+            android:text="@string/temp_txt"
+            android:textColor="@color/white"
+            style="@style/tv_regular"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:background="@drawable/shape_5_blue"
+            android:textSize="@dimen/_12sdp"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_direct_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp">
+
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
     <TextView
         android:id="@+id/bt_done"

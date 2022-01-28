@@ -5,9 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +45,9 @@ import org.json.JSONException;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -266,11 +270,17 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
             holder.tv_username.setText(item.getUserName());
-            holder.tv_task_description.setText(item.getTaskDescription());
+            holder.tv_task_description.setText(item.getContentBody());
             try {
                 String time =Global.getDate(item.getStartTime());
                 holder.tv_time.setText(time);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                String currentDateandTime = sdf.format(new Date());
+               holder.tv_status.setVisibility(View.VISIBLE);
+                compareDates(currentDateandTime,time,holder.tv_status);
+
             } catch (ParseException e) {
+
                 e.printStackTrace();
             }
             String name =item.getUserName();
@@ -295,7 +305,7 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
             }
 
 
-            holder.no_image.setText(add_text);
+            holder.no_image.setText(add_text.toUpperCase());
             holder.no_image.setVisibility(View.VISIBLE);
             holder.profile_image.setVisibility(View.GONE);
 
@@ -308,8 +318,9 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
 
 
         public class viewData extends RecyclerView.ViewHolder {
-            TextView tv_username, tv_task_description, tv_time,no_image;
+            TextView tv_username, tv_task_description, tv_time,no_image,tv_status;
             CircleImageView profile_image;
+
             public viewData(@NonNull View itemView) {
                 super(itemView);
                 tv_username = itemView.findViewById(R.id.tv_username);
@@ -317,8 +328,58 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
                 tv_time = itemView.findViewById(R.id.tv_time);
                 no_image = itemView.findViewById(R.id.no_image);
                 profile_image = itemView.findViewById(R.id.profile_image);
-
+                tv_status=itemView.findViewById(R.id.tv_status);
             }
         }
     }
+
+    public static void compareDates(String d1, String d2, TextView tv_status)
+    {
+        try{
+            // If you already have date objects then skip 1
+
+            //1
+            // Create 2 dates starts
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date date1 = sdf.parse(d1);
+            Date date2 = sdf.parse(d2);
+
+            Log.e("Date1",sdf.format(date1));
+            Log.e("Date2",sdf.format(date2));
+
+            // Create 2 dates ends
+            //1
+
+            // Date object is having 3 methods namely after,before and equals for comparing
+            // after() will return true if and only if date1 is after date 2
+            if(date1.after(date2)){
+                tv_status.setText("Due");
+                tv_status.setTextColor(Color.parseColor("#EC5454"));
+                Log.e("","Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if(date1.before(date2)){
+
+                tv_status.setText("Upcoming");
+                tv_status.setTextColor(Color.parseColor("#2DA602"));
+                Log.e("","Date1 is before Date2");
+                System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if(date1.equals(date2)){
+                tv_status.setText("Today");
+                tv_status.setTextColor(Color.parseColor("#EC5454"));
+                Log.e("","Date1 is equal Date2");
+                System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        }
+        catch(ParseException ex){
+            ex.printStackTrace();
+        }
+    }
+
+
 }

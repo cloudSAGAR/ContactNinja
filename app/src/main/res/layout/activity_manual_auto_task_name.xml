@@ -43,6 +43,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:maxEms="40"
                 android:id="@+id/ev_titale"
                 android:layout_marginTop="@dimen/_50sdp"
                 android:background="@color/add_contect_transpernt"

@@ -96,13 +96,13 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        try {
+        /*try {
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                CompanyList();
+               // CompanyList();
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         intentView(view);
         tabLayout.addTab(tabLayout.newTab().setText("Dashboard"));
         tabLayout.addTab(tabLayout.newTab().setText("Affiliate Groth"));

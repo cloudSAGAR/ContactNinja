@@ -10,6 +10,7 @@
 
 
     <TextView
+        android:id="@+id/tv_title"
         style="@style/tv_Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
         android:textSize="@dimen/_16sdp" />
 
     <TextView
+        android:id="@+id/tv_sub_titale"
         android:layout_marginTop="@dimen/_10sdp"
         style="@style/tv_regular"
         android:layout_width="match_parent"
