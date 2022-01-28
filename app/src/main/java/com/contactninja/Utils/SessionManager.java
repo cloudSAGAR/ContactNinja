@@ -47,7 +47,7 @@ public class SessionManager {
     public static final String Access_token = "access_token";
     public static final String csv_token = "csv_token";
     public static final String Contect_List = "contectlist";
-    public static final String Company_List = "company_List";
+    //public static final String Company_List = "company_List";
     public static final String brodcaste_Contect_List = "brod_contectlist";
     public static final String brodcaste_group = "brod_group";
     public static final String Broadcast_Data_save = " broadcast_data";
@@ -321,7 +321,7 @@ public class SessionManager {
     }
 
 
-    public static List<CompanyModel.Company> getCompanylist(Context context) {
+    /*public static List<CompanyModel.Company> getCompanylist(Context context) {
 
         Gson gson = new Gson();
         String json = pref.getString(Company_List, null);
@@ -341,7 +341,7 @@ public class SessionManager {
         editor.putString(Company_List, json);
         Log.e("companyModels data", new Gson().toJson(companyModels));
         editor.apply();
-    }
+    }*/
 
     public static List<ContectListData.Contact> getContectList_broadcste(Context context) {
 

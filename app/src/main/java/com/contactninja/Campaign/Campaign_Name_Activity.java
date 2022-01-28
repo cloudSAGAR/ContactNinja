@@ -71,8 +71,8 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
     BottomSheetDialog bottomSheetDialog_time;
     List<WorkingHoursModel.WorkingHour> workingHourList = new ArrayList<>();
     TimeZoneAdepter timeZoneAdepter;
-    int perPage = 20;
     private BroadcastReceiver mNetworkReceiver;
+    int perPage = 20;
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;

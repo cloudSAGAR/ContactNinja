@@ -15,15 +15,26 @@ public class CompanyModel {
     @SerializedName("http_status")
     @Expose
     private Integer httpStatus;
+    @SerializedName("total")
+    @Expose
+    private Integer total;
     @SerializedName("success")
     @Expose
     private Boolean success;
-    @SerializedName("data")
+    @SerializedName("company")
     @Expose
     private List<Company> companies = new ArrayList<>();
     @SerializedName("message")
     @Expose
     private String message;
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 
     public Integer getHttpStatus() {
         return httpStatus;
@@ -57,31 +68,31 @@ public class CompanyModel {
         this.message = message;
     }
 
-    public  class Company {
+    public static class Company {
         @SerializedName("id")
         @Expose
-        private Integer id;
+        private Integer id=0;
         @SerializedName("organization_id")
         @Expose
-        private Integer organizationId;
+        private Integer organizationId=0;
         @SerializedName("team_id")
         @Expose
-        private Integer teamId;
+        private Integer teamId=0;
         @SerializedName("name")
         @Expose
-        private String name;
+        private String name="";
         @SerializedName("email")
         @Expose
-        private Object email;
+        private String email="";
         @SerializedName("status")
         @Expose
-        private String status;
+        private String status="";
         @SerializedName("created_at")
         @Expose
-        private String createdAt;
+        private String createdAt="";
         @SerializedName("updated_at")
         @Expose
-        private String updatedAt;
+        private String updatedAt="";
 
         public Integer getId() {
             return id;
@@ -115,11 +126,11 @@ public class CompanyModel {
             this.name = name;
         }
 
-        public Object getEmail() {
+        public String getEmail() {
             return email;
         }
 
-        public void setEmail(Object email) {
+        public void setEmail(String email) {
             this.email = email;
         }
 
