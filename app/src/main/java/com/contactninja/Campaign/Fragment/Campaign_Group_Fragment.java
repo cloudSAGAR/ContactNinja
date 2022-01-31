@@ -365,7 +365,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                     viewHolder = new MovieViewHolder(viewItem);
                     break;
                 case LOADING:
-                    View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
                     viewHolder = new LoadingViewHolder(viewLoading);
                     break;
             }

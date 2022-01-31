@@ -55,7 +55,6 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
     ImageView iv_back, iv_Setting;
     TextView save_button;
     List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
-    CardListAdepter cardListAdepter;
     private BroadcastReceiver mNetworkReceiver;
 
     LinearLayout main_layout;
@@ -63,7 +62,7 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
     int sequence_id,seq_task_id;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    TextView tv_email,tv_sms,tv_contect,tv_pending,tv_contec_reach;
+    TextView tv_email,tv_sms,tv_contect,tv_pending,tv_contec_reach,tv_camp_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +108,7 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
     }
     private void IntentUI() {
         main_layout = findViewById(R.id.main_layout);
+        tv_camp_name = findViewById(R.id.tv_camp_name);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         iv_back = findViewById(R.id.iv_back);
@@ -248,31 +248,37 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
                             Type listType = new TypeToken<CampaignTask_overview>() {
                             }.getType();
 
-                            CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
+                            CampaignTask_overview campData = new Gson().fromJson(headerString, listType);
                             //Log.e("User Model",new Gson().toJson(user_model1));
-                            SessionManager.setCampaign_data(user_model1);
+                            SessionManager.setCampaign_data(campData);
                           //  Log.e("Email Task",user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
                            // Log.e("SMS",user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
 
                           //  tv_email.setText(user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
                             //tv_sms.setText(user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
-                            String prospect_count=user_model1.getSeqProspectCount().getTotal().toString();
-                            tv_contect.setText(prospect_count);
-                            int sms_count=0;
-                            int email_count=0;
-                            for (int i=0;i<user_model1.getSequenceTask().size();i++)
-                            {
-                                if (user_model1.getSequenceTask().get(i).getType().equals("SMS"))
+                            try {
+                                String prospect_count=campData.getSeqProspectCount().getTotal().toString();
+                                tv_contect.setText(prospect_count);
+                                tv_camp_name.setText(campData.get0().getSeqName());
+                                int sms_count=0;
+                                int email_count=0;
+                                for (int i=0;i<campData.getSequenceTask().size();i++)
                                 {
-                                    sms_count=sms_count+1;
+                                    if (campData.getSequenceTask().get(i).getType().equals("SMS"))
+                                    {
+                                        sms_count=sms_count+1;
+                                    }
+                                    else {
+                                        email_count=email_count+1;
+                                    }
                                 }
-                                else {
-                                    email_count=email_count+1;
-                                }
-                            }
-                            tv_sms.setText(String.valueOf(sms_count));
-                            tv_email.setText(String.valueOf(email_count));
+                                tv_sms.setText(String.valueOf(sms_count));
+                                tv_email.setText(String.valueOf(email_count));
 
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
 
 
                         } else {

@@ -122,15 +122,23 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
         fastscroller.setupWithRecyclerView(
                 contect_list_unselect,
                 (position) -> {
-                    // ItemModel item = data.get(position);
-                    FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                    try {
+                        // ItemModel item = data.get(position);
+                        FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
 
 
-                            sequenceProspects.get(position).getFirstname().substring(0, 1)
-                                    .substring(0, 1)
-                                    .toUpperCase()// Grab the first letter and capitalize it
-                    );
-                    return fastScrollItemIndicator;
+                                sequenceProspects.get(position).getFirstname().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );
+                        return fastScrollItemIndicator;
+                    }
+                    catch (Exception e)
+                    {
+
+                        return null;
+                    }
+
                 }
         );
 
@@ -418,7 +426,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                     viewHolder = new GroupContectAdapter.MovieViewHolder(viewItem);
                     break;
                 case LOADING:
-                    View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
                     viewHolder = new GroupContectAdapter.LoadingViewHolder(viewLoading);
                     break;
             }

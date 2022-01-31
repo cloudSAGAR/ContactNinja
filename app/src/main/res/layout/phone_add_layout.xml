@@ -62,13 +62,12 @@
                                 <TextView
 
                                     android:id="@+id/tv_phone"
-                                    style="@style/tv_regular"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/add_phone"
-                                    android:textColor="@color/tv_medium"
-                                    android:textSize="@dimen/_12sdp"
-                                    android:textStyle="bold">
+                                    android:textColor="@color/text_reg"
+                                   >
 
                                 </TextView>
 
@@ -97,7 +96,7 @@
 
                             <TextView
                                 android:id="@+id/phone_txt"
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -106,8 +105,6 @@
                                 android:gravity="center"
                                 android:text="@string/add_home"
                                 android:textColor="@color/home_list_sub_data"
-                                android:textSize="@dimen/_12sdp"
-                                android:textStyle="bold"
                                 tools:ignore="TextContrastCheck">
 
                             </TextView>
@@ -178,7 +175,7 @@
                         android:visibility="gone"
                         android:id="@+id/layout_swap"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center|top"
                         android:gravity="center|top"
                         app:bring_to_clamp="150dp"
@@ -213,7 +210,7 @@
                             android:gravity="center|top">
 
                             <TextView
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_13"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -256,7 +253,7 @@
                     app:ccp_autoDetectCountry="true"
                     app:ccp_contentColor="@color/otp_header_text_color"
                     app:ccp_showNameCode="false"
-                    app:ccp_textSize="@dimen/_12sdp" />
+                     />
 
                 <View
                     android:layout_marginEnd="@dimen/_5sdp"
@@ -269,7 +266,7 @@
 
                 <EditText
                     android:id="@+id/edt_mobile_no"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
@@ -278,10 +275,8 @@
                     android:hint="@string/add_number"
                     android:inputType="number"
                     android:padding="@dimen/_5sdp"
-                    android:textColor="@color/home_list_sub_data"
-                    android:textColorHint="@color/home_list_sub_data"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
+                    android:textColor="@color/text_reg"
+                    android:textColorHint="@color/text_gray"
                     tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
             </LinearLayout>

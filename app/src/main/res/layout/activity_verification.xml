@@ -17,11 +17,11 @@
         <TextView
             android:layout_gravity="center|top"
             android:gravity="center|top"
-            style="@style/tv_bold"
+            style="@style/tv_bold_14"
             android:layout_marginTop="@dimen/_30sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter The Code We just \n Texted you"
+            android:text="@string/verifition_title_text"
             android:textColor="@color/otp_header_text_color">
         </TextView>
         <LinearLayout
@@ -32,6 +32,7 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <com.chaos.view.PinView
+                android:itemBackground="@color/white"
                 android:layout_marginStart="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_25sdp"
                 android:id="@+id/otp_pinview"
@@ -56,7 +57,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="@dimen/_30sdp"
                 android:padding="@dimen/_5sdp"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:visibility="gone"
                 android:layout_gravity="center|start"
                 android:gravity="start|center"
@@ -76,11 +77,9 @@
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             android:text="@string/otp_button_text"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="@dimen/_13sdp"
             android:textColor="@color/otp_background"
             android:background="@drawable/shape_25_white_blue_line"
             android:layout_width="match_parent"
@@ -96,7 +95,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:padding="@dimen/_5sdp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_12"
             android:layout_gravity="center|end"
             android:gravity="end|center"
             android:text="@string/otp_bottom_text"
@@ -109,8 +108,7 @@
                 android:id="@+id/resend_txt"
                 android:padding="@dimen/_5sdp"
                 android:textColor="@color/otp_background"
-                style="@style/tv_regular"
-                android:textStyle="bold"
+                style="@style/tv_regular_13"
                 android:text="@string/otp_resend_text"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
@@ -119,7 +117,7 @@
                 android:id="@+id/tvTimer"
                 android:padding="@dimen/_5sdp"
                 android:textColor="@color/otp_background"
-                style="@style/tv_regular"
+                style="@style/tv_regular_12"
                 android:textStyle="bold"
                 android:text="@string/otp_resend_text"
                 android:layout_width="wrap_content"

@@ -16,7 +16,7 @@
     <color name="otp_header_text_color">#777777</color>
     <color name="gray_C4C4C4">#C4C4C4</color>
     <color name="text_welcome">#484848</color>
-    <color name="tv_medium">#4A4A4A</color>
+
     <color name="tv_regular">#828282</color>
     <color name="tv_otp_validation">#F64F50</color>
     <color name="plan_shpe_border">#D9DCE1</color>
@@ -40,7 +40,6 @@
 
     <color name="home_list_add_contect__bottom_text">#007AFF</color>
     <color name="contect_bottom_sheet_color">#4848484D</color>
-    <color name="bz_text">#4A4A4A</color>
     <color name="line_camp">#1A4A4A4A</color>
 
 
@@ -62,5 +61,13 @@
     <color name="camp_delete">#F47F7F</color>
 
 
+    <color name="line_separator">#EEEEEE</color>
+
+
+    <color name="text_White">#FFFFFF</color>
+    <color name="text_green">#08910D</color>
+    <color name="text_gray">#ABABAB</color>
+    <color name="text_reg">#4A4A4A</color>
+    <color name="text_reg_75">#BF4A4A4A</color>
 
 </resources>

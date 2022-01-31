@@ -34,13 +34,13 @@
                 tools:ignore="UseAppTint">
             </ImageView>
             <TextView
-                android:textStyle="bold"
+                style="@style/tv_Medium_14"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:id="@+id/currentMonth"
                 android:layout_weight="0.6"
                 android:textSize="@dimen/_15sdp"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -81,16 +81,15 @@
                 <TextView
 
                     android:id="@+id/tv_last_time"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Today"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/text_reg"
+                    />
 
                 <View
                     android:layout_width="match_parent"
@@ -116,6 +115,7 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profile_image"
+                        android:visibility="gone"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_gravity="center|left"
@@ -125,14 +125,12 @@
                         app:civ_border_color="#FF000000"/>
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/no_image"
-                        android:textStyle="bold"
                         android:textColor="@color/white"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textSize="@dimen/_12sdp"
+                        android:text="T"
                         android:background="@drawable/shape_primary_circle"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp">
@@ -154,12 +152,12 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:textColor="@color/black"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:singleLine="true"
-                            android:textStyle="bold"
                             android:text="TEST"
                             />
                         <TextView
+                            style="@style/tv_regular_13"
                             android:visibility="gone"
                             android:textColor="@color/home_list_sub_data"
                             android:layout_marginTop="@dimen/_2sdp"
@@ -169,7 +167,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:singleLine="true"
-                            android:textStyle="bold" />
+                             />
 
                     </LinearLayout>
                     <ImageView

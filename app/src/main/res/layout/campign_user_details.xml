@@ -60,12 +60,10 @@
                     <TextView
                         android:visibility="gone"
                         android:id="@+id/no_image"
-                        android:textStyle="bold"
                         android:textColor="@color/white"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textSize="@dimen/_12sdp"
                         android:background="@drawable/shape_primary_circle"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp">
@@ -85,13 +83,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:textColor="@color/black"
-                            style="@style/tv_regular"
+                            android:textColor="@color/text_reg"
+                            style="@style/tv_regular_13"
                             android:singleLine="true"
-                            android:textStyle="bold"
                             android:text="GC Gregory Christakis"
                             />
                         <TextView
+                            style="@style/tv_Medium_14"
                             android:textColor="@color/home_list_sub_data"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:layout_marginStart="@dimen/_12sdp"
@@ -100,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:singleLine="true"
-                            android:textStyle="bold" />
+                          />
 
                     </LinearLayout>
                     <LinearLayout
@@ -115,9 +113,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:textColor="@color/black"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:singleLine="true"
-                            android:textStyle="bold"
                             android:text="GC Gregory Christakis"
                             />
                         <ImageView

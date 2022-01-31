@@ -68,6 +68,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
    /* List<String> stringList;*/
     List<CampaignTask_overview.SequenceTask> campaignTasks=new ArrayList<>();
     int sequence_id,sequence_task_id;
+    String sequence_Name="";
 
     BottomSheetDialog bottomSheetDialog;
     private BroadcastReceiver mNetworkReceiver;
@@ -164,7 +165,9 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                    Intent intent=new Intent(getApplicationContext(),ContectAndGroup_Actvity.class);
                    intent.putExtra("sequence_id",sequence_id);
                    intent.putExtra("seq_task_id",sequence_task_id);
+                   intent.putExtra("sequence_Name",sequence_Name);
                    startActivity(intent);
+                   finish();
                }
                else {
                    SessionManager.setCampign_flag("read");
@@ -248,7 +251,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     viewHolder = new Campaign_OverviewAdapter.MovieViewHolder(viewItem);
                     break;
                 case LOADING:
-                    View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
                     viewHolder = new Campaign_OverviewAdapter.LoadingViewHolder(viewLoading);
                     break;
             }
@@ -335,7 +338,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                                     campaignTaskList.add(campaignTask);
                                     SessionManager.setTask(getApplicationContext(), campaignTaskList);
                                 }
-                                Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                                Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
                                 intent.putExtra("flag","new");
                                 startActivity(intent);
                                 finish();
@@ -581,7 +584,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     campaignTask.setStepNo(sequenceTask.getStepNo());;
 
                     campaignTasks1.add(campaignTask);*/
-                    Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                    Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -645,7 +648,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+                    Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -710,6 +713,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         loadingDialog.cancelLoading();
 
                         if (response.body().getHttp_status() == 200) {
+                            Global.count=1;
                             campaign_overviewAdapter.remove_item(position);
                             bottomSheetDialog.cancel();
                         } else {
@@ -781,18 +785,14 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         }
                         else {
                             seq_prospect_count=user_model1.getSeqProspectCount().getTotal();
-                            SessionManager.setCampign_flag("read");
-                            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-                            intent.putExtra("sequence_id", sequence_id);
-                            /*intent.putExtra("seq_task_id",seq_task_id);*/
-                            startActivity(intent);
-                            finish();
+
                         }
                     }
                     main_data.clear();
                     campaign_overviewAdapter.removeall();
                     main_data=  user_model1.getSequenceTask();
                     sequence_task_id=user_model1.getSequenceTask().get(0).getId();
+                    sequence_Name=user_model1.get0().getSeqName();
                     campaign_overviewAdapter.addAll(main_data);
                 }
             }

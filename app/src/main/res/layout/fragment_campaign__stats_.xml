@@ -23,12 +23,12 @@
             <TextView
 
                 android:id="@+id/tv_step"
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Step#1 (Manual Sms)"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_15sdp"/>
+                android:textColor="@color/text_reg"
+                />
 
             <ImageView
                 android:id="@+id/iv_message"
@@ -72,21 +72,20 @@
 
                 <TextView
                     android:id="@+id/tv_totale"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textColor="@color/text_reg" />
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Total "
                     android:textColor="@color/tv_regular"
-                    android:textSize="@dimen/_12sdp"/>
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -99,21 +98,20 @@
 
                 <TextView
                     android:id="@+id/tv_pending"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textColor="@color/text_reg" />
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Pending "
                     android:textColor="@color/tv_regular"
-                    android:textSize="@dimen/_12sdp"/>
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -126,21 +124,21 @@
 
                 <TextView
                     android:id="@+id/tv_pushed"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textColor="@color/text_reg"
+                    />
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Pushed "
                     android:textColor="@color/tv_regular"
-                    android:textSize="@dimen/_12sdp"/>
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -153,21 +151,21 @@
 
                 <TextView
                     android:id="@+id/tv_finished"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textColor="@color/text_reg"
+                    />
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Finished "
                     android:textColor="@color/tv_regular"
-                    android:textSize="@dimen/_12sdp"/>
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -192,21 +190,21 @@
 
                 <TextView
                     android:id="@+id/tv_open"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textColor="@color/text_reg"
+                   />
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Open"
                     android:textColor="@color/tv_regular"
-                    android:textSize="@dimen/_12sdp"/>
+                   />
             </LinearLayout>
 
             <LinearLayout
@@ -219,21 +217,21 @@
 
                 <TextView
                     android:id="@+id/tv_replied"
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textColor="@color/text_reg"
+                    />
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Replied"
                     android:textColor="@color/tv_regular"
-                    android:textSize="@dimen/_12sdp"/>
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -246,21 +244,21 @@
 
                 <TextView
                     android:id="@+id/tv_failed"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textColor="@color/text_reg"
+                    />
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Failed"
                     android:textColor="@color/tv_regular"
-                    android:textSize="@dimen/_12sdp"/>
+                    />
             </LinearLayout>
 
         </LinearLayout>

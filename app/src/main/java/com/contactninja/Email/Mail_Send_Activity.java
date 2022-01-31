@@ -77,10 +77,10 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
     TemplateClick templateClick;
 
     EditText edit_template, ev_subject, ev_to, ev_from;
-    String email = "", id = "";
+    String email = "", id = "",task_name="",from_ac="",from_ac_id="";;
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
-    int defult_id;
+    int defult_id,temaplet_id=0;
     List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
@@ -546,6 +546,9 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                 bottomSheetDialog_templateList1.cancel();
                 if(select_userLinkedGmailList.size()!=0){
                     ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
+                    from_ac="";
+                    from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
+
                 }
             }
         });
@@ -601,6 +604,9 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                             ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+                            from_ac="";
+                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
+
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
@@ -627,14 +633,12 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
-
         JSONObject paramObject = new JSONObject();
-
-        paramObject.put("type", "EMAIL");
+        paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
         paramObject.put("assign_to", user_id);
@@ -653,9 +657,25 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
         }
         JSONArray contact_group_ids = new JSONArray();
         contact_group_ids.put("");
+
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
 
+        paramObject.put("record_id","");
+        paramObject.put("task_name",task_name);
+        if (temaplet_id==0)
+        {
+            paramObject.put("template_id","");
+
+        }
+        else {
+            paramObject.put("template_id",temaplet_id);
+        }
+
+        paramObject.put("content_header",ev_subject.getText().toString());
+        paramObject.put("content_body",edit_template.getText().toString());
+        paramObject.put("from_ac",from_ac);
+        paramObject.put("from_ac_id",from_ac_id);
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
@@ -677,7 +697,9 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                         JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
                         String _newid = jsonDailyObject1.getString("id");
                         Log.e("_newid", _newid);
-                        Email_execute(subject, text, id, email, _newid);
+                        loadingDialog.cancelLoading();
+                        finish();
+                        //Email_execute(subject, text, id, email, _newid);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -774,7 +796,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
 
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
@@ -789,6 +811,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
                     if (holder.tv_item.getText().toString().equals("Save Current as template")) {
                         showAlertDialogButtonClicked(view);
                     } else {
+                        temaplet_id=item.getId();
                         interfaceClick.OnClick(item);
                     }
                 }
@@ -839,7 +862,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
             HastagList.TemplateText item = templateTextList.get(position);
             holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {
                 holder.im_file.setVisibility(View.VISIBLE);
                 holder.tv_item.setVisibility(View.GONE);
@@ -874,7 +897,7 @@ public class Mail_Send_Activity extends AppCompatActivity implements View.OnClic
             });
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
                 holder.line_view.setVisibility(View.VISIBLE);
             } else {
                 holder.line_view.setVisibility(View.GONE);

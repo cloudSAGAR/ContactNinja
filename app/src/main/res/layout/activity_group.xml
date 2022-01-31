@@ -19,15 +19,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            style="@style/tv_regular"
+            android:padding="@dimen/_5sdp"
+            style="@style/tv_regular_13"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_gravity="center|end"
             android:gravity="end|center"
             android:id="@+id/save_button"
             android:text="@string/group_to"
-            android:textSize="@dimen/_12sdp"
             android:layout_marginStart="@dimen/_20sdp"
-            android:textColor="@color/text_welcome"
+            android:textColor="@color/text_reg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -66,13 +66,14 @@
 
         </ImageView>
         <EditText
-
+style="@style/tv_Medium_14"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_gravity="center|left"
             android:gravity="center|left"
             android:id="@+id/contect_search"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             android:layout_width="match_parent"
+            android:hint="@string/search_hint"
             android:layout_height="wrap_content"
             android:background="@color/add_contect_transpernt"
             >
@@ -104,8 +105,9 @@
             android:layout_height="@dimen/_35sdp"/>
 
         <TextView
+            android:padding="@dimen/_5sdp"
             android:id="@+id/add_new_contect"
-            style="@style/tv_regular"
+            style="@style/tv_Medium_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -113,8 +115,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/add_new_contect1"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:textColor="@color/text_reg" />
         <TextView
             android:layout_marginEnd="@dimen/_20sdp"
             android:layout_gravity="center|end"
@@ -124,7 +125,7 @@
             android:layout_height="wrap_content"
             android:gravity="center|end"
             android:textColor="@color/purple_500"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:textStyle="bold"
             android:singleLine="true"
             android:text=""
@@ -173,7 +174,7 @@
 
             <com.reddit.indicatorfastscroll.FastScrollerView
                 android:id="@+id/fastscroller"
-                style="@style/tv_regular1"
+                style="@style/tv_regular_5"
                 android:layout_width="32dp"
 
                 android:layout_height="match_parent"

@@ -161,6 +161,15 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
+
+    public void Contect_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Contect_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
     public void Mail_Activiy_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Mail_Activiy_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
@@ -247,6 +256,14 @@ public class RetrofitCalls {
 
     }
 
+    public void CompanyList(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.CompanyList(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
 
   /*  public void Send_SMS_Api(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Send_SMS_Api(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
@@ -307,6 +324,15 @@ public class RetrofitCalls {
     public void Task_Data_Return(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
                                  String token, String version ,String device_id,RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Sequence_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+    public void working_hour(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog,
+                                 String token, String version ,String device_id,RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.working_hour(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);

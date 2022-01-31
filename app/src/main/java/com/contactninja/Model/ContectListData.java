@@ -16,9 +16,7 @@ public class ContectListData {
     @SerializedName("contacts")
     @Expose
     private List<Contact> contacts = null;
-    @SerializedName("company")
-    @Expose
-    private List<Company> company = null;
+
 
     public Integer getTotal() {
         return total;
@@ -36,13 +34,8 @@ public class ContectListData {
         this.contacts = contacts;
     }
 
-    public List<Company> getCompany() {
-        return company;
-    }
 
-    public void setCompany(List<Company> company) {
-        this.company = company;
-    }
+
     public static class Contact {
 
         @SerializedName("id")
@@ -573,39 +566,7 @@ public class ContectListData {
         }
 
     }
-    public class Company {
 
-        @SerializedName("id")
-        @Expose
-        private String id;
-        @SerializedName("name")
-        @Expose
-        private String name;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-
-
-
-
-
-
-
-    }
 
 
 

@@ -4,27 +4,24 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Response;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.contactninja.Email.Email_Selction_Activity;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_and_sms.Email_Detail_activty;
 import com.contactninja.Manual_email_and_sms.Manual_Sms_Activity;
+import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Manual_email_and_sms.Sms_Detail_Activty;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
@@ -45,10 +42,16 @@ import org.json.JSONException;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Response;
 
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Sms_List_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     LinearLayout demo_layout, add_new_contect_layout, mMainLayout;
@@ -102,14 +105,32 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
 
         switch (view.getId()) {
             case R.id.add_new_contect_layout:
-                SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                startActivity(new Intent(getActivity(), Manual_Sms_Activity.class));
-                //finish();
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                SessionManager.setEmail_screen_name("");
+                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag","edit");
+                intent1.putExtra("type","SMS");
+                startActivity(intent1); //  finish();
                 break;
             case R.id.demo_layout:
-                SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                startActivity(new Intent(getActivity(), Manual_Sms_Activity.class));
-                //  finish();
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                SessionManager.setEmail_screen_name("");
+                Intent intent=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent.putExtra("flag","edit");
+                intent.putExtra("type","SMS");
+                startActivity(intent);
                 break;
 
         }
@@ -209,11 +230,14 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
             holder.tv_username.setText(item.getUserName());
-            holder.tv_task_description.setText(item.getTaskDescription());
-            holder.tv_status.setText(item.getStatus());
+            holder.tv_task_description.setText(item.getContentBody());
+           // holder.tv_status.setText(item.getStatus());
             try {
                 String time =Global.getDate(item.getStartTime());
                 holder.tv_time.setText(time);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                String currentDateandTime = sdf.format(new Date());
+                compareDates(currentDateandTime,time,holder.tv_status);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -237,7 +261,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             {
                 e.printStackTrace();
             }
-            holder.no_image.setText(add_text);
+            holder.no_image.setText(add_text.toUpperCase());
             holder.no_image.setVisibility(View.VISIBLE);
             holder.profile_image.setVisibility(View.GONE);
             holder.layout_contec.setOnClickListener(new View.OnClickListener() {
@@ -274,4 +298,58 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             }
         }
     }
+
+
+    public static void compareDates(String d1, String d2, TextView tv_status)
+    {
+        try{
+            // If you already have date objects then skip 1
+
+            //1
+            // Create 2 dates starts
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date date1 = sdf.parse(d1);
+            Date date2 = sdf.parse(d2);
+
+            Log.e("Date1",sdf.format(date1));
+            Log.e("Date2",sdf.format(date2));
+
+            // Create 2 dates ends
+            //1
+
+            // Date object is having 3 methods namely after,before and equals for comparing
+            // after() will return true if and only if date1 is after date 2
+            if(date1.after(date2)){
+                tv_status.setText("Due");
+                tv_status.setTextColor(Color.parseColor("#EC5454"));
+                Log.e("","Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if(date1.before(date2)){
+
+                tv_status.setText("Upcoming");
+                tv_status.setTextColor(Color.parseColor("#2DA602"));
+                Log.e("","Date1 is before Date2");
+                System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if(date1.equals(date2)){
+                tv_status.setText("Today");
+                tv_status.setTextColor(Color.parseColor("#EC5454"));
+                Log.e("","Date1 is equal Date2");
+                System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        }
+        catch(ParseException ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+
+
+
 }

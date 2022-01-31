@@ -573,7 +573,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
 
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
@@ -638,7 +638,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
             HastagList.TemplateText item = templateTextList.get(position);
             holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {
                 holder.im_file.setVisibility(View.VISIBLE);
                 holder.tv_item.setVisibility(View.GONE);
@@ -673,7 +673,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
             });
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
                 holder.line_view.setVisibility(View.VISIBLE);
             } else {
                 holder.line_view.setVisibility(View.GONE);

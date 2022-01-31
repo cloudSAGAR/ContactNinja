@@ -43,6 +43,7 @@ import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
+import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
@@ -150,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
         sessionManager.login();
+    /*    Intent intent=new Intent(getApplicationContext(),Contect_Demo.class);
+        startActivity(intent);*/
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
         SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onPermissionGranted() {
                 if (sessionManager.getContectList(getApplicationContext()).size() == 0) {
-                    loadingDialog.showLoadingDialog();
+                 //   loadingDialog.showLoadingDialog();
                 }
              //  GetContactsIntoArrayList();
 
@@ -286,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // StructuredPostal.CITY == data7
                 city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
                 // StructuredPostal.REGION == data8
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                //region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
                 // StructuredPostal.STREET == data4
                 street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
                 // StructuredPostal.POSTCODE == data9
@@ -831,6 +834,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView selected_campaign = bottomSheetDialog.findViewById(R.id.selected_campaign);
 
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
+        TextView selected_task=bottomSheetDialog.findViewById(R.id.selected_task);
+        selected_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SessionManager.setCampaign_Day("00");
+                SessionManager.setCampaign_minute("00");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setEmail_screen_name("");
+                Intent intent1=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag","add");
+                startActivity(intent1);//  finish();
+                bottomSheetDialog.dismiss();
+            }
+        });
+
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

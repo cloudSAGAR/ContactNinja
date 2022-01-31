@@ -142,14 +142,22 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
                 contect_list_unselect,
                 (position) -> {
                     // ItemModel item = data.get(position);
-                    FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+
+                    try {
+                        FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
 
 
-                            groupContectAdapter.getItem(position).getFirstname().substring(0, 1)
-                                    .substring(0, 1)
-                                    .toUpperCase()// Grab the first letter and capitalize it
-                    );
-                    return fastScrollItemIndicator;
+                                groupContectAdapter.getItem(position).getFirstname().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );
+                        return fastScrollItemIndicator;
+                    }
+                    catch (Exception e)
+                    {
+                        return null;
+                    }
+
                 }
         );
 
@@ -490,7 +498,7 @@ public class Email_Selction_Activity extends AppCompatActivity implements View.O
                     viewHolder = new GroupContectAdapter.MovieViewHolder(viewItem);
                     break;
                 case LOADING:
-                    View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
                     viewHolder = new GroupContectAdapter.LoadingViewHolder(viewLoading);
                     break;
             }

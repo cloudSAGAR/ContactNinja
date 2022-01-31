@@ -21,12 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:gravity="center"
-            android:textSize="@dimen/_15sdp"
-            android:textStyle="bold"
             android:text="@string/add_broadcast"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             />
         <View
             android:background="@color/browser_actions_bg_grey"
@@ -39,12 +37,27 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:gravity="center"
-            android:textSize="@dimen/_15sdp"
-            android:textStyle="bold"
-            android:text="@string/campaign_add"
-            android:textColor="@color/tv_medium"
+            android:text="@string/campaign"
+            android:textColor="@color/text_reg"
+            />
+        <View
+            android:background="@color/browser_actions_bg_grey"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp">
+
+        </View>
+
+        <TextView
+            android:id="@+id/selected_task"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="10dp"
+            style="@style/tv_regular_13"
+            android:gravity="center"
+            android:text="@string/manual_task_create"
+            android:textColor="@color/text_reg"
             />
         <View
             android:background="@color/browser_actions_bg_grey"

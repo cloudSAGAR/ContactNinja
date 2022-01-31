@@ -22,6 +22,7 @@ import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_and_sms.Email_Sms_List_Activty;
+import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;
 import com.contactninja.R;
@@ -41,8 +42,10 @@ import org.json.JSONException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -56,12 +59,13 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
-    ImageView iv_toolbar_mail, iv_toolbar_select,iv_toolbar_notification;
+    ImageView iv_toolbar_select, iv_toolbar_notification;
     LinearLayout layout_toolbar_logo;
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewpaggerAdapter adapter;
-
+    String token_api = "", user_id = "", organization_id = "", team_id = "";
+    SignResponseModel user_data;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +75,14 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         sessionManager = new SessionManager(getActivity());
+
+        token_api = Global.getToken(sessionManager);
+        user_data = SessionManager.getGetUserdata(getActivity());
+        user_id = String.valueOf(user_data.getUser().getId());
+        organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
      /*   try {
             if(Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 Refreess_token();
@@ -85,6 +97,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         intentView(view);
         tabLayout.addTab(tabLayout.newTab().setText("Dashboard"));
         tabLayout.addTab(tabLayout.newTab().setText("Affiliate Groth"));
@@ -114,16 +127,13 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         });
 
 
-
         return view;
     }
 
     private void intentView(View view) {
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
         iv_toolbar_notification.setVisibility(View.VISIBLE);
-        iv_toolbar_mail = view.findViewById(R.id.iv_toolbar_mail);
-        iv_toolbar_mail.setVisibility(View.VISIBLE);
-        iv_toolbar_mail.setOnClickListener(this);
+
         iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
         iv_toolbar_select.setVisibility(View.VISIBLE);
         iv_toolbar_select.setOnClickListener(this);
@@ -136,14 +146,10 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_toolbar_notification:
-                Intent intent=new Intent(getActivity(),NotificationListActivity.class);
+                Intent intent = new Intent(getActivity(), NotificationListActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.iv_toolbar_mail:
-                startActivity(new Intent(getActivity(), Email_List_Activity.class));
-                //getActivity().finish();
                 break;
             case R.id.iv_toolbar_select:
                 startActivity(new Intent(getActivity(), Email_Sms_List_Activty.class));
@@ -152,7 +158,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         }
     }
-
 
 
     static class ViewpaggerAdapter extends FragmentPagerAdapter {
@@ -179,7 +184,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                     Affiliate_Groth_Fragment affiliate_groth_fragment = new Affiliate_Groth_Fragment();
                     return affiliate_groth_fragment;
                 case 2:
-                    Contact_Growth_Fragment contact_growth_fragment= new Contact_Growth_Fragment();
+                    Contact_Growth_Fragment contact_growth_fragment = new Contact_Growth_Fragment();
                     return contact_growth_fragment;
                 default:
                     return null;
@@ -257,12 +262,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         String time = offset + TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS);
         Log.e("offset", time);
-        String token = Global.getToken(sessionManager);
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        //String workin_time=user_data.getUser().getWorkingHoursList();
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 //        Log.e("Size is",new Gson().toJson(user_data.getUser().getWorkingHoursList()));
         if (user_data.getUser().getWorkingHoursList().size() == 0) {
@@ -274,7 +273,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             paramObject.addProperty("team_id", "1");
             paramObject.addProperty("user_id", user_id);
             obj.add("data", paramObject);
-            retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
                     //Log.e("Response is",new Gson().toJson(response));

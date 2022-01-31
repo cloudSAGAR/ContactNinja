@@ -34,6 +34,7 @@ import com.contactninja.Broadcast.Broadcast_Frgment.Broadcast_Group_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.Broadcste_Contect_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
+import com.contactninja.Campaign.Campaign_List_Activity;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.R;
@@ -132,133 +133,134 @@ public class Broadcst_Activty extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.save_button:
+                if(SessionManager.getContectList(Broadcst_Activty.this).size()!=0) {
+                    final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Broadcst_Activty.this, R.style.DialogStyle);
+                    bottomSheetDialog.setContentView(mView);
+                    TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
+                    ImageView iv_send = bottomSheetDialog.findViewById(R.id.iv_send);
+                    ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
+                    ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
+                    ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
+                    ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
+                    LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
+                    LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
+                    RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
+                    EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
+                    CoordinatorLayout layout_select_image = bottomSheetDialog.findViewById(R.id.layout_select_image);
+                    LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
+                    LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
 
-                final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Broadcst_Activty.this, R.style.DialogStyle);
-                bottomSheetDialog.setContentView(mView);
-                TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
-                ImageView iv_send = bottomSheetDialog.findViewById(R.id.iv_send);
-                ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
-                ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
-                ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
-                ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
-                LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
-                LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
-                RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
-                EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
-                CoordinatorLayout layout_select_image=bottomSheetDialog.findViewById(R.id.layout_select_image);
-                LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
-                LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
+                    lay_sendnow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent1 = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
+                            intent1.putExtra("s_name", "default");
+                            startActivity(intent1);
 
-                lay_sendnow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent1= new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
-                        intent1.putExtra("s_name","default");
-                        startActivity(intent1);
-
-                    }
-                });
-                lay_schedule.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
-                    }
-                });
-                edit_message.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        iv_card_list.setImageResource(R.drawable.ic_card_blank);
-                        rv_image_card.setVisibility(View.GONE);
-                        iv_card_list.setSelected(false);
-                    }
-                });
-
-                iv_send.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-                        Broadcast_Data broadcast_data=new Broadcast_Data();
-                        broadcast_data.setLink(tv_text_link.getText().toString());
-                        broadcast_data.setLink_text(edit_message.getText().toString());
-                        broadcast_data.setBroadcast_image_lists(broadcast_image_list);
-                        sessionManager.setAdd_Broadcast_Data(broadcast_data);
-                        lay_main_choose_send.setVisibility(View.VISIBLE);
-
-                    }
-                });
-
-
-
-                broadcast_image_list.clear();
-                for (int i=0;i<=20;i++){
-                    Broadcast_image_list item=new Broadcast_image_list();
-                    if(i%2 == 0){
-                        item.setId(i);
-                        item.setScelect(false);
-                        item.setImagename("card_1");
-                    }else {
-                        item.setId(i);
-                        item.setScelect(false);
-                        item.setImagename("card_2");
-                    }
-                    broadcast_image_list.add(item);
-                }
-                rv_image_card.setLayoutManager(new LinearLayoutManager(Broadcst_Activty.this,
-                        LinearLayoutManager.HORIZONTAL, false));
-                rv_image_card.setHasFixedSize(true);
-                cardListAdepter = new CardListAdepter(Broadcst_Activty.this, broadcast_image_list,iv_selected,this,layout_select_image);
-                rv_image_card.setAdapter(cardListAdepter);
-
-
-                lay_link_copy.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        iv_link_icon.setImageResource(R.drawable.ic_link_dark);
-                        tv_text_link.setTextColor(getResources().getColor(R.color.purple_200));
-                        tv_text_link.setText(getResources().getString(R.string.link_click));
-                    }
-                });
-                iv_card_list.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (v.isSelected()) {
-
-
-                                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-
+                        }
+                    });
+                    lay_schedule.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
+                        }
+                    });
+                    edit_message.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
                             iv_card_list.setImageResource(R.drawable.ic_card_blank);
                             rv_image_card.setVisibility(View.GONE);
                             iv_card_list.setSelected(false);
-                        }else {
-                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-
-                            iv_card_list.setImageResource(R.drawable.ic_card_fill);
-                            rv_image_card.setVisibility(View.VISIBLE);
-                            iv_card_list.setSelected(true);
                         }
+                    });
+
+                    iv_send.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+                            Broadcast_Data broadcast_data = new Broadcast_Data();
+                            broadcast_data.setLink(tv_text_link.getText().toString());
+                            broadcast_data.setLink_text(edit_message.getText().toString());
+                            broadcast_data.setBroadcast_image_lists(broadcast_image_list);
+                            sessionManager.setAdd_Broadcast_Data(broadcast_data);
+                            lay_main_choose_send.setVisibility(View.VISIBLE);
+
+                        }
+                    });
+
+
+                    broadcast_image_list.clear();
+                    for (int i = 0; i <= 20; i++) {
+                        Broadcast_image_list item = new Broadcast_image_list();
+                        if (i % 2 == 0) {
+                            item.setId(i);
+                            item.setScelect(false);
+                            item.setImagename("card_1");
+                        } else {
+                            item.setId(i);
+                            item.setScelect(false);
+                            item.setImagename("card_2");
+                        }
+                        broadcast_image_list.add(item);
                     }
-                });
+                    rv_image_card.setLayoutManager(new LinearLayoutManager(Broadcst_Activty.this,
+                            LinearLayoutManager.HORIZONTAL, false));
+                    rv_image_card.setHasFixedSize(true);
+                    cardListAdepter = new CardListAdepter(Broadcst_Activty.this, broadcast_image_list, iv_selected, this, layout_select_image);
+                    rv_image_card.setAdapter(cardListAdepter);
 
 
-                iv_cancle_select_image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        layout_select_image.setVisibility(View.GONE);
-                        for(int i=0;i<broadcast_image_list.size();i++){
-                            if(broadcast_image_list.get(i).isScelect()){
-                                broadcast_image_list.get(i).setScelect(false);
-                                break;
+                    lay_link_copy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            iv_link_icon.setImageResource(R.drawable.ic_link_dark);
+                            tv_text_link.setTextColor(getResources().getColor(R.color.purple_200));
+                            tv_text_link.setText(getResources().getString(R.string.link_click));
+                        }
+                    });
+                    iv_card_list.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (v.isSelected()) {
+
+
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+
+                                iv_card_list.setImageResource(R.drawable.ic_card_blank);
+                                rv_image_card.setVisibility(View.GONE);
+                                iv_card_list.setSelected(false);
+                            } else {
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+
+                                iv_card_list.setImageResource(R.drawable.ic_card_fill);
+                                rv_image_card.setVisibility(View.VISIBLE);
+                                iv_card_list.setSelected(true);
                             }
                         }
-                    }
-                });
+                    });
 
-                bottomSheetDialog.show();
 
+                    iv_cancle_select_image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            layout_select_image.setVisibility(View.GONE);
+                            for (int i = 0; i < broadcast_image_list.size(); i++) {
+                                if (broadcast_image_list.get(i).isScelect()) {
+                                    broadcast_image_list.get(i).setScelect(false);
+                                    break;
+                                }
+                            }
+                        }
+                    });
+
+                    bottomSheetDialog.show();
+                   }else {
+                    Global.Messageshow(Broadcst_Activty.this,main_layout,getResources().getString(R.string.add_contact),false);
+                }
                 break;
         }
     }

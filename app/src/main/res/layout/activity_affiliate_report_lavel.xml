@@ -22,14 +22,13 @@
 
 
         <TextView
-            style="@style/tv_regular"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/_10sdp"
-            android:textColor="@color/tv_medium"
             android:text="@string/Please_select_your_level"
-            android:textStyle="bold" />
+            android:textColor="@color/text_reg" />
 
         <LinearLayout
             android:id="@+id/select_label_zone"
@@ -43,17 +42,14 @@
 
             <TextView
                 android:id="@+id/tv_lavel_name"
-                style="@style/tv_regular"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/home_list_sub_data"
-                android:textStyle="bold">
-
-            </TextView>
+                android:textColor="@color/text_gray" />
 
             <ImageView
                 android:layout_width="@dimen/_12sdp"
@@ -61,9 +57,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:src="@drawable/ic_down">
-
-            </ImageView>
+                android:src="@drawable/ic_down" />
         </LinearLayout>
 
 
@@ -73,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/line_camp" />
+        android:background="@color/line_separator" />
 
     <LinearLayout
 
@@ -95,6 +89,7 @@
 
         <EditText
             android:id="@+id/contect_search"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -102,7 +97,7 @@
             android:background="@color/add_contect_transpernt"
             android:gravity="center|left"
             android:hint="@string/search_hint"
-            android:textColor="@color/tv_medium" />
+            android:textColor="@color/text_reg" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

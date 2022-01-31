@@ -32,14 +32,13 @@
             </View>
 
             <TextView
+                style="@style/tv_regular_13"
                 android:id="@+id/tv_item_num"
                 android:background="@drawable/shape_primary_circle"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="1"
-                android:textColor="@color/white"
+                android:textColor="@color/text_White"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp">
 
@@ -87,16 +86,15 @@
 
                 <TextView
                     android:id="@+id/tv_title"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="@string/campaign_step_title"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/text_reg"
+                    />
 
                 <ImageView
                     android:id="@+id/iv_message"
@@ -135,13 +133,13 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@color/line_camp">
+            android:background="@color/line_separator">
 
         </View>
 
         <TextView
             android:id="@+id/tv_detail"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -151,8 +149,8 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:gravity="center|left"
             android:text="@string/campaign_sub_txt"
-            android:textColor="@color/tv_medium"
-            android:textSize="@dimen/_13sdp" />
+            android:textColor="@color/text_reg"
+            />
 
         <LinearLayout
 
@@ -167,19 +165,19 @@
                 android:layout_height="1dp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@color/line_camp">
+                android:background="@color/line_separator">
 
             </View>
 
             <TextView
                 android:layout_marginTop="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/Run_this_step_on"
-                android:textColor="@color/tv_medium" />
+                android:textColor="@color/text_reg" />
 
             <LinearLayout
                 android:layout_marginBottom="@dimen/_10sdp"
@@ -189,13 +187,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/Day"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <LinearLayout
                     android:id="@+id/layout_day"
@@ -208,7 +206,7 @@
                     <EditText
                         android:enabled="false"
                         android:id="@+id/edit_day"
-                        style="@style/tv_regular"
+                        style="@style/tv_Medium_14"
                         android:layout_width="86dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -220,8 +218,7 @@
                         android:maxLines="1"
                         android:padding="5dp"
                         android:textColor="@color/purple_200"
-                        android:textSize="@dimen/_16sdp"
-                        android:textStyle="bold"
+
                         tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                     <View
@@ -231,13 +228,13 @@
                 </LinearLayout>
 
                 <TextView
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/and"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <LinearLayout
 
@@ -252,7 +249,7 @@
                     <EditText
                         android:enabled="false"
                         android:id="@+id/edit_minutes"
-                        style="@style/tv_regular"
+                        style="@style/tv_Medium_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -264,8 +261,7 @@
                         android:maxLines="1"
                         android:padding="5dp"
                         android:textColor="@color/purple_200"
-                        android:textSize="@dimen/_16sdp"
-                        android:textStyle="bold"
+
                         tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                     <View
@@ -275,13 +271,13 @@
                 </LinearLayout>
 
                 <TextView
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/minutes"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
             </LinearLayout>
 
         </LinearLayout>
@@ -317,16 +313,15 @@
 
                     <TextView
                         android:id="@+id/tv_email_title"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/campaign_step_title"
-                        android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_14sdp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/text_reg"
+                         />
 
                     <ImageView
 
@@ -361,7 +356,7 @@
 
             <TextView
                 android:id="@+id/tv_email_detail"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -371,8 +366,8 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|left"
                 android:text="@string/campaign_sub_txt"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_13sdp" />
+                android:textColor="@color/text_reg"
+                />
 
             <LinearLayout
                 android:visibility="gone"
@@ -394,12 +389,12 @@
                 <TextView
                     android:layout_marginTop="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/Run_this_step_on"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <LinearLayout
                     android:layout_marginBottom="@dimen/_10sdp"
@@ -409,13 +404,13 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/Day"
-                        android:textColor="@color/tv_medium" />
+                        android:textColor="@color/text_reg" />
 
                     <LinearLayout
                         android:id="@+id/layout_email_day"
@@ -427,7 +422,7 @@
 
                         <EditText
                             android:id="@+id/edit_email_day"
-                            style="@style/tv_regular"
+                            style="@style/tv_Medium_14"
                             android:layout_width="86dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -439,8 +434,7 @@
                             android:maxLines="1"
                             android:padding="5dp"
                             android:textColor="@color/purple_200"
-                            android:textSize="@dimen/_16sdp"
-                            android:textStyle="bold"
+
                             tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                         <View
@@ -450,13 +444,13 @@
                     </LinearLayout>
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/and"
-                        android:textColor="@color/tv_medium" />
+                        android:textColor="@color/text_reg" />
 
                     <LinearLayout
 
@@ -470,7 +464,7 @@
 
                         <EditText
                             android:id="@+id/edit_email_minutes"
-                            style="@style/tv_regular"
+                            style="@style/tv_Medium_14"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -482,8 +476,6 @@
                             android:maxLines="1"
                             android:padding="5dp"
                             android:textColor="@color/purple_200"
-                            android:textSize="@dimen/_16sdp"
-                            android:textStyle="bold"
                             tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                         <View
@@ -493,13 +485,13 @@
                     </LinearLayout>
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/minutes"
-                        android:textColor="@color/tv_medium" />
+                        android:textColor="@color/text_reg" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -541,7 +533,6 @@
                 android:id="@+id/tv_add_new_step_num"
                 android:background="@drawable/shape_primary_circle"
                 android:textSize="@dimen/_12sdp"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="2"
@@ -569,7 +560,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_add_new_step"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/shape_5_blue"
             android:layout_width="match_parent"
@@ -579,20 +570,20 @@
             android:gravity="center"
             android:text="@string/campaign_button_txt"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+        />
 
         </LinearLayout>
     </LinearLayout>
     <TextView
         android:layout_marginBottom="@dimen/_10sdp"
-        style="@style/tv_regular"
+        style="@style/tv_regular_13"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_15sdp"
         android:gravity="center"
         android:text="@string/campaign_txt"
-        android:textColor="@color/tv_medium"
+        android:textColor="@color/text_reg"
         android:textSize="@dimen/_13sdp" />
     </LinearLayout>
 </LinearLayout>

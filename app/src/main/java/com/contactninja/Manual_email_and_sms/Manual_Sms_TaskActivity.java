@@ -1,12 +1,13 @@
 package com.contactninja.Manual_email_and_sms;
 
-import androidx.appcompat.app.AppCompatActivity;
-import retrofit2.Response;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -39,7 +45,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.OnClickListener {
+import retrofit2.Response;
+
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     TextView tc_time_zone;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -50,10 +59,15 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
     TextView tv_date,tv_time;
     private int mYear, mMonth, mDay, mHour, mMinute;
     String id,text,p_number;
+    private BroadcastReceiver mNetworkReceiver;
+    ConstraintLayout mMainLayout;
+    String task_name="",from_ac="",from_ac_id="",temaplet_id="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_sms_task);
+        mNetworkReceiver = new ConnectivityReceiver();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -63,6 +77,12 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         id=bundle.getString("id");
         text=bundle.getString("text");
         p_number=bundle.getString("number");
+
+
+        temaplet_id=bundle.getString("tem_id");
+        task_name=bundle.getString("task_name");
+        from_ac=bundle.getString("from_ac");
+        from_ac_id= bundle.getString("from_ac_id");
 
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
@@ -75,8 +95,39 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         String currentDateandTime = sdf.format(new Date());
         tv_time.setText(currentDateandTime);
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Manual_Sms_TaskActivity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
     private void IntentUI() {
+        mMainLayout=findViewById(R.id.mMainLayout);
         linearLayout=findViewById(R.id.linearLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -150,8 +201,21 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                tv_time.setText( selectedHour + ":" + selectedMinute);
-            }
+                String stime = "";
+                if (selectedHour + 1 < 10) {
+                    stime = "0" + (selectedHour);
+                } else {
+                    stime = String.valueOf(selectedHour);
+                }
+
+
+                String sminite = "";
+                if (selectedMinute < 10) {
+                    sminite = "0" + selectedMinute;
+                } else {
+                    sminite = String.valueOf(selectedMinute);
+                }
+                tv_time.setText( stime + ":" + sminite);            }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
@@ -210,15 +274,15 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
 
         JSONObject paramObject = new JSONObject();
 
-        paramObject.put("type", "SMS");
+        paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", "MANUAL");
+        paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", tv_time.getText().toString());
         paramObject.put("date", tv_date.getText().toString());
         paramObject.put("assign_to", user_id);
-        paramObject.put("task_description", text);
+        //paramObject.put("task_description", text);
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < 1; i++) {
@@ -235,14 +299,24 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         contact_group_ids.put("");
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
+        paramObject.put("task_name",task_name);
+        if (temaplet_id.equals(""))
+        {
+            paramObject.put("template_id","");
 
+        }
+        else {
+            paramObject.put("template_id",temaplet_id);
+        }
+        //paramObject.put("content_header","");
+        paramObject.put("content_body",text);
+        paramObject.put("from_ac",from_ac);
+        paramObject.put("from_ac_id",from_ac_id);
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
-
-
+        //Log.e("Gson Data is", new Gson().toJson(gsonObject));
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
@@ -250,17 +324,12 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
                     loadingDialog.cancelLoading();
                     String jsonRawData = new Gson().toJson(response.body());
 
-                    try {
-                        JSONObject jsonObject = new JSONObject(jsonRawData);
-                        JSONObject jsonDailyObject = jsonObject.getJSONObject("data");
-                        JSONObject jsonDailyObject1 = jsonDailyObject.getJSONObject("0");
-                        String _newid = jsonDailyObject1.getString("id");
-                        Log.e("_newid", _newid);
-                        SMS_execute(text, id, email, _newid);
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+
+                        Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
+                        intent.putExtra("s_name","final");
+                        startActivity(intent);
+                        finish();
 
                 } else {
                     loadingDialog.cancelLoading();

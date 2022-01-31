@@ -48,6 +48,16 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Manual_email_and_sms.Manual_Auto_Task_Name_Activity"
+            android:screenOrientation="portrait" android:exported="false" />
+        <activity
+            android:name=".Manual_email_and_sms.Sms_And_Email_Auto_Manual"
+            android:screenOrientation="portrait" android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"  />
+        <activity
             android:name=".Manual_email_and_sms.Sms_Detail_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -152,7 +162,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Automated_Email_Activity"
+            android:name=".Campaign.Add_Camp_Email_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -160,7 +170,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.First_Step_Start_Activity"
+            android:name=".Campaign.Add_Camp_SMS_Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
@@ -172,7 +182,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.First_Step_Activity"
+            android:name=".Campaign.Add_Camp_First_Step_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -302,10 +312,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
+      <!--  <activity
+            android:name=".Contect_Demo"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" />-->
 
         <receiver android:name=".Utils.OTP_Receiver">
             <intent-filter>

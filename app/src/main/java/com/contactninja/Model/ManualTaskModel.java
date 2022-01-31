@@ -62,16 +62,45 @@ public class ManualTaskModel {
     private String userName;
     @SerializedName("contact_master_firstname")
     @Expose
-    private String contactMasterFirstname;
+    private String contactMasterFirstname="";
     @SerializedName("contact_master_lastname")
     @Expose
-    private String contactMasterLastname;
+    private String contactMasterLastname="";
     @SerializedName("content_header")
     @Expose
     private String contentHeader;
     @SerializedName("content_body")
     @Expose
     private String contentBody;
+
+    @SerializedName("task_name")
+    @Expose
+    private String task_name;
+
+
+    @SerializedName("mail_module")
+    @Expose
+    private String mail_module;
+
+    @SerializedName("sent_tbl_id")
+    @Expose
+    private String  sent_tbl_id;
+
+    public String getMail_module() {
+        return mail_module;
+    }
+
+    public void setMail_module(String mail_module) {
+        this.mail_module = mail_module;
+    }
+
+    public String getSent_tbl_id() {
+        return sent_tbl_id;
+    }
+
+    public void setSent_tbl_id(String sent_tbl_id) {
+        this.sent_tbl_id = sent_tbl_id;
+    }
 
     public Integer getId() {
         return id;
@@ -243,6 +272,14 @@ public class ManualTaskModel {
 
     public String getContentBody() {
         return contentBody;
+    }
+
+    public String getTask_name() {
+        return task_name;
+    }
+
+    public void setTask_name(String task_name) {
+        this.task_name = task_name;
     }
 
     public void setContentBody(String contentBody) {
