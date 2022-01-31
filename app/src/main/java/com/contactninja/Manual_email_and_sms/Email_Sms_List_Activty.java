@@ -59,6 +59,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Email_Sms_List_Activty extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener,SwipeRefreshLayout.OnRefreshListener{
@@ -155,18 +156,12 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         for (ManualTaskModel item : manualTaskModelList) {
             // checking if the entered string matched with any item of our recycler view.
             if (item.getContactMasterFirstname().toLowerCase().contains(text.toLowerCase())) {
-                // if the item is matched we are
-                // adding it to our filtered list.
                 filteredlist.add(item);
             }
         }
         if (filteredlist.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
-           // Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+
         } else {
-            // at last we are passing that filtered
-            // list to our adapter class.
            emailAdepter.filterList(filteredlist);
         }
     }
@@ -387,7 +382,13 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
             //   holder.tv_status.setText(item.getStatus());
             try {
                 String time =Global.getDate(item.getStartTime());
-                holder.tv_time.setText(time);
+                Log.e("Date is",time);
+
+                String dt = covertTimeToText(time);
+
+               // Log.e("Date is 1 ",dt);
+
+                holder.tv_time.setText(dt);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 String currentDateandTime = sdf.format(new Date());
                 compareDates(currentDateandTime,time,holder.tv_status);
@@ -463,6 +464,52 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         }
     }
 
+    public String covertTimeToText(String dataDate) {
+        String convTime = null;
+        try {
+            String prefix = "";
+            String suffix = "Ago";
+
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date pasTime = dateFormat.parse(dataDate);
+            Log.e("Time is ", String.valueOf(pasTime));
+
+            Date nowTime = new Date();
+
+            long dateDiff = nowTime.getTime() - pasTime.getTime();
+
+            long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
+            long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
+            long hour = TimeUnit.MILLISECONDS.toHours(dateDiff);
+            long day = TimeUnit.MILLISECONDS.toDays(dateDiff);
+
+            if (second < 60) {
+                convTime = second + " Sec " + suffix;
+            } else if (minute < 60) {
+                convTime = minute + " Min " + suffix;
+            } else if (hour < 24) {
+                convTime = hour + " Hours " + suffix;
+            } else if (day >= 7) {
+                if (day > 30) {
+                    convTime = (day / 30) + " Months " + suffix;
+                } else if (day > 360) {
+                    convTime = (day / 360) + " Years " + suffix;
+                } else {
+                    convTime = (day / 7) + " Week " + suffix;
+                }
+            } else if (day < 7) {
+                convTime = day + " Days " + suffix;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //  Log.e("ConvTimeE", e.getMessage());
+        }
+
+        Log.e("convTime is",convTime);
+        return convTime;
+    }
     public static void compareDates(String d1, String d2, TextView tv_status)
     {
         try{
