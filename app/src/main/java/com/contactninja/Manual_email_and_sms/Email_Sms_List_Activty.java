@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -124,8 +127,53 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
 
+        ev_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filter(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
     }
+
+
+    private void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<ManualTaskModel> filteredlist = new ArrayList<>();
+
+        // running a for loop to compare elements.
+        for (ManualTaskModel item : manualTaskModelList) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getContactMasterFirstname().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+           // Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+           emailAdepter.filterList(filteredlist);
+        }
+    }
+
+
     private void IntentUI() {
+
         iv_back=findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button=findViewById(R.id.save_button);
@@ -308,6 +356,14 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         public Context mCtx;
         List<ManualTaskModel> manualTaskModelList;
 
+        public void filterList(ArrayList<ManualTaskModel> filterllist) {
+            // below line is to add our filtered
+            // list in our course array list.
+            manualTaskModelList = filterllist;
+            // below line is to notify our adapter
+            // as change in recycler view data.
+            notifyDataSetChanged();
+        }
         public EmailAdepter(Context context, List<ManualTaskModel> manualTaskModelList) {
             this.mCtx = context;
             this.manualTaskModelList = manualTaskModelList;
