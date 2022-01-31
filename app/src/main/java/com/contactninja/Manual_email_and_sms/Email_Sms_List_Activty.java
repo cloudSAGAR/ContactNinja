@@ -637,16 +637,11 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                 convTime = minute + " Min " + suffix;
             } else if (hour < 24) {
                 convTime = hour + " Hours " + suffix;
-            } else if (day >= 7) {
-                if (day > 30) {
-                    convTime = (day / 30) + " Months " + suffix;
-                } else if (day > 360) {
-                    convTime = (day / 360) + " Years " + suffix;
-                } else {
-                    convTime = (day / 7) + " Week " + suffix;
-                }
-            } else if (day < 7) {
-                convTime = day + " Days " + suffix;
+            }
+
+            else
+            {
+                convTime=dataDate;
             }
 
         } catch (Exception e) {
