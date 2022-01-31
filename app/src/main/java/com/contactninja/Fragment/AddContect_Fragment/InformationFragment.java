@@ -2105,6 +2105,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     Log.e("Sms Event Call", "Yes");
                     Log.e("Number is", item.getEmail_number());
                     //showAlertDialogButtonClicked1(item.getEmail_number());
+                    Toast.makeText(getActivity(),String.valueOf(item.getId()),Toast.LENGTH_LONG).show();
                     showAlertDialogMeassge(item.getEmail_number(), item.getId());
                 }
             });

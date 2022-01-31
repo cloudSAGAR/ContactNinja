@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.Campaign.Campaign_Name_Activity;
@@ -120,9 +121,10 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
 
                     if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms"))
                     {
+                        Toast.makeText(getApplicationContext(),SessionManager.getMessage_id(getApplicationContext()),Toast.LENGTH_LONG).show();
                         Intent intent=new Intent(Manual_Auto_Task_Name_Activity.this, Manual_Sms_Send_Activty.class);
                         intent.putExtra("number",SessionManager.getMessage_number(getApplicationContext()));
-                        intent.putExtra("id",SessionManager.getMessage_id(getApplicationContext()));
+                        intent.putExtra("id",Integer.parseInt(SessionManager.getMessage_id(getApplicationContext())));
                         intent.putExtra("type",SessionManager.getMessage_tyep(getApplicationContext()));
                         intent.putExtra("task_name",ev_titale.getText().toString());
                         startActivity(intent);

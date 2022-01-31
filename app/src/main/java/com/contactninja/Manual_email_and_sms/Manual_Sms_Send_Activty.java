@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -110,6 +111,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
         ev_task_title.setText(task_name);
         ev_from.setText(p_number);
         ev_from.setEnabled(false);
+        Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
 
         try {
             if(Global.isNetworkAvailable(Manual_Sms_Send_Activty.this,mMainLayout)){
