@@ -28,9 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:gravity="center"
-            android:textSize="@dimen/_15sdp"
             android:text="@string/template_error"
             android:textColor="@color/red"
             />
@@ -46,12 +45,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="10dp"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:gravity="center"
-                android:textSize="@dimen/_15sdp"
                 android:textStyle="bold"
                 android:text="@string/Please_select_template"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 />
             <View
                 android:background="@color/browser_actions_bg_grey"

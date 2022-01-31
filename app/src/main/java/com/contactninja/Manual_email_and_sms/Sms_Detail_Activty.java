@@ -51,7 +51,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -777,7 +776,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
 
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
@@ -843,7 +842,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             HastagList.TemplateText item = templateTextList.get(position);
             holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {
                 holder.im_file.setVisibility(View.VISIBLE);
                 holder.tv_item.setVisibility(View.GONE);
@@ -878,7 +877,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             });
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
                 holder.line_view.setVisibility(View.VISIBLE);
             } else {
                 holder.line_view.setVisibility(View.GONE);

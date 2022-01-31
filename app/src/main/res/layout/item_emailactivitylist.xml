@@ -24,15 +24,13 @@
 
         <TextView
             android:id="@+id/no_image"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_gravity="center"
             android:background="@drawable/shape_primary_circle"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-            android:textStyle="bold"
             android:visibility="gone">
 
         </TextView>
@@ -48,31 +46,30 @@
             <TextView
                 android:visibility="gone"
                 android:id="@+id/tv_status"
-                style="@style/tv_regular"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:gravity="center|left"
                 android:singleLine="true"
                 android:text="Adam Smith"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textColor="@color/text_reg"
+                />
 
             <TextView
                 android:id="@+id/tv_username"
-                style="@style/tv_regular"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:gravity="center|left"
                 android:singleLine="true"
-                android:textSize="@dimen/_15sdp"
                 android:text="Adam Smith"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textColor="@color/text_reg"
+                />
 
             <TextView
+                style="@style/tv_regular_14"
                 android:id="@+id/tv_task_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,23 +78,23 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="Hey , Everyone check this out ..."
-                android:textColor="@color/home_list_sub_data"
+                android:textColor="@color/text_gray"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_time"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_35sdp"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/_10sdp"
             android:gravity="center"
             android:text="45min"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             android:textSize="@dimen/_10sdp"
-            android:textStyle="bold">
+           >
 
         </TextView>
     </LinearLayout>

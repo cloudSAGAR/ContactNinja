@@ -634,10 +634,10 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
             HastagList.TemplateText item = templateTextList.get(position);
             holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
                 holder.line_view.setVisibility(View.VISIBLE);
             } else {
                 holder.line_view.setVisibility(View.GONE);
@@ -706,7 +706,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
         public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
                 holder.line_view.setVisibility(View.VISIBLE);

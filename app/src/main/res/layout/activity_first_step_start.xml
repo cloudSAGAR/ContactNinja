@@ -26,21 +26,20 @@
     <TextView
         android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/tv_step"
-        style="@style/tv_regular"
+        style="@style/tv_regular_14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:singleLine="true"
-        android:textSize="@dimen/_16sdp"
         android:text="@string/campaign_step_one_one"
-        android:textColor="@color/tv_medium"
+        android:textColor="@color/text_reg"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:textStyle="bold" />
+         />
     <EditText
 
         android:id="@+id/edit_template"
-        style="@style/tv_regular"
+        style="@style/tv_regular_14"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_130sdp"
         android:layout_below="@+id/line_view"
@@ -53,7 +52,7 @@
         android:hint="@string/Typehere"
         android:imeOptions="actionDone"
         android:padding="15dp"
-        android:textColor="@color/tv_medium"
+        android:textColor="@color/text_reg"
         tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
 
@@ -73,14 +72,13 @@
             android:id="@+id/tv_use_tamplet"
             android:text="@string/temp_txt"
             android:textColor="@color/white"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_marginStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
             android:background="@drawable/shape_5_blue"
-            android:textSize="@dimen/_12sdp"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"

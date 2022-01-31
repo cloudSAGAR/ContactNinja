@@ -21,8 +21,8 @@
         android:visibility="gone"
         android:id="@+id/no_image"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        style="@style/tv_regular"
+        android:textColor="@color/text_White"
+        style="@style/tv_regular_14"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="@dimen/_12sdp"
@@ -33,7 +33,7 @@
 
     <TextView
         android:id="@+id/username"
-        style="@style/tv_regular"
+        style="@style/tv_regular_14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -42,7 +42,7 @@
         android:textSize="@dimen/_10sdp"
         android:singleLine="true"
         android:text="@string/add_new_contect1"
-        android:textColor="@color/black" />
+        android:textColor="@color/text_reg" />
 
 
 

@@ -31,16 +31,16 @@
             <TextView
                 android:layout_marginTop="@dimen/_10sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_regular"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textSize="@dimen/_17sdp"
                 android:text="@string/manual_task"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:textStyle="bold" />
+              />
 
             <EditText
                 android:maxEms="40"
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:focusable="true"
                 android:maxLength="40"
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_14"
                 android:layout_height="wrap_content"/>
             <View
                 android:layout_marginTop="@dimen/_5sdp"
@@ -66,7 +66,7 @@
             <TextView
                 android:id="@+id/tv_remain_txt"
                 android:layout_marginTop="@dimen/_10sdp"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -74,14 +74,13 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:singleLine="true"
-                android:textSize="@dimen/_12sdp"
                 android:text="@string/camp_remaingn"
                 android:textColor="@color/home_list_sub_data"
                 android:layout_marginBottom="@dimen/_10sdp" />
             <TextView
                 android:id="@+id/tv_error"
                 android:layout_marginTop="@dimen/_10sdp"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

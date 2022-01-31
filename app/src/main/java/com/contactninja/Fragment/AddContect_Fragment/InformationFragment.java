@@ -121,13 +121,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     CompanyAdapter companyAdapter;
     List<CompanyModel.Company> companyList=new ArrayList<>();
-    int perPage = 1000;
+    int perPage = 20;
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    public InformationFragment() {
-        // Required empty public constructor
-    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -2573,7 +2571,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         bottomSheetDialog_company.setContentView(R.layout.bottom_sheet_dialog_for_compnay);
         RecyclerView home_type_list = bottomSheetDialog_company.findViewById(R.id.home_type_list);
         TextView tv_item=bottomSheetDialog_company.findViewById(R.id.tv_item);
-        tv_item.setText("Please select Timezone");
+        tv_item.setText("Please select company");
+        tv_item.setVisibility(View.VISIBLE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         home_type_list.setLayoutManager(layoutManager);
         ImageView search_icon=bottomSheetDialog_company.findViewById(R.id.search_icon);
@@ -2853,7 +2852,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         @Override
         public void onBindViewHolder(@NonNull viewData holder, int position) {
             CompanyModel.Company WorkData = companyList.get(position);
-            if(WorkData.getName()!=null){
+            if(Global.IsNotNull(WorkData)&&!WorkData.getName().equals("")){
                 holder.tv_item.setText(WorkData.getName());
                 holder.tv_item.setOnClickListener(new View.OnClickListener() {
                     @Override

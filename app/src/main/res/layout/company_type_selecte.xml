@@ -10,21 +10,19 @@
         android:paddingTop="@dimen/_12sdp"
         android:paddingBottom="@dimen/_12sdp"
         android:id="@+id/tv_item"
-        style="@style/tv_regular"
-        android:textStyle="bold"
+        style="@style/tv_regular_14"
         android:text="Phone"
         android:layout_gravity="center|left"
         android:gravity="center|left"
         android:paddingStart="@dimen/_15sdp"
-        android:textSize="@dimen/_13sdp"
-        android:textColor="@color/tv_medium"
+        android:textColor="@color/text_reg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </TextView>
 
     <View
-        android:background="@color/home_list_add_contect_view"
+        android:background="@color/line_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp">
 

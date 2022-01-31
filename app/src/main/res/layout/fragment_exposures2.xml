@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/tv_date"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
@@ -40,9 +40,9 @@
             android:gravity="center"
             android:singleLine="true"
             android:text=""
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             android:textSize="@dimen/_14sdp"
-            android:textStyle="bold" />
+            />
 
         <LinearLayout
             android:id="@+id/layout_right"
@@ -85,16 +85,15 @@
                 <TextView
 
                     android:id="@+id/tv_last_time"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Today"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/text_reg"
+                     />
 
                 <View
                     android:layout_width="match_parent"
@@ -123,7 +122,7 @@
                 <TextView
 
                     android:id="@+id/tv_name"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -131,15 +130,14 @@
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Adam Smith, benjamin..."
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/text_reg"
+                     />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_time"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -150,7 +148,7 @@
                 android:text="12:00"
                 android:textColor="@color/purple_200"
                 android:textSize="@dimen/_10sdp"
-                android:textStyle="bold" />
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -170,7 +168,7 @@
                 <TextView
 
                     android:id="@+id/tv_refress"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -180,7 +178,7 @@
                     android:text="Contact Ninja Blast"
                     android:textColor="@color/home_list_sub_data"
                     android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                     />
 
             </LinearLayout>
         </LinearLayout>
@@ -200,6 +198,7 @@
             </de.hdodenhof.circleimageview.CircleImageView>
 
             <TextView
+                style="@style/tv_regular_14"
                 android:id="@+id/tv_latter"
                 android:layout_width="@dimen/_38sdp"
                 android:layout_height="@dimen/_38sdp"

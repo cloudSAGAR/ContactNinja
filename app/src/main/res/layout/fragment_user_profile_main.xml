@@ -49,9 +49,9 @@
 
             <TextView
                 android:textSize="@dimen/_20sdp"
-                style="@style/tv_Medium"
+                style="@style/tv_regular_14"
                 android:visibility="gone"
-                android:textColor="@color/white"
+                android:textColor="@color/text_White"
                 android:gravity="center"
                 android:background="@drawable/shape_primary_circle"
                 android:id="@+id/tv_nameLetter"
@@ -96,15 +96,15 @@
 
             <EditText
                 android:id="@+id/edt_FirstName"
-                style="@style/tv_bold"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/add_contect_transpernt"
                 android:hint="@string/f_name"
                 android:inputType="text|textCapSentences"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 android:textColorHint="@color/home_list_sub_data"
-                android:textSize="@dimen/_15sdp">
+                >
 
             </EditText>
 
@@ -119,7 +119,7 @@
                 android:background="@color/add_contect_transpernt"
                 android:id="@+id/edt_lastname"
                 android:layout_marginTop="@dimen/_5sdp"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:textColor="@color/otp_header_text_color"
                 android:hint="Last Name"
                 android:inputType="text|textCapSentences"
@@ -132,9 +132,8 @@
                 android:id="@+id/edit_profile"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:textColor="@color/purple_200"
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_14"
                 android:text="Edit Profile"
-                android:textSize="@dimen/_15sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -148,9 +147,9 @@
     <com.google.android.material.tabs.TabLayout
         android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/tabLayout"
-        style="@style/tv_bold"
+        style="@style/tv_bold_16"
         app:tabIndicatorColor="@color/home_list_tab_bg"
-        app:tabSelectedTextColor="@color/tv_medium"
+        app:tabSelectedTextColor="@color/text_reg"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
         app:tabTextColor="@color/bz_text"

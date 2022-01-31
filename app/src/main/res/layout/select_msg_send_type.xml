@@ -18,8 +18,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                style="@style/tv_Medium"
-                android:textStyle="bold"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -34,8 +33,7 @@
 
         <TextView
             android:id="@+id/tv_munual"
-            style="@style/tv_Medium"
-            android:textStyle="bold"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -59,9 +57,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/tv_api"
             android:layout_marginBottom="@dimen/_10sdp"
-            style="@style/tv_Medium"
-            android:textStyle="bold"
-            android:textSize="@dimen/_15sdp"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

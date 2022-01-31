@@ -17,13 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_gravity="center|end"
             android:gravity="end|center"
             android:id="@+id/save_button"
             android:text="@string/group_to"
-            android:textSize="@dimen/_12sdp"
             android:layout_marginStart="@dimen/_20sdp"
             android:textColor="@color/text_welcome"
             android:layout_width="wrap_content"
@@ -40,7 +39,7 @@
     </LinearLayout>
     <View
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/home_list_back_line"
+        android:background="@color/line_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp">
 
@@ -65,7 +64,7 @@
         </ImageView>
         <EditText
             android:layout_marginStart="@dimen/_5sdp"
-            style="@style/tv_Medium"
+            style="@style/tv_Medium_14"
             android:id="@+id/contect_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,7 +74,7 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:background="@color/add_contect_transpernt"
-            android:textColor="@color/otp_header_text_color"
+            android:textColor="@color/text_reg"
             android:visibility="visible" />
     </LinearLayout>
     <LinearLayout
@@ -105,7 +104,7 @@
 
         <TextView
             android:id="@+id/add_new_contect"
-            style="@style/tv_regular"
+            style="@style/tv_Medium_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -113,8 +112,8 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/add_new_contect1"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:textColor="@color/text_reg"
+          />
         <TextView
             android:layout_marginEnd="@dimen/_20sdp"
             android:layout_gravity="center|end"
@@ -124,8 +123,7 @@
             android:layout_height="wrap_content"
             android:gravity="center|end"
             android:textColor="@color/purple_500"
-            style="@style/tv_regular"
-            android:textStyle="bold"
+            style="@style/tv_Medium_14"
             android:singleLine="true"
             android:text=""
             />
@@ -173,7 +171,7 @@
 
             <com.reddit.indicatorfastscroll.FastScrollerView
                 android:id="@+id/fastscroller"
-                style="@style/tv_regular1"
+                style="@style/tv_regular_5"
                 android:layout_width="32dp"
 
                 android:layout_height="match_parent"

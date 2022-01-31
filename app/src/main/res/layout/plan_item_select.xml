@@ -26,16 +26,16 @@
             <TextView
                 android:padding="@dimen/_4sdp"
                 android:id="@+id/tv_title"
-                style="@style/tv_regular"
-                android:textColor="@color/white"
+                style="@style/tv_regular_14"
+                android:textColor="@color/text_White"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:textStyle="bold"
                 android:padding="@dimen/_4sdp"
                 android:id="@+id/tv_prise"
-                style="@style/tv_regular"
-                android:textColor="@color/white"
+                style="@style/tv_regular_14"
+                android:textColor="@color/text_White"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -43,8 +43,8 @@
     <TextView
         android:padding="@dimen/_5sdp"
         android:id="@+id/tv_text"
-        style="@style/tv_regular"
-        android:textColor="@color/white"
+        style="@style/tv_regular_14"
+        android:textColor="@color/text_White"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <androidx.recyclerview.widget.RecyclerView

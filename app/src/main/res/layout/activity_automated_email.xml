@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/add_new_contect"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -45,7 +45,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/mail_title"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 android:textSize="@dimen/_16sdp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -65,7 +65,7 @@
                 android:padding="@dimen/_10sdp">
 
                 <TextView
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_5sdp"
@@ -76,7 +76,7 @@
 
                 <EditText
                     android:id="@+id/ev_subject"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -86,7 +86,7 @@
                     android:hint="@string/Enter_subject_here"
                     android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
-                    android:textColor="@color/tv_medium"
+                    android:textColor="@color/text_reg"
                     android:textColorHint="@color/otp_header_text_color"
                     android:textStyle="bold"
                     tools:ignore="Autofill,RtlHardcoded" />
@@ -107,7 +107,7 @@
 
         <EditText
             android:id="@+id/edit_template"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -117,7 +117,7 @@
             android:hint="@string/ComposeEmail"
             android:imeOptions="actionDone"
             android:padding="15dp"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
 
@@ -134,7 +134,7 @@
 
         <TextView
             android:id="@+id/tv_use_tamplet"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

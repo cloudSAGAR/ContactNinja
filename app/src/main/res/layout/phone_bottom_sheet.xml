@@ -27,12 +27,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="10dp"
-                style="@style/tv_regular"
+                style="@style/tv_Medium_14"
                 android:gravity="center"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold"
                 android:text="Pick contact details for "
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 />
 
             <LinearLayout
@@ -50,12 +48,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_marginTop="10dp"
-                        style="@style/tv_regular"
+                        style="@style/tv_Medium_14"
                         android:gravity="center"
-                        android:textSize="@dimen/_15sdp"
-                        android:textStyle="bold"
                         android:text="@string/add_phone"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         />
                     <View
                         android:visibility="gone"
@@ -82,12 +78,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_marginTop="10dp"
-                        style="@style/tv_regular"
+                        style="@style/tv_Medium_14"
                         android:gravity="center"
-                        android:textSize="@dimen/_15sdp"
-                        android:textStyle="bold"
                         android:text="@string/add_email"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         />
                     <View
                         android:id="@+id/v_email"
@@ -138,10 +132,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:gravity="center"
             android:textSize="@dimen/_15sdp"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             />
 
         <TextView
@@ -150,10 +144,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:gravity="center"
             android:textSize="@dimen/_15sdp"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             />
 
         <TextView
@@ -164,7 +158,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:textColor="@color/white"
             android:text="Done"
-            style="@style/tv_Medium"
+            style="@style/tv_Medium_16"
             android:layout_gravity="center"
             android:gravity="center"
             android:background="@drawable/shape_primary_back"

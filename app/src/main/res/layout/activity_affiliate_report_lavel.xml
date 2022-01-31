@@ -22,12 +22,12 @@
 
 
         <TextView
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/_10sdp"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             android:text="@string/Please_select_your_level"
             android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/tv_lavel_name"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -102,7 +102,7 @@
             android:background="@color/add_contect_transpernt"
             android:gravity="center|left"
             android:hint="@string/search_hint"
-            android:textColor="@color/tv_medium" />
+            android:textColor="@color/text_reg" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

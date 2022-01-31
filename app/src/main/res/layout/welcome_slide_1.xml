@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/tv_dis"
-        style="@style/tv_regular"
+        style="@style/tv_regular_14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

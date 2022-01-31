@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_16"
                 android:textSize="@dimen/_14sdp"
                 android:text="Task title: "
                 android:textColor="@color/home_list_sub_data"
@@ -31,7 +31,7 @@
 
             <EditText
                 android:id="@+id/ev_titale"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -40,7 +40,7 @@
                 android:gravity="left"
                 android:paddingStart="@dimen/_15sdp"
                 android:imeOptions="actionDone"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
 
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:layout_gravity="center"
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_16"
                 android:textSize="@dimen/_14sdp"
                 android:text="@string/from"
                 android:textColor="@color/purple_200"
@@ -76,7 +76,7 @@
             <EditText
                 android:layout_weight="1"
                 android:id="@+id/ev_from"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -85,7 +85,7 @@
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:paddingStart="@dimen/_15sdp"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
             <ImageView
                 android:padding="@dimen/_10sdp"
@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_16"
                 android:textSize="@dimen/_14sdp"
                 android:text="@string/to"
                 android:textColor="@color/purple_200"
@@ -127,7 +127,7 @@
 
             <EditText
                 android:id="@+id/ev_to"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -136,7 +136,7 @@
                 android:gravity="left"
                 android:paddingStart="@dimen/_15sdp"
                 android:imeOptions="actionDone"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
 
@@ -159,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:textSize="@dimen/_14sdp"
                 android:text="@string/to_subject"
                 android:textColor="@color/home_list_sub_data"
@@ -170,7 +170,7 @@
             <EditText
                 android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/ev_subject"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -179,7 +179,7 @@
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:hint="@string/ComposeEmail"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
 
@@ -202,7 +202,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:textSize="@dimen/_14sdp"
                 android:text="date:  "
                 android:textColor="@color/home_list_sub_data"
@@ -212,7 +212,7 @@
             <TextView
 
                 android:id="@+id/tv_date"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:text=""
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
@@ -222,7 +222,7 @@
                 android:layout_gravity="center|right"
                 android:id="@+id/tv_status"
                 android:gravity="center|right"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:textStyle="bold"
                 android:textSize="@dimen/_12sdp"
                 android:textColor="@color/home_list_sub_data"
@@ -237,7 +237,7 @@
         <EditText
             android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/edit_compose"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -247,7 +247,7 @@
             android:imeOptions="actionDone"
             android:padding="15dp"
             android:hint="@string/ComposeEmail"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
     <ImageView
@@ -274,7 +274,7 @@
             android:id="@+id/tv_use_tamplet"
             android:text="@string/temp_txt"
             android:textColor="@color/white"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_marginStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
@@ -306,7 +306,7 @@
         android:background="@drawable/shape_50_blue"
         android:layout_width="match_parent"
         android:textSize="@dimen/_15sdp"
-        style="@style/tv_Medium"
+        style="@style/tv_Medium_16"
         android:gravity="center"
         android:textStyle="bold"
         android:text="Send and complete"

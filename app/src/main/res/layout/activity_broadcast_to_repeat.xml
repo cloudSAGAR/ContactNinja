@@ -31,7 +31,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/tv_bold"
+            style="@style/tv_bold_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center|end"
@@ -107,7 +107,7 @@
 
             </TextView>
             <TextView
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|left"

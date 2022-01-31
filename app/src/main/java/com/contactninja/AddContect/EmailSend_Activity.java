@@ -32,7 +32,6 @@ import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_and_sms.Email_Tankyou;
 import com.contactninja.Manual_email_and_sms.Manual_Email_TaskActivity_;
-import com.contactninja.Manual_email_and_sms.Manual_Mail_Send_Activty;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -836,7 +835,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
 
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
@@ -903,7 +902,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             HastagList.TemplateText item = templateTextList.get(position);
             holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {
                 holder.im_file.setVisibility(View.VISIBLE);
                 holder.tv_item.setVisibility(View.GONE);
@@ -939,7 +938,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
 
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
                 holder.line_view.setVisibility(View.VISIBLE);
             } else {
                 holder.line_view.setVisibility(View.GONE);

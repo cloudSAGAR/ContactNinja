@@ -37,13 +37,12 @@
             android:paddingTop="@dimen/_12sdp"
             android:paddingBottom="@dimen/_12sdp"
             android:id="@+id/tv_item"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:text="Phone"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_gravity="center|left"
             android:gravity="center|left"
-            android:textSize="@dimen/_13sdp"
-            android:textColor="@color/bz_text"
+            android:textColor="@color/text_reg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>

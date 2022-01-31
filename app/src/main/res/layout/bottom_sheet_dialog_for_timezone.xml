@@ -21,13 +21,11 @@
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_12sdp"
                 android:id="@+id/tv_item"
-                style="@style/tv_regular"
-                android:textStyle="bold"
-                android:textSize="@dimen/_13sdp"
+                style="@style/tv_regular_14"
                 android:text="Please select label"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/text_reg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -35,7 +33,7 @@
 
             <View
                 android:visibility="gone"
-                android:background="@color/home_list_add_contect_view"
+                android:background="@color/line_separator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp">
 
@@ -57,13 +55,14 @@
 
             </ImageView>
             <EditText
+                style="@style/tv_Medium_14"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_gravity="center|left"
                 android:gravity="center|left"
                 android:id="@+id/ev_search"
                 android:singleLine="true"
                 android:hint="@string/search_hint"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/add_contect_transpernt"

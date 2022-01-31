@@ -46,12 +46,12 @@
 
                 <TextView
                     android:id="@+id/tv_email"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/add_email"
-                    android:textColor="@color/tv_medium"
-                    android:textStyle="bold">
+                    android:textColor="@color/text_reg"
+               >
 
                 </TextView>
 
@@ -69,7 +69,7 @@
 
                 <TextView
                     android:id="@+id/email_txt"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -78,7 +78,7 @@
                     android:gravity="center"
                     android:text="@string/add_home"
                     android:textColor="@color/home_list_sub_data"
-                    android:textStyle="bold">
+                    >
 
                 </TextView>
 
@@ -156,7 +156,7 @@
                     android:gravity="center">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -164,7 +164,7 @@
                         android:text="@string/add_defult_text"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp"
-                        android:textStyle="bold"/>
+                        />
                 </LinearLayout>
 
             </LinearLayout>
@@ -174,15 +174,15 @@
         <EditText
             android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/edt_email"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:background="@color/add_contect_transpernt"
             android:hint="@string/add_email_a"
-            android:textColor="@color/home_list_sub_data"
-            android:textColorHint="@color/home_list_sub_data"
-            android:textStyle="bold">
+            android:textColor="@color/text_reg"
+            android:textColorHint="@color/text_gray"
+            >
 
         </EditText>
         <TextView
@@ -190,20 +190,20 @@
             android:visibility="gone"
             android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/iv_invalid"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_10sdp"
             android:padding="@dimen/_5sdp"
             android:textColor="@color/red"
-            android:textStyle="bold" />
+           />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:background="@color/home_list_add_contect_view" />
+            android:background="@color/line_separator" />
     </LinearLayout>
     </ru.rambler.libs.swipe_layout.SwipeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,13 +14,11 @@
             android:layout_marginTop="@dimen/_30sdp"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
-            android:src="@drawable/ic_ok">
-
-        </ImageView>
+            android:src="@drawable/ic_ok"/>
 
         <TextView
             android:id="@+id/tv_sub_titale"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,8 +28,7 @@
             android:layout_marginBottom="@dimen/_30sdp"
             android:gravity="center"
             android:text="@string/text_ok"
-            android:textColor="@color/text_welcome"
-            android:textColorHint="@color/text_welcome"
+            android:textColor="@color/text_reg"
             android:textSize="@dimen/_12sdp"
             android:textStyle="bold">
 

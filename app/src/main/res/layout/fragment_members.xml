@@ -25,6 +25,8 @@
 
         </ImageView>
         <EditText
+            style="@style/tv_Medium_14"
+            android:hint="@string/search_hint"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_gravity="center|left"
             android:gravity="center|left"
@@ -70,7 +72,7 @@
 
             <com.reddit.indicatorfastscroll.FastScrollerView
                 android:id="@+id/fastscroller"
-                style="@style/tv_regular1"
+                style="@style/tv_regular_5"
                 android:layout_width="32dp"
 
                 android:layout_height="match_parent"

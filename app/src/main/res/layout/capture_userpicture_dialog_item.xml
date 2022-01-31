@@ -22,20 +22,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            style="@style/tv_Medium"
+            style="@style/tv_Medium_16"
             android:gravity="center"
             android:text="User Photo"
-            android:textColor="@color/black"
+            android:textColor="@color/text_reg"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:gravity="center"
             android:text="How do you want to set your picture?"
-            android:textColor="@color/black"
+            android:textColor="@color/text_reg"
            />
 
         <LinearLayout
@@ -50,14 +50,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_14"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/btn_bg_new"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Remove"
-                android:textColor="@color/white"
+                android:textColor="@color/text_White"
                 />
 
             <TextView
@@ -65,14 +65,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_14"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/btn_bg_new"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Camera"
-                android:textColor="@color/white"
+                android:textColor="@color/text_White"
                 />
 
             <TextView
@@ -81,12 +81,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_14"
                 android:background="@drawable/btn_bg_new"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Gallery"
-                android:textColor="@color/white"
+                android:textColor="@color/text_White"
                 />
         </LinearLayout>
     </LinearLayout>

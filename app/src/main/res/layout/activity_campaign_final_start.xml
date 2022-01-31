@@ -25,7 +25,7 @@
         android:padding="@dimen/_15sdp">
 
         <TextView
-            style="@style/tv_Medium"
+            style="@style/tv_Medium_16"
             android:id="@+id/tv_camp_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:layout_height="match_parent">
                 <TextView
                     android:layout_weight="1"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_contect"
@@ -64,7 +64,7 @@
                     android:layout_weight="1"
                     android:id="@+id/tv_contect"
                     android:gravity="left|center"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="7"
@@ -84,7 +84,7 @@
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/tv_sms"
@@ -97,7 +97,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:id="@+id/tv_sms"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="7"
@@ -116,7 +116,7 @@
                 android:layout_height="match_parent">
                 <TextView
                     android:layout_weight="1"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:gravity="right|center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -129,7 +129,7 @@
                 <TextView
                     android:layout_weight="1"
                     android:id="@+id/tv_email"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -156,7 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/con_reach"
@@ -168,7 +168,7 @@
                     android:layout_gravity="center|left"
                     android:gravity="left|center"
                     android:id="@+id/tv_contec_reach"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:paddingStart="10dp"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/con_pending"
@@ -198,7 +198,7 @@
                     android:layout_gravity="center|left"
                     android:gravity="left|center"
                     android:id="@+id/tv_pending"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -212,14 +212,14 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        style="@style/tv_bold"
+        style="@style/tv_bold_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/white"
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabIndicatorHeight="2dp"
-        app:tabSelectedTextColor="@color/tv_medium"
+        app:tabSelectedTextColor="@color/text_reg"
         app:tabTextColor="@color/bz_text"/>
 
     <View

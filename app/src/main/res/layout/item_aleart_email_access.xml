@@ -15,14 +15,13 @@
         <TextView
             android:id="@+id/tv_aleartMessage"
             android:layout_marginTop="@dimen/_10sdp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="@dimen/_16sdp"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             >
 
         </TextView>
@@ -38,15 +37,14 @@
             <TextView
                 android:visibility="gone"
                 android:id="@+id/tv_cancel"
-                style="@style/tv_regular"
-                android:textStyle="bold"
+                style="@style/tv_regular_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
-                android:textColor="@color/home_list_sub_data"
+                android:textColor="@color/text_gray"
                 android:text="Cancel">
 
             </TextView>
@@ -54,17 +52,15 @@
             <TextView
                 android:padding="@dimen/_10sdp"
                 android:id="@+id/tv_add"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:gravity="center|end"
                 android:text="Okay"
-                android:textColor="@color/purple_200"
-                android:textStyle="bold">
+                android:textColor="@color/purple_200"/>
 
-            </TextView>
         </LinearLayout>
     </LinearLayout>
 

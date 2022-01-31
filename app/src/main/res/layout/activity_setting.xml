@@ -34,12 +34,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/current_Plan"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -58,12 +58,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/Messaging_Template"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -82,12 +82,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/About_Contact_Ninja"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -105,12 +105,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/Mail_Box"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -130,12 +130,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/Reset_Password"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -154,12 +154,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_Medium"
+                    style="@style/tv_regular_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/Logout"
-                    android:textColor="@color/tv_medium" />
+                    android:textColor="@color/text_reg" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -193,8 +193,7 @@
             <TextView
 
                 android:id="@+id/tv_version_name"
-                style="@style/tv_regular"
-                android:textStyle="bold"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"

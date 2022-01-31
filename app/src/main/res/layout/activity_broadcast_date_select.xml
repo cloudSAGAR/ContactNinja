@@ -18,7 +18,7 @@
         <include layout="@layout/toolbar"/>
 
         <TextView
-            style="@style/tv_bold"
+            style="@style/tv_bold_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
@@ -41,10 +41,10 @@
             custom:enable_time_selection="false"
             custom:text_size_title="@dimen/_15sdp"
             custom:text_size_date="@dimen/_12sdp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             custom:range_color="@color/range_bg_color_app"
             custom:selected_date_circle_color="@color/purple_200"
-            custom:title_color="@color/tv_medium"
+            custom:title_color="@color/text_reg"
             custom:week_offset="0">
 
         </com.archit.calendardaterangepicker.customviews.DateRangeCalendarView>

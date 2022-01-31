@@ -37,7 +37,7 @@
                 tools:ignore="UseAppTint"/>
             <TextView
                 android:textSize="@dimen/_20sdp"
-                style="@style/tv_Medium"
+                style="@style/tv_Medium_16"
 
                 android:textColor="@color/white"
                 android:gravity="center"
@@ -76,7 +76,7 @@
             <TextView
                 android:background="@color/add_contect_transpernt"
                 android:id="@+id/tv_FirstName"
-                style="@style/tv_bold"
+                style="@style/tv_bold_16"
                 android:textSize="@dimen/_15sdp"
                 android:hint="@string/f_name"
                 android:inputType="text|textCapSentences"
@@ -120,11 +120,11 @@
                 <TextView
 
                     android:id="@+id/tv_step"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Step#1 (Manual Sms)"
-                    android:textColor="@color/tv_medium"
+                    android:textColor="@color/text_reg"
                     android:textSize="@dimen/_15sdp"/>
 
                 <ImageView
@@ -169,15 +169,15 @@
 
                     <TextView
                         android:id="@+id/tv_totale"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         android:textSize="@dimen/_15sdp"/>
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -196,15 +196,15 @@
 
                     <TextView
                         android:id="@+id/tv_pending"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         android:textSize="@dimen/_15sdp"/>
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -223,15 +223,15 @@
 
                     <TextView
                         android:id="@+id/tv_pushed"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         android:textSize="@dimen/_15sdp"/>
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -250,15 +250,15 @@
 
                     <TextView
                         android:id="@+id/tv_finished"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         android:textSize="@dimen/_15sdp"/>
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -289,15 +289,15 @@
 
                     <TextView
                         android:id="@+id/tv_open"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         android:textSize="@dimen/_15sdp"/>
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -316,15 +316,15 @@
 
                     <TextView
                         android:id="@+id/tv_replied"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         android:textSize="@dimen/_15sdp"/>
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -343,15 +343,15 @@
 
                     <TextView
                         android:id="@+id/tv_failed"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
+                        android:textColor="@color/text_reg"
                         android:textSize="@dimen/_15sdp"/>
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"

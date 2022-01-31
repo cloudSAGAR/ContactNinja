@@ -24,10 +24,9 @@
 
             android:layout_marginStart="@dimen/_12sdp"
             android:id="@+id/check_text"
-            android:textColor="@color/tv_medium"
-            style="@style/tv_regular"
+            android:textColor="@color/text_reg"
+            style="@style/tv_regular_14"
             android:text=""
-            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -51,8 +50,8 @@
 
             android:layout_marginStart="@dimen/_12sdp"
             android:id="@+id/check_text1"
-            android:textColor="@color/tv_medium"
-            style="@style/tv_regular"
+            android:textColor="@color/text_reg"
+            style="@style/tv_regular_14"
             android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

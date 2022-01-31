@@ -23,13 +23,12 @@
             android:paddingEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
             android:id="@+id/tv_item"
-            style="@style/tv_regular"
+            style="@style/tv_regular_14"
             android:textStyle="bold"
             android:text="Phone"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="@dimen/_13sdp"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

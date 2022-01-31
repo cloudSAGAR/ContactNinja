@@ -38,7 +38,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/tv_Medium"
+            style="@style/tv_Medium_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -46,7 +46,7 @@
             android:gravity="center|left"
             android:paddingStart="@dimen/_25sdp"
             android:text="@string/plan_type_text"
-            android:textColor="@color/tv_medium" />
+            android:textColor="@color/text_reg" />
 
        <LinearLayout
            android:id="@+id/layout_free_card"
@@ -60,7 +60,7 @@
 
            <TextView
                android:layout_weight="1"
-               style="@style/tv_regular"
+               style="@style/tv_regular_14"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:layout_gravity="top"
@@ -68,13 +68,11 @@
                android:gravity="center|left"
                android:text="@string/plan_text_free_card"
                android:textColor="@color/purple_200"
-               android:textSize="@dimen/_13sdp"
-               android:textStyle="bold"
                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
            <TextView
                android:layout_weight="1"
-               style="@style/tv_regular"
+               style="@style/tv_regular_14"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:layout_gravity="top"
@@ -82,8 +80,6 @@
                android:layout_marginEnd="@dimen/_25sdp"
                android:text="@string/plan_text_free"
                android:textColor="@color/purple_200"
-               android:textSize="@dimen/_13sdp"
-               android:textStyle="bold"
                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
        </LinearLayout>
@@ -100,7 +96,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -108,13 +104,11 @@
                 android:gravity="center|left"
                 android:text="@string/plan_text_bz_card"
                 android:textColor="@color/purple_200"
-                android:textSize="@dimen/_13sdp"
-                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -122,8 +116,6 @@
                 android:layout_marginEnd="@dimen/_25sdp"
                 android:text="@string/plan_text_bz"
                 android:textColor="@color/plan_price_text_color"
-                android:textSize="@dimen/_13sdp"
-                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         </LinearLayout>
@@ -140,7 +132,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -148,13 +140,11 @@
                 android:gravity="center|left"
                 android:text="@string/plan_text_master_card"
                 android:textColor="@color/purple_200"
-                android:textSize="@dimen/_13sdp"
-                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -162,8 +152,6 @@
                 android:layout_marginEnd="@dimen/_25sdp"
                 android:text="@string/plan_text_master"
                 android:textColor="@color/plan_price_text_color"
-                android:textSize="@dimen/_13sdp"
-                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         </LinearLayout>
@@ -181,7 +169,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -189,13 +177,11 @@
                 android:gravity="center|left"
                 android:text="@string/plan_text_contect_card"
                 android:textColor="@color/purple_200"
-                android:textSize="@dimen/_13sdp"
-                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -203,8 +189,6 @@
                 android:layout_marginEnd="@dimen/_25sdp"
                 android:text="@string/plan_text_contect"
                 android:textColor="@color/plan_price_text_color"
-                android:textSize="@dimen/_13sdp"
-                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         </LinearLayout>

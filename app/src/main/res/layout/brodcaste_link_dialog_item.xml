@@ -91,7 +91,7 @@
                             android:id="@+id/tv_text_link"
                             android:layout_marginStart="@dimen/_2sdp"
                             android:layout_gravity="center"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_14"
                             android:textColor="@color/otp_header_text_color"
                             android:text="@string/link_add"
                             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                     <EditText
                         android:layout_weight="1"
                         android:id="@+id/edit_message"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_14"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -116,7 +116,6 @@
                         android:imeOptions="actionDone"
                         android:inputType="textEmailAddress"
                         android:padding="10dp"
-                        android:textStyle="bold"
                         android:textColor="@color/otp_header_text_color"
                         android:textColorHint="@color/otp_header_text_color"
                         tools:ignore="Autofill,RtlHardcoded" />
@@ -160,7 +159,7 @@
                 tools:ignore="NegativeMargin,UseCompoundDrawables,UselessLeaf,UselessParent">
                 <TextView
                     android:layout_weight="1"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/broadcast_Send_Now"/>
@@ -180,7 +179,7 @@
                 tools:ignore="NegativeMargin,UseCompoundDrawables,UselessLeaf,UselessParent">
                 <TextView
                     android:layout_weight="1"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/broadcast_Schedule"/>
