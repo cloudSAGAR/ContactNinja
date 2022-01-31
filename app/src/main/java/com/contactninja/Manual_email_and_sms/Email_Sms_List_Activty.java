@@ -192,6 +192,20 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                 startActivity(intent1);//  finish();
             }
         });
+        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SessionManager.setCampaign_Day("00");
+                SessionManager.setCampaign_minute("00");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setEmail_screen_name("");
+                Intent intent1=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag","add");
+                startActivity(intent1);//  finish();
+            }
+        });
 
     }
 
@@ -255,7 +269,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         tv_create.setText(getString(R.string.email_txt));
         rv_email_list = findViewById(R.id.email_list);
         add_new_contect_layout = findViewById(R.id.add_new_contect_layout);
-        add_new_contect_layout.setOnClickListener(this);
+
         swipeToRefresh = findViewById(R.id.swipeToRefresh);
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(this);

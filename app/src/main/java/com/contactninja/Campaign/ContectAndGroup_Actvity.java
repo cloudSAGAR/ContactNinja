@@ -418,8 +418,6 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                             loadingDialog.cancelLoading();
                         }
                     });
-
-
         }
 
     }

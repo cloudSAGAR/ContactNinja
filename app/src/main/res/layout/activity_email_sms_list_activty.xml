@@ -77,7 +77,6 @@
     <include
         layout="@layout/common_dialog"/>
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/add_new_contect_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
