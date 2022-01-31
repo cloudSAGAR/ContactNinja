@@ -277,6 +277,9 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                             e.printStackTrace();
                         }*/
                     }
+                    else {
+                        broadcast_manu();
+                    }
 
 
                 }

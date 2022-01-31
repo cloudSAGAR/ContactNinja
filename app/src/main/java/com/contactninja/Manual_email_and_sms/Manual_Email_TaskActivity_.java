@@ -343,7 +343,24 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                tv_time.setText( selectedHour + ":" + selectedMinute);
+              Log.e("selectedHour", String.valueOf(selectedHour));
+              Log.e("selectedminite", String.valueOf(selectedMinute));
+
+                String stime = "";
+                if (selectedHour + 1 < 10) {
+                    stime = "0" + (selectedHour);
+                } else {
+                    stime = String.valueOf(selectedHour);
+                }
+
+
+                String sminite = "";
+                if (selectedMinute < 10) {
+                    sminite = "0" + selectedMinute;
+                } else {
+                    sminite = String.valueOf(selectedMinute);
+                }
+                tv_time.setText( stime + ":" + sminite);
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");

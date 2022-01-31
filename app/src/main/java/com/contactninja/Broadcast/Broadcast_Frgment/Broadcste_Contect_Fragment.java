@@ -785,7 +785,7 @@ public class Broadcste_Contect_Fragment extends Fragment {
                     viewHolder = new GroupContectAdapter.MovieViewHolder(viewItem);
                     break;
                 case LOADING:
-                    View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
                     viewHolder = new GroupContectAdapter.LoadingViewHolder(viewLoading);
                     break;
             }

@@ -231,11 +231,11 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                /*try {
+                try {
                     SMSAPI();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }*/
+                }
 
             }
         });

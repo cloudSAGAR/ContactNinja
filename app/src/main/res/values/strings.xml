@@ -319,6 +319,7 @@ Number</string>
     <string name="Current_Plan">Current Plan</string>
     <string name="campaign_add">Create new campaign</string>
     <string name="campaign">Campaign</string>
+    <string name="manual_task_create">Manual Task</string>
     <string name="campaign_alert_txt">Click to create \n campaign</string>
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or SMSes sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
     <string name="campaign_step_one">Select your step</string>

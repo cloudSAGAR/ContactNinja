@@ -841,7 +841,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     viewHolder = new Campaign_OverviewAdapter.MovieViewHolder(viewItem);
                     break;
                 case LOADING:
-                    View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
                     viewHolder = new Campaign_OverviewAdapter.LoadingViewHolder(viewLoading);
                     break;
             }

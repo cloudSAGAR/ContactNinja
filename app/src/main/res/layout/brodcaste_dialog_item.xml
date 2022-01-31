@@ -48,5 +48,23 @@
             android:layout_height="@dimen/_1sdp">
 
         </View>
+
+        <TextView
+            android:id="@+id/selected_task"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="10dp"
+            style="@style/tv_regular_14"
+            android:gravity="center"
+            android:textSize="@dimen/_15sdp"
+            android:text="@string/manual_task_create"
+            android:textColor="@color/text_reg"
+            />
+        <View
+            android:background="@color/browser_actions_bg_grey"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp">
+
+        </View>
     </LinearLayout>
 </LinearLayout>
