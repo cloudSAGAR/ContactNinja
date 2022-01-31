@@ -44,7 +44,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_status"
                 style="@style/tv_Medium_12"
                 android:layout_width="match_parent"

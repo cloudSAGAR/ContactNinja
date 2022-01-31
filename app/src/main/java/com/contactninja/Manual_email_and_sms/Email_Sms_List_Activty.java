@@ -1,5 +1,7 @@
 package com.contactninja.Manual_email_and_sms;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,9 +34,11 @@ import androidx.viewpager.widget.ViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
+import com.contactninja.Campaign.Campaign_List_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_and_sms.Fragment.Email_List_Fragment;
 import com.contactninja.Manual_email_and_sms.Fragment.Sms_List_Fragment;
+import com.contactninja.Model.Campaign_List;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -42,6 +46,7 @@ import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -85,6 +90,12 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
 
     EmailAdepter emailAdepter;
     List<ManualTaskModel> manualTaskModelList = new ArrayList<>();
+    int perPage = 20;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +105,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         loadingDialog=new LoadingDialog(this);
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         IntentUI();
 
         pagerAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager());
@@ -122,11 +134,6 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         });
     */
 
-        try {
-            Mail_list();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         ev_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -142,6 +149,33 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+        rv_email_list.setLayoutManager(layoutManager);
+        emailAdepter = new EmailAdepter(Email_Sms_List_Activty.this, new ArrayList<>());
+        rv_email_list.setAdapter(emailAdepter);
+        rv_email_list.addOnScrollListener(new PaginationListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                try {
+                    if (Global.isNetworkAvailable(Email_Sms_List_Activty.this, MainActivity.mMainLayout)) {
+                        Mail_list();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
             }
         });
         demo_layout.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +214,24 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        currentPage = PAGE_START;
+        isLastPage = false;
+        manualTaskModelList.clear();
+        emailAdepter.clear();
+        try {
+            if (Global.isNetworkAvailable(Email_Sms_List_Activty.this, MainActivity.mMainLayout)) {
+                if (!swipeToRefresh.isRefreshing()) {
+                    loadingDialog.showLoadingDialog();
+                }
+                Mail_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void IntentUI() {
 
@@ -204,7 +256,6 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         rv_email_list = findViewById(R.id.email_list);
         add_new_contect_layout = findViewById(R.id.add_new_contect_layout);
         add_new_contect_layout.setOnClickListener(this);
-        rv_email_list.setLayoutManager(new LinearLayoutManager(this));
         swipeToRefresh = findViewById(R.id.swipeToRefresh);
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(this);
@@ -291,10 +342,6 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
 
 
     void Mail_list() throws JSONException {
-
-        if (!swipeToRefresh.isRefreshing()) {
-            loadingDialog.showLoadingDialog();
-        }
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
@@ -309,32 +356,45 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
                 if (response.body().getHttp_status() == 200) {
-                    manualTaskModelList.clear();
+
+
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<EmailActivityListModel>() {
-                    }.getType();
-                    EmailActivityListModel emailActivityListModel = new Gson().fromJson(headerString, listType);
+                    if (response.body().getHttp_status() == 200) {
 
-                    for (int i=0;i<emailActivityListModel.getManualTask().size();i++)
-                    {
-                        manualTaskModelList.add(emailActivityListModel.getManualTask().get(i));
-                    }
-                    //manualTaskModelList = emailActivityListModel.getManualTask();
 
-                    if (manualTaskModelList.size()==0)
-                    {
-                        layout_search.setVisibility(View.GONE);
+                        Type listType = new TypeToken<EmailActivityListModel>() {
+                        }.getType();
+                        EmailActivityListModel emailActivityListModel = new Gson().fromJson(headerString, listType);
+                        manualTaskModelList = emailActivityListModel.getManualTask();
+
+                        if (manualTaskModelList.size()==0)
+                        {
+                            layout_search.setVisibility(View.GONE);
+                            demo_layout.setVisibility(View.VISIBLE);
+
+
+                        }else {
+
+                            demo_layout.setVisibility(View.GONE);
+                        }
+
+
+                        if (currentPage != PAGE_START) emailAdepter.removeLoading();
+                        emailAdepter.addItems(manualTaskModelList);
+                        // check weather is last page or not
+                        if (emailActivityListModel.getTotal() > emailAdepter.getItemCount()) {
+                            emailAdepter.addLoading();
+                        } else {
+                            isLastPage = true;
+                        }
+                        isLoading = false;
+
+                    } else {
+                        // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
                         demo_layout.setVisibility(View.VISIBLE);
-
-
                     }
-                    else {
-                        layout_search.setVisibility(View.VISIBLE);
-                        rv_email_list.setLayoutManager(new LinearLayoutManager(Email_Sms_List_Activty.this, LinearLayoutManager.VERTICAL, false));
-                        emailAdepter = new EmailAdepter(Email_Sms_List_Activty.this, manualTaskModelList);
-                        rv_email_list.setAdapter(emailAdepter);
-                    }
+
 
                 }
                 else {
@@ -362,7 +422,9 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
     }
 
     public class EmailAdepter extends RecyclerView.Adapter<EmailAdepter.viewData> {
-
+        private static final int VIEW_TYPE_LOADING = 0;
+        private static final int VIEW_TYPE_NORMAL = 1;
+        private boolean isLoaderVisible = false;
         public Context mCtx;
         List<ManualTaskModel> manualTaskModelList;
 
@@ -382,83 +444,130 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         @NonNull
         @Override
         public EmailAdepter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.item_emailactivitylist, parent, false);
-            return new EmailAdepter.viewData(view);
+
+            switch (viewType) {
+                case VIEW_TYPE_NORMAL:
+                    return new EmailAdepter.viewData(
+                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_emailactivitylist, parent, false));
+                case VIEW_TYPE_LOADING:
+                    return new EmailAdepter.ProgressHolder(
+                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
+                default:
+                    return null;
+            }
+        }
+        @Override
+        public int getItemViewType(int position) {
+            if (isLoaderVisible) {
+                return position == manualTaskModelList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
+            } else {
+                return VIEW_TYPE_NORMAL;
+            }
+        }
+
+        public void addItems(List<ManualTaskModel> postItems) {
+            manualTaskModelList.addAll(postItems);
+            notifyDataSetChanged();
+        }
+
+        public void addLoading() {
+            isLoaderVisible = true;
+            manualTaskModelList.add(new ManualTaskModel());
+            notifyItemInserted(manualTaskModelList.size() - 1);
+        }
+
+        public void removeLoading() {
+            isLoaderVisible = false;
+            int position = manualTaskModelList.size() - 1;
+            ManualTaskModel item = getItem(position);
+            if (item != null) {
+                manualTaskModelList.remove(position);
+                notifyItemRemoved(position);
+            }
+        }
+        ManualTaskModel getItem(int position) {
+            return manualTaskModelList.get(position);
+        }
+
+        public void clear() {
+            manualTaskModelList.clear();
+            notifyDataSetChanged();
         }
 
         @SuppressLint("LogConditional")
         @Override
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
-            String conactname=item.getContactMasterFirstname()+" "+item.getContactMasterLastname();
-            holder.tv_username.setText(conactname);
-            holder.tv_task_description.setText(item.getContentBody());
-            //   holder.tv_status.setText(item.getStatus());
-            try {
-                String time =Global.getDate(item.getStartTime());
-                Log.e("Date is",time);
+            if(Global.IsNotNull(item.getContactMasterFirstname())&&!item.getContactMasterLastname().equals("")) {
 
-                String dt = covertTimeToText(time);
 
-               // Log.e("Date is 1 ",dt);
+                String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
+                holder.tv_username.setText(conactname);
+                holder.tv_task_description.setText(item.getContentBody());
+                //   holder.tv_status.setText(item.getStatus());
+                try {
+                    String time = Global.getDate(item.getStartTime());
+                    Log.e("Date is", time);
 
-                holder.tv_time.setText(dt);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                String currentDateandTime = sdf.format(new Date());
-                compareDates(currentDateandTime,time,holder.tv_status);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            String name =conactname;
-            String add_text="";
-            String[] split_data=name.split(" ");
-            try {
-                for (int i=0;i<split_data.length;i++)
-                {
-                    if (i==0)
-                    {
-                        add_text=split_data[i].substring(0,1);
-                    }
-                    else {
-                        add_text=add_text+split_data[i].substring(0,1);
-                        break;
-                    }
+                    String dt = covertTimeToText(time);
+
+                    // Log.e("Date is 1 ",dt);
+
+                    holder.tv_time.setText(dt);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    String currentDateandTime = sdf.format(new Date());
+                    compareDates(currentDateandTime, time, holder.tv_status);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            holder.no_image.setText(add_text.toUpperCase());
-            holder.no_image.setVisibility(View.VISIBLE);
-            holder.profile_image.setVisibility(View.GONE);
-            holder.layout_contec.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if (item.getType().toString().equals("SMS"))
-                    {
-                        SessionManager.setManualTaskModel(item);
-                        Intent intent=new Intent(getApplicationContext(), Sms_Detail_Activty.class);
-                        startActivity(intent);
+                String name = conactname;
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].substring(0, 1);
+                            break;
+                        }
                     }
-                    else {
-
-                        SessionManager.setManualTaskModel(item);
-                        Intent intent=new Intent(getApplicationContext(), Email_Detail_activty.class);
-                        startActivity(intent);
-                    }
-
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
+                holder.no_image.setText(add_text.toUpperCase());
+                holder.no_image.setVisibility(View.VISIBLE);
+                holder.profile_image.setVisibility(View.GONE);
+                holder.layout_contec.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (item.getType().toString().equals("SMS")) {
+                            SessionManager.setManualTaskModel(item);
+                            Intent intent = new Intent(getApplicationContext(), Sms_Detail_Activty.class);
+                            startActivity(intent);
+                        } else {
+
+                            SessionManager.setManualTaskModel(item);
+                            Intent intent = new Intent(getApplicationContext(), Email_Detail_activty.class);
+                            startActivity(intent);
+                        }
+
+                    }
+                });
+            }
         }
 
         @Override
         public int getItemCount() {
             return manualTaskModelList.size();
         }
+        public  class ProgressHolder extends EmailAdepter.viewData {
+            ProgressHolder(View itemView) {
+                super(itemView);
+            }
 
+        }
 
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_username, tv_task_description, tv_time,no_image,tv_status;
@@ -473,7 +582,6 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                 no_image = itemView.findViewById(R.id.no_image);
                 profile_image = itemView.findViewById(R.id.profile_image);
                 tv_status=itemView.findViewById(R.id.tv_status);
-                tv_status.setVisibility(View.VISIBLE);
                 layout_contec=itemView.findViewById(R.id.layout_contec);
             }
         }

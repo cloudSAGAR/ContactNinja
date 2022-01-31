@@ -371,9 +371,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     public class CampaingAdepter extends RecyclerView.Adapter<CampaingAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
+        private boolean isLoaderVisible = false;
         public Context mCtx;
         CampaingClick campaingClick;
-        private boolean isLoaderVisible = false;
         private List<Campaign_List.Campaign> campaignList = new ArrayList<>();
 
         public CampaingAdepter(Context context, List<Campaign_List.Campaign> campaignList, CampaingClick campaingClick) {
