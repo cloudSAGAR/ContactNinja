@@ -152,7 +152,10 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
         String time_zone= TimeZone.getDefault().getID();
-        tc_time_zone.setText("Time Zone("+localTime+"-"+time_zone);
+      //  tc_time_zone.setText("Time Zone("+localTime+"-"+time_zone);
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+        tc_time_zone.setText("Time Zone("+user_data.getUser().getUserTimezone().get(0).getText().toString()+")");
     }
 
     @Override
