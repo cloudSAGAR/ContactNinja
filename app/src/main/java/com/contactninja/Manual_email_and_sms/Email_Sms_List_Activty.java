@@ -429,8 +429,15 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
     }
 
     public void onRefresh() {
+        currentPage = PAGE_START;
+        isLastPage = false;
+        manualTaskModelList.clear();
+        emailAdepter.clear();
         try {
             if (Global.isNetworkAvailable(Email_Sms_List_Activty.this, MainActivity.mMainLayout)) {
+                if (!swipeToRefresh.isRefreshing()) {
+                    loadingDialog.showLoadingDialog();
+                }
                 Mail_list();
             }
         } catch (JSONException e) {
