@@ -652,8 +652,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                             ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-                            from_ac=select_userLinkedGmailList.get(i).getType();
-                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
+                            from_ac=userLinkedGmailList.get(i).getType();
+                            from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
 
                         }
                     }

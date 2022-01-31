@@ -251,7 +251,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                showAlertDialogButtonClicked();
                 break;
             case R.id.save_button:
                 if (ev_subject.getText().toString().equals("")) {
@@ -292,6 +292,43 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                 break;
 
         }
+    }
+
+
+    public void showAlertDialogButtonClicked() {
+
+        // Create an alert builder
+        androidx.appcompat.app.AlertDialog.Builder builder
+                = new androidx.appcompat.app.AlertDialog.Builder(this, R.style.MyDialogStyle);
+
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.logout_dialog, null);
+        builder.setView(customLayout);
+        androidx.appcompat.app.AlertDialog dialog
+                = builder.create();
+
+        TextView tv_title=customLayout.findViewById(R.id.tv_title);
+        TextView tv_sub_titale=customLayout.findViewById(R.id.tv_sub_titale);
+        TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
+        tv_title.setText("Are You Sure ?");
+        tv_sub_titale.setText("Are you sure that you would like to back  home ?");
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               finish();
+                dialog.dismiss();
+
+
+            }
+        });
+        dialog.show();
     }
 
     private void broadcast_manu() {
@@ -662,9 +699,8 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                             ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-
-                            from_ac=select_userLinkedGmailList.get(0).getType();
-                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
+                            from_ac=userLinkedGmailList.get(i).getType();
+                            from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
 
                         }
                     }
@@ -1099,7 +1135,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
 
     @Override
     public void onBackPressed() {
-        finish();
-        super.onBackPressed();
+        showAlertDialogButtonClicked();
+      //  super.onBackPressed();
     }
 }

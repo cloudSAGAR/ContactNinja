@@ -49,7 +49,7 @@
                     style="@style/tv_Medium_14"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/text_reg"
-                    android:text="A"
+
                      />
 
             </LinearLayout>
@@ -108,7 +108,6 @@
                             android:textColor="@color/text_reg"
                             style="@style/tv_regular_13"
                             android:singleLine="true"
-                            android:text="GC Gregory Christakis"
                              />
                         <TextView
                             android:visibility="gone"

@@ -749,8 +749,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
-
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
 
         public Context mCtx;
@@ -816,7 +814,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
     class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
         public Context mCtx;
@@ -922,9 +919,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
-
-
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
 
         public Context mCtx;
