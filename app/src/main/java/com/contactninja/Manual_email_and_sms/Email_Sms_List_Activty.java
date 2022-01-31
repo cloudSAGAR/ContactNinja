@@ -613,11 +613,24 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
             Log.e("pass Time",String.valueOf(pasTime.getTime()));
             long dateDiff = nowTime.getTime() - pasTime.getTime();
 
+            String diffrence= String.valueOf(String.valueOf(dateDiff).charAt(0));
+
+            Log.e("String is",diffrence);
+            if (diffrence.equals("-"))
+            {
+                dateDiff = pasTime.getTime() - nowTime.getTime();
+            }
+
+            Log.e("dateDiff",String.valueOf(dateDiff));
             long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
             long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
             long hour = TimeUnit.MILLISECONDS.toHours(dateDiff);
             long day = TimeUnit.MILLISECONDS.toDays(dateDiff);
 
+            Log.e("Second",String.valueOf(second));
+            Log.e("Minute", String.valueOf(minute));
+            Log.e("hour", String.valueOf(hour));
+            Log.e("day", String.valueOf(day));
             if (second < 60) {
                 convTime = second + " Sec " + suffix;
             } else if (minute < 60) {

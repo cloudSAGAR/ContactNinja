@@ -427,7 +427,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
 
 
                             from_ac="USERSMS";
-                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
+                            from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
 
 
                         }
