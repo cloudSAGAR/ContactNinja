@@ -421,7 +421,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setId(detail_contect.get(i).getContactId());
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
                         emaildetails_list.add(contactdetail);
@@ -439,7 +439,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setId(detail_contect.get(i).getContactId());
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
 

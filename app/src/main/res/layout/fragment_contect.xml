@@ -182,6 +182,7 @@
                 app:layout_constraintTop_toTopOf="@+id/fastscroller"/>
         </LinearLayout>
         <TextView
+            android:visibility="gone"
             android:layout_marginTop="-25dp"
             android:id="@+id/num_count"
             style="@style/tv_Medium_14"
