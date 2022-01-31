@@ -27,6 +27,7 @@
         </ImageView>
 
         <EditText
+            style="@style/tv_Medium_14"
             android:id="@+id/ev_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
             android:gravity="center|left"
             android:singleLine="true"
             android:hint="@string/search_hint"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
         </EditText>
@@ -61,8 +62,9 @@
             tools:ignore="ImageContrastCheck" />
 
         <TextView
+            android:padding="@dimen/_5sdp"
             android:id="@+id/add_new_contect"
-            style="@style/tv_regular"
+            style="@style/tv_Medium_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -70,12 +72,12 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/create_new_email"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:textColor="@color/text_reg"
+            />
 
         <TextView
             android:id="@+id/num_count"
-            style="@style/tv_regular"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
@@ -85,7 +87,7 @@
             android:singleLine="true"
             android:text=""
             android:textColor="@color/purple_500"
-            android:textStyle="bold" />
+            />
 
     </LinearLayout>
 

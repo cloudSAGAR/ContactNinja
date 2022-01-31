@@ -43,13 +43,11 @@
               tools:ignore="UseAppTint">
           </ImageView>
           <TextView
-              android:textStyle="bold"
               android:layout_gravity="center"
               android:gravity="center"
               android:id="@+id/currentMonth"
               android:layout_weight="0.6"
-              android:textSize="@dimen/_15sdp"
-              android:textColor="@color/tv_medium"
+              android:textColor="@color/text_reg"
               android:textAppearance="?android:attr/textAppearanceMedium"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
@@ -75,18 +73,18 @@
         android:gravity="center">
 
         <TextView
+            android:padding="@dimen/_5sdp"
 
             android:id="@+id/tv_last_time"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
             android:gravity="center|left"
             android:singleLine="true"
             android:text="Today"
-            android:textColor="@color/tv_medium"
-            android:textSize="@dimen/_15sdp"
-            android:textStyle="bold" />
+            android:textColor="@color/text_reg"
+            />
 
         <View
             android:layout_width="match_parent"
@@ -132,8 +130,9 @@
                 </ImageView>
 
                 <TextView
+                    android:padding="@dimen/_5sdp"
 
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -141,30 +140,29 @@
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Starts:"
-                    android:textColor="@color/home_list_sub_data"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/text_gray"
+                     />
 
                 <TextView
+                    android:padding="@dimen/_5sdp"
 
                     android:id="@+id/tv_name"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
-                    android:layout_marginStart="@dimen/_5sdp"
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Adam Smith, benjamin..."
                     android:textColor="@color/purple_200"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                     />
 
             </LinearLayout>
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/tv_time"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -175,7 +173,7 @@
                 android:text="12:00"
                 android:textColor="@color/purple_200"
                 android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
+                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -196,30 +194,29 @@
 
                 <TextView
 
-                    style="@style/tv_regular"
+                    android:padding="@dimen/_5sdp"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Repeats:"
-                    android:textColor="@color/home_list_sub_data"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/text_gray"
+                     />
 
                 <TextView
+                    android:padding="@dimen/_5sdp"
                     android:id="@+id/tv_refress"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Contact Ninja Blast"
                     android:textColor="@color/purple_200"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                     />
 
             </LinearLayout>
 
@@ -235,31 +232,30 @@
 
                 <TextView
 
-                    style="@style/tv_regular"
+                    android:padding="@dimen/_5sdp"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Ends:"
-                    android:textColor="@color/home_list_sub_data"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/text_gray"
+                     />
 
                 <TextView
 
+                    android:padding="@dimen/_5sdp"
                     android:id="@+id/tv_end_date"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:gravity="center|left"
                     android:singleLine="true"
                     android:text="Contact Ninja Blast"
                     android:textColor="@color/purple_200"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                     />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -285,6 +281,7 @@
             </de.hdodenhof.circleimageview.CircleImageView>
 
             <TextView
+                style="@style/tv_regular_13"
                 android:text="+3"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -314,7 +311,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_title"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -322,19 +319,19 @@
             android:gravity="center|left"
             android:text="your link is attached"
             android:textColor="@color/purple_200"
-            android:textSize="@dimen/_14sdp" />
+             />
 
 
         <TextView
             android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/tv_title_tct"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:text="Hello fellow Ninjas! Check out  Lorem ipsum dolor sit amet,  consectetuer adipiscing elit. Aenean commodo   ligula eget dolor. Aenean m"
-            android:textColor="@color/tv_medium"
-            android:textSize="@dimen/_13sdp" />
+            android:textColor="@color/text_reg"
+            />
 
 
     </LinearLayout>

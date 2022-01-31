@@ -26,11 +26,9 @@
                 <TextView
                     android:padding="@dimen/_10sdp"
                     android:id="@+id/tv_item"
-                    style="@style/tv_regular"
-                    android:textStyle="bold"
+                    style="@style/tv_regular_13"
                     android:text="Phone"
-                    android:textSize="@dimen/_13sdp"
-                    android:textColor="@color/tv_medium"
+                    android:textColor="@color/text_reg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -51,12 +49,9 @@
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:id="@+id/tv_phone"
-                style="@style/tv_regular"
-                android:textStyle="bold"
+                style="@style/tv_regular_13"
                 android:text="Phone"
-
                 android:layout_weight="1"
-                android:textSize="@dimen/_13sdp"
                 android:textColor="@color/purple_200"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

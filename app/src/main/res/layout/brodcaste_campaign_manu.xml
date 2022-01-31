@@ -32,10 +32,8 @@
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30sdp"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:gravity="center"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold"
                 android:text="Delete"
                 android:textColor="@color/camp_delete"
                 />
@@ -69,10 +67,8 @@
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30sdp"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:gravity="center"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold"
                 android:text="Edit"
                 android:textColor="@color/purple_200"
                 />

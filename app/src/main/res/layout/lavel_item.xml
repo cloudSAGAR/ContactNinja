@@ -21,10 +21,9 @@ android:layout_height="wrap_content">
             android:id="@+id/no_image"
             android:textStyle="bold"
             android:textColor="@color/white"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="@dimen/_12sdp"
             android:background="@drawable/shape_primary_circle"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp">
@@ -35,20 +34,21 @@ android:layout_height="wrap_content">
         <TextView
             android:layout_weight="1"
             android:id="@+id/tv_user_name"
-            style="@style/tv_regular"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
             android:layout_marginStart="@dimen/_12sdp"
             android:gravity="center|left"
             android:singleLine="true"
+            android:padding="@dimen/_5sdp"
             android:text="@string/add_new_group_name"
-            android:textColor="@color/bz_text"
-            android:textStyle="bold"
+            android:textColor="@color/text_reg"
           />
         <TextView
             android:id="@+id/tv_Referrer_by"
-            style="@style/tv_regular"
+            style="@style/tv_regular_12"
+            android:padding="@dimen/_5sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -56,8 +56,7 @@ android:layout_height="wrap_content">
             android:gravity="center|left"
             android:singleLine="true"
             android:text="@string/add_new_group_name"
-            android:textColor="@color/home_list_sub_data"
-            android:textStyle="bold"
+            android:textColor="@color/text_gray"
           />
 
     </LinearLayout>
@@ -67,6 +66,6 @@ android:layout_height="wrap_content">
         android:layout_height="@dimen/_1sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:background="@color/line_camp"/>
+        android:background="@color/line_separator"/>
 
 </LinearLayout>

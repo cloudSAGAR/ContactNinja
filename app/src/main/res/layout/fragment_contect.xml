@@ -35,6 +35,7 @@
             </ImageView>
 
             <EditText
+                style="@style/tv_Medium_14"
                 android:id="@+id/ev_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,12 +45,13 @@
                 android:gravity="center|left"
                 android:singleLine="true"
                 android:hint="@string/search_hint"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
             </EditText>
         </LinearLayout>
         <LinearLayout
+            android:layout_marginBottom="@dimen/_5sdp"
             android:id="@+id/add_new_contect_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,21 +69,23 @@
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_regular"
+                style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/add_new_contect"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textColor="@color/text_reg"
+
+                 />
 
             <TextView
                 android:id="@+id/num_count"
-                style="@style/tv_regular"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
@@ -91,18 +95,31 @@
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/purple_500"
-                android:textStyle="bold" />
+               />
 
         </LinearLayout>
+
+        <TextView
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/tv_upload"
+            style="@style/tv_regular_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:layout_marginStart="@dimen/_60sdp"
+            android:gravity="center|left"
+            android:singleLine="true"
+            android:text="@string/add_sink"
+            android:textColor="@color/purple_200"
+
+           />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/home_list_back_line" />
+            android:background="@color/line_separator" />
 
-
-        <androidx.appcompat.widget.SearchView
+       <androidx.appcompat.widget.SearchView
             android:id="@+id/contect_search"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
@@ -153,7 +170,7 @@
 
                 <com.reddit.indicatorfastscroll.FastScrollerView
                     android:id="@+id/fastscroller"
-                    style="@style/tv_regular1"
+                    style="@style/tv_regular_5"
                     android:layout_width="32dp"
 
                     android:layout_height="match_parent"

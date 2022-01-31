@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/tv_Medium"
+            style="@style/tv_Medium_14"
             android:textColor="@color/purple_200"/>
         <ImageView
             android:layout_gravity="center"
@@ -46,7 +46,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/tv_Medium"
+            style="@style/tv_Medium_14"
             android:textColor="@color/purple_200"/>
         <ImageView
             android:layout_gravity="center"

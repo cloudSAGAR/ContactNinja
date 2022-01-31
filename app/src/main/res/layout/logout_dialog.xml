@@ -10,25 +10,27 @@
 
 
     <TextView
-        style="@style/tv_Medium"
+        android:id="@+id/tv_title"
+        style="@style/tv_Medium_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="Sign Out of App?"
-        android:textColor="@color/tv_medium"
-        android:textSize="@dimen/_16sdp" />
+        android:textColor="@color/text_reg"
+       />
 
     <TextView
+        android:id="@+id/tv_sub_titale"
         android:layout_marginTop="@dimen/_10sdp"
-        style="@style/tv_regular"
+        style="@style/tv_regular_13"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="Are you sure that you would like to signout?"
         android:textColor="@color/otp_header_text_color"
-        android:textSize="@dimen/_14sdp" />
+         />
     <LinearLayout
         android:layout_marginTop="@dimen/_5sdp"
         android:gravity="end"
@@ -45,7 +47,7 @@
             android:padding="@dimen/_10sdp"
             android:textColor="@color/white"
             android:text="@string/cancel"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -57,7 +59,7 @@
             android:padding="@dimen/_10sdp"
             android:textColor="@color/white"
             android:text="@string/ok"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

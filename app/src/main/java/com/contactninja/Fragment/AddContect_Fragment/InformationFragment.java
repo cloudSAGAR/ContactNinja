@@ -1,5 +1,7 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -33,15 +35,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.AddContect.Message_Activity;
+import com.contactninja.Campaign.Campaign_Name_Activity;
+import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.TimezoneModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.WorkTypeData;
+import com.contactninja.Model.WorkingHoursModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -111,11 +119,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     public int emailFieldNumber=0;// total email add count
     ImageView iv_down;
 
+    CompanyAdapter companyAdapter;
+    List<CompanyModel.Company> companyList=new ArrayList<>();
+    int perPage = 20;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
 
-
-    public InformationFragment() {
-        // Required empty public constructor
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -129,6 +139,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
+        companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
 
 
         List<ContectListData.Contact> test_list = new ArrayList<>();
@@ -1266,13 +1277,25 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                SessionManager.setMessage_number(p_num);
+                SessionManager.setMessage_type("app");
+                SessionManager.setMessage_id(String.valueOf(id));
+                SessionManager.setEmail_screen_name("only_sms");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag","edit");
+                intent1.putExtra("type","SMS");
+                startActivity(intent1); //  finish();
 
 
-           Intent intent=new Intent(getActivity(), Message_Activity.class);
+                /*   Intent intent=new Intent(getActivity(), Message_Activity.class);
            intent.putExtra("number",p_num);
            intent.putExtra("id",id);
            intent.putExtra("type","app");
-           startActivity(intent);
+           startActivity(intent);*/
 
          //  showAlertDialogButtonClicked1(p_num, id, "app");
 
@@ -2411,10 +2434,25 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), EmailSend_Activity.class);
+                    SessionManager.setMessage_number(item.getEmail_number());
+                    SessionManager.setMessage_id(String.valueOf(item.getId()));
+
+
+                    SessionManager.setEmail_screen_name("only_email");
+                    SessionManager.setCampaign_type("");
+                    SessionManager.setCampaign_type_name("");
+                    SessionManager.setCampaign_Day("");
+                    SessionManager.setCampaign_minute("");
+                    Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                    intent1.putExtra("flag","edit");
+                    intent1.putExtra("type","EMAIL");
+                    startActivity(intent1);
+
+
+                  /*  Intent intent = new Intent(getActivity(), EmailSend_Activity.class);
                     intent.putExtra("email", item.getEmail_number());
                     intent.putExtra("id", String.valueOf(item.getId()));
-                    startActivity(intent);
+                    startActivity(intent);*/
                     //  showAlertDialogEmailMeassge(item.getEmail_number(), item.getId());
                 }
             });
@@ -2533,53 +2571,149 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         bottomSheetDialog_company.setContentView(R.layout.bottom_sheet_dialog_for_compnay);
         RecyclerView home_type_list = bottomSheetDialog_company.findViewById(R.id.home_type_list);
         TextView tv_item=bottomSheetDialog_company.findViewById(R.id.tv_item);
-        tv_item.setText("Please select Timezone");
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        tv_item.setText("Please select company");
+        tv_item.setVisibility(View.VISIBLE);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         home_type_list.setLayoutManager(layoutManager);
         ImageView search_icon=bottomSheetDialog_company.findViewById(R.id.search_icon);
-        EditText ev_search=bottomSheetDialog_company.findViewById(R.id.ev_search);
+       EditText ev_search=bottomSheetDialog_company.findViewById(R.id.ev_search);
         LinearLayout add_new=bottomSheetDialog_company.findViewById(R.id.add_new);
-        search_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ev_search.requestFocus();
-            }
-        });
-        List<ContectListData> List_is=SessionManager.getContectList(getContext());
-        List<ContectListData.Company> companyList=List_is.get(0).getCompany();
-        CompanyAdapter companyAdapter = new CompanyAdapter(getActivity(), companyList);
+       search_icon.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               ev_search.requestFocus();
+           }
+       });
+
         home_type_list.setAdapter(companyAdapter);
-        add_new.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+       home_type_list.addOnScrollListener(new PaginationListener(layoutManager) {
+           @Override
+           protected void loadMoreItems() {
+               isLoading = true;
+               currentPage++;
+               try {
+                   if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                       CompanyList();
+                   }
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
+           }
 
-                bottomSheetDialog_company.cancel();
+           @Override
+           public boolean isLastPage() {
+               return isLastPage;
+           }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
             }
         });
-        ev_search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+     add_new.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                List<ContectListData.Company> temp = new ArrayList();
-                for(ContectListData.Company d: companyList){
-                    if(d.getName().toLowerCase().contains(charSequence.toString().toLowerCase())){
-                        temp.add(d);
-                        // Log.e("Same Data ",d.getUserName());
-                    }
-                }
-                companyAdapter.updateList(temp);
-            }
+             bottomSheetDialog_company.cancel();
+         }
+     });
+     ev_search.addTextChangedListener(new TextWatcher() {
+         @Override
+         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            @Override
-            public void afterTextChanged(Editable editable) {
+         }
 
-            }
-        });
+       @Override
+       public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+           List<CompanyModel.Company> temp = new ArrayList();
+           for(CompanyModel.Company d: companyList){
+               if(d.getName().toLowerCase().contains(charSequence.toString().toLowerCase())){
+                   temp.add(d);
+                   // Log.e("Same Data ",d.getUserName());
+               }
+           }
+           companyAdapter.updateList(temp);
+       }
+
+       @Override
+       public void afterTextChanged(Editable editable) {
+
+         }
+     });
         bottomSheetDialog_company.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        currentPage = PAGE_START;
+        isLastPage = false;
+        companyList.clear();
+        companyAdapter.clear();
+        try {
+            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+
+                CompanyList();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void CompanyList() throws JSONException {
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("perPage", perPage);
+        paramObject.addProperty("page", currentPage);
+        obj.add("data", paramObject);
+        retrofitCalls.CompanyList(sessionManager, obj, loadingDialog,  Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+                if(response.body().getHttp_status().equals(200)){
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    if (response.body().getHttp_status() == 200) {
+                    //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
+                        Type listType = new TypeToken<CompanyModel>() {
+                        }.getType();
+                        CompanyModel data = new Gson().fromJson(headerString, listType);
+                        List<CompanyModel.Company> companyList=data.getData();
+                       // sessionManager.setCompanylist(getActivity(), data.getData());
+
+
+                        if (currentPage != PAGE_START) companyAdapter.removeLoading();
+                        companyAdapter.addItems(companyList);
+                        // check weather is last page or not
+                        if (data.getTotal() > companyAdapter.getItemCount()) {
+                            companyAdapter.addLoading();
+                        } else {
+                            isLastPage = true;
+                        }
+                        isLoading = false;
+
+                    } else {
+                        // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
     }
 
     public class TimezoneAdapter extends RecyclerView.Adapter<TimezoneAdapter.InviteListDataclass> {
@@ -2605,6 +2739,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         @Override
         public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
             TimezoneModel WorkData = timezoneModels.get(position);
+
             holder.tv_item.setText(WorkData.getText());
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2644,40 +2779,92 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     }
 
 
-    public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.InviteListDataclass> {
-
+    public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.viewData> {
+        private static final int VIEW_TYPE_LOADING = 0;
+        private static final int VIEW_TYPE_NORMAL = 1;
+        private boolean isLoaderVisible = false;
         public Context mCtx;
         TextView phone_txt;
         Contactdetail item;
-        private List<ContectListData.Company> companyList;
+        private List<CompanyModel.Company> companyList;
 
-        public CompanyAdapter(Context context, List<ContectListData.Company> companyList) {
+        public CompanyAdapter(Context context, List<CompanyModel.Company> companyList) {
             this.mCtx = context;
             this.companyList = companyList;
         }
 
         @NonNull
         @Override
-        public InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.company_type_selecte, parent, false);
-            return new InviteListDataclass(view);
+        public CompanyAdapter.viewData  onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            switch (viewType) {
+                case VIEW_TYPE_NORMAL:
+                    return new CompanyAdapter.viewData(
+                            LayoutInflater.from(parent.getContext()).inflate(R.layout.company_type_selecte, parent, false));
+                case VIEW_TYPE_LOADING:
+                    return new CompanyAdapter.ProgressHolder(
+                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
+                default:
+                    return null;
+            }
+
+        }
+        @Override
+        public int getItemViewType(int position) {
+            if (isLoaderVisible) {
+                return position == companyList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
+            } else {
+                return VIEW_TYPE_NORMAL;
+            }
+        }
+
+        public void addItems(List<CompanyModel.Company> postItems) {
+            companyList.addAll(postItems);
+            notifyDataSetChanged();
+        }
+
+        public void addLoading() {
+            isLoaderVisible = true;
+            companyList.add(new CompanyModel.Company());
+            notifyItemInserted(companyList.size() - 1);
+        }
+
+        public void removeLoading() {
+            isLoaderVisible = false;
+            int position = companyList.size() - 1;
+            CompanyModel.Company item = getItem(position);
+            if (item != null) {
+                companyList.remove(position);
+                notifyItemRemoved(position);
+            }
+        }
+
+        public void clear() {
+            companyList.clear();
+            notifyDataSetChanged();
+        }
+
+
+
+        CompanyModel.Company getItem(int position) {
+            return companyList.get(position);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
-            ContectListData.Company WorkData = companyList.get(position);
-            holder.tv_item.setText(WorkData.getName());
-            holder.tv_item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    bottomSheetDialog_company.cancel();
-                    ev_company.setText(holder.tv_item.getText().toString());
-                    //addcontectModel.setCompany(String.valueOf(WorkData.getName()));
-                    addcontectModel.setCompany_id(String.valueOf(WorkData.getId()));
-                    SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-                }
-            });
+        public void onBindViewHolder(@NonNull viewData holder, int position) {
+            CompanyModel.Company WorkData = companyList.get(position);
+            if(Global.IsNotNull(WorkData)&&!WorkData.getName().equals("")){
+                holder.tv_item.setText(WorkData.getName());
+                holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog_company.cancel();
+                        ev_company.setText(holder.tv_item.getText().toString());
+                        //addcontectModel.setCompany(String.valueOf(WorkData.getName()));
+                        addcontectModel.setCompany_id(String.valueOf(WorkData.getId()));
+                        SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                    }
+                });
+            }
 
         }
 
@@ -2685,24 +2872,24 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         public int getItemCount() {
             return companyList.size();
         }
-
-        public void updateList(List<ContectListData.Company> list) {
+        public void updateList(List<CompanyModel.Company> list) {
             companyList = list;
             notifyDataSetChanged();
         }
-
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
+        public class viewData extends RecyclerView.ViewHolder {
             TextView tv_item;
 
-            public InviteListDataclass(@NonNull View itemView) {
+            public viewData(@NonNull View itemView) {
                 super(itemView);
                 tv_item = itemView.findViewById(R.id.tv_item);
             }
-
         }
 
+        public class ProgressHolder extends viewData {
+            ProgressHolder(View itemView) {
+                super(itemView);
+            }
+
+        }
     }
-
-
-
 }

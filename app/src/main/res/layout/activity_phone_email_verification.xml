@@ -27,7 +27,7 @@
 
                 <TextView
                     android:id="@+id/tv_welcome"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
@@ -39,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/tv_dis"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_welcome"
@@ -91,7 +91,7 @@
 
                         <EditText
                             android:id="@+id/edit_Mobile"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -105,7 +105,6 @@
                             android:textColor="@color/otp_header_text_color"
                             android:textColorHighlight="@color/purple_200"
                             android:textColorHint="@color/otp_header_text_color"
-                            android:textStyle="bold"
                             tools:ignore="Autofill" />
 
                     </LinearLayout>
@@ -122,7 +121,7 @@
 
                         <EditText
                             android:id="@+id/edit_email"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -132,7 +131,6 @@
                             android:imeOptions="actionDone"
                             android:inputType="textEmailAddress"
                             android:padding="10dp"
-                            android:textStyle="bold"
                             android:textColor="@color/otp_header_text_color"
                             android:textColorHint="@color/otp_header_text_color"
                             tools:ignore="Autofill,RtlHardcoded" />
@@ -147,17 +145,18 @@
 
                     <TextView
                         android:id="@+id/iv_invalid"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_12"
                         android:layout_width="@dimen/_150sdp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
                         android:textColor="@color/red"
-                        android:textStyle="bold" />
+                        />
                 </LinearLayout>
 
                 <TextView
+                    style="@style/tv_regular_13"
                     android:id="@+id/btn_getStarted"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
@@ -171,8 +170,7 @@
                     android:letterSpacing="0.05"
                     android:text="@string/get_started"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                   />
 
 
    </RelativeLayout>

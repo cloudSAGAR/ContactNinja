@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mMainLayout"
     tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".AddContect.EmailSend_Activity">
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
+
+
     <LinearLayout
-        android:layout_marginTop="@dimen/_70sdp"
-        android:orientation="vertical"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_layout"
+        android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
-
         <LinearLayout
-            android:weightSum="1"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
             <TextView
-                android:layout_gravity="center"
-                style="@style/tv_Medium"
-                android:textSize="@dimen/_14sdp"
-                android:text="@string/from"
-                android:textColor="@color/purple_200"
+                style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="Task title: "
+                android:textColor="@color/text_gray">
 
             </TextView>
 
             <EditText
-                android:layout_weight="1"
-                android:id="@+id/ev_from"
-                style="@style/tv_regular"
+                android:id="@+id/ev_titale"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -43,93 +46,99 @@
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:paddingStart="@dimen/_15sdp"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-            <ImageView
-                android:visibility="gone"
-                android:padding="@dimen/_10sdp"
-                android:id="@+id/iv_more"
-                android:src="@drawable/ic_down"
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"/>
-
 
 
         </LinearLayout>
+
         <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/line_camp"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_height="1dp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/line_separator">
 
         </View>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:weightSum="1">
+
             <TextView
-                style="@style/tv_Medium"
-                android:textSize="@dimen/_14sdp"
+                style="@style/tv_Medium_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/from"
+                android:textColor="@color/purple_200">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/ev_from"
+                style="@style/tv_regular_13"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:imeOptions="actionDone"
+                android:paddingStart="@dimen/_15sdp"
+                android:textColor="@color/text_reg"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+            <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_down" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/line_separator">
+
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
+            <TextView
+                style="@style/tv_Medium_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
                 android:text="@string/to"
                 android:textColor="@color/purple_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:textSize="@dimen/_14sdp">
 
             </TextView>
 
             <EditText
                 android:id="@+id/ev_to"
-                style="@style/tv_regular"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/add_contect_transpernt"
-                android:focusable="true"
-                android:gravity="left"
-                android:paddingStart="@dimen/_15sdp"
-                android:imeOptions="actionDone"
-                android:textColor="@color/tv_medium"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-
-
-
-        </LinearLayout>
-        <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_camp"
-            android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
-
-        </View>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                style="@style/tv_regular"
-                android:textSize="@dimen/_14sdp"
-                android:text="@string/to_subject"
-                android:textColor="@color/home_list_sub_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
-
-            <EditText
-                android:layout_marginStart="@dimen/_5sdp"
-                android:id="@+id/ev_subject"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -137,66 +146,189 @@
                 android:focusable="true"
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
-                android:hint="@string/ComposeEmail"
-                android:textColor="@color/tv_medium"
+                android:paddingStart="@dimen/_15sdp"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
 
-
         </LinearLayout>
+
         <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_camp"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_height="1dp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/line_separator">
 
         </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
+            <TextView
+                style="@style/tv_Medium_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/to_subject"
+                android:textColor="@color/text_gray"/>
+
+            <EditText
+                android:id="@+id/ev_subject"
+                style="@style/tv_regular_13"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:hint="@string/ComposeEmail"
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_reg"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/line_separator">
+
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
+            <TextView
+                style="@style/tv_Medium_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="date:  "
+                android:textColor="@color/text_gray"/>
+
+            <TextView
+
+                android:id="@+id/tv_date"
+                style="@style/tv_regular_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/text_reg"/>
+
+            <TextView
+                android:id="@+id/tv_status"
+                style="@style/tv_regular_13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:gravity="center|right"
+                android:textColor="@color/text_gray"/>
+
+
+        </LinearLayout>
+
         <EditText
             android:id="@+id/edit_compose"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/add_contect_transpernt"
             android:focusable="true"
             android:gravity="left"
+            android:hint="@string/ComposeEmail"
             android:imeOptions="actionDone"
             android:padding="15dp"
-            android:hint="@string/ComposeEmail"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
-    <ImageView
-        android:id="@+id/iv_body"
-        android:visibility="gone"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="@drawable/shep_gray_back"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp">
+        <ImageView
+            android:id="@+id/iv_body"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/shep_gray_back"
+            android:visibility="gone">
 
-    </ImageView>
+        </ImageView>
     </LinearLayout>
-    <TextView
-        android:id="@+id/bt_done"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:background="@drawable/shape_50_blue"
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:textSize="@dimen/_15sdp"
-        style="@style/tv_Medium"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="Send and complete"
-        android:textColor="@color/white"
-        android:layout_height="@dimen/_45sdp">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+>
+        <LinearLayout
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
 
-    </TextView>
 
-    <include layout="@layout/toolbar" />
+            <TextView
+                android:id="@+id/tv_use_tamplet"
+                android:text="@string/temp_txt"
+                android:textColor="@color/white"
+                style="@style/tv_regular_12"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_8sdp"
+                android:background="@drawable/shape_5_blue"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_direct_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/_5sdp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/bt_done"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@drawable/shape_50_blue"
+            android:layout_width="match_parent"
+            style="@style/tv_Medium_14"
+            android:gravity="center"
+            android:text="Send and complete"
+            android:textColor="@color/white"
+            android:layout_height="@dimen/_45sdp">
+
+        </TextView>
+    </LinearLayout>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</RelativeLayout>

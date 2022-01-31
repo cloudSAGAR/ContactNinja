@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".Campaign.First_Step_Start_Activity">
+        tools:context=".Campaign.Add_Camp_SMS_Activity">
     <include
         layout="@layout/toolbar"/>
 
@@ -38,7 +38,7 @@
         <TextView
             android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/add_new_contect"
-            style="@style/tv_regular"
+            style="@style/tv_Medium_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -46,9 +46,9 @@
             android:singleLine="true"
             android:textSize="@dimen/_16sdp"
             android:text="@string/campaign_step_title"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:textStyle="bold" />
+             />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/item_list"

@@ -55,7 +55,7 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
-public class First_Step_Start_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick , ConnectivityReceiver.ConnectivityReceiverListener{
+public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick , ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back;
     TextView save_button, tv_use_tamplet, tv_step;
     SessionManager sessionManager;
@@ -80,13 +80,13 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_step_start);
         mNetworkReceiver = new ConnectivityReceiver();
-        templateClick = First_Step_Start_Activity.this;
+        templateClick = Add_Camp_SMS_Activity.this;
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
         try {
-            if (Global.isNetworkAvailable(First_Step_Start_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Add_Camp_SMS_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
             }
         } catch (JSONException e) {
@@ -141,7 +141,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList = new BottomSheetDialog(First_Step_Start_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList = new BottomSheetDialog(Add_Camp_SMS_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
@@ -149,7 +149,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         templet_list.setVisibility(View.VISIBLE);
 
         try {
-            if (Global.isNetworkAvailable(First_Step_Start_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Add_Camp_SMS_Activity.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -164,7 +164,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(First_Step_Start_Activity.this, mMainLayout);
+        Global.checkConnectivity(Add_Camp_SMS_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -195,7 +195,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
 
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(First_Step_Start_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_SMS_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -203,7 +203,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(First_Step_Start_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -284,7 +284,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     private void Hastag_list() throws JSONException {
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(First_Step_Start_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_SMS_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -292,7 +292,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(First_Step_Start_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -361,9 +361,11 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
                 break;
             case R.id.save_button:
                 //Add Api Call
+                Global.hideKeyboard(Add_Camp_SMS_Activity.this);
                 Global.count = 1;
-                if (edit_template.getText().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, "ERROR", false);
+                String body=edit_template.getText().toString();
+                if (body.equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_message), false);
 
                 } else {
                     StepData();
@@ -520,7 +522,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             obj.add("data", paramObject);
         }
 
-        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(First_Step_Start_Activity.this),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
@@ -564,7 +566,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     private void CreateTemplate(String body_text, String s) throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(First_Step_Start_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_SMS_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -579,7 +581,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         paramObject.addProperty("type", "SMS");
 
         obj.add("data", paramObject);
-        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(First_Step_Start_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -602,8 +604,6 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
-
-
         });
 
 
@@ -634,10 +634,10 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
             HastagList.TemplateText item = templateTextList.get(position);
             holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
                 holder.line_view.setVisibility(View.VISIBLE);
             } else {
                 holder.line_view.setVisibility(View.GONE);
@@ -706,7 +706,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
         public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
                 holder.line_view.setVisibility(View.VISIBLE);
@@ -751,7 +751,7 @@ public class First_Step_Start_Activity extends AppCompatActivity implements View
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+        Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
         intent.putExtra("flag","new");
         startActivity(intent);
         finish();

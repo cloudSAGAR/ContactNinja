@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,6 +9,7 @@
     tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".AddContect.EmailSend_Activity">
     <LinearLayout
+        android:id="@+id/layout_header"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,15 +17,126 @@
         <include
             layout="@layout/toolbar"/>
 
+        <LinearLayout
+            android:layout_marginTop="@dimen/_10sdp"
+            android:weightSum="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:padding="@dimen/_5sdp"
+                android:layout_gravity="center"
+                style="@style/tv_Medium_16"
+                android:textSize="@dimen/_14sdp"
+                android:text="Task title:"
+                android:textColor="@color/text_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+            </TextView>
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/ev_task_title"
+                style="@style/tv_regular_13"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:imeOptions="actionDone"
+                android:paddingStart="@dimen/_15sdp"
+                android:textColor="@color/text_reg"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+            <ImageView
+                android:visibility="gone"
+                android:padding="@dimen/_10sdp"
+                android:id="@+id/iv_more"
+                android:src="@drawable/ic_down"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@color/line_separator"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_height="1dp">
+
+        </View>
+
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_10sdp"
+            android:weightSum="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:padding="@dimen/_5sdp"
+                android:layout_gravity="center"
+                style="@style/tv_Medium_14"
+                android:text="@string/from"
+                android:textColor="@color/purple_200"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/ev_from"
+                style="@style/tv_regular_13"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:imeOptions="actionDone"
+                android:paddingStart="@dimen/_15sdp"
+                android:textColor="@color/text_reg"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+            <ImageView
+                android:id="@+id/iv_down"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_down"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@color/line_separator"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_height="1dp">
+
+        </View>
     </LinearLayout>
 
     <LinearLayout
-
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_below="@+id/layout_header"
+        android:layout_above="@+id/layout_template"
         android:orientation="horizontal"
         android:weightSum="1"
-        android:gravity="center"
-        android:layout_marginBottom="@dimen/_45sdp"
+        android:gravity="bottom"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:layout_gravity="bottom"
         android:layout_width="match_parent" android:layout_height="wrap_content">
         <EditText
@@ -34,11 +147,12 @@
             android:background="@drawable/shape_25_white_gray_line_1"
             android:id="@+id/ev_txt"
             android:textSize="@dimen/_15sdp"
-            android:textColor="@color/tv_medium"
-            style="@style/tv_Medium"
+            android:textColor="@color/text_reg"
+            style="@style/tv_Medium_16"
             android:paddingStart="@dimen/_15sdp"
             android:hint="Enter Your Message"
             android:padding="@dimen/_10sdp"
+            android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -57,14 +171,13 @@
         </ImageView>
     </LinearLayout>
     <LinearLayout
-
-
+        android:id="@+id/layout_template"
+        android:layout_marginBottom="@dimen/_15sdp"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-
         android:layout_alignParentBottom="true">
 
 
@@ -73,14 +186,13 @@
             android:id="@+id/tv_use_tamplet"
             android:text="@string/temp_txt"
             android:textColor="@color/white"
-            style="@style/tv_regular"
+            style="@style/tv_regular_12"
             android:layout_marginStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
             android:background="@drawable/shape_10_blue"
-            android:textSize="@dimen/_12sdp"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
@@ -100,4 +212,4 @@
 
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

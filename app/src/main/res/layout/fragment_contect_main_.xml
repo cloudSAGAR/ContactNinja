@@ -29,7 +29,9 @@
 
         </ImageView>
         <EditText
-            android:textColor="@color/tv_medium"
+            android:hint="@string/search_hint"
+            style="@style/tv_Medium_14"
+            android:textColor="@color/text_reg"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_gravity="center|left"
             android:gravity="center|left"
@@ -46,10 +48,10 @@
     <com.google.android.material.tabs.TabLayout
         android:layout_marginTop="@dimen/_5sdp"
         android:id="@+id/tabLayout"
-        style="@style/tv_bold"
+        style="@style/tv_bold_16"
         app:tabIndicatorColor="@color/home_list_tab_bg"
-        app:tabSelectedTextColor="@color/tv_medium"
-        app:tabTextColor="@color/bz_text"
+        app:tabSelectedTextColor="@color/text_reg"
+        app:tabTextColor="@color/text_reg"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
         android:layout_height="wrap_content"

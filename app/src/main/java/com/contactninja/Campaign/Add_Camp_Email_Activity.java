@@ -59,7 +59,7 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class Automated_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick ,TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
+public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick ,TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button, tv_use_tamplet;
     SessionManager sessionManager;
@@ -81,6 +81,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     int minite = 00, day = 1;
     public String template_id_is="";
     private BroadcastReceiver mNetworkReceiver;
+    TextView add_new_contect;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,11 +90,11 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        templateClick=Automated_Email_Activity.this;
+        templateClick= Add_Camp_Email_Activity.this;
 
         IntentUI();
         try {
-            if (Global.isNetworkAvailable(Automated_Email_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
             }
         } catch (JSONException e) {
@@ -120,7 +121,19 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         Intent inten=getIntent();
         Bundle bundle=inten.getExtras();
         String flag=bundle.getString("flag");
-        if (flag.equals("edit"))
+        if (SessionManager.getTask(getApplicationContext()).size() == 0) {
+            String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
+            String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+            add_new_contect.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
+        } else {
+            List<CampaignTask> step=   SessionManager.getTask(getApplicationContext());
+
+            int step_id = step.get(0).getStepNo()+1;
+            String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+            add_new_contect.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
+
+        }
+   /*     if (flag.equals("edit"))
         {
             edit_template.setText(bundle.getString("body"));
 
@@ -143,13 +156,42 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             e.printStackTrace();
           }
 
+        }*/
+
+
+        if (flag.equals("edit"))
+        {
+            edit_template.setText(bundle.getString("body"));
+
+            seq_task_id= String.valueOf(bundle.getInt("seq_task_id"));
+            sequence_id= String.valueOf(bundle.getInt("sequence_id"));
+
+            step_no= String.valueOf(bundle.getInt("step"));
+            ev_subject.setText(bundle.getString("header"));
+            //  SessionManager.setCampaign_type(bundle.getString("type"));
+            //SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
+
+            Log.e("Step ",step_no);
+            String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+            add_new_contect.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
+
+            try {
+                // minite= bundle.getInt("minute");
+                //day= bundle.getInt("day");
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
         }
 
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(getApplicationContext(),First_Step_Activity.class);
+        Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
         intent.putExtra("flag","new");
         startActivity(intent);
         finish();
@@ -158,7 +200,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Automated_Email_Activity.this, mMainLayout);
+        Global.checkConnectivity(Add_Camp_Email_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -189,7 +231,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     private void Hastag_list() throws JSONException {
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -197,7 +239,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -268,6 +310,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
         tv_use_tamplet.setOnClickListener(this);
         rv_direct_list = findViewById(R.id.rv_direct_list);
+        add_new_contect=findViewById(R.id.add_new_contect);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -278,6 +321,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
                 onBackPressed();
                 break;
             case R.id.save_button:
+                Global.hideKeyboard(Add_Camp_Email_Activity.this);
                 if (ev_subject.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
                 }
@@ -300,14 +344,14 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList= new BottomSheetDialog(Automated_Email_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList= new BottomSheetDialog(Add_Camp_Email_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
         try {
-            if(Global.isNetworkAvailable(Automated_Email_Activity.this, MainActivity.mMainLayout)) {
+            if(Global.isNetworkAvailable(Add_Camp_Email_Activity.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -321,7 +365,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         bottomSheetDialog_templateList.show();
     }
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -329,7 +373,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -454,7 +498,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
 
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
@@ -517,7 +561,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             @Override
             public void onClick(View v) {
                 try {
-                    if (Global.isNetworkAvailable(Automated_Email_Activity.this, Automated_Email_Activity.mMainLayout)) {
+                    if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
                         if (isValidation(edit_template,ev_subject,edt_template_name))
                             CreateTemplate(edit_template,ev_subject,edt_template_name,dialog);
                     }
@@ -623,7 +667,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
 
         }
 
-        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Automated_Email_Activity.this),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
@@ -665,7 +709,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
     }
     private void CreateTemplate(EditText edit_template, EditText ev_subject, EditText edt_template_name, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Automated_Email_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -680,7 +724,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
         paramObject.addProperty("type", "EMAIL");
 
         obj.add("data", paramObject);
-        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Automated_Email_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -753,7 +797,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             HastagList.TemplateText item = templateTextList.get(position);
             holder.tv_item.setText(item.getDescription());
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
-            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+            holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {
                 holder.im_file.setVisibility(View.VISIBLE);
                 holder.tv_item.setVisibility(View.GONE);
@@ -788,7 +832,7 @@ public class Automated_Email_Activity extends AppCompatActivity implements View.
             });
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
-                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.tv_medium));
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
                 holder.line_view.setVisibility(View.VISIBLE);
             } else {
                 holder.line_view.setVisibility(View.GONE);

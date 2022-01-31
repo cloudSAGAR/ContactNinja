@@ -60,7 +60,7 @@ import java.util.List;
 
 import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class ContectAndGroup_Actvity extends AppCompatActivity implements View.OnClickListener ,CardClick,  ConnectivityReceiver.ConnectivityReceiverListener{
+public class ContectAndGroup_Actvity extends AppCompatActivity implements View.OnClickListener ,  ConnectivityReceiver.ConnectivityReceiverListener{
     TabLayout tabLayout;
     ViewPager viewPager;
     EditText contect_search;
@@ -70,12 +70,12 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
     ImageView iv_back, iv_Setting;
     TextView save_button;
     List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
-    CardListAdepter cardListAdepter;
     private BroadcastReceiver mNetworkReceiver;
 
     LinearLayout main_layout;
     SessionManager sessionManager;
     int sequence_id,seq_task_id;
+    String sequence_Name="";
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     @Override
@@ -91,6 +91,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         Bundle bundle=getintent.getExtras();
         sequence_id=bundle.getInt("sequence_id");
         seq_task_id=bundle.getInt("seq_task_id");
+        sequence_Name=bundle.getString("sequence_Name");
 
         if (SessionManager.getContect_flag(getApplicationContext()).equals("edit"))
         {
@@ -214,6 +215,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                 finish();
                 break;
             case R.id.save_button:
+                Global.hideKeyboard(ContectAndGroup_Actvity.this);
                 try {
                     AddContectAndGroup(seq_task_id,sequence_id);
                 } catch (JSONException e) {
@@ -228,18 +230,6 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
     public void onBackPressed() {
         finish();
         super.onBackPressed();
-    }
-
-    @Override
-    public void Onclick(Broadcast_image_list broadcastImageList) {
-        for(int i=0;i<broadcast_image_list.size();i++){
-            if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
-                broadcast_image_list.get(i).setScelect(true);
-            }else {
-                broadcast_image_list.get(i).setScelect(false);
-            }
-        }
-        cardListAdepter.notifyDataSetChanged();
     }
 
     class ViewpaggerAdapter extends FragmentPagerAdapter {
@@ -313,18 +303,53 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
 
 
     public void AddContectAndGroup(int seq_task_id, int sequence_id) throws JSONException {
-        loadingDialog.showLoadingDialog();
 
-        if (sessionManager.getGroupList(this).equals(null))
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("seq_task_id", seq_task_id);
+        paramObject.put("seq_id", sequence_id);
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        List<ContectListData.Contact> contactdetails=sessionManager.getGroupList(this);
+        JSONArray jsonArray = new JSONArray();
+        Log.e("Contec List Size",String.valueOf(contactdetails.size()));
+        for (int i = 0; i < contactdetails.size(); i++) {
+            Log.e("Contec List Size",String.valueOf(contactdetails.get(0).getContactDetails().size()));
+            JSONObject paramObject1 = new JSONObject();
+            paramObject1.put("prospect_id",contactdetails.get(i).getId());
+            Log.e("Contect Detail is",new Gson().toJson(contactdetails.get(i).getContactDetails()));
+            for (int j=0;j<contactdetails.get(i).getContactDetails().size();j++)
+            {
+                if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
+                {
+                    paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                }
+                else {
+                    paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                }
+                //break;
+            }
+
+            jsonArray.put(paramObject1);
+        }
+
+        List<Grouplist.Group> group_list=SessionManager.getgroup_broadcste(getApplicationContext());
+        JSONArray contect_array = new JSONArray();
+        for (int i =0;i<group_list.size();i++)
+        {
+            contect_array.put(group_list.get(i).getId());
+        }
+        paramObject.put("prospect_ids", jsonArray);
+        if ((jsonArray!=null&& jsonArray.length()== 0) && (contect_array!=null&& contect_array.length() == 0))
         {
             Global.Messageshow(getApplicationContext(),main_layout,getString(R.string.camp_select_contect).toString(),false);
         }
         else {
-
-            SignResponseModel user_data = SessionManager.getGetUserdata(this);
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+            loadingDialog.showLoadingDialog();
 
             Log.e("Contect List is",new Gson().toJson(sessionManager.getGroupList(this)));
             Log.e("Group List is",new Gson().toJson(SessionManager.getgroup_broadcste(getApplicationContext())));
@@ -340,42 +365,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             }
             Log.e("sequence_id", String.valueOf(this.sequence_id));
             JSONObject obj = new JSONObject();
-            JSONObject paramObject = new JSONObject();
-            paramObject.put("organization_id", "1");
-            paramObject.put("seq_task_id", seq_task_id);
-            paramObject.put("seq_id", sequence_id);
-            paramObject.put("team_id", "1");
-            paramObject.put("user_id", user_id);
-            List<ContectListData.Contact> contactdetails=sessionManager.getGroupList(this);
-            JSONArray jsonArray = new JSONArray();
-            Log.e("Contec List Size",String.valueOf(contactdetails.size()));
-            for (int i = 0; i < contactdetails.size(); i++) {
-                Log.e("Contec List Size",String.valueOf(contactdetails.get(0).getContactDetails().size()));
-                JSONObject paramObject1 = new JSONObject();
-                paramObject1.put("prospect_id",contactdetails.get(i).getId());
-               Log.e("Contect Detail is",new Gson().toJson(contactdetails.get(i).getContactDetails()));
-                for (int j=0;j<contactdetails.get(i).getContactDetails().size();j++)
-                {
-                    if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
-                    {
-                        paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
-                    }
-                    else {
-                        paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
-                    }
-                    //break;
-                }
 
-                jsonArray.put(paramObject1);
-            }
-
-            List<Grouplist.Group> group_list=SessionManager.getgroup_broadcste(getApplicationContext());
-            JSONArray contect_array = new JSONArray();
-            for (int i =0;i<group_list.size();i++)
-            {
-                contect_array.put(group_list.get(i).getId());
-            }
-            paramObject.put("prospect_ids", jsonArray);
             paramObject.put("contact_group_ids",contect_array);
             obj.put("data", paramObject);
             JsonParser jsonParser = new JsonParser();
@@ -402,13 +392,14 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                                    Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
                                    intent.putExtra("sequence_id", sequence_id);
                                    startActivity(intent);
-                                   finish();
+                                //   finish();
 
                                }
                               else {
                                    Intent intent=new Intent(getApplicationContext(),Campaign_Name_Activity.class);
                                    intent.putExtra("sequence_id",sequence_id);
                                    intent.putExtra("seq_task_id",seq_task_id);
+                                   intent.putExtra("sequence_Name",sequence_Name);
                                    startActivity(intent);
                                    finish();
                                }
@@ -433,84 +424,6 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
 
 }
 
-
-
-
-class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
-
-    Activity activity;
-    List<Broadcast_image_list> broadcast_image_list;
-    ImageView iv_selected;
-    CardClick cardClick;
-    CoordinatorLayout layout_select_image;
-
-
-    public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
-                           ImageView iv_selected,CardClick cardClick,CoordinatorLayout coordinatorLayout) {
-        this.activity = activity;
-        this.broadcast_image_list = broadcast_image_list;
-        this.iv_selected = iv_selected;
-        this.cardClick = cardClick;
-        this.layout_select_image = coordinatorLayout;
-    }
-
-
-    @NonNull
-    @Override
-    public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
-        return new cardListData(view);
-    }
-
-    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
-    @Override
-    public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
-        Broadcast_image_list item = this.broadcast_image_list.get(position);
-
-
-        int resID = activity.getResources().getIdentifier(item.getImagename()
-                .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-        if (resID != 0) {
-            Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
-        }
-        holder.layout_select_image.setOnClickListener(v -> {
-            cardClick.Onclick(item);
-            item.setScelect(true);
-            layout_select_image.setVisibility(View.VISIBLE);
-            int resID1 = activity.getResources().getIdentifier(item.getImagename()
-                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-            if (resID1 != 0) {
-                Glide.with(activity.getApplicationContext()).load(resID1).into(iv_selected);
-            }
-        });
-        if(item.isScelect()){
-            holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
-        }else {
-            holder.layout_select_image.setBackground(null);
-        }
-    }
-
-
-    @Override
-    public int getItemCount() {
-        return broadcast_image_list.size();
-    }
-
-    public static class cardListData extends RecyclerView.ViewHolder {
-
-        ImageView iv_card;
-        LinearLayout layout_select_image;
-
-        public cardListData(@NonNull View itemView) {
-            super(itemView);
-            iv_card = itemView.findViewById(R.id.iv_card);
-            layout_select_image = itemView.findViewById(R.id.layout_select_image);
-        }
-    }
-
-
-
-}
 
 
 

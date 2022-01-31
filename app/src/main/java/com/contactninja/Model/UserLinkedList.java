@@ -72,6 +72,19 @@ public class UserLinkedList implements Serializable {
         @Expose
         private String updatedAt;
 
+        @SerializedName("type")
+        @Expose
+        private String type;
+
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
         public Integer getId() {
             return id;
         }

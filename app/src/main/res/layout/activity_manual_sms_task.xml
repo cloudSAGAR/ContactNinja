@@ -30,7 +30,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/tv_bold"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
@@ -44,14 +44,13 @@
 
 
         <TextView
-            style="@style/tv_bold"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_30sdp"
             android:text="@string/email_date"
             android:layout_marginStart="@dimen/_22sdp"
-            android:textColor="@color/bz_text"
-            android:textSize="@dimen/_13sdp">
+            android:textColor="@color/text_reg">
 
         </TextView>
         <LinearLayout
@@ -67,25 +66,25 @@
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_marginStart="@dimen/_15sdp"
-                style="@style/tv_bold"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email_date"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_15sdp">
+                android:textColor="@color/text_reg"
+                >
 
             </TextView>
         </LinearLayout>
 
         <TextView
-            style="@style/tv_bold"
+            style="@style/tv_Medium_14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/email_time"
             android:layout_marginStart="@dimen/_22sdp"
-            android:textColor="@color/bz_text"
-            android:textSize="@dimen/_13sdp">
+            android:textColor="@color/text_reg"
+            >
 
         </TextView>
         <LinearLayout
@@ -101,25 +100,25 @@
             <TextView
                 android:id="@+id/tv_time"
                 android:layout_marginStart="@dimen/_15sdp"
-                style="@style/tv_bold"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email_time"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_15sdp">
+                android:textColor="@color/text_reg"
+                >
 
             </TextView>
         </LinearLayout>
         <TextView
             android:id="@+id/tc_time_zone"
             android:layout_marginStart="@dimen/_22sdp"
-            style="@style/tv_bold"
+            style="@style/tv_regular_12"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email_date"
-            android:textColor="@color/tv_medium"
-            android:textSize="@dimen/_13sdp">
+            android:textColor="@color/text_reg"
+          >
 
         </TextView>
 

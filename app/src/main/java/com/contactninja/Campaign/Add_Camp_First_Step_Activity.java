@@ -39,7 +39,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.List;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
-public class First_Step_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
+public class Add_Camp_First_Step_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -108,7 +108,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
 
                     @Override
                     public void run() {
-                        viewPager.setCurrentItem(1);
+                        viewPager.setCurrentItem(0);
                     }
                 }, 10);
 
@@ -118,7 +118,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
 
                     @Override
                     public void run() {
-                        viewPager.setCurrentItem(0);
+                        viewPager.setCurrentItem(1);
                     }
                 }, 10);
 
@@ -190,7 +190,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
             case R.id.save_button:
                if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"EMAIL OR SMS select",false);
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
                    if (SessionManager.getTask(getApplicationContext()).equals(null))
@@ -204,7 +204,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                        if (flag.equals("edit"))
                        {
 
-                           Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
                            new_task.putExtra("flag","edit");
                            new_task.putExtra("body",bundle.getString("body"));
                            new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
@@ -220,7 +220,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
 
                        }
                        else {
-                           Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
                            new_task.putExtra("flag","add");
                            startActivity(new_task);
                            finish();
@@ -244,7 +244,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                            if (flag.equals("edit"))
                            {
 
-                               Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
                                new_task.putExtra("flag","edit");
                                new_task.putExtra("body",bundle.getString("body"));
                                new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
@@ -260,7 +260,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
 
                            }
                            else {
-                               Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
+                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
                                new_task.putExtra("flag","add");
                                startActivity(new_task);
                                finish();
@@ -281,7 +281,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                        if (flag.equals("edit"))
                        {
                            Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
-                           Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_SMS_Activity.class);
                            new_task.putExtra("flag","edit");
                            new_task.putExtra("body",bundle.getString("body"));
                            new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
@@ -295,7 +295,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                            finish();
                        }
                        else {
-                           Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_SMS_Activity.class);
                            new_task.putExtra("flag","add");
                            startActivity(new_task);
                            finish();
@@ -324,7 +324,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                            {
                                Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
 
-                               Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_SMS_Activity.class);
                                new_task.putExtra("flag","edit");
                                new_task.putExtra("body",bundle.getString("body"));
                                new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
@@ -338,7 +338,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
                                finish();
                            }
                            else {
-                               Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
+                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_SMS_Activity.class);
                                new_task.putExtra("flag","add");
                                startActivity(new_task);
                                finish();
@@ -359,7 +359,7 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(First_Step_Activity.this, mMainLayout);
+        Global.checkConnectivity(Add_Camp_First_Step_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -389,8 +389,8 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     }
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-    private String tabTitles[] = new String[] { "Email ", "SMS" };
-    private int[] imageResId = { R.drawable.ic_email, R.drawable.ic_message_tab };
+    private String tabTitles[] = new String[] { "SMS", "Email" };
+    private int[] imageResId = {  R.drawable.ic_message_tab,R.drawable.ic_email };
     final int PAGE_COUNT = 2;
 
     public SampleFragmentPagerAdapter(@NonNull FragmentManager fm) {
@@ -411,13 +411,11 @@ public class First_Step_Activity extends AppCompatActivity implements View.OnCli
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
+                Campaign_Sms_Fragment campaign_sms_fragment = new Campaign_Sms_Fragment();
+                return campaign_sms_fragment;
+            case 1:
                 Campaign_Email_Fragment campaign_email_fragment = new Campaign_Email_Fragment();
                 return campaign_email_fragment;
-
-            case 1:
-                Campaign_Sms_Fragment campaign_sms_fragment = new Campaign_Sms_Fragment();
-
-                return campaign_sms_fragment;
             default:
                 return null;
         }

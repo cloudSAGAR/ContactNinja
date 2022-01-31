@@ -35,7 +35,7 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_bold"
+                    style="@style/tv_Medium_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
@@ -43,8 +43,7 @@
                     android:gravity="center|left"
                     android:padding="@dimen/_15sdp"
                     android:text="@string/campaign_step_one_email"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"
+                    android:textColor="@color/text_reg"
                     tools:ignore="RtlHardcoded,RtlSymmetry">
 
                 </TextView>
@@ -82,12 +81,12 @@
 
                     <TextView
                         android:padding="@dimen/_5sdp"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/Run_this_step_on"
-                        android:textColor="@color/tv_medium" />
+                        android:textColor="@color/text_reg" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -96,13 +95,13 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/Day"
-                            android:textColor="@color/tv_medium" />
+                            android:textColor="@color/text_reg" />
 
                         <LinearLayout
                             android:id="@+id/layout_day"
@@ -114,7 +113,7 @@
 
                             <EditText
                                 android:id="@+id/edit_day"
-                                style="@style/tv_regular"
+                                style="@style/tv_Medium_14"
                                 android:layout_width="86dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -127,8 +126,6 @@
                                 android:text="1"
                                 android:padding="5dp"
                                 android:textColor="@color/purple_200"
-                                android:textSize="@dimen/_16sdp"
-                                android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                             <View
@@ -138,13 +135,13 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/and"
-                            android:textColor="@color/tv_medium" />
+                            android:textColor="@color/text_reg" />
 
                         <LinearLayout
                             android:id="@+id/layout_minutes"
@@ -156,7 +153,7 @@
 
                             <EditText
                                 android:id="@+id/edit_minutes"
-                                style="@style/tv_regular"
+                                style="@style/tv_Medium_14"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -169,8 +166,6 @@
                                 android:maxLines="1"
                                 android:padding="5dp"
                                 android:textColor="@color/purple_200"
-                                android:textSize="@dimen/_16sdp"
-                                android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                             <View
@@ -180,24 +175,24 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/minutes"
-                            android:textColor="@color/tv_medium" />
+                            android:textColor="@color/text_reg" />
                     </LinearLayout>
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/campaing_email_text"
-                        android:textColor="@color/tv_medium" />
+                        android:textColor="@color/text_reg" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -222,7 +217,7 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_bold"
+                    style="@style/tv_Medium_14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
@@ -230,7 +225,7 @@
                     android:gravity="center|left"
                     android:padding="@dimen/_15sdp"
                     android:text="@string/campaign_step_one_email_manual"
-                    android:textColor="@color/tv_medium"
+                    android:textColor="@color/text_reg"
                     android:textSize="@dimen/_15sdp"
                     tools:ignore="RtlHardcoded,RtlSymmetry">
 
@@ -269,12 +264,12 @@
 
                     <TextView
                         android:padding="@dimen/_5sdp"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/Run_this_step_on"
-                        android:textColor="@color/tv_medium" />
+                        android:textColor="@color/text_reg" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -283,13 +278,13 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/Day"
-                            android:textColor="@color/tv_medium" />
+                            android:textColor="@color/text_reg" />
 
                         <LinearLayout
                             android:id="@+id/layout_day_manual"
@@ -301,7 +296,7 @@
 
                             <EditText
                                 android:id="@+id/edit_day_manual"
-                                style="@style/tv_regular"
+                                style="@style/tv_Medium_14"
                                 android:layout_width="86dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -314,8 +309,6 @@
                                 android:text="1"
                                 android:padding="5dp"
                                 android:textColor="@color/purple_200"
-                                android:textSize="@dimen/_16sdp"
-                                android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                             <View
@@ -325,13 +318,13 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/and"
-                            android:textColor="@color/tv_medium" />
+                            android:textColor="@color/text_reg" />
 
                         <LinearLayout
                             android:id="@+id/layout_minutes_manual"
@@ -343,7 +336,7 @@
 
                             <EditText
                                 android:id="@+id/edit_minutes_manual"
-                                style="@style/tv_regular"
+                                style="@style/tv_Medium_14"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -356,8 +349,6 @@
                                 android:text="00"
                                 android:padding="5dp"
                                 android:textColor="@color/purple_200"
-                                android:textSize="@dimen/_16sdp"
-                                android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                             <View
@@ -367,30 +358,30 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/minutes"
-                            android:textColor="@color/tv_medium" />
+                            android:textColor="@color/text_reg" />
                     </LinearLayout>
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/campaing_email_text"
-                        android:textColor="@color/tv_medium" />
+                        android:textColor="@color/text_reg" />
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
         <TextView
-            style="@style/tv_regular"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -400,7 +391,7 @@
             android:paddingEnd="@dimen/_10sdp"
             android:text="@string/campaign_step_one_email_txt"
             android:textColor="@color/home_list_sub_data"
-            android:textSize="@dimen/_12sdp">
+            >
 
         </TextView>
 

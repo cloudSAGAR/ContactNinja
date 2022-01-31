@@ -37,8 +37,7 @@
                 tools:ignore="UseAppTint"/>
             <TextView
                 android:textSize="@dimen/_20sdp"
-                style="@style/tv_Medium"
-
+                style="@style/tv_Medium_14"
                 android:textColor="@color/white"
                 android:gravity="center"
                 android:background="@drawable/shape_primary_circle"
@@ -76,12 +75,12 @@
             <TextView
                 android:background="@color/add_contect_transpernt"
                 android:id="@+id/tv_FirstName"
-                style="@style/tv_bold"
+                style="@style/tv_Medium_14"
                 android:textSize="@dimen/_15sdp"
                 android:hint="@string/f_name"
                 android:inputType="text|textCapSentences"
-                android:textColorHint="@color/home_list_sub_data"
-                android:textColor="@color/black"
+                android:textColorHint="@color/text_gray"
+                android:textColor="@color/text_reg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -98,7 +97,7 @@
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/home_list_back_line"
+        android:background="@color/line_separator"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"/>
 
@@ -120,12 +119,12 @@
                 <TextView
 
                     android:id="@+id/tv_step"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Step#1 (Manual Sms)"
-                    android:textColor="@color/tv_medium"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textColor="@color/text_reg"
+                    />
 
                 <ImageView
                     android:id="@+id/iv_message"
@@ -169,21 +168,21 @@
 
                     <TextView
                         android:id="@+id/tv_totale"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"/>
+                        android:textColor="@color/text_reg"
+                        />
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Total "
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"/>
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -196,21 +195,21 @@
 
                     <TextView
                         android:id="@+id/tv_pending"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"/>
+                        android:textColor="@color/text_reg"
+                       />
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="Pending "
+                        android:text="Pending"
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"/>
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -223,21 +222,21 @@
 
                     <TextView
                         android:id="@+id/tv_pushed"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"/>
+                        android:textColor="@color/text_reg"
+                       />
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Pushed "
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"/>
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -250,21 +249,21 @@
 
                     <TextView
                         android:id="@+id/tv_finished"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"/>
+                        android:textColor="@color/text_reg"
+                        />
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Finished "
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"/>
+                       />
                 </LinearLayout>
             </LinearLayout>
 
@@ -289,21 +288,21 @@
 
                     <TextView
                         android:id="@+id/tv_open"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"/>
+                        android:textColor="@color/text_reg"
+                        />
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Open"
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"/>
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -316,21 +315,21 @@
 
                     <TextView
                         android:id="@+id/tv_replied"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"/>
+                        android:textColor="@color/text_reg"
+                        />
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Replied"
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"/>
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -343,21 +342,21 @@
 
                     <TextView
                         android:id="@+id/tv_failed"
-                        style="@style/tv_Medium"
+                        style="@style/tv_Medium_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4"
-                        android:textColor="@color/tv_medium"
-                        android:textSize="@dimen/_15sdp"/>
+                        android:textColor="@color/text_reg"
+                        />
 
                     <TextView
-                        style="@style/tv_Medium"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="Failed"
                         android:textColor="@color/tv_regular"
-                        android:textSize="@dimen/_12sdp"/>
+                        />
                 </LinearLayout>
 
             </LinearLayout>

@@ -14,6 +14,7 @@ import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
+import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.ManualTaskModel;
@@ -46,6 +47,7 @@ public class SessionManager {
     public static final String Access_token = "access_token";
     public static final String csv_token = "csv_token";
     public static final String Contect_List = "contectlist";
+    //public static final String Company_List = "company_List";
     public static final String brodcaste_Contect_List = "brod_contectlist";
     public static final String brodcaste_group = "brod_group";
     public static final String Broadcast_Data_save = " broadcast_data";
@@ -64,6 +66,11 @@ public class SessionManager {
     private static SharedPreferences.Editor editor;
     private final Context _context;
     private static final String ManualTaskmodel="ManualTaskmodel";
+    private  static final String email_screen_name="email_screen_name";
+    private static final String message_number="message_number";
+
+    private static final String message_id="message_id";
+    private static final String message_type="message_type";
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -97,6 +104,63 @@ public class SessionManager {
         editor.putString(campaign_type_name, campaign_type_name1);
         editor.commit();
     }
+
+
+    public static String getEmail_screen_name(Context context) {
+
+        String type = pref.getString(email_screen_name, "");
+        return type;
+
+    }
+
+    public static void setEmail_screen_name(String email_screen_name1) {
+        editor.putString(email_screen_name, email_screen_name1);
+        editor.commit();
+    }
+
+
+
+    public static String getMessage_number(Context context) {
+
+        String type = pref.getString(message_number, "");
+        return type;
+
+    }
+
+    public static void setMessage_number(String email_screen_name1) {
+        editor.putString(message_number, email_screen_name1);
+        editor.commit();
+    }
+
+
+
+    public static String getMessage_id(Context context) {
+
+        String type = pref.getString(message_id, "");
+        return type;
+
+    }
+
+    public static void setMessage_id(String email_screen_name1) {
+        editor.putString(message_id, email_screen_name1);
+        editor.commit();
+    }
+
+
+    public static String getMessage_tyep(Context context) {
+
+        String type = pref.getString(message_type, "");
+        return type;
+
+    }
+
+    public static void setMessage_type(String email_screen_name1) {
+        editor.putString(message_type, email_screen_name1);
+        editor.commit();
+    }
+
+
+
 
     public static String getcontectexits() {
 
@@ -255,6 +319,29 @@ public class SessionManager {
         Log.e("Sessioin data", new Gson().toJson(groupModel));
         editor.apply();
     }
+
+
+    /*public static List<CompanyModel.Company> getCompanylist(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(Company_List, null);
+        Type type = new TypeToken<ArrayList<CompanyModel.Company>>() {
+        }.getType();
+        List<CompanyModel.Company> contectList = gson.fromJson(json, type);
+        if (contectList == null) {
+            contectList = new ArrayList<>();
+        }
+        return contectList;
+
+    }
+
+    public static void setCompanylist(Context context, List<CompanyModel.Company> companyModels) {
+        Gson gson = new Gson();
+        String json = gson.toJson(companyModels);
+        editor.putString(Company_List, json);
+        Log.e("companyModels data", new Gson().toJson(companyModels));
+        editor.apply();
+    }*/
 
     public static List<ContectListData.Contact> getContectList_broadcste(Context context) {
 

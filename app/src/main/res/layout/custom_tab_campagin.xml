@@ -12,8 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        style="@style/tv_regular"
-        android:textStyle="bold"
+        style="@style/tv_regular_13"
         android:textSize="@dimen/_14sdp"
         android:gravity="center"/>
     <ImageView

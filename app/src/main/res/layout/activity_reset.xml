@@ -36,19 +36,19 @@
 
                 <TextView
                     android:id="@+id/tv_welcome"
-                    style="@style/tv_Medium"
+                    style="@style/tv_Medium_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
                     android:layout_marginTop="@dimen/_30sdp"
                     android:gravity="center|top"
                     android:text="@string/reset_password"
-                    android:textColor="@color/tv_medium"
+                    android:textColor="@color/text_reg"
                     android:textSize="@dimen/_22sdp" />
 
                 <TextView
                     android:id="@+id/tv_dis"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_welcome"
@@ -94,7 +94,7 @@
 
                                 <EditText
                                     android:id="@+id/edit_Current_Password"
-                                    style="@style/tv_regular"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -107,7 +107,6 @@
                                     android:padding="10dp"
                                     android:textColor="@color/otp_header_text_color"
                                     android:textColorHint="@color/otp_header_text_color"
-                                    android:textStyle="bold"
                                     tools:ignore="Autofill,RtlHardcoded" />
 
                                 <ImageView
@@ -142,7 +141,7 @@
 
                                 <EditText
                                     android:id="@+id/edit_New_Password"
-                                    style="@style/tv_regular"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -155,7 +154,6 @@
                                     android:padding="10dp"
                                     android:textColor="@color/otp_header_text_color"
                                     android:textColorHint="@color/otp_header_text_color"
-                                    android:textStyle="bold"
                                     tools:ignore="Autofill,RtlHardcoded" />
 
                                 <ImageView
@@ -190,7 +188,7 @@
 
                                 <EditText
                                     android:id="@+id/edit_Confirm_Password"
-                                    style="@style/tv_regular"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -203,7 +201,6 @@
                                     android:padding="10dp"
                                     android:textColor="@color/otp_header_text_color"
                                     android:textColorHint="@color/otp_header_text_color"
-                                    android:textStyle="bold"
                                     tools:ignore="Autofill,RtlHardcoded" />
 
                                 <ImageView
@@ -233,7 +230,7 @@
 
                             <TextView
                                 android:id="@+id/iv_invalid"
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
@@ -260,7 +257,7 @@
                     android:text="@string/Create_password"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+                  />
 
 
             </RelativeLayout>

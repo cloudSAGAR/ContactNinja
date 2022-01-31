@@ -48,7 +48,7 @@ public class Email_Tankyou extends AppCompatActivity  implements ConnectivityRec
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                //startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
 
             }
@@ -60,7 +60,7 @@ public class Email_Tankyou extends AppCompatActivity  implements ConnectivityRec
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        //startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
 
     }

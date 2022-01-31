@@ -70,6 +70,8 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -229,16 +231,29 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 contect_list_unselect,
                 (position) -> {
                     // ItemModel item = data.get(position);
-                    FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
-                            inviteListData.get(position).getFirstname().substring(0, 1)
-                                    .substring(0, 1)
-                                    .toUpperCase()// Grab the first letter and capitalize it
-                    );
-                    return fastScrollItemIndicator;
+                    try {
+                        FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
+                                inviteListData.get(position).getFirstname().substring(0, 1)
+                                        .substring(0, 1)
+                                        .toUpperCase()// Grab the first letter and capitalize it
+                        );
+                        return fastScrollItemIndicator;
+                    }
+                    catch (Exception e)
+                    {
+
+                        return null;
+
+                    }
+
                 }
         );
 
-
+        Collections.sort(inviteListData, new Comparator<ContectListData.Contact>(){
+            public int compare(ContectListData.Contact obj1, ContectListData.Contact obj2) {
+                return obj1.getFirstname().compareToIgnoreCase(obj1.getFirstname());
+            }
+        });
         userListDataAdapter = new UserListDataAdapter(this, getApplicationContext(), inviteListData);
         contect_list_unselect.setAdapter(userListDataAdapter);
         loadingDialog = new LoadingDialog(this);
@@ -259,6 +274,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                          //Log.e("Same Data ",d.getFirstname());
                     }
                 }
+
                 userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
                 contect_list_unselect.setAdapter(userListDataAdapter);
                 userListDataAdapter.notifyDataSetChanged();
@@ -341,7 +357,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
     private void SaveEvent() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
 
         group_name = add_new_contect.getText().toString();
         group_description = add_detail.getText().toString();
@@ -350,6 +365,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         } else if (group_description.equals("")) {
             Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_description), false);
         } else {
+            loadingDialog.showLoadingDialog();
 
             SignResponseModel user_data = sessionManager.getGetUserdata(this);
             String user_id = String.valueOf(user_data.getUser().getId());
@@ -649,15 +665,16 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     holder.add_new_contect_icon.setVisibility(View.GONE);
                 }
                 else */
-            if (userDetailsfull.get(position).getFlag().equals("false")) {
+         /*   if (userDetailsfull.get(position).getFlag().equals("false")) {
                 holder.remove_contect_icon.setVisibility(View.VISIBLE);
                 holder.add_new_contect_icon1.setVisibility(View.GONE);
             } else {
                 holder.remove_contect_icon.setVisibility(View.GONE);
                 holder.add_new_contect_icon1.setVisibility(View.VISIBLE);
+            }*/
 
-
-            }
+            holder.remove_contect_icon.setVisibility(View.VISIBLE);
+            holder.add_new_contect_icon1.setVisibility(View.GONE);
 
 
 

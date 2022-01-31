@@ -18,7 +18,7 @@
 
 
         <TextView
-            style="@style/tv_bold"
+            style="@style/tv_Medium_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
@@ -41,16 +41,16 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:paddingStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:gravity="center|left"
                 android:text="@string/week_repete"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/text_reg"
                 >
 
             </TextView>
@@ -84,15 +84,15 @@
             </LinearLayout>
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:gravity="center"
                 android:text="@string/week_txt"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/text_reg"
                 >
 
             </TextView>
@@ -103,15 +103,16 @@
             android:layout_height="1dp"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@color/spinner">
+            android:background="@color/line_separator">
 
         </View>
 
 
         <TextView
+            android:padding="@dimen/_5sdp"
             android:id="@+id/tv_day"
-            android:layout_marginTop="@dimen/_30sdp"
-            style="@style/tv_regular"
+            android:layout_marginTop="@dimen/_20sdp"
+            style="@style/tv_regular_13"
             android:paddingEnd="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_15sdp"
@@ -120,8 +121,7 @@
             android:layout_gravity="center|left"
             android:gravity="center|left"
             android:text="@string/week_option"
-            android:textColor="@color/tv_medium"
-            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/text_reg"
             >
         </TextView>
 
@@ -133,10 +133,10 @@
             android:layout_height="wrap_content">
             <RadioButton
                 android:id="@+id/radio_day"
-                android:buttonTint="@color/tv_medium"
+                android:buttonTint="@color/text_reg"
                 android:text="@string/add_day"
-                android:textColor="@color/tv_medium"
-                style="@style/tv_regular"
+                android:textColor="@color/text_reg"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -158,16 +158,16 @@
                     tools:listitem="@android:layout/simple_spinner_item" />
             </LinearLayout>
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:paddingStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:gravity="center|end"
                 android:text="@string/add_of_monthe"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/text_reg"
                 >
 
             </TextView>
@@ -182,10 +182,10 @@
             android:layout_height="wrap_content">
             <RadioButton
                 android:id="@+id/radio_every"
-                android:buttonTint="@color/tv_medium"
+                android:buttonTint="@color/text_reg"
                 android:text="@string/add_month"
-                android:textColor="@color/tv_medium"
-                style="@style/tv_regular"
+                android:textColor="@color/text_reg"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -230,17 +230,17 @@
 
         </LinearLayout>
         <TextView
+            android:padding="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingStart="@dimen/_5sdp"
-            style="@style/tv_regular"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
             android:gravity="center|end"
             android:paddingEnd="@dimen/_20sdp"
             android:text="@string/add_of_monthe"
-            android:textColor="@color/tv_medium"
-            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/text_reg"
             android:layout_marginBottom="@dimen/_10sdp"
             >
 
@@ -251,7 +251,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@color/spinner">
+            android:background="@color/line_separator">
 
         </View>
 
@@ -269,14 +269,13 @@
             <TextView
                 android:paddingStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:gravity="center|left"
                 android:text="End Date"
-                android:textColor="@color/tv_medium"
-                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/text_reg"
                 >
 
             </TextView>

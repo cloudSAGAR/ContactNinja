@@ -42,15 +42,15 @@
             android:padding="@dimen/_5sdp"
             android:layout_weight="1"
             android:id="@+id/campaign_name"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center|left"
             android:gravity="center|left"
             android:singleLine="true"
             android:text="@string/add_new_group_name"
-            android:textColor="@color/bz_text"
-            android:textStyle="bold" />
+            android:textColor="@color/text_reg"
+            />
 
     </LinearLayout>
     <View

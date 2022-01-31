@@ -15,12 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular"
+            style="@style/tv_Medium_14"
             android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="@dimen/_14sdp"
             android:text="@string/Please_select_template"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             />
         <View
             android:id="@+id/line_view"

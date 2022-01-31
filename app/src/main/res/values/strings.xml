@@ -94,6 +94,7 @@ Number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_contect">Add new contact</string>
+    <string name="add_sink">SINK ALL</string>
     <string name="add_new_contect1">Add all contacts</string>
     <string name="remove_new_contect1">Remove all contacts</string>
     <string name="add_new">Add new</string>
@@ -318,10 +319,12 @@ Number</string>
     <string name="Current_Plan">Current Plan</string>
     <string name="campaign_add">Create new campaign</string>
     <string name="campaign">Campaign</string>
+    <string name="manual_task_create">Manual task</string>
     <string name="campaign_alert_txt">Click to create \n campaign</string>
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or SMSes sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
     <string name="campaign_step_one">Select your step</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
+    <string name="create_task">Create your </string>
 
     <string name="campaign_step_one_email">Automated email</string>
     <string name="campaign_step_one_email_manual">Manual email</string>
@@ -346,8 +349,12 @@ Number</string>
     <string name="mail_subject">Subject:</string>
     <string name="ComposeEmail">Compose email</string>
     <string name="camp_done">Please add title of \n  your campaign</string>
+    <string name="manual_task">Please add title \n for your task</string>
     <string name="camp_remaingn"> Characters remaining</string>
+    <string name="camp_name">Campaign name</string>
     <string name="camp_title">Enter campagin title</string>
+    <string name="task_title">Enter task title</string>
+
     <string name="update">update</string>
     <string name="Enter_subject_here">Enter subject here…</string>
     <string name="Subject">Subject:</string>
@@ -368,6 +375,7 @@ Number</string>
     <string name="Comp_D">I</string><!--Delete-->
     <string name="camp_select_contect">Select contect number</string>
     <string name="manu_name1"> Save as draft</string>
+    <string name="manu_setting">setting</string>
     <string name="manu_name2"> Edit </string>
     <string name="txt_campaign">Start campaign</string>
     <string name="view_contect">View contacts</string>
@@ -392,4 +400,10 @@ Number</string>
     <string name="email_time">Select time</string>
     <string name="sms_txt">Message</string>
     <string name="verifition_title_text">Enter the code We just \n texted you</string>
+    <string name="enter_campaign_name">Enter campaign name</string>
+    <string name="add_contact">Add first contacts</string>
+    <string name="add_message">Add message</string>
+    <string name="characters40">40 characters remaining</string>
+    <string name="select_type">Select automated or manual</string>
+
 </resources>

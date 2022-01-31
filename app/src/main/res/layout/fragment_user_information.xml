@@ -35,12 +35,11 @@
 
                     <TextView
                         android:layout_weight="1"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/AffiliateCode"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold"
+                        android:textColor="@color/text_reg"
                         tools:ignore="NestedWeights" />
 
 
@@ -117,13 +116,12 @@
                                     <TextView
 
                                         android:id="@+id/tv_phone"
-                                        style="@style/tv_regular"
+                                        style="@style/tv_regular_13"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/add_phone"
-                                        android:textColor="@color/tv_medium"
-                                        android:textSize="@dimen/_12sdp"
-                                        android:textStyle="bold">
+                                        android:textColor="@color/text_reg"
+                                        >
 
                                     </TextView>
 
@@ -153,7 +151,7 @@
 
                                 <TextView
                                     android:id="@+id/phone_txt"
-                                    style="@style/tv_regular"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -161,9 +159,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center"
                                     android:text="@string/add_home"
-                                    android:textColor="@color/home_list_sub_data"
-                                    android:textSize="@dimen/_12sdp"
-                                    android:textStyle="bold"
+                                    android:textColor="@color/text_gray"
                                     tools:ignore="TextContrastCheck">
 
                                 </TextView>
@@ -269,15 +265,14 @@
                                 android:gravity="center|top">
 
                                 <TextView
-                                    style="@style/tv_regular"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:text="@string/add_defult_text"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/_10sdp"
-                                    android:textStyle="bold"/>
+                                    />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -310,9 +305,9 @@
                             app:ccpDialog_showTitle="false"
                             app:ccpDialog_textColor="@color/white"
                             app:ccp_autoDetectCountry="true"
-                            app:ccp_contentColor="@color/otp_header_text_color"
+                            app:ccp_contentColor="@color/text_gray"
                             app:ccp_showNameCode="false"
-                            app:ccp_textSize="@dimen/_12sdp" />
+                            />
 
                         <View
                             android:layout_marginEnd="@dimen/_5sdp"
@@ -325,7 +320,7 @@
 
                     <EditText
                         android:id="@+id/edt_mobile_no"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
@@ -334,10 +329,9 @@
                         android:hint="@string/add_number"
                         android:inputType="number"
                         android:padding="@dimen/_5sdp"
-                        android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="bold"
+                        android:textColor="@color/text_reg"
+                        android:textColorHint="@color/text_gray"
+
                         tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
                 </LinearLayout>
@@ -347,7 +341,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:background="@color/home_list_add_contect_view" />
+                    android:background="@color/lineView" />
 
             </LinearLayout>
         </ru.rambler.libs.swipe_layout.SwipeLayout>
@@ -385,12 +379,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_mobile_a"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
@@ -465,12 +459,12 @@
 
                             <TextView
                                 android:id="@+id/tv_email"
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/add_email"
-                                android:textColor="@color/tv_medium"
-                                android:textStyle="bold">
+                                android:textColor="@color/text_reg"
+                                >
 
                             </TextView>
 
@@ -488,7 +482,7 @@
 
                             <TextView
                                 android:id="@+id/email_txt"
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -497,7 +491,7 @@
                                 android:gravity="center"
                                 android:text="@string/add_home"
                                 android:textColor="@color/home_list_sub_data"
-                                android:textStyle="bold">
+                                >
 
                             </TextView>
 
@@ -541,15 +535,15 @@
 
                     android:layout_marginStart="@dimen/_10sdp"
                     android:id="@+id/edt_email"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:background="@color/add_contect_transpernt"
                     android:hint="@string/add_email_a"
-                    android:textColor="@color/home_list_sub_data"
-                    android:textColorHint="@color/home_list_sub_data"
-                    android:textStyle="bold">
+                    android:textColor="@color/text_reg"
+                    android:textColorHint="@color/text_gray"
+                    >
 
                 </EditText>
                 <TextView
@@ -557,13 +551,13 @@
                     android:visibility="gone"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:id="@+id/iv_invalid"
-                    style="@style/tv_regular"
+                    style="@style/tv_regular_13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/red"
-                    android:textStyle="bold" />
+                    />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -609,12 +603,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_email_address"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
@@ -675,19 +669,19 @@
 
                     <TextView
                         android:id="@+id/tv_otger_company"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/other_company"
                         android:drawableRight="@drawable/ic_down"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_othre_company"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -696,7 +690,7 @@
                         android:hint="@string/add_company_a"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -736,19 +730,19 @@
 
                     <TextView
                         android:id="@+id/tv_company"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_company"
                         android:drawableRight="@drawable/ic_down"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                       >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_company"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -757,7 +751,7 @@
                         android:hint="@string/add_company_a"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -800,18 +794,18 @@
 
                     <TextView
                         android:id="@+id/tv_company_url"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_company_url"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_company_url"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -819,7 +813,7 @@
                         android:hint="@string/add_company_url_a"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -861,18 +855,18 @@
 
                     <TextView
                         android:id="@+id/tv_job"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_job"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                       >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_job"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -881,7 +875,7 @@
                         android:hint="@string/add_job_a"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -922,18 +916,18 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_zoom"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_zoom"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -942,7 +936,7 @@
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -982,18 +976,18 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_address"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_address"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1002,7 +996,7 @@
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -1045,18 +1039,18 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_city"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_city"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1065,7 +1059,7 @@
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -1108,18 +1102,18 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_state"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_state"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1128,7 +1122,7 @@
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -1144,7 +1138,7 @@
                     android:visibility="gone">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -1153,7 +1147,7 @@
                         android:gravity="center"
                         android:text="@string/add_state_a"
                         android:textColor="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </TextView>
 
@@ -1202,18 +1196,18 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_zip"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_zip"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1223,7 +1217,7 @@
                         android:maxLength="6"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -1243,7 +1237,6 @@
 
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1280,14 +1273,14 @@
                         android:orientation="vertical">
 
                         <TextView
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_gravity="center|left"
                             android:gravity="left|center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_timezone"
-                            android:textColor="@color/tv_medium"
-                            android:textStyle="bold">
+                            android:textColor="@color/text_reg"
+                            >
 
                         </TextView>
 
@@ -1296,7 +1289,7 @@
 
                     <LinearLayout
                         android:id="@+id/select_label_zone"
-                        android:layout_width="@dimen/_170sdp"
+                        android:layout_width="wrap_content"
                         android:paddingTop="@dimen/_4sdp"
                         android:paddingBottom="@dimen/_4sdp"
                         android:layout_height="wrap_content"
@@ -1306,7 +1299,7 @@
 
                         <TextView
                             android:id="@+id/zone_txt"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -1315,7 +1308,7 @@
                             android:gravity="center"
                             android:text="@string/add_timezone"
                             android:textColor="@color/home_list_sub_data"
-                            android:textStyle="bold">
+                            >
 
                         </TextView>
 
@@ -1371,18 +1364,18 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_bod"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_bob"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1393,7 +1386,7 @@
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -1437,18 +1430,18 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_note"
-                        android:textColor="@color/tv_medium"
-                        android:textStyle="bold">
+                        android:textColor="@color/text_reg"
+                        >
 
                     </TextView>
 
                     <EditText
                         android:id="@+id/ev_note"
-                        style="@style/tv_regular"
+                        style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1457,7 +1450,7 @@
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data"
-                        android:textStyle="bold">
+                        >
 
                     </EditText>
 
@@ -1537,18 +1530,18 @@
 
                             <TextView
                                 android:layout_marginStart="@dimen/_10sdp"
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/add_fb"
-                                android:textColor="@color/tv_medium"
-                                android:textStyle="bold">
+                                android:textColor="@color/text_reg"
+                                >
 
                             </TextView>
                         </LinearLayout>
                         <EditText
                             android:id="@+id/ev_fb"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -1557,7 +1550,7 @@
                             android:inputType="text|textCapSentences"
                             android:textColor="@color/home_list_sub_data"
                             android:textColorHint="@color/home_list_sub_data"
-                            android:textStyle="bold">
+                            >
 
                         </EditText>
 
@@ -1617,18 +1610,18 @@
 
                             <TextView
                                 android:layout_marginStart="@dimen/_10sdp"
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/add_twitter"
-                                android:textColor="@color/tv_medium"
-                                android:textStyle="bold">
+                                android:textColor="@color/text_reg"
+                                >
 
                             </TextView>
                         </LinearLayout>
                         <EditText
                             android:id="@+id/ev_twitter"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -1637,7 +1630,7 @@
                             android:inputType="text|textCapSentences"
                             android:textColor="@color/home_list_sub_data"
                             android:textColorHint="@color/home_list_sub_data"
-                            android:textStyle="bold">
+                            >
 
                         </EditText>
 
@@ -1698,18 +1691,18 @@
 
                             <TextView
                                 android:layout_marginStart="@dimen/_10sdp"
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/add_linkedin"
-                                android:textColor="@color/tv_medium"
-                                android:textStyle="bold">
+                                android:textColor="@color/text_reg"
+                                >
 
                             </TextView>
                         </LinearLayout>
                         <EditText
                             android:id="@+id/ev_linkedin"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -1718,7 +1711,7 @@
                             android:inputType="text|textCapSentences"
                             android:textColor="@color/home_list_sub_data"
                             android:textColorHint="@color/home_list_sub_data"
-                            android:textStyle="bold">
+                            >
 
                         </EditText>
 
@@ -1781,18 +1774,18 @@
 
                             <TextView
                                 android:layout_marginStart="@dimen/_10sdp"
-                                style="@style/tv_regular"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/add_breactout"
-                                android:textColor="@color/tv_medium"
-                                android:textStyle="bold">
+                                android:textColor="@color/text_reg"
+                                >
 
                             </TextView>
                         </LinearLayout>
                         <EditText
                             android:id="@+id/ev_breakout"
-                            style="@style/tv_regular"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -1801,7 +1794,7 @@
                             android:inputType="text|textCapSentences"
                             android:textColor="@color/home_list_sub_data"
                             android:textColorHint="@color/home_list_sub_data"
-                            android:textStyle="bold">
+                            >
 
                         </EditText>
 
@@ -1822,7 +1815,7 @@
 
         <TextView
             android:id="@+id/tv_more_field"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -1831,7 +1824,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/add_more_field"
             android:textColor="@color/purple_200"
-            android:textStyle="bold">
+            >
 
         </TextView>
 
@@ -1839,7 +1832,7 @@
 
         <TextView
             android:id="@+id/tv_add_social"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1849,7 +1842,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/add_social"
             android:textColor="@color/purple_200"
-            android:textStyle="bold">
+            >
 
         </TextView>
         <LinearLayout

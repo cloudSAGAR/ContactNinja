@@ -8,28 +8,27 @@
     android:orientation="vertical"
     android:id="@+id/mMainLayout"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.First_Step_Activity">
+    tools:context=".Campaign.Add_Camp_First_Step_Activity">
     <include
         layout="@layout/toolbar"/>
     <TextView
         android:id="@+id/add_new_contect"
-        style="@style/tv_regular"
+        style="@style/tv_regular_13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:singleLine="true"
-        android:textSize="@dimen/_16sdp"
         android:text="@string/campaign_step_one"
-        android:textColor="@color/tv_medium"
-        android:textStyle="bold" />
+        android:textColor="@color/text_reg"
+         />
     <com.google.android.material.tabs.TabLayout
         android:layout_marginTop="@dimen/_25sdp"
         android:id="@+id/tabLayout"
-        style="@style/tv_bold"
+        style="@style/tv_bold_16"
         app:tabIndicatorColor="@color/home_list_tab_bg"
-        app:tabSelectedTextColor="@color/tv_medium"
-        app:tabTextColor="@color/bz_text"
+        app:tabSelectedTextColor="@color/text_reg"
+        app:tabTextColor="@color/text_reg"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
         android:layout_height="wrap_content"

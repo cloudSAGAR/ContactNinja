@@ -22,9 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:layout_gravity="center"
-                style="@style/tv_Medium"
-                android:textSize="@dimen/_14sdp"
+                style="@style/tv_Medium_14"
                 android:text="@string/from"
                 android:textColor="@color/purple_200"
                 android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             <EditText
                 android:layout_weight="1"
                 android:id="@+id/ev_from"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -44,7 +44,7 @@
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:paddingStart="@dimen/_15sdp"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
             <ImageView
                 android:padding="@dimen/_10sdp"
@@ -60,7 +60,7 @@
         </LinearLayout>
         <View
             android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/line_camp"
+            android:background="@color/line_separator"
             android:layout_width="match_parent"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
@@ -69,14 +69,14 @@
         </View>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/tv_Medium"
-                android:textSize="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                style="@style/tv_Medium_14"
                 android:text="@string/to"
                 android:textColor="@color/purple_200"
                 android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
 
             <EditText
                 android:id="@+id/ev_to"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -95,7 +95,7 @@
                 android:gravity="left"
                 android:paddingStart="@dimen/_15sdp"
                 android:imeOptions="actionDone"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
 
@@ -103,7 +103,7 @@
         </LinearLayout>
         <View
             android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_camp"
+            android:background="@color/line_separator"
             android:layout_width="match_parent"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
@@ -112,16 +112,16 @@
         </View>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/tv_regular"
-                android:textSize="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
+                style="@style/tv_Medium_14"
                 android:text="@string/to_subject"
-                android:textColor="@color/home_list_sub_data"
+                android:textColor="@color/text_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -130,7 +130,7 @@
             <EditText
                 android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/ev_subject"
-                style="@style/tv_regular"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -139,7 +139,7 @@
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:hint="@string/ComposeEmail"
-                android:textColor="@color/tv_medium"
+                android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
 
@@ -147,7 +147,7 @@
         </LinearLayout>
         <View
             android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_camp"
+            android:background="@color/line_separator"
             android:layout_width="match_parent"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
@@ -156,7 +156,7 @@
         </View>
         <EditText
             android:id="@+id/edit_compose"
-            style="@style/tv_regular"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -166,7 +166,7 @@
             android:imeOptions="actionDone"
             android:padding="15dp"
             android:hint="@string/ComposeEmail"
-            android:textColor="@color/tv_medium"
+            android:textColor="@color/text_reg"
             tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
     </LinearLayout>
@@ -185,14 +185,13 @@
             android:id="@+id/tv_use_tamplet"
             android:text="@string/temp_txt"
             android:textColor="@color/white"
-            style="@style/tv_regular"
+            style="@style/tv_regular_12"
             android:layout_marginStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
             android:background="@drawable/shape_5_blue"
-            android:textSize="@dimen/_12sdp"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
