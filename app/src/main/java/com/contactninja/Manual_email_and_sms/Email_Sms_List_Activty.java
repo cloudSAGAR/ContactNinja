@@ -349,6 +349,9 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("q", ev_search.getText().toString());
+        paramObject.addProperty("perPage", perPage);
+        paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
         retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
@@ -498,8 +501,12 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         @Override
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
-            if(Global.IsNotNull(item.getContactMasterFirstname())&&!item.getContactMasterLastname().equals("")) {
-
+            if(Global.IsNotNull(item.getType())&&!item.getType().equals("")) {
+                if(item.getType().equals("SMS")){
+                        holder.image_icon.setImageResource(R.drawable.ic_message_tab);
+                }else {
+                    holder.image_icon.setImageResource(R.drawable.ic_email);
+                }
 
                 String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
                 holder.tv_username.setText(conactname);
@@ -573,6 +580,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
             TextView tv_username, tv_task_description, tv_time,no_image,tv_status;
             CircleImageView profile_image;
             LinearLayout layout_contec;
+            ImageView image_icon;
 
             public viewData(@NonNull View itemView) {
                 super(itemView);
@@ -583,6 +591,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                 profile_image = itemView.findViewById(R.id.profile_image);
                 tv_status=itemView.findViewById(R.id.tv_status);
                 layout_contec=itemView.findViewById(R.id.layout_contec);
+                image_icon=itemView.findViewById(R.id.image_icon);
             }
         }
     }
