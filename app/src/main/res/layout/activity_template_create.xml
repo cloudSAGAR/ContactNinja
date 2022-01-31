@@ -26,12 +26,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="@dimen/_10sdp">
 
         <TextView
+            android:padding="@dimen/_5sdp"
             android:id="@+id/tv_item"
             style="@style/tv_Medium_14"
             android:layout_width="wrap_content"
@@ -86,7 +87,7 @@
             android:padding="@dimen/_10sdp">
 
             <TextView
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_5sdp"
@@ -96,7 +97,7 @@
 
             <EditText
                 android:id="@+id/edit_template_subject"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -128,7 +129,7 @@
 
     <EditText
         android:id="@+id/edit_template"
-        style="@style/tv_regular_14"
+        style="@style/tv_regular_13"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/lay_title"

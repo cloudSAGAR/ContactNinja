@@ -13,7 +13,7 @@
         layout="@layout/toolbar"/>
     <TextView
         android:id="@+id/add_new_contect"
-        style="@style/tv_regular_14"
+        style="@style/tv_regular_13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -28,7 +28,7 @@
         style="@style/tv_bold_16"
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabSelectedTextColor="@color/text_reg"
-        app:tabTextColor="@color/bz_text"
+        app:tabTextColor="@color/text_reg"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
         android:layout_height="wrap_content"

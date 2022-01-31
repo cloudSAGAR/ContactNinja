@@ -66,7 +66,7 @@
             <TextView
                 android:id="@+id/tv_remain_txt"
                 android:layout_marginTop="@dimen/_10sdp"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -80,7 +80,7 @@
             <TextView
                 android:id="@+id/tv_error"
                 android:layout_marginTop="@dimen/_10sdp"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

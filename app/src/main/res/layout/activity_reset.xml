@@ -48,7 +48,7 @@
 
                 <TextView
                     android:id="@+id/tv_dis"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_welcome"
@@ -94,7 +94,7 @@
 
                                 <EditText
                                     android:id="@+id/edit_Current_Password"
-                                    style="@style/tv_regular_14"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -141,7 +141,7 @@
 
                                 <EditText
                                     android:id="@+id/edit_New_Password"
-                                    style="@style/tv_regular_14"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -188,7 +188,7 @@
 
                                 <EditText
                                     android:id="@+id/edit_Confirm_Password"
-                                    style="@style/tv_regular_14"
+                                    style="@style/tv_regular_13"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -230,7 +230,7 @@
 
                             <TextView
                                 android:id="@+id/iv_invalid"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"

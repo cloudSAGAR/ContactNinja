@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:layout_gravity="center"
                 style="@style/tv_Medium_14"
                 android:text="@string/from"
@@ -34,7 +35,7 @@
             <EditText
                 android:layout_weight="1"
                 android:id="@+id/ev_from"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -68,12 +69,13 @@
         </View>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:padding="@dimen/_5sdp"
                 style="@style/tv_Medium_14"
                 android:text="@string/to"
                 android:textColor="@color/purple_200"
@@ -84,7 +86,7 @@
 
             <EditText
                 android:id="@+id/ev_to"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -110,12 +112,13 @@
         </View>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:padding="@dimen/_5sdp"
                 style="@style/tv_Medium_14"
                 android:text="@string/to_subject"
                 android:textColor="@color/text_gray"
@@ -127,7 +130,7 @@
             <EditText
                 android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/ev_subject"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -153,7 +156,7 @@
         </View>
         <EditText
             android:id="@+id/edit_compose"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -182,7 +185,7 @@
             android:id="@+id/tv_use_tamplet"
             android:text="@string/temp_txt"
             android:textColor="@color/white"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_12"
             android:layout_marginStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"

@@ -109,7 +109,7 @@
         <TextView
             android:layout_marginBottom="@dimen/_10sdp"
             android:id="@+id/tv_done"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:background="@drawable/shape_10_blue"

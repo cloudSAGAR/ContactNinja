@@ -38,7 +38,7 @@
                 android:visibility="gone"
                 android:id="@+id/no_image"
                 android:textColor="@color/white"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:background="@drawable/shape_primary_circle"
@@ -55,6 +55,7 @@
                >
                 <EditText
                     android:id="@+id/add_new_contect"
+                    android:padding="@dimen/_5sdp"
                     style="@style/tv_Medium_14"
                     android:enabled="false"
                     android:layout_width="match_parent"
@@ -80,7 +81,7 @@
         </LinearLayout>
         <EditText
             android:id="@+id/add_detail"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"
@@ -98,8 +99,7 @@
             android:textColor="@color/text_reg" />
         <TextView
             android:layout_marginTop="@dimen/_10sdp"
-            style="@style/tv_regular_14"
-            android:textSize="@dimen/_12sdp"
+            style="@style/tv_regular_12"
             android:textColor="@color/min_text"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
@@ -115,7 +115,7 @@
             <TextView
                 android:layout_weight="1"
                 android:layout_marginTop="@dimen/_10sdp"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:background="@drawable/shape_5_blue"
                 android:textColor="@color/white"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -129,7 +129,7 @@
             <TextView
                 android:layout_weight="1"
                 android:layout_marginTop="@dimen/_10sdp"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:gravity="center"
                 android:background="@drawable/shape_5_blue"
                 android:textColor="@color/white"
@@ -149,7 +149,7 @@
             style="@style/tv_bold_16"
             app:tabIndicatorColor="@color/home_list_tab_bg"
             app:tabSelectedTextColor="@color/text_reg"
-            app:tabTextColor="@color/bz_text"
+            app:tabTextColor="@color/text_reg"
             android:layout_width="match_parent"
             app:tabIndicatorHeight="2dp"
             android:layout_height="wrap_content"

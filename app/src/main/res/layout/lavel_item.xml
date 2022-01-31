@@ -21,7 +21,7 @@ android:layout_height="wrap_content">
             android:id="@+id/no_image"
             android:textStyle="bold"
             android:textColor="@color/white"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_gravity="center"
             android:gravity="center"
             android:background="@drawable/shape_primary_circle"
@@ -41,12 +41,14 @@ android:layout_height="wrap_content">
             android:layout_marginStart="@dimen/_12sdp"
             android:gravity="center|left"
             android:singleLine="true"
+            android:padding="@dimen/_5sdp"
             android:text="@string/add_new_group_name"
-            android:textColor="@color/bz_text"
+            android:textColor="@color/text_reg"
           />
         <TextView
             android:id="@+id/tv_Referrer_by"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_12"
+            android:padding="@dimen/_5sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -64,6 +66,6 @@ android:layout_height="wrap_content">
         android:layout_height="@dimen/_1sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:background="@color/line_camp"/>
+        android:background="@color/line_separator"/>
 
 </LinearLayout>

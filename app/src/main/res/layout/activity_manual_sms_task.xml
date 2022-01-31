@@ -112,7 +112,7 @@
         <TextView
             android:id="@+id/tc_time_zone"
             android:layout_marginStart="@dimen/_22sdp"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_12"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -41,9 +41,10 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:paddingStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -83,8 +84,9 @@
             </LinearLayout>
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -109,8 +111,8 @@
         <TextView
             android:id="@+id/tv_day"
             android:drawableRight="@drawable/ic_right_arrow"
-            android:layout_marginTop="@dimen/_30sdp"
-            style="@style/tv_regular_14"
+            android:layout_marginTop="@dimen/_20sdp"
+            style="@style/tv_regular_13"
             android:paddingEnd="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_15sdp"
@@ -140,14 +142,14 @@
             android:weightSum="2"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:paddingStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"

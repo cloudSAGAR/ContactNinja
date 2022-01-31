@@ -9,7 +9,7 @@
             android:paddingTop="@dimen/_12sdp"
             android:paddingBottom="@dimen/_12sdp"
             android:id="@+id/tv_item"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:textStyle="bold"
             android:text="Phone"
             android:layout_gravity="center"

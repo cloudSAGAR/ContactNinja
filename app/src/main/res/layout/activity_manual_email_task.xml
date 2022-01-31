@@ -51,7 +51,7 @@
            android:layout_marginTop="@dimen/_30sdp"
             android:text="@string/email_date"
             android:layout_marginStart="@dimen/_22sdp"
-            android:textColor="@color/bz_text"
+            android:textColor="@color/text_reg"
             >
 
         </TextView>
@@ -85,7 +85,7 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/email_time"
             android:layout_marginStart="@dimen/_22sdp"
-            android:textColor="@color/bz_text">
+            android:textColor="@color/text_reg">
 
         </TextView>
         <LinearLayout
@@ -113,7 +113,7 @@
         <TextView
             android:id="@+id/tc_time_zone"
             android:layout_marginStart="@dimen/_22sdp"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_12"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

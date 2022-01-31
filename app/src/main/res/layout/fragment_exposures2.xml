@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/tv_date"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
@@ -85,7 +85,7 @@
                 <TextView
 
                     android:id="@+id/tv_last_time"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -120,9 +120,9 @@
                 </ImageView>
 
                 <TextView
-
+                    android:padding="@dimen/_5sdp"
                     android:id="@+id/tv_name"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -136,8 +136,9 @@
             </LinearLayout>
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/tv_time"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -166,9 +167,9 @@
                 </ImageView>
 
                 <TextView
-
+                    android:padding="@dimen/_5sdp"
                     android:id="@+id/tv_refress"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -198,7 +199,7 @@
             </de.hdodenhof.circleimageview.CircleImageView>
 
             <TextView
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:id="@+id/tv_latter"
                 android:layout_width="@dimen/_38sdp"
                 android:layout_height="@dimen/_38sdp"

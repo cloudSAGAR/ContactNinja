@@ -1,61 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameContainer1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.contactninja.MainActivity"
-    android:id="@+id/frameContainer1"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"  xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <include
 
         android:id="@+id/include2"
         layout="@layout/toolbar" />
+
     <LinearLayout
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp">
 
         <LinearLayout
             android:id="@+id/layout_pulse"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_15sdp"
             android:background="@drawable/shape_oval_border_10_blue"
             android:gravity="center"
-            android:layout_marginStart="@dimen/_15sdp"
             tools:ignore="Orientation">
+
             <ImageView
-                android:padding="@dimen/_18sdp"
                 android:id="@+id/pulse_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_18sdp"
                 android:src="@drawable/ic_plus"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:ignore="UseAppTint"/>
+                tools:ignore="UseAppTint" />
+
             <TextView
-                android:textSize="@dimen/_20sdp"
-                style="@style/tv_Medium_16"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:background="@drawable/shape_primary_circle"
                 android:id="@+id/tv_nameLetter"
-                android:inputType="textCapSentences"
+                style="@style/tv_Medium_16"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/shape_primary_circle"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20sdp"
+                android:visibility="gone"
                 tools:ignore="TextViewEdits" />
 
         </LinearLayout>
+
         <com.makeramen.roundedimageview.RoundedImageView
-            android:layout_marginStart="@dimen/_15sdp"
             android:id="@+id/iv_user"
-            android:visibility="gone"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="right"
+            android:layout_marginStart="@dimen/_15sdp"
             android:padding="1dp"
             android:scaleType="fitXY"
+            android:visibility="gone"
             app:riv_border_color="@color/purple_200"
             app:riv_border_width="0dp"
             app:riv_corner_radius="@dimen/_50sdp"
@@ -63,66 +69,63 @@
 
 
         <LinearLayout
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:orientation="vertical"
-            android:layout_gravity="center|left"
-            android:gravity="center|left"
-            android:layout_marginStart="@dimen/_15sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:gravity="center|left"
+            android:orientation="vertical">
 
             <EditText
-                android:background="@color/add_contect_transpernt"
                 android:id="@+id/edt_FirstName"
-                style="@style/tv_bold_16"
-                android:textSize="@dimen/_15sdp"
-                android:hint="@string/f_name"
-                android:singleLine="true"
-                android:inputType="text|textCapSentences"
-                android:textColorHint="@color/home_list_sub_data"
-                android:textColor="@color/text_reg"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/add_contect_transpernt"
+                android:hint="@string/f_name"
+                android:inputType="text|textCapSentences"
+                android:singleLine="true"
+                android:textColor="@color/text_reg"
+                android:textColorHint="@color/text_gray">
 
             </EditText>
 
             <EditText
-                android:background="@color/add_contect_transpernt"
                 android:id="@+id/edt_lastname"
+                style="@style/tv_Medium_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                style="@style/tv_regular_14"
-                android:singleLine="true"
-                android:textColor="@color/otp_header_text_color"
+                android:background="@color/add_contect_transpernt"
                 android:hint="Last Name"
                 android:inputType="text|textCapSentences"
-                android:textColorHint="@color/home_list_sub_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:singleLine="true"
+                android:textColor="@color/otp_header_text_color"
+                android:textColorHint="@color/home_list_sub_data">
 
             </EditText>
         </LinearLayout>
 
 
-
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/tabLayout"
         style="@style/tv_bold_16"
-        app:tabIndicatorColor="@color/home_list_tab_bg"
-        app:tabSelectedTextColor="@color/text_reg"
         android:layout_width="match_parent"
-        app:tabIndicatorHeight="2dp"
-        app:tabTextColor="@color/bz_text"
         android:layout_height="wrap_content"
-        android:background="@color/white">
-    </com.google.android.material.tabs.TabLayout>
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/home_list_tab_bg"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="@color/text_reg"
+        app:tabTextColor="@color/text_reg"></com.google.android.material.tabs.TabLayout>
 
     <View
-        android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp" />
+        android:layout_height="1dp"
+        android:background="@color/home_list_back_line" />
 
     <FrameLayout
         android:id="@+id/frameContainer"

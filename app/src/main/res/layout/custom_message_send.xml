@@ -18,7 +18,7 @@
         <TextView
             android:visibility="gone"
             android:id="@+id/tv_phone"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
@@ -45,7 +45,7 @@
         <EditText
 
             android:id="@+id/editText"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
             android:layout_marginStart="@dimen/_10sdp"
@@ -82,7 +82,7 @@
 
             <TextView
                 android:id="@+id/tv_cancel"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
@@ -97,7 +97,7 @@
 
             <TextView
                 android:id="@+id/tv_add"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"

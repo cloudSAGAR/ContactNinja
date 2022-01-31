@@ -40,7 +40,7 @@
 
                 <TextView
                     android:id="@+id/tv_dis"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_welcome"
@@ -98,7 +98,7 @@
 
                             <EditText
                                 android:id="@+id/edit_Mobile"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -141,7 +141,7 @@
 
                             <EditText
                                 android:id="@+id/edit_email"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -172,7 +172,7 @@
 
                             <TextView
                                 android:id="@+id/iv_invalid"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_13"
                                 android:layout_width="@dimen/_150sdp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
@@ -184,7 +184,7 @@
 
                             <TextView
                                 android:id="@+id/btn_chnage_phone_email"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -213,7 +213,7 @@
                             <EditText
                                 android:layout_weight="1"
                                 android:id="@+id/edit_password"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_13"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -255,7 +255,7 @@
 
                             <TextView
                                 android:id="@+id/iv_password_invalid"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_13"
                                 android:layout_width="@dimen/_150sdp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
@@ -266,7 +266,7 @@
 
                             <TextView
                                 android:id="@+id/btn_chnage_forgot"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -286,7 +286,7 @@
                 </LinearLayout>
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
@@ -313,7 +313,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/tv_regular_14"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center|end"
@@ -326,7 +326,7 @@
 
                     <TextView
                         android:id="@+id/tv_signUP"
-                        style="@style/tv_regular_14"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:paddingTop="@dimen/_5sdp"
@@ -339,7 +339,7 @@
 
                 <TextView
                     android:id="@+id/tv_terms"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lay_signup"

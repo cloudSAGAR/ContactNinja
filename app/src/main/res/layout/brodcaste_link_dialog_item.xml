@@ -91,7 +91,7 @@
                             android:id="@+id/tv_text_link"
                             android:layout_marginStart="@dimen/_2sdp"
                             android:layout_gravity="center"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_12"
                             android:textColor="@color/otp_header_text_color"
                             android:text="@string/link_add"
                             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                     <EditText
                         android:layout_weight="1"
                         android:id="@+id/edit_message"
-                        style="@style/tv_regular_14"
+                        style="@style/tv_regular_13"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

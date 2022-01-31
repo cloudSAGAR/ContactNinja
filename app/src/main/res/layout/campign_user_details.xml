@@ -61,7 +61,7 @@
                         android:visibility="gone"
                         android:id="@+id/no_image"
                         android:textColor="@color/white"
-                        style="@style/tv_regular_14"
+                        style="@style/tv_regular_13"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:background="@drawable/shape_primary_circle"
@@ -84,7 +84,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:textColor="@color/text_reg"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:singleLine="true"
                             android:text="GC Gregory Christakis"
                             />
@@ -113,7 +113,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:textColor="@color/black"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:singleLine="true"
                             android:text="GC Gregory Christakis"
                             />

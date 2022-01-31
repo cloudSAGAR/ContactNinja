@@ -1,184 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.contactninja.MainActivity"
     android:background="@color/white"
-    android:id="@+id/main_layout"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields" >
+    android:orientation="vertical"
+    tools:context="com.contactninja.MainActivity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />
 
 
     <LinearLayout
-        android:weightSum="2"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_gravity="left|center"
-        android:gravity="center|left"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            style="@style/tv_regular_14"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_gravity="center|end"
-            android:gravity="end|center"
-            android:id="@+id/save_button"
-            android:text="@string/group_to"
-            android:textSize="@dimen/_12sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:textColor="@color/text_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </TextView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_weight="1"
-            android:id="@+id/add_contect_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.recyclerview.widget.RecyclerView>
-        <View
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:background="@color/home_list_back_line"
-            android:layout_width="2dp"
-            android:layout_height="match_parent">
-
-        </View>
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_weight="1"
-            android:id="@+id/add_group_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
-
-
-    <View
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/home_list_back_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp">
-
-    </View>
-    <EditText
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:id="@+id/ev_titale"
-        android:background="@color/add_contect_transpernt"
-        style="@style/tv_regular_14"
-        android:inputType="textCapSentences"
-        android:textColor="@color/text_reg"
-        android:textColorHint="@color/text_reg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_15sdp"
-        android:hint="@string/tv_title">
+        android:layout_gravity="left|center"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:gravity="center|left"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/save_button"
+            style="@style/tv_regular_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:gravity="end|center"
+            android:padding="@dimen/_2sdp"
+            android:text="@string/group_to"
+            android:textColor="@color/text_reg">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/add_contect_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></androidx.recyclerview.widget.RecyclerView>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@color/line_separator" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/add_group_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/line_separator" />
+
+    <EditText
+        android:id="@+id/ev_titale"
+        style="@style/tv_regular_13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@color/add_contect_transpernt"
+        android:hint="@string/tv_title"
+        android:inputType="textCapSentences"
+        android:textColor="@color/text_reg"
+        android:textColorHint="@color/text_gray">
 
     </EditText>
 
 
     <LinearLayout
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_15sdp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_15sdp">
+
         <TextView
-            android:text="Starts :  "
-            style="@style/tv_regular_14"
+            style="@style/tv_Medium_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:gravity="center|left"
-            android:textSize="@dimen/_14sdp"
-            android:textColor="@color/text_reg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:text="Starts :  "
+            android:textColor="@color/text_reg">
 
         </TextView>
+
         <TextView
             android:id="@+id/tv_start"
-            android:text=""
+            style="@style/tv_regular_13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:gravity="center|left"
-            style="@style/tv_regular_14"
-            android:textSize="@dimen/_14sdp"
-            android:textStyle="bold"
-            android:textColor="@color/purple_200"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
+            android:text=""
+            android:textColor="@color/purple_200" />
 
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_15sdp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp">
+
         <TextView
-            android:text="Repeats :  "
-            style="@style/tv_regular_14"
+            style="@style/tv_Medium_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:gravity="center|left"
-            android:textSize="@dimen/_14sdp"
-            android:textColor="@color/text_reg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:text="Repeats :  "
+            android:textColor="@color/text_reg">
 
         </TextView>
+
         <TextView
             android:id="@+id/tv_repite"
-            android:text=""
-            android:textStyle="bold"
-            style="@style/tv_regular_14"
+            style="@style/tv_Medium_14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:gravity="center|left"
-            android:textSize="@dimen/_14sdp"
-            android:textColor="@color/purple_200"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:text=""
+            android:textColor="@color/purple_200">
 
         </TextView>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_15sdp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp">
+
         <TextView
-            android:text="Ends :  "
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:gravity="center|left"
-            android:textSize="@dimen/_14sdp"
-            android:textColor="@color/text_reg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:text="Ends :  "
+            android:textColor="@color/text_reg" />
 
-        </TextView>
         <TextView
             android:id="@+id/tv_ends"
-            android:text=" "
-            style="@style/tv_regular_14"
-            android:textStyle="bold"
+            style="@style/tv_Medium_14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:gravity="center|left"
-            android:textSize="@dimen/_14sdp"
-            android:textColor="@color/purple_200"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
-
+            android:text=" "
+            android:textColor="@color/purple_200" />
     </LinearLayout>
 
 

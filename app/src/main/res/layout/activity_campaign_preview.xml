@@ -38,17 +38,15 @@
 
                     android:layout_marginTop="@dimen/_10sdp"
                     android:id="@+id/add_new_contect"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:textSize="@dimen/_16sdp"
                     android:text="Campaign Preview"
                     android:textColor="@color/text_reg"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    android:textStyle="bold"
                     tools:ignore="HardcodedText" />
 
                 <LinearLayout
@@ -111,10 +109,9 @@
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:layout_width="match_parent"
                                 android:focusable="true"
-                                style="@style/tv_Medium_16"
+                                style="@style/tv_Medium_14"
                                 android:textColor="@color/text_reg"
                                 android:textColorHint="@color/text_reg"
-                                android:textSize="@dimen/_15sdp"
                                 android:layout_height="match_parent"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -204,7 +201,7 @@
 
                             <TextView
                                 android:id="@+id/contect_count"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_Medium_14"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/_30sdp"
                                 android:layout_alignParentBottom="true"
@@ -215,9 +212,8 @@
                                 android:paddingStart="@dimen/_15sdp"
                                 android:paddingEnd="@dimen/_15sdp"
                                 android:singleLine="true"
-                                android:textColor="@color/bz_text"
-                                android:textSize="@dimen/_14sdp"
-                                android:textStyle="bold" />
+                                android:textColor="@color/text_reg"
+                              />
 
                         </RelativeLayout>
 

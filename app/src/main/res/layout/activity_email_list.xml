@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/add_Template"
-                style="@style/tv_regular_14"
+                style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -44,8 +44,8 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/addEmail"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textColor="@color/text_reg"
+                 />
         </LinearLayout>
         <View
             android:layout_marginTop="@dimen/_12sdp"

@@ -46,7 +46,7 @@
 
                 <TextView
                     android:id="@+id/tv_email"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/add_email"
@@ -69,7 +69,7 @@
 
                 <TextView
                     android:id="@+id/email_txt"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -156,7 +156,7 @@
                     android:gravity="center">
 
                     <TextView
-                        style="@style/tv_regular_14"
+                        style="@style/tv_regular_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -174,7 +174,7 @@
         <EditText
             android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/edt_email"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -190,7 +190,7 @@
             android:visibility="gone"
             android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/iv_invalid"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_10sdp"

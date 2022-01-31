@@ -16,7 +16,7 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/tv_dis"
         android:padding="@dimen/_10sdp"
-        style="@style/tv_regular_14"
+        style="@style/tv_regular_13"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

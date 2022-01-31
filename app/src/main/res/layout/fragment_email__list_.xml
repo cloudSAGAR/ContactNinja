@@ -62,6 +62,7 @@
             tools:ignore="ImageContrastCheck" />
 
         <TextView
+            android:padding="@dimen/_5sdp"
             android:id="@+id/add_new_contect"
             style="@style/tv_Medium_14"
             android:layout_width="wrap_content"

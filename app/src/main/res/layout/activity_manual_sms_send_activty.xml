@@ -18,13 +18,14 @@
             layout="@layout/toolbar"/>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:weightSum="1"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:layout_gravity="center"
                 style="@style/tv_Medium_16"
                 android:textSize="@dimen/_14sdp"
@@ -38,7 +39,7 @@
             <EditText
                 android:layout_weight="1"
                 android:id="@+id/ev_task_title"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -74,13 +75,14 @@
 
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:weightSum="1"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:layout_gravity="center"
                 style="@style/tv_Medium_14"
                 android:text="@string/from"
@@ -93,7 +95,7 @@
             <EditText
                 android:layout_weight="1"
                 android:id="@+id/ev_from"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -184,7 +186,7 @@
             android:id="@+id/tv_use_tamplet"
             android:text="@string/temp_txt"
             android:textColor="@color/white"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_12"
             android:layout_marginStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"

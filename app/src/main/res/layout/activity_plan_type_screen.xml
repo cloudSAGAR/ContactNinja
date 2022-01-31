@@ -60,7 +60,7 @@
 
            <TextView
                android:layout_weight="1"
-               style="@style/tv_regular_14"
+               style="@style/tv_regular_13"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:layout_gravity="top"
@@ -72,7 +72,7 @@
 
            <TextView
                android:layout_weight="1"
-               style="@style/tv_regular_14"
+               style="@style/tv_regular_13"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:layout_gravity="top"
@@ -96,7 +96,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -108,7 +108,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -132,7 +132,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -144,7 +144,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -169,7 +169,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
@@ -181,7 +181,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"

@@ -51,6 +51,7 @@
             </EditText>
         </LinearLayout>
         <LinearLayout
+            android:layout_marginBottom="@dimen/_5sdp"
             android:id="@+id/add_new_contect_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,12 +69,13 @@
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
                 style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/add_new_contect"
@@ -98,8 +100,9 @@
         </LinearLayout>
 
         <TextView
+            android:padding="@dimen/_5sdp"
             android:id="@+id/tv_upload"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -114,7 +117,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_12sdp"
             android:background="@color/line_separator" />
 
        <androidx.appcompat.widget.SearchView

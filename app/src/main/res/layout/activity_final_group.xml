@@ -79,7 +79,7 @@
 
     <EditText
         android:id="@+id/add_detail"
-        style="@style/tv_regular_14"
+        style="@style/tv_regular_13"
         android:inputType="textCapSentences"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_70sdp"
@@ -98,7 +98,7 @@
 
     <TextView
         android:layout_marginTop="@dimen/_10sdp"
-        style="@style/tv_regular_14"
+        style="@style/tv_regular_12"
         android:textColor="@color/min_text"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
@@ -216,7 +216,7 @@
             android:layout_height="wrap_content"
             android:gravity="center|end"
             android:textColor="@color/purple_500"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_13"
             android:textStyle="bold"
             android:singleLine="true"
             android:text=""

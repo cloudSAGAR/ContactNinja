@@ -79,7 +79,7 @@
                     android:textColor="@color/text_reg" />
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -105,7 +105,7 @@
                     android:textColor="@color/text_reg" />
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -132,7 +132,7 @@
                     />
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -159,7 +159,7 @@
                     />
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -198,7 +198,7 @@
                    />
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -217,7 +217,7 @@
 
                 <TextView
                     android:id="@+id/tv_replied"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
@@ -225,7 +225,7 @@
                     />
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -252,7 +252,7 @@
                     />
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"

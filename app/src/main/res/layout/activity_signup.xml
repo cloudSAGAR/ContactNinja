@@ -40,7 +40,7 @@
 
                 <TextView
                     android:id="@+id/tv_dis"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_welcome"
@@ -72,7 +72,7 @@
 
                         <EditText
                             android:id="@+id/edit_First"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -102,7 +102,7 @@
 
                         <EditText
                             android:id="@+id/edit_Last"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -163,7 +163,7 @@
 
                         <EditText
                             android:id="@+id/edit_Mobile"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -192,7 +192,7 @@
 
                         <EditText
                             android:id="@+id/edit_email"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -219,7 +219,7 @@
 
                         <TextView
                             android:id="@+id/iv_invalid"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:layout_width="@dimen/_150sdp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -230,7 +230,7 @@
 
                         <TextView
                             android:id="@+id/btn_chnage_phone_email"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -238,11 +238,10 @@
                             android:gravity="end"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/or_email"
-                            android:textColor="@color/purple_200"
-                            />
+                            android:textColor="@color/purple_200" />
 
                         <CheckBox
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:id="@+id/select_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -268,7 +267,7 @@
 
                             <EditText
                                 android:id="@+id/edit_code"
-                                style="@style/tv_regular_14"
+                                style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -323,7 +322,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/tv_regular_14"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center|end"
@@ -336,7 +335,7 @@
 
                     <TextView
                         android:id="@+id/tv_Login"
-                        style="@style/tv_regular_14"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:padding="@dimen/_5sdp"
@@ -347,7 +346,7 @@
 
                 <TextView
                     android:id="@+id/tv_terms"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lay_signup"

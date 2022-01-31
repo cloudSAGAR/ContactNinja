@@ -34,10 +34,11 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/current_Plan"
                     android:textColor="@color/text_reg" />
 
@@ -58,10 +59,11 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/Messaging_Template"
                     android:textColor="@color/text_reg" />
 
@@ -82,10 +84,11 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/About_Contact_Ninja"
                     android:textColor="@color/text_reg" />
 
@@ -96,6 +99,7 @@
                     android:src="@drawable/ic_right_arrow"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_mail_box"
                 android:layout_width="match_parent"
@@ -105,10 +109,11 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/Mail_Box"
                     android:textColor="@color/text_reg" />
 
@@ -130,10 +135,11 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/Reset_Password"
                     android:textColor="@color/text_reg" />
 
@@ -154,10 +160,11 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/Logout"
                     android:textColor="@color/text_reg" />
 
@@ -193,7 +200,7 @@
             <TextView
 
                 android:id="@+id/tv_version_name"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"

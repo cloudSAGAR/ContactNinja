@@ -81,7 +81,7 @@
                 <TextView
 
                     android:id="@+id/tv_last_time"
-                    style="@style/tv_regular_14"
+                    style="@style/tv_regular_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -127,7 +127,7 @@
                     <TextView
                         android:id="@+id/no_image"
                         android:textColor="@color/white"
-                        style="@style/tv_regular_14"
+                        style="@style/tv_regular_13"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="T"
@@ -152,12 +152,12 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:textColor="@color/black"
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:singleLine="true"
                             android:text="TEST"
                             />
                         <TextView
-                            style="@style/tv_regular_14"
+                            style="@style/tv_regular_13"
                             android:visibility="gone"
                             android:textColor="@color/home_list_sub_data"
                             android:layout_marginTop="@dimen/_2sdp"

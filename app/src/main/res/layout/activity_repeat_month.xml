@@ -41,9 +41,10 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:paddingStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -83,8 +84,9 @@
             </LinearLayout>
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -107,9 +109,10 @@
 
 
         <TextView
+            android:padding="@dimen/_5sdp"
             android:id="@+id/tv_day"
-            android:layout_marginTop="@dimen/_30sdp"
-            style="@style/tv_regular_14"
+            android:layout_marginTop="@dimen/_20sdp"
+            style="@style/tv_regular_13"
             android:paddingEnd="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_15sdp"
@@ -133,7 +136,7 @@
                 android:buttonTint="@color/text_reg"
                 android:text="@string/add_day"
                 android:textColor="@color/text_reg"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -155,9 +158,10 @@
                     tools:listitem="@android:layout/simple_spinner_item" />
             </LinearLayout>
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:paddingStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
@@ -181,7 +185,7 @@
                 android:buttonTint="@color/text_reg"
                 android:text="@string/add_month"
                 android:textColor="@color/text_reg"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -226,9 +230,10 @@
 
         </LinearLayout>
         <TextView
+            android:padding="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingStart="@dimen/_5sdp"
-            style="@style/tv_regular_14"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
@@ -264,7 +269,7 @@
             <TextView
                 android:paddingStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                style="@style/tv_regular_14"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"

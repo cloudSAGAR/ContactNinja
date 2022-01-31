@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.contactninja.Interface.TemplateClick;
@@ -70,7 +71,7 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
     LoadingDialog loadingDialog;
     ImageView iv_back,iv_body;
     TextView save_button,bt_done;
-    CoordinatorLayout mMainLayout;
+    RelativeLayout mMainLayout;
     EditText ev_from,ev_to,ev_subject,edit_compose;
 
     private BroadcastReceiver mNetworkReceiver;
