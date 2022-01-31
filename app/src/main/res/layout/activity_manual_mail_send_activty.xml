@@ -135,7 +135,7 @@
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:paddingStart="@dimen/_15sdp"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"
