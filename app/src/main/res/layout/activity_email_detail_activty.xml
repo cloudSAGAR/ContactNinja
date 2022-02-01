@@ -82,6 +82,7 @@
             </TextView>
 
             <EditText
+                android:enabled="false"
                 android:id="@+id/ev_from"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
@@ -137,6 +138,7 @@
             </TextView>
 
             <EditText
+                android:enabled="false"
                 android:id="@+id/ev_to"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"

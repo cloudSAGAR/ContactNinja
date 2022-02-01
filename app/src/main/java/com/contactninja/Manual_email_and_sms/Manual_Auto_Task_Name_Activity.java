@@ -98,7 +98,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Done");
+        save_button.setText("Next");
         ev_titale = findViewById(R.id.ev_titale);
         tv_remain_txt = findViewById(R.id.tv_remain_txt);
         tv_error = findViewById(R.id.tv_error);

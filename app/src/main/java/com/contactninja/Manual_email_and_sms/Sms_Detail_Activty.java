@@ -156,7 +156,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Cancel");
+        save_button.setText("Delete");
         mMainLayout = findViewById(R.id.mMainLayout);
         bt_done=findViewById(R.id.bt_done);
         bt_done.setOnClickListener(this);

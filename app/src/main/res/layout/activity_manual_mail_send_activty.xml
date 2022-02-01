@@ -76,6 +76,7 @@
             </TextView>
 
             <EditText
+                android:enabled="false"
                 android:layout_weight="1"
                 android:id="@+id/ev_from"
                 style="@style/tv_regular_13"
