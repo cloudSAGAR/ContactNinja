@@ -220,6 +220,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             // display a progress dialog for good user experiance
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         protected String doInBackground(String... params) {
 
@@ -283,7 +284,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 company_layout.setEnabled(true);
                 tv_add_social.setVisibility(View.GONE);
                 media_link.setVisibility(View.GONE);
-                ev_company.setEnabled(true);
+                ev_company.setEnabled(false);
                 ev_company_url.setEnabled(true);
                 ev_job.setEnabled(true);
                 ev_zoom.setEnabled(true);
@@ -291,8 +292,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 ev_city.setEnabled(true);
                 ev_state.setEnabled(true);
                 ev_zip.setEnabled(true);
-                ev_bob.setEnabled(true);
+              //  ev_bob.setEnabled(true);
                 ev_note.setEnabled(true);
+
 
                 edt_mobile_no.setEnabled(false);
                 edt_mobile_no.setText(user_data_model.getContactNumber());
