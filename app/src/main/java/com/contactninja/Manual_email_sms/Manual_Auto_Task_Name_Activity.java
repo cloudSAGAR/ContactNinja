@@ -1,9 +1,8 @@
-package com.contactninja.Manual_email_and_sms;
+package com.contactninja.Manual_email_sms;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import retrofit2.Response;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -18,21 +17,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.Campaign.Campaign_Name_Activity;
-import com.contactninja.Campaign.Campaign_Preview;
-import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.retrofit.ApiResponse;
-import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
-import com.google.gson.JsonObject;
 
 public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     ImageView iv_back;
@@ -143,12 +135,12 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
                     }
                     else {
                         if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
-                            Intent intent = new Intent(getApplicationContext(), Manual_Sms_Activity.class);
+                            Intent intent = new Intent(getApplicationContext(), Manual_Sms_Contact_Activity.class);
                             intent.putExtra("task_name", ev_titale.getText().toString());
                             startActivity(intent);
                             finish();
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), Manual_Email_Activity.class);
+                            Intent intent = new Intent(getApplicationContext(), Manual_Email_Contect_Activity.class);
                             intent.putExtra("task_name", ev_titale.getText().toString());
                             startActivity(intent);
                             finish();

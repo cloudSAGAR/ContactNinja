@@ -48,57 +48,57 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Manual_email_and_sms.Manual_Auto_Task_Name_Activity"
+            android:name=".Manual_email_sms.Manual_Auto_Task_Name_Activity"
             android:screenOrientation="portrait" android:exported="false" />
         <activity
-            android:name=".Manual_email_and_sms.Sms_And_Email_Auto_Manual"
+            android:name=".Manual_email_sms.Sms_And_Email_Auto_Manual"
             android:screenOrientation="portrait" android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:screenOrientation="portrait"  />
         <activity
-            android:name=".Manual_email_and_sms.Sms_Detail_Activty"
+            android:name=".Manual_email_sms.Sms_Detail_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Manual_Sms_TaskActivity"
+            android:name=".Manual_email_sms.Manual_Sms_TaskActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Manual_Sms_Send_Activty"
+            android:name=".Manual_email_sms.Manual_Sms_Send_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Email_Detail_activty"
+            android:name=".Manual_email_sms.Email_Detail_activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Manual_Sms_Activity"
+            android:name=".Manual_email_sms.Manual_Sms_Contact_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Manual_Email_TaskActivity_"
+            android:name=".Manual_email_sms.Manual_Email_TaskActivity_"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Email_Tankyou"
+            android:name=".Manual_email_sms.Email_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Manual_Mail_Send_Activty"
+            android:name=".Manual_email_sms.Manual_Mail_Send_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Manual_Email_Activity"
+            android:name=".Manual_email_sms.Manual_Email_Contect_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_and_sms.Email_Sms_List_Activty"
+            android:name=".Manual_email_sms.Email_Sms_List_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Email.Mail_Send_Activity"
+            android:name=".Unuse.Email.Mail_Send_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -110,11 +110,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Email.Email_Selction_Activity"
+            android:name=".Unuse.Email.Email_Selction_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Email.Email_List_Activity"
+            android:name=".Unuse.Email.Email_List_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

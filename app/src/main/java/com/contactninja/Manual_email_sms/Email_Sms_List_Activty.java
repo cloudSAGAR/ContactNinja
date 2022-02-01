@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_and_sms;
+package com.contactninja.Manual_email_sms;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
@@ -32,8 +32,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_and_sms.Fragment.Email_List_Fragment;
-import com.contactninja.Manual_email_and_sms.Fragment.Sms_List_Fragment;
+import com.contactninja.Unuse.Fragment.Email_List_Fragment;
+import com.contactninja.Unuse.Fragment.Sms_List_Fragment;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;

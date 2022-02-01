@@ -43,7 +43,7 @@ import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
-import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;

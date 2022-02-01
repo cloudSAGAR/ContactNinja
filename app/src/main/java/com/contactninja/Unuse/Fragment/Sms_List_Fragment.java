@@ -1,31 +1,27 @@
-package com.contactninja.Email;
+package com.contactninja.Unuse.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_sms.Sms_Detail_Activty;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -53,9 +49,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class Email_List_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, SwipeRefreshLayout.OnRefreshListener {
-    LinearLayout demo_layout, add_new_contect_layout, mMainLayout,mMainLayout1;
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Sms_List_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+
+    LinearLayout demo_layout, add_new_contect_layout, mMainLayout;
     TextView tv_create;
     RecyclerView rv_email_list;
     SwipeRefreshLayout swipeToRefresh;
@@ -64,35 +61,39 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
     SessionManager sessionManager;
     EmailAdepter emailAdepter;
     List<ManualTaskModel> manualTaskModelList = new ArrayList<>();
-    ImageView iv_back;
     private BroadcastReceiver mNetworkReceiver;
+    LinearLayout layout_search;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_email_list2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+    View view=inflater.inflate(R.layout.fragment_sms__list_, container, false);
+        intentView(view);
         mNetworkReceiver = new ConnectivityReceiver();
-        retrofitCalls = new RetrofitCalls(Email_List_Activity.this);
-        loadingDialog = new LoadingDialog(Email_List_Activity.this);
-        sessionManager = new SessionManager(Email_List_Activity.this);
-        intentView();
+        retrofitCalls = new RetrofitCalls(getActivity());
+        loadingDialog = new LoadingDialog(getActivity());
+        sessionManager = new SessionManager(getActivity());
+        try {
+            Mail_list();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  view;
+
     }
 
-    private void intentView() {
-        iv_back = findViewById(R.id.iv_back);
-        iv_back.setVisibility(View.VISIBLE);
-        iv_back.setOnClickListener(this);
-        demo_layout = findViewById(R.id.demo_layout);
-        mMainLayout = findViewById(R.id.mMainLayout);
-        mMainLayout1 = findViewById(R.id.mMainLayout1);
+    private void intentView(View view) {
+        layout_search=view.findViewById(R.id.layout_search);
+        demo_layout = view.findViewById(R.id.demo_layout);
+        mMainLayout = view.findViewById(R.id.mMainLayout);
         demo_layout.setOnClickListener(this);
-        tv_create = findViewById(R.id.tv_create);
+        tv_create = view.findViewById(R.id.tv_create);
         tv_create.setText(getString(R.string.email_txt));
-        rv_email_list = findViewById(R.id.email_list);
-        add_new_contect_layout = findViewById(R.id.add_new_contect_layout);
+        rv_email_list = view.findViewById(R.id.email_list);
+        add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         add_new_contect_layout.setOnClickListener(this);
-        rv_email_list.setLayoutManager(new LinearLayoutManager(this));
-        swipeToRefresh = findViewById(R.id.swipeToRefresh);
+        rv_email_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        swipeToRefresh = view.findViewById(R.id.swipeToRefresh);
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(this);
     }
@@ -102,56 +103,34 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
 
         switch (view.getId()) {
             case R.id.add_new_contect_layout:
-                SessionManager.setEmail_screen_name("one_email");
-                SessionManager.setCampaign_type("");
-                SessionManager.setCampaign_type_name("");
-                SessionManager.setCampaign_Day("");
-                SessionManager.setCampaign_minute("");
-
-                SessionManager.setMessage_number("");
-                SessionManager.setMessage_type("");
-                SessionManager.setMessage_id(String.valueOf(""));
-                Intent intent=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
-                intent.putExtra("flag","edit");
-                intent.putExtra("type","EMAIL");
-                startActivity(intent);
-                //finish();
-                break;
-            case R.id.demo_layout:
-                SessionManager.setEmail_screen_name("one_email");
-                SessionManager.setCampaign_type("");
-                SessionManager.setCampaign_type_name("");
-                SessionManager.setCampaign_Day("");
-                SessionManager.setCampaign_minute("");
                 SessionManager.setMessage_number("");
                 SessionManager.setMessage_type("");
                 SessionManager.setMessage_id("");
-                Intent intent1=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                SessionManager.setEmail_screen_name("");
+                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
                 intent1.putExtra("flag","edit");
-                intent1.putExtra("type","EMAIL");
-                startActivity(intent1);//  finish();
+                intent1.putExtra("type","SMS");
+                startActivity(intent1); //  finish();
                 break;
-            case R.id.iv_back:
-                onBackPressed();
+            case R.id.demo_layout:
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                SessionManager.setEmail_screen_name("");
+                Intent intent=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent.putExtra("flag","edit");
+                intent.putExtra("type","SMS");
+                startActivity(intent);
                 break;
-        }
-    }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            if (Global.isNetworkAvailable(Email_List_Activity.this, MainActivity.mMainLayout)) {
-                Mail_list();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
@@ -160,7 +139,7 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
         if (!swipeToRefresh.isRefreshing()) {
             loadingDialog.showLoadingDialog();
         }
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Email_List_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -168,14 +147,12 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Email_List_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
                 if (response.body().getHttp_status() == 200) {
-                    demo_layout.setVisibility(View.GONE);
-                    mMainLayout1.setVisibility(View.VISIBLE);
                     manualTaskModelList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -183,16 +160,30 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
                     }.getType();
                     EmailActivityListModel emailActivityListModel = new Gson().fromJson(headerString, listType);
 
-                    manualTaskModelList = emailActivityListModel.getManualTask();
+                    for (int i=0;i<emailActivityListModel.getManualTask().size();i++)
+                    {
+                        if (!emailActivityListModel.getManualTask().get(i).getType().toString().equals("EMAIL"))
+                        {
+                            manualTaskModelList.add(emailActivityListModel.getManualTask().get(i));
+                        }
+                    }
+                    //manualTaskModelList = emailActivityListModel.getManualTask();
 
-                    rv_email_list.setLayoutManager(new LinearLayoutManager(Email_List_Activity.this, LinearLayoutManager.VERTICAL, false));
-                    emailAdepter = new EmailAdepter(Email_List_Activity.this, manualTaskModelList);
-                    rv_email_list.setAdapter(emailAdepter);
+                    if (manualTaskModelList.size()==0)
+                    {
+                        demo_layout.setVisibility(View.VISIBLE);
+                        layout_search.setVisibility(View.GONE);
+                    }
+                    else {
+                        layout_search.setVisibility(View.VISIBLE);
+                        rv_email_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                        emailAdepter = new EmailAdepter(getActivity(), manualTaskModelList);
+                        rv_email_list.setAdapter(emailAdepter);
+                    }
 
-
-                }else {
+                }
+                else {
                     demo_layout.setVisibility(View.VISIBLE);
-                    mMainLayout1.setVisibility(View.GONE);
                 }
             }
 
@@ -202,49 +193,16 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
                 loadingDialog.cancelLoading();
             }
         });
-
     }
 
-    @Override
     public void onRefresh() {
         try {
-            if (Global.isNetworkAvailable(Email_List_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 Mail_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Email_List_Activity.this, mMainLayout);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void registerNetworkBroadcastForNougat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    protected void unregisterNetworkChanges() {
-        try {
-            unregisterReceiver(mNetworkReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterNetworkChanges();
     }
 
     public class EmailAdepter extends RecyclerView.Adapter<EmailAdepter.viewData> {
@@ -271,16 +229,14 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
             ManualTaskModel item = manualTaskModelList.get(position);
             holder.tv_username.setText(item.getUserName());
             holder.tv_task_description.setText(item.getContentBody());
+           // holder.tv_status.setText(item.getStatus());
             try {
                 String time =Global.getDate(item.getStartTime());
                 holder.tv_time.setText(time);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 String currentDateandTime = sdf.format(new Date());
-               holder.tv_status.setVisibility(View.VISIBLE);
                 compareDates(currentDateandTime,time,holder.tv_status);
-
             } catch (ParseException e) {
-
                 e.printStackTrace();
             }
             String name =item.getUserName();
@@ -303,11 +259,17 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
             {
                 e.printStackTrace();
             }
-
-
             holder.no_image.setText(add_text.toUpperCase());
             holder.no_image.setVisibility(View.VISIBLE);
             holder.profile_image.setVisibility(View.GONE);
+            holder.layout_contec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SessionManager.setManualTaskModel(item);
+                    Intent intent=new Intent(getActivity(), Sms_Detail_Activty.class);
+                    startActivity(intent);
+                }
+            });
 
         }
 
@@ -320,7 +282,7 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_username, tv_task_description, tv_time,no_image,tv_status;
             CircleImageView profile_image;
-
+            LinearLayout layout_contec;
             public viewData(@NonNull View itemView) {
                 super(itemView);
                 tv_username = itemView.findViewById(R.id.tv_username);
@@ -329,9 +291,12 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
                 no_image = itemView.findViewById(R.id.no_image);
                 profile_image = itemView.findViewById(R.id.profile_image);
                 tv_status=itemView.findViewById(R.id.tv_status);
+                tv_status.setVisibility(View.VISIBLE);
+                layout_contec=itemView.findViewById(R.id.layout_contec);
             }
         }
     }
+
 
     public static void compareDates(String d1, String d2, TextView tv_status)
     {
@@ -380,6 +345,9 @@ public class Email_List_Activity extends AppCompatActivity implements View.OnCli
             ex.printStackTrace();
         }
     }
+
+
+
 
 
 }
