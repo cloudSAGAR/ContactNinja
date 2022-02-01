@@ -51,6 +51,7 @@ import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Csv_InviteListData;
 import com.contactninja.Model.InviteListData;
+import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
@@ -258,9 +259,9 @@ public class ContectFragment extends Fragment {
         contectListData = new ArrayList<>();
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
 
-
         paginationAdapter = new ContectListAdapter(getActivity());
         rvinviteuserdetails.setAdapter(paginationAdapter);
+
 
         //inviteListData.clear();
 
@@ -287,7 +288,7 @@ public class ContectFragment extends Fragment {
             paginationAdapter.addAll(contectListData);
             num_count.setText(contectListData.size() + " Contacts");
         }
- //       EnableRuntimePermission();
+      // EnableRuntimePermission();
 
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -297,7 +298,7 @@ public class ContectFragment extends Fragment {
 
                 try {
                     try {
-                        //GetContactsIntoArrayList();
+        //                GetContactsIntoArrayList();
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -305,7 +306,7 @@ public class ContectFragment extends Fragment {
                 } catch (Exception e) {
                     try {
                         ContectEvent();
-                        //GetContactsIntoArrayList();
+                   //     GetContactsIntoArrayList();
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
@@ -342,7 +343,7 @@ public class ContectFragment extends Fragment {
 
             }
         });
-        tv_upload.setVisibility(View.GONE);
+        tv_upload.setVisibility(View.VISIBLE);
         tv_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -359,15 +360,15 @@ public class ContectFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : contectListData) {
+                filter1(s.toString());
+               /* List<ContectListData.Contact> temp = new ArrayList();
+                for (ContectListData.Contact d : main_store) {
                     if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
                     }
                 }
-                paginationAdapter.updateList(temp);
+                paginationAdapter.updateList(temp);*/
                 //groupContectAdapter.notifyDataSetChanged();
             }
 
@@ -394,8 +395,28 @@ public class ContectFragment extends Fragment {
                 }
         );
 
+
         return content_view;
 
+    }
+
+
+    private void filter1(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<ContectListData.Contact> filteredlist = new ArrayList<>();
+
+        // running a for loop to compare elements.
+        for (ContectListData.Contact item : contectListData) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getFirstname().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+
+        } else {
+            paginationAdapter.filterList(filteredlist);
+        }
     }
 
     private void splitdata(List<Csv_InviteListData> response) {
@@ -997,13 +1018,14 @@ public class ContectFragment extends Fragment {
     public void onResume() {
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-        try {
+       try {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
         } catch (Exception e) {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
+
         }
         ev_search.setText("");
 
@@ -1256,6 +1278,15 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<ContectListData.Contact> contacts;
     private boolean isLoadingAdded = false;
 
+    public void filterList(ArrayList<ContectListData.Contact> filterllist) {
+        // below line is to add our filtered
+        // list in our course array list.
+       contacts = filterllist;
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        notifyDataSetChanged();
+    }
+
     public ContectListAdapter(@SuppressLint("UnknownNullness") Context context) {
         this.context = context;
         contacts = new LinkedList<>();
@@ -1294,13 +1325,13 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case ITEM:
                 ContectListAdapter.MovieViewHolder holder1 = (ContectListAdapter.MovieViewHolder) holder;
               try {
-               /*   if (Contact_data.getState().equals("I"))
+                if (Contact_data.getState().equals("I"))
                   {
-                      holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
+                      holder1.add_new_contect_icon.setVisibility(View.GONE);
                   }
                   else {
                       holder1.add_new_contect_icon.setVisibility(View.GONE);
-                  }*/
+                  }
 
                   if (Contact_data.getLastname().equals("null"))
                   {
@@ -1312,11 +1343,9 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                   }
                   holder1.userNumber.setVisibility(View.GONE);
 
-                  holder1.first_latter.setVisibility(View.VISIBLE);
-                  holder1.top_layout.setVisibility(View.VISIBLE);
 
-
-
+                  holder1.first_latter.setVisibility(View.GONE);
+                  holder1.top_layout.setVisibility(View.GONE);
                   String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
                   holder1.first_latter.setText(first_latter);
                   if (second_latter.equals("")) {
@@ -1383,7 +1412,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                   holder1.main_layout.setOnClickListener(new View.OnClickListener() {
                       @Override
                       public void onClick(View v) {
-                         /* if (Contact_data.getState().equals("I"))
+                          if (Contact_data.getState().equals("I"))
                           {
                               holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
 
@@ -1393,14 +1422,14 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                   e.printStackTrace();
                               }
                           }
-                          else {*/
+                          else {
                               SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
                               Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                               SessionManager.setOneCotect_deatil(context, Contact_data);
                               Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
                               SessionManager.setContect_flag("read");
                               context.startActivity(addnewcontect);
-                          //}
+                          }
 
 
                       }
