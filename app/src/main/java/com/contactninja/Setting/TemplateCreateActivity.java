@@ -235,7 +235,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         if (template_type.equals("SMS")) {
             if (edit_template_name.getText().toString().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
-            }
+            }else
             if (edit_template.getText().toString().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
             } else {
@@ -244,10 +244,10 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         } else {
             if (edit_template_name.getText().toString().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
-            }
+            }else
             if (edit_template_subject.getText().toString().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
-            }
+            }else
             if (edit_template.getText().toString().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
             } else {
@@ -268,14 +268,16 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("id", template.getId());
         paramObject.addProperty("template_name", edit_template_name.getText().toString().trim());
-        paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
+        if(template_type.equals("EMAIL")){
+            paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
+        }
         String template_slug = edit_template_name.getText().toString().toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
         paramObject.addProperty("content_body", edit_template.getText().toString().trim());
         paramObject.addProperty("type", template_type);
 
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(TemplateCreateActivity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(TemplateCreateActivity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -313,7 +315,9 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("template_name", edit_template_name.getText().toString().trim());
-        paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
+        if(template_type.equals("EMAIL")){
+            paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
+        }
         String template_slug = edit_template_name.getText().toString().toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
         paramObject.addProperty("content_body", edit_template.getText().toString().trim());

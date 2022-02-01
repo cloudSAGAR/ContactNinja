@@ -59,6 +59,7 @@
         </ImageView>
 
         <EditText
+            android:layout_weight="1"
             style="@style/tv_Medium_14"
             android:id="@+id/ev_search"
             android:layout_width="match_parent"
@@ -73,6 +74,13 @@
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
         </EditText>
+        <ImageView
+            android:id="@+id/iv_filter_icon"
+            android:padding="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_filter"/>
     </LinearLayout>
     <include
         layout="@layout/common_dialog"/>
@@ -124,7 +132,6 @@
 
 
     <View
-        android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"

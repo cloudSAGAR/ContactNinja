@@ -222,7 +222,7 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
         try {
             String time =Global.getDate(Data.getStartTime());
             tv_date.setText(time);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
             String currentDateandTime = sdf.format(new Date());
             compareDates(currentDateandTime,time,tv_status);
         } catch (ParseException e) {
@@ -237,7 +237,7 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
 
             //1
             // Create 2 dates starts
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
             Date date1 = sdf.parse(d1);
             Date date2 = sdf.parse(d2);
 
