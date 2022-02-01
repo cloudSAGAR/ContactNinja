@@ -304,7 +304,7 @@ Number</string>
     <string name="characters8">Must be at least 8 characters</string>
     <string name="passwordCheck">Password must contain one special character, digit and capital letter</string>
     <string name="passwordNotMetch">New password and confirm not match.</string>
-    <string name="addTemplate">Add new messaging template</string>
+    <string name="addTemplate">Add messaging template</string>
     <string name="cratetemplate">Create new messaging template</string>
     <string name="Use_template">Use template</string>
     <string name="Please_select_template">Please select template</string>
