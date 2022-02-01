@@ -88,7 +88,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
     List<ContecModel.PhoneDatum> select_userLinkedGmailList = new ArrayList<>();
     List<ContecModel.PhoneDatum> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
-
     ImageView iv_down;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

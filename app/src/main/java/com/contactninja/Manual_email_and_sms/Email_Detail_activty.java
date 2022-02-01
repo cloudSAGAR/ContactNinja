@@ -21,9 +21,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -174,10 +176,11 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
                         edit_compose.getSelectionEnd(),
                         0);
 
-                edit_compose.setText(spannableString);
+                edit_compose.setText(spannableString.toString());
             }
         });
-    }
+
+   }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Email_Detail_activty.this, mMainLayout);

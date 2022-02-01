@@ -248,7 +248,6 @@
 
         <EditText
             android:id="@+id/edit_compose"
-            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -260,7 +259,7 @@
             android:imeOptions="actionDone"
             android:padding="15dp"
             android:textColor="@color/text_reg"
-            tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+            />
 
         <ImageView
             android:id="@+id/iv_body"
@@ -294,7 +293,7 @@
             <TextView
                 android:id="@+id/tv_bold"
                 android:text="B"
-                android:padding="@dimen/_5sdp"
+                android:padding="@dimen/_10sdp"
                 style="@style/tv_regular_12"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -306,7 +305,7 @@
                 style="@style/tv_regular_12"
                 android:textColor="@color/black"
                 android:text="I"
-                android:padding="@dimen/_5sdp"
+                android:padding="@dimen/_10sdp"
 
                 android:id="@+id/tv_ital"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -318,8 +317,7 @@
                 style="@style/tv_regular_12"
                 android:textColor="@color/black"
                 android:text="U"
-                android:padding="@dimen/_5sdp"
-
+                android:padding="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:id="@+id/tv_uline"
                 android:layout_width="wrap_content"
