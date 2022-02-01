@@ -245,7 +245,7 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                     templateTextList = hastagList.getHashtag();
 
 
-                    HastagList.TemplateText text = new HastagList.TemplateText();
+                /*    HastagList.TemplateText text = new HastagList.TemplateText();
                     text.setFile(R.drawable.ic_a);
                     text.setSelect(false);
                     templateTextList.add(0, text);
@@ -253,13 +253,13 @@ public class Manual_Sms_Send_Activty extends AppCompatActivity implements View.O
                     HastagList.TemplateText text1 = new HastagList.TemplateText();
                     text1.setFile(R.drawable.ic_file);
                     text1.setSelect(false);
-                    templateTextList.add(1, text1);
+                    templateTextList.add(1, text1);*/
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(2, templateText);
+                    templateTextList.add(0, templateText);
 
 
                     Listset(templateTextList);

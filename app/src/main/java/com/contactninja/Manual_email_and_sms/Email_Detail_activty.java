@@ -229,7 +229,7 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Cancel");
+        save_button.setText("Delete");
         mMainLayout = findViewById(R.id.mMainLayout);
         bt_done=findViewById(R.id.bt_done);
         bt_done.setOnClickListener(this);
@@ -444,16 +444,16 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
                     text.setSelect(false);
                     templateTextList.add(0, text);
 
-                    HastagList.TemplateText text1 = new HastagList.TemplateText();
+               /*     HastagList.TemplateText text1 = new HastagList.TemplateText();
                     text1.setFile(R.drawable.ic_file);
                     text1.setSelect(false);
-                    templateTextList.add(1, text1);
+                    templateTextList.add(1, text1);*/
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(2, templateText);
+                    templateTextList.add(1, templateText);
 
 
                     Listset(templateTextList);

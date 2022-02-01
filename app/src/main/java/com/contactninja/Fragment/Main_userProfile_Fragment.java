@@ -162,7 +162,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         retrofitCalls = new RetrofitCalls(getActivity());
         sessionManager = new SessionManager(getActivity());
         option_type = "save";
-
+        setTab();
    /*     try {
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                 Userinfo();
@@ -334,7 +334,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             SessionManager.setUserdata(getActivity(), user_model);
                             Log.e("Main Data Is ",new Gson().toJson(user_model));
                             setdata();
-                            setTab();
+                           // setTab();
 
 
 

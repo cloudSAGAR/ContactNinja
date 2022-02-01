@@ -182,16 +182,16 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                     text.setSelect(false);
                     templateTextList.add(0, text);
 
-                    HastagList.TemplateText text1 = new HastagList.TemplateText();
+                  /*  HastagList.TemplateText text1 = new HastagList.TemplateText();
                     text1.setFile(R.drawable.ic_file);
                     text1.setSelect(false);
-                    templateTextList.add(1, text1);
+                    templateTextList.add(1, text1);*/
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(2, templateText);
+                    templateTextList.add(1, templateText);
 
 
                     Listset(templateTextList);
