@@ -15,11 +15,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -95,6 +100,8 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
     TextView tv_status,tv_date,tv_use_tamplet;
+    TextView tv_bold,tv_ital,tv_uline;
+    LinearLayout layout_a;
 
 
     @Override
@@ -109,6 +116,8 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
         IntentUI();
         setData();
         templateClick = this;
+
+
         try {
             if(Global.isNetworkAvailable(Email_Detail_activty.this,mMainLayout)){
                 Hastag_list();
@@ -124,6 +133,50 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        tv_bold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                        edit_compose.getSelectionStart(),
+                        edit_compose.getSelectionEnd(),
+                        0);
+
+                edit_compose.setText(spannableString);
+                Log.e("Text is a", Html.toHtml(edit_compose.getText()));
+            }
+        });
+
+
+        tv_ital.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
+                spannableString.setSpan(new StyleSpan(Typeface.ITALIC),
+                        edit_compose.getSelectionStart(),
+                        edit_compose.getSelectionEnd(),
+                        0);
+
+                edit_compose.setText(spannableString);
+            }
+        });
+
+        tv_uline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
+                spannableString.setSpan(new UnderlineSpan(),
+                        edit_compose.getSelectionStart(),
+                        edit_compose.getSelectionEnd(),
+                        0);
+
+                edit_compose.setText(spannableString);
+            }
+        });
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
@@ -223,6 +276,10 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
     }
 
     private void IntentUI() {
+        layout_a=findViewById(R.id.layout_a);
+        tv_uline=findViewById(R.id.tv_uline);
+        tv_bold=findViewById(R.id.tv_bold);
+        tv_ital=findViewById(R.id.tv_ital);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
@@ -1128,11 +1185,8 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
-                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                        chooseFile.setType("*/*");
-                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                    if (position == 0) {
+                        layout_a.setVisibility(View.VISIBLE);
                     }
                 }
             });

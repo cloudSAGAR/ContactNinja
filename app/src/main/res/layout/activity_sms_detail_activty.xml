@@ -33,6 +33,7 @@
             </TextView>
 
             <EditText
+                android:enabled="false"
                 android:layout_weight="1"
                 android:id="@+id/ev_titale"
                 style="@style/tv_regular_13"
@@ -88,6 +89,7 @@
             </TextView>
 
             <EditText
+                android:enabled="false"
                 android:layout_weight="1"
                 android:id="@+id/ev_from"
                 style="@style/tv_regular_13"
@@ -142,6 +144,7 @@
             </TextView>
 
             <EditText
+                android:enabled="false"
                 android:id="@+id/ev_to"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
@@ -247,47 +250,49 @@
 
         </ImageView>
 
-        <LinearLayout
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_gravity="bottom"
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginBottom="@dimen/_70sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+
+        android:layout_alignParentBottom="true">
+
+
+        <TextView
+
+            android:id="@+id/tv_use_tamplet"
+            android:text="@string/temp_txt"
+            android:textColor="@color/white"
+            style="@style/tv_regular_12"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:background="@drawable/shape_10_blue"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_direct_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp">
 
-            android:layout_alignParentBottom="true">
-
-
-            <TextView
-
-                android:id="@+id/tv_use_tamplet"
-                android:text="@string/temp_txt"
-                android:textColor="@color/white"
-                style="@style/tv_regular_12"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingTop="@dimen/_8sdp"
-                android:paddingBottom="@dimen/_8sdp"
-                android:background="@drawable/shape_10_blue"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-
-            </TextView>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_direct_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/_5sdp">
-
-            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
 
-        </LinearLayout>
     </LinearLayout>
     <TextView
         android:id="@+id/bt_done"
