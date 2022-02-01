@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -162,13 +163,13 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         sessionManager = new SessionManager(getActivity());
         option_type = "save";
 
-        try {
+   /*     try {
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                 Userinfo();
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
         pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
@@ -269,10 +270,46 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     @Override
     public void onResume() {
-
+        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+        myAsyncTasks.execute();
         super.onResume();
 
     }
+
+
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                    Userinfo();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
+    }
+
 
     private void Userinfo() throws JSONException {
       //  loadingDialog.showLoadingDialog();

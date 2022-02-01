@@ -195,7 +195,6 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 SessionManager.setCampaign_Day("00");
                 SessionManager.setCampaign_minute("00");
                 SessionManager.setCampaign_type("");

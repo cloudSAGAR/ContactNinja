@@ -121,7 +121,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
 
                     if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms"))
                     {
-                        Toast.makeText(getApplicationContext(),SessionManager.getMessage_id(getApplicationContext()),Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(getApplicationContext(),SessionManager.getMessage_id(getApplicationContext()),Toast.LENGTH_LONG).show();
                         Intent intent=new Intent(Manual_Auto_Task_Name_Activity.this, Manual_Sms_Send_Activty.class);
                         intent.putExtra("number",SessionManager.getMessage_number(getApplicationContext()));
                         intent.putExtra("id",Integer.parseInt(SessionManager.getMessage_id(getApplicationContext())));
