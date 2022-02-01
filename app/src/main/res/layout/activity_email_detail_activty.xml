@@ -9,13 +9,26 @@
     tools:context=".AddContect.EmailSend_Activity">
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_marginTop="@dimen/_50sdp"
+       android:layout_marginBottom="@dimen/_120sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
 
     <LinearLayout
-        android:layout_below="@+id/toolbar"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_layout"
+        android:layout_below="@+id/toolbar"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
@@ -37,13 +50,13 @@
             </TextView>
 
             <EditText
-                android:enabled="false"
                 android:id="@+id/ev_titale"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
+                android:enabled="false"
                 android:focusable="true"
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
@@ -84,7 +97,6 @@
             </TextView>
 
             <EditText
-                android:enabled="false"
                 android:id="@+id/ev_from"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
@@ -92,6 +104,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@color/add_contect_transpernt"
+                android:enabled="false"
                 android:focusable="true"
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
@@ -140,13 +153,13 @@
             </TextView>
 
             <EditText
-                android:enabled="false"
                 android:id="@+id/ev_to"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
+                android:enabled="false"
                 android:focusable="true"
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
@@ -180,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/to_subject"
-                android:textColor="@color/text_gray"/>
+                android:textColor="@color/text_gray" />
 
             <EditText
                 android:id="@+id/ev_subject"
@@ -223,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
                 android:text="date:  "
-                android:textColor="@color/text_gray"/>
+                android:textColor="@color/text_gray" />
 
             <TextView
 
@@ -232,7 +245,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/text_reg"/>
+                android:textColor="@color/text_reg" />
 
             <TextView
                 android:id="@+id/tv_status"
@@ -241,7 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|right"
                 android:gravity="center|right"
-                android:textColor="@color/text_gray"/>
+                android:textColor="@color/text_gray" />
 
 
         </LinearLayout>
@@ -258,8 +271,7 @@
             android:hint="@string/ComposeEmail"
             android:imeOptions="actionDone"
             android:padding="15dp"
-            android:textColor="@color/text_reg"
-            />
+            android:textColor="@color/text_reg" />
 
         <ImageView
             android:id="@+id/iv_body"
@@ -273,6 +285,11 @@
     </LinearLayout>
 
 
+
+
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
     <LinearLayout
 
         android:id="@+id/bottom_layout"
@@ -281,7 +298,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical"
->
+        >
 
         <LinearLayout
             android:id="@+id/layout_a"
@@ -325,7 +342,7 @@
 
             </TextView>
         </LinearLayout>
-      <LinearLayout
+        <LinearLayout
             android:layout_gravity="bottom"
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_width="match_parent"
@@ -376,8 +393,4 @@
 
         </TextView>
     </LinearLayout>
-
-
-
-
 </RelativeLayout>

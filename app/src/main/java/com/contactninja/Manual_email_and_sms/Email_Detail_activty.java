@@ -1189,7 +1189,7 @@ public class Email_Detail_activty extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(View view) {
                     if (position == 0) {
-                        layout_a.setVisibility(View.VISIBLE);
+                      //  layout_a.setVisibility(View.VISIBLE);
                     }
                 }
             });
