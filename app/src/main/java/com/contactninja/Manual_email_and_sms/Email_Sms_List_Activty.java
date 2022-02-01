@@ -530,7 +530,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
 
                 String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
                 holder.tv_username.setText(conactname);
-                holder.tv_task_description.setText(item.getContentBody());
+                holder.tv_task_description.setText(item.getTask_name());
                 //   holder.tv_status.setText(item.getStatus());
                 try {
                     String time = Global.getDate(item.getStartTime());

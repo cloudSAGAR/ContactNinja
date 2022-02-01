@@ -417,7 +417,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     @Override
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + "{" + s + "}";
+        String Newtext = curenttext + " " + s + " ";
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
@@ -469,7 +469,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                         handler.postDelayed(r, 1000);
                         holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
-                        interfaceClick.OnClick(item.getDescription());
+                        interfaceClick.OnClick(item.getHashtag());
                     }
                 }
             });

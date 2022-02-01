@@ -406,4 +406,9 @@ Number</string>
     <string name="characters40">40 characters remaining</string>
     <string name="select_type">Select automated or manual</string>
 
+    <string name="select_Home">Home</string>
+    <string name="select_Send">Send</string>
+    <string name="select_Contact">Contact</string>
+    <string name="select_User">User</string>
+
 </resources>
