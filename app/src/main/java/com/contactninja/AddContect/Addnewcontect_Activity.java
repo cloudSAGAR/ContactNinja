@@ -441,6 +441,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         iv_user = findViewById(R.id.iv_user);
         pulse_icon.setOnClickListener(this);
+        iv_user.setOnClickListener(this);
 
     }
 
@@ -976,13 +977,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     captureimageDialog(false);
                 }
                 break;
-
             case R.id.iv_user:
             case R.id.tv_nameLetter:
-
-
                 if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
-                    if (olld_image != null && !olld_image.equals("")) {
+                    if (olld_image != null && !olld_image.equals("")||user_image_Url != null && !user_image_Url.equals("")) {
                         captureimageDialog(true);
                     } else {
                         captureimageDialog(false);

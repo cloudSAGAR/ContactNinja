@@ -48,7 +48,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/addTemplate"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/text_reg" />
         </LinearLayout>
         <View
             android:layout_marginTop="@dimen/_12sdp"

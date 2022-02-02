@@ -60,6 +60,17 @@ public class User {
     @SerializedName("affiliate_info")
     @Expose
     private AffiliateInfo affiliateInfo = new AffiliateInfo();
+    @SerializedName("user_timezone")
+    @Expose
+    private List<UserTimezone> userTimezone = null;
+
+    public List<UserTimezone> getUserTimezone() {
+        return userTimezone;
+    }
+
+    public void setUserTimezone(List<UserTimezone> userTimezone) {
+        this.userTimezone = userTimezone;
+    }
 
     public Integer getId() {
         return id;

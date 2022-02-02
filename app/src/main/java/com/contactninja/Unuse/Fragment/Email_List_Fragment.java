@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_and_sms.Fragment;
+package com.contactninja.Unuse.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,9 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_and_sms.Manual_Sms_Activity;
-import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
-import com.contactninja.Manual_email_and_sms.Sms_Detail_Activty;
+import com.contactninja.Manual_email_sms.Email_Detail_activty;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -44,7 +44,6 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,9 +51,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Sms_List_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class Email_List_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    LinearLayout demo_layout, add_new_contect_layout, mMainLayout;
+    LinearLayout demo_layout, add_new_contect_layout, mMainLayout,layout_search;
     TextView tv_create;
     RecyclerView rv_email_list;
     SwipeRefreshLayout swipeToRefresh;
@@ -63,13 +62,16 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
     SessionManager sessionManager;
     EmailAdepter emailAdepter;
     List<ManualTaskModel> manualTaskModelList = new ArrayList<>();
+    ImageView iv_back;
     private BroadcastReceiver mNetworkReceiver;
-    LinearLayout layout_search;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-    View view=inflater.inflate(R.layout.fragment_sms__list_, container, false);
+
+        View view=inflater.inflate(R.layout.fragment_email__list_, container, false);
         intentView(view);
         mNetworkReceiver = new ConnectivityReceiver();
         retrofitCalls = new RetrofitCalls(getActivity());
@@ -80,8 +82,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return  view;
-
+        return view;
     }
 
     private void intentView(View view) {
@@ -105,32 +106,36 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
 
         switch (view.getId()) {
             case R.id.add_new_contect_layout:
+                SessionManager.setGroupList(getActivity(), new ArrayList<>());
+               // startActivity(new Intent(getActivity(), Manual_Email_Activity.class));
+                //finish();
+
                 SessionManager.setMessage_number("");
                 SessionManager.setMessage_type("");
                 SessionManager.setMessage_id("");
+                SessionManager.setEmail_screen_name("manual");
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
-                SessionManager.setEmail_screen_name("");
-                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
-                intent1.putExtra("flag","edit");
-                intent1.putExtra("type","SMS");
-                startActivity(intent1); //  finish();
+                Intent intent=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent.putExtra("flag","edit");
+                intent.putExtra("type","EMAIL");
+                startActivity(intent);
                 break;
             case R.id.demo_layout:
                 SessionManager.setMessage_number("");
                 SessionManager.setMessage_type("");
                 SessionManager.setMessage_id("");
+                SessionManager.setEmail_screen_name("manual");
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
-                SessionManager.setEmail_screen_name("");
-                Intent intent=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
-                intent.putExtra("flag","edit");
-                intent.putExtra("type","SMS");
-                startActivity(intent);
+                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag","edit");
+                intent1.putExtra("type","EMAIL");
+                startActivity(intent1); //  finish();
                 break;
 
         }
@@ -154,7 +159,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
-                if (response.body().getHttp_status() == 200) {
+               if (response.body().getHttp_status() == 200) {
                     manualTaskModelList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -164,26 +169,28 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
 
                     for (int i=0;i<emailActivityListModel.getManualTask().size();i++)
                     {
-                        if (!emailActivityListModel.getManualTask().get(i).getType().toString().equals("EMAIL"))
+                        if (emailActivityListModel.getManualTask().get(i).getType().toString().equals("EMAIL"))
                         {
                             manualTaskModelList.add(emailActivityListModel.getManualTask().get(i));
                         }
                     }
                     //manualTaskModelList = emailActivityListModel.getManualTask();
 
-                    if (manualTaskModelList.size()==0)
-                    {
-                        demo_layout.setVisibility(View.VISIBLE);
-                        layout_search.setVisibility(View.GONE);
-                    }
-                    else {
-                        layout_search.setVisibility(View.VISIBLE);
-                        rv_email_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                        emailAdepter = new EmailAdepter(getActivity(), manualTaskModelList);
-                        rv_email_list.setAdapter(emailAdepter);
-                    }
+                   if (manualTaskModelList.size()==0)
+                   {
+                       layout_search.setVisibility(View.GONE);
+                       demo_layout.setVisibility(View.VISIBLE);
 
-                }
+
+                   }
+                   else {
+                       layout_search.setVisibility(View.VISIBLE);
+                       rv_email_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                       emailAdepter = new EmailAdepter(getActivity(), manualTaskModelList);
+                       rv_email_list.setAdapter(emailAdepter);
+                   }
+
+               }
                 else {
                     demo_layout.setVisibility(View.VISIBLE);
                 }
@@ -229,9 +236,10 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
         @Override
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
-            holder.tv_username.setText(item.getUserName());
+            String conactname=item.getContactMasterFirstname()+" "+item.getContactMasterLastname();
+            holder.tv_username.setText(conactname);
             holder.tv_task_description.setText(item.getContentBody());
-           // holder.tv_status.setText(item.getStatus());
+         //   holder.tv_status.setText(item.getStatus());
             try {
                 String time =Global.getDate(item.getStartTime());
                 holder.tv_time.setText(time);
@@ -241,7 +249,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            String name =item.getUserName();
+            String name =conactname;
             String add_text="";
             String[] split_data=name.split(" ");
             try {
@@ -264,15 +272,16 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             holder.no_image.setText(add_text.toUpperCase());
             holder.no_image.setVisibility(View.VISIBLE);
             holder.profile_image.setVisibility(View.GONE);
-            holder.layout_contec.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SessionManager.setManualTaskModel(item);
-                    Intent intent=new Intent(getActivity(), Sms_Detail_Activty.class);
-                    startActivity(intent);
-                }
-            });
+                holder.layout_contec.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.e("Item List is",new Gson().toJson(item));
 
+                    SessionManager.setManualTaskModel(item);
+                    Intent intent=new Intent(getActivity(), Email_Detail_activty.class);
+                    startActivity(intent);
+                    }
+                });
         }
 
         @Override
@@ -285,6 +294,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             TextView tv_username, tv_task_description, tv_time,no_image,tv_status;
             CircleImageView profile_image;
             LinearLayout layout_contec;
+
             public viewData(@NonNull View itemView) {
                 super(itemView);
                 tv_username = itemView.findViewById(R.id.tv_username);
@@ -298,7 +308,6 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             }
         }
     }
-
 
     public static void compareDates(String d1, String d2, TextView tv_status)
     {
@@ -347,9 +356,5 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
             ex.printStackTrace();
         }
     }
-
-
-
-
 
 }

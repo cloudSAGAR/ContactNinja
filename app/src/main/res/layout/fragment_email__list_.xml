@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Manual_email_and_sms.Fragment.Email_List_Fragment">
+    tools:context=".Unuse.Fragment.Email_List_Fragment">
 
     <LinearLayout
         android:id="@+id/layout_search"

@@ -320,16 +320,19 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         for (int i = 0; i < contactdetails.size(); i++) {
             Log.e("Contec List Size",String.valueOf(contactdetails.get(0).getContactDetails().size()));
             JSONObject paramObject1 = new JSONObject();
-            paramObject1.put("prospect_id",contactdetails.get(i).getId());
             Log.e("Contect Detail is",new Gson().toJson(contactdetails.get(i).getContactDetails()));
             for (int j=0;j<contactdetails.get(i).getContactDetails().size();j++)
             {
                 if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
                 {
-                    paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                    paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getContactId());
+                    paramObject1.put("prospect_id",contactdetails.get(i).getId());
+
                 }
                 else {
-                    paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                    paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getContactId());
+                    paramObject1.put("prospect_id",contactdetails.get(i).getId());
+
                 }
                 //break;
             }
@@ -415,8 +418,6 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                             loadingDialog.cancelLoading();
                         }
                     });
-
-
         }
 
     }

@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_and_sms.Fragment;
+package com.contactninja.Manual_email_sms;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

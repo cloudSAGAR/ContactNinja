@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_and_sms;
+package com.contactninja.Manual_email_sms;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -15,7 +15,6 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,13 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.Campaign.Add_Camp_Email_Activity;
-import com.contactninja.Campaign.Add_Camp_First_Step_Activity;
-import com.contactninja.Campaign.Add_Camp_SMS_Activity;
-import com.contactninja.Campaign.Fragment.Campaign_Email_Fragment;
-import com.contactninja.Campaign.Fragment.Campaign_Sms_Fragment;
-import com.contactninja.Manual_email_and_sms.Fragment.Manual_Auto_Selection_Email_Fragment;
-import com.contactninja.Manual_email_and_sms.Fragment.Manual_Auto_Selection_Fragment;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;

@@ -375,14 +375,15 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             for (int i = 0; i < inviteListData.size(); i++) {
                 Log.e("Contec List Size", String.valueOf(inviteListData.get(0).getContactDetails().size()));
                 JSONObject paramObject1 = new JSONObject();
-                paramObject1.put("prospect_id", inviteListData.get(i).getId());
+
                 for (int j = 0; j < inviteListData.get(i).getContactDetails().size(); j++) {
                     if (inviteListData.get(i).getContactDetails().get(j).getType().equals("NUMBER")) {
                         paramObject1.put("mobile", inviteListData.get(i).getContactDetails().get(j).getEmailNumber());
+                        paramObject1.put("prospect_id", inviteListData.get(i).getContactDetails().get(j).getContactId());
                     } else {
                         if (!inviteListData.get(i).getContactDetails().get(j).getEmailNumber().equals(" ")) {
                             paramObject1.put("email", inviteListData.get(i).getContactDetails().get(j).getEmailNumber());
-
+                            paramObject1.put("prospect_id", inviteListData.get(i).getContactDetails().get(j).getContactId());
                         }
                     }
                     //break;

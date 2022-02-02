@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -161,16 +162,17 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         retrofitCalls = new RetrofitCalls(getActivity());
         sessionManager = new SessionManager(getActivity());
         option_type = "save";
-
-        try {
+        setTab();
+   /*     try {
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                 Userinfo();
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
-
+        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+        myAsyncTasks.execute();
         pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,6 +276,41 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     }
 
+
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                    Userinfo();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
+    }
+
+
     private void Userinfo() throws JSONException {
       //  loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
@@ -297,7 +334,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             SessionManager.setUserdata(getActivity(), user_model);
                             Log.e("Main Data Is ",new Gson().toJson(user_model));
                             setdata();
-                            setTab();
+                           // setTab();
 
 
 

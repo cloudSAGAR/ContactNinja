@@ -76,6 +76,7 @@
             </TextView>
 
             <EditText
+                android:enabled="false"
                 android:layout_weight="1"
                 android:id="@+id/ev_from"
                 style="@style/tv_regular_13"
@@ -135,7 +136,7 @@
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:paddingStart="@dimen/_15sdp"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"

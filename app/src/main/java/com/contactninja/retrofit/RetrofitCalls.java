@@ -192,6 +192,7 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
+
     public void CreateTemplate(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.CreateTemplate(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;

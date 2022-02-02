@@ -94,7 +94,7 @@ Number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_contect">Add new contact</string>
-    <string name="add_sink">SINK ALL</string>
+    <string name="add_sink">Sync All</string>
     <string name="add_new_contect1">Add all contacts</string>
     <string name="remove_new_contect1">Remove all contacts</string>
     <string name="add_new">Add new</string>
@@ -304,7 +304,7 @@ Number</string>
     <string name="characters8">Must be at least 8 characters</string>
     <string name="passwordCheck">Password must contain one special character, digit and capital letter</string>
     <string name="passwordNotMetch">New password and confirm not match.</string>
-    <string name="addTemplate">Add new messaging template</string>
+    <string name="addTemplate">Add messaging template</string>
     <string name="cratetemplate">Create new messaging template</string>
     <string name="Use_template">Use template</string>
     <string name="Please_select_template">Please select template</string>
@@ -394,7 +394,7 @@ Number</string>
     <string name="composse_email">Compose email</string>
     <string name="email_txt">click here to send \n an email </string>
     <string name="create_new_email">Create new email</string>
-    <string name="create_new_sms">Create new sms task</string>
+    <string name="create_new_sms">Create new task</string>
     <string name="email_task_txt">Schedule my task</string>
     <string name="email_date">Please select date</string>
     <string name="email_time">Select time</string>
@@ -405,5 +405,10 @@ Number</string>
     <string name="add_message">Add message</string>
     <string name="characters40">40 characters remaining</string>
     <string name="select_type">Select automated or manual</string>
+
+    <string name="select_Home">Home</string>
+    <string name="select_Send">Send</string>
+    <string name="select_Contact">Contact</string>
+    <string name="select_User">User</string>
 
 </resources>

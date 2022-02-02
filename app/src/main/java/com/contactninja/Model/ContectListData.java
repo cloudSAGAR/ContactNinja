@@ -131,6 +131,18 @@ public class ContectListData {
         @Expose
         private String dob;
 
+        @SerializedName("is_blocked")
+        @Expose
+        private String is_blocked;
+
+        public String getIs_blocked() {
+            return is_blocked;
+        }
+
+        public void setIs_blocked(String is_blocked) {
+            this.is_blocked = is_blocked;
+        }
+
         public String getFacebook_link() {
             return facebook_link;
         }

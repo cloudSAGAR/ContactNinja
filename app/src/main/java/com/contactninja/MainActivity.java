@@ -43,7 +43,7 @@ import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
-import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
@@ -141,12 +141,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean shouldLoadHomeFragOnBackPress = true;
     @RequiresApi(api = Build.VERSION_CODES.N)
     private BroadcastReceiver mNetworkReceiver;
+    public static MainActivity activity;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        activity=MainActivity.this;
         mNetworkReceiver = new ConnectivityReceiver();
         registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EnableRuntimePermission();
         navItemIndex = 0;
         displayView();
-        ImageSetLight("Home");
+        ImageSetLight(getResources().getString(R.string.select_Home));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -206,9 +208,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onPermissionGranted() {
                 if (sessionManager.getContectList(getApplicationContext()).size() == 0) {
-                 //   loadingDialog.showLoadingDialog();
+                 //  loadingDialog.showLoadingDialog();
                 }
-             //  GetContactsIntoArrayList();
+              // GetContactsIntoArrayList();
 
             }
 
@@ -667,39 +669,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void ImageSetLight(String imageName) {
+    public void ImageSetLight(String imageName) {
         switch (imageName) {
             case "Home":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home_select));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
+                llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home_select));
+                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_chat_icon));
+                llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Send":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon_select));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
+                llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
+                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_chat_icon_select));
+                llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Contact":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts_selece));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
+                llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
+                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_chat_icon));
+                llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts_selece));
+                llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "User":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user_select));
+                llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
+                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_chat_icon));
+                llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user_select));
                 break;
 
-            case "Add":
-                llHome.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_chat_icon));
-                llContact.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_contacts));
-                llUser.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_nav_user));
-                break;
+
 
         }
     }
@@ -710,7 +707,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (navItemIndex != 0) {
                 navItemIndex = 0;
                 displayView();
-                ImageSetLight("Home");
+                ImageSetLight(getResources().getString(R.string.select_Home));
                 return;
             }
 
@@ -744,7 +741,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 navItemIndex = 0;
                 displayView();
 
-                ImageSetLight("Home");
+                ImageSetLight(getResources().getString(R.string.select_Home));
 
 
                 break;
@@ -752,7 +749,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 navItemIndex = 1;
                 displayView();
 
-                ImageSetLight("Send");
+                ImageSetLight(getResources().getString(R.string.select_Send));
 
 
                 break;
@@ -760,7 +757,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 navItemIndex = 2;
                 displayView();
 
-                ImageSetLight("Contact");
+                ImageSetLight(getResources().getString(R.string.select_Contact));
 
 
                 break;
@@ -769,14 +766,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 navItemIndex = 3;
                 displayView();
 
-                ImageSetLight("User");
+                ImageSetLight(getResources().getString(R.string.select_User));
 
                 break;
             case R.id.llCreate:
                 navItemIndex = 4;
                 displayView();
-
-                ImageSetLight("Add");
                 break;
 
         }
