@@ -1,9 +1,8 @@
-package com.contactninja.Manual_email_and_sms;
+package com.contactninja.Manual_email_sms;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import retrofit2.Response;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -20,18 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.Campaign.Campaign_Name_Activity;
-import com.contactninja.Campaign.Campaign_Preview;
-import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.retrofit.ApiResponse;
-import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
-import com.google.gson.JsonObject;
 
 public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     ImageView iv_back;
@@ -97,7 +90,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Done");
+        save_button.setText("Next");
         ev_titale = findViewById(R.id.ev_titale);
         tv_remain_txt = findViewById(R.id.tv_remain_txt);
         tv_error = findViewById(R.id.tv_error);
@@ -120,9 +113,10 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
 
                     if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms"))
                     {
+                      //  Toast.makeText(getApplicationContext(),SessionManager.getMessage_id(getApplicationContext()),Toast.LENGTH_LONG).show();
                         Intent intent=new Intent(Manual_Auto_Task_Name_Activity.this, Manual_Sms_Send_Activty.class);
                         intent.putExtra("number",SessionManager.getMessage_number(getApplicationContext()));
-                        intent.putExtra("id",SessionManager.getMessage_id(getApplicationContext()));
+                        intent.putExtra("id",Integer.parseInt(SessionManager.getMessage_id(getApplicationContext())));
                         intent.putExtra("type",SessionManager.getMessage_tyep(getApplicationContext()));
                         intent.putExtra("task_name",ev_titale.getText().toString());
                         startActivity(intent);
@@ -141,12 +135,12 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
                     }
                     else {
                         if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
-                            Intent intent = new Intent(getApplicationContext(), Manual_Sms_Activity.class);
+                            Intent intent = new Intent(getApplicationContext(), Manual_Sms_Contact_Activity.class);
                             intent.putExtra("task_name", ev_titale.getText().toString());
                             startActivity(intent);
                             finish();
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), Manual_Email_Activity.class);
+                            Intent intent = new Intent(getApplicationContext(), Manual_Email_Contect_Activity.class);
                             intent.putExtra("task_name", ev_titale.getText().toString());
                             startActivity(intent);
                             finish();

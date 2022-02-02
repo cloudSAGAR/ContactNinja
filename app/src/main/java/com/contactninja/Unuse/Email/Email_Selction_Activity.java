@@ -1,4 +1,4 @@
-package com.contactninja.Email;
+package com.contactninja.Unuse.Email;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

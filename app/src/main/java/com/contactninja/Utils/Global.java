@@ -265,7 +265,7 @@ public static String getDate(long time) throws ParseException {
     Calendar cal = Calendar.getInstance();
     cal.setTimeInMillis(time * 1000);
     Date date = cal.getTime();
-    SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    SimpleDateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
     String date1 = format1.format(date);
 
     return String.valueOf(date1);

@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_and_sms;
+package com.contactninja.Manual_email_sms;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -65,7 +65,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Manual_Email_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public class Manual_Email_Contect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button;
 
@@ -260,7 +260,7 @@ return  null;
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Manual_Email_Activity.this, mMainLayout);
+        Global.checkConnectivity(Manual_Email_Contect_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -318,7 +318,7 @@ return  null;
             // implement API in background and store the response in current variable
             String current = "";
             try {
-                if(Global.isNetworkAvailable(Manual_Email_Activity.this,mMainLayout)) {
+                if(Global.isNetworkAvailable(Manual_Email_Contect_Activity.this,mMainLayout)) {
                     ContectEvent();
                 }
 
@@ -359,7 +359,7 @@ return  null;
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(Manual_Email_Activity.this), Global.Device);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(Manual_Email_Contect_Activity.this), Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -815,7 +815,7 @@ return  null;
             for (int i=0;i<contectListData.size();i++)
             {
 
-                groupContectAdapter = new GroupContectAdapter(Manual_Email_Activity.this);
+                groupContectAdapter = new GroupContectAdapter(Manual_Email_Contect_Activity.this);
                 contect_list_unselect.setAdapter(groupContectAdapter);
                 group_flag="false";
                 contectListData.get(i).setFlag("false");

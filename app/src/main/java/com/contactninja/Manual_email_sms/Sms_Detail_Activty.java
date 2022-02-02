@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_and_sms;
+package com.contactninja.Manual_email_sms;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -88,7 +88,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
     List<ContecModel.PhoneDatum> select_userLinkedGmailList = new ArrayList<>();
     List<ContecModel.PhoneDatum> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
-
     ImageView iv_down;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +138,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         try {
             String time =Global.getDate(Data.getStartTime());
             tv_date.setText(time);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
             String currentDateandTime = sdf.format(new Date());
             compareDates(currentDateandTime,time,tv_status);
         } catch (ParseException e) {
@@ -156,7 +155,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Cancel");
+        save_button.setText("Delete");
         mMainLayout = findViewById(R.id.mMainLayout);
         bt_done=findViewById(R.id.bt_done);
         bt_done.setOnClickListener(this);
@@ -341,7 +340,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
 
             //1
             // Create 2 dates starts
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
             Date date1 = sdf.parse(d1);
             Date date2 = sdf.parse(d2);
 
@@ -427,7 +426,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
 
 
                             from_ac="USERSMS";
-                            from_ac_id= String.valueOf(select_userLinkedGmailList.get(i).getId());
+                            from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
 
 
                         }
@@ -474,7 +473,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
                     templateTextList = hastagList.getHashtag();
 
 
-                    HastagList.TemplateText text = new HastagList.TemplateText();
+                 /*   HastagList.TemplateText text = new HastagList.TemplateText();
                     text.setFile(R.drawable.ic_a);
                     text.setSelect(false);
                     templateTextList.add(0, text);
@@ -482,13 +481,13 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
                     HastagList.TemplateText text1 = new HastagList.TemplateText();
                     text1.setFile(R.drawable.ic_file);
                     text1.setSelect(false);
-                    templateTextList.add(1, text1);
+                    templateTextList.add(1, text1);*/
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(2, templateText);
+                    templateTextList.add(0, templateText);
 
 
                     Listset(templateTextList);
@@ -749,8 +748,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
-
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
 
         public Context mCtx;
@@ -816,7 +813,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
     class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
         public Context mCtx;
@@ -922,9 +918,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
-
-
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
 
         public Context mCtx;

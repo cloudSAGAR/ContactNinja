@@ -1,10 +1,13 @@
-package com.contactninja.Manual_email_and_sms.Fragment;
+package com.contactninja.Unuse.Email;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,15 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_and_sms.Email_Detail_activty;
-import com.contactninja.Manual_email_and_sms.Manual_Email_Activity;
-import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -51,10 +53,9 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Email_List_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
-
-    LinearLayout demo_layout, add_new_contect_layout, mMainLayout,layout_search;
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
+public class Email_List_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, SwipeRefreshLayout.OnRefreshListener {
+    LinearLayout demo_layout, add_new_contect_layout, mMainLayout,mMainLayout1;
     TextView tv_create;
     RecyclerView rv_email_list;
     SwipeRefreshLayout swipeToRefresh;
@@ -66,38 +67,32 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
     ImageView iv_back;
     private BroadcastReceiver mNetworkReceiver;
 
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view=inflater.inflate(R.layout.fragment_email__list_, container, false);
-        intentView(view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_email_list2);
         mNetworkReceiver = new ConnectivityReceiver();
-        retrofitCalls = new RetrofitCalls(getActivity());
-        loadingDialog = new LoadingDialog(getActivity());
-        sessionManager = new SessionManager(getActivity());
-        try {
-            Mail_list();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return view;
+        retrofitCalls = new RetrofitCalls(Email_List_Activity.this);
+        loadingDialog = new LoadingDialog(Email_List_Activity.this);
+        sessionManager = new SessionManager(Email_List_Activity.this);
+        intentView();
     }
 
-    private void intentView(View view) {
-        layout_search=view.findViewById(R.id.layout_search);
-        demo_layout = view.findViewById(R.id.demo_layout);
-        mMainLayout = view.findViewById(R.id.mMainLayout);
+    private void intentView() {
+        iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
+        iv_back.setOnClickListener(this);
+        demo_layout = findViewById(R.id.demo_layout);
+        mMainLayout = findViewById(R.id.mMainLayout);
+        mMainLayout1 = findViewById(R.id.mMainLayout1);
         demo_layout.setOnClickListener(this);
-        tv_create = view.findViewById(R.id.tv_create);
+        tv_create = findViewById(R.id.tv_create);
         tv_create.setText(getString(R.string.email_txt));
-        rv_email_list = view.findViewById(R.id.email_list);
-        add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
+        rv_email_list = findViewById(R.id.email_list);
+        add_new_contect_layout = findViewById(R.id.add_new_contect_layout);
         add_new_contect_layout.setOnClickListener(this);
-        rv_email_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        swipeToRefresh = view.findViewById(R.id.swipeToRefresh);
+        rv_email_list.setLayoutManager(new LinearLayoutManager(this));
+        swipeToRefresh = findViewById(R.id.swipeToRefresh);
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(this);
     }
@@ -107,38 +102,56 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
 
         switch (view.getId()) {
             case R.id.add_new_contect_layout:
-                SessionManager.setGroupList(getActivity(), new ArrayList<>());
-               // startActivity(new Intent(getActivity(), Manual_Email_Activity.class));
-                //finish();
-
-                SessionManager.setMessage_number("");
-                SessionManager.setMessage_type("");
-                SessionManager.setMessage_id("");
-                SessionManager.setEmail_screen_name("manual");
+                SessionManager.setEmail_screen_name("one_email");
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
-                Intent intent=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id(String.valueOf(""));
+                Intent intent=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
                 intent.putExtra("flag","edit");
                 intent.putExtra("type","EMAIL");
                 startActivity(intent);
+                //finish();
                 break;
             case R.id.demo_layout:
-                SessionManager.setMessage_number("");
-                SessionManager.setMessage_type("");
-                SessionManager.setMessage_id("");
-                SessionManager.setEmail_screen_name("manual");
+                SessionManager.setEmail_screen_name("one_email");
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
-                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                SessionManager.setMessage_number("");
+                SessionManager.setMessage_type("");
+                SessionManager.setMessage_id("");
+                Intent intent1=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
                 intent1.putExtra("flag","edit");
                 intent1.putExtra("type","EMAIL");
-                startActivity(intent1); //  finish();
+                startActivity(intent1);//  finish();
                 break;
+            case R.id.iv_back:
+                onBackPressed();
+                break;
+        }
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (Global.isNetworkAvailable(Email_List_Activity.this, MainActivity.mMainLayout)) {
+                Mail_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -147,7 +160,7 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
         if (!swipeToRefresh.isRefreshing()) {
             loadingDialog.showLoadingDialog();
         }
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Email_List_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -155,12 +168,14 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Email_List_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
-               if (response.body().getHttp_status() == 200) {
+                if (response.body().getHttp_status() == 200) {
+                    demo_layout.setVisibility(View.GONE);
+                    mMainLayout1.setVisibility(View.VISIBLE);
                     manualTaskModelList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -168,32 +183,16 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
                     }.getType();
                     EmailActivityListModel emailActivityListModel = new Gson().fromJson(headerString, listType);
 
-                    for (int i=0;i<emailActivityListModel.getManualTask().size();i++)
-                    {
-                        if (emailActivityListModel.getManualTask().get(i).getType().toString().equals("EMAIL"))
-                        {
-                            manualTaskModelList.add(emailActivityListModel.getManualTask().get(i));
-                        }
-                    }
-                    //manualTaskModelList = emailActivityListModel.getManualTask();
+                    manualTaskModelList = emailActivityListModel.getManualTask();
 
-                   if (manualTaskModelList.size()==0)
-                   {
-                       layout_search.setVisibility(View.GONE);
-                       demo_layout.setVisibility(View.VISIBLE);
+                    rv_email_list.setLayoutManager(new LinearLayoutManager(Email_List_Activity.this, LinearLayoutManager.VERTICAL, false));
+                    emailAdepter = new EmailAdepter(Email_List_Activity.this, manualTaskModelList);
+                    rv_email_list.setAdapter(emailAdepter);
 
 
-                   }
-                   else {
-                       layout_search.setVisibility(View.VISIBLE);
-                       rv_email_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                       emailAdepter = new EmailAdepter(getActivity(), manualTaskModelList);
-                       rv_email_list.setAdapter(emailAdepter);
-                   }
-
-               }
-                else {
+                }else {
                     demo_layout.setVisibility(View.VISIBLE);
+                    mMainLayout1.setVisibility(View.GONE);
                 }
             }
 
@@ -203,16 +202,49 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
                 loadingDialog.cancelLoading();
             }
         });
+
     }
 
+    @Override
     public void onRefresh() {
         try {
-            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Email_List_Activity.this, MainActivity.mMainLayout)) {
                 Mail_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Email_List_Activity.this, mMainLayout);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
     }
 
     public class EmailAdepter extends RecyclerView.Adapter<EmailAdepter.viewData> {
@@ -237,20 +269,21 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
         @Override
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
-            String conactname=item.getContactMasterFirstname()+" "+item.getContactMasterLastname();
-            holder.tv_username.setText(conactname);
+            holder.tv_username.setText(item.getUserName());
             holder.tv_task_description.setText(item.getContentBody());
-         //   holder.tv_status.setText(item.getStatus());
             try {
                 String time =Global.getDate(item.getStartTime());
                 holder.tv_time.setText(time);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 String currentDateandTime = sdf.format(new Date());
+               holder.tv_status.setVisibility(View.VISIBLE);
                 compareDates(currentDateandTime,time,holder.tv_status);
+
             } catch (ParseException e) {
+
                 e.printStackTrace();
             }
-            String name =conactname;
+            String name =item.getUserName();
             String add_text="";
             String[] split_data=name.split(" ");
             try {
@@ -270,19 +303,12 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
             {
                 e.printStackTrace();
             }
+
+
             holder.no_image.setText(add_text.toUpperCase());
             holder.no_image.setVisibility(View.VISIBLE);
             holder.profile_image.setVisibility(View.GONE);
-                holder.layout_contec.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.e("Item List is",new Gson().toJson(item));
 
-                    SessionManager.setManualTaskModel(item);
-                    Intent intent=new Intent(getActivity(), Email_Detail_activty.class);
-                    startActivity(intent);
-                    }
-                });
         }
 
         @Override
@@ -294,7 +320,6 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_username, tv_task_description, tv_time,no_image,tv_status;
             CircleImageView profile_image;
-            LinearLayout layout_contec;
 
             public viewData(@NonNull View itemView) {
                 super(itemView);
@@ -304,8 +329,6 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
                 no_image = itemView.findViewById(R.id.no_image);
                 profile_image = itemView.findViewById(R.id.profile_image);
                 tv_status=itemView.findViewById(R.id.tv_status);
-                tv_status.setVisibility(View.VISIBLE);
-                layout_contec=itemView.findViewById(R.id.layout_contec);
             }
         }
     }
@@ -357,5 +380,6 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
             ex.printStackTrace();
         }
     }
+
 
 }

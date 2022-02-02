@@ -33,11 +33,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.AddContect.EmailSend_Activity;
-import com.contactninja.AddContect.Message_Activity;
-import com.contactninja.Campaign.Campaign_Name_Activity;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_and_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
@@ -45,7 +42,6 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.TimezoneModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.WorkTypeData;
-import com.contactninja.Model.WorkingHoursModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -421,7 +417,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setId(detail_contect.get(i).getContactId());
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
                         emaildetails_list.add(contactdetail);
@@ -439,7 +435,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setId(detail_contect.get(i).getContactId());
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
 
@@ -2105,6 +2101,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     Log.e("Sms Event Call", "Yes");
                     Log.e("Number is", item.getEmail_number());
                     //showAlertDialogButtonClicked1(item.getEmail_number());
+                    //Toast.makeText(getActivity(),String.valueOf(item.getId()),Toast.LENGTH_LONG).show();
                     showAlertDialogMeassge(item.getEmail_number(), item.getId());
                 }
             });

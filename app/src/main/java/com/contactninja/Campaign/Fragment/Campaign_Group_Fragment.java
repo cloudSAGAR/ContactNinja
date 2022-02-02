@@ -66,17 +66,12 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     private List<Grouplist.Group> grouplists;
     List<Grouplist.Group> select_contectListData;
     // private GroupAdapter groupAdapter;
-    private ProgressBar loadingPB;
     RecyclerView add_contect_list;
     public static TopUserListDataAdapter topUserListDataAdapter;
     TextView tv_create;
     LinearLayout mMainLayout;
     ImageView add_new_contect_icon1,add_new_contect_icon;
     TextView add_new_contect;
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -158,7 +153,6 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         group_recyclerView.setLayoutManager(layoutManager);
         group_name = view.findViewById(R.id.group_name);
         num_count = view.findViewById(R.id.num_count);
-        loadingPB = view.findViewById(R.id.idPBLoading);
         grouplists = new ArrayList<>();
         add_contect_list=view.findViewById(R.id.add_contect_list);
         layoutManager1=new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
@@ -215,7 +209,6 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
