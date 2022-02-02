@@ -1018,7 +1018,7 @@ public class ContectFragment extends Fragment {
     public void onResume() {
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-       try {
+      /* try {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
@@ -1026,7 +1026,7 @@ public class ContectFragment extends Fragment {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
-        }
+        }*/
         ev_search.setText("");
 
         super.onResume();

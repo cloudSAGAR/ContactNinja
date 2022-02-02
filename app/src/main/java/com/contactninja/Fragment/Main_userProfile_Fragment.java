@@ -171,7 +171,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             e.printStackTrace();
         }*/
 
-
+        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+        myAsyncTasks.execute();
         pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,8 +271,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     @Override
     public void onResume() {
-        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-        myAsyncTasks.execute();
+
         super.onResume();
 
     }
