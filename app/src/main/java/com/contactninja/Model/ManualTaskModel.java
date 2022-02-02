@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 @SuppressLint("UnknownNullness")
 public class ManualTaskModel {
     @SerializedName("id")
@@ -17,7 +18,7 @@ public class ManualTaskModel {
     private Integer teamId;
     @SerializedName("seq_id")
     @Expose
-    private Integer seqId;
+    private Integer seqId = 0;
     @SerializedName("seq_task_id")
     @Expose
     private Integer seqTaskId;
@@ -62,10 +63,10 @@ public class ManualTaskModel {
     private String userName;
     @SerializedName("contact_master_firstname")
     @Expose
-    private String contactMasterFirstname="";
+    private String contactMasterFirstname = "";
     @SerializedName("contact_master_lastname")
     @Expose
-    private String contactMasterLastname="";
+    private String contactMasterLastname = "";
     @SerializedName("content_header")
     @Expose
     private String contentHeader;
@@ -84,7 +85,7 @@ public class ManualTaskModel {
 
     @SerializedName("sent_tbl_id")
     @Expose
-    private String  sent_tbl_id;
+    private String sent_tbl_id;
 
     public String getMail_module() {
         return mail_module;
@@ -274,15 +275,15 @@ public class ManualTaskModel {
         return contentBody;
     }
 
+    public void setContentBody(String contentBody) {
+        this.contentBody = contentBody;
+    }
+
     public String getTask_name() {
         return task_name;
     }
 
     public void setTask_name(String task_name) {
         this.task_name = task_name;
-    }
-
-    public void setContentBody(String contentBody) {
-        this.contentBody = contentBody;
     }
 }

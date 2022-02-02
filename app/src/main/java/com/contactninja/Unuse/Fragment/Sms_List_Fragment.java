@@ -21,7 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
-import com.contactninja.Manual_email_sms.Sms_Detail_Activty;
+import com.contactninja.Manual_email_sms.Item_List_Sms_Detail_Activty;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -266,7 +266,7 @@ public class Sms_List_Fragment extends Fragment implements View.OnClickListener,
                 @Override
                 public void onClick(View view) {
                     SessionManager.setManualTaskModel(item);
-                    Intent intent=new Intent(getActivity(), Sms_Detail_Activty.class);
+                    Intent intent=new Intent(getActivity(), Item_List_Sms_Detail_Activty.class);
                     startActivity(intent);
                 }
             });

@@ -12,7 +12,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.SystemClock;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -35,20 +34,21 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Global extends Application   {
-    private static final long MIN_CLICK_INTERVAL = 2000; //in millis
+public class Global extends Application {
     public static final String Device = "APP_ANDR";
+    private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static String AppVersion = "";
-    public static String about="https://contactninja.us/about/";
-    public static String Email_auth="https://app.contactninja.org/email_api/callback.php";
+    public static String about = "https://contactninja.us/about/";
+    public static String Email_auth = "https://app.contactninja.org/email_api/callback.php";
+    public static int count = 1;
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;
-    public static int count=1;
 
     public static void openEmailAuth(Activity activity) {
         Uri uri = Uri.parse(Global.Email_auth); // missing 'http://' will cause crashed
@@ -60,6 +60,7 @@ public class Global extends Application   {
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
         return currentTime;
     }
+
     public static String getCurrentDate() {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String date = df.format(Calendar.getInstance().getTime());
@@ -67,56 +68,49 @@ public class Global extends Application   {
     }
 
     public static String getVersionname(Activity activity) {
-     String version="";
+        String version = "";
         try {
             PackageInfo pInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-             version = pInfo.versionName;
-            AppVersion=version;
+            version = pInfo.versionName;
+            AppVersion = version;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         return version;
     }
 
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        mInstance = this;
-
+    public static String setFirstLetter(String status) {
+        String upperString = status.substring(0, 1).toUpperCase() + status.substring(1).toLowerCase();
+        return upperString;
     }
-    public static synchronized Global getInstance () {
+
+    public static synchronized Global getInstance() {
         return mInstance;
     }
+
     /*
      * any value not null or blank check
      * */
-    public static boolean IsNotNull (Object object) {
+    public static boolean IsNotNull(Object object) {
         return object != null && !object.equals("null") && !object.equals("");
     }
 
-    public static void bsck (Context context, View drawerLayout) {
+    public static void bsck(Context context, View drawerLayout) {
         Snackbar snackbar;
         snackbar = Snackbar.make(drawerLayout, context.getString(R.string.back_button), 5000);
         snackbar.show();
     }
 
-
-
-    public static boolean emailValidator (String email) {
+    public static boolean emailValidator(String email) {
         Pattern pattern;
         Matcher matcher;
-        final String EMAIL_PATTERN =  "[a-zA-Z0-9+._-]+@[a-z]+\\.+[a-z]+";
+        final String EMAIL_PATTERN = "[a-zA-Z0-9+._-]+@[a-z]+\\.+[a-z]+";
         pattern = Pattern.compile(EMAIL_PATTERN);
         matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
-
-
-    public static void list_Show_Hide (RecyclerView recyclerView, TextView textView, boolean isVisibalRecyclerView) {
+    public static void list_Show_Hide(RecyclerView recyclerView, TextView textView, boolean isVisibalRecyclerView) {
         if (isVisibalRecyclerView) {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
@@ -126,7 +120,7 @@ public class Global extends Application   {
         }
     }
 
-    public static void View_Show_Hide (View view, boolean isVisibal) {
+    public static void View_Show_Hide(View view, boolean isVisibal) {
         if (isVisibal) {
             view.setVisibility(View.VISIBLE);
         } else {
@@ -134,8 +128,7 @@ public class Global extends Application   {
         }
     }
 
-
-    public static void hideKeyboard (Activity activity) {
+    public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
         if (Global.IsNotNull(activity.getCurrentFocus())) {
             if (imm != null) {
@@ -145,7 +138,7 @@ public class Global extends Application   {
     }
 
     @SuppressLint("NewApi")
-    public static void Messageshow (Context context, View frameLayout, String message, boolean success) {
+    public static void Messageshow(Context context, View frameLayout, String message, boolean success) {
         Snackbar snackbar;
         View sbview;
 
@@ -163,8 +156,7 @@ public class Global extends Application   {
         snackbar.show();
     }
 
-
-    public static CircularProgressDrawable setplaceholder (Context context) {
+    public static CircularProgressDrawable setplaceholder(Context context) {
         CircularProgressDrawable circularProgressDrawable;
         circularProgressDrawable = new CircularProgressDrawable(context);
         circularProgressDrawable.setStrokeWidth(1f);
@@ -173,21 +165,19 @@ public class Global extends Application   {
         return circularProgressDrawable;
     }
 
-
-
-
-    public static boolean buttonOneclick () {
+    public static boolean buttonOneclick() {
         boolean click;
         long currentTime = SystemClock.elapsedRealtime();
         if (currentTime - lastClickTime > MIN_CLICK_INTERVAL) {
             lastClickTime = currentTime;
-           click=true;
-        }else {
+            click = true;
+        } else {
             click = false;
         }
 
-    return click;
+        return click;
     }
+
     public static boolean isPasswordValidMethod(String password) {
 
         boolean isValid = false;
@@ -195,7 +185,7 @@ public class Global extends Application   {
         // ^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$
         // ^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$
 
-        String expression =  "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+        String expression = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
         CharSequence inputStr = password;
 
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
@@ -205,16 +195,15 @@ public class Global extends Application   {
         }
         return isValid;
     }
+
     public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             return Patterns.PHONE.matcher(phoneNumber).matches();
         }
         return false;
     }
-    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
-        ConnectivityReceiver.connectivityReceiverListener = listener;
-    }
-    public static void checkConnectivity (Activity activity, View mMainLayout) {
+
+    public static void checkConnectivity(Activity activity, View mMainLayout) {
         boolean finalConnectivity = false;
 
         snackbar =
@@ -225,7 +214,7 @@ public class Global extends Application   {
         snackbar.setActionTextColor(activity.getResources().getColor(R.color.red));
 
         snackbar.setAction(activity.getString(R.string.tryAgain), view -> {
-            checkConnectivity(activity,mMainLayout);
+            checkConnectivity(activity, mMainLayout);
         });
         if (ConnectivityReceiver.isConnected()) {
             snackbar.dismiss();
@@ -247,28 +236,41 @@ public class Global extends Application   {
         }
     }
 
-    public static String getToken(SessionManager sessionManager){
-        String token=sessionManager.getAccess_token();
-        Log.e("token",token);
+    public static String getToken(SessionManager sessionManager) {
+        String token = sessionManager.getAccess_token();
+        Log.e("token", token);
         return token;
     }
 
+    /*
+        public static String getcontectexits(SessionManager sessionManager){
 
-/*
-    public static String getcontectexits(SessionManager sessionManager){
+            String token=sessionManager.getcontectexits();
+            return token;
+        }
+    */
+    public static String getDate(long time) throws ParseException {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.setTimeInMillis(time * 1000);
+        Date date = cal.getTime();
+        SimpleDateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
+        String date1 = format1.format(date);
 
-        String token=sessionManager.getcontectexits();
-        return token;
+        return String.valueOf(date1);
     }
-*/
-public static String getDate(long time) throws ParseException {
-    Calendar cal = Calendar.getInstance();
-    cal.setTimeInMillis(time * 1000);
-    Date date = cal.getTime();
-    SimpleDateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-    String date1 = format1.format(date);
 
-    return String.valueOf(date1);
-}
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        mInstance = this;
+
+    }
+
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
+    }
 
 }

@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Email_Detail_activty;
+import com.contactninja.Manual_email_sms.Item_List_Email_Detail_activty;
 import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
@@ -278,7 +278,7 @@ public class Email_List_Fragment extends Fragment implements View.OnClickListene
                         Log.e("Item List is",new Gson().toJson(item));
 
                     SessionManager.setManualTaskModel(item);
-                    Intent intent=new Intent(getActivity(), Email_Detail_activty.class);
+                    Intent intent=new Intent(getActivity(), Item_List_Email_Detail_activty.class);
                     startActivity(intent);
                     }
                 });

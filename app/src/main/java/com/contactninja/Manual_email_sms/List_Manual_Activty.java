@@ -15,25 +15,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Unuse.Fragment.Email_List_Fragment;
-import com.contactninja.Unuse.Fragment.Sms_List_Fragment;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -47,7 +44,6 @@ import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -62,24 +58,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Email_Sms_List_Activty extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, SwipeRefreshLayout.OnRefreshListener {
+public class List_Manual_Activty extends AppCompatActivity implements View.OnClickListener,
+        ConnectivityReceiver.ConnectivityReceiverListener, SwipeRefreshLayout.OnRefreshListener {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back, iv_filter_icon;
     TextView save_button;
-    TabLayout tabLayout;
     TextView add_new_contect;
 
-    ViewPager viewPager;
     LinearLayout mMainLayout;
-    SampleFragmentPagerAdapter pagerAdapter;
-    TabLayout.Tab tab;
-    LinearLayout demo_layout, add_new_contect_layout, layout_search;
+    LinearLayout demo_layout, add_new_contect_layout, lay_no_list;
+    RelativeLayout lay_mainlayout;
     TextView tv_create;
     RecyclerView rv_email_list;
     SwipeRefreshLayout swipeToRefresh;
@@ -87,12 +80,13 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
     EmailAdepter emailAdepter;
     List<ManualTaskModel> manualTaskModelList = new ArrayList<>();
     int perPage = 20;
+    String Filter = "";//FINISHED / TODAY / UPCOMING/ DUE/ SKIPPED / PAUSED
     private BroadcastReceiver mNetworkReceiver;
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
 
-    public static void compareDates(String d1, String d2, TextView tv_status, TextView tv_time) {
+    public static void compareDates(String d1, String d2, TextView tv_status, TextView tv_time, ManualTaskModel item) {
         try {
             // If you already have date objects then skip 1
 
@@ -102,25 +96,32 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
             Date date1 = sdf.parse(d1);
             Date date2 = sdf.parse(d2);
 
-            //  Log.e("Date1",sdf.format(date1));
-            //    Log.e("Date2",sdf.format(date2));
-
             // Create 2 dates ends
             //1
 
             // Date object is having 3 methods namely after,before and equals for comparing
             // after() will return true if and only if date1 is after date 2
             if (date1.after(date2)) {
-                tv_status.setText("Due");
-                tv_status.setTextColor(Color.parseColor("#EC5454"));
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
                 tv_time.setText(d2);
                 //    Log.e("","Date1 is after Date2");
             }
             // before() will return true if and only if date1 is before date2
             if (date1.before(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
 
-                tv_status.setText("Upcoming");
-                tv_status.setTextColor(Color.parseColor("#2DA602"));
                 tv_time.setText(d2);
                 //  Log.e("","Date1 is before Date2");
                 //System.out.println("Date1 is before Date2");
@@ -128,13 +129,18 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
 
             //equals() returns true if both the dates are equal
             if (date1.equals(date2)) {
-                tv_status.setText("Today");
-                tv_status.setTextColor(Color.parseColor("#EC5454"));
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Today");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
                 String convTime = null;
                 try {
                     String prefix = "";
                     String suffix = "Ago";
-
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
                     Date pasTime = dateFormat.parse(d2);
@@ -198,32 +204,6 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         IntentUI();
 
-        pagerAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#4A4A4A"));
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            tab = tabLayout.getTabAt(i);
-            tab.setCustomView(pagerAdapter.getTabView(i));
-        }
-      /*  viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(final int i, final float v, final int i2) {
-            }
-            @Override
-            public void onPageSelected(final int i) {
-                YourFragmentInterface fragment = (YourFragmentInterface) pagerAdapter.instantiateItem(viewPager, i);
-                if (fragment != null) {
-                    fragment.fragmentBecameVisible();
-                }
-            }
-            @Override
-            public void onPageScrollStateChanged(final int i) {
-            }
-        });
-    */
-
 
         ev_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -242,15 +222,17 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
             }
         });
         rv_email_list.setLayoutManager(layoutManager);
-        emailAdepter = new EmailAdepter(Email_Sms_List_Activty.this, new ArrayList<>());
+        emailAdepter = new EmailAdepter(List_Manual_Activty.this, new ArrayList<>());
         rv_email_list.setAdapter(emailAdepter);
         rv_email_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
+                iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                Filter = "";
                 isLoading = true;
                 currentPage++;
                 try {
-                    if (Global.isNetworkAvailable(Email_Sms_List_Activty.this, MainActivity.mMainLayout)) {
+                    if (Global.isNetworkAvailable(List_Manual_Activty.this, MainActivity.mMainLayout)) {
                         Mail_list();
                     }
                 } catch (JSONException e) {
@@ -320,12 +302,14 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
+        Filter = "";
+        iv_filter_icon.setImageResource(R.drawable.ic_filter);
         currentPage = PAGE_START;
         isLastPage = false;
         manualTaskModelList.clear();
         emailAdepter.clear();
         try {
-            if (Global.isNetworkAvailable(Email_Sms_List_Activty.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(List_Manual_Activty.this, MainActivity.mMainLayout)) {
                 if (!swipeToRefresh.isRefreshing()) {
                     loadingDialog.showLoadingDialog();
                 }
@@ -338,12 +322,11 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
 
     private void IntentUI() {
 
+        lay_no_list = findViewById(R.id.lay_no_list);
         iv_filter_icon = findViewById(R.id.iv_filter_icon);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPager);
         save_button.setVisibility(View.GONE);
 
         iv_back.setOnClickListener(this);
@@ -353,7 +336,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         mMainLayout = findViewById(R.id.mMainLayout);
 
 
-        layout_search = findViewById(R.id.layout_search);
+        lay_mainlayout = findViewById(R.id.lay_mainlayout);
         demo_layout = findViewById(R.id.demo_layout);
         mMainLayout = findViewById(R.id.mMainLayout);
         tv_create = findViewById(R.id.tv_create);
@@ -370,7 +353,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Email_Sms_List_Activty.this, mMainLayout);
+        Global.checkConnectivity(List_Manual_Activty.this, mMainLayout);
     }
 
     @Override
@@ -389,9 +372,131 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
     private void filter_manu() {
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_solo_list_filter, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Email_Sms_List_Activty.this, R.style.CoffeeDialog);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(List_Manual_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
-        LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
+        CheckBox ch_today = bottomSheetDialog.findViewById(R.id.ch_today);
+        CheckBox ch_upcoming = bottomSheetDialog.findViewById(R.id.ch_upcoming);
+        CheckBox ch_due = bottomSheetDialog.findViewById(R.id.ch_due);
+        CheckBox ch_complate = bottomSheetDialog.findViewById(R.id.ch_complate);
+        CheckBox ch_skipped = bottomSheetDialog.findViewById(R.id.ch_skipped);
+        CheckBox ch_Paused = bottomSheetDialog.findViewById(R.id.ch_Paused);
+        CheckBox ch_all_task = bottomSheetDialog.findViewById(R.id.ch_all_task);
+
+
+        switch (Filter) {
+            case "TODAY":
+                ch_today.setChecked(true);
+                break;
+            case "UPCOMING":
+                ch_upcoming.setChecked(true);
+
+                break;
+            case "DUE":
+                ch_due.setChecked(true);
+
+                break;
+            case "FINISHED":
+                ch_complate.setChecked(true);
+
+                break;
+            case "SKIPPED":
+                ch_skipped.setChecked(true);
+
+                break;
+            case "PAUSED":
+                ch_Paused.setChecked(true);
+
+                break;
+        }
+
+
+        String[] Filters = getResources().getStringArray(R.array.manual_filter);//FINISHED / TODAY / UPCOMING/ DUE/ SKIPPED / PAUSED
+
+        ch_today.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = Filters[0];
+                    // refresf_api();
+                }
+
+            }
+        });
+        ch_upcoming.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = Filters[1];
+                    refresf_api();
+                }
+
+            }
+        });
+        ch_due.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = Filters[2];
+                    //refresf_api();
+                }
+
+            }
+        });
+        ch_complate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = Filters[3];
+                    //refresf_api();
+                }
+
+            }
+        });
+        ch_skipped.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = Filters[4];
+                    //refresf_api();
+                }
+
+            }
+        });
+        ch_Paused.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = Filters[5];
+                    //refresf_api();
+                }
+
+            }
+        });
+        ch_all_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = "";
+                    refresf_api();
+                }
+
+            }
+        });
+
 
         bottomSheetDialog.show();
     }
@@ -428,6 +533,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("q", ev_search.getText().toString());
+        paramObject.addProperty("filter_by", Filter);
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
@@ -448,13 +554,25 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                         }.getType();
                         EmailActivityListModel emailActivityListModel = new Gson().fromJson(headerString, listType);
                         manualTaskModelList = emailActivityListModel.getManualTask();
-                        if (ev_search.getText().toString().equals("")) {
+                        if (!ev_search.getText().toString().equals("") || !Filter.equals("")) {
                             if (manualTaskModelList.size() == 0) {
-                                layout_search.setVisibility(View.GONE);
+                                swipeToRefresh.setVisibility(View.GONE);
+                                lay_no_list.setVisibility(View.VISIBLE);
+                            } else {
+                                lay_no_list.setVisibility(View.GONE);
+                                swipeToRefresh.setVisibility(View.VISIBLE);
+                            }
+
+                        } else {
+
+                            if (manualTaskModelList.size() == 0) {
+                                lay_mainlayout.setVisibility(View.GONE);
                                 demo_layout.setVisibility(View.VISIBLE);
                             } else {
 
                                 demo_layout.setVisibility(View.GONE);
+                                swipeToRefresh.setVisibility(View.VISIBLE);
+                                lay_mainlayout.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -490,12 +608,18 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
     }
 
     public void onRefresh() {
+        refresf_api();
+    }
+
+    private void refresf_api() {
+        Filter = "";
+        iv_filter_icon.setImageResource(R.drawable.ic_filter);
         currentPage = PAGE_START;
         isLastPage = false;
         manualTaskModelList.clear();
         emailAdepter.clear();
         try {
-            if (Global.isNetworkAvailable(Email_Sms_List_Activty.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(List_Manual_Activty.this, MainActivity.mMainLayout)) {
                 if (!swipeToRefresh.isRefreshing()) {
                     loadingDialog.showLoadingDialog();
                 }
@@ -559,47 +683,6 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
         return convTime;
     }
 
-    public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-        final int PAGE_COUNT = 2;
-        private String tabTitles[] = new String[]{"SMS", "Email"};
-        private int[] imageResId = {R.drawable.ic_message_tab, R.drawable.ic_email};
-
-        public SampleFragmentPagerAdapter(@NonNull FragmentManager fm) {
-            super(fm);
-        }
-
-        public View getTabView(int position) {
-            // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
-            View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.custom_tab_campagin, null);
-            TextView tv = v.findViewById(R.id.tabContent);
-            tv.setText(tabTitles[position]);
-            ImageView img = v.findViewById(R.id.image_view);
-            img.setImageResource(imageResId[position]);
-            return v;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    Sms_List_Fragment campaign_sms_fragment = new Sms_List_Fragment();
-
-                    return campaign_sms_fragment;
-
-                case 1:
-                    Email_List_Fragment email_fragment = new Email_List_Fragment();
-                    return email_fragment;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return PAGE_COUNT;
-        }
-
-    }
 
     public class EmailAdepter extends RecyclerView.Adapter<EmailAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
@@ -687,6 +770,11 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                 } else {
                     holder.image_icon.setImageResource(R.drawable.ic_email);
                 }
+                if (!Global.IsNotNull(item.getSeqId()) || item.getSeqId() != 0) {
+                    holder.iv_camp.setVisibility(View.VISIBLE);
+                } else {
+                    holder.iv_camp.setVisibility(View.GONE);
+                }
 
                 String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
                 holder.tv_username.setText(conactname);
@@ -698,7 +786,7 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
 
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
                     String currentDateandTime = sdf.format(new Date());
-                    compareDates(currentDateandTime, time, holder.tv_status,holder.tv_time);
+                    compareDates(currentDateandTime, time, holder.tv_status, holder.tv_time, item);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -719,19 +807,18 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                 }
                 holder.no_image.setText(add_text.toUpperCase());
                 holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
                 holder.layout_contec.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                         if (item.getType().toString().equals("SMS")) {
                             SessionManager.setManualTaskModel(item);
-                            Intent intent = new Intent(getApplicationContext(), Sms_Detail_Activty.class);
+                            Intent intent = new Intent(getApplicationContext(), Item_List_Sms_Detail_Activty.class);
                             startActivity(intent);
                         } else {
 
                             SessionManager.setManualTaskModel(item);
-                            Intent intent = new Intent(getApplicationContext(), Email_Detail_activty.class);
+                            Intent intent = new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class);
                             startActivity(intent);
                         }
 
@@ -754,9 +841,8 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
 
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_username, tv_task_description, tv_time, no_image, tv_status;
-            CircleImageView profile_image;
             LinearLayout layout_contec;
-            ImageView image_icon;
+            ImageView image_icon, iv_camp;
 
             public viewData(@NonNull View itemView) {
                 super(itemView);
@@ -764,10 +850,10 @@ public class Email_Sms_List_Activty extends AppCompatActivity implements View.On
                 tv_task_description = itemView.findViewById(R.id.tv_task_description);
                 tv_time = itemView.findViewById(R.id.tv_time);
                 no_image = itemView.findViewById(R.id.no_image);
-                profile_image = itemView.findViewById(R.id.profile_image);
                 tv_status = itemView.findViewById(R.id.tv_status);
                 layout_contec = itemView.findViewById(R.id.layout_contec);
                 image_icon = itemView.findViewById(R.id.image_icon);
+                iv_camp = itemView.findViewById(R.id.iv_camp);
             }
         }
     }

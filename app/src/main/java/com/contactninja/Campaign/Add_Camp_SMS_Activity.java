@@ -632,7 +632,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item = templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setText(Global.setFirstLetter(item.getDescription()));
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.isSelect()) {
