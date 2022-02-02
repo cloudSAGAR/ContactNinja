@@ -50,7 +50,7 @@
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/text_reg"
 
-                     />
+                    />
 
             </LinearLayout>
 
@@ -117,7 +117,7 @@
                             android:textColor="@color/text_reg"
                             style="@style/tv_regular_13"
                             android:singleLine="true"
-                             />
+                            />
                         <TextView
                             android:visibility="gone"
                             android:textColor="@color/text_gray"
@@ -163,7 +163,7 @@
                     android:layout_height="1dp"/>
 
 
-                </LinearLayout>
+            </LinearLayout>
 
 
         </LinearLayout>

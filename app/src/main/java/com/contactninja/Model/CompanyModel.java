@@ -81,6 +81,12 @@ public class CompanyModel {
         @SerializedName("name")
         @Expose
         private String name="";
+
+
+        @SerializedName("is_blocked")
+        @Expose
+        private String is_blocked="";
+
         @SerializedName("email")
         @Expose
         private String email="";
@@ -93,6 +99,14 @@ public class CompanyModel {
         @SerializedName("updated_at")
         @Expose
         private String updatedAt="";
+
+        public String getIs_blocked() {
+            return is_blocked;
+        }
+
+        public void setIs_blocked(String is_blocked) {
+            this.is_blocked = is_blocked;
+        }
 
         public Integer getId() {
             return id;

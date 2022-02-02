@@ -103,6 +103,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     LinearLayout layout_pulse;
     String option_type = "";
     private BroadcastReceiver mNetworkReceiver;
+    ImageView iv_toolbar_manu_vertical,iv_block;
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
@@ -162,6 +163,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
             iv_user.setOnClickListener(this);
+            if (Contect_data.getIs_blocked().equals("1"))
+            {
+                iv_block.setVisibility(View.VISIBLE);
+            }
+            else {
+                iv_block.setVisibility(View.GONE);
+            }
             if (Contect_data.getContactImage() == null) {
                 iv_user.setVisibility(View.GONE);
 
@@ -210,6 +218,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
+            if (Contect_data.getIs_blocked().equals("1"))
+            {
+                iv_block.setVisibility(View.VISIBLE);
+            }
+            else {
+                iv_block.setVisibility(View.GONE);
+            }
             if (Contect_data.getContactImage() == null) {
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
@@ -253,6 +268,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         //tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
         tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
+
         fragment_name = "Info";
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -424,6 +440,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     }
 
     private void IntentUI() {
+        iv_block=findViewById(R.id.iv_block);
+        iv_toolbar_manu_vertical=findViewById(R.id.iv_toolbar_manu_vertical);
+        iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
@@ -442,6 +461,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         iv_user = findViewById(R.id.iv_user);
         pulse_icon.setOnClickListener(this);
         iv_user.setOnClickListener(this);
+        iv_toolbar_manu_vertical.setOnClickListener(this);
+
 
     }
 
@@ -987,6 +1008,11 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
 
                 }
+
+                break;
+            case R.id.iv_toolbar_manu_vertical:
+                ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
+                broadcast_manu(Contect_data);
                 break;
 
         }
@@ -1261,5 +1287,182 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     }
 
+    private void broadcast_manu(ContectListData.Contact contact_item) {
+
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        TextView selected_block = bottomSheetDialog.findViewById(R.id.selected_block);
+        View line_block=bottomSheetDialog.findViewById(R.id.line_block);
+        View line_unblock=bottomSheetDialog.findViewById(R.id.line_unblock);
+        TextView selected_un_block = bottomSheetDialog.findViewById(R.id.selected_unblock);
+        TextView selected_delete=bottomSheetDialog.findViewById(R.id.selected_delete);
+        selected_block.setText(getString(R.string.add_blacklist));
+        selected_un_block.setText(getString(R.string.remove_blacklist));
+        selected_delete.setText(getString(R.string.delete_contact));
+
+        if (contact_item.getIs_blocked().equals("1"))
+        {
+            selected_block.setVisibility(View.GONE);
+            line_block.setVisibility(View.GONE);
+            selected_un_block.setVisibility(View.VISIBLE);
+            line_unblock.setVisibility(View.VISIBLE);
+        }
+        else {
+            line_block.setVisibility(View.VISIBLE);
+            selected_block.setVisibility(View.VISIBLE);
+            selected_un_block.setVisibility(View.GONE);
+            line_unblock.setVisibility(View.GONE);
+        }
+
+
+        selected_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_BLock(contact_item,"1",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_un_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_BLock(contact_item,"0",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_Remove(contact_item,"0",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
+
+    public void Contect_BLock(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("is_block",block);
+        JSONArray block_array = new JSONArray();
+        block_array.put(contact_data.getId());
+        paramObject.put("blockContactIds", block_array);
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        retrofitCalls.Block_contact(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                   if (block.equals("1"))
+                   {
+                       iv_block.setVisibility(View.VISIBLE);
+                   }
+                   else {
+                       iv_block.setVisibility(View.GONE);
+                   }
+
+                    contact_data.setIs_blocked(block);
+                    SessionManager.setOneCotect_deatil(getApplicationContext(),contact_data);
+                    bottomSheetDialog.cancel();
+
+                }
+                else {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+    }
+
+
+
+    public void Contect_Remove(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("id",contact_data.getId());
+        paramObject.put("status","D");
+
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    finish();
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+                else {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+    }
 
 }

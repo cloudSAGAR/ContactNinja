@@ -17,34 +17,32 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/selected_broadcast"
+            android:id="@+id/selected_block"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
             style="@style/tv_regular_13"
             android:gravity="center"
-            android:text="@string/add_broadcast"
             android:textColor="@color/text_reg"
             />
         <View
-            android:id="@+id/line_brodcste"
+            android:id="@+id/line_block"
             android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp">
 
         </View>
         <TextView
-            android:id="@+id/selected_campaign"
+            android:id="@+id/selected_unblock"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
             style="@style/tv_regular_13"
             android:gravity="center"
-            android:text="@string/campaign"
             android:textColor="@color/text_reg"
             />
         <View
-            android:id="@+id/line_caampaign"
+            android:id="@+id/line_unblock"
             android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp">
@@ -52,13 +50,13 @@
         </View>
 
         <TextView
-            android:id="@+id/selected_task"
+            android:id="@+id/selected_delete"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
             style="@style/tv_regular_13"
             android:gravity="center"
-            android:text="@string/manual_task_create"
+
             android:textColor="@color/text_reg"
             />
         <View
