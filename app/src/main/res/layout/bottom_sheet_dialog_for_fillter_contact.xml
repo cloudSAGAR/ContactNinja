@@ -81,6 +81,7 @@
 
             </ImageView>
             <TextView
+                android:id="@+id/tv_blacklist"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_weight="1"
                 style="@style/tv_Medium_14"
@@ -134,6 +135,7 @@
 
             </ImageView>
             <TextView
+                android:id="@+id/tv_allcompany"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_weight="1"
                 style="@style/tv_Medium_14"

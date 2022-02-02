@@ -392,6 +392,14 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
+
+    public void Block_Company(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Block_Company(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
     private void call_api(final RetrofitCallback retrofitCallback, LoadingDialog loadingDialog) {
         call.enqueue(new Callback<ApiResponse>() {
             @Override

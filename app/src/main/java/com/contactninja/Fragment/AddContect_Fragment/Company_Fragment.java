@@ -1,11 +1,12 @@
 package com.contactninja.Fragment.AddContect_Fragment;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.AddContect.Add_Company_Activity;
 import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.MainActivity;
@@ -59,7 +61,9 @@ import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -67,8 +71,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
-
-
 public class Company_Fragment extends Fragment {
     ConstraintLayout mMainLayout;
     BottomSheetDialog bottomSheetDialog_fillter;
@@ -99,7 +101,6 @@ public class Company_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View content_view = inflater.inflate(R.layout.fragment_company_, container, false);
-
         IntentUI(content_view);
         mCtx = getContext();
         sessionManager = new SessionManager(getActivity());
@@ -173,20 +174,24 @@ public class Company_Fragment extends Fragment {
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
+                intent.putExtra("flag","add");
+                startActivity(intent);
             }
         });
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
+                Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
+                intent.putExtra("flag","add");
+                startActivity(intent);            }
         });
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
+                Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
+                intent.putExtra("flag","add");
+                startActivity(intent);            }
         });
 
         ev_search.addTextChangedListener(new TextWatcher() {
@@ -256,12 +261,15 @@ public class Company_Fragment extends Fragment {
 
 
     void showBottomSheetDialog_Filtter() {
-
         bottomSheetDialog_fillter = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
         bottomSheetDialog_fillter.setContentView(R.layout.bottom_sheet_dialog_for_fillter_contact);
         TextView tv_clear=bottomSheetDialog_fillter.findViewById(R.id.tv_clear);
         TextView tv_done=bottomSheetDialog_fillter.findViewById(R.id.tv_done);
         TextView tv_item=bottomSheetDialog_fillter.findViewById(R.id.tv_item);
+        TextView tv_blacklist=bottomSheetDialog_fillter.findViewById(R.id.tv_blacklist);
+        TextView tv_allcompany=bottomSheetDialog_fillter.findViewById(R.id.tv_allcompany);
+        tv_allcompany.setText(getString(R.string.company_all));
+        tv_blacklist.setText(getString(R.string.company_blacklst));
         ImageView iv_unselect_blacklist=bottomSheetDialog_fillter.findViewById(R.id.iv_unselect_blacklist);
         ImageView iv_select_blacklist=bottomSheetDialog_fillter.findViewById(R.id.iv_select_blacklist);
         ImageView iv_unselect_all=bottomSheetDialog_fillter.findViewById(R.id.iv_unselect_all);
@@ -281,8 +289,6 @@ public class Company_Fragment extends Fragment {
             public void onClick(View view) {
                 iv_unselect_blacklist.setVisibility(View.GONE);
                 iv_select_blacklist.setVisibility(View.VISIBLE);
-
-
                 bottomSheetDialog_fillter.cancel();
             }
         });
@@ -292,6 +298,7 @@ public class Company_Fragment extends Fragment {
                 iv_unselect_all.setVisibility(View.GONE);
                 iv_select_all.setVisibility(View.VISIBLE);
                 try {
+                    companyAdapter.removeitem();
                     CompanyList();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -497,7 +504,23 @@ public class Company_Fragment extends Fragment {
                     holder.profile_image.setVisibility(View.GONE);
 
 
+                holder.main_layout.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
 
+                        broadcast_manu(WorkData);
+                        return false;
+                    }
+                });
+                holder.main_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SessionManager.setCompnay_detail(WorkData);
+                        Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
+                        intent.putExtra("flag","read");
+                        startActivity(intent);
+                    }
+                });
 
                }
 
@@ -511,6 +534,12 @@ public class Company_Fragment extends Fragment {
             companyList = list;
             notifyDataSetChanged();
         }
+
+        public void removeitem() {
+            companyList.clear();
+            notifyDataSetChanged();
+        }
+
         public class viewData extends RecyclerView.ViewHolder {
             TextView no_image;
             TextView userName, userNumber, first_latter;
@@ -557,6 +586,186 @@ public class Company_Fragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void broadcast_manu(CompanyModel.Company Company) {
+
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        TextView selected_block = bottomSheetDialog.findViewById(R.id.selected_block);
+        View line_block=bottomSheetDialog.findViewById(R.id.line_block);
+        View line_unblock=bottomSheetDialog.findViewById(R.id.line_unblock);
+        TextView selected_un_block = bottomSheetDialog.findViewById(R.id.selected_unblock);
+        TextView selected_delete=bottomSheetDialog.findViewById(R.id.selected_delete);
+        selected_block.setText(getString(R.string.add_blacklist));
+        selected_un_block.setText(getString(R.string.remove_blacklist));
+        selected_delete.setText(getString(R.string.delete_contact));
+
+        if (Company.getIs_blocked().equals("1"))
+        {
+            selected_block.setVisibility(View.GONE);
+            line_block.setVisibility(View.GONE);
+            selected_un_block.setVisibility(View.VISIBLE);
+            line_unblock.setVisibility(View.VISIBLE);
+        }
+        else {
+            line_block.setVisibility(View.VISIBLE);
+            selected_block.setVisibility(View.VISIBLE);
+            selected_un_block.setVisibility(View.GONE);
+            line_unblock.setVisibility(View.GONE);
+        }
+
+
+        selected_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_BLock(Company,"1",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_un_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_BLock(Company,"0",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+/*
+                try {
+                    Contect_Remove(Company,"0",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
+
+
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
+
+    public void Contect_BLock(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("is_block",block);
+        JSONArray block_array = new JSONArray();
+        block_array.put(Company.getId());
+        paramObject.put("blockCompanyIds", block_array);
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        retrofitCalls.Block_Company(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    try {
+                        companyAdapter.removeitem();
+                        CompanyList();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    bottomSheetDialog.cancel();
+                }
+                else {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+    }
+
+
+
+    public void Contect_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("id",Company.getId());
+        paramObject.put("status","D");
+
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    try {
+                        companyAdapter.removeitem();
+                        CompanyList();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    bottomSheetDialog.cancel();
+                }
+                else {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
     }
 
 
