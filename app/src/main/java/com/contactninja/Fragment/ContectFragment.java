@@ -301,7 +301,7 @@ public class ContectFragment extends Fragment  {
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                ev_search.setText("");
 
                 try {
                     try {
@@ -912,7 +912,7 @@ public class ContectFragment extends Fragment  {
                 try {
                     //   if (response.body().getStatus() == 200) {.
 
-                   contectListData.clear();
+                    contectListData.clear();
                     paginationAdapter.removeloist();
                     paginationAdapter.notifyDataSetChanged();
                     rvinviteuserdetails.setItemViewCacheSize(5000);
@@ -1842,7 +1842,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
                     try {
                         ContectEvent();
                     } catch (JSONException e) {
