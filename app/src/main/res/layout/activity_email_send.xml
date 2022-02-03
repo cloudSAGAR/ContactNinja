@@ -86,7 +86,6 @@
                 android:focusable="true"
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
-                android:paddingStart="@dimen/_15sdp"
                 android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
             <ImageView
@@ -137,7 +136,6 @@
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
                 android:gravity="left"
-                android:paddingStart="@dimen/_15sdp"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
