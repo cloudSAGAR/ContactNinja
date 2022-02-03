@@ -48,7 +48,12 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AddContect.Add_Company_Activity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".Manual_email_sms.Manual_Shooz_Time_Date_Activity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Manual_email_sms.Manual_Auto_Task_Name_Activity"

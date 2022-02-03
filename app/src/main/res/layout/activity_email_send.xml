@@ -30,7 +30,6 @@
             </TextView>
 
             <EditText
-                android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/ev_titale"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
@@ -135,7 +134,7 @@
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
@@ -170,7 +169,6 @@
             </TextView>
 
             <EditText
-                android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/ev_subject"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
@@ -183,9 +181,6 @@
                 android:hint="@string/ComposeEmail"
                 android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-
-
-
         </LinearLayout>
         <View
             android:layout_marginTop="@dimen/_12sdp"
