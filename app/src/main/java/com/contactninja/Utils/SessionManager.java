@@ -71,7 +71,7 @@ public class SessionManager {
 
     private static final String message_id="message_id";
     private static final String message_type="message_type";
-
+    private static final String Company_detail="company_detail";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -498,6 +498,28 @@ public class SessionManager {
         String json = gson.toJson(add_model);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(ManualTaskmodel, json);
+        editor.apply();
+    }
+
+
+
+    public static  CompanyModel.Company getCompnay_detail(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Company_detail, "");
+        Type type = new TypeToken< CompanyModel.Company>() {
+        }.getType();
+        CompanyModel.Company signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new  CompanyModel.Company();
+        }
+        return signModel;
+    }
+
+    public static void setCompnay_detail( CompanyModel.Company add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Company_detail, json);
         editor.apply();
     }
 

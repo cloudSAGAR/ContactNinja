@@ -202,6 +202,13 @@ public interface RetrofitApiInterface {
                                  @Body JsonObject jsonObject,
                                  @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
+
+    @POST("sequence/task_delete")
+    Call<ApiResponse> Task_delete(@Header("Accept") String api, @Header("Authorization") String auth,
+                                 @Body JsonObject jsonObject,
+                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+
     @POST("manual_task/store")
     Call<ApiResponse> manual_task_store(@Header("Accept") String api, @Header("Authorization") String auth,
                                         @Body JsonObject jsonObject,
@@ -257,6 +264,17 @@ public interface RetrofitApiInterface {
     Call<ApiResponse> SingleGroup_List(@Header("Accept") String api, @Header("Authorization") String auth,
                                        @Body JsonObject jsonObject,
                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+
+    @POST("contact/block")
+    Call<ApiResponse> Block_contact(@Header("Accept") String api, @Header("Authorization") String auth,
+                                 @Body JsonObject body,
+                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+    @POST("company/block")
+    Call<ApiResponse> Block_Company(@Header("Accept") String api, @Header("Authorization") String auth,
+                                    @Body JsonObject body,
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
 }

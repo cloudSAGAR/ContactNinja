@@ -90,11 +90,12 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/add_new_contect"
+                android:text="@string/company_add"
                 android:textColor="@color/text_reg"
 
-                 />
+                />
             <TextView
+                android:visibility="gone"
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/tv_upload"
                 style="@style/tv_regular_13"
@@ -109,7 +110,19 @@
 
                 />
 
+            <TextView
+                android:id="@+id/num_count"
+                style="@style/tv_Medium_14"
 
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/purple_500"
+                />
 
         </LinearLayout>
 
@@ -119,7 +132,7 @@
             android:layout_height="1dp"
             android:background="@color/line_separator" />
 
-       <androidx.appcompat.widget.SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/contect_search"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
@@ -148,11 +161,11 @@
                 android:layout_marginEnd="-30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/contact_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/contact_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
@@ -193,20 +206,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/fastscroller"
                 app:layout_constraintTop_toTopOf="@+id/fastscroller"/>
         </LinearLayout>
-        <TextView
-            android:layout_marginTop="-30dp"
-            android:id="@+id/num_count"
-            style="@style/tv_Medium_14"
-            android:paddingTop="@dimen/_5sdp"
-            android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text=""
-            android:textColor="@color/purple_500"
-            />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
