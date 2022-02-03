@@ -572,14 +572,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 }
 
 
-                img_linkdin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Uri uri = Uri.parse(Contect_data.getLinkedin_link()); // missing 'http://' will cause crashed
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                    }
-                });
                 try {
 
                     if (Contect_data.getBreakout_link().equals("")) {
@@ -593,14 +585,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                 }
 
-                img_breakout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Uri uri = Uri.parse(Contect_data.getBreakout_link()); // missing 'http://' will cause crashed
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                    }
-                });
+
 
        /*     PhoneViewAdd();
             EmailViewAdd();

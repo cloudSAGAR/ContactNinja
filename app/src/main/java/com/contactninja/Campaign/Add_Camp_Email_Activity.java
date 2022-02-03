@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -32,12 +33,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_sms.Manual_Mail_Send_Activty;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.Email_verification;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -73,7 +77,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList=new ArrayList<>();
     public static final int PICKFILE_RESULT_CODE = 1;
-    String filePath;
+    String filePath,from_ac="",from_ac_id="";
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
     static CoordinatorLayout mMainLayout;
@@ -82,6 +86,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     public String template_id_is="";
     private BroadcastReceiver mNetworkReceiver;
     TextView add_new_contect;
+    EditText ev_from;
+    ImageView iv_more;
+    BottomSheetDialog bottomSheetDialog_templateList1;
+    int defult_id;
+    List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
+    List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
+    private int amountOfItemsSelected = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +107,14 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         try {
             if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if(Global.isNetworkAvailable(Add_Camp_Email_Activity.this,mMainLayout)){
+                Mail_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -229,6 +248,80 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         unregisterNetworkChanges();
     }
 
+    private void Mail_list() throws JSONException {
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp","1");
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Email_Activity.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    userLinkedGmailList.clear();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail = new Gson().fromJson(headerString, listType);
+                    userLinkedGmailList = userLinkedGmail.getUserLinkedGmail();
+                    Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+                    if (userLinkedGmailList.size() == 1) {
+                        iv_more.setVisibility(View.GONE);
+                    } else if (userLinkedGmailList.size() == 1) {
+                        iv_more.setVisibility(View.GONE);
+                    } else {
+                        iv_more.setVisibility(View.VISIBLE);
+                    }
+                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
+
+                        Intent inten=getIntent();
+                        Bundle bundle=inten.getExtras();
+                        String flag=bundle.getString("flag");
+                        if (flag.equals("edit"))
+                        {
+                            if (userLinkedGmailList.get(i).getId().toString().equals(bundle.getString("from_ac_id"))) {
+                                ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
+                                defult_id = userLinkedGmailList.get(i).getId();
+                                select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+                                from_ac=userLinkedGmailList.get(i).getType();
+                                from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
+
+                            }
+                        }
+                        else {
+                            if (userLinkedGmailList.get(i).getIsDefault().toString().equals("1")) {
+                                ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
+                                defult_id = userLinkedGmailList.get(i).getId();
+                                select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+                                from_ac=userLinkedGmailList.get(i).getType();
+                                from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
+
+                            }
+                        }
+                    }
+                    Log.e("List Is", new Gson().toJson(userLinkedGmailList));
+                } else {
+                     startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
+
     private void Hastag_list() throws JSONException {
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
@@ -311,6 +404,10 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         tv_use_tamplet.setOnClickListener(this);
         rv_direct_list = findViewById(R.id.rv_direct_list);
         add_new_contect=findViewById(R.id.add_new_contect);
+        ev_from=findViewById(R.id.ev_from);
+        iv_more=findViewById(R.id.iv_more);
+        iv_more.setOnClickListener(this);
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -336,10 +433,52 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             case R.id.tv_use_tamplet:
                 bouttomSheet();
                 break;
+            case R.id.iv_more:
+                Email_bouttomSheet();
+                break;
+
 
 
         }
 
+    }
+
+    private void Email_bouttomSheet() {
+        final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(Add_Camp_Email_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1.setContentView(mView);
+        TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
+
+
+        for(int i=0;i<userLinkedGmailList.size();i++){
+            if(userLinkedGmailList.get(i).getIsDefault()==1){
+                select_userLinkedGmailList.clear();
+                userLinkedGmailList.get(i).setEmailSelect(true);
+                select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+                break;
+            }
+        }
+
+        email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        EmailListAdepter emailListAdepter = new EmailListAdepter(getApplicationContext(), userLinkedGmailList);
+        email_list.setAdapter(emailListAdepter);
+        email_list.setVisibility(View.VISIBLE);
+
+
+        tv_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog_templateList1.cancel();
+                if(select_userLinkedGmailList.size()!=0){
+                    from_ac=select_userLinkedGmailList.get(0).getType();
+                    from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
+                    ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
+                }
+            }
+        });
+
+        bottomSheetDialog_templateList1.show();
     }
 
     private void bouttomSheet() {
@@ -364,6 +503,107 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
         bottomSheetDialog_templateList.show();
     }
+    class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
+
+        public Context mCtx;
+        List<UserLinkedList.UserLinkedGmail> userLinkedGmailList;
+
+        public EmailListAdepter(Context applicationContext, List<UserLinkedList.UserLinkedGmail> userLinkedGmailList) {
+            this.mCtx = applicationContext;
+            this.userLinkedGmailList = userLinkedGmailList;
+        }
+
+        @NonNull
+        @Override
+        public EmailListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.email_select_layout, parent, false);
+            return new EmailListAdepter.viewholder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull EmailListAdepter.viewholder holder, int position) {
+
+            holder.tv_item.setText(userLinkedGmailList.get(position).getUserEmail());
+            if (holder.iv_selected.isSelected() == false) {
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+                holder.iv_selected.setVisibility(View.GONE);
+
+                amountOfItemsSelected++;
+            } else if (holder.iv_selected.isSelected() == true) {
+                holder.iv_unselected.setVisibility(View.GONE);
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                amountOfItemsSelected--;
+            }
+
+            if (amountOfItemsSelected > 1) {
+
+            }
+            if (userLinkedGmailList.get(position).getIsDefault().toString().equals("1")) {
+                holder.iv_dufult.setVisibility(View.VISIBLE);
+            } else {
+                holder.iv_dufult.setVisibility(View.GONE);
+            }
+
+
+            if (userLinkedGmailList.get(position).isEmailSelect())
+            {
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                holder.iv_unselected.setVisibility(View.GONE);
+            }
+            else {
+                holder.iv_selected.setVisibility(View.GONE);
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+            }
+
+
+            holder.layout_select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    for(int i=0; i<userLinkedGmailList.size();i++){
+                        if (userLinkedGmailList.get(i).isEmailSelect())
+                        {
+                            userLinkedGmailList.get(i).setEmailSelect(false);
+                            break;
+                        }
+                    }
+                    userLinkedGmailList.get(position).setEmailSelect(true);
+
+                    select_userLinkedGmailList.clear();
+                    holder.iv_selected.setVisibility(View.VISIBLE);
+                    holder.iv_unselected.setVisibility(View.GONE);
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(position));
+                    notifyDataSetChanged();
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return userLinkedGmailList.size();
+        }
+
+        public class viewholder extends RecyclerView.ViewHolder {
+            TextView tv_item;
+            View line_view;
+            ImageView iv_dufult, iv_selected, iv_unselected;
+            LinearLayout layout_select;
+
+            public viewholder(View view) {
+                super(view);
+                tv_item = view.findViewById(R.id.tv_item);
+                line_view = view.findViewById(R.id.line_view);
+                iv_dufult = view.findViewById(R.id.iv_dufult);
+                iv_selected = view.findViewById(R.id.iv_selected);
+                iv_unselected = view.findViewById(R.id.iv_unselected);
+                layout_select = view.findViewById(R.id.layout_select);
+            }
+        }
+    }
+
+
     private void Template_list(RecyclerView templet_list) throws JSONException {
         SignResponseModel signResponseModel= SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
@@ -624,7 +864,11 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
             paramObject.addProperty("minute", minite);
             paramObject.addProperty("organization_id", "1");
-            paramObject.addProperty("template_id",template_id_is);
+            if (!template_id_is.equals(""))
+            {
+                paramObject.addProperty("template_id",template_id_is);
+
+            }
 
             if (!sequence_id.equals("null"))
             {
@@ -636,6 +880,9 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
             paramObject.addProperty("time", Global.getCurrentTime());
             paramObject.addProperty("user_id", user_id);
+            paramObject.addProperty("from_ac",from_ac);
+            paramObject.addProperty("from_ac_id",from_ac_id);
+
             obj.add("data", paramObject);
         }
         else {
@@ -662,7 +909,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             paramObject.addProperty("time", Global.getCurrentTime());
             paramObject.addProperty("user_id", user_id);
             paramObject.addProperty("step_no", step_no);
+            paramObject.addProperty("from_ac",from_ac);
+            paramObject.addProperty("from_ac_id",from_ac_id);
+            if (!template_id_is.equals(""))
+            {
+                paramObject.addProperty("template_id",template_id_is);
 
+            }
             obj.add("data", paramObject);
 
         }
@@ -795,7 +1048,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item = templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setText(Global.setFirstLetter(item.getDescription()));
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {

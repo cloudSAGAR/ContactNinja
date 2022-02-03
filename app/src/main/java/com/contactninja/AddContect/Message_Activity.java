@@ -1,13 +1,5 @@
 package com.contactninja.AddContect;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Response;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -26,6 +18,13 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
@@ -56,7 +55,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Message_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
+import retrofit2.Response;
+
+public class Message_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -85,6 +86,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
     private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,14 +103,14 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         Bundle bundle = intent.getExtras();
         p_number = bundle.getString("number");
         id = String.valueOf(bundle.getInt("id"));
-        String type=bundle.getString("type");
+        String type = bundle.getString("type");
         /*intent.putExtra("number",p_num);
         intent.putExtra("id",id);
         intent.putExtra("type","app");*/
 
 
         try {
-            if(Global.isNetworkAvailable(Message_Activity.this,mMainLayout)){
+            if (Global.isNetworkAvailable(Message_Activity.this, mMainLayout)) {
                 Hastag_list();
             }
 
@@ -132,11 +134,10 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         rv_direct_list = findViewById(R.id.rv_direct_list);
      /*   iv_more = findViewById(R.id.iv_more);
         iv_more.setOnClickListener(this);*/
-        mMainLayout=findViewById(R.id.mMainLayout);
-        edit_template=findViewById(R.id.ev_txt);
-        iv_submit=findViewById(R.id.iv_submit);
+        mMainLayout = findViewById(R.id.mMainLayout);
+        edit_template = findViewById(R.id.ev_txt);
+        iv_submit = findViewById(R.id.iv_submit);
         iv_submit.setOnClickListener(this);
-
 
 
     }
@@ -150,7 +151,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Message_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Message_Activity.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -205,6 +206,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Message_Activity.this, mMainLayout);
@@ -235,6 +237,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         super.onDestroy();
         unregisterNetworkChanges();
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -242,18 +245,16 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.iv_submit:
-                Log.e("Text is",edit_template.getText().toString());
-                if (edit_template.getText().toString().equals(""))
-                {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Message",false);
-                }
-                else {
-                try {
-                    SMSAPI(edit_template.getText().toString(), Integer.parseInt(id), p_number);
+                Log.e("Text is", edit_template.getText().toString());
+                if (edit_template.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Message", false);
+                } else {
+                    try {
+                        SMSAPI(edit_template.getText().toString(), Integer.parseInt(id), p_number);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 break;
@@ -264,6 +265,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
 
         }
     }
+
     private void SMSAPI(String text, int id, String email) throws JSONException {
 
         Log.e("Phone Number", email);
@@ -309,7 +311,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -360,7 +362,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         paramObject.addProperty("team_id", "1");
         obj.add("data", paramObject);
 
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 edit_template.setText("");
@@ -405,7 +407,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Message_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Message_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -486,7 +488,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext  + s ;
+        String Newtext = curenttext + s;
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
@@ -531,7 +533,6 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         });
 
     }
-
 
 
     @Override
@@ -636,7 +637,7 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item = templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setText(Global.setFirstLetter(item.getDescription()));
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {

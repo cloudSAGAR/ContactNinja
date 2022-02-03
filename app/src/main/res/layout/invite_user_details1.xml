@@ -91,6 +91,7 @@
                     </TextView>
                     <ImageView
                         android:id="@+id/iv_block"
+                        android:visibility="gone"
                         android:layout_marginStart="-15dp"
                         android:layout_gravity="center|bottom"
                         android:src="@drawable/ic_block"

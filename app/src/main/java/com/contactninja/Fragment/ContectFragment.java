@@ -44,8 +44,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Broadcast.Broadcst_Activty;
+import com.contactninja.Campaign.Campaign_List_Activity;
+import com.contactninja.Campaign.Fragment.View_Contect_Fragment;
 import com.contactninja.ContectListAdapter;
 import com.contactninja.ContectListAdapter_demo;
+import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -63,6 +68,7 @@ import com.contactninja.retrofit.RetrofitApiClient;
 import com.contactninja.retrofit.RetrofitApiInterface;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -101,13 +107,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged")
-public class ContectFragment extends Fragment {
+public class ContectFragment extends Fragment  {
     private final static String[] DATA_COLS = {
 
             ContactsContract.Data.MIMETYPE,
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
+    BottomSheetDialog bottomSheetDialog_fillter;
     List<ContectListData.Contact> main_store = new ArrayList<>();
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     ConstraintLayout mMainLayout;
@@ -118,7 +125,7 @@ public class ContectFragment extends Fragment {
     FastScrollerThumbView fastscroller_thumb;
     SearchView contect_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon;
+    ImageView add_new_contect_icon,iv_filter_icon;
     View view1;
     FragmentActivity fragmentActivity;
     LinearLayout add_new_contect_layout;
@@ -294,7 +301,7 @@ public class ContectFragment extends Fragment {
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                ev_search.setText("");
 
                 try {
                     try {
@@ -360,15 +367,15 @@ public class ContectFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filter1(s.toString());
-               /* List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : main_store) {
+               // filter1(s.toString());
+                List<ContectListData.Contact> temp = new ArrayList();
+                for (ContectListData.Contact d : contectListData) {
                     if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
                     }
                 }
-                paginationAdapter.updateList(temp);*/
+                paginationAdapter.updateList(temp);
                 //groupContectAdapter.notifyDataSetChanged();
             }
 
@@ -401,6 +408,7 @@ public class ContectFragment extends Fragment {
     }
 
 
+/*
     private void filter1(String text) {
         // creating a new array list to filter our data.
         ArrayList<ContectListData.Contact> filteredlist = new ArrayList<>();
@@ -418,6 +426,7 @@ public class ContectFragment extends Fragment {
             paginationAdapter.filterList(filteredlist);
         }
     }
+*/
 
     private void splitdata(List<Csv_InviteListData> response) {
 
@@ -840,6 +849,7 @@ public class ContectFragment extends Fragment {
     }
 
     private void IntentUI(View content_view) {
+        iv_filter_icon=content_view.findViewById(R.id.iv_filter_icon);
         mMainLayout = content_view.findViewById(R.id.mMainLayout);
         rvinviteuserdetails = content_view.findViewById(R.id.contact_list);
         fastscroller = content_view.findViewById(R.id.fastscroller);
@@ -852,6 +862,12 @@ public class ContectFragment extends Fragment {
         swipeToRefresh = content_view.findViewById(R.id.swipeToRefresh);
         ev_search = content_view.findViewById(R.id.ev_search);
         tv_upload=content_view.findViewById(R.id.tv_upload);
+        iv_filter_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBottomSheetDialog_Filtter();
+            }
+        });
     }
 
 
@@ -896,7 +912,7 @@ public class ContectFragment extends Fragment {
                 try {
                     //   if (response.body().getStatus() == 200) {.
 
-                   contectListData.clear();
+                    contectListData.clear();
                     paginationAdapter.removeloist();
                     paginationAdapter.notifyDataSetChanged();
                     rvinviteuserdetails.setItemViewCacheSize(5000);
@@ -1018,7 +1034,7 @@ public class ContectFragment extends Fragment {
     public void onResume() {
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-      /* try {
+       try {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
@@ -1026,213 +1042,12 @@ public class ContectFragment extends Fragment {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
-        }*/
+        }
         ev_search.setText("");
 
         super.onResume();
 
     }
-
-    public static class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
-            implements Filterable {
-
-        private final Context mcntx;
-        private final List<InviteListData> userDetailsfull;
-        public Activity mCtx;
-        int last_postion = 0;
-        String second_latter = "";
-        String current_latter = "", image_url = "";
-        private List<InviteListData> userDetails;
-        private final Filter exampleFilter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                List<InviteListData> filteredList = new ArrayList<>();
-                if (constraint == null || constraint.length() == 0) {
-                    filteredList.addAll(userDetailsfull);
-                } else {
-                    String userName = constraint.toString().toLowerCase().trim();
-                    String userNumber = constraint.toString().toLowerCase().trim();
-                    for (InviteListData item : userDetailsfull) {
-                        if (item.getUserName().toLowerCase().contains(userName)
-                                || item.getUserPhoneNumber().toLowerCase().contains(userNumber)) {
-                            filteredList.add(item);
-                        }
-                    }
-                }
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                userDetails.clear();
-                userDetails.addAll((List<InviteListData>) results.values);
-                notifyDataSetChanged();
-            }
-        };
-
-        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<InviteListData> userDetails) {
-            this.mcntx = mCtx;
-            this.mCtx = Ctx;
-            this.userDetails = userDetails;
-            userDetailsfull = new ArrayList<>(userDetails);
-        }
-
-        @NonNull
-        @Override
-        public InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.invite_user_details, parent, false);
-            return new InviteListDataclass(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
-            InviteListData inviteUserDetails = userDetails.get(position);
-
-            last_postion = position;
-
-
-            if (inviteUserDetails.getF_latter().equals("")) {
-                holder.first_latter.setVisibility(View.GONE);
-                holder.top_layout.setVisibility(View.GONE);
-            } else {
-
-                holder.first_latter.setVisibility(View.VISIBLE);
-                holder.first_latter.setText(inviteUserDetails.getF_latter());
-                holder.top_layout.setVisibility(View.VISIBLE);
-                String first_latter = inviteUserDetails.getUserName().substring(0, 1).toUpperCase();
-
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
-
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                    inviteUserDetails.setF_latter("");
-                    holder.first_latter.setVisibility(View.GONE);
-                    holder.top_layout.setVisibility(View.GONE);
-
-                } else {
-
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
-
-
-                }
-            }
-
-            if (inviteUserDetails.getUserImageURL() == null) {
-                String name = inviteUserDetails.getUserName();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                holder.no_image.setText(add_text);
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
-            } else {
-                Glide.with(mCtx).
-                        load(inviteUserDetails.getUserImageURL())
-                        .placeholder(R.drawable.shape_primary_circle)
-                        .error(R.drawable.shape_primary_circle)
-                        .into(holder.profile_image);
-                holder.no_image.setVisibility(View.GONE);
-                holder.profile_image.setVisibility(View.VISIBLE);
-            }
-            holder.userName.setText(inviteUserDetails.getUserName());
-            holder.userNumber.setText(inviteUserDetails.getUserPhoneNumber());
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return userDetails.size();
-        }
-
-        @Override
-        public Filter getFilter() {
-            Log.e("Fillter is", new Gson().toJson(exampleFilter));
-            return exampleFilter;
-        }
-
-        public void updateList(List<InviteListData> list) {
-            userDetails = list;
-            notifyDataSetChanged();
-        }
-
-        public static class InviteListDataclass extends RecyclerView.ViewHolder {
-
-            TextView no_image;
-            TextView userName, userNumber, first_latter;
-            CircleImageView profile_image;
-            LinearLayout top_layout;
-
-
-            public InviteListDataclass(@NonNull View itemView) {
-                super(itemView);
-                first_latter = itemView.findViewById(R.id.first_latter);
-                userName = itemView.findViewById(R.id.username);
-                userNumber = itemView.findViewById(R.id.user_number);
-                profile_image = itemView.findViewById(R.id.profile_image);
-                no_image = itemView.findViewById(R.id.no_image);
-                top_layout = itemView.findViewById(R.id.top_layout);
-            }
-
-        }
-
-    }
-
-
-    public abstract static class PaginationScrollListener extends RecyclerView.OnScrollListener {
-
-        private final LinearLayoutManager layoutManager;
-
-        public PaginationScrollListener(LinearLayoutManager layoutManager) {
-            this.layoutManager = layoutManager;
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-
-            int visibleItemCount = layoutManager.getChildCount();
-            int totalItemCount = layoutManager.getItemCount();
-            int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-
-            if (!isLoading() && !isLastPage()) {
-                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                        && firstVisibleItemPosition >= 0) {
-                    loadMoreItems();
-                }
-            }
-        }
-
-        protected abstract void loadMoreItems();
-
-        public abstract boolean isLastPage();
-
-        public abstract boolean isLoading();
-
-    }
-
     public class MyAsyncTasks extends AsyncTask<String, String, String> {
 
 
@@ -1267,6 +1082,7 @@ public class ContectFragment extends Fragment {
 
 
 
+/*
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -1394,11 +1210,13 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                       holder1.profile_image.setVisibility(View.GONE);
                   } else {
 
-                    /*  CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context.getApplicationContext());
+                    */
+/*  CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context.getApplicationContext());
                       circularProgressDrawable.setStrokeWidth(6f);
                       circularProgressDrawable.setCenterRadius(20f);
                       circularProgressDrawable.setColorSchemeColors(context.getResources().getColor(R.color.purple_200),context.getResources().getColor(R.color.purple_200),context.getResources().getColor(R.color.purple_200));
-                      circularProgressDrawable.start();*/
+                      circularProgressDrawable.start();*//*
+
                       Glide.with(context).
                               load(Contact_data.getContactImage())
                               .placeholder(R.drawable.shape_primary_circle)
@@ -1438,7 +1256,9 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
               catch (Exception e)
               {
                   contacts.remove(position);
-           /*       notifyDataSetChanged();*/
+           */
+/*       notifyDataSetChanged();*//*
+
 
               }
 
@@ -1543,6 +1363,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 }
 
+*/
 
 
     public void AddContect_Api(ContectListData.Contact contact_data) throws JSONException {
@@ -1655,5 +1476,507 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 
+
+
+
+    public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private static final int LOADING = 0;
+        private static final int ITEM = 1;
+        private final Context context;
+        String second_latter = "";
+        String current_latter = "", image_url = "";
+        private List<ContectListData.Contact> contacts;
+        private boolean isLoadingAdded = false;
+
+        public ContectListAdapter(@SuppressLint("UnknownNullness") Context context) {
+            this.context = context;
+            contacts = new LinkedList<>();
+        }
+
+        public void setContactList(@SuppressLint("UnknownNullness") List<ContectListData.Contact> contacts) {
+            this.contacts = contacts;
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            RecyclerView.ViewHolder viewHolder = null;
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+            switch (viewType) {
+                case ITEM:
+                    View viewItem = inflater.inflate(R.layout.invite_user_details1, parent, false);
+                    viewHolder = new MovieViewHolder(viewItem);
+                    break;
+                case LOADING:
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
+                    viewHolder = new LoadingViewHolder(viewLoading);
+
+                    break;
+            }
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+            ContectListData.Contact Contact_data = contacts.get(position);
+            //Log.e("Postion is",String.valueOf(position));
+            switch (getItemViewType(position)) {
+                case ITEM:
+                    MovieViewHolder holder1 = (MovieViewHolder) holder;
+                    try {
+
+                        if (Contact_data.getIs_blocked().equals("1"))
+                        {
+                            holder1.iv_block.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            holder1.iv_block.setVisibility(View.GONE);
+
+                        }
+                        holder1.userName.setText(Contact_data.getFirstname()+" "+Contact_data.getLastname());
+                        holder1.userNumber.setVisibility(View.GONE);
+
+                        holder1.first_latter.setVisibility(View.VISIBLE);
+                        holder1.top_layout.setVisibility(View.VISIBLE);
+
+
+
+
+                        String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
+                        holder1.first_latter.setText(first_latter);
+                        if (second_latter.equals("")) {
+                            current_latter = first_latter;
+                            second_latter = first_latter;
+                            holder1.first_latter.setVisibility(View.VISIBLE);
+                            holder1.top_layout.setVisibility(View.VISIBLE);
+
+                        } else if (second_latter.equals(first_latter)) {
+                            current_latter = second_latter;
+                            // inviteUserDetails.setF_latter("");
+                            holder1.first_latter.setVisibility(View.GONE);
+                            holder1.top_layout.setVisibility(View.GONE);
+
+                        } else {
+
+                            current_latter = first_latter;
+                            second_latter = first_latter;
+                            holder1.first_latter.setVisibility(View.VISIBLE);
+                            holder1.top_layout.setVisibility(View.VISIBLE);
+
+
+                        }
+
+
+                        if (Contact_data.getContactImage() == null) {
+                            String name = Contact_data.getFirstname();
+                            String add_text = "";
+                            String[] split_data = name.split(" ");
+                            try {
+                                for (int i = 0; i < split_data.length; i++) {
+                                    if (i == 0) {
+                                        add_text = split_data[i].substring(0, 1);
+                                    } else {
+                                        add_text = add_text + split_data[i].charAt(0);
+                                        break;
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+
+                            holder1.no_image.setText(add_text);
+                            holder1.no_image.setVisibility(View.VISIBLE);
+                            holder1.profile_image.setVisibility(View.GONE);
+                        } else {
+
+                    /*  CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context.getApplicationContext());
+                      circularProgressDrawable.setStrokeWidth(6f);
+                      circularProgressDrawable.setCenterRadius(20f);
+                      circularProgressDrawable.setColorSchemeColors(context.getResources().getColor(R.color.purple_200),context.getResources().getColor(R.color.purple_200),context.getResources().getColor(R.color.purple_200));
+                      circularProgressDrawable.start();*/
+                            Glide.with(context).
+                                    load(Contact_data.getContactImage())
+                                    .placeholder(R.drawable.shape_primary_circle)
+                                    .error(R.drawable.shape_primary_circle)
+                                    .into(holder1.profile_image);
+                            holder1.no_image.setVisibility(View.GONE);
+                            holder1.profile_image.setVisibility(View.VISIBLE);
+                        }
+
+
+                        holder1.main_layout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
+                                Log.e("List Of Contec is",new Gson().toJson(Contact_data));
+                                SessionManager.setOneCotect_deatil(context, Contact_data);
+                                Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
+                                SessionManager.setContect_flag("read");
+                                context.startActivity(addnewcontect);
+                            }
+                        });
+
+                        holder1.main_layout.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+
+                                broadcast_manu(Contact_data);
+                                return false;
+                            }
+                        });
+
+                    }
+                    catch (Exception e)
+                    {
+                        contacts.remove(position);
+                        /*       notifyDataSetChanged();*/
+
+                    }
+
+
+                    break;
+
+                case LOADING:
+                    LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
+                    loadingViewHolder.progressBar.setVisibility(View.GONE);
+                    break;
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            // Log.e("Size is :: ",contacts.size()+"");
+            return contacts == null ? 0 : contacts.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return (position == contacts.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+        }
+
+        public void addLoadingFooter() {
+            isLoadingAdded = true;
+            add(new ContectListData.Contact());
+        }
+
+        public void removeLoadingFooter() {
+            isLoadingAdded = false;
+
+            int position = contacts.size() - 1;
+            ContectListData.Contact result = getItem(position);
+
+            if (result != null) {
+                contacts.remove(position);
+                notifyItemRemoved(position);
+            }
+        }
+
+        public void add(ContectListData.Contact contact) {
+            contacts.add(contact);
+            notifyItemInserted(contacts.size() - 1);
+            //  notifyDataSetChanged();
+        }
+
+        public void addAll(List<ContectListData.Contact> contact) {
+            for (ContectListData.Contact result : contact) {
+
+                add(result);
+            }
+
+        }
+        public void updateList(List<ContectListData.Contact> list) {
+            contacts = list;
+            notifyDataSetChanged();
+        }
+
+        public void removeloist() {
+            contacts.clear();
+            notifyDataSetChanged();
+        }
+
+        public ContectListData.Contact getItem(int position) {
+            return contacts.get(position);
+        }
+
+
+        public  class MovieViewHolder extends RecyclerView.ViewHolder {
+            TextView no_image;
+            TextView userName, userNumber, first_latter;
+            CircleImageView profile_image;
+            LinearLayout top_layout;
+            RelativeLayout main_layout;
+            ImageView iv_block;
+
+            public MovieViewHolder(View itemView) {
+                super(itemView);
+                first_latter = itemView.findViewById(R.id.first_latter);
+                userName = itemView.findViewById(R.id.username);
+                userNumber = itemView.findViewById(R.id.user_number);
+                profile_image = itemView.findViewById(R.id.profile_image);
+                no_image = itemView.findViewById(R.id.no_image);
+                top_layout = itemView.findViewById(R.id.top_layout);
+                main_layout = itemView.findViewById(R.id.main_layout);
+                iv_block=itemView.findViewById(R.id.iv_block);
+            }
+        }
+
+        public  class LoadingViewHolder extends RecyclerView.ViewHolder {
+
+            private final ProgressBar progressBar;
+
+            public LoadingViewHolder(View itemView) {
+                super(itemView);
+                progressBar = itemView.findViewById(R.id.idPBLoading);
+
+            }
+        }
+
+    }
+
+
+    private void broadcast_manu(ContectListData.Contact contact_item) {
+
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        TextView selected_block = bottomSheetDialog.findViewById(R.id.selected_block);
+        View line_block=bottomSheetDialog.findViewById(R.id.line_block);
+        View line_unblock=bottomSheetDialog.findViewById(R.id.line_unblock);
+        TextView selected_un_block = bottomSheetDialog.findViewById(R.id.selected_unblock);
+        TextView selected_delete=bottomSheetDialog.findViewById(R.id.selected_delete);
+        selected_block.setText(getString(R.string.add_blacklist));
+        selected_un_block.setText(getString(R.string.remove_blacklist));
+        selected_delete.setText(getString(R.string.delete_contact));
+
+        if (contact_item.getIs_blocked().equals("1"))
+        {
+            selected_block.setVisibility(View.GONE);
+            line_block.setVisibility(View.GONE);
+            selected_un_block.setVisibility(View.VISIBLE);
+            line_unblock.setVisibility(View.VISIBLE);
+        }
+        else {
+            line_block.setVisibility(View.VISIBLE);
+            selected_block.setVisibility(View.VISIBLE);
+            selected_un_block.setVisibility(View.GONE);
+            line_unblock.setVisibility(View.GONE);
+        }
+
+
+        selected_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_BLock(contact_item,"1",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_un_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_BLock(contact_item,"0",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_Remove(contact_item,"0",bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
+
+    public void Contect_BLock(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("is_block",block);
+        JSONArray block_array = new JSONArray();
+        block_array.put(contact_data.getId());
+        paramObject.put("blockContactIds", block_array);
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        retrofitCalls.Block_contact(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
+                    try {
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    bottomSheetDialog.cancel();
+                }
+                else {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+    }
+
+
+
+    public void Contect_Remove(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("id",contact_data.getId());
+        paramObject.put("status","D");
+
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    try {
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    bottomSheetDialog.cancel();
+                }
+                else {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+    }
+
+
+
+    void showBottomSheetDialog_Filtter() {
+
+        bottomSheetDialog_fillter = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
+        bottomSheetDialog_fillter.setContentView(R.layout.bottom_sheet_dialog_for_fillter_contact);
+        TextView tv_clear=bottomSheetDialog_fillter.findViewById(R.id.tv_clear);
+        TextView tv_done=bottomSheetDialog_fillter.findViewById(R.id.tv_done);
+        TextView tv_item=bottomSheetDialog_fillter.findViewById(R.id.tv_item);
+        ImageView iv_unselect_blacklist=bottomSheetDialog_fillter.findViewById(R.id.iv_unselect_blacklist);
+        ImageView iv_select_blacklist=bottomSheetDialog_fillter.findViewById(R.id.iv_select_blacklist);
+        ImageView iv_unselect_all=bottomSheetDialog_fillter.findViewById(R.id.iv_unselect_all);
+        ImageView iv_select_all=bottomSheetDialog_fillter.findViewById(R.id.iv_select_all);
+        tv_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_unselect_blacklist.setVisibility(View.VISIBLE);
+                iv_select_blacklist.setVisibility(View.GONE);
+                iv_unselect_all.setVisibility(View.VISIBLE);
+                iv_select_all.setVisibility(View.GONE);
+
+            }
+        });
+        iv_unselect_blacklist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_unselect_blacklist.setVisibility(View.GONE);
+                iv_select_blacklist.setVisibility(View.VISIBLE);
+
+             List<ContectListData.Contact> block_data=SessionManager.getContectList(getActivity()).get(0).getContacts();
+             List<ContectListData.Contact> block__list_data=new ArrayList<>();
+              for (int i=0;i<block_data.size();i++)
+              {
+                  if (block_data.get(i).getIs_blocked().equals("1"))
+                  {
+                      block__list_data.add(block_data.get(i));
+                  }
+              }
+                contectListData.clear();
+                paginationAdapter.removeloist();
+                contectListData.addAll(block__list_data);
+                paginationAdapter.addAll(contectListData);
+                num_count.setText(contectListData.size() + " Contacts");
+
+                bottomSheetDialog_fillter.cancel();
+            }
+        });
+        iv_unselect_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_unselect_all.setVisibility(View.GONE);
+                iv_select_all.setVisibility(View.VISIBLE);
+                contectListData.clear();
+                paginationAdapter.removeloist();
+                contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+                paginationAdapter.addAll(contectListData);
+                num_count.setText(contectListData.size() + " Contacts");
+                bottomSheetDialog_fillter.cancel();
+
+            }
+        });
+
+        bottomSheetDialog_fillter.show();
+    }
 }
 

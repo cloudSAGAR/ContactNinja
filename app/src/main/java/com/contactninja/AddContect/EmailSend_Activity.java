@@ -38,6 +38,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.Email_verification;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -179,6 +180,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
                     HastagList.TemplateText text = new HastagList.TemplateText();
                     text.setFile(R.drawable.ic_a);
+                    text.setDescription("");
                     text.setSelect(false);
                     templateTextList.add(0, text);
 /*
@@ -659,9 +661,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
-
-                    Global.openEmailAuth(EmailSend_Activity.this);
-                   // startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                        /*is a email permission link open */
+                        //Global.openEmailAuth(SettingActivity.this);
+                        startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 
@@ -900,7 +902,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item = templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setText(Global.setFirstLetter(item.getDescription()));
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {

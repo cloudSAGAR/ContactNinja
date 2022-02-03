@@ -73,6 +73,13 @@ public class CampaignTask_overview {
         @SerializedName("template_id")
         @Expose
         private String templateId;
+
+       @SerializedName("mail_module")
+       @Expose
+       private String mail_module;
+       @SerializedName("sent_tbl_id")
+       @Expose
+       private String sent_tbl_id;
         @SerializedName("content_header")
         @Expose
         private String contentHeader="";
@@ -202,7 +209,23 @@ public class CampaignTask_overview {
             this.activeTaskContactNumber = activeTaskContactNumber;
         }
 
-    }
+       public String getMail_module() {
+           return mail_module;
+       }
+
+       public void setMail_module(String mail_module) {
+           this.mail_module = mail_module;
+       }
+
+       public String getSent_tbl_id() {
+           return sent_tbl_id;
+       }
+
+       public void setSent_tbl_id(String sent_tbl_id) {
+           this.sent_tbl_id = sent_tbl_id;
+       }
+   }
+
 
 
     public static class _0 {
@@ -400,6 +423,10 @@ public class CampaignTask_overview {
         @SerializedName("firstname")
         @Expose
         private String firstname="";
+
+        @SerializedName("group_detail")
+        @Expose
+        private GroupDetail groupDetail;
         @SerializedName("lastname")
         @Expose
         private String lastname;
@@ -445,6 +472,18 @@ public class CampaignTask_overview {
         @SerializedName("aday")
         @Expose
         private String aday;
+
+        @SerializedName("step_no")
+        @Expose
+        private String step_no;
+
+        public String getStep_no() {
+            return step_no;
+        }
+
+        public void setStep_no(String step_no) {
+            this.step_no = step_no;
+        }
 
         public Integer getContactId() {
             return contactId;
@@ -581,6 +620,42 @@ public class CampaignTask_overview {
         public void setAday(String aday) {
             this.aday = aday;
         }
+        public GroupDetail getGroupDetail() {
+            return groupDetail;
+        }
+
+
+        public void setGroupDetail(GroupDetail groupDetail) {
+            this.groupDetail = groupDetail;
+        }
+
+        public class GroupDetail {
+
+            @SerializedName("id")
+            @Expose
+            private Integer id;
+            @SerializedName("name")
+            @Expose
+            private String name;
+
+            public Integer getId() {
+                return id;
+            }
+
+            public void setId(Integer id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+        }
+
 
     }
 

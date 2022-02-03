@@ -38,6 +38,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.Email_verification;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -706,9 +707,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
-
-                    Global.openEmailAuth(Manual_Mail_Send_Activty.this);
-                    // startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                     startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 
@@ -950,7 +949,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item = templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setText(Global.setFirstLetter(item.getDescription()));
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {

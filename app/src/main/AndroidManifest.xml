@@ -48,17 +48,27 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AddContect.Add_Company_Activity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Manual_email_sms.Manual_Shooz_Time_Date_Activity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".Manual_email_sms.Manual_Auto_Task_Name_Activity"
-            android:screenOrientation="portrait" android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Manual_email_sms.Sms_And_Email_Auto_Manual"
-            android:screenOrientation="portrait" android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait"  />
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Sms_Detail_Activty"
+            android:name=".Manual_email_sms.Item_List_Sms_Detail_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -70,7 +80,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Email_Detail_activty"
+            android:name=".Manual_email_sms.Item_List_Email_Detail_activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -94,7 +104,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Email_Sms_List_Activty"
+            android:name=".Manual_email_sms.List_Manual_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -312,11 +322,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-      <!--  <activity
+        <!--
+  <activity
             android:name=".Contect_Demo"
             android:exported="true"
-            android:screenOrientation="portrait" />-->
-
+            android:screenOrientation="portrait" />
+        -->
         <receiver android:name=".Utils.OTP_Receiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

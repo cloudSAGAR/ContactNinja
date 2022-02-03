@@ -36,6 +36,60 @@
         android:textColor="@color/text_reg"
         android:layout_marginBottom="@dimen/_10sdp"
          />
+    <LinearLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:weightSum="1"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="@dimen/_5sdp"
+            android:layout_gravity="center"
+            style="@style/tv_Medium_14"
+            android:text="@string/from"
+            android:textColor="@color/purple_200"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/ev_from"
+            android:enabled="false"
+            style="@style/tv_regular_13"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/add_contect_transpernt"
+            android:focusable="true"
+            android:gravity="left|center"
+            android:imeOptions="actionDone"
+            android:paddingStart="@dimen/_15sdp"
+            android:textColor="@color/text_reg"
+            tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+        <ImageView
+            android:id="@+id/iv_down"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_down"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+
+
+    </LinearLayout>
+    <View
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@color/line_separator"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_height="1dp">
+
+    </View>
     <EditText
 
         android:id="@+id/edit_template"

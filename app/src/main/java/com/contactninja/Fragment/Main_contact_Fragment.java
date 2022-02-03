@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.contactninja.Fragment.AddContect_Fragment.Company_Fragment;
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
@@ -37,9 +38,10 @@ public class Main_contact_Fragment extends Fragment implements ViewPager.OnPageC
         View view = inflater.inflate(R.layout.fragment_contect_main_, container, false);
         IntentUI(view);
 
-
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
+        tabLayout.addTab(tabLayout.newTab().setText("Company"));
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         adapter = new ViewpaggerAdapter(getActivity(), getChildFragmentManager(),
                 tabLayout.getTabCount(), strtext);
@@ -143,6 +145,10 @@ public class Main_contact_Fragment extends Fragment implements ViewPager.OnPageC
                     GroupFragment c_Fragment = new GroupFragment();
 
                     return c_Fragment;
+                case 2:
+                    Company_Fragment company_Fragment = new Company_Fragment();
+
+                    return company_Fragment;
                 default:
                     return null;
             }

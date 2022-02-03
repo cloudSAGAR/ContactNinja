@@ -20,7 +20,7 @@ import com.contactninja.Fragment.Home.Affiliate_Groth_Fragment;
 import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Email_Sms_List_Activty;
+import com.contactninja.Manual_email_sms.List_Manual_Activty;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;
 import com.contactninja.R;
@@ -148,7 +148,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.iv_toolbar_select:
-                startActivity(new Intent(getActivity(), Email_Sms_List_Activty.class));
+                startActivity(new Intent(getActivity(), List_Manual_Activty.class));
 
                 break;
 

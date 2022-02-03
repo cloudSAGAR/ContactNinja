@@ -106,6 +106,7 @@ Number</string>
     <string name="add_email">Email</string>
     <string name="add_email_a">Add email</string>
     <string name="add_address">Address</string>
+    <string name="add_company_address">Company  Address</string>
     <string name="add_address_a">Add address</string>
     <string name="add_company">Company</string>
     <string name="other_company">Other company</string>
@@ -157,6 +158,7 @@ Number</string>
     <string name="add_group_all_member">All members</string>
     <string name="add_group_all_more">Add more members</string>
 
+    <string name="add_informaton">Information</string>
     //Group
 
     <string name="group_to">To</string>
@@ -410,5 +412,49 @@ Number</string>
     <string name="select_Send">Send</string>
     <string name="select_Contact">Contact</string>
     <string name="select_User">User</string>
+
+    <string name="add_blacklist">Add to blacklist</string>
+    <string name="remove_blacklist">Remove to blacklist</string>
+    <string name="delete_contact">Delete contact</string>
+    <string name="fillter_block">Blacklist</string>
+    <string name="fillter_all">All Contacts</string>
+    <string name="company_add">Add New Company</string>
+    <string name="company_blacklst">Blacklist Companies</string>
+    <string name="company_all">All Companies</string>
+
+    <string name="no_Task">👍 You\'re all good ! \n You don\'t have any tasks here</string>
+    <string name="manual_Today">Today</string>
+    <string name="manual_Upcoming">Upcoming</string>
+    <string name="manual_Due">Due</string>
+    <string name="manual_Completed">Completed</string>
+    <string name="manual_Skipped">Skipped</string>
+    <string name="manual_Paused">Paused</string>
+    <string name="manual_Snooze">Snooze</string>
+    <string name="manual_Delete">Delete</string>
+    <string name="manual_All_tasks">All tasks</string>
+    <string name="Filters">Filters</string>
+    <string name="send_complate">Send now &amp; mark task as complete</string>
+    <string name="Snooze_task">Snooze task</string>
+
+    <string name="manual_aleart_delete">Remove Task ?</string>
+    <string name="manual_aleart_delete_des">Are you sure that you would like to task remove?</string>
+    <string name="manual_aleart_paused">Paused Task ?</string>
+    <string name="manual_aleart_paused_des">Are you sure that you would like to task paused?</string>
+    <string name="manual_aleart_snooze">Snooze Task ?</string>
+    <string name="manual_aleart_snooze_des">Are you sure that you would like to task snooze?</string>
+
+    <string-array name="manual_filter">
+        <item>TODAY</item>
+        <item>UPCOMING</item>
+        <item>DUE</item>
+        <item>FINISHED</item>
+        <item>SKIPPED</item>
+        <item>PAUSED</item>
+    </string-array>
+    <string-array name="manual_Select">
+        <item>PAUSED</item>
+        <item>SNOOZE</item>
+        <item>DELETE</item>
+    </string-array>
 
 </resources>

@@ -347,46 +347,4 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
             }
         });
     }
-
-    private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JsonObject obj = new JsonObject();
-
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("content_body", text);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("prospect_id", id);
-        paramObject.addProperty("record_id", record_id);
-        paramObject.addProperty("type", "SMS");
-        paramObject.addProperty("team_id", "1");
-        obj.add("data", paramObject);
-
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this),Global.Device,new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-                loadingDialog.cancelLoading();
-                Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
-                intent.putExtra("s_name","final");
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
-    }
 }
