@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
@@ -74,11 +76,10 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
     boolean isLastPage = false;
-
     Activity activity;
     BottomSheetDialog bottomSheetDialog_step,bottomSheetDialog_fillter;
-
     CampaignTask_overview contect_list_data;
+    String s_type="";
     List<CampaignTask_overview.SequenceProspect> sequenceProspects=new ArrayList<>();
 
     @Override
@@ -102,8 +103,9 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
         groupContectAdapter = new GroupContectAdapter(getActivity());
         contect_list_unselect.setAdapter(groupContectAdapter);
         groupContectAdapter.addAll(sequenceProspects);
+        Log.e("Seqence Data Is",new Gson().toJson(sequenceProspects));
         num_count.setText(contect_list_data.getSeqProspectCount().getTotal()+" Contacts");
-
+        s_type=contect_list_data.getSequenceTask().get(0).getType();
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
         fastscroller.getItemIndicatorSelectedCallbacks().add(
@@ -443,21 +445,77 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                   /*  contacts.get(position).setFlag("true");*/
                     holder1.userName.setText(Contact_data.getFirstname());
                     holder1.userNumber.setVisibility(View.GONE);
-                    holder1.tv_step.setText("Step#"+Contact_data.getAstepNo());
+
+                    // Manual Ni
                     try {
-                        if (Contact_data.getAtype().equals("SMS"))
+                        if (!Contact_data.getMtype().toString().equals("null"))
                         {
-                            holder1.iv_email.setVisibility(View.GONE);
-                            holder1.iv_mesage.setVisibility(View.VISIBLE);
+
+                            if (Contact_data.getMtype().equals("SMS"))
+                            {
+                                holder1.iv_email.setVisibility(View.GONE);
+                                holder1.iv_mesage.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                holder1.iv_email.setVisibility(View.VISIBLE);
+                                holder1.iv_mesage.setVisibility(View.GONE);
+                            }
+                            holder1.tv_step.setText("Step#"+Contact_data.getMstepNo());
                         }
+                        //Auto
                         else {
-                            holder1.iv_email.setVisibility(View.VISIBLE);
-                            holder1.iv_mesage.setVisibility(View.GONE);
+                            if (Contact_data.getAtype().equals("SMS"))
+                            {
+                                holder1.iv_email.setVisibility(View.GONE);
+                                holder1.iv_mesage.setVisibility(View.VISIBLE);
+
+                            }
+                            else {
+                                holder1.iv_email.setVisibility(View.VISIBLE);
+                                holder1.iv_mesage.setVisibility(View.GONE);
+                            }
+                            holder1.tv_step.setText("Step#"+Contact_data.getAstepNo());
+
                         }
-                    }catch (Exception e)
+                    }
+                    catch (Exception e)
                     {
+                        holder1.tv_step.setText("Step#"+Contact_data.getAstepNo());
+                        try {
+                            if (Contact_data.getAtype().equals("SMS"))
+                            {
+                                holder1.iv_email.setVisibility(View.GONE);
+                                holder1.iv_mesage.setVisibility(View.VISIBLE);
+
+                            }
+                            else {
+                                holder1.iv_email.setVisibility(View.VISIBLE);
+                                holder1.iv_mesage.setVisibility(View.GONE);
+                            }
+                        }
+                        catch (Exception e1)
+                        {
+
+                            holder1.tv_step.setText("Step#"+Contact_data.getStep_no());
+                            if (s_type.equals("SMS"))
+                            {
+                                holder1.iv_email.setVisibility(View.GONE);
+                                holder1.iv_mesage.setVisibility(View.VISIBLE);
+
+                            }
+                            else {
+                                holder1.iv_email.setVisibility(View.VISIBLE);
+                                holder1.iv_mesage.setVisibility(View.GONE);
+                            }
+                        }
+
+
 
                     }
+
+
+
+
 
                         String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
                         String add_text = "";
