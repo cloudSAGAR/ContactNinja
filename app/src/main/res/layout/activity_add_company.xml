@@ -73,6 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:inputType="textCapSentences"
                         android:layout_weight="2"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:id="@+id/add_name"
@@ -347,7 +348,6 @@
             android:gravity="center|left"
             android:hint="@string/add_company_url"
             android:imeOptions="actionDone"
-            android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textColor="@color/otp_header_text_color"
             android:textColorHighlight="@color/purple_200"
@@ -385,7 +385,6 @@
             android:gravity="center|left"
             android:hint="@string/add_company_address"
             android:imeOptions="actionDone"
-            android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textColor="@color/otp_header_text_color"
             android:textColorHighlight="@color/purple_200"
