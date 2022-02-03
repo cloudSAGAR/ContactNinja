@@ -34,8 +34,9 @@ import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.ContecModel;
+import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.HastagList;
-import com.contactninja.Model.ManualTaskModel;
+import com.contactninja.Model.ManualTaskDetailsModel;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -67,7 +68,7 @@ import retrofit2.Response;
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
-    static ManualTaskModel Data;
+    static ManualTaskDetailsModel.ManualDetails manualDetails;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -82,7 +83,8 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList = new ArrayList<>();
     String filePath;
-    String p_number = "", id = "", task_name = "", from_ac = "", from_ac_id = "";
+    Integer id=0;
+    String p_number = "",  task_name = "", from_ac = "", from_ac_id = "";
     BottomSheetDialog bottomSheetDialog_templateList1;
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
@@ -93,67 +95,7 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
 
-    public static void compareDates(String d1, String d2, TextView tv_status) {
-        try {
-            // If you already have date objects then skip 1
 
-            //1
-            // Create 2 dates starts
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-            Date date1 = sdf.parse(d1);
-            Date date2 = sdf.parse(d2);
-
-            Log.e("Date1", sdf.format(date1));
-            Log.e("Date2", sdf.format(date2));
-
-            // Create 2 dates ends
-            //1
-
-            // Date object is having 3 methods namely after,before and equals for comparing
-            // after() will return true if and only if date1 is after date 2
-            if (date1.after(date2)) {
-                if (Data.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Due");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(Data.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                Log.e("", "Date1 is after Date2");
-            }
-            // before() will return true if and only if date1 is before date2
-            if (date1.before(date2)) {
-
-                if (Data.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Upcoming");
-                    tv_status.setTextColor(Color.parseColor("#2DA602"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(Data.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-
-                Log.e("", "Date1 is before Date2");
-                System.out.println("Date1 is before Date2");
-            }
-
-            //equals() returns true if both the dates are equal
-            if (date1.equals(date2)) {
-                if (Data.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Today");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(Data.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                Log.e("", "Date1 is equal Date2");
-                System.out.println("Date1 is equal Date2");
-            }
-
-            System.out.println();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,24 +107,80 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
         retrofitCalls = new RetrofitCalls(this);
 
         IntentUI();
-        setData();
+        try {
+            Intent intent=getIntent();
+            Bundle bundle=intent.getExtras();
+            id=bundle.getInt("record_id");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, MainActivity.mMainLayout)) {
+                loadingDialog.showLoadingDialog();
+                Api_Details();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         templateClick = this;
-        try {
-            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, mMainLayout)) {
-                Hastag_list();
+
+    }
+
+    void Api_Details() throws JSONException {
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("record_id",id);
+
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    if (response.body().getHttp_status() == 200) {
+
+                        Type listType = new TypeToken<ManualTaskDetailsModel>() {
+                        }.getType();
+                        ManualTaskDetailsModel manualTaskDetailsModel = new Gson().fromJson(headerString, listType);
+                        manualDetails= manualTaskDetailsModel.get_0();
+                        setData();
+
+                        try {
+                            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, mMainLayout)) {
+                                Hastag_list();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, mMainLayout)) {
+                                Contect_list();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, mMainLayout)) {
-                Contect_list();
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -193,14 +191,12 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
     }
 
     private void setData() {
-        Data = SessionManager.getManualTaskModel(getApplicationContext());
-        //ev_from.setText(Data.getContactMasterFirstname()+" "+Data.getContactMasterLastname());
-        ev_to.setText(Data.getContactNumber());
-        //ev_subject.setText(Data.getContentHeader());
-        edit_compose.setText(Data.getContentBody());
-        ev_titale.setText(Data.getTask_name());
+
+        ev_to.setText(manualDetails.getContactNumber());
+        edit_compose.setText(manualDetails.getContentBody());
+        ev_titale.setText(manualDetails.getTaskName());
         try {
-            String time = Global.getDate(Data.getStartTime());
+            String time = Global.getDate(manualDetails.getStartTime());
             tv_date.setText(time);
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
             String currentDateandTime = sdf.format(new Date());
@@ -246,7 +242,8 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
                 break;
             case R.id.bt_done:
                 try {
-                    SMS_execute(edit_compose.getText().toString(), Data.getProspectId(), Data.getContactNumber(), String.valueOf(Data.getId()));
+                    SMS_execute(edit_compose.getText().toString(), manualDetails.getProspectId(),
+                            manualDetails.getContactNumber(), String.valueOf(manualDetails.getId()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -269,6 +266,18 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
         CheckBox ch_snooze = bottomSheetDialog.findViewById(R.id.ch_snooze);
         CheckBox ch_delete = bottomSheetDialog.findViewById(R.id.ch_delete);
 
+
+        switch (manualDetails.getStatus()) {
+            case "PAUSED":
+                ch_Paused.setChecked(true);
+                break;
+            case "SNOOZE":
+                ch_snooze.setChecked(true);
+                break;
+            case "DELETE":
+                ch_delete.setChecked(true);
+                break;
+        }
         // select sting static
         String[] selet_item = getResources().getStringArray(R.array.manual_Select);
 
@@ -348,7 +357,7 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
                             break;
                         case "SNOOZE":
                             Intent intent = new Intent(getApplicationContext(), Manual_Shooz_Time_Date_Activity.class);
-                            intent.putExtra("id", Data.getId());
+                            intent.putExtra("id", manualDetails.getId());
                             intent.putExtra("Type","SMS");
                             startActivity(intent);
                             finish();
@@ -378,7 +387,7 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("record_id", Data.getId());
+        paramObject.put("record_id", manualDetails.getId());
         switch (type) {
             case "PAUSED":
                 paramObject.put("status", "PAUSED");
@@ -411,7 +420,67 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
             }
         });
     }
+    public static void compareDates(String d1, String d2, TextView tv_status) {
+        try {
+            // If you already have date objects then skip 1
 
+            //1
+            // Create 2 dates starts
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
+            Date date1 = sdf.parse(d1);
+            Date date2 = sdf.parse(d2);
+
+            Log.e("Date1", sdf.format(date1));
+            Log.e("Date2", sdf.format(date2));
+
+            // Create 2 dates ends
+            //1
+
+            // Date object is having 3 methods namely after,before and equals for comparing
+            // after() will return true if and only if date1 is after date 2
+            if (date1.after(date2)) {
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                Log.e("", "Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if (date1.before(date2)) {
+
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+                Log.e("", "Date1 is before Date2");
+                System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if (date1.equals(date2)) {
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Today");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                Log.e("", "Date1 is equal Date2");
+                System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+    }
     private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
@@ -509,10 +578,6 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
-                } else {
-
-                    //Global.openEmailAuth(from_ac.this);
-                    // startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 
@@ -548,15 +613,6 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
                     templateTextList = hastagList.getHashtag();
 
 
-                 /*   HastagList.TemplateText text = new HastagList.TemplateText();
-                    text.setFile(R.drawable.ic_a);
-                    text.setSelect(false);
-                    templateTextList.add(0, text);
-
-                    HastagList.TemplateText text1 = new HastagList.TemplateText();
-                    text1.setFile(R.drawable.ic_file);
-                    text1.setSelect(false);
-                    templateTextList.add(1, text1);*/
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
@@ -623,7 +679,7 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
 
 
         for (int i = 0; i < userLinkedGmailList.size(); i++) {
-            if (userLinkedGmailList.get(i).getId().toString().equals(Data.getSent_tbl_id())) {
+            if (userLinkedGmailList.get(i).getId().toString().equals(manualDetails.getSentTblId())) {
                 select_userLinkedGmailList.clear();
                 userLinkedGmailList.get(i).setEmailSelect(true);
                 select_userLinkedGmailList.add(userLinkedGmailList.get(i));
@@ -967,7 +1023,7 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
                             }
                         };
                         handler.postDelayed(r, 1000);
-                        holder.tv_item.setBackgroundResource(R.drawable.shape_10_blue);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
                         interfaceClick.OnClick(item.getHashtag());
                     }

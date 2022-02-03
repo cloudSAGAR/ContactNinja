@@ -179,6 +179,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
                     HastagList.TemplateText text = new HastagList.TemplateText();
                     text.setFile(R.drawable.ic_a);
+                    text.setDescription("");
                     text.setSelect(false);
                     templateTextList.add(0, text);
 /*

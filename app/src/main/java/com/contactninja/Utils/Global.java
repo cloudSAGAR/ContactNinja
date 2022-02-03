@@ -80,7 +80,10 @@ public class Global extends Application {
     }
 
     public static String setFirstLetter(String status) {
-        String upperString = status.substring(0, 1).toUpperCase() + status.substring(1).toLowerCase();
+        String upperString="";
+        if(Global.IsNotNull(status)||!status.equals("")){
+            upperString = status.substring(0, 1).toUpperCase() + status.substring(1).toLowerCase();
+        }
         return upperString;
     }
 
@@ -249,10 +252,10 @@ public class Global extends Application {
             return token;
         }
     */
-    public static String getDate(long time) throws ParseException {
+    public static String getDate(Integer time) throws ParseException {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-        cal.setTimeInMillis(time * 1000);
+        cal.setTimeInMillis(Long.valueOf(time) * 1000);
         Date date = cal.getTime();
         SimpleDateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
         String date1 = format1.format(date);

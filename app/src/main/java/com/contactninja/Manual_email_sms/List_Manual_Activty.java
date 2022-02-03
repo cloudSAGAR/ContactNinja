@@ -86,112 +86,6 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
     private boolean isLastPage = false;
     private boolean isLoading = false;
 
-    public static void compareDates(String d1, String d2, TextView tv_status, TextView tv_time, ManualTaskModel item) {
-        try {
-            // If you already have date objects then skip 1
-
-            //1
-            // Create 2 dates starts
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-            Date date1 = sdf.parse(d1);
-            Date date2 = sdf.parse(d2);
-
-            // Create 2 dates ends
-            //1
-
-            // Date object is having 3 methods namely after,before and equals for comparing
-            // after() will return true if and only if date1 is after date 2
-            if (date1.after(date2)) {
-                if (item.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Due");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                tv_time.setText(d2);
-                //    Log.e("","Date1 is after Date2");
-            }
-            // before() will return true if and only if date1 is before date2
-            if (date1.before(date2)) {
-                if (item.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Upcoming");
-                    tv_status.setTextColor(Color.parseColor("#2DA602"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-
-                tv_time.setText(d2);
-                //  Log.e("","Date1 is before Date2");
-                //System.out.println("Date1 is before Date2");
-            }
-
-            //equals() returns true if both the dates are equal
-            if (date1.equals(date2)) {
-                if (item.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Today");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-
-                String convTime = null;
-                try {
-                    String prefix = "";
-                    String suffix = "Ago";
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-                    Date pasTime = dateFormat.parse(d2);
-                    Log.e("Time is ", String.valueOf(pasTime));
-
-                    Date nowTime = new Date();
-
-                    Log.e("now Time", String.valueOf(nowTime));
-                    Log.e("pass Time", String.valueOf(pasTime.getTime()));
-                    long dateDiff = nowTime.getTime() - pasTime.getTime();
-
-                    String diffrence = String.valueOf(String.valueOf(dateDiff).charAt(0));
-
-                    Log.e("String is", diffrence);
-                    if (diffrence.equals("-")) {
-                        dateDiff = pasTime.getTime() - nowTime.getTime();
-                        Log.e("dateDiff", String.valueOf(dateDiff));
-                        long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
-                        long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
-                        long hour = TimeUnit.MILLISECONDS.toHours(dateDiff);
-                        long day = TimeUnit.MILLISECONDS.toDays(dateDiff);
-
-                        Log.e("Second", String.valueOf(second));
-                        Log.e("Minute", String.valueOf(minute));
-                        Log.e("hour", String.valueOf(hour));
-                        Log.e("day", String.valueOf(day));
-                        if (second < 60) {
-                            convTime = second + " Sec " + suffix;
-                        } else if (minute < 60) {
-                            convTime = minute + " Min " + suffix;
-                        } else if (hour < 24) {
-                            convTime = hour + " Hours " + suffix;
-                        } else {
-                            convTime = d2;
-                        }
-                    }
-                    tv_time.setText(convTime);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    //  Log.e("ConvTimeE", e.getMessage());
-                }
-                //Log.e("","Date1 is equal Date2");
-                //System.out.println("Date1 is equal Date2");
-            }
-
-            System.out.println();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -317,6 +211,112 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+    public static void compareDates(String d1, String d2, TextView tv_status, TextView tv_time, ManualTaskModel item) {
+        try {
+            // If you already have date objects then skip 1
+
+            //1
+            // Create 2 dates starts
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
+            Date date1 = sdf.parse(d1);
+            Date date2 = sdf.parse(d2);
+
+            // Create 2 dates ends
+            //1
+
+            // Date object is having 3 methods namely after,before and equals for comparing
+            // after() will return true if and only if date1 is after date 2
+            if (date1.after(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                tv_time.setText(d2);
+                //    Log.e("","Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if (date1.before(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+                tv_time.setText(d2);
+                //  Log.e("","Date1 is before Date2");
+                //System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if (date1.equals(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Today");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+                String convTime = null;
+                try {
+                    String prefix = "";
+                    String suffix = "Ago";
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
+                    Date pasTime = dateFormat.parse(d2);
+                    Log.e("Time is ", String.valueOf(pasTime));
+
+                    Date nowTime = new Date();
+
+                    Log.e("now Time", String.valueOf(nowTime));
+                    Log.e("pass Time", String.valueOf(pasTime.getTime()));
+                    long dateDiff = nowTime.getTime() - pasTime.getTime();
+
+                    String diffrence = String.valueOf(String.valueOf(dateDiff).charAt(0));
+
+                    Log.e("String is", diffrence);
+                    if (diffrence.equals("-")) {
+                        dateDiff = pasTime.getTime() - nowTime.getTime();
+                        Log.e("dateDiff", String.valueOf(dateDiff));
+                        long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
+                        long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
+                        long hour = TimeUnit.MILLISECONDS.toHours(dateDiff);
+                        long day = TimeUnit.MILLISECONDS.toDays(dateDiff);
+
+                        Log.e("Second", String.valueOf(second));
+                        Log.e("Minute", String.valueOf(minute));
+                        Log.e("hour", String.valueOf(hour));
+                        Log.e("day", String.valueOf(day));
+                        if (second < 60) {
+                            convTime = second + " Sec " + suffix;
+                        } else if (minute < 60) {
+                            convTime = minute + " Min " + suffix;
+                        } else if (hour < 24) {
+                            convTime = hour + " Hours " + suffix;
+                        } else {
+                            convTime = d2;
+                        }
+                    }
+                    tv_time.setText(convTime);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //  Log.e("ConvTimeE", e.getMessage());
+                }
+                //Log.e("","Date1 is equal Date2");
+                //System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -812,13 +812,12 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     public void onClick(View view) {
 
                         if (item.getType().toString().equals("SMS")) {
-                            SessionManager.setManualTaskModel(item);
                             Intent intent = new Intent(getApplicationContext(), Item_List_Sms_Detail_Activty.class);
+                            intent.putExtra("record_id",item.getId());
                             startActivity(intent);
                         } else {
-
-                            SessionManager.setManualTaskModel(item);
                             Intent intent = new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class);
+                            intent.putExtra("record_id",item.getId());
                             startActivity(intent);
                         }
 

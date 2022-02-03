@@ -56,10 +56,10 @@ public class HastagList {
         private Integer teamId;
         @SerializedName("hashtag")
         @Expose
-        private String hashtag;
+        private String hashtag="";
         @SerializedName("description")
         @Expose
-        private String description;
+        private String description="";
         @SerializedName("status")
         @Expose
         private String status;
