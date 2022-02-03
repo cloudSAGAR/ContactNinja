@@ -73,7 +73,7 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back, iv_body, iv_toolbar_manu1;
-    TextView bt_done, tv_status, tv_date, tv_use_tamplet;
+    TextView bt_done, tv_status, tv_date, tv_use_tamplet,tv_taskname,tv_stap;
     CoordinatorLayout mMainLayout;
     EditText ev_from, ev_to, ev_subject, edit_compose, ev_titale;
     TemplateAdepter templateAdepter;
@@ -94,7 +94,7 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
     ImageView iv_down;
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
-
+LinearLayout lay_seq_stap,lay_taskname;
 
 
     @Override
@@ -195,6 +195,7 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
         ev_to.setText(manualDetails.getContactNumber());
         edit_compose.setText(manualDetails.getContentBody());
         ev_titale.setText(manualDetails.getTaskName());
+        tv_taskname.setText(manualDetails.getTaskName());
         try {
             String time = Global.getDate(manualDetails.getStartTime());
             tv_date.setText(time);
@@ -204,9 +205,22 @@ public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements V
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        if (!Global.IsNotNull(manualDetails.getSeqId()) || manualDetails.getSeqId() != 0) {
+            lay_seq_stap.setVisibility(View.VISIBLE);
+            lay_taskname.setVisibility(View.GONE);
+            tv_stap.setText("Step#"+manualDetails.getStep_no()+" Manual sms -");
+
+        }else {
+            lay_seq_stap.setVisibility(View.GONE);
+            lay_taskname.setVisibility(View.VISIBLE);
+        }
     }
 
     private void IntentUI() {
+        tv_stap=findViewById(R.id.tv_stap);
+        tv_taskname=findViewById(R.id.tv_taskname);
+        lay_seq_stap=findViewById(R.id.lay_seq_stap);
+        lay_taskname=findViewById(R.id.lay_taskname);
         ev_titale = findViewById(R.id.ev_titale);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);

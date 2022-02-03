@@ -1,7 +1,5 @@
 package com.contactninja.Manual_email_sms;
 
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -41,10 +39,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.ManualTaskDetailsModel;
-import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
@@ -83,7 +79,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back,iv_body,iv_toolbar_manu1;
-    TextView bt_done;
+    TextView bt_done,tv_taskname,tv_stap;
     RelativeLayout mMainLayout;
     EditText ev_from,ev_to,ev_subject,edit_compose;
 
@@ -110,7 +106,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     private int amountOfItemsSelected = 0;
     TextView tv_status,tv_date,tv_use_tamplet;
     TextView tv_bold,tv_ital,tv_uline;
-    LinearLayout layout_a;
+    LinearLayout layout_a,lay_seq_stap,lay_taskname;
 
 
     @Override
@@ -281,6 +277,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         ev_subject.setText(manualDetails.getContentHeader());
         edit_compose.setText(manualDetails.getContentBody());
         ev_titale.setText(manualDetails.getTaskName());
+        tv_taskname.setText(manualDetails.getTaskName());
         try {
             String time =Global.getDate(manualDetails.getStartTime());
             tv_date.setText(time);
@@ -289,6 +286,15 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             compareDates(currentDateandTime,time,tv_status);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+        if (!Global.IsNotNull(manualDetails.getSeqId()) || manualDetails.getSeqId() != 0) {
+            lay_seq_stap.setVisibility(View.VISIBLE);
+            lay_taskname.setVisibility(View.GONE);
+            tv_stap.setText("Step#"+manualDetails.getStep_no()+" Manual email -");
+
+        }else {
+            lay_seq_stap.setVisibility(View.GONE);
+            lay_taskname.setVisibility(View.VISIBLE);
         }
 
     }
@@ -357,6 +363,10 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     }
 
     private void IntentUI() {
+        tv_stap=findViewById(R.id.tv_stap);
+        tv_taskname=findViewById(R.id.tv_taskname);
+        lay_seq_stap=findViewById(R.id.lay_seq_stap);
+        lay_taskname=findViewById(R.id.lay_taskname);
         layout_a=findViewById(R.id.layout_a);
         tv_uline=findViewById(R.id.tv_uline);
         tv_bold=findViewById(R.id.tv_bold);

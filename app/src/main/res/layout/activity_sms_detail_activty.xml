@@ -22,8 +22,43 @@
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
-
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/lay_seq_stap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_message_tab"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"/>
+                <TextView
+                    android:id="@+id/tv_stap"
+                    style="@style/tv_Medium_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/text_reg"
+                    tools:ignore="HardcodedText">
+
+                </TextView>
+                <TextView
+                    android:id="@+id/tv_taskname"
+                    style="@style/tv_Medium_14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/text_gray"
+                    tools:ignore="HardcodedText">
+
+                </TextView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lay_taskname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"

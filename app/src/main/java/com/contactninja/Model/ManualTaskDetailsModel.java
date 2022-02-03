@@ -63,6 +63,9 @@ public class ManualTaskDetailsModel {
                 @SerializedName("task_name")
                 @Expose
                 private String taskName;
+                @SerializedName("step_no")
+                @Expose
+                private String step_no="";
                 @SerializedName("date")
                 @Expose
                 private String date;
@@ -285,6 +288,14 @@ public class ManualTaskDetailsModel {
 
                 public void setSentTblId(Integer sentTblId) {
                         this.sentTblId = sentTblId;
+                }
+
+                public String getStep_no() {
+                        return step_no;
+                }
+
+                public void setStep_no(String step_no) {
+                        this.step_no = step_no;
                 }
         }
 }
