@@ -38,6 +38,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.Email_verification;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -660,9 +661,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
-
-                    Global.openEmailAuth(EmailSend_Activity.this);
-                   // startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                        /*is a email permission link open */
+                        //Global.openEmailAuth(SettingActivity.this);
+                        startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 

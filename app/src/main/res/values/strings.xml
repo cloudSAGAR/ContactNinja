@@ -413,6 +413,14 @@ Number</string>
     <string name="select_Contact">Contact</string>
     <string name="select_User">User</string>
 
+    <string name="add_blacklist">Add to blacklist</string>
+    <string name="remove_blacklist">Remove to blacklist</string>
+    <string name="delete_contact">Delete contact</string>
+    <string name="fillter_block">Blacklist</string>
+    <string name="fillter_all">All Contacts</string>
+    <string name="company_add">Add New Company</string>
+    <string name="company_blacklst">Blacklist Companies</string>
+    <string name="company_all">All Companies</string>
 
     <string name="no_Task">👍 You\'re all good ! \n You don\'t have any tasks here</string>
     <string name="manual_Today">Today</string>
