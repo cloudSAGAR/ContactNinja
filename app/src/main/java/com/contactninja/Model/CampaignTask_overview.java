@@ -423,6 +423,10 @@ public class CampaignTask_overview {
         @SerializedName("firstname")
         @Expose
         private String firstname="";
+
+        @SerializedName("group_detail")
+        @Expose
+        private GroupDetail groupDetail;
         @SerializedName("lastname")
         @Expose
         private String lastname;
@@ -468,6 +472,18 @@ public class CampaignTask_overview {
         @SerializedName("aday")
         @Expose
         private String aday;
+
+        @SerializedName("step_no")
+        @Expose
+        private String step_no;
+
+        public String getStep_no() {
+            return step_no;
+        }
+
+        public void setStep_no(String step_no) {
+            this.step_no = step_no;
+        }
 
         public Integer getContactId() {
             return contactId;
@@ -604,6 +620,42 @@ public class CampaignTask_overview {
         public void setAday(String aday) {
             this.aday = aday;
         }
+        public GroupDetail getGroupDetail() {
+            return groupDetail;
+        }
+
+
+        public void setGroupDetail(GroupDetail groupDetail) {
+            this.groupDetail = groupDetail;
+        }
+
+        public class GroupDetail {
+
+            @SerializedName("id")
+            @Expose
+            private Integer id;
+            @SerializedName("name")
+            @Expose
+            private String name;
+
+            public Integer getId() {
+                return id;
+            }
+
+            public void setId(Integer id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+        }
+
 
     }
 
