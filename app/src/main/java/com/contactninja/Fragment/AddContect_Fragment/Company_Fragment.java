@@ -38,6 +38,7 @@ import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -174,6 +175,7 @@ public class Company_Fragment extends Fragment {
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
                 intent.putExtra("flag","add");
                 startActivity(intent);
@@ -182,6 +184,7 @@ public class Company_Fragment extends Fragment {
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
                 intent.putExtra("flag","add");
                 startActivity(intent);            }
@@ -189,6 +192,7 @@ public class Company_Fragment extends Fragment {
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
                 intent.putExtra("flag","add");
                 startActivity(intent);            }
@@ -653,12 +657,12 @@ public class Company_Fragment extends Fragment {
             public void onClick(View view) {
 
                 //Block Contect
-/*
+
                 try {
-                    Contect_Remove(Company,"0",bottomSheetDialog);
+                    Company_Remove(Company,"0",bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }*/
+                }
 
 
             }
@@ -720,7 +724,7 @@ public class Company_Fragment extends Fragment {
 
 
 
-    public void Contect_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -732,12 +736,11 @@ public class Company_Fragment extends Fragment {
         paramObject.put("user_id", user_id);
         paramObject.put("id",Company.getId());
         paramObject.put("status","D");
-
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Main Data is ", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Company_add(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void success(Response<ApiResponse> response) {
