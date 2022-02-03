@@ -215,6 +215,8 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                            new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
                            new_task.putExtra("header",bundle.getString("header"));
                            new_task.putExtra("step",bundle.getInt("step"));
+                           new_task.putExtra("from_ac",bundle.getString("from_ac"));
+                           new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
                            startActivity(new_task);
                            finish();
 
@@ -255,6 +257,9 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                                new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
                                new_task.putExtra("header",bundle.getString("header"));
                                new_task.putExtra("step",bundle.getInt("step"));
+                               new_task.putExtra("from_ac",bundle.getString("from_ac"));
+                               new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
+
                                startActivity(new_task);
                                finish();
 
@@ -291,6 +296,8 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                            new_task.putExtra("type",bundle.getString("type"));
                            new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
                            new_task.putExtra("step",bundle.getInt("step"));
+                           new_task.putExtra("from_ac",bundle.getString("from_ac"));
+                           new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
                            startActivity(new_task);
                            finish();
                        }
@@ -334,6 +341,8 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                                new_task.putExtra("type",bundle.getString("type"));
                                new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
                                new_task.putExtra("step",bundle.getInt("step"));
+                               new_task.putExtra("from_ac",bundle.getString("from_ac"));
+                               new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
                                startActivity(new_task);
                                finish();
                            }

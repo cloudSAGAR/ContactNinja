@@ -73,6 +73,13 @@ public class CampaignTask_overview {
         @SerializedName("template_id")
         @Expose
         private String templateId;
+
+       @SerializedName("mail_module")
+       @Expose
+       private String mail_module;
+       @SerializedName("sent_tbl_id")
+       @Expose
+       private String sent_tbl_id;
         @SerializedName("content_header")
         @Expose
         private String contentHeader="";
@@ -202,7 +209,23 @@ public class CampaignTask_overview {
             this.activeTaskContactNumber = activeTaskContactNumber;
         }
 
-    }
+       public String getMail_module() {
+           return mail_module;
+       }
+
+       public void setMail_module(String mail_module) {
+           this.mail_module = mail_module;
+       }
+
+       public String getSent_tbl_id() {
+           return sent_tbl_id;
+       }
+
+       public void setSent_tbl_id(String sent_tbl_id) {
+           this.sent_tbl_id = sent_tbl_id;
+       }
+   }
+
 
 
     public static class _0 {

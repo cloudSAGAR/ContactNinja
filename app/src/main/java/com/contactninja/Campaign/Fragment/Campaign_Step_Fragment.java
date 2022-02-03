@@ -340,7 +340,7 @@ public class Campaign_Step_Fragment extends Fragment {
         delete_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RemoveTaskData(sequenceTask.getId(),"D",position);
+                RemoveTaskData(sequenceTask.getId(),"SEQUENCE/TASK REMOVED",position);
             }
         });
         edit_layout.setOnClickListener(new View.OnClickListener() {
@@ -398,6 +398,8 @@ public class Campaign_Step_Fragment extends Fragment {
                     intent.putExtra("minute",sequenceTask.getMinute());
                     intent.putExtra("header",sequenceTask.getContentHeader());
                     intent.putExtra("step",sequenceTask.getStepNo());
+                    intent.putExtra("from_ac",sequenceTask.getMail_module());
+                    intent.putExtra("from_ac_id",sequenceTask.getSent_tbl_id());
                     startActivity(intent);
                    // startActivity(new Intent(getActivity(),First_Step_Activity.class));
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
@@ -461,6 +463,8 @@ public class Campaign_Step_Fragment extends Fragment {
                     intent.putExtra("type",sequenceTask.getType());
                     intent.putExtra("minute",sequenceTask.getMinute());
                     intent.putExtra("step",sequenceTask.getStepNo());
+                    intent.putExtra("from_ac",sequenceTask.getMail_module());
+                    intent.putExtra("from_ac_id",sequenceTask.getSent_tbl_id());
                     startActivity(intent);
                   //  SessionManager.setTask(getActivity(),campaignTasks1);
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
@@ -517,8 +521,10 @@ public class Campaign_Step_Fragment extends Fragment {
                         loadingDialog.cancelLoading();
 
                         if (response.body().getHttp_status() == 200) {
+                            Global.count=1;
                             campaign_overviewAdapter.remove_item(position);
                             bottomSheetDialog.cancel();
+
                         } else {
 
                         }

@@ -325,13 +325,13 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             {
                 if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER"))
                 {
-                    paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getContactId());
-                    paramObject1.put("prospect_id",contactdetails.get(i).getId());
+                    paramObject1.put("mobile",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                    paramObject1.put("prospect_id",contactdetails.get(i).getContactDetails().get(j).getContactId());
 
                 }
                 else {
-                    paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getContactId());
-                    paramObject1.put("prospect_id",contactdetails.get(i).getId());
+                    paramObject1.put("email",contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
+                    paramObject1.put("prospect_id",contactdetails.get(i).getContactDetails().get(j).getContactId());
 
                 }
                 //break;
