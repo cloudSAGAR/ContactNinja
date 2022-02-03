@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,14 +29,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Response;
 
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.ContecModel;
+import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.HastagList;
-import com.contactninja.Model.ManualTaskModel;
+import com.contactninja.Model.ManualTaskDetailsModel;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -61,18 +63,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Response;
+
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
-    SessionManager sessionManager;
+public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
+    static ManualTaskDetailsModel.ManualDetails manualDetails;
+    SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    ImageView iv_back,iv_body;
-    TextView save_button,bt_done,tv_status,tv_date,tv_use_tamplet;
+    ImageView iv_back, iv_body, iv_toolbar_manu1;
+    TextView bt_done, tv_status, tv_date, tv_use_tamplet;
     CoordinatorLayout mMainLayout;
-    EditText ev_from,ev_to,ev_subject,edit_compose,ev_titale;
-    private BroadcastReceiver mNetworkReceiver;
-    ManualTaskModel Data;
+    EditText ev_from, ev_to, ev_subject, edit_compose, ev_titale;
     TemplateAdepter templateAdepter;
     ImageView iv_submit;
     RecyclerView rv_direct_list;
@@ -80,15 +83,20 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList = new ArrayList<>();
     String filePath;
-    String p_number = "", id = "",task_name="",from_ac="",from_ac_id="";
+    Integer id=0;
+    String p_number = "",  task_name = "", from_ac = "", from_ac_id = "";
     BottomSheetDialog bottomSheetDialog_templateList1;
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
-    int defult_id,temaplet_id=0;
+    int defult_id, temaplet_id = 0;
     List<ContecModel.PhoneDatum> select_userLinkedGmailList = new ArrayList<>();
     List<ContecModel.PhoneDatum> userLinkedGmailList = new ArrayList<>();
-    private int amountOfItemsSelected = 0;
     ImageView iv_down;
+    private BroadcastReceiver mNetworkReceiver;
+    private int amountOfItemsSelected = 0;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,27 +107,81 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         retrofitCalls = new RetrofitCalls(this);
 
         IntentUI();
-        setData();
+        try {
+            Intent intent=getIntent();
+            Bundle bundle=intent.getExtras();
+            id=bundle.getInt("record_id");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, MainActivity.mMainLayout)) {
+                loadingDialog.showLoadingDialog();
+                Api_Details();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         templateClick = this;
-        try {
-            if(Global.isNetworkAvailable(Sms_Detail_Activty.this,mMainLayout)){
-                Hastag_list();
-            }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if(Global.isNetworkAvailable(Sms_Detail_Activty.this,mMainLayout)){
-                Contect_list();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
+    void Api_Details() throws JSONException {
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("record_id",id);
 
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    if (response.body().getHttp_status() == 200) {
+
+                        Type listType = new TypeToken<ManualTaskDetailsModel>() {
+                        }.getType();
+                        ManualTaskDetailsModel manualTaskDetailsModel = new Gson().fromJson(headerString, listType);
+                        manualDetails= manualTaskDetailsModel.get_0();
+                        setData();
+
+                        try {
+                            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, mMainLayout)) {
+                                Hastag_list();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, mMainLayout)) {
+                                Contect_list();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -129,63 +191,59 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
     }
 
     private void setData() {
-        Data= SessionManager.getManualTaskModel(getApplicationContext());
-        //ev_from.setText(Data.getContactMasterFirstname()+" "+Data.getContactMasterLastname());
-        ev_to.setText(Data.getContactNumber());
-        //ev_subject.setText(Data.getContentHeader());
-        edit_compose.setText(Data.getContentBody());
-        ev_titale.setText(Data.getTask_name());
+
+        ev_to.setText(manualDetails.getContactNumber());
+        edit_compose.setText(manualDetails.getContentBody());
+        ev_titale.setText(manualDetails.getTaskName());
         try {
-            String time =Global.getDate(Data.getStartTime());
+            String time = Global.getDate(manualDetails.getStartTime());
             tv_date.setText(time);
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
             String currentDateandTime = sdf.format(new Date());
-            compareDates(currentDateandTime,time,tv_status);
+            compareDates(currentDateandTime, time, tv_status);
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-
     private void IntentUI() {
-        ev_titale=findViewById(R.id.ev_titale);
+        ev_titale = findViewById(R.id.ev_titale);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
-        save_button = findViewById(R.id.save_button);
-        save_button.setVisibility(View.VISIBLE);
-        save_button.setOnClickListener(this);
+        iv_toolbar_manu1 = findViewById(R.id.iv_toolbar_manu1);
+        iv_toolbar_manu1.setVisibility(View.VISIBLE);
+        iv_toolbar_manu1.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Delete");
         mMainLayout = findViewById(R.id.mMainLayout);
-        bt_done=findViewById(R.id.bt_done);
+        bt_done = findViewById(R.id.bt_done);
         bt_done.setOnClickListener(this);
-        tv_date=findViewById(R.id.tv_date);
-        ev_from=findViewById(R.id.ev_from);
-        ev_to=findViewById(R.id.ev_to);
-        ev_subject=findViewById(R.id.ev_subject);
-        edit_compose=findViewById(R.id.edit_compose);
-        iv_body=findViewById(R.id.iv_body);
-        tv_status=findViewById(R.id.tv_status);
+        tv_date = findViewById(R.id.tv_date);
+        ev_from = findViewById(R.id.ev_from);
+        ev_to = findViewById(R.id.ev_to);
+        ev_subject = findViewById(R.id.ev_subject);
+        edit_compose = findViewById(R.id.edit_compose);
+        iv_body = findViewById(R.id.iv_body);
+        tv_status = findViewById(R.id.tv_status);
         tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
         tv_use_tamplet.setOnClickListener(this);
         rv_direct_list = findViewById(R.id.rv_direct_list);
-        iv_down=findViewById(R.id.iv_down);
+        iv_down = findViewById(R.id.iv_down);
         iv_down.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
-        {
-            case R.id.save_button:
-                showAlertDialogButtonClicked();
+        switch (view.getId()) {
+            case R.id.iv_toolbar_manu1:
+                Select_to_update();
                 break;
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.bt_done:
                 try {
-                    SMS_execute(edit_compose.getText().toString(),Data.getProspectId(),Data.getContactNumber(), String.valueOf(Data.getId()));
+                    SMS_execute(edit_compose.getText().toString(), manualDetails.getProspectId(),
+                            manualDetails.getContactNumber(), String.valueOf(manualDetails.getId()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -200,9 +258,71 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
 
     }
 
+    private void Select_to_update() {
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.solo_item_update, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Sms_Detail_Activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        CheckBox ch_Paused = bottomSheetDialog.findViewById(R.id.ch_Paused);
+        CheckBox ch_snooze = bottomSheetDialog.findViewById(R.id.ch_snooze);
+        CheckBox ch_delete = bottomSheetDialog.findViewById(R.id.ch_delete);
 
 
-    public void showAlertDialogButtonClicked() {
+        switch (manualDetails.getStatus()) {
+            case "PAUSED":
+                ch_Paused.setChecked(true);
+                break;
+            case "SNOOZE":
+                ch_snooze.setChecked(true);
+                break;
+            case "DELETE":
+                ch_delete.setChecked(true);
+                break;
+        }
+        // select sting static
+        String[] selet_item = getResources().getStringArray(R.array.manual_Select);
+
+        ch_Paused.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    bottomSheetDialog.dismiss();
+
+                    showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
+                            getResources().getString(R.string.manual_aleart_paused_des), selet_item[0]);
+
+                }
+
+            }
+        });
+        ch_snooze.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    bottomSheetDialog.dismiss();
+                    showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_snooze),
+                            getResources().getString(R.string.manual_aleart_snooze_des), selet_item[1]);
+
+                }
+
+            }
+        });
+        ch_delete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    bottomSheetDialog.dismiss();
+                    showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_delete),
+                            getResources().getString(R.string.manual_aleart_delete_des), selet_item[2]);
+                }
+
+            }
+        });
+
+
+        bottomSheetDialog.show();
+    }
+
+    public void showAlertDialogButtonClicked(String title, String dis, String type) {
 
         // Create an alert builder
         androidx.appcompat.app.AlertDialog.Builder builder
@@ -214,11 +334,11 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         androidx.appcompat.app.AlertDialog dialog
                 = builder.create();
 
-        TextView tv_title=customLayout.findViewById(R.id.tv_title);
-        TextView tv_sub_titale=customLayout.findViewById(R.id.tv_sub_titale);
+        TextView tv_title = customLayout.findViewById(R.id.tv_title);
+        TextView tv_sub_titale = customLayout.findViewById(R.id.tv_sub_titale);
         TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
-        tv_title.setText("Remove Task ?");
-        tv_sub_titale.setText("Are you sure that you would like to task remove?");
+        tv_title.setText(title);
+        tv_sub_titale.setText(dis);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,7 +351,22 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             public void onClick(View v) {
                 dialog.dismiss();
                 try {
-                    SMSAPI();
+                    switch (type) {
+                        case "PAUSED":
+                            SMSAPI(type);
+                            break;
+                        case "SNOOZE":
+                            Intent intent = new Intent(getApplicationContext(), Manual_Shooz_Time_Date_Activity.class);
+                            intent.putExtra("id", manualDetails.getId());
+                            intent.putExtra("Type","SMS");
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case "DELETE":
+                            SMSAPI(type);
+                            break;
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -240,7 +375,8 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         });
         dialog.show();
     }
-    private void SMSAPI() throws JSONException {
+
+    private void SMSAPI(String type) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -251,26 +387,31 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("record_id",Data.getId());
-        paramObject.put("status","DELETED");
+        paramObject.put("record_id", manualDetails.getId());
+        switch (type) {
+            case "PAUSED":
+                paramObject.put("status", "PAUSED");
+                break;
+
+            case "DELETE":
+                paramObject.put("status", "DELETED");
+                break;
+        }
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     finish();
-
                 } else {
                     loadingDialog.cancelLoading();
                 }
-
-
             }
 
             @Override
@@ -279,8 +420,67 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         });
     }
+    public static void compareDates(String d1, String d2, TextView tv_status) {
+        try {
+            // If you already have date objects then skip 1
 
+            //1
+            // Create 2 dates starts
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
+            Date date1 = sdf.parse(d1);
+            Date date2 = sdf.parse(d2);
 
+            Log.e("Date1", sdf.format(date1));
+            Log.e("Date2", sdf.format(date2));
+
+            // Create 2 dates ends
+            //1
+
+            // Date object is having 3 methods namely after,before and equals for comparing
+            // after() will return true if and only if date1 is after date 2
+            if (date1.after(date2)) {
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                Log.e("", "Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if (date1.before(date2)) {
+
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+                Log.e("", "Date1 is before Date2");
+                System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if (date1.equals(date2)) {
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Today");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                Log.e("", "Date1 is equal Date2");
+                System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+    }
     private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
@@ -295,26 +495,24 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "SMS");
-        paramObject.addProperty("from_ac",from_ac);
-        paramObject.addProperty("prospect_id",id);
-        paramObject.addProperty("from_ac_id",from_ac_id);
-        paramObject.addProperty("email_recipients",email);
-        paramObject.addProperty("content_body",text);
+        paramObject.addProperty("from_ac", from_ac);
+        paramObject.addProperty("prospect_id", id);
+        paramObject.addProperty("from_ac_id", from_ac_id);
+        paramObject.addProperty("email_recipients", email);
+        paramObject.addProperty("content_body", text);
         obj.add("data", paramObject);
 
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-             if (response.body().getHttp_status()==200)
-             {
-                 Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
-                 intent.putExtra("s_name","add");
-                 startActivity(intent);
-                 finish();
-             }
-             else {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                if (response.body().getHttp_status() == 200) {
+                    Intent intent = new Intent(getApplicationContext(), Email_Tankyou.class);
+                    intent.putExtra("s_name", "add");
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
 
             }
@@ -332,73 +530,23 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         super.onBackPressed();
     }
 
-
-    public static void compareDates(String d1, String d2, TextView tv_status)
-    {
-        try{
-            // If you already have date objects then skip 1
-
-            //1
-            // Create 2 dates starts
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-            Date date1 = sdf.parse(d1);
-            Date date2 = sdf.parse(d2);
-
-            Log.e("Date1",sdf.format(date1));
-            Log.e("Date2",sdf.format(date2));
-
-            // Create 2 dates ends
-            //1
-
-            // Date object is having 3 methods namely after,before and equals for comparing
-            // after() will return true if and only if date1 is after date 2
-            if(date1.after(date2)){
-                tv_status.setText("Due");
-                tv_status.setTextColor(Color.parseColor("#EC5454"));
-                Log.e("","Date1 is after Date2");
-            }
-            // before() will return true if and only if date1 is before date2
-            if(date1.before(date2)){
-
-                tv_status.setText("Upcoming");
-                tv_status.setTextColor(Color.parseColor("#2DA602"));
-                Log.e("","Date1 is before Date2");
-                System.out.println("Date1 is before Date2");
-            }
-
-            //equals() returns true if both the dates are equal
-            if(date1.equals(date2)){
-                tv_status.setText("Today");
-                tv_status.setTextColor(Color.parseColor("#EC5454"));
-                Log.e("","Date1 is equal Date2");
-                System.out.println("Date1 is equal Date2");
-            }
-
-            System.out.println();
-        }
-        catch(ParseException ex){
-            ex.printStackTrace();
-        }
-    }
-
-
     private void Contect_list() throws JSONException {
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Sms_Detail_Activty.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Sms_Detail_Activty.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("q","");
-        paramObject.addProperty("status","");
-        paramObject.addProperty("orderBy","");
-        paramObject.addProperty("order","");
-        paramObject.addProperty("perPage","10");
-        paramObject.addProperty("page","1");
+        paramObject.addProperty("q", "");
+        paramObject.addProperty("status", "");
+        paramObject.addProperty("orderBy", "");
+        paramObject.addProperty("order", "");
+        paramObject.addProperty("perPage", "10");
+        paramObject.addProperty("page", "1");
         obj.add("data", paramObject);
-        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Sms_Detail_Activty.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Sms_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -424,18 +572,12 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
 
-
-                            from_ac="USERSMS";
-                            from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
-
+                            from_ac = "USERSMS";
+                            from_ac_id = String.valueOf(userLinkedGmailList.get(i).getId());
 
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
-                } else {
-
-                    //Global.openEmailAuth(from_ac.this);
-                    // startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 
@@ -445,12 +587,10 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         });
 
-
     }
 
-
     private void Hastag_list() throws JSONException {
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Sms_Detail_Activty.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Sms_Detail_Activty.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -458,7 +598,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Sms_Detail_Activty.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Sms_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -473,15 +613,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
                     templateTextList = hastagList.getHashtag();
 
 
-                 /*   HastagList.TemplateText text = new HastagList.TemplateText();
-                    text.setFile(R.drawable.ic_a);
-                    text.setSelect(false);
-                    templateTextList.add(0, text);
-
-                    HastagList.TemplateText text1 = new HastagList.TemplateText();
-                    text1.setFile(R.drawable.ic_file);
-                    text1.setSelect(false);
-                    templateTextList.add(1, text1);*/
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
@@ -513,9 +644,10 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Sms_Detail_Activty.this, mMainLayout);
+        Global.checkConnectivity(Item_List_Sms_Detail_Activty.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -540,14 +672,14 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
 
     private void Email_bouttomSheet() {
         final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
-        bottomSheetDialog_templateList1 = new BottomSheetDialog(Sms_Detail_Activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(Item_List_Sms_Detail_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
 
 
-        for(int i=0;i<userLinkedGmailList.size();i++){
-            if(userLinkedGmailList.get(i).getId().toString().equals(Data.getSent_tbl_id())){
+        for (int i = 0; i < userLinkedGmailList.size(); i++) {
+            if (userLinkedGmailList.get(i).getId().toString().equals(manualDetails.getSentTblId())) {
                 select_userLinkedGmailList.clear();
                 userLinkedGmailList.get(i).setEmailSelect(true);
                 select_userLinkedGmailList.add(userLinkedGmailList.get(i));
@@ -565,9 +697,9 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
-                if(select_userLinkedGmailList.size()!=0){
-                    from_ac="USERSMS";
-                    from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
+                if (select_userLinkedGmailList.size() != 0) {
+                    from_ac = "USERSMS";
+                    from_ac_id = String.valueOf(select_userLinkedGmailList.get(0).getId());
                     ev_from.setText(select_userLinkedGmailList.get(0).getPhoneNumber());
                 }
             }
@@ -578,14 +710,14 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList = new BottomSheetDialog(Sms_Detail_Activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList = new BottomSheetDialog(Item_List_Sms_Detail_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
         try {
-            if (Global.isNetworkAvailable(Sms_Detail_Activty.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -599,7 +731,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
     }
 
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Sms_Detail_Activty.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Sms_Detail_Activty.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -607,7 +739,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Sms_Detail_Activty.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Sms_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -735,7 +867,6 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -748,6 +879,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
 
         public Context mCtx;
@@ -788,7 +920,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
                     if (holder.tv_item.getText().toString().equals("Save Current as template")) {
                         showAlertDialogButtonClicked(view);
                     } else {
-                        temaplet_id=item.getId();
+                        temaplet_id = item.getId();
                         interfaceClick.OnClick(item);
                     }
                 }
@@ -813,6 +945,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
     class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
         public Context mCtx;
@@ -836,7 +969,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item = templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setText(Global.setFirstLetter(item.getDescription()));
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {
@@ -890,7 +1023,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
                             }
                         };
                         handler.postDelayed(r, 1000);
-                        holder.tv_item.setBackgroundResource(R.drawable.shape_10_blue);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
                         holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
                         interfaceClick.OnClick(item.getHashtag());
                     }
@@ -918,6 +1051,7 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
 
         public Context mCtx;
@@ -961,12 +1095,10 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             }
 
 
-            if (userLinkedGmailList.get(position).isEmailSelect())
-            {
+            if (userLinkedGmailList.get(position).isEmailSelect()) {
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }
@@ -975,9 +1107,8 @@ public class Sms_Detail_Activty extends AppCompatActivity implements View.OnClic
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    for(int i=0; i<userLinkedGmailList.size();i++){
-                        if (userLinkedGmailList.get(i).isEmailSelect())
-                        {
+                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
+                        if (userLinkedGmailList.get(i).isEmailSelect()) {
                             userLinkedGmailList.get(i).setEmailSelect(false);
                             break;
                         }

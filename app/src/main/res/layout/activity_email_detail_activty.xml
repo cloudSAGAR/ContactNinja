@@ -1,373 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mMainLayout"
-    xmlns:are="http://schemas.android.com/apk/res-auto"
-    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".AddContect.EmailSend_Activity">
-    <include layout="@layout/toolbar"
-        android:id="@+id/toolbar"/>
+    tools:context=".AddContect.EmailSend_Activity"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
     <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_50sdp"
-       android:layout_marginBottom="@dimen/_120sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_marginBottom="@dimen/_120sdp">
 
-
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_layout"
-        android:layout_below="@+id/toolbar"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp">
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/tv_Medium_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:text="Task title: "
-                android:textColor="@color/text_gray">
 
-            </TextView>
-
-            <EditText
-                android:id="@+id/ev_titale"
-                style="@style/tv_regular_13"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/add_contect_transpernt"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="left|center"
-                android:imeOptions="actionDone"
-                android:paddingStart="@dimen/_15sdp"
-                android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                android:layout_above="@+id/bottom_layout"
+                android:layout_below="@+id/toolbar"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp">
+
+                    <TextView
+                        style="@style/tv_Medium_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Task title: "
+                        android:textColor="@color/text_gray"
+                        tools:ignore="HardcodedText">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/ev_titale"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/add_contect_transpernt"
+                        android:enabled="false"
+                        android:focusable="true"
+                        android:gravity="left|center"
+                        android:imeOptions="actionDone"
+                        android:textColor="@color/text_reg"
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/line_separator">
+
+                </View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:weightSum="1">
+
+                    <TextView
+                        style="@style/tv_Medium_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/from"
+                        android:textColor="@color/purple_200">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/ev_from"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@color/add_contect_transpernt"
+                        android:enabled="false"
+                        android:focusable="true"
+                        android:gravity="left|center"
+                        android:imeOptions="actionDone"
+                        android:textColor="@color/text_reg"
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+                    <ImageView
+                        android:id="@+id/iv_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_down" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/line_separator">
+
+                </View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp">
+
+                    <TextView
+                        style="@style/tv_Medium_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/to"
+                        android:textColor="@color/purple_200"
+                        android:textSize="@dimen/_14sdp">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/ev_to"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/add_contect_transpernt"
+                        android:enabled="false"
+                        android:focusable="true"
+                        android:gravity="left|center"
+                        android:imeOptions="actionDone"
+                        android:textColor="@color/text_reg"
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/line_separator">
+
+                </View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp">
+
+                    <TextView
+                        style="@style/tv_Medium_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/to_subject"
+                        android:textColor="@color/text_gray" />
+
+                    <EditText
+                        android:id="@+id/ev_subject"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:focusable="true"
+                        android:gravity="left|center"
+                        android:hint="@string/ComposeEmail"
+                        android:imeOptions="actionDone"
+                        android:textColor="@color/text_reg"
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/line_separator">
+
+                </View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp">
+
+                    <TextView
+                        style="@style/tv_Medium_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Date:  "
+                        android:textColor="@color/text_gray"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+
+                        android:id="@+id/tv_date"
+                        style="@style/tv_regular_13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/text_reg" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|right"
+                        android:gravity="center|right"
+                        android:textColor="@color/text_gray" />
+
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_compose"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/add_contect_transpernt"
+                    android:focusable="true"
+                    android:gravity="left"
+                    android:hint="@string/ComposeEmail"
+                    android:imeOptions="actionDone"
+                    android:padding="15dp"
+                    android:textColor="@color/text_reg" />
+
+                <ImageView
+                    android:id="@+id/iv_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/shep_gray_back"
+                    android:visibility="gone">
+
+                </ImageView>
+            </LinearLayout>
 
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@color/line_separator">
-
-        </View>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:weightSum="1">
-
-            <TextView
-                style="@style/tv_Medium_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/from"
-                android:textColor="@color/purple_200">
-
-            </TextView>
-
-            <EditText
-                android:id="@+id/ev_from"
-                style="@style/tv_regular_13"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/add_contect_transpernt"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="left|center"
-                android:imeOptions="actionDone"
-                android:paddingStart="@dimen/_15sdp"
-                android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-
-            <ImageView
-                android:id="@+id/iv_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_down" />
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@color/line_separator">
-
-        </View>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp">
-
-            <TextView
-                style="@style/tv_Medium_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/to"
-                android:textColor="@color/purple_200"
-                android:textSize="@dimen/_14sdp">
-
-            </TextView>
-
-            <EditText
-                android:id="@+id/ev_to"
-                style="@style/tv_regular_13"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/add_contect_transpernt"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="left|center"
-                android:imeOptions="actionDone"
-                android:paddingStart="@dimen/_15sdp"
-                android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@color/line_separator">
-
-        </View>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp">
-
-            <TextView
-                style="@style/tv_Medium_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/to_subject"
-                android:textColor="@color/text_gray" />
-
-            <EditText
-                android:id="@+id/ev_subject"
-                style="@style/tv_regular_13"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:background="@color/add_contect_transpernt"
-                android:focusable="true"
-                android:gravity="left|center"
-                android:hint="@string/ComposeEmail"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@color/line_separator">
-
-        </View>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp">
-
-            <TextView
-                style="@style/tv_Medium_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:text="date:  "
-                android:textColor="@color/text_gray" />
-
-            <TextView
-
-                android:id="@+id/tv_date"
-                style="@style/tv_regular_13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/text_reg" />
-
-            <TextView
-                android:id="@+id/tv_status"
-                style="@style/tv_regular_13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|right"
-                android:gravity="center|right"
-                android:textColor="@color/text_gray" />
-
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/edit_compose"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/add_contect_transpernt"
-            android:focusable="true"
-            android:gravity="left"
-            android:hint="@string/ComposeEmail"
-            android:imeOptions="actionDone"
-            android:padding="15dp"
-            android:textColor="@color/text_reg" />
-
-        <ImageView
-            android:id="@+id/iv_body"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/shep_gray_back"
-            android:visibility="gone">
-
-        </ImageView>
-    </LinearLayout>
-
-
-
-
-
-    </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
     <LinearLayout
 
         android:id="@+id/bottom_layout"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/layout_a"
-            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:visibility="gone">
+
             <TextView
                 android:id="@+id/tv_bold"
+                style="@style/tv_regular_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:padding="@dimen/_10sdp"
                 android:text="B"
-                android:padding="@dimen/_10sdp"
-                style="@style/tv_regular_12"
-                android:textColor="@color/black"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:textColor="@color/black">
 
             </TextView>
-            <TextView
-                style="@style/tv_regular_12"
-                android:textColor="@color/black"
-                android:text="I"
-                android:padding="@dimen/_10sdp"
 
+            <TextView
                 android:id="@+id/tv_ital"
-                android:layout_marginStart="@dimen/_10sdp"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/_10sdp"
+                android:padding="@dimen/_10sdp"
+                android:text="I"
+                android:textColor="@color/black">
 
             </TextView>
+
             <TextView
-                style="@style/tv_regular_12"
-                android:textColor="@color/black"
-                android:text="U"
-                android:padding="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_10sdp"
                 android:id="@+id/tv_uline"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:padding="@dimen/_10sdp"
+                android:text="U"
+                android:textColor="@color/black">
 
             </TextView>
         </LinearLayout>
+
         <LinearLayout
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:orientation="horizontal">
 
 
             <TextView
                 android:id="@+id/tv_use_tamplet"
-                android:text="@string/temp_txt"
-                android:textColor="@color/white"
                 style="@style/tv_regular_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
+                android:background="@drawable/shape_5_blue"
+                android:gravity="center"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingTop="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_8sdp"
-                android:background="@drawable/shape_5_blue"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_height="wrap_content">
+                android:text="@string/temp_txt"
+                android:textColor="@color/white">
 
             </TextView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_direct_list"
                 android:layout_width="match_parent"
@@ -377,19 +377,20 @@
 
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
+
         <TextView
             android:id="@+id/bt_done"
-            android:layout_marginBottom="@dimen/_20sdp"
+            style="@style/tv_Medium_14"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
             android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:background="@drawable/shape_50_blue"
-            android:layout_width="match_parent"
-            style="@style/tv_Medium_14"
             android:gravity="center"
-            android:text="Send and complete"
-            android:textColor="@color/white"
-            android:layout_height="@dimen/_45sdp">
+            android:text="@string/send_complate"
+            android:textColor="@color/white">
 
         </TextView>
     </LinearLayout>

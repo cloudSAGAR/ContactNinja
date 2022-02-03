@@ -950,7 +950,7 @@ public class Manual_Mail_Send_Activty extends AppCompatActivity implements View.
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item = templateTextList.get(position);
-            holder.tv_item.setText(item.getDescription());
+            holder.tv_item.setText(Global.setFirstLetter(item.getDescription()));
             holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
             if (item.getFile() != 0) {

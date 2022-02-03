@@ -48,7 +48,7 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".AddContect.Add_Company_Activity"
+            android:name=".Manual_email_sms.Manual_Shooz_Time_Date_Activity"
             android:exported="false" />
         <activity
             android:name=".Manual_email_sms.Manual_Auto_Task_Name_Activity"
@@ -63,7 +63,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Sms_Detail_Activty"
+            android:name=".Manual_email_sms.Item_List_Sms_Detail_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -75,7 +75,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Email_Detail_activty"
+            android:name=".Manual_email_sms.Item_List_Email_Detail_activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -99,7 +99,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Email_Sms_List_Activty"
+            android:name=".Manual_email_sms.List_Manual_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
