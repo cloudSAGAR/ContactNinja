@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Group.GroupActivity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
@@ -536,6 +537,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                 }
             });
 
+/*
 
             contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -563,6 +565,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                     }
                 }
             });
+*/
 
             groupContectAdapter = new GroupContectAdapter(getActivity());
             contect_list_unselect.setAdapter(groupContectAdapter);
@@ -778,7 +781,329 @@ public class Campaign_Contect_Fragment extends Fragment {
     }
 
 
-    private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int position) {
+    private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList_phone, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int position, List<ContectListData.Contact.ContactDetail> detailList1_email) {
+
+        Log.e("Data list is",new Gson().toJson(detailList_phone));
+        final View mView = getLayoutInflater().inflate(R.layout.phone_bottom_sheet, null);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1.setContentView(mView);
+
+        LinearLayout layout_phone=bottomSheetDialog_templateList1.findViewById(R.id.layout_phone);
+        View v_phone=bottomSheetDialog_templateList1.findViewById(R.id.v_phone);
+        View v_phone1=bottomSheetDialog_templateList1.findViewById(R.id.v_phone1);
+        LinearLayout layout_email=bottomSheetDialog_templateList1.findViewById(R.id.layout_email);
+        LinearLayout bottom_sheet=bottomSheetDialog_templateList1.findViewById(R.id.bottom_sheet);
+        View v_email=bottomSheetDialog_templateList1.findViewById(R.id.v_email);
+        View v_email1=bottomSheetDialog_templateList1.findViewById(R.id.v_email1);
+        TextView tv_error=bottomSheetDialog_templateList1.findViewById(R.id.tv_error);
+        TextView tv_error1=bottomSheetDialog_templateList1.findViewById(R.id.tv_error1);
+        TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        TextView tv_txt=bottomSheetDialog_templateList1.findViewById(R.id.tv_txt);
+        tv_txt.setText("Pick contact details for "+contacts.get(position).getFirstname());
+        RecyclerView phone_list = bottomSheetDialog_templateList1.findViewById(R.id.phone_list);
+        phone_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        PhoneListAdepter emailListAdepter = new PhoneListAdepter(getActivity(), detailList_phone,holder1,contacts,position,
+                tv_done);
+        phone_list.setAdapter(emailListAdepter);
+
+
+        RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
+        email_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        EmailListAdepter email_listAdepter = new EmailListAdepter(getActivity(), detailList1_email,holder1,contacts,position,
+                tv_done);
+        email_list.setAdapter(email_listAdepter);
+
+
+        layout_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("Size is", String.valueOf(detailList_phone.size()));
+
+                if (detailList_phone.size()==0)
+                {
+
+                    tv_error1.setVisibility(View.VISIBLE);
+                    tv_error.setVisibility(View.GONE);
+                    tv_error1.setText("seems like you don’t have any phone number ,  \n" +
+                            "you can add that in contact section");
+                    phone_list.setVisibility(View.GONE);
+                }
+                else {
+                    phone_list.setVisibility(View.VISIBLE);
+                    tv_error1.setVisibility(View.GONE);
+                    tv_error1.setText("");
+                    tv_error.setVisibility(View.GONE);
+                }
+                v_phone.setVisibility(View.GONE);
+                v_phone1.setVisibility(View.VISIBLE);
+                v_email1.setVisibility(View.GONE);
+                v_email.setVisibility(View.VISIBLE);
+
+                email_list.setVisibility(View.GONE);
+            }
+        });
+
+        layout_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                v_phone.setVisibility(View.VISIBLE);
+                v_phone1.setVisibility(View.GONE);
+                v_email1.setVisibility(View.VISIBLE);
+                v_email.setVisibility(View.GONE);
+                phone_list.setVisibility(View.GONE);
+                Log.e("Size is", String.valueOf(detailList1_email.size()));
+                if (detailList1_email.size()==0)
+                {
+
+                    tv_error.setVisibility(View.VISIBLE);
+                    tv_error.setText("seems like you don’t have any \n" +
+                            "email you can add that in contact section");
+                    email_list.setVisibility(View.GONE);
+                    tv_error1.setVisibility(View.GONE);
+                }
+                else {
+                    email_list.setVisibility(View.VISIBLE);
+                    tv_error.setVisibility(View.GONE);
+                    tv_error.setText("");
+                    tv_error1.setVisibility(View.GONE);
+
+                }
+
+
+            }
+        });
+        List<ContectListData.Contact.ContactDetail> userLinkedGmailList=new ArrayList<>();
+        tv_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
+                contactDetails.clear();
+                userLinkedGmailList.clear();
+
+                if (detailList_phone.size()==0)
+                {
+
+                    if (!tv_error.getText().equals(""))
+                    {
+                        Global.Messageshow(getActivity(),mMainLayout,tv_error.getText().toString(),false);
+                        bottomSheetDialog_templateList1.cancel();
+
+                    }
+                    else if (!tv_error1.getText().equals(""))
+                    {
+
+                        Global.Messageshow(getActivity(),mMainLayout,tv_error1.getText().toString(),false);
+                        bottomSheetDialog_templateList1.cancel();
+                    }
+                }
+                else {
+
+
+                    for (int i=0;i<detailList_phone.size();i++)
+                    {
+                        if (detailList_phone.get(i).isPhoneSelect())
+                        {
+                            userLinkedGmailList.add(detailList_phone.get(i));
+                        }
+                    }
+
+                    for (int j=0;j<detailList1_email.size();j++)
+                    {
+                        if (detailList1_email.get(j).isPhoneSelect())
+                        {
+                            userLinkedGmailList.add(detailList1_email.get(j));
+                        }
+                    }
+                    contactDetails.addAll(userLinkedGmailList);
+                    Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+                    contacts.get(position).setContactDetails(contactDetails);
+                    select_contectListData.add(contacts.get(position));
+                    sessionManager.setGroupList(getActivity(),select_contectListData);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    num_count.setText(select_contectListData.size()+" Contact Selcted");
+                    contacts.get(position).setFlag("false");
+                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+                    for (int i=0;i<detailList_phone.size();i++)
+                    {
+                        detailList_phone.get(i).setPhoneSelect(false);
+                        if (!detailList_phone.get(i).getId().equals(userLinkedGmailList.get(0).getId()))
+                        {
+                            contactDetails.add(detailList_phone.get(i));
+
+                        }
+
+                    }
+
+                    for (int i=0;i<detailList1_email.size();i++)
+                    {
+                        detailList1_email.get(i).setPhoneSelect(false);
+                        for (int j=0;j<contactDetails.size();j++)
+                        {
+
+                            if (!detailList1_email.get(i).getId().equals(contactDetails.get(j).getId()))
+                            {
+                                contactDetails.add(detailList1_email.get(i));
+                            }
+                            else {
+                                contactDetails.remove(j);
+                            }
+                        }
+
+                    }
+                    // contacts.get(position).setContactDetails(new ArrayList<>());
+                    // contacts.get(position).setContactDetails(contactDetails);
+
+                    bottomSheetDialog_templateList1.cancel();
+
+
+                }
+
+
+
+                // ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
+            }
+        });
+
+        bottomSheetDialog_templateList1.show();
+    }
+
+
+    class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
+
+        public Context mCtx;
+        List<ContectListData.Contact.ContactDetail> userLinkedGmailList1;
+
+        GroupContectAdapter.MovieViewHolder holder1;
+
+        List<ContectListData.Contact> contacts;
+        int s_position;
+        TextView tv_done;
+
+
+        public EmailListAdepter(Context applicationContext, List<ContectListData.Contact.ContactDetail> userLinkedGmailList1, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int s_position, TextView tv_done) {
+            this.mCtx = applicationContext;
+            this.userLinkedGmailList1 = userLinkedGmailList1;
+            this.holder1=holder1;
+            this.contacts=contacts;
+            this.s_position=s_position;
+            this.tv_done=tv_done;
+        }
+
+        @NonNull
+        @Override
+        public EmailListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.email_select_layout, parent, false);
+            return new EmailListAdepter.viewholder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull EmailListAdepter.viewholder holder, int position) {
+
+            userLinkedGmailList1.get(position).setFlag("false");
+            holder.tv_item.setText("Email("+userLinkedGmailList1.get(position).getLabel()+")");
+            holder.tv_phone.setText(userLinkedGmailList1.get(position).getEmailNumber());
+            holder.tv_phone.setVisibility(View.VISIBLE);
+            if (userLinkedGmailList1.get(position).isPhoneSelect())
+            {
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                holder.iv_unselected.setVisibility(View.GONE);
+            }
+            else {
+                holder.iv_selected.setVisibility(View.GONE);
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+            }
+
+            if (userLinkedGmailList1.get(position).getIsDefault().toString().equals("1")) {
+                holder.iv_dufult.setVisibility(View.VISIBLE);
+            } else {
+                holder.iv_dufult.setVisibility(View.GONE);
+            }
+
+
+
+            holder.layout_select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    for(int i=0; i<userLinkedGmailList1.size();i++){
+                        if (userLinkedGmailList1.get(i).isPhoneSelect())
+                        {
+                            userLinkedGmailList1.get(i).setPhoneSelect(false);
+                            break;
+                        }
+                    }
+                    userLinkedGmailList1.get(position).setPhoneSelect(true);
+                    /*holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);*/
+//                    tv_done.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//
+//                            for (int i=0;i<contacts.get(s_position).getContactDetails().size();i++)
+//                            {
+//                                if (contacts.get(s_position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
+//                                {
+//                                    // detailList.add(contacts.get(position).getContactDetails().get(i));
+//                                }
+//                                else {
+//                                    userLinkedGmailList1.add(contacts.get(s_position).getContactDetails().get(i));
+//                                    break;
+//                                }
+//                            }
+//                            List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
+//                            contactDetails.add(userLinkedGmailList1.get(position));
+//                            contactDetails.add(userLinkedGmailList1.get(userLinkedGmailList1.size()-1));
+//                            //Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+//                            contacts.get(s_position).setContactDetails(contactDetails);
+//                            select_contectListData.add(contacts.get(position));
+//                            //userDetailsfull.get(position).setId(position);
+//                            topUserListDataAdapter.notifyDataSetChanged();
+//                            num_count.setText(select_contectListData.size()+" Contact Selcted");
+//                            contacts.get(position).setFlag("false");
+//                            save_button.setTextColor(getResources().getColor(R.color.purple_200));
+//                            bottomSheetDialog_templateList1.cancel();
+//                        }
+//                    });
+
+                    holder.iv_selected.setVisibility(View.VISIBLE);
+                    holder.iv_unselected.setVisibility(View.GONE);
+                    notifyItemChanged(position);
+                    userLinkedGmailList1.get(position).setFlag("false");
+                    notifyDataSetChanged();
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return userLinkedGmailList1.size();
+        }
+
+        public class viewholder extends RecyclerView.ViewHolder {
+            TextView tv_item,tv_phone;
+            View line_view;
+            ImageView iv_dufult, iv_selected, iv_unselected;
+            LinearLayout layout_select;
+
+            public viewholder(View view) {
+                super(view);
+                tv_item = view.findViewById(R.id.tv_item);
+                line_view = view.findViewById(R.id.line_view);
+                iv_dufult = view.findViewById(R.id.iv_dufult);
+                iv_selected = view.findViewById(R.id.iv_selected);
+                layout_select = view.findViewById(R.id.layout_select);
+                iv_unselected = view.findViewById(R.id.iv_unselected);
+                tv_phone=view.findViewById(R.id.tv_phone);
+            }
+        }
+    }
+
+
+    /*  private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int position) {
 
         final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
         bottomSheetDialog_templateList1 = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
@@ -841,7 +1166,7 @@ public class Campaign_Contect_Fragment extends Fragment {
 
         bottomSheetDialog_templateList1.show();
     }
-
+*/
     public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
@@ -1254,18 +1579,23 @@ public class Campaign_Contect_Fragment extends Fragment {
                                     Global.Messageshow(getActivity(),mMainLayout,getString(R.string.contect_block),false);
                                 }
                                 else {
+
                                     Log.e("Contect Detail Size is", String.valueOf(contacts.get(position).getContactDetails().size()));
                                     List<ContectListData.Contact.ContactDetail> detailList = new ArrayList<>();
-
+                                    List<ContectListData.Contact.ContactDetail> detailList1 = new ArrayList<>();
                                     detailList.clear();
+                                    detailList1.clear();
                                     for (int i = 0; i < contacts.get(position).getContactDetails().size(); i++) {
                                         if (contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("")) {
                                             detailList.add(contacts.get(position).getContactDetails().get(i));
-                                        } else {
-                                            // detailList.add(contacts.get(position).getContactDetails().get(i));
+                                        } else if (contacts.get(position).getContactDetails().get(i).getType().equals("EMAIL") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("") && !contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER")) {
+
+                                            detailList1.add(contacts.get(position).getContactDetails().get(i));
                                         }
                                     }
-                                    if (detailList.size() == 1) {
+                                    // Log.e("DATALIST",new Gson().toJson(detailList));
+                                    ///  Log.e("DATALIST 1" ,new Gson().toJson(detailList1));
+                                    if (detailList.size() == 1 && detailList1.size() == 0) {
                                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                         holder1.add_new_contect_icon.setVisibility(View.GONE);
                                         select_contectListData.add(contacts.get(position));
@@ -1273,23 +1603,56 @@ public class Campaign_Contect_Fragment extends Fragment {
                                         topUserListDataAdapter.notifyDataSetChanged();
                                         num_count.setText(select_contectListData.size() + " Contact Selcted");
                                         contacts.get(position).setFlag("false");
-
                                         SessionManager.setGroupList(getActivity(), new ArrayList<>());
                                         SessionManager.setGroupList(getActivity(), select_contectListData);
+                                    }
 
-
-                                    } else if (detailList.size() >= 1) {
+                                    else if (detailList1.size() == 1 && detailList.size() == 0) {
+                                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                        holder1.add_new_contect_icon.setVisibility(View.GONE);
+                                        select_contectListData.add(contacts.get(position));
+                                        //userDetailsfull.get(position).setId(position);
+                                        topUserListDataAdapter.notifyDataSetChanged();
+                                        num_count.setText(select_contectListData.size() + " Contact Selcted");
+                                        contacts.get(position).setFlag("false");
+                                        SessionManager.setGroupList(getActivity(), new ArrayList<>());
+                                        SessionManager.setGroupList(getActivity(), select_contectListData);
+                                    }
+                                    else if (detailList.size() >= 1) {
                                         for (int i = 0; i < detailList.size(); i++) {
                                             if (detailList.get(i).getIsDefault() == 1) {
                                                 detailList.get(i).setPhoneSelect(true);
                                                 break;
                                             }
                                         }
-                                        Phone_bouttomSheet(detailList, holder1, contacts, position);
-                                        Log.e("Size is", "More ONE");
+                                        for (int i = 0; i < detailList1.size(); i++) {
+                                            if (detailList1.get(i).getIsDefault() == 1) {
+                                                detailList1.get(i).setPhoneSelect(true);
+                                                break;
+                                            }
+                                        }
+                                        Phone_bouttomSheet(detailList, holder1, contacts, position, detailList1);
+                                        //   Log.e("Size is","More ONE");
                                     }
-                                }
+                                    else if (detailList1.size() >= 1) {
+                                        for (int i = 0; i < detailList.size(); i++) {
+                                            if (detailList.get(i).getIsDefault() == 1) {
+                                                detailList.get(i).setPhoneSelect(true);
+                                                break;
+                                            }
+                                        }
+                                        for (int i = 0; i < detailList1.size(); i++) {
+                                            if (detailList1.get(i).getIsDefault() == 1) {
+                                                detailList1.get(i).setPhoneSelect(true);
+                                                break;
+                                            }
+                                        }
+                                        Phone_bouttomSheet(detailList, holder1, contacts, position, detailList1);
+                                        //   Log.e("Size is","More ONE");
+                                    }
 
+
+                                }
 
                             }
                         });

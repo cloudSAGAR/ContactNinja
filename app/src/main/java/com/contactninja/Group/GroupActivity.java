@@ -963,7 +963,20 @@ e.printStackTrace();
                                     }
                                     // Log.e("DATALIST",new Gson().toJson(detailList));
                                     ///  Log.e("DATALIST 1" ,new Gson().toJson(detailList1));
-                                    if (detailList.size()==1)
+                                    if (detailList.size()==1 && detailList1.size() == 0)
+                                    {
+                                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                        holder1.add_new_contect_icon.setVisibility(View.GONE);
+                                        select_contectListData.add(contacts.get(position));
+                                        sessionManager.setGroupList(getApplicationContext(),select_contectListData);
+                                        //userDetailsfull.get(position).setId(position);
+                                        topUserListDataAdapter.notifyDataSetChanged();
+                                        num_count.setText(select_contectListData.size()+" Contact Selcted");
+                                        contacts.get(position).setFlag("false");
+                                        save_button.setTextColor(getResources().getColor(R.color.purple_200));
+
+                                    }
+                                    else  if (detailList1.size()==1 && detailList.size() == 0)
                                     {
                                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                         holder1.add_new_contect_icon.setVisibility(View.GONE);
@@ -977,6 +990,24 @@ e.printStackTrace();
 
                                     }
                                     else if (detailList.size()>=1 )
+                                    {
+                                        for(int i=0;i<detailList.size();i++){
+                                            if(detailList.get(i).getIsDefault()==1){
+                                                detailList.get(i).setPhoneSelect(true);
+                                                break;
+                                            }
+                                        }
+                                        for(int i=0;i<detailList1.size();i++){
+                                            if(detailList1.get(i).getIsDefault()==1){
+                                                detailList1.get(i).setPhoneSelect(true);
+                                                break;
+                                            }
+                                        }
+                                        Phone_bouttomSheet(detailList,holder1,contacts,position,detailList1);
+                                        //   Log.e("Size is","More ONE");
+                                    }
+
+                                    else if (detailList1.size()>=1 )
                                     {
                                         for(int i=0;i<detailList.size();i++){
                                             if(detailList.get(i).getIsDefault()==1){
@@ -1325,6 +1356,24 @@ e.printStackTrace();
                        }
 
                    }
+
+
+                    for (int i=0;i<detailList1_email.size();i++)
+                    {
+                        detailList1_email.get(i).setPhoneSelect(false);
+                        for (int j=0;j<contactDetails.size();j++)
+                        {
+
+                            if (!detailList1_email.get(i).getId().equals(contactDetails.get(j).getId()))
+                            {
+                                contactDetails.add(detailList1_email.get(i));
+                            }
+                            else {
+                                contactDetails.remove(j);
+                            }
+                        }
+
+                    }
                    // contacts.get(position).setContactDetails(new ArrayList<>());
                    // contacts.get(position).setContactDetails(contactDetails);
 
