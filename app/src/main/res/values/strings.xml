@@ -457,4 +457,6 @@ Number</string>
         <item>DELETE</item>
     </string-array>
 
+    <string name="contect_block">This Contect Block</string>
+
 </resources>
