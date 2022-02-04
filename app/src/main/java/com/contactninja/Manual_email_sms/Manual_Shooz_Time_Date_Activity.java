@@ -2,7 +2,6 @@ package com.contactninja.Manual_email_sms;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -21,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.contactninja.Manual_email_sms.List_And_show.Item_List_Email_Detail_activty;
+import com.contactninja.Manual_email_sms.List_And_show.Item_List_Sms_Detail_Activty;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -132,9 +133,9 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     public void onBackPressed() {
         super.onBackPressed();
         if(Type.equals("EMAIL")){
-            startActivity(new Intent(getApplicationContext(),Item_List_Email_Detail_activty.class));
+            startActivity(new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class));
         }else {
-            startActivity(new Intent(getApplicationContext(),Item_List_Sms_Detail_Activty.class));
+            startActivity(new Intent(getApplicationContext(), Item_List_Sms_Detail_Activty.class));
         }
         finish();
     }

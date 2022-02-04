@@ -76,7 +76,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view_l"
-            android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:gravity="end|center">
 
@@ -89,8 +88,8 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
-                android:text="Cancel"
                 android:padding="@dimen/_10sdp"
+                android:text="Cancel"
                 android:textColor="@color/shape_red">
 
             </TextView>
@@ -101,13 +100,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
-android:padding="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
+                android:padding="@dimen/_10sdp"
                 android:text="Send"
-                android:textColor="@color/purple_200"
-               >
+                android:textColor="@color/purple_200">
 
             </TextView>
         </LinearLayout>

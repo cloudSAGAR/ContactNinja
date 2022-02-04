@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Item_List_Email_Detail_activty;
+import com.contactninja.Manual_email_sms.List_And_show.Item_List_Email_Detail_activty;
 import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;

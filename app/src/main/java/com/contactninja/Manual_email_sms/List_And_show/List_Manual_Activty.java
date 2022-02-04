@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_sms.List_And_show;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -77,7 +78,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
     RecyclerView rv_email_list;
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
-    EmailAdepter emailAdepter;
+    ListItemAdepter emailAdepter;
     List<ManualTaskModel> manualTaskModelList = new ArrayList<>();
     int perPage = 20;
     String Filter = "";//FINISHED / TODAY / UPCOMING/ DUE/ SKIPPED / PAUSED
@@ -116,7 +117,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             }
         });
         rv_email_list.setLayoutManager(layoutManager);
-        emailAdepter = new EmailAdepter(List_Manual_Activty.this, new ArrayList<>());
+        emailAdepter = new ListItemAdepter(List_Manual_Activty.this, new ArrayList<>());
         rv_email_list.setAdapter(emailAdepter);
         rv_email_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
@@ -368,8 +369,12 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
-
     private void filter_manu() {
+        /*
+        Create By :- Paras
+        Date:-1-2-22
+        Chnage Date:- 4-2-22
+        */
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_solo_list_filter, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(List_Manual_Activty.this, R.style.CoffeeDialog);
@@ -420,6 +425,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     bottomSheetDialog.dismiss();
                     Filter = Filters[0];
                     // refresf_api();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                 }
 
             }
@@ -431,7 +437,8 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[1];
-                    refresf_api();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
+                    //refresf_api();
                 }
 
             }
@@ -443,6 +450,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[2];
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                     //refresf_api();
                 }
 
@@ -455,6 +463,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[3];
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                     //refresf_api();
                 }
 
@@ -467,6 +476,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[4];
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                     //refresf_api();
                 }
 
@@ -479,6 +489,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[5];
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                     //refresf_api();
                 }
 
@@ -525,6 +536,11 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
 
 
     void Mail_list() throws JSONException {
+        /*
+        Create By :- Paras
+        Date:-1-2-22
+        Chnage Date:- 4-2-22
+        */
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
@@ -684,14 +700,14 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
     }
 
 
-    public class EmailAdepter extends RecyclerView.Adapter<EmailAdepter.viewData> {
+    public class ListItemAdepter extends RecyclerView.Adapter<ListItemAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
         List<ManualTaskModel> manualTaskModelList;
         private boolean isLoaderVisible = false;
 
-        public EmailAdepter(Context context, List<ManualTaskModel> manualTaskModelList) {
+        public ListItemAdepter(Context context, List<ManualTaskModel> manualTaskModelList) {
             this.mCtx = context;
             this.manualTaskModelList = manualTaskModelList;
         }
@@ -707,14 +723,14 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
 
         @NonNull
         @Override
-        public EmailAdepter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ListItemAdepter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
-                    return new EmailAdepter.viewData(
+                    return new ListItemAdepter.viewData(
                             LayoutInflater.from(parent.getContext()).inflate(R.layout.item_emailactivitylist, parent, false));
                 case VIEW_TYPE_LOADING:
-                    return new EmailAdepter.ProgressHolder(
+                    return new ListItemAdepter.ProgressHolder(
                             LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
                 default:
                     return null;
@@ -762,7 +778,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
 
         @SuppressLint("LogConditional")
         @Override
-        public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
+        public void onBindViewHolder(@NonNull ListItemAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
             if (Global.IsNotNull(item.getType()) && !item.getType().equals("")) {
                 if (item.getType().equals("SMS")) {
@@ -777,8 +793,8 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 }
 
                 String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
-                holder.tv_username.setText(conactname);
-                holder.tv_task_description.setText(item.getTask_name());
+                holder.tv_username.setText(Global.setFirstLetter(conactname));
+                holder.tv_task_description.setText(Global.setFirstLetter(item.getTask_name()));
                 //   holder.tv_status.setText(item.getStatus());
                 try {
                     String time = Global.getDate(item.getStartTime());
@@ -831,7 +847,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             return manualTaskModelList.size();
         }
 
-        public class ProgressHolder extends EmailAdepter.viewData {
+        public class ProgressHolder extends ListItemAdepter.viewData {
             ProgressHolder(View itemView) {
                 super(itemView);
             }
