@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -389,324 +390,27 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                SessionManager.setGroupData(this,new Grouplist.Group());
+                SessionManager.setGroupData(this, new Grouplist.Group());
                 finish();
                 break;
             case R.id.save_button:
-               // Log.e("Main Data ",new Gson().toJson(select_inviteListData));
-                if(select_contectListData.size()!=0){
-                    sessionManager.setGroupList(this,new ArrayList<>());
-                    Intent intent=new Intent(getApplicationContext(),Final_Group.class);
+                // Log.e("Main Data ",new Gson().toJson(select_inviteListData));
+                if (select_contectListData.size() != 0) {
+                    sessionManager.setGroupList(this, new ArrayList<>());
+                    Intent intent = new Intent(getApplicationContext(), Final_Group.class);
                     startActivity(intent);
                     finish();
                     sessionManager.setGroupList(getApplicationContext(), select_contectListData);
-                }else {
+                } else {
                     Global.Messageshow(getApplicationContext(),
-                            mMainLayout,getResources().getString(R.string.camp_select_contect),false);
+                            mMainLayout, getResources().getString(R.string.camp_select_contect), false);
                 }
                 break;
             default:
 
-
         }
 
     }
-
-
-
-
-
-
-  /*  public class UserListDataAdapter extends RecyclerView.Adapter<UserListDataAdapter.InviteListDataclass>
-            implements Filterable {
-
-        private final Context mcntx;
-        public Activity mCtx;
-        int last_postion = 0;
-        String second_latter = "";
-        String current_latter = "", image_url = "";
-        private List<GroupListData> userDetails;
-        private final List<GroupListData> userDetailsfull;
-        private final Filter exampleFilter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                List<GroupListData> filteredList = new ArrayList<>();
-                if (constraint == null || constraint.length() == 0) {
-                    filteredList.addAll(userDetailsfull);
-                } else {
-                    String userName = constraint.toString().toLowerCase().trim();
-                    String userNumber = constraint.toString().toLowerCase().trim();
-                    for (GroupListData item : userDetailsfull) {
-                        if (item.getUserName().toLowerCase().contains(userName)
-                                || item.getUserPhoneNumber().toLowerCase().contains(userNumber)) {
-                            filteredList.add(item);
-                        }
-                    }
-                }
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                userDetails.clear();
-                userDetails.addAll((List<GroupListData>) results.values);
-                notifyDataSetChanged();
-            }
-        };
-
-        public UserListDataAdapter(Activity Ctx, Context mCtx, ArrayList<GroupListData> userDetails) {
-            this.mcntx = mCtx;
-            this.mCtx = Ctx;
-            this.userDetails = userDetails;
-            userDetailsfull = new ArrayList<>(userDetails);
-        }
-
-        @NonNull
-        @Override
-        public UserListDataAdapter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.invite_user_details, parent, false);
-            return new UserListDataAdapter.InviteListDataclass(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull UserListDataAdapter.InviteListDataclass holder, int position) {
-
-
-            GroupListData inviteUserDetails = userDetailsfull.get(position);
-            last_postion = position;
-            Log.e("Size is", String.valueOf(select_inviteListData.size()));
-
-
-            if (userDetailsfull.get(position).getFlag().equals("false"))
-            {
-                holder.remove_contect_icon.setVisibility(View.VISIBLE);
-                holder.add_new_contect_icon.setVisibility(View.GONE);
-            }
-            else {
-                holder.remove_contect_icon.setVisibility(View.GONE);
-                holder.add_new_contect_icon.setVisibility(View.VISIBLE);
-            }
-
-            for (int i=0;i<select_inviteListData.size();i++)
-            {
-
-                if (inviteListData.get(select_inviteListData.get(i).getId()).getFlag().equals(select_inviteListData.get(i).getFlag()))
-                {
-                    Log.e("i is false",String.valueOf(i));
-
-                    inviteListData.get(select_inviteListData.get(i).getId()).setFlag("false");
-
-
-                }
-                else {
-                    Log.e("i is true",String.valueOf(i));
-                    inviteListData.get(select_inviteListData.get(i).getId()).setFlag("true");
-                    select_inviteListData.remove(select_inviteListData.get(i).getId());
-                    topUserListDataAdapter.notifyDataSetChanged();
-                }
-
-
-            }
-            holder.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                       userDetailsfull.get(position).setId(position);
-                        holder.remove_contect_icon.setVisibility(View.VISIBLE);
-                        holder.add_new_contect_icon.setVisibility(View.GONE);
-                        select_inviteListData.add(userDetailsfull.get(position));
-                        userDetailsfull.get(position).setId(position);
-                        topUserListDataAdapter.notifyDataSetChanged();
-                        num_count.setText(select_contectListData.size()+" Contact Selcted");
-                        userDetailsfull.get(position).setFlag("false");
-                        save_button.setTextColor(getResources().getColor(R.color.purple_200));
-
-
-
-
-
-                }
-            });
-            holder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                        userDetailsfull.get(position).setId(0);
-                        holder.remove_contect_icon.setVisibility(View.GONE);
-                        holder.add_new_contect_icon.setVisibility(View.VISIBLE);
-                        select_inviteListData.remove(userDetailsfull.get(position));
-
-                        topUserListDataAdapter.notifyDataSetChanged();
-                        num_count.setText(select_contectListData.size()+" Contact Selcted");
-                        userDetailsfull.get(position).setFlag("true");
-
-                        if (select_inviteListData.size()==0)
-                        {
-                            save_button.setTextColor(getResources().getColor(R.color.black));
-                        }
-                        else {
-                            save_button.setTextColor(getResources().getColor(R.color.purple_200));
-
-                        }
-
-                }
-            });
-
-            if (inviteUserDetails.getF_latter().equals("")) {
-                holder.first_latter.setVisibility(View.GONE);
-                holder.top_layout.setVisibility(View.GONE);
-            } else {
-
-                holder.first_latter.setVisibility(View.VISIBLE);
-                holder.first_latter.setText(inviteUserDetails.getF_latter());
-                holder.top_layout.setVisibility(View.VISIBLE);
-                String first_latter = inviteUserDetails.getUserName().substring(0, 1).toUpperCase();
-
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
-
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                    inviteUserDetails.setF_latter("");
-                    holder.first_latter.setVisibility(View.GONE);
-                    holder.top_layout.setVisibility(View.GONE);
-
-                } else {
-
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
-
-
-                }
-            }
-
-
-            String file = "" + inviteUserDetails.getUserImageURL();
-            if (file.equals("null")) {
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
-                String name = inviteUserDetails.getUserName();
-                holder.profile_image.setVisibility(View.GONE);
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-
-                }
-
-
-                holder.no_image.setText(add_text);
-                holder.no_image.setVisibility(View.VISIBLE);
-
-            } else {
-                image_url = inviteUserDetails.getUserImageURL();
-
-                if (holder.profile_image.getDrawable() == null) {
-                    Glide.with(mCtx).
-                            load(inviteUserDetails.getUserImageURL())
-                            .placeholder(R.drawable.shape_primary_circle)
-                            .error(R.drawable.shape_primary_circle)
-                            .into(holder.profile_image);
-                    //Log.e("Image ","View "+position);
-                } else {
-                    holder.profile_image.setVisibility(View.GONE);
-                    String name = inviteUserDetails.getUserName();
-                    String add_text = "";
-                    String[] split_data = name.split(" ");
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                        }
-                    }
-                    holder.no_image.setText(add_text);
-                    holder.no_image.setVisibility(View.VISIBLE);
-                }
-
-            }
-            holder.userName.setText(inviteUserDetails.getUserName());
-            holder.userNumber.setText(inviteUserDetails.getUserPhoneNumber());
-
-
-
-
-
-
-
-
-
-
-
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return userDetails.size();
-        }
-
-        @Override
-        public Filter getFilter() {
-            Log.e("Fillter is", new Gson().toJson(exampleFilter));
-            return exampleFilter;
-        }
-
-        public void updateList(List<GroupListData> list) {
-            userDetails = list;
-            notifyDataSetChanged();
-        }
-
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
-
-            TextView no_image;
-            TextView userName, userNumber, first_latter;
-            CircleImageView profile_image;
-            LinearLayout top_layout;
-            ImageView add_new_contect_icon,remove_contect_icon;
-
-
-            public InviteListDataclass(@NonNull View itemView) {
-                super(itemView);
-                first_latter = itemView.findViewById(R.id.first_latter);
-                userName = itemView.findViewById(R.id.username);
-                userNumber = itemView.findViewById(R.id.user_number);
-                profile_image = itemView.findViewById(R.id.profile_image);
-                no_image = itemView.findViewById(R.id.no_image);
-                top_layout = itemView.findViewById(R.id.top_layout);
-                add_new_contect_icon=itemView.findViewById(R.id.add_new_contect_icon);
-                remove_contect_icon=itemView.findViewById(R.id.remove_contect_icon);
-                add_new_contect_icon.setVisibility(View.VISIBLE);
-
-            }
-
-        }
-
-    }
-
-
-
-
-
-
-*/
-
-
     public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass>
           {
 
@@ -1111,7 +815,20 @@ e.printStackTrace();
                         holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                     }
 
+                    if (contacts.get(position).getIs_blocked().equals("1"))
+                    {
 
+                        holder1.iv_block.setVisibility(View.VISIBLE);
+                        holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
+                        holder1.remove_contect_icon.setVisibility(View.GONE);
+                        holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
+
+                    }
+                    else {
+                        holder1.iv_block.setVisibility(View.GONE);
+                        holder1.userName.setTextColor(Color.parseColor("#4A4A4A"));
+
+                    }
 
 
                    // Log.e("List is",new Gson().toJson(select_contectListData));
@@ -1222,60 +939,68 @@ e.printStackTrace();
                         holder1.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Log.e("Contect Detail Size is", String.valueOf(contacts.get(position).getContactDetails().size()));
-                                List<ContectListData.Contact.ContactDetail> detailList=new ArrayList<>();
-                                List<ContectListData.Contact.ContactDetail> detailList1=new ArrayList<>();
-                                detailList.clear();
-                                detailList1.clear();
-                                for (int i=0;i<contacts.get(position).getContactDetails().size();i++)
+
+                                if (contacts.get(position).getIs_blocked().equals("1"))
                                 {
-                                    if (contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
+                                    Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.contect_block),false);
+                                }
+                                else {
+                                    Log.e("Contect Detail Size is", String.valueOf(contacts.get(position).getContactDetails().size()));
+                                    List<ContectListData.Contact.ContactDetail> detailList=new ArrayList<>();
+                                    List<ContectListData.Contact.ContactDetail> detailList1=new ArrayList<>();
+                                    detailList.clear();
+                                    detailList1.clear();
+                                    for (int i=0;i<contacts.get(position).getContactDetails().size();i++)
                                     {
-                                        detailList.add(contacts.get(position).getContactDetails().get(i));
-                                    }
-                                    else if (contacts.get(position).getContactDetails().get(i).getType().equals("EMAIL") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("") && !contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER")){
+                                        if (contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
+                                        {
+                                            detailList.add(contacts.get(position).getContactDetails().get(i));
+                                        }
+                                        else if (contacts.get(position).getContactDetails().get(i).getType().equals("EMAIL") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("") && !contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER")){
 
-                                        detailList1.add(contacts.get(position).getContactDetails().get(i));
-                                    }
-                                }
-                               // Log.e("DATALIST",new Gson().toJson(detailList));
-                              ///  Log.e("DATALIST 1" ,new Gson().toJson(detailList1));
-                                if (detailList.size()==1)
-                                {
-                                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                                    holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                    select_contectListData.add(contacts.get(position));
-                                    sessionManager.setGroupList(getApplicationContext(),select_contectListData);
-                                    //userDetailsfull.get(position).setId(position);
-                                    topUserListDataAdapter.notifyDataSetChanged();
-                                    num_count.setText(select_contectListData.size()+" Contact Selcted");
-                                    contacts.get(position).setFlag("false");
-                                    save_button.setTextColor(getResources().getColor(R.color.purple_200));
-
-                                }
-                                else if (detailList.size()>=1 )
-                                {
-                                    for(int i=0;i<detailList.size();i++){
-                                        if(detailList.get(i).getIsDefault()==1){
-                                            detailList.get(i).setPhoneSelect(true);
-                                            break;
+                                            detailList1.add(contacts.get(position).getContactDetails().get(i));
                                         }
                                     }
-                                    for(int i=0;i<detailList1.size();i++){
-                                        if(detailList1.get(i).getIsDefault()==1){
-                                            detailList1.get(i).setPhoneSelect(true);
-                                            break;
-                                        }
+                                    // Log.e("DATALIST",new Gson().toJson(detailList));
+                                    ///  Log.e("DATALIST 1" ,new Gson().toJson(detailList1));
+                                    if (detailList.size()==1)
+                                    {
+                                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                        holder1.add_new_contect_icon.setVisibility(View.GONE);
+                                        select_contectListData.add(contacts.get(position));
+                                        sessionManager.setGroupList(getApplicationContext(),select_contectListData);
+                                        //userDetailsfull.get(position).setId(position);
+                                        topUserListDataAdapter.notifyDataSetChanged();
+                                        num_count.setText(select_contectListData.size()+" Contact Selcted");
+                                        contacts.get(position).setFlag("false");
+                                        save_button.setTextColor(getResources().getColor(R.color.purple_200));
+
                                     }
-                                    Phone_bouttomSheet(detailList,holder1,contacts,position,detailList1);
-                                 //   Log.e("Size is","More ONE");
+                                    else if (detailList.size()>=1 )
+                                    {
+                                        for(int i=0;i<detailList.size();i++){
+                                            if(detailList.get(i).getIsDefault()==1){
+                                                detailList.get(i).setPhoneSelect(true);
+                                                break;
+                                            }
+                                        }
+                                        for(int i=0;i<detailList1.size();i++){
+                                            if(detailList1.get(i).getIsDefault()==1){
+                                                detailList1.get(i).setPhoneSelect(true);
+                                                break;
+                                            }
+                                        }
+                                        Phone_bouttomSheet(detailList,holder1,contacts,position,detailList1);
+                                        //   Log.e("Size is","More ONE");
+                                    }
+
+
+
+
+
+
+
                                 }
-
-
-
-
-
-
                             }
                         });
                         holder1.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
@@ -1349,16 +1074,25 @@ e.printStackTrace();
             for (int i=0;i<contectListData.size();i++)
             {
 
-                groupContectAdapter = new GroupContectAdapter(getApplicationContext());
-                contect_list_unselect.setAdapter(groupContectAdapter);
-                group_flag="false";
-                contectListData.get(i).setFlag("false");
-                groupContectAdapter.addAll(contectListData);
-                groupContectAdapter.notifyDataSetChanged();
-                select_contectListData.add(contectListData.get(i));
-                add_contect_list.setItemViewCacheSize(5000);
-                topUserListDataAdapter.notifyDataSetChanged();
-                save_button.setTextColor(getResources().getColor(R.color.purple_200));
+                if (contectListData.get(i).getIs_blocked().equals("1"))
+                {
+                    group_flag="true";
+                    contectListData.get(i).setFlag("true");
+
+                }
+                else {
+                    groupContectAdapter = new GroupContectAdapter(getApplicationContext());
+                    contect_list_unselect.setAdapter(groupContectAdapter);
+                    group_flag="false";
+                    contectListData.get(i).setFlag("false");
+                    groupContectAdapter.addAll(contectListData);
+                    groupContectAdapter.notifyDataSetChanged();
+                    select_contectListData.add(contectListData.get(i));
+                    add_contect_list.setItemViewCacheSize(5000);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    save_button.setTextColor(getResources().getColor(R.color.purple_200));
+
+                }
 
             }
 
@@ -1400,10 +1134,11 @@ e.printStackTrace();
             TextView userName, userNumber, first_latter;
             CircleImageView profile_image;
             LinearLayout top_layout,layout_contec;
-            ImageView add_new_contect_icon,remove_contect_icon;
+            ImageView add_new_contect_icon,remove_contect_icon,iv_block;
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
+                iv_block=itemView.findViewById(R.id.iv_block);
                 first_latter = itemView.findViewById(R.id.first_latter);
                 userName = itemView.findViewById(R.id.username);
                 userNumber = itemView.findViewById(R.id.user_number);

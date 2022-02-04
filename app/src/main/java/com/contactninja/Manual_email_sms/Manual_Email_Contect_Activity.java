@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -475,6 +476,20 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     holder1.first_latter.setVisibility(View.VISIBLE);
                     holder1.top_layout.setVisibility(View.VISIBLE);
 
+                    if (contacts.get(position).getIs_blocked().equals("1"))
+                    {
+
+                        holder1.iv_block.setVisibility(View.VISIBLE);
+                        holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
+                        holder1.remove_contect_icon.setVisibility(View.GONE);
+                        holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
+
+                    }
+                    else {
+                        holder1.iv_block.setVisibility(View.GONE);
+                        holder1.userName.setTextColor(Color.parseColor("#4A4A4A"));
+
+                    }
 
                     String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
                     holder1.first_latter.setText(first_latter);
@@ -532,204 +547,56 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                         @Override
                         public void onClick(View view) {
 
-                            List<ContectListData.Contact.ContactDetail> detailList = new ArrayList<>();
-                            detailList.clear();
-                            for (int i = 0; i < contacts.get(position).getContactDetails().size(); i++) {
-                                if (contacts.get(position).getContactDetails().get(i).getType().equals("EMAIL") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("")) {
-                                    detailList.add(contacts.get(position).getContactDetails().get(i));
-                                } else {
-                                    // detailList.add(contacts.get(position).getContactDetails().get(i));
-                                }
-                            }
-                            if (detailList.size() == 1) {
 
-                                holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                                holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                contacts.get(position).setContactDetails(detailList);
-                                select_contectListData.add(contacts.get(position));
-                                num_count.setText(select_contectListData.size() + " Contact Selcted");
-                                contacts.get(position).setFlag("false");
-                                //Log.e("Selction List is",new Gson().toJson(select_contectListData));
-                                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                                SessionManager.setGroupList(getApplicationContext(), select_contectListData);
-                                Intent intent = new Intent(getApplicationContext(), Manual_Mail_Send_Activty.class);
-                                intent.putExtra("task_name", task_name);
-                                startActivity(intent);
-                                finish();
-                            } else if (detailList.size() >= 1) {
-                                for (int i = 0; i < detailList.size(); i++) {
-                                    if (detailList.get(i).getIsDefault() == 1) {
-                                        detailList.get(i).setPhoneSelect(true);
-                                        break;
+                            if (contacts.get(position).getIs_blocked().equals("1"))
+                            {
+                                Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.contect_block),false);
+                            }
+                            else {
+                                List<ContectListData.Contact.ContactDetail> detailList = new ArrayList<>();
+                                detailList.clear();
+                                for (int i = 0; i < contacts.get(position).getContactDetails().size(); i++) {
+                                    if (contacts.get(position).getContactDetails().get(i).getType().equals("EMAIL") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("")) {
+                                        detailList.add(contacts.get(position).getContactDetails().get(i));
+                                    } else {
+                                        // detailList.add(contacts.get(position).getContactDetails().get(i));
                                     }
                                 }
-                                Phone_bouttomSheet(detailList, holder1, contacts, position);
-                                Log.e("Size is", "More ONE");
-                            }
+                                if (detailList.size() == 1) {
 
-                        }
-
-
-                    });
-
-/*
-                    holder1.layout_contec.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            List<ContectListData.Contact.ContactDetail> detailList=new ArrayList<>();
-                            detailList.clear();
-                            for (int i=0;i<contacts.get(position).getContactDetails().size();i++)
-                            {
-                                if (contacts.get(position).getContactDetails().get(i).getType().equals("EMAIL") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
-                                {
-                                    detailList.add(contacts.get(position).getContactDetails().get(i));
-                                }
-                                else {
-                                    // detailList.add(contacts.get(position).getContactDetails().get(i));
-                                }
-                            }
-                            if (detailList.size()==1)
-                            {
-
-                                holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                                holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                contacts.get(position).setContactDetails(detailList);
-                                select_contectListData.add(contacts.get(position));
-                                num_count.setText(select_contectListData.size() + " Contact Selcted");
-                                contacts.get(position).setFlag("false");
-                                //Log.e("Selction List is",new Gson().toJson(select_contectListData));
-                                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                                SessionManager.setGroupList(getApplicationContext(), select_contectListData);
-                                Intent intent = new Intent(getApplicationContext(), Manual_Mail_Send_Activty.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                            else if (detailList.size()>=1)
-                            {
-                                for(int i=0;i<detailList.size();i++){
-                                    if(detailList.get(i).getIsDefault()==1){
-                                        detailList.get(i).setPhoneSelect(true);
-                                        break;
-                                    }
-                                }
-                                Phone_bouttomSheet(detailList,holder1,contacts,position);
-                                Log.e("Size is","More ONE");
-                            }
-
-                        }
-                          */
-
-
-/*  select_contectListData.add(contacts.get(position));
-                            num_count.setText(select_contectListData.size() + " Contact Selcted");
-                            contacts.get(position).setFlag("false");
-                            SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                            SessionManager.setGroupList(getApplicationContext(), select_contectListData);
-
-                            Intent intent = new Intent(getApplicationContext(), Mail_Send_Activity.class);
-                            startActivity(intent);*//*
-
-
-                    });
-*/
-
-
-                    //  holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-
-                    /*if (sessionManager.getGroupList(getApplicationContext()).size() != 0) {
-
-                        List<ContectListData.Contact> contact1 = sessionManager.getGroupList(getApplicationContext());
-
-                        for (int i = 0; i < contact1.size(); i++) {
-                            if (contact1.get(i).getId().equals(contacts.get(position).getId())) {
-
-                                if (holder1.add_new_contect_icon.getVisibility() == View.VISIBLE) {
                                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                     holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                } else {
-                                    contacts.get(position).setFlag("true");
-                                    holder1.remove_contect_icon.setVisibility(View.GONE);
-                                    holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                                }
-
-                            } else {
-
-                                if (holder1.remove_contect_icon.getVisibility() == View.GONE) {
-                                    holder1.remove_contect_icon.setVisibility(View.GONE);
-                                    holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                                } else {
-                                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                                    holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                }
-
-
-                            }
-                        }
-
-                    }*/
-                  /*  holder1.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            List<ContectListData.Contact.ContactDetail> detailList=new ArrayList<>();
-                            detailList.clear();
-                            for (int i=0;i<contacts.get(position).getContactDetails().size();i++)
-                            {
-                                if (contacts.get(position).getContactDetails().get(i).getType().equals("EMAIL") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
-                                {
-                                    detailList.add(contacts.get(position).getContactDetails().get(i));
-                                }
-                                else {
-                                    // detailList.add(contacts.get(position).getContactDetails().get(i));
-                                }
-                            }
-                            if (detailList.size()==1)
-                            {
-                                holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                                holder1.add_new_contect_icon.setVisibility(View.GONE);
-                                select_contectListData.add(contacts.get(position));
-                                num_count.setText(select_contectListData.size() + " Contact Selcted");
-                                contacts.get(position).setFlag("false");
-                                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                                SessionManager.setGroupList(getApplicationContext(), select_contectListData);
-                            }
-                            else if (detailList.size()>=1)
-                            {
-                                for(int i=0;i<detailList.size();i++){
-                                    if(detailList.get(i).getIsDefault()==1){
-                                        detailList.get(i).setPhoneSelect(true);
-                                        break;
+                                    contacts.get(position).setContactDetails(detailList);
+                                    select_contectListData.add(contacts.get(position));
+                                    num_count.setText(select_contectListData.size() + " Contact Selcted");
+                                    contacts.get(position).setFlag("false");
+                                    //Log.e("Selction List is",new Gson().toJson(select_contectListData));
+                                    SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
+                                    SessionManager.setGroupList(getApplicationContext(), select_contectListData);
+                                    Intent intent = new Intent(getApplicationContext(), Manual_Mail_Send_Activty.class);
+                                    intent.putExtra("task_name", task_name);
+                                    startActivity(intent);
+                                    finish();
+                                } else if (detailList.size() >= 1) {
+                                    for (int i = 0; i < detailList.size(); i++) {
+                                        if (detailList.get(i).getIsDefault() == 1) {
+                                            detailList.get(i).setPhoneSelect(true);
+                                            break;
+                                        }
                                     }
+                                    Phone_bouttomSheet(detailList, holder1, contacts, position);
+                                    Log.e("Size is", "More ONE");
                                 }
-                                Phone_bouttomSheet(detailList,holder1,contacts,position);
-                                Log.e("Size is","More ONE");
+
                             }
 
-                        }
-                    });
-                    holder1.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.e("On Click Remove ", "Remove");
-
-                            holder1.remove_contect_icon.setVisibility(View.GONE);
-                            holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-
-                            Log.e("Size is", new Gson().toJson(select_contectListData));
-                            num_count.setText(select_contectListData.size() + " Contact Selcted");
-                            contacts.get(position).setFlag("true");
-
 
                         }
+
+
                     });
 
-*/
 
-                    /*}
-                    catch (Exception e)
-                    {
-                        contacts.remove(position);
-                    }*/
 
 
                     break;
@@ -753,21 +620,6 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
         }
 
 
-        public void addAll_item(List<ContectListData.Contact> contectListData) {
-            select_contectListData.clear();
-            contacts.clear();
-            for (int i = 0; i < contectListData.size(); i++) {
-
-                groupContectAdapter = new GroupContectAdapter(Manual_Email_Contect_Activity.this);
-                contect_list_unselect.setAdapter(groupContectAdapter);
-                group_flag = "false";
-                contectListData.get(i).setFlag("false");
-                groupContectAdapter.addAll(contectListData);
-                groupContectAdapter.notifyDataSetChanged();
-                select_contectListData.add(contectListData.get(i));
-            }
-
-        }
 
         @Override
         public int getItemViewType(int position) {
@@ -815,11 +667,13 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
             TextView userName, userNumber, first_latter;
             CircleImageView profile_image;
             LinearLayout top_layout, layout_contec;
+            ImageView iv_block;
 
             ImageView add_new_contect_icon, remove_contect_icon;
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
+                iv_block=itemView.findViewById(R.id.iv_block);
                 first_latter = itemView.findViewById(R.id.first_latter);
                 userName = itemView.findViewById(R.id.username);
                 userNumber = itemView.findViewById(R.id.user_number);

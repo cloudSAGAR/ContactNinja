@@ -68,7 +68,7 @@ public class SigleGroupModel {
         private String updatedAt;
         @SerializedName("contact_details")
         @Expose
-        private Integer contactDetails;
+        private List<ContactDetail> contactDetails = null;
 
         public Integer getId() {
             return id;
@@ -150,12 +150,72 @@ public class SigleGroupModel {
             this.updatedAt = updatedAt;
         }
 
-        public Integer getContactDetails() {
+        public List<ContactDetail> getContactDetails() {
             return contactDetails;
         }
 
-        public void setContactDetails(Integer contactDetails) {
+        public void setContactDetails(List<ContactDetail> contactDetails) {
             this.contactDetails = contactDetails;
+        }
+
+        public class ContactDetail {
+
+            @SerializedName("id")
+            @Expose
+            private Integer id;
+            @SerializedName("email_number")
+            @Expose
+            private String emailNumber;
+            @SerializedName("firstname")
+            @Expose
+            private String firstname;
+            @SerializedName("lastname")
+            @Expose
+            private Object lastname;
+            @SerializedName("contact_image")
+            @Expose
+            private Object contactImage;
+
+            public Integer getId() {
+                return id;
+            }
+
+            public void setId(Integer id) {
+                this.id = id;
+            }
+
+            public String getEmailNumber() {
+                return emailNumber;
+            }
+
+            public void setEmailNumber(String emailNumber) {
+                this.emailNumber = emailNumber;
+            }
+
+            public String getFirstname() {
+                return firstname;
+            }
+
+            public void setFirstname(String firstname) {
+                this.firstname = firstname;
+            }
+
+            public Object getLastname() {
+                return lastname;
+            }
+
+            public void setLastname(Object lastname) {
+                this.lastname = lastname;
+            }
+
+            public Object getContactImage() {
+                return contactImage;
+            }
+
+            public void setContactImage(Object contactImage) {
+                this.contactImage = contactImage;
+            }
+
         }
 
 
