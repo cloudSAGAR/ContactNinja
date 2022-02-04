@@ -42,7 +42,7 @@
         tools:ignore="UseCompoundDrawables">
         <TextView
             android:padding="@dimen/_5sdp"
-            android:text="@string/SMS_Template"
+            android:text="@string/Text_Template"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

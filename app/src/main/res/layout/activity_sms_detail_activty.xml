@@ -262,7 +262,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_17sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:text="@string/sms_txt"
+                android:text="@string/text_txt"
                 android:textColor="@color/text_reg"
                 android:textSize="@dimen/_14sdp"/>
 

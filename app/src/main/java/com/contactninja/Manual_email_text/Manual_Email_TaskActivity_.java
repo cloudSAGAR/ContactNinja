@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_text;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;

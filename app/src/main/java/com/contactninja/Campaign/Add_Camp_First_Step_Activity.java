@@ -286,7 +286,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                        if (flag.equals("edit"))
                        {
                            Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
-                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_SMS_Activity.class);
+                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
                            new_task.putExtra("flag","edit");
                            new_task.putExtra("body",bundle.getString("body"));
                            new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
@@ -302,7 +302,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                            finish();
                        }
                        else {
-                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_SMS_Activity.class);
+                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
                            new_task.putExtra("flag","add");
                            startActivity(new_task);
                            finish();
@@ -331,7 +331,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                            {
                                Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
 
-                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_SMS_Activity.class);
+                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
                                new_task.putExtra("flag","edit");
                                new_task.putExtra("body",bundle.getString("body"));
                                new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
@@ -347,7 +347,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                                finish();
                            }
                            else {
-                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_SMS_Activity.class);
+                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
                                new_task.putExtra("flag","add");
                                startActivity(new_task);
                                finish();
@@ -398,7 +398,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
     }
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-    private String tabTitles[] = new String[] { "SMS", "Email" };
+    private String tabTitles[] = getResources().getStringArray(R.array.Select_Tab);
     private int[] imageResId = {  R.drawable.ic_message_tab,R.drawable.ic_email };
     final int PAGE_COUNT = 2;
 

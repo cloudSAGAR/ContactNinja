@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:id="@+id/mMainLayout"
     android:layout_height="match_parent"
-    tools:context=".Manual_email_sms.Manual_Shooz_Time_Date_Activity">
+    tools:context=".Manual_email_text.Manual_Shooz_Time_Date_Activity">
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"

@@ -43,7 +43,7 @@ import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
-import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
@@ -208,9 +208,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onPermissionGranted() {
                 if (sessionManager.getContectList(getApplicationContext()).size() == 0) {
-                 //  loadingDialog.showLoadingDialog();
+                   loadingDialog.showLoadingDialog();
                 }
-              // GetContactsIntoArrayList();
+               GetContactsIntoArrayList();
 
             }
 
@@ -838,7 +838,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setEmail_screen_name("");
-                Intent intent1=new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
+                Intent intent1=new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
                 intent1.putExtra("flag","add");
                 startActivity(intent1);//  finish();
                 bottomSheetDialog.dismiss();

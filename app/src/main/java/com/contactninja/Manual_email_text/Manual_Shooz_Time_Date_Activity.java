@@ -1,4 +1,7 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_text;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -17,10 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
+import com.contactninja.Manual_email_text.List_And_show.Item_List_Email_Detail_activty;
+import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -34,7 +35,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,8 +47,11 @@ import java.util.TimeZone;
 
 import retrofit2.Response;
 
-@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
+public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implements View.OnClickListener,ConnectivityReceiver.ConnectivityReceiverListener{
+    private BroadcastReceiver mNetworkReceiver;
+    LinearLayout mMainLayout;
+
+
     TextView tc_time_zone;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -58,31 +61,31 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
     LinearLayout la_date,la_time,linearLayout;
     TextView tv_date,tv_time;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    String id,text,p_number;
-    private BroadcastReceiver mNetworkReceiver;
-    ConstraintLayout mMainLayout;
-    String task_name="",from_ac="",from_ac_id="",temaplet_id="";
+    String id,text,p_number,Type;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_sms_task);
+        setContentView(R.layout.activity_manual_shooz_time_date);
+        mNetworkReceiver = new ConnectivityReceiver();
+        mMainLayout = findViewById(R.id.mMainLayout);
+
+
         mNetworkReceiver = new ConnectivityReceiver();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        id=bundle.getString("id");
-        text=bundle.getString("text");
-        p_number=bundle.getString("number");
+        try {
+            Intent intent=getIntent();
+            Bundle bundle=intent.getExtras();
+            id=bundle.getString("id");
+            Type=bundle.getString("Type");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-
-        temaplet_id=bundle.getString("tem_id");
-        task_name=bundle.getString("task_name");
-        from_ac=bundle.getString("from_ac");
-        from_ac_id= bundle.getString("from_ac_id");
 
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
@@ -97,7 +100,7 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Manual_Sms_TaskActivity.this, mMainLayout);
+        Global.checkConnectivity(Manual_Shooz_Time_Date_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -126,6 +129,17 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         unregisterNetworkChanges();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(Type.equals("EMAIL")){
+            startActivity(new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class));
+        }else {
+            startActivity(new Intent(getApplicationContext(), Item_List_Text_Detail_Activty.class));
+        }
+        finish();
+    }
+
     private void IntentUI() {
         mMainLayout=findViewById(R.id.mMainLayout);
         linearLayout=findViewById(R.id.linearLayout);
@@ -152,7 +166,7 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
         String time_zone= TimeZone.getDefault().getID();
-      //  tc_time_zone.setText("Time Zone("+localTime+"-"+time_zone);
+        //  tc_time_zone.setText("Time Zone("+localTime+"-"+time_zone);
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         tc_time_zone.setText("Time Zone("+user_data.getUser().getUserTimezone().get(0).getText().toString()+")");
@@ -162,7 +176,7 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+              onBackPressed();
                 break;
             case R.id.save_button:
                 if (tv_date.getText().toString().equals(""))
@@ -177,7 +191,7 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
                 }
                 else {
                     try {
-                        SMSAPI(text, Integer.parseInt(id), p_number);
+                        SMSAPI(id);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -194,7 +208,44 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
 
         }
     }
+    private void SMSAPI(String i) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("team_id", "1");
+        paramObject.put("organization_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("record_id", i);
+        paramObject.put("status", "SNOOZE");
+        paramObject.put("time", tv_time.getText().toString());
+        paramObject.put("date", tv_date.getText().toString());
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
+
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getHttp_status() == 200) {
+                    loadingDialog.cancelLoading();
+                    finish();
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
     public void onTimer()
     {
         Calendar mcurrentTime = Calendar.getInstance();
@@ -231,7 +282,7 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(Manual_Sms_TaskActivity.this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(Manual_Shooz_Time_Date_Activity.this,
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -263,88 +314,5 @@ public class Manual_Sms_TaskActivity extends AppCompatActivity implements View.O
 
         datePickerDialog.show();
 
-    }
-
-    private void SMSAPI(String text, int id, String email) throws JSONException {
-
-        Log.e("Phone Number", email);
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JSONObject obj = new JSONObject();
-
-        JSONObject paramObject = new JSONObject();
-
-        paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
-        paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-        paramObject.put("time", tv_time.getText().toString());
-        paramObject.put("date", tv_date.getText().toString());
-        paramObject.put("assign_to", user_id);
-        //paramObject.put("task_description", text);
-
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < 1; i++) {
-            JSONObject paramObject1 = new JSONObject();
-            paramObject1.put("prospect_id", id);
-            paramObject1.put("mobile", email);
-           /* JSONArray contect_array = new JSONArray();
-            contect_array.put(email);
-            paramObject1.put("mobile", contect_array);*/
-            jsonArray.put(paramObject1);
-            break;
-        }
-        JSONArray contact_group_ids = new JSONArray();
-        contact_group_ids.put("");
-        paramObject.put("contact_group_ids", contact_group_ids);
-        paramObject.put("prospect_id", jsonArray);
-        paramObject.put("task_name",task_name);
-        if (temaplet_id.equals(""))
-        {
-            paramObject.put("template_id","");
-
-        }
-        else {
-            paramObject.put("template_id",temaplet_id);
-        }
-        //paramObject.put("content_header","");
-        paramObject.put("content_body",text);
-        paramObject.put("from_ac",from_ac);
-        paramObject.put("from_ac_id",from_ac_id);
-        obj.put("data", paramObject);
-
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        //Log.e("Gson Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(this),Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                if (response.body().getHttp_status() == 200) {
-                    loadingDialog.cancelLoading();
-                    String jsonRawData = new Gson().toJson(response.body());
-
-
-
-                        Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
-                        intent.putExtra("s_name","final");
-                        startActivity(intent);
-                        finish();
-
-                } else {
-                    loadingDialog.cancelLoading();
-                }
-
-
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
     }
 }

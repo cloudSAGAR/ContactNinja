@@ -89,7 +89,7 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/create_new_sms"
+                android:text="@string/create_new_text"
                 android:textColor="@color/text_reg" />
 
             <TextView

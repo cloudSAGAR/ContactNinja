@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms.List_And_show;
+package com.contactninja.Manual_email_text.List_And_show;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -33,8 +33,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Email_Tankyou;
-import com.contactninja.Manual_email_sms.Manual_Shooz_Time_Date_Activity;
+import com.contactninja.Manual_email_text.Email_Tankyou;
+import com.contactninja.Manual_email_text.Manual_Shooz_Time_Date_Activity;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.ManualTaskDetailsModel;
@@ -67,7 +67,7 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Item_List_Sms_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
+public class Item_List_Text_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
     static ManualTaskDetailsModel.ManualDetails manualDetails;
     SessionManager sessionManager;
@@ -116,7 +116,7 @@ LinearLayout lay_seq_stap,lay_taskname;
             e.printStackTrace();
         }
         try {
-            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, MainActivity.mMainLayout)) {
                 loadingDialog.showLoadingDialog();
                 Api_Details();
             }
@@ -157,7 +157,7 @@ LinearLayout lay_seq_stap,lay_taskname;
                         setData();
 
                         try {
-                            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, mMainLayout)) {
+                            if (Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, mMainLayout)) {
                                 Hastag_list();
                             }
 
@@ -166,7 +166,7 @@ LinearLayout lay_seq_stap,lay_taskname;
                         }
 
                         try {
-                            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, mMainLayout)) {
+                            if (Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, mMainLayout)) {
                                 Contect_list();
                             }
                         } catch (JSONException e) {
@@ -275,7 +275,7 @@ LinearLayout lay_seq_stap,lay_taskname;
 
     private void Select_to_update() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.solo_item_update, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Sms_Detail_Activty.this, R.style.CoffeeDialog);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         CheckBox ch_Paused = bottomSheetDialog.findViewById(R.id.ch_Paused);
         CheckBox ch_snooze = bottomSheetDialog.findViewById(R.id.ch_snooze);
@@ -547,7 +547,7 @@ LinearLayout lay_seq_stap,lay_taskname;
 
     private void Contect_list() throws JSONException {
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Sms_Detail_Activty.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Text_Detail_Activty.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -561,7 +561,7 @@ LinearLayout lay_seq_stap,lay_taskname;
         paramObject.addProperty("perPage", "10");
         paramObject.addProperty("page", "1");
         obj.add("data", paramObject);
-        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Sms_Detail_Activty.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -605,7 +605,7 @@ LinearLayout lay_seq_stap,lay_taskname;
     }
 
     private void Hastag_list() throws JSONException {
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Sms_Detail_Activty.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Text_Detail_Activty.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -613,7 +613,7 @@ LinearLayout lay_seq_stap,lay_taskname;
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Sms_Detail_Activty.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -662,7 +662,7 @@ LinearLayout lay_seq_stap,lay_taskname;
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Item_List_Sms_Detail_Activty.this, mMainLayout);
+        Global.checkConnectivity(Item_List_Text_Detail_Activty.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -687,7 +687,7 @@ LinearLayout lay_seq_stap,lay_taskname;
 
     private void Email_bouttomSheet() {
         final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
-        bottomSheetDialog_templateList1 = new BottomSheetDialog(Item_List_Sms_Detail_Activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
@@ -725,14 +725,14 @@ LinearLayout lay_seq_stap,lay_taskname;
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList = new BottomSheetDialog(Item_List_Sms_Detail_Activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
         try {
-            if (Global.isNetworkAvailable(Item_List_Sms_Detail_Activty.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -746,7 +746,7 @@ LinearLayout lay_seq_stap,lay_taskname;
     }
 
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Sms_Detail_Activty.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Text_Detail_Activty.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -754,7 +754,7 @@ LinearLayout lay_seq_stap,lay_taskname;
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Sms_Detail_Activty.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {

@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
@@ -1281,7 +1281,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
-                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                Intent intent1=new Intent(getActivity(), Text_And_Email_Auto_Manual.class);
                 intent1.putExtra("flag","edit");
                 intent1.putExtra("type","SMS");
                 startActivity(intent1); //  finish();
@@ -2440,7 +2440,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     SessionManager.setCampaign_type_name("");
                     SessionManager.setCampaign_Day("");
                     SessionManager.setCampaign_minute("");
-                    Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
+                    Intent intent1=new Intent(getActivity(), Text_And_Email_Auto_Manual.class);
                     intent1.putExtra("flag","edit");
                     intent1.putExtra("type","EMAIL");
                     startActivity(intent1);

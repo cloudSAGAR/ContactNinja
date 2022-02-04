@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms.List_And_show;
+package com.contactninja.Manual_email_text.List_And_show;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -154,7 +154,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setEmail_screen_name("");
-                Intent intent1 = new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
+                Intent intent1 = new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
                 intent1.putExtra("flag", "add");
                 startActivity(intent1);//  finish();
             }
@@ -167,7 +167,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setEmail_screen_name("");
-                Intent intent1 = new Intent(getApplicationContext(), Sms_And_Email_Auto_Manual.class);
+                Intent intent1 = new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
                 intent1.putExtra("flag", "add");
                 startActivity(intent1);//  finish();
             }
@@ -376,7 +376,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         Chnage Date:- 4-2-22
         */
 
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_solo_list_filter, null);
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.filter_solo_list, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(List_Manual_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         CheckBox ch_today = bottomSheetDialog.findViewById(R.id.ch_today);
@@ -828,7 +828,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     public void onClick(View view) {
 
                         if (item.getType().toString().equals("SMS")) {
-                            Intent intent = new Intent(getApplicationContext(), Item_List_Sms_Detail_Activty.class);
+                            Intent intent = new Intent(getApplicationContext(), Item_List_Text_Detail_Activty.class);
                             intent.putExtra("record_id",item.getId());
                             startActivity(intent);
                         } else {

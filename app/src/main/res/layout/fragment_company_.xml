@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
-    tools:ignore="ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:ignore="ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -17,58 +17,58 @@
         tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
-            android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/shape_25_white_eee_line"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
+
             <ImageView
                 android:id="@+id/search_icon"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_gravity="center|left"
-                android:src="@drawable/ic_search"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
-                >
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/ic_search">
 
             </ImageView>
 
             <EditText
-                android:layout_weight="2"
-                style="@style/tv_Medium_14"
                 android:id="@+id/ev_search"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="2"
                 android:background="@color/add_contect_transpernt"
                 android:gravity="center|left"
-                android:singleLine="true"
                 android:hint="@string/search_hint"
+                android:singleLine="true"
                 android:textColor="@color/text_reg"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
             </EditText>
-            <ImageView
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:id="@+id/iv_filter_icon"
-                android:src="@drawable/ic_filter"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp">
 
-            </ImageView>
+            <ImageView
+                android:id="@+id/iv_filter_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_filter" />
         </LinearLayout>
+
         <LinearLayout
-            android:layout_marginBottom="@dimen/_5sdp"
             android:id="@+id/add_new_contect_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <ImageView
@@ -81,7 +81,6 @@
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
-                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
                 style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
@@ -89,14 +88,14 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:gravity="center"
+                android:padding="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text="@string/company_add"
                 android:textColor="@color/text_reg"
 
                 />
+
             <TextView
-                android:visibility="gone"
-                android:padding="@dimen/_5sdp"
                 android:id="@+id/tv_upload"
                 style="@style/tv_regular_13"
                 android:layout_width="wrap_content"
@@ -104,9 +103,11 @@
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_60sdp"
                 android:gravity="center|left"
+                android:padding="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text="@string/add_sink"
                 android:textColor="@color/purple_200"
+                android:visibility="gone"
 
                 />
 
@@ -114,15 +115,14 @@
                 android:id="@+id/num_count"
                 style="@style/tv_Medium_14"
 
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@color/white"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text=""
-                android:textColor="@color/purple_500"
-                />
+                android:textColor="@color/purple_500" />
 
         </LinearLayout>
 
@@ -155,12 +155,13 @@
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeToRefresh"
-                android:layout_weight="4"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:paddingStart="@dimen/_2sdp"
-                android:layout_marginEnd="-30dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="-30dp"
+                android:layout_weight="4"
+                android:paddingStart="@dimen/_2sdp">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/contact_list"
                     android:layout_width="match_parent"
@@ -204,7 +205,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/fastscroller"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/fastscroller"
-                app:layout_constraintTop_toTopOf="@+id/fastscroller"/>
+                app:layout_constraintTop_toTopOf="@+id/fastscroller" />
         </LinearLayout>
 
     </LinearLayout>

@@ -2,7 +2,6 @@ package com.contactninja.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentUris;
@@ -23,9 +22,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -45,19 +44,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Broadcast.Broadcst_Activty;
-import com.contactninja.Campaign.Campaign_List_Activity;
-import com.contactninja.Campaign.Fragment.View_Contect_Fragment;
-import com.contactninja.ContectListAdapter;
-import com.contactninja.ContectListAdapter_demo;
-import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
-import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Csv_InviteListData;
 import com.contactninja.Model.InviteListData;
-import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
@@ -115,7 +105,6 @@ public class ContectFragment extends Fragment  {
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
-    BottomSheetDialog bottomSheetDialog_fillter;
     List<ContectListData.Contact> main_store = new ArrayList<>();
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     ConstraintLayout mMainLayout;
@@ -142,7 +131,7 @@ public class ContectFragment extends Fragment  {
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
     private List<ContectListData.Contact> contectListData;
-
+    String Filter="";//BLOCK / ALL
 
     String userName = "", user_phone_number = "", user_image = "", user_des = "", old_latter = "", contect_type = "", contect_email = "",
             contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
@@ -161,92 +150,7 @@ public class ContectFragment extends Fragment  {
         // Log.e("View is ", String.valueOf(view1.getVisibility()));
     }
 
-    //Update Contect Number Direct
-    public static boolean updateNameAndNumber(final Context context, String number, String newName, String newNumber) {
 
-        if (context == null || number == null || number.trim().isEmpty()) return false;
-
-        if (newNumber != null && newNumber.trim().isEmpty()) newNumber = null;
-
-        if (newNumber == null) return false;
-
-
-        String contactId = getContactId(context, number);
-
-        if (contactId == null) return false;
-
-        //selection for name
-        String where = String.format(
-                "%s = '%s' AND %s = ?",
-                DATA_COLS[0], //mimetype
-                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE,
-                DATA_COLS[2]/*contactId*/);
-
-        String[] args = {contactId};
-
-        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-
-        operations.add(
-                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                        .withSelection(where, args)
-                        .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, newName)
-                        .build()
-        );
-
-        //change selection for number
-        where = String.format(
-                "%s = '%s' AND %s = ?",
-                DATA_COLS[0],//mimetype
-                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
-                DATA_COLS[1]/*number*/);
-
-        //change args for number
-        args[0] = number;
-
-        operations.add(
-                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                        .withSelection(where, args)
-                        .withValue(DATA_COLS[1]/*number*/, newNumber)
-                        .build()
-        );
-
-        try {
-
-            ContentProviderResult[] results = context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
-
-            for (ContentProviderResult result : results) {
-                Log.e("Upadte Contect", result.toString());
-            }
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    public static String getContactId(Context context, String number) {
-
-        if (context == null) return null;
-
-        Cursor cursor = context.getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                new String[]{ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER},
-                ContactsContract.CommonDataKinds.Phone.NUMBER + "=?",
-                new String[]{number},
-                null
-        );
-
-        if (cursor == null || cursor.getCount() == 0) return null;
-
-        cursor.moveToFirst();
-
-        String id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
-
-        cursor.close();
-        return id;
-    }
 
     TextView tv_upload;
 
@@ -409,6 +313,92 @@ public class ContectFragment extends Fragment  {
     }
 
 
+    //Update Contect Number Direct
+    public static boolean updateNameAndNumber(final Context context, String number, String newName, String newNumber) {
+
+        if (context == null || number == null || number.trim().isEmpty()) return false;
+
+        if (newNumber != null && newNumber.trim().isEmpty()) newNumber = null;
+
+        if (newNumber == null) return false;
+
+
+        String contactId = getContactId(context, number);
+
+        if (contactId == null) return false;
+
+        //selection for name
+        String where = String.format(
+                "%s = '%s' AND %s = ?",
+                DATA_COLS[0], //mimetype
+                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE,
+                DATA_COLS[2]/*contactId*/);
+
+        String[] args = {contactId};
+
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+
+        operations.add(
+                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                        .withSelection(where, args)
+                        .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, newName)
+                        .build()
+        );
+
+        //change selection for number
+        where = String.format(
+                "%s = '%s' AND %s = ?",
+                DATA_COLS[0],//mimetype
+                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
+                DATA_COLS[1]/*number*/);
+
+        //change args for number
+        args[0] = number;
+
+        operations.add(
+                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                        .withSelection(where, args)
+                        .withValue(DATA_COLS[1]/*number*/, newNumber)
+                        .build()
+        );
+
+        try {
+
+            ContentProviderResult[] results = context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
+
+            for (ContentProviderResult result : results) {
+                Log.e("Upadte Contect", result.toString());
+            }
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static String getContactId(Context context, String number) {
+
+        if (context == null) return null;
+
+        Cursor cursor = context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER},
+                ContactsContract.CommonDataKinds.Phone.NUMBER + "=?",
+                new String[]{number},
+                null
+        );
+
+        if (cursor == null || cursor.getCount() == 0) return null;
+
+        cursor.moveToFirst();
+
+        String id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+
+        cursor.close();
+        return id;
+    }
 /*
     private void filter1(String text) {
         // creating a new array list to filter our data.
@@ -1033,6 +1023,7 @@ public class ContectFragment extends Fragment  {
 
     @Override
     public void onResume() {
+        super.onResume();
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
      try {
@@ -1045,8 +1036,7 @@ public class ContectFragment extends Fragment  {
 
         }
         ev_search.setText("");
-
-        super.onResume();
+        Filter="";
 
     }
     public class MyAsyncTasks extends AsyncTask<String, String, String> {
@@ -1922,65 +1912,71 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     void showBottomSheetDialog_Filtter() {
 
-        bottomSheetDialog_fillter = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
-        bottomSheetDialog_fillter.setContentView(R.layout.bottom_sheet_dialog_for_fillter_contact);
-        TextView tv_clear=bottomSheetDialog_fillter.findViewById(R.id.tv_clear);
-        TextView tv_done=bottomSheetDialog_fillter.findViewById(R.id.tv_done);
-        TextView tv_item=bottomSheetDialog_fillter.findViewById(R.id.tv_item);
-        ImageView iv_unselect_blacklist=bottomSheetDialog_fillter.findViewById(R.id.iv_unselect_blacklist);
-        ImageView iv_select_blacklist=bottomSheetDialog_fillter.findViewById(R.id.iv_select_blacklist);
-        ImageView iv_unselect_all=bottomSheetDialog_fillter.findViewById(R.id.iv_unselect_all);
-        ImageView iv_select_all=bottomSheetDialog_fillter.findViewById(R.id.iv_select_all);
-        tv_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iv_unselect_blacklist.setVisibility(View.VISIBLE);
-                iv_select_blacklist.setVisibility(View.GONE);
-                iv_unselect_all.setVisibility(View.VISIBLE);
-                iv_select_all.setVisibility(View.GONE);
+          /*
+        Change By :- Paras
+        Chnage Date:- 4-2-22
+        */
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.fillter_contact_block_unblock, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
 
-            }
-        });
-        iv_unselect_blacklist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iv_unselect_blacklist.setVisibility(View.GONE);
-                iv_select_blacklist.setVisibility(View.VISIBLE);
 
-             List<ContectListData.Contact> block_data=SessionManager.getContectList(getActivity()).get(0).getContacts();
-             List<ContectListData.Contact> block__list_data=new ArrayList<>();
-              for (int i=0;i<block_data.size();i++)
-              {
-                  if (block_data.get(i).getIs_blocked().equals("1"))
-                  {
-                      block__list_data.add(block_data.get(i));
-                  }
-              }
-                contectListData.clear();
-                paginationAdapter.removeloist();
-                contectListData.addAll(block__list_data);
-                paginationAdapter.addAll(contectListData);
-                num_count.setText(contectListData.size() + " Contacts");
+        CheckBox ch_block = bottomSheetDialog.findViewById(R.id.ch_block);
+        CheckBox ch_all = bottomSheetDialog.findViewById(R.id.ch_all);
+        switch (Filter) {
+            case "BLOCK":
+                ch_block.setChecked(true);
+                break;
+            case "ALL":
+                ch_all.setChecked(true);
+                break;
 
-                bottomSheetDialog_fillter.cancel();
-            }
-        });
-        iv_unselect_all.setOnClickListener(new View.OnClickListener() {
+        }
+        ch_block.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                iv_unselect_all.setVisibility(View.GONE);
-                iv_select_all.setVisibility(View.VISIBLE);
-                contectListData.clear();
-                paginationAdapter.removeloist();
-                contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                paginationAdapter.addAll(contectListData);
-                num_count.setText(contectListData.size() + " Contacts");
-                bottomSheetDialog_fillter.cancel();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    List<ContectListData.Contact> block_data=SessionManager.getContectList(getActivity()).get(0).getContacts();
+                    List<ContectListData.Contact> block__list_data=new ArrayList<>();
+                    for (int i=0;i<block_data.size();i++)
+                    {
+                        if (block_data.get(i).getIs_blocked().equals("1"))
+                        {
+                            block__list_data.add(block_data.get(i));
+                        }
+                    }
+                    contectListData.clear();
+                    paginationAdapter.removeloist();
+                    contectListData.addAll(block__list_data);
+                    paginationAdapter.addAll(contectListData);
+                    num_count.setText(contectListData.size() + " Contacts");
+                    Filter="BLOCK";
+                }
 
             }
         });
 
-        bottomSheetDialog_fillter.show();
+        ch_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    bottomSheetDialog.dismiss();
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    contectListData.clear();
+                    paginationAdapter.removeloist();
+                    contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+                    paginationAdapter.addAll(contectListData);
+                    num_count.setText(contectListData.size() + " Contacts");
+                    Filter="All";
+                }
+
+            }
+        });
+
+
+        bottomSheetDialog.show();
     }
 }
 

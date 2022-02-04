@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_text;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -34,7 +34,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
-public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
+public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -204,7 +204,7 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Sms_And_Email_Auto_Manual.this, mMainLayout);
+        Global.checkConnectivity(Text_And_Email_Auto_Manual.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -234,7 +234,7 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
     }
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = new String[] { "SMS", "Email" };
+        private String tabTitles[] = getResources().getStringArray(R.array.Select_Tab);
         private int[] imageResId = { R.drawable.ic_message_tab,R.drawable.ic_email };
         final int PAGE_COUNT = 2;
 
