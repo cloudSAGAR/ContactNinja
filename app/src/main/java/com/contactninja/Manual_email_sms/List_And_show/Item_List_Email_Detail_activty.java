@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_sms.List_And_show;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -39,6 +39,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_sms.Email_Tankyou;
+import com.contactninja.Manual_email_sms.Manual_Email_TaskActivity_;
+import com.contactninja.Manual_email_sms.Manual_Shooz_Time_Date_Activity;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.ManualTaskDetailsModel;
 import com.contactninja.Model.TemplateList;
@@ -622,7 +625,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
                 if (response.body().getHttp_status()==200)
                 {
-                    Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
+                    Intent intent=new Intent(getApplicationContext(), Email_Tankyou.class);
                     intent.putExtra("s_name","add");
                     startActivity(intent);
                     finish();
@@ -742,7 +745,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         lay_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),Manual_Email_TaskActivity_.class);
+                Intent intent=new Intent(getApplicationContext(), Manual_Email_TaskActivity_.class);
                 intent.putExtra("subject",ev_subject.getText().toString());
                 intent.putExtra("body",edit_compose.getText().toString());
                 intent.putExtra("id",id);

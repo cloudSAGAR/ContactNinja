@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_sms.List_And_show;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -368,8 +369,12 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
-
     private void filter_manu() {
+        /*
+        Create By :- Paras
+        Date:-1-2-22
+        Chnage Date:- 4-2-22
+        */
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_solo_list_filter, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(List_Manual_Activty.this, R.style.CoffeeDialog);
@@ -420,6 +425,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     bottomSheetDialog.dismiss();
                     Filter = Filters[0];
                     // refresf_api();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                 }
 
             }
@@ -431,7 +437,8 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[1];
-                    refresf_api();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
+                    //refresf_api();
                 }
 
             }
@@ -443,6 +450,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[2];
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                     //refresf_api();
                 }
 
@@ -455,6 +463,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[3];
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                     //refresf_api();
                 }
 
@@ -467,6 +476,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[4];
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                     //refresf_api();
                 }
 
@@ -479,6 +489,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[5];
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
                     //refresf_api();
                 }
 
@@ -525,6 +536,11 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
 
 
     void Mail_list() throws JSONException {
+        /*
+        Create By :- Paras
+        Date:-1-2-22
+        Chnage Date:- 4-2-22
+        */
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();

@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_sms.List_And_show;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -33,8 +33,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_sms.Email_Tankyou;
+import com.contactninja.Manual_email_sms.Manual_Shooz_Time_Date_Activity;
 import com.contactninja.Model.ContecModel;
-import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.ManualTaskDetailsModel;
 import com.contactninja.Model.TemplateList;
