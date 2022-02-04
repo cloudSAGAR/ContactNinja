@@ -61,6 +61,7 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -565,7 +566,8 @@ LinearLayout lay_seq_stap,lay_taskname;
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
+                if (response.body().getHttp_status() == 200)
+                {
                     userLinkedGmailList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -573,6 +575,13 @@ LinearLayout lay_seq_stap,lay_taskname;
                     }.getType();
                     ContecModel userLinkedGmail = new Gson().fromJson(headerString, listType);
                     userLinkedGmailList = userLinkedGmail.getPhoneData();
+                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    phoneDatum.setId(0);
+                    phoneDatum.setIsDefault(1);
+                    phoneDatum.setPhoneNumber("System Assigned");
+                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    Collections.reverse(userLinkedGmailList);
+
                     Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
                     if (userLinkedGmailList.size() == 1) {
                         iv_down.setVisibility(View.GONE);
@@ -593,6 +602,20 @@ LinearLayout lay_seq_stap,lay_taskname;
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
+                }
+                else {
+                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    phoneDatum.setId(0);
+                    phoneDatum.setIsDefault(1);
+                    phoneDatum.setPhoneNumber("System Assigned");
+                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+
+                    ev_from.setText(userLinkedGmailList.get(0).getPhoneNumber());
+                    defult_id = userLinkedGmailList.get(0).getId();
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(0));
+                    from_ac="USERSMS";
+                    from_ac_id= String.valueOf(userLinkedGmailList.get(0).getId());
+
                 }
             }
 

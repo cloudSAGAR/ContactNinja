@@ -32,7 +32,7 @@ public class ContecModel {
         this.phoneData = phoneData;
     }
 
-    public class PhoneDatum {
+    public static class PhoneDatum {
 
         @SerializedName("id")
         @Expose

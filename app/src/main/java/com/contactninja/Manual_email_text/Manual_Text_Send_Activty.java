@@ -54,6 +54,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Response;
@@ -108,7 +109,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         String type=bundle.getString("type");
         task_name=bundle.getString("task_name");
         ev_task_title.setText(task_name);
-        ev_from.setText(p_number);
+       // ev_from.setText(p_number);
         ev_from.setEnabled(false);
        // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
 
@@ -181,6 +182,13 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     }.getType();
                     ContecModel userLinkedGmail = new Gson().fromJson(headerString, listType);
                     userLinkedGmailList = userLinkedGmail.getPhoneData();
+
+                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    phoneDatum.setId(0);
+                    phoneDatum.setIsDefault(1);
+                    phoneDatum.setPhoneNumber("System Assigned");
+                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    Collections.reverse(userLinkedGmailList);
                     Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
                     if (userLinkedGmailList.size() == 1) {
                         iv_down.setVisibility(View.GONE);
@@ -194,8 +202,6 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                             ev_from.setText(userLinkedGmailList.get(i).getPhoneNumber());
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-
-
                             from_ac="USERSMS";
                             from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
 
@@ -204,6 +210,17 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
+                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    phoneDatum.setId(0);
+                    phoneDatum.setIsDefault(1);
+                    phoneDatum.setPhoneNumber("System Assigned");
+                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+
+                    ev_from.setText(userLinkedGmailList.get(0).getPhoneNumber());
+                    defult_id = userLinkedGmailList.get(0).getId();
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(0));
+                    from_ac="USERSMS";
+                    from_ac_id= String.valueOf(userLinkedGmailList.get(0).getId());
 
                     //Global.openEmailAuth(from_ac.this);
                     // startActivity(new Intent(getApplicationContext(), Email_verification.class));
