@@ -87,7 +87,7 @@
                     style="@style/tv_Medium_14"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/tv_sms"
+                    android:text="@string/tv_text"
                     android:textColor="@color/white"
                     >
 

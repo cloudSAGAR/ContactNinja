@@ -45,7 +45,7 @@
                     android:layout_weight="1"
                     android:gravity="center|left"
                     android:padding="@dimen/_15sdp"
-                    android:text="@string/campaign_step_one_sms"
+                    android:text="@string/campaign_step_one_text"
                     android:textColor="@color/text_reg"
                     tools:ignore="RtlHardcoded,RtlSymmetry">
 
@@ -227,7 +227,7 @@
                     android:layout_weight="1"
                     android:gravity="center|left"
                     android:padding="@dimen/_15sdp"
-                    android:text="@string/campaign_step_one_sms_manual"
+                    android:text="@string/campaign_step_one_text_manual"
                     android:textColor="@color/text_reg"
                     tools:ignore="RtlHardcoded,RtlSymmetry">
 
@@ -389,7 +389,7 @@
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             style="@style/tv_regular_12"
-            android:text="@string/campaign_step_one_sms_txt"
+            android:text="@string/campaign_step_one_text_txt"
             android:textColor="@color/home_list_sub_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

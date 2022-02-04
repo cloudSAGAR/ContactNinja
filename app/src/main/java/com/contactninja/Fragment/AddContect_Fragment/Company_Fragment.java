@@ -90,6 +90,7 @@ public class Company_Fragment extends Fragment {
     CompanyAdapter companyAdapter;
     List<CompanyModel.Company> companyList = new ArrayList<>();
     int perPage = 20;
+    String Filter="";//BLOCK / ALL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -261,24 +262,36 @@ public class Company_Fragment extends Fragment {
 
 
     void showBottomSheetDialog_Filtter() {
-             /*
+        /*
         Change By :- Paras
         Chnage Date:- 4-2-22
         */
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.fillter_contact_block_unblock, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
 
-        bottomSheetDialog_fillter = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
-        bottomSheetDialog_fillter.setContentView(R.layout.fillter_company_block_unblock);
 
-        CheckBox ch_block = bottomSheetDialog_fillter.findViewById(R.id.ch_block);
-        CheckBox ch_all = bottomSheetDialog_fillter.findViewById(R.id.ch_all);
+        CheckBox ch_block = bottomSheetDialog.findViewById(R.id.ch_block);
+        CheckBox ch_all = bottomSheetDialog.findViewById(R.id.ch_all);
+        switch (Filter) {
+            case "BLOCK":
+                ch_block.setChecked(true);
+                break;
+            case "ALL":
+                ch_all.setChecked(true);
+                break;
 
+        }
         ch_block.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
-                    bottomSheetDialog_fillter.dismiss();
+                    bottomSheetDialog.dismiss();
+
+                    Filter="BLOCK";
                 }
+
             }
         });
 
@@ -286,15 +299,17 @@ public class Company_Fragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    bottomSheetDialog_fillter.dismiss();
+                    bottomSheetDialog.dismiss();
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+
+                    Filter="All";
                 }
 
             }
         });
 
 
-        bottomSheetDialog_fillter.show();
+        bottomSheetDialog.show();
 
     }
 
@@ -354,6 +369,7 @@ public class Company_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Filter="";
         currentPage = PAGE_START;
         isLastPage = false;
         companyList.clear();

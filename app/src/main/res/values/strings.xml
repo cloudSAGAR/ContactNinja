@@ -166,7 +166,7 @@ Number</string>
     <string name="add_new_group_all">Add all group</string>
     <string name="remove_new_group_all">Add all Group</string>
     <string name="add_task_email">Create a new \n email task</string>
-    <string name="add_task_sms">Create a new \n SMS  task</string>
+    <string name="add_task_text">Create a new \n Text task</string>
     <string name="add_new_group_name">Intricare technologies</string>
     <string name="group_broadcast">Send broadcast</string>
     <string name="group_broadcast_group">Group text</string>
@@ -323,7 +323,7 @@ Number</string>
     <string name="campaign">Campaign</string>
     <string name="manual_task_create">Manual task</string>
     <string name="campaign_alert_txt">Click to create \n campaign</string>
-    <string name="campaign_alert_sub_txt">Campaign is a series of emails and or SMSes sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
+    <string name="campaign_alert_sub_txt">Campaign is a series of emails and or Text sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
     <string name="campaign_step_one">Select your step</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
     <string name="create_task">Create your </string>
@@ -332,11 +332,11 @@ Number</string>
     <string name="campaign_step_one_email_manual">Manual email</string>
     <string name="campaign_step_one_email_txt">Automated emails are sent using automation and Manual emails create a task on your /n dashboard for you to approve it before sending.</string>
 
-    <string name="campaign_step_one_sms">Automated SMS</string>
-    <string name="campaign_step_one_sms_manual">Manual SMS </string>
-    <string name="campaign_step_one_sms_txt">Automated SMSes are sent using automation \n  and Manual SMSes create a task on your \n  dashboard for you to approve it before sending.</string>
+    <string name="campaign_step_one_text">Automated Text</string>
+    <string name="campaign_step_one_text_manual">Manual Text</string>
+    <string name="campaign_step_one_text_txt">Automated Text are sent using automation \n  and Manual Text create a task on your \n  dashboard for you to approve it before sending.</string>
 
-    <string name="campaign_step_one_one">Step#1 (Automated SMS)</string>
+    <string name="campaign_step_one_one">Step#1 (Automated Text)</string>
     <string name="temp_txt">Use template</string>
     <string name="campaign_step_title">Campaign Overview</string>
     <string name="campaign_sub_txt">Lorem ipsum dolor sit amet, consectetuer \n adipiscing elit. Aenean commodo ligulaeget dolor. Aenean massa. Cum sociisnatoque penatibus et magnis dis \n parturient.</string>
@@ -361,7 +361,7 @@ Number</string>
     <string name="Enter_subject_here">Enter subject here…</string>
     <string name="Subject">Subject:</string>
     <string name="Email_Template">Email template</string>
-    <string name="SMS_Template">SMS template</string>
+    <string name="Text_Template">Text template</string>
     <string name="template_name">"Please add template name "</string>
     <string name="template_dody">"Please add template content "</string>
     <string name="template_subject">"Please add template subject "</string>
@@ -382,7 +382,7 @@ Number</string>
     <string name="txt_campaign">Start campaign</string>
     <string name="view_contect">View contacts</string>
     <string name="tv_contect">Contacts</string>
-    <string name="tv_sms">SMS</string>
+    <string name="tv_text">Text</string>
     <string name="tv_email">Emails</string>
     <string name="cam_tv_titel">Conatc ninja campaign for new mebers</string>
     <string name="con_reach">Completed Out reach</string>
@@ -396,11 +396,11 @@ Number</string>
     <string name="composse_email">Compose email</string>
     <string name="email_txt">click here to send \n an email </string>
     <string name="create_new_email">Create new email</string>
-    <string name="create_new_sms">Create new task</string>
+    <string name="create_new_text">Create new task</string>
     <string name="email_task_txt">Schedule my task</string>
     <string name="email_date">Please select date</string>
     <string name="email_time">Select time</string>
-    <string name="sms_txt">Message</string>
+    <string name="text_txt">Message</string>
     <string name="verifition_title_text">Enter the code We just \n texted you</string>
     <string name="enter_campaign_name">Enter campaign name</string>
     <string name="add_contact">Add first contacts</string>
@@ -457,6 +457,10 @@ Number</string>
         <item>PAUSED</item>
         <item>SNOOZE</item>
         <item>DELETE</item>
+    </string-array>
+    <string-array name="Select_Tab">
+        <item>Taxt</item>
+        <item>Email</item>
     </string-array>
 
     <string name="contect_block">This Contect Block</string>

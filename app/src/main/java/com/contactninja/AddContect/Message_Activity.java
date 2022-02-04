@@ -63,10 +63,8 @@ public class Message_Activity extends AppCompatActivity implements View.OnClickL
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     CoordinatorLayout mMainLayout;
-
     ImageView iv_back;
     TextView save_button, tv_use_tamplet;
-
     TemplateAdepter templateAdepter;
     ImageView iv_submit;
     RecyclerView rv_direct_list;

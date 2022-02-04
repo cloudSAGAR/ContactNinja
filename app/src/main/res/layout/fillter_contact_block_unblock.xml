@@ -41,7 +41,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="@dimen/_5sdp"
-                    android:checked="true"
                     android:text="@string/fillter_block" />
 
 

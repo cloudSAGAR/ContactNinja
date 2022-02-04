@@ -1024,6 +1024,7 @@ public class ContectFragment extends Fragment  {
 
     @Override
     public void onResume() {
+        super.onResume();
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
      try {
@@ -1037,7 +1038,6 @@ public class ContectFragment extends Fragment  {
         }
         ev_search.setText("");
         Filter="";
-        super.onResume();
 
     }
     public class MyAsyncTasks extends AsyncTask<String, String, String> {

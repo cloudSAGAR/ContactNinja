@@ -234,7 +234,7 @@ public class Sms_And_Email_Auto_Manual extends AppCompatActivity  implements Vie
     }
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = new String[] { "SMS", "Email" };
+        private String tabTitles[] = getResources().getStringArray(R.array.Select_Tab);
         private int[] imageResId = { R.drawable.ic_message_tab,R.drawable.ic_email };
         final int PAGE_COUNT = 2;
 
