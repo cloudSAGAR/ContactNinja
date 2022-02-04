@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.DatabaseClient;
@@ -32,9 +33,14 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 import retrofit2.Response;
 
@@ -44,16 +50,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     LinearLayout layout_logout, layout_resetPassword, layout_template, layout_Current_plan, layout_about, layout_mail_box;
     SessionManager sessionManager;
     RelativeLayout mMainLayout;
-    private BroadcastReceiver mNetworkReceiver;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         mNetworkReceiver = new ConnectivityReceiver();
-        loadingDialog=new LoadingDialog(SettingActivity.this);
+        loadingDialog = new LoadingDialog(SettingActivity.this);
         retrofitCalls = new RetrofitCalls(SettingActivity.this);
         sessionManager = new SessionManager(getApplicationContext());
         intentView();
@@ -160,7 +166,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
 
                 try {
-                    if(Global.isNetworkAvailable(SettingActivity.this, MainActivity.mMainLayout)) {
+                    if (Global.isNetworkAvailable(SettingActivity.this, MainActivity.mMainLayout)) {
                         Mail_list();
                     }
                 } catch (JSONException e) {
@@ -170,9 +176,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
     private void Mail_list() throws JSONException {
 
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(SettingActivity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(SettingActivity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -180,18 +187,23 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(SettingActivity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(SettingActivity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     /*is a list to email show*/
-                    startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
-                }else {
-
-                    /*is a email permission link open */
-                    //Global.openEmailAuth(SettingActivity.this);
-                    startActivity(new Intent(getApplicationContext(),Email_verification.class));
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail = new Gson().fromJson(headerString, listType);
+                    List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = userLinkedGmail.getUserLinkedGmail();
+                    if (userLinkedGmailList.size() == 0) {
+                        startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
+                    }
                 }
             }
 
@@ -203,6 +215,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
 
     }
+
     public void showAlertDialogButtonClicked() {
 
         // Create an alert builder
