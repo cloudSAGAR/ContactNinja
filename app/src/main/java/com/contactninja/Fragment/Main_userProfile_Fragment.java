@@ -497,9 +497,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new User_InformationFragment();
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
-        fragmentTransaction.commitAllowingStateLoss();
+
+        if (fragmentManager != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+            fragmentTransaction.commitAllowingStateLoss();
+        }
+
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
