@@ -385,7 +385,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                                 emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
                                 rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 rv_email.setAdapter(emailAdapter);
-
+                                addcontectModel.setContactdetails(contactdetails);
 
                             } else {
                                 //    Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
@@ -409,6 +409,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                                 phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
                                 rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 rv_phone.setAdapter(phoneAdapter);
+                                addcontectModel.setContactdetails(contactdetails);
 
 
                             }
@@ -417,6 +418,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } catch (Exception e) {
 
                 }
+
 
 
                 EmailViewAdd();

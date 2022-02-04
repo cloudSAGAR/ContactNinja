@@ -35,19 +35,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.UserPofile.User_BzcardFragment;
-import com.contactninja.UserPofile.User_ExposuresFragment;
-import com.contactninja.UserPofile.User_InformationFragment;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -56,6 +45,9 @@ import com.contactninja.Model.UserData.User;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Setting.SettingActivity;
+import com.contactninja.UserPofile.User_BzcardFragment;
+import com.contactninja.UserPofile.User_ExposuresFragment;
+import com.contactninja.UserPofile.User_InformationFragment;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -82,6 +74,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.RequiresApi;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
@@ -93,7 +92,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
     CoordinatorLayout user_image;
-    ImageView iv_Setting, pulse_icon,iv_back,iv_edit;
+    ImageView iv_Setting, pulse_icon, iv_back, iv_edit;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
     String fragment_name, user_image_Url = "", File_name = "", File_extension = "";
@@ -184,7 +183,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 note = addcontectModel.getNote();
                 f_name = edt_FirstName.getText().toString();
                 l_name = edt_lastname.getText().toString();
-                if (sessionManager.getContect_flag(getActivity()).equals("edit")) {
+                if (SessionManager.getContect_flag(getActivity()).equals("edit")) {
                     if (f_name.equals("")) {
                         Global.Messageshow(getActivity(), mMainLayout, getString(R.string.invalid_first_name), false);
 
@@ -205,7 +204,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 } else {
 
 
-                    String flag = sessionManager.getContect_flag(getActivity());
+                    String flag = SessionManager.getContect_flag(getActivity());
                     if (flag.equals("read")) {
                         SessionManager.setContect_flag("edit");
                         Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
@@ -276,43 +275,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     }
 
-
-
-    public class MyAsyncTasks extends AsyncTask<String, String, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // display a progress dialog for good user experiance
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            // implement API in background and store the response in current variable
-            String current = "";
-            try {
-                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                    Userinfo();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "Exception: " + e.getMessage();
-            }
-            return current;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
-
-    }
-
-
     private void Userinfo() throws JSONException {
-      //  loadingDialog.showLoadingDialog();
+        //  loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -332,10 +296,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             }.getType();
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
-                            Log.e("Main Data Is ",new Gson().toJson(user_model));
+                            Log.e("Main Data Is ", new Gson().toJson(user_model));
                             setdata();
-                           // setTab();
-
+                            // setTab();
 
 
                         } else {
@@ -375,7 +338,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             //setTab();
 
 
-
                         } else {
                             loadingDialog.cancelLoading();
                         }
@@ -399,16 +361,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     }
 
-
     @SuppressLint("SetTextI18n")
     private void setdata() {
 
-        String flag = sessionManager.getContect_flag(getActivity());
+        String flag = SessionManager.getContect_flag(getActivity());
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
 
 
         User user_data_model = user_data.getUser();
@@ -484,9 +444,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             save_button.setText("Save");
 
 
-        }
-
-        else if (flag.equals("read")) {
+        } else if (flag.equals("read")) {
 
 
             save_button.setVisibility(View.GONE);
@@ -581,11 +539,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     private void intentView(View view) {
 
-        iv_edit=view.findViewById(R.id.iv_edit);
+        iv_edit = view.findViewById(R.id.iv_edit);
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
         iv_Setting.setOnClickListener(this);
-        iv_back=view.findViewById(R.id.iv_back);
+        iv_back = view.findViewById(R.id.iv_back);
         tabLayout = view.findViewById(R.id.tabLayout);
         frameContainer = view.findViewById(R.id.frameContainer);
         pulse_icon = view.findViewById(R.id.pulse_icon);
@@ -607,7 +565,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         edit_profile.setOnClickListener(this);
         iv_back.setOnClickListener(this);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int RC, String[] per, int[] PResult) {
@@ -637,8 +594,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         }
     }
-
-
 
     private long getRawContactId() {
         // Inser an empty contact.
@@ -682,7 +637,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         // Insert new contact data into phone contact list.
         getActivity().getContentResolver().insert(addContactsUri, contentValues);
     }
-
 
     public void AddContect_Api() throws JSONException {
 
@@ -814,7 +768,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 */
     }
 
-
     public void AddContect_Update() throws JSONException {
         loadingDialog.showLoadingDialog();
         f_name = edt_FirstName.getText().toString().trim();
@@ -832,10 +785,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String email_address=user_data.getUser().getEmail();
+        String email_address = user_data.getUser().getEmail();
 
-        String  rol_id=user_data.getUser().getRoleId().toString();
-        String contect_number=user_data.getUser().getContactNumber();
+        String rol_id = user_data.getUser().getRoleId().toString();
+        String contect_number = user_data.getUser().getContactNumber();
 
         List<Contactdetail> contactdetails = new ArrayList<>();
 
@@ -848,28 +801,26 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         contactdetails.addAll(contactdetails_email);
         JSONObject obj = new JSONObject();
 
-        JSONObject param_data= new JSONObject();
+        JSONObject param_data = new JSONObject();
         param_data.put("organization_id", 1);
-        param_data.put("team_id",  1);
+        param_data.put("team_id", 1);
         param_data.put("user_id", Integer.parseInt(user_id));
-        param_data.put("role_id",rol_id);
-        param_data.put("contact_number",contect_number);
-        param_data.put("email",email_address);
+        param_data.put("role_id", rol_id);
+        param_data.put("contact_number", contect_number);
+        param_data.put("email", email_address);
 
 
-       // JSONArray jsonArray_contect = new JSONArray();
+        // JSONArray jsonArray_contect = new JSONArray();
 
 
-       // JSONObject paramObject = new JSONObject();
+        // JSONObject paramObject = new JSONObject();
         //Other Company Add
-        if (addcontectModel.getCompany().trim().equalsIgnoreCase(""))
-        {
+        if (addcontectModel.getCompany().trim().equalsIgnoreCase("")) {
             param_data.put("company_name", addcontectModel.getCompany());
             //param_data.put("company_id",  addcontectModel.getCompany_id());
-        }
-        else {
+        } else {
             param_data.put("company_name", addcontectModel.getCompany());
-           // param_data.put("company_id",   addcontectModel.getCompany_id());
+            // param_data.put("company_id",   addcontectModel.getCompany_id());
         }
         param_data.put("address", address);
         param_data.put("breakout_link", addcontectModel.getBreakoutu());
@@ -894,27 +845,23 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("zipcode", addcontectModel.getZip_code());
         param_data.put("zoom_id", addcontectModel.getZoom_id());
 
-        if (!user_image_Url.equals(""))
-        {
+        if (!user_image_Url.equals("")) {
             param_data.put("profile_pic", user_image_Url);
             param_data.put("pic_name", File_name);
             param_data.put("pic_extension", File_extension);
-            if(olld_image!=null){
+            if (olld_image != null) {
                 param_data.put("old_pic_name", olld_image);
-            }
-            else {
+            } else {
                 param_data.put("old_pic_name", "");
             }
 
-        }
-        else {
+        } else {
             param_data.put("profile_pic", olld_image);
             //   paramObject.put("contact_image", "");
             //   paramObject.put("contact_image_name", "");
         }
 
-        param_data.put("notes",addcontectModel.getNote());
-
+        param_data.put("notes", addcontectModel.getNote());
 
 
         for (int i = 0; i < contactdetails.size(); i++) {
@@ -922,13 +869,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             if (contactdetails.get(i).getEmail_number().equals("")) {
 
             } else {
-                if (contactdetails.get(i).getEmail_number().equals(user_data.getUser().getContactNumber()) || contactdetails.get(i).getEmail_number().equals(user_data.getUser().getEmail()))
-                {
+                if (contactdetails.get(i).getEmail_number().equals(user_data.getUser().getContactNumber()) || contactdetails.get(i).getEmail_number().equals(user_data.getUser().getEmail())) {
 
-                }
-                else {
-                    if (contactdetails.get(i).getType().equals("NUMBER"))
-                    {
+                } else {
+                    if (contactdetails.get(i).getType().equals("NUMBER")) {
                         phone = contactdetails.get(i).getEmail_number();
                     }
                     phone_type = contactdetails.get(i).getLabel();
@@ -949,15 +893,13 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             } else {
 
 
-                    if (contactdetails.get(i).getType().equals("NUMBER"))
-                    {
-                        phone = contactdetails.get(i).getEmail_number();
-                    }
-                    phone_type = contactdetails1.get(i).getLabel();
-                    paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
-                    paramObject1.put("label", contactdetails1.get(i).getLabel());
-                    paramObject1.put("type", contactdetails1.get(i).getType());
-
+                if (contactdetails.get(i).getType().equals("NUMBER")) {
+                    phone = contactdetails.get(i).getEmail_number();
+                }
+                phone_type = contactdetails1.get(i).getLabel();
+                paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
+                paramObject1.put("label", contactdetails1.get(i).getLabel());
+                paramObject1.put("type", contactdetails1.get(i).getType());
 
 
             }
@@ -970,7 +912,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.UpdateUser_Profile(sessionManager,gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.UpdateUser_Profile(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -994,8 +936,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         e.printStackTrace();
                     }
 
-                }
-             else    if (response.body().getHttp_status() == 404) {
+                } else if (response.body().getHttp_status() == 404) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<UservalidateModel>() {
@@ -1004,18 +945,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     try {
                         if (uservalidateModel.getLast_name().size() != 0) {
                             Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getLast_name().get(0), false);
-                        }
-                        else if (uservalidateModel.getFirstname().size() != 0) {
+                        } else if (uservalidateModel.getFirstname().size() != 0) {
                             Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getFirstname().get(0), false);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                }
-
-
-                else {
+                } else {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<UservalidateModel>() {
@@ -1040,8 +977,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         });
 
     }
-
-
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -1096,8 +1031,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 setdata();
         }
     }
-    // Handled permission Result
-
 
     private void captureimageDialog(boolean remove) {
         final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
@@ -1146,6 +1079,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         bottomSheetDialog.show();
 
     }
+    // Handled permission Result
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1273,7 +1207,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         return ret;
     }
 
-
     private void updatePhoneNumber(ContentResolver contentResolver, long rawContactId, int phoneType, String newPhoneNumber, String phoneTypeStr) {
         // Create content values object.
         ContentValues contentValues = new ContentValues();
@@ -1322,7 +1255,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     }
 
-
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(getActivity(), mMainLayout);
     }
@@ -1351,6 +1283,38 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
+    }
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                    Userinfo();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
     }
 
 
