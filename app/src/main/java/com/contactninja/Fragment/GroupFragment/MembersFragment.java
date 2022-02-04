@@ -351,9 +351,16 @@ public class MembersFragment extends Fragment {
                         OptionalInt indexOpt = IntStream.range(0, contectListData.size())
                                 .filter(i -> p_id.equals(String.valueOf(contectListData.get(i).getId())))
                                 .findFirst();
-                        Log.e("Matech Index", String.valueOf(indexOpt.getAsInt()));
-                        contectListData.get(indexOpt.getAsInt()).setFlag("false");
-                        selected_contectListData.add(contectListData.get(indexOpt.getAsInt()));
+                       // Log.e("Matech Index", String.valueOf(indexOpt.getAsInt()));
+                       try {
+                           contectListData.get(indexOpt.getAsInt()).setFlag("false");
+                           selected_contectListData.add(contectListData.get(indexOpt.getAsInt()));
+
+                       }
+                       catch (Exception e)
+                       {
+
+                       }
 
                     }
                     sessionManager.setGroupList(getActivity(),selected_contectListData);

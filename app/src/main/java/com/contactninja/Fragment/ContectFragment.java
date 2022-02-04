@@ -9,6 +9,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -1034,7 +1035,7 @@ public class ContectFragment extends Fragment  {
     public void onResume() {
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-       try {
+    /*   try {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
@@ -1042,7 +1043,7 @@ public class ContectFragment extends Fragment  {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
-        }
+        }*/
         ev_search.setText("");
 
         super.onResume();
@@ -1531,8 +1532,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         if (Contact_data.getIs_blocked().equals("1"))
                         {
                             holder1.iv_block.setVisibility(View.VISIBLE);
+                            holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
+
                         }
                         else {
+                            holder1.userName.setTextColor(Color.parseColor("#4A4A4A"));
                             holder1.iv_block.setVisibility(View.GONE);
 
                         }
