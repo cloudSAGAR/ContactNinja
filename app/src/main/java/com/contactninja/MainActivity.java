@@ -39,6 +39,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.contactninja.Broadcast.Broadcst_Activty;
 import com.contactninja.Campaign.Campaign_List_Activity;
+import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;
@@ -210,7 +211,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (sessionManager.getContectList(getApplicationContext()).size() == 0) {
                    loadingDialog.showLoadingDialog();
                 }
-               GetContactsIntoArrayList();
+                MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                myAsyncTasks.execute();
 
             }
 
@@ -235,6 +237,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        GetContactsIntoArrayList();
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
+    }
 
     private void IntentUI() {
         mMainLayout = findViewById(R.id.mMainLayout);
