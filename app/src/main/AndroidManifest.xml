@@ -68,7 +68,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Item_List_Sms_Detail_Activty"
+            android:name=".Manual_email_sms.List_And_show.Item_List_Sms_Detail_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -80,7 +80,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Item_List_Email_Detail_activty"
+            android:name=".Manual_email_sms.List_And_show.Item_List_Email_Detail_activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -104,7 +104,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.List_Manual_Activty"
+            android:name=".Manual_email_sms.List_And_show.List_Manual_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

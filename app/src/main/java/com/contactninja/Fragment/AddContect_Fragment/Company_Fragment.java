@@ -698,7 +698,7 @@ public class Company_Fragment extends Fragment {
 
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
                     try {
                         companyAdapter.removeitem();
                         CompanyList();
