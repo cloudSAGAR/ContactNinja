@@ -1,9 +1,25 @@
 package com.contactninja.Fragment.AddContect_Fragment;
+
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -14,34 +30,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Company_Activity;
-import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.MainActivity;
-import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
-import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -49,8 +43,6 @@ import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
-import com.contactninja.retrofit.RetrofitApiClient;
-import com.contactninja.retrofit.RetrofitApiInterface;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -68,10 +60,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
+import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Response;
+
 public class Company_Fragment extends Fragment {
     ConstraintLayout mMainLayout;
     BottomSheetDialog bottomSheetDialog_fillter;
@@ -81,7 +74,7 @@ public class Company_Fragment extends Fragment {
     FastScrollerThumbView fastscroller_thumb;
     SearchView contect_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon,iv_filter_icon;
+    ImageView add_new_contect_icon, iv_filter_icon;
     View view1;
     FragmentActivity fragmentActivity;
     LinearLayout add_new_contect_layout;
@@ -95,7 +88,7 @@ public class Company_Fragment extends Fragment {
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
     CompanyAdapter companyAdapter;
-    List<CompanyModel.Company> companyList=new ArrayList<>();
+    List<CompanyModel.Company> companyList = new ArrayList<>();
     int perPage = 20;
 
     @Override
@@ -176,8 +169,8 @@ public class Company_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SessionManager.setCampaign_data(new CampaignTask_overview());
-                Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
-                intent.putExtra("flag","add");
+                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                intent.putExtra("flag", "add");
                 startActivity(intent);
             }
         });
@@ -185,17 +178,19 @@ public class Company_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SessionManager.setCampaign_data(new CampaignTask_overview());
-                Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
-                intent.putExtra("flag","add");
-                startActivity(intent);            }
+                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                intent.putExtra("flag", "add");
+                startActivity(intent);
+            }
         });
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SessionManager.setCampaign_data(new CampaignTask_overview());
-                Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
-                intent.putExtra("flag","add");
-                startActivity(intent);            }
+                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                intent.putExtra("flag", "add");
+                startActivity(intent);
+            }
         });
 
         ev_search.addTextChangedListener(new TextWatcher() {
@@ -207,13 +202,14 @@ public class Company_Fragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 List<CompanyModel.Company> temp = new ArrayList();
-                for(CompanyModel.Company d: companyList){
-                    if(d.getName().toLowerCase().contains(s.toString().toLowerCase())){
+                for (CompanyModel.Company d : companyList) {
+                    if (d.getName().toLowerCase().contains(s.toString().toLowerCase())) {
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
                     }
                 }
-                companyAdapter.updateList(temp);  }
+                companyAdapter.updateList(temp);
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -224,7 +220,7 @@ public class Company_Fragment extends Fragment {
                 rvinviteuserdetails,
                 (position) -> {
 
-                   try {
+                    try {
                         FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
                                 companyAdapter.getItem(position).getName().substring(0, 1)
                                         .substring(0, 1)
@@ -243,7 +239,7 @@ public class Company_Fragment extends Fragment {
 
 
     private void IntentUI(View content_view) {
-        iv_filter_icon=content_view.findViewById(R.id.iv_filter_icon);
+        iv_filter_icon = content_view.findViewById(R.id.iv_filter_icon);
         mMainLayout = content_view.findViewById(R.id.mMainLayout);
         rvinviteuserdetails = content_view.findViewById(R.id.contact_list);
         fastscroller = content_view.findViewById(R.id.fastscroller);
@@ -258,60 +254,48 @@ public class Company_Fragment extends Fragment {
         iv_filter_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             showBottomSheetDialog_Filtter();
+                showBottomSheetDialog_Filtter();
             }
         });
     }
 
 
     void showBottomSheetDialog_Filtter() {
+             /*
+        Change By :- Paras
+        Chnage Date:- 4-2-22
+        */
+
         bottomSheetDialog_fillter = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
-        bottomSheetDialog_fillter.setContentView(R.layout.bottom_sheet_dialog_for_fillter_contact);
-        TextView tv_clear=bottomSheetDialog_fillter.findViewById(R.id.tv_clear);
-        TextView tv_done=bottomSheetDialog_fillter.findViewById(R.id.tv_done);
-        TextView tv_item=bottomSheetDialog_fillter.findViewById(R.id.tv_item);
-        TextView tv_blacklist=bottomSheetDialog_fillter.findViewById(R.id.tv_blacklist);
-        TextView tv_allcompany=bottomSheetDialog_fillter.findViewById(R.id.tv_allcompany);
-        tv_allcompany.setText(getString(R.string.company_all));
-        tv_blacklist.setText(getString(R.string.company_blacklst));
-        ImageView iv_unselect_blacklist=bottomSheetDialog_fillter.findViewById(R.id.iv_unselect_blacklist);
-        ImageView iv_select_blacklist=bottomSheetDialog_fillter.findViewById(R.id.iv_select_blacklist);
-        ImageView iv_unselect_all=bottomSheetDialog_fillter.findViewById(R.id.iv_unselect_all);
-        ImageView iv_select_all=bottomSheetDialog_fillter.findViewById(R.id.iv_select_all);
-        tv_clear.setOnClickListener(new View.OnClickListener() {
+        bottomSheetDialog_fillter.setContentView(R.layout.fillter_company_block_unblock);
+
+        CheckBox ch_block = bottomSheetDialog_fillter.findViewById(R.id.ch_block);
+        CheckBox ch_all = bottomSheetDialog_fillter.findViewById(R.id.ch_all);
+
+        ch_block.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                iv_unselect_blacklist.setVisibility(View.VISIBLE);
-                iv_select_blacklist.setVisibility(View.GONE);
-                iv_unselect_all.setVisibility(View.VISIBLE);
-                iv_select_all.setVisibility(View.GONE);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog_fillter.dismiss();
+                }
+            }
+        });
+
+        ch_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    bottomSheetDialog_fillter.dismiss();
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                }
 
             }
         });
-        iv_unselect_blacklist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iv_unselect_blacklist.setVisibility(View.GONE);
-                iv_select_blacklist.setVisibility(View.VISIBLE);
-                bottomSheetDialog_fillter.cancel();
-            }
-        });
-        iv_unselect_all.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iv_unselect_all.setVisibility(View.GONE);
-                iv_select_all.setVisibility(View.VISIBLE);
-                try {
-                    companyAdapter.removeitem();
-                    CompanyList();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                bottomSheetDialog_fillter.cancel();
-            }
-        });
+
 
         bottomSheetDialog_fillter.show();
+
     }
 
     private void CompanyList() throws JSONException {
@@ -329,11 +313,11 @@ public class Company_Fragment extends Fragment {
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
-        retrofitCalls.CompanyList(sessionManager, obj, loadingDialog,  Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+        retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
-                if(response.body().getHttp_status().equals(200)){
+                if (response.body().getHttp_status().equals(200)) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     if (response.body().getHttp_status() == 200) {
@@ -341,7 +325,7 @@ public class Company_Fragment extends Fragment {
                         Type listType = new TypeToken<CompanyModel>() {
                         }.getType();
                         CompanyModel data = new Gson().fromJson(headerString, listType);
-                        List<CompanyModel.Company> companyList=data.getData();
+                        List<CompanyModel.Company> companyList = data.getData();
                         if (currentPage != PAGE_START) companyAdapter.removeLoading();
                         companyAdapter.addItems(companyList);
                         // check weather is last page or not
@@ -367,15 +351,203 @@ public class Company_Fragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        currentPage = PAGE_START;
+        isLastPage = false;
+        companyList.clear();
+        companyAdapter.clear();
+        try {
+            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+
+                CompanyList();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void broadcast_manu(CompanyModel.Company Company) {
+
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        TextView selected_block = bottomSheetDialog.findViewById(R.id.selected_block);
+        View line_block = bottomSheetDialog.findViewById(R.id.line_block);
+        View line_unblock = bottomSheetDialog.findViewById(R.id.line_unblock);
+        TextView selected_un_block = bottomSheetDialog.findViewById(R.id.selected_unblock);
+        TextView selected_delete = bottomSheetDialog.findViewById(R.id.selected_delete);
+        selected_block.setText(getString(R.string.add_blacklist));
+        selected_un_block.setText(getString(R.string.remove_blacklist));
+        selected_delete.setText(getString(R.string.delete_contact));
+
+        if (Company.getIs_blocked().equals("1")) {
+            selected_block.setVisibility(View.GONE);
+            line_block.setVisibility(View.GONE);
+            selected_un_block.setVisibility(View.VISIBLE);
+            line_unblock.setVisibility(View.VISIBLE);
+        } else {
+            line_block.setVisibility(View.VISIBLE);
+            selected_block.setVisibility(View.VISIBLE);
+            selected_un_block.setVisibility(View.GONE);
+            line_unblock.setVisibility(View.GONE);
+        }
+
+
+        selected_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_BLock(Company, "1", bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_un_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Contect_BLock(Company, "0", bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+
+                try {
+                    Company_Remove(Company, "0", bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
+    public void Contect_BLock(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("is_block", block);
+        JSONArray block_array = new JSONArray();
+        block_array.put(Company.getId());
+        paramObject.put("blockCompanyIds", block_array);
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        retrofitCalls.Block_Company(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
+                    try {
+                        companyAdapter.removeitem();
+                        CompanyList();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    bottomSheetDialog.cancel();
+                } else {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+    }
+
+    public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", "1");
+        paramObject.put("user_id", user_id);
+        paramObject.put("id", Company.getId());
+        paramObject.put("status", "D");
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        retrofitCalls.Company_add(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    try {
+                        companyAdapter.removeitem();
+                        CompanyList();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    bottomSheetDialog.cancel();
+                } else {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+    }
 
     public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
-        private boolean isLoaderVisible = false;
         public Context mCtx;
         TextView phone_txt;
         Contactdetail item;
-        String second_latter = "",current_latter = "";
+        String second_latter = "", current_latter = "";
+        private boolean isLoaderVisible = false;
         private List<CompanyModel.Company> companyList;
 
         public CompanyAdapter(Context context, List<CompanyModel.Company> companyList) {
@@ -385,7 +557,7 @@ public class Company_Fragment extends Fragment {
 
         @NonNull
         @Override
-        public CompanyAdapter.viewData  onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public CompanyAdapter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
                     return new CompanyAdapter.viewData(
@@ -398,6 +570,7 @@ public class Company_Fragment extends Fragment {
             }
 
         }
+
         @Override
         public int getItemViewType(int position) {
             if (isLoaderVisible) {
@@ -434,7 +607,6 @@ public class Company_Fragment extends Fragment {
         }
 
 
-
         CompanyModel.Company getItem(int position) {
             return companyList.get(position);
         }
@@ -442,12 +614,10 @@ public class Company_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CompanyAdapter.viewData holder, int position) {
             CompanyModel.Company WorkData = companyList.get(position);
-            if(Global.IsNotNull(WorkData)&&!WorkData.getName().equals("")){
-                if (WorkData.getIs_blocked().equals("1"))
-                {
+            if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
+                if (WorkData.getIs_blocked().equals("1")) {
                     holder.iv_block.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     holder.iv_block.setVisibility(View.GONE);
 
                 }
@@ -456,8 +626,6 @@ public class Company_Fragment extends Fragment {
 
                 holder.first_latter.setVisibility(View.VISIBLE);
                 holder.top_layout.setVisibility(View.VISIBLE);
-
-
 
 
                 String first_latter = WorkData.getName().substring(0, 1).toUpperCase();
@@ -485,27 +653,26 @@ public class Company_Fragment extends Fragment {
                 }
 
 
-
-                    String name = WorkData.getName();
-                    String add_text = "";
-                    String[] split_data = name.split(" ");
-                    try {
-                        for (int i = 0; i < split_data.length; i++) {
-                            if (i == 0) {
-                                add_text = split_data[i].substring(0, 1);
-                            } else {
-                                add_text = add_text + split_data[i].charAt(0);
-                                break;
-                            }
+                String name = WorkData.getName();
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
-                    holder.no_image.setText(add_text);
-                    holder.no_image.setVisibility(View.VISIBLE);
-                    holder.profile_image.setVisibility(View.GONE);
+                holder.no_image.setText(add_text);
+                holder.no_image.setVisibility(View.VISIBLE);
+                holder.profile_image.setVisibility(View.GONE);
 
 
                 holder.main_layout.setOnLongClickListener(new View.OnLongClickListener() {
@@ -520,13 +687,13 @@ public class Company_Fragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         SessionManager.setCompnay_detail(WorkData);
-                        Intent intent=new Intent(getActivity(),Add_Company_Activity.class);
-                        intent.putExtra("flag","read");
+                        Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                        intent.putExtra("flag", "read");
                         startActivity(intent);
                     }
                 });
 
-               }
+            }
 
         }
 
@@ -534,6 +701,7 @@ public class Company_Fragment extends Fragment {
         public int getItemCount() {
             return companyList.size();
         }
+
         public void updateList(List<CompanyModel.Company> list) {
             companyList = list;
             notifyDataSetChanged();
@@ -562,7 +730,7 @@ public class Company_Fragment extends Fragment {
                 no_image = itemView.findViewById(R.id.no_image);
                 top_layout = itemView.findViewById(R.id.top_layout);
                 main_layout = itemView.findViewById(R.id.main_layout);
-                iv_block=itemView.findViewById(R.id.iv_block);
+                iv_block = itemView.findViewById(R.id.iv_block);
             }
         }
 
@@ -572,203 +740,6 @@ public class Company_Fragment extends Fragment {
             }
 
         }
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        currentPage = PAGE_START;
-        isLastPage = false;
-        companyList.clear();
-        companyAdapter.clear();
-        try {
-            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-
-                CompanyList();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void broadcast_manu(CompanyModel.Company Company) {
-
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
-        bottomSheetDialog.setContentView(mView);
-        TextView selected_block = bottomSheetDialog.findViewById(R.id.selected_block);
-        View line_block=bottomSheetDialog.findViewById(R.id.line_block);
-        View line_unblock=bottomSheetDialog.findViewById(R.id.line_unblock);
-        TextView selected_un_block = bottomSheetDialog.findViewById(R.id.selected_unblock);
-        TextView selected_delete=bottomSheetDialog.findViewById(R.id.selected_delete);
-        selected_block.setText(getString(R.string.add_blacklist));
-        selected_un_block.setText(getString(R.string.remove_blacklist));
-        selected_delete.setText(getString(R.string.delete_contact));
-
-        if (Company.getIs_blocked().equals("1"))
-        {
-            selected_block.setVisibility(View.GONE);
-            line_block.setVisibility(View.GONE);
-            selected_un_block.setVisibility(View.VISIBLE);
-            line_unblock.setVisibility(View.VISIBLE);
-        }
-        else {
-            line_block.setVisibility(View.VISIBLE);
-            selected_block.setVisibility(View.VISIBLE);
-            selected_un_block.setVisibility(View.GONE);
-            line_unblock.setVisibility(View.GONE);
-        }
-
-
-        selected_block.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Block Contect
-
-                try {
-                    Contect_BLock(Company,"1",bottomSheetDialog);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-        selected_un_block.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Block Contect
-
-                try {
-                    Contect_BLock(Company,"0",bottomSheetDialog);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-        selected_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Block Contect
-
-                try {
-                    Company_Remove(Company,"0",bottomSheetDialog);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-        bottomSheetDialog.show();
-
-    }
-
-
-    public void Contect_BLock(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JSONObject obj = new JSONObject();
-        JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
-        paramObject.put("is_block",block);
-        JSONArray block_array = new JSONArray();
-        block_array.put(Company.getId());
-        paramObject.put("blockCompanyIds", block_array);
-        obj.put("data", paramObject);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Main Data is ", new Gson().toJson(gsonObject));
-        retrofitCalls.Block_Company(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
-                    try {
-                        companyAdapter.removeitem();
-                        CompanyList();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    bottomSheetDialog.cancel();
-                }
-                else {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                bottomSheetDialog.cancel();
-            }
-        });
-
-    }
-
-
-
-    public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
-        JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
-        paramObject.put("id",Company.getId());
-        paramObject.put("status","D");
-        obj.put("data", paramObject);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Main Data is ", new Gson().toJson(gsonObject));
-        retrofitCalls.Company_add(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    try {
-                        companyAdapter.removeitem();
-                        CompanyList();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    bottomSheetDialog.cancel();
-                }
-                else {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                bottomSheetDialog.cancel();
-            }
-        });
-
     }
 
 

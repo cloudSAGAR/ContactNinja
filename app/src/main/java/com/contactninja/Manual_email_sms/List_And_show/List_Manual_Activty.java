@@ -376,7 +376,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         Chnage Date:- 4-2-22
         */
 
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_solo_list_filter, null);
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.filter_solo_list, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(List_Manual_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         CheckBox ch_today = bottomSheetDialog.findViewById(R.id.ch_today);
