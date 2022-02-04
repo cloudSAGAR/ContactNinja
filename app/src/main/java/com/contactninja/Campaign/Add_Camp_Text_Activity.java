@@ -52,6 +52,7 @@ import org.json.JSONException;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Response;
@@ -182,7 +183,16 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     }.getType();
                     ContecModel userLinkedGmail = new Gson().fromJson(headerString, listType);
                     userLinkedGmailList = userLinkedGmail.getPhoneData();
+
+
                     Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+
+                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    phoneDatum.setId(0);
+                    phoneDatum.setIsDefault(1);
+                    phoneDatum.setPhoneNumber("System Assigned");
+                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    Collections.reverse(userLinkedGmailList);
                     if (userLinkedGmailList.size() == 1) {
                         iv_down.setVisibility(View.GONE);
                     } else if (userLinkedGmailList.size() == 1) {
@@ -190,6 +200,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     } else {
                         iv_down.setVisibility(View.VISIBLE);
                     }
+
                     for (int i = 0; i < userLinkedGmailList.size(); i++) {
 
                         Intent inten=getIntent();
@@ -218,6 +229,18 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
+
+                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    phoneDatum.setId(0);
+                    phoneDatum.setIsDefault(1);
+                    phoneDatum.setPhoneNumber("System Assigned");
+                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+
+                    ev_from.setText(userLinkedGmailList.get(0).getPhoneNumber());
+                    defult_id = userLinkedGmailList.get(0).getId();
+                    select_userLinkedGmailList.add(userLinkedGmailList.get(0));
+                    from_ac="USERSMS";
+                    from_ac_id= String.valueOf(userLinkedGmailList.get(0).getId());
 
                     //Global.openEmailAuth(from_ac.this);
                     // startActivity(new Intent(getApplicationContext(), Email_verification.class));

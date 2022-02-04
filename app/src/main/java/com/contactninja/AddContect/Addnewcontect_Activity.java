@@ -208,7 +208,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             save_button.setText("Save Contact");
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
             edt_FirstName.setEnabled(false);
             edt_lastname.setEnabled(false);
             iv_user.setOnClickListener(null);
@@ -259,7 +260,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             olld_image = Contect_data.getContactImage();
 
             save_button.setText("Edit Contact");
-        } else {
+        }
+        else {
+            iv_toolbar_manu_vertical.setVisibility(View.GONE);
             Log.e("Null", "No Call");
         }
         retrofitCalls = new RetrofitCalls(this);
