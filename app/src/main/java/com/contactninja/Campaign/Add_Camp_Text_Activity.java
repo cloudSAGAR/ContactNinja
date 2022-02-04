@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Manual_Sms_Send_Activty;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
@@ -58,7 +57,7 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
-public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick , ConnectivityReceiver.ConnectivityReceiverListener{
+public class Add_Camp_Text_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick , ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back,iv_down;
     BottomSheetDialog bottomSheetDialog_templateList1;
     TextView save_button, tv_use_tamplet, tv_step;
@@ -88,20 +87,20 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_step_start);
         mNetworkReceiver = new ConnectivityReceiver();
-        templateClick = Add_Camp_SMS_Activity.this;
+        templateClick = Add_Camp_Text_Activity.this;
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
         try {
-            if(Global.isNetworkAvailable(Add_Camp_SMS_Activity.this,mMainLayout)){
+            if(Global.isNetworkAvailable(Add_Camp_Text_Activity.this,mMainLayout)){
                 Contect_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            if (Global.isNetworkAvailable(Add_Camp_SMS_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Add_Camp_Text_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
             }
         } catch (JSONException e) {
@@ -157,7 +156,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
 
     private void Contect_list() throws JSONException {
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_SMS_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Text_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -171,7 +170,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
         paramObject.addProperty("perPage","10");
         paramObject.addProperty("page","1");
         obj.add("data", paramObject);
-        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -237,7 +236,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList = new BottomSheetDialog(Add_Camp_SMS_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList = new BottomSheetDialog(Add_Camp_Text_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
@@ -245,7 +244,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
         templet_list.setVisibility(View.VISIBLE);
 
         try {
-            if (Global.isNetworkAvailable(Add_Camp_SMS_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Add_Camp_Text_Activity.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -260,7 +259,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Add_Camp_SMS_Activity.this, mMainLayout);
+        Global.checkConnectivity(Add_Camp_Text_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -291,7 +290,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
 
 
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_SMS_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Text_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -299,7 +298,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -380,7 +379,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
 
     private void Hastag_list() throws JSONException {
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_SMS_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Text_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -388,7 +387,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -460,7 +459,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.save_button:
                 //Add Api Call
-                Global.hideKeyboard(Add_Camp_SMS_Activity.this);
+                Global.hideKeyboard(Add_Camp_Text_Activity.this);
                 Global.count = 1;
                 String body=edit_template.getText().toString();
                 if (body.equals("")) {
@@ -485,7 +484,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
 
     private void Email_bouttomSheet() {
         final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
-        bottomSheetDialog_templateList1 = new BottomSheetDialog(Add_Camp_SMS_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(Add_Camp_Text_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
@@ -774,7 +773,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
             obj.add("data", paramObject);
         }
 
-        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device,new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
@@ -818,7 +817,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
 
     private void CreateTemplate(String body_text, String s) throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_SMS_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Text_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -833,7 +832,7 @@ public class Add_Camp_SMS_Activity extends AppCompatActivity implements View.OnC
         paramObject.addProperty("type", "SMS");
 
         obj.add("data", paramObject);
-        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_SMS_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();

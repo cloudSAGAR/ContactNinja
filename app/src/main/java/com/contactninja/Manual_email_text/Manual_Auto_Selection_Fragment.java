@@ -1,7 +1,6 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_text;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;

@@ -1,4 +1,4 @@
-package com.contactninja.Manual_email_sms;
+package com.contactninja.Manual_email_text;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -114,7 +114,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
                     if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms"))
                     {
                       //  Toast.makeText(getApplicationContext(),SessionManager.getMessage_id(getApplicationContext()),Toast.LENGTH_LONG).show();
-                        Intent intent=new Intent(Manual_Auto_Task_Name_Activity.this, Manual_Sms_Send_Activty.class);
+                        Intent intent=new Intent(Manual_Auto_Task_Name_Activity.this, Manual_Text_Send_Activty.class);
                         intent.putExtra("number",SessionManager.getMessage_number(getApplicationContext()));
                         intent.putExtra("id",Integer.parseInt(SessionManager.getMessage_id(getApplicationContext())));
                         intent.putExtra("type",SessionManager.getMessage_tyep(getApplicationContext()));
@@ -135,7 +135,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
                     }
                     else {
                         if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
-                            Intent intent = new Intent(getApplicationContext(), Manual_Sms_Contact_Activity.class);
+                            Intent intent = new Intent(getApplicationContext(), Manual_Text_Contact_Activity.class);
                             intent.putExtra("task_name", ev_titale.getText().toString());
                             startActivity(intent);
                             finish();

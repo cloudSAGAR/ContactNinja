@@ -44,7 +44,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
-import com.contactninja.Manual_email_sms.List_And_show.List_Manual_Activty;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Csv_InviteListData;
