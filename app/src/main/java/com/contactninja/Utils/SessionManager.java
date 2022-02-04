@@ -19,6 +19,7 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,6 +40,7 @@ public class SessionManager {
     public static final String Add_Contect_Detail = "contect_detail";
     public static final String Fcm_Token = "fcm_token";
     public static final String GroupListData = "grouplistdata";
+    public static final String UserLinkedGmailList = "userLinkedGmailList";
     public static final String Group_Model = "group_model";
     public static final String Contect_Model = "contect_model";
     public static final String Contect_flag = "contect_flag";
@@ -709,6 +711,30 @@ public class SessionManager {
     public void setlogin_type(String plantype) {
         editor.putString(Login_type, plantype);
         editor.commit();
+    }
+
+
+
+    public static List<UserLinkedList.UserLinkedGmail> getUserLinkedGmail(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(UserLinkedGmailList, null);
+        Type type = new TypeToken<ArrayList<UserLinkedList.UserLinkedGmail>>() {
+        }.getType();
+        List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = gson.fromJson(json, type);
+        if (userLinkedGmailList == null) {
+            userLinkedGmailList = new ArrayList<>();
+        }
+        return userLinkedGmailList;
+
+    }
+
+    public static void setUserLinkedGmail(Context context, List<UserLinkedList.UserLinkedGmail> userLinkedGmailList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userLinkedGmailList);
+        editor.putString(UserLinkedGmailList, json);
+        Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+        editor.apply();
     }
 
 

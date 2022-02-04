@@ -3,12 +3,14 @@ package com.contactninja.Setting;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -18,7 +20,10 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.Manual_email_text.Manual_Mail_Send_Activty;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -27,11 +32,15 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.util.List;
 
 import retrofit2.Response;
 
@@ -116,12 +125,17 @@ public class Email_verification extends AppCompatActivity implements Connectivit
                     @Override
                     public void success(Response<ApiResponse> response) {
                         if (response.body().getHttp_status() == 200) {
-                            loadingDialog.cancelLoading();
                             webEmail.clearHistory();
                             webEmail.clearFormData();
                             webEmail.clearCache(true);
 
-                            finish();
+                            try {
+                                if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)){
+                                    Mail_list();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
                         } else {
                             loadingDialog.cancelLoading();
@@ -133,6 +147,41 @@ public class Email_verification extends AppCompatActivity implements Connectivit
                         loadingDialog.cancelLoading();
                     }
                 });
+    }
+    private void Mail_list() throws JSONException {
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Email_verification.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp","1");
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Email_verification.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail = new Gson().fromJson(headerString, listType);
+                    List<UserLinkedList.UserLinkedGmail> setUserLinkedGmail = userLinkedGmail.getUserLinkedGmail();
+                    sessionManager.setUserLinkedGmail(getApplicationContext(),setUserLinkedGmail);
+                    finish();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
     }
 
     private class HelloWebViewClient extends WebViewClient {

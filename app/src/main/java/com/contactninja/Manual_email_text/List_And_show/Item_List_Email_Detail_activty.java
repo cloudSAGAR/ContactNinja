@@ -223,14 +223,6 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        try {
-                            if(Global.isNetworkAvailable(Item_List_Email_Detail_activty.this,mMainLayout)){
-                                Mail_list();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
                     }
 
                 }
@@ -241,6 +233,35 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                 loadingDialog.cancelLoading();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Mail_listDetails();
+    }
+
+    private void Mail_listDetails() {
+
+        userLinkedGmailList = sessionManager.getUserLinkedGmail(getApplicationContext());
+        Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+        if (userLinkedGmailList.size() == 0) {
+            startActivity(new Intent(getApplicationContext(), Email_verification.class));
+            iv_more.setVisibility(View.GONE);
+        } else if (userLinkedGmailList.size() == 1) {
+            iv_more.setVisibility(View.GONE);
+        } else {
+            iv_more.setVisibility(View.VISIBLE);
+        }
+        for (int i = 0; i < userLinkedGmailList.size(); i++) {
+            if (userLinkedGmailList.get(i).getId().toString().equals(manualDetails.getSentTblId().toString())) {
+                ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
+                defult_id = userLinkedGmailList.get(i).getId();
+                select_userLinkedGmailList.add(userLinkedGmailList.get(i));
+                from_ac=userLinkedGmailList.get(i).getType();
+                from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
+            }
+        }
     }
 
     @Override
@@ -859,6 +880,8 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick);
                     templet_list.setAdapter(templateAdepter);
 
+                }else {
+                    bottomSheetDialog_templateList.dismiss();
                 }
             }
 
@@ -1053,61 +1076,6 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         }
     }
 
-    private void Mail_list() throws JSONException {
-
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Email_Detail_activty.this);
-        String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("include_smtp","1");
-        obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Item_List_Email_Detail_activty.this),Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    userLinkedGmailList.clear();
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<UserLinkedList>() {
-                    }.getType();
-                    UserLinkedList userLinkedGmail = new Gson().fromJson(headerString, listType);
-                    userLinkedGmailList = userLinkedGmail.getUserLinkedGmail();
-                    Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
-                    if (userLinkedGmailList.size() == 1) {
-                        iv_more.setVisibility(View.GONE);
-                    } else if (userLinkedGmailList.size() == 1) {
-                        iv_more.setVisibility(View.GONE);
-                    } else {
-                        iv_more.setVisibility(View.VISIBLE);
-                    }
-                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
-                        if (userLinkedGmailList.get(i).getId().toString().equals(manualDetails.getSentTblId().toString())) {
-                            ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
-                            defult_id = userLinkedGmailList.get(i).getId();
-                            select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-                            from_ac=userLinkedGmailList.get(i).getType();
-                            from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
-
-                        }
-                    }
-                    Log.e("List Is", new Gson().toJson(userLinkedGmailList));
-                } else {
-                     startActivity(new Intent(getApplicationContext(), Email_verification.class));
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-
-
-    }
 
     private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
         loadingDialog.showLoadingDialog();

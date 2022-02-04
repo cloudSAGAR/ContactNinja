@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -202,8 +203,13 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     }
                 }
             }
+            if(contectListData.size()!=0) {
+                groupContectAdapter.addAll(contectListData);
+            }else {
+
+                finish();
+            }
             // contectListData.addAll(SessionManager.getContectList(getApplicationContext()).get(0).getContacts());
-            groupContectAdapter.addAll(contectListData);
             groupContectAdapter.notifyDataSetChanged();
             num_count.setText(contectListData.size() + " Contacts");
         }

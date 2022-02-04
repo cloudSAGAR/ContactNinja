@@ -21,6 +21,7 @@ import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.List_And_show.List_Manual_Activty;
+import com.contactninja.Model.Timezon;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;
 import com.contactninja.R;
@@ -38,13 +39,9 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
 
@@ -78,20 +75,16 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-
-     /*   try {
-            if(Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                Refreess_token();
+        TimeZone tz = TimeZone.getDefault();
+        Log.e("offset", tz.getID());
+        if (Global.IsNotNull(user_data.getUser().getWorkingHoursList())||user_data.getUser().getWorkingHoursList().size() == 0) {
+            try {
+                if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                    Timezone( tz.getID());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-        try {
-            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                TimeZooneUpdate();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         intentView(view);
@@ -242,45 +235,62 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void TimeZooneUpdate() throws JSONException {
+    private void Timezone(String id) throws JSONException {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Timezone(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
 
-        Calendar cal = Calendar.getInstance();
-        TimeZone tz1 = cal.getTimeZone();
-        Calendar calendar = Calendar.getInstance(tz1,
-                Locale.getDefault());
 
-        Date currentLocalTime = calendar.getTime();
-        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
-        String localTime = date.format(currentLocalTime);
-        String offset = localTime.substring(0, 1);
+                Gson gson = new Gson();
+                String headerString = gson.toJson(response.body().getData());
+                Type listType = new TypeToken<ArrayList<Timezon.TimezonData>>() {
+                }.getType();
+                List<Timezon.TimezonData> timezonDataList = new Gson().fromJson(headerString, listType);
+                    for (int i=0;i<timezonDataList.size();i++){
+                        if(id.equals(timezonDataList.get(i).getTzname())){
+                            Working_hour(timezonDataList.get(i).getValue());
+                            break;
+                        }
+                    }
 
-//      //  Log.e("GMT offset is %s hours",""+ TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS));
 
-        String time = offset + TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS);
-        Log.e("offset", time);
+            }
 
-//        Log.e("Size is",new Gson().toJson(user_data.getUser().getWorkingHoursList()));
-        if (user_data.getUser().getWorkingHoursList().size() == 0) {
-            JsonObject obj = new JsonObject();
-            JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("diff_minutes", time);
-            paramObject.addProperty("is_default", "1");
-            paramObject.addProperty("organization_id", "1");
-            paramObject.addProperty("team_id", "1");
-            paramObject.addProperty("user_id", user_id);
-            obj.add("data", paramObject);
-            retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-                @Override
-                public void success(Response<ApiResponse> response) {
-                    //Log.e("Response is",new Gson().toJson(response));
-                }
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
 
-                @Override
-                public void error(Response<ApiResponse> response) {
-                }
-            });
-        }
+//
 
+
+    }
+
+    private void Working_hour(Integer value) {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("timezone_id", value);
+        paramObject.addProperty("is_default", "1");
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
 
     }
 }

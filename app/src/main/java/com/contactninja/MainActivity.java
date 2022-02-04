@@ -534,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             user_data.getUser().setIs_contact_exist(1);
                             SessionManager.setUserdata(getApplicationContext(), user_data);
 
-                            loadingDialog.cancelLoading();
+                         //   loadingDialog.cancelLoading();
                             try {
                                 limit = csv_inviteListData.size();
                                 ContectEvent();

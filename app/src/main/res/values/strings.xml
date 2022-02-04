@@ -321,7 +321,7 @@ Number</string>
     <string name="Current_Plan">Current Plan</string>
     <string name="campaign_add">Create new campaign</string>
     <string name="campaign">Campaign</string>
-    <string name="manual_task_create">Manual task</string>
+    <string name="manual_task_create">Task</string>
     <string name="campaign_alert_txt">Click to create \n campaign</string>
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or Text sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
     <string name="campaign_step_one">Select your step</string>
@@ -464,5 +464,6 @@ Number</string>
     </string-array>
 
     <string name="contect_block">This Contect Block</string>
+    <string name="email_contact">Please email in contact</string>
 
 </resources>
