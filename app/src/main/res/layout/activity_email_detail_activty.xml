@@ -57,6 +57,8 @@
                     </TextView>
                     <TextView
                         android:id="@+id/tv_taskname"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         style="@style/tv_Medium_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -95,6 +97,9 @@
                         android:background="@color/add_contect_transpernt"
                         android:enabled="false"
                         android:focusable="true"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:scrollHorizontally="true"
                         android:gravity="left|center"
                         android:imeOptions="actionDone"
                         android:textColor="@color/text_reg"

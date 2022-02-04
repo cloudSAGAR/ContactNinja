@@ -78,7 +78,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
     RecyclerView rv_email_list;
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
-    EmailAdepter emailAdepter;
+    ListItemAdepter emailAdepter;
     List<ManualTaskModel> manualTaskModelList = new ArrayList<>();
     int perPage = 20;
     String Filter = "";//FINISHED / TODAY / UPCOMING/ DUE/ SKIPPED / PAUSED
@@ -117,7 +117,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             }
         });
         rv_email_list.setLayoutManager(layoutManager);
-        emailAdepter = new EmailAdepter(List_Manual_Activty.this, new ArrayList<>());
+        emailAdepter = new ListItemAdepter(List_Manual_Activty.this, new ArrayList<>());
         rv_email_list.setAdapter(emailAdepter);
         rv_email_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
@@ -700,14 +700,14 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
     }
 
 
-    public class EmailAdepter extends RecyclerView.Adapter<EmailAdepter.viewData> {
+    public class ListItemAdepter extends RecyclerView.Adapter<ListItemAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
         List<ManualTaskModel> manualTaskModelList;
         private boolean isLoaderVisible = false;
 
-        public EmailAdepter(Context context, List<ManualTaskModel> manualTaskModelList) {
+        public ListItemAdepter(Context context, List<ManualTaskModel> manualTaskModelList) {
             this.mCtx = context;
             this.manualTaskModelList = manualTaskModelList;
         }
@@ -723,14 +723,14 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
 
         @NonNull
         @Override
-        public EmailAdepter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ListItemAdepter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
-                    return new EmailAdepter.viewData(
+                    return new ListItemAdepter.viewData(
                             LayoutInflater.from(parent.getContext()).inflate(R.layout.item_emailactivitylist, parent, false));
                 case VIEW_TYPE_LOADING:
-                    return new EmailAdepter.ProgressHolder(
+                    return new ListItemAdepter.ProgressHolder(
                             LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
                 default:
                     return null;
@@ -778,7 +778,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
 
         @SuppressLint("LogConditional")
         @Override
-        public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
+        public void onBindViewHolder(@NonNull ListItemAdepter.viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
             if (Global.IsNotNull(item.getType()) && !item.getType().equals("")) {
                 if (item.getType().equals("SMS")) {
@@ -793,8 +793,8 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 }
 
                 String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
-                holder.tv_username.setText(conactname);
-                holder.tv_task_description.setText(item.getTask_name());
+                holder.tv_username.setText(Global.setFirstLetter(conactname));
+                holder.tv_task_description.setText(Global.setFirstLetter(item.getTask_name()));
                 //   holder.tv_status.setText(item.getStatus());
                 try {
                     String time = Global.getDate(item.getStartTime());
@@ -847,7 +847,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             return manualTaskModelList.size();
         }
 
-        public class ProgressHolder extends EmailAdepter.viewData {
+        public class ProgressHolder extends ListItemAdepter.viewData {
             ProgressHolder(View itemView) {
                 super(itemView);
             }
