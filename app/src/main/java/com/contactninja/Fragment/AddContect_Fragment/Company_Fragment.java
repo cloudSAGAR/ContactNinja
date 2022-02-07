@@ -338,7 +338,8 @@ public class Company_Fragment extends Fragment {
                         }.getType();
                         CompanyModel data = new Gson().fromJson(headerString, listType);
                         List<CompanyModel.Company> companyList = data.getData();
-                        if (currentPage != PAGE_START) companyAdapter.removeLoading();
+                        if (currentPage != PAGE_START)
+                            companyAdapter.removeLoading();
                         companyAdapter.addItems(companyList);
                         // check weather is last page or not
                         if (data.getTotal() > companyAdapter.getItemCount()) {
@@ -373,7 +374,6 @@ public class Company_Fragment extends Fragment {
         companyAdapter.clear();
         try {
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-
                 CompanyList();
             }
         } catch (JSONException e) {
@@ -483,6 +483,7 @@ public class Company_Fragment extends Fragment {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
                     try {
                         companyAdapter.removeitem();
+                        currentPage = 1;
                         CompanyList();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -527,6 +528,7 @@ public class Company_Fragment extends Fragment {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
                     try {
                         companyAdapter.removeitem();
+                        currentPage = 1;
                         CompanyList();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -621,8 +623,8 @@ public class Company_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CompanyAdapter.viewData holder, int position) {
             CompanyModel.Company WorkData = companyList.get(position);
-            if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
-                if (WorkData.getIs_blocked().equals("1")) {
+            if (Global.IsNotNull(WorkData) && ! WorkData.getName().equals("")) {
+                if (WorkData.getIs_blocked().equals(1)) {
                     holder.iv_block.setVisibility(View.VISIBLE);
                 } else {
                     holder.iv_block.setVisibility(View.GONE);
