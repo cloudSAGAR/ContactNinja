@@ -97,22 +97,26 @@
                             </View>
                         </LinearLayout>
                         <LinearLayout
+                            android:id="@+id/layout_name"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/shape_5_white_ccc_line"
                             android:layout_width="match_parent"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:layout_height="@dimen/_50sdp">
-                            <EditText
+
+                            <TextView
+                                android:layout_gravity="left|center"
+                                android:gravity="center|left"
                                 android:id="@+id/tv_name"
-                                android:background="@color/add_contect_transpernt"
-                                android:layout_marginEnd="@dimen/_10sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_width="match_parent"
-                                android:focusable="true"
                                 style="@style/tv_Medium_14"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:background="@color/add_contect_transpernt"
+                                android:focusable="true"
                                 android:textColor="@color/text_reg"
-                                android:textColorHint="@color/text_reg"
-                                android:layout_height="match_parent"/>
+                                android:textColorHint="@color/text_reg" />
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout

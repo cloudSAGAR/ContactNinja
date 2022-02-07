@@ -3,7 +3,6 @@ package com.contactninja;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -162,8 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IntentUI();
         Calendar cal = Calendar.getInstance();
         TimeZone tz1 = cal.getTimeZone();
-        Calendar calendar = Calendar.getInstance(tz1,
-                Locale.getDefault());
+        Calendar calendar = Calendar.getInstance(tz1,Locale.getDefault());
         Date currentLocalTime = calendar.getTime();
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
@@ -281,7 +279,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //String phonne_id=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
 
 
-
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
             user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
@@ -294,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
                 countryCode = numberProto.getCountryCode();
                 user_phone_number = user_phone_number.replace(" ", "");
-             //   Log.e("Mobile Number ", user_phone_number);
+                //   Log.e("Mobile Number ", user_phone_number);
                 user_phone_number = user_phone_number.replace("-", "");
                 if (!user_phone_number.contains("+")) {
                     user_phone_number = "+" + countryCode + user_phone_number;
@@ -349,12 +346,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             user_image,
                             user_des,
                             "", ""));
-                    String email="";
+                    String email = "";
                     for (int i = 0; i < emailModels.size(); i++) {
-           //             Log.e("Phone ID", userName);
-         //               Log.e("Email Id", emailModels.get(i).getId());
+                        //             Log.e("Phone ID", userName);
+                        //               Log.e("Email Id", emailModels.get(i).getId());
                         if (userName.equals(emailModels.get(i).getId())) {
-                           email = emailModels.get(i).getName();
+                            email = emailModels.get(i).getName();
                         } else {
                             // contect_email="";
                         }
@@ -393,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
 
-       // Log.e("CSV LIST", new Gson().toJson(csv_inviteListData));
+        // Log.e("CSV LIST", new Gson().toJson(csv_inviteListData));
         if (csv_inviteListData.size() == 0) {
             loadingDialog.cancelLoading();
             //Log.e("Csv Size is ","0");
@@ -408,12 +405,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 } else {
                     //Upload Contect Then If Call
-                     getTasks();
+                    getTasks();
 
                 }
             } else {
                 //Upload Contect Then If Call
-                 getTasks();
+                getTasks();
 
             }
         }
@@ -1112,6 +1109,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         paramObject.put("user_id", user_id);
         paramObject.put("organization_id", "1");
         paramObject.put("team_id", "1");
+        String str = android.os.Build.MODEL;
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        int version = Build.VERSION.SDK_INT;
+        String versionRelease = Build.VERSION.RELEASE;
+        paramObject.put("imei",str+" "+versionRelease);
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());

@@ -1408,7 +1408,12 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             jsonArray.put(paramObject1);
         }
-
+        String str = android.os.Build.MODEL;
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        int version = Build.VERSION.SDK_INT;
+        String versionRelease = Build.VERSION.RELEASE;
+        paramObject.put("imei",str+" "+versionRelease);
         paramObject.put("contact_detail", jsonArray);
 
 

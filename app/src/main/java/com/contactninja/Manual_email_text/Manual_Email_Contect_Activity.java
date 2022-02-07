@@ -24,13 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
@@ -60,6 +53,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -202,9 +201,9 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     }
                 }
             }
-            if(contectListData.size()!=0) {
+            if (contectListData.size() != 0) {
                 groupContectAdapter.addAll(contectListData);
-            }else {
+            } else {
 
                 finish();
             }
@@ -219,10 +218,10 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
 
 
     public void call_updatedata() {
-        if (sessionManager.getGroupList(getApplicationContext()).size() != 0) {
+        if (SessionManager.getGroupList(getApplicationContext()).size() != 0) {
             select_contectListData.clear();
             pre_seleact.clear();
-            pre_seleact.addAll(sessionManager.getGroupList(getApplicationContext()));
+            pre_seleact.addAll(SessionManager.getGroupList(getApplicationContext()));
             select_contectListData.addAll(pre_seleact);
 
 
@@ -481,16 +480,14 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     holder1.first_latter.setVisibility(View.VISIBLE);
                     holder1.top_layout.setVisibility(View.VISIBLE);
 
-                    if (contacts.get(position).getIs_blocked().equals(1))
-                    {
+                    if (contacts.get(position).getIs_blocked().equals(1)) {
 
                         holder1.iv_block.setVisibility(View.VISIBLE);
                         holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                         holder1.remove_contect_icon.setVisibility(View.GONE);
                         holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
 
-                    }
-                    else {
+                    } else {
                         holder1.iv_block.setVisibility(View.GONE);
                         holder1.userName.setTextColor(Color.parseColor("#4A4A4A"));
 
@@ -553,11 +550,9 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                         public void onClick(View view) {
 
 
-                            if (contacts.get(position).getIs_blocked().equals(1))
-                            {
-                                Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.contect_block),false);
-                            }
-                            else {
+                            if (contacts.get(position).getIs_blocked().equals(1)) {
+                                Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.contect_block), false);
+                            } else {
                                 List<ContectListData.Contact.ContactDetail> detailList = new ArrayList<>();
                                 detailList.clear();
                                 for (int i = 0; i < contacts.get(position).getContactDetails().size(); i++) {
@@ -602,8 +597,6 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     });
 
 
-
-
                     break;
 
                 case LOADING:
@@ -623,7 +616,6 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
             // Log.e("Size is :: ",contacts.size()+"");
             return contacts == null ? 0 : contacts.size();
         }
-
 
 
         @Override
@@ -678,7 +670,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
-                iv_block=itemView.findViewById(R.id.iv_block);
+                iv_block = itemView.findViewById(R.id.iv_block);
                 first_latter = itemView.findViewById(R.id.first_latter);
                 userName = itemView.findViewById(R.id.username);
                 userNumber = itemView.findViewById(R.id.user_number);
