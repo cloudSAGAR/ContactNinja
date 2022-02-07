@@ -24,16 +24,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -640,17 +643,15 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Manual_Text_Send_Activty.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                templateList.clear();
                 if (response.body().getHttp_status() == 200) {
-                    loadingDialog.cancelLoading();
-                    templateList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
                     TemplateList list = new Gson().fromJson(headerString, listType);
                     templateList=list.getTemplate();
-                }else {
-                    bottomSheetDialog_templateList.dismiss();
                 }
 
                 TemplateList.Template template1 = new TemplateList.Template();
@@ -700,6 +701,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                         R.layout.add_titale_for_templet,
                         null);
         builder.setView(customLayout);
+        CoordinatorLayout c_layout = customLayout.findViewById(R.id.c_layout);
         EditText editText = customLayout.findViewById(R.id.editText);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
         TextView tv_add = customLayout.findViewById(R.id.tv_add);
@@ -711,7 +713,20 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             @Override
             public void onClick(View v) {
 
-                dialog.dismiss();
+                if (editText.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                } else {
+                    try {
+                        if (Global.isNetworkAvailable(Manual_Text_Send_Activty.this, MainActivity.mMainLayout)) {
+                            if (isValidation(editText.getText().toString().trim(), dialog)) {
+                                CreateTemplate(editText.getText().toString().trim());
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
@@ -723,6 +738,70 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
 
     }
 
+    private void CreateTemplate(String template_name) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Manual_Text_Send_Activty.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("template_name", template_name);
+        String template_slug = template_name.toUpperCase().replace(" ", "_");
+        paramObject.addProperty("template_slug", template_slug);
+        paramObject.addProperty("content_body", edit_template.getText().toString().trim());
+        paramObject.addProperty("type", "EMAIL");
+
+        obj.add("data", paramObject);
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(Manual_Text_Send_Activty.this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    onBackPressed();
+
+                } else {
+                    bottomSheetDialog_templateList.dismiss();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
+    }
+
+    private boolean isValidation(String name, AlertDialog dialog) {
+
+        if (name.equals("")) {
+            dialog.dismiss();
+            bottomSheetDialog_templateList.dismiss();
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+        } else if (edit_template.getText().toString().equals("")) {
+            bottomSheetDialog_templateList.dismiss();
+            dialog.dismiss();
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+        } else {
+            return true;
+        }
+
+        return false;
+    }
 
 
     @Override

@@ -439,9 +439,9 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Manual_Email_Send_Activty.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+                templateList.clear();
+                loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    loadingDialog.cancelLoading();
-                    templateList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
@@ -449,8 +449,6 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
                     TemplateList list = new Gson().fromJson(headerString, listType);
                     templateList=list.getTemplate();
 
-                }else {
-                    bottomSheetDialog_templateList.dismiss();
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
                 template1.setTemplateName("Save current as template");
@@ -500,6 +498,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
                         R.layout.add_titale_for_templet,
                         null);
         builder.setView(customLayout);
+        CoordinatorLayout c_layout = customLayout.findViewById(R.id.c_layout);
         EditText editText = customLayout.findViewById(R.id.editText);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
         TextView tv_add = customLayout.findViewById(R.id.tv_add);
@@ -510,17 +509,20 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    if (Global.isNetworkAvailable(Manual_Email_Send_Activty.this, MainActivity.mMainLayout)) {
-                        if (isValidation(editText.getText().toString().trim(),dialog))
-                        {
-                            CreateTemplate(editText.getText().toString().trim());
+                if (editText.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                } else {
+                    try {
+                        if (Global.isNetworkAvailable(Manual_Email_Send_Activty.this, MainActivity.mMainLayout)) {
+                            if (isValidation(editText.getText().toString().trim(), dialog)) {
+                                CreateTemplate(editText.getText().toString().trim());
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {

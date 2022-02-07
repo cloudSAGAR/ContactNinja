@@ -328,9 +328,9 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                templateList.clear();
                 if (response.body().getHttp_status() == 200) {
-                    loadingDialog.cancelLoading();
-                    templateList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
@@ -338,8 +338,6 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     TemplateList list = new Gson().fromJson(headerString, listType);
                     templateList=list.getTemplate();
 
-                }else {
-                    bottomSheetDialog_templateList.dismiss();
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
                 template1.setTemplateName("Save current as template");

@@ -40,6 +40,7 @@ import com.contactninja.Model.HastagList;
 import com.contactninja.Model.ManualTaskDetailsModel;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -75,7 +76,7 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back, iv_body, iv_toolbar_manu1;
-    TextView bt_done, tv_status, tv_date, tv_use_tamplet,tv_taskname,tv_stap;
+    TextView bt_done, tv_status, tv_date, tv_use_tamplet, tv_taskname, tv_stap;
     CoordinatorLayout mMainLayout;
     EditText ev_from, ev_to, ev_subject, edit_compose, ev_titale;
     TemplateAdepter templateAdepter;
@@ -85,8 +86,8 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList = new ArrayList<>();
     String filePath;
-    Integer id=0;
-    String p_number = "",  task_name = "", from_ac = "", from_ac_id = "";
+    Integer id = 0;
+    String p_number = "", task_name = "", from_ac = "", from_ac_id = "";
     BottomSheetDialog bottomSheetDialog_templateList1;
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
@@ -94,10 +95,71 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     List<ContecModel.PhoneDatum> select_userLinkedGmailList = new ArrayList<>();
     List<ContecModel.PhoneDatum> userLinkedGmailList = new ArrayList<>();
     ImageView iv_down;
+    LinearLayout lay_seq_stap, lay_taskname;
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
-LinearLayout lay_seq_stap,lay_taskname;
 
+    public static void compareDates(String d1, String d2, TextView tv_status) {
+        try {
+            // If you already have date objects then skip 1
+
+            //1
+            // Create 2 dates starts
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
+            Date date1 = sdf.parse(d1);
+            Date date2 = sdf.parse(d2);
+
+            Log.e("Date1", sdf.format(date1));
+            Log.e("Date2", sdf.format(date2));
+
+            // Create 2 dates ends
+            //1
+
+            // Date object is having 3 methods namely after,before and equals for comparing
+            // after() will return true if and only if date1 is after date 2
+            if (date1.after(date2)) {
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                Log.e("", "Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if (date1.before(date2)) {
+
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+                Log.e("", "Date1 is before Date2");
+                System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if (date1.equals(date2)) {
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Today");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                Log.e("", "Date1 is equal Date2");
+                System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,10 +172,10 @@ LinearLayout lay_seq_stap,lay_taskname;
 
         IntentUI();
         try {
-            Intent intent=getIntent();
-            Bundle bundle=intent.getExtras();
-            id=bundle.getInt("record_id");
-        }catch (Exception e){
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            id = bundle.getInt("record_id");
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
@@ -137,7 +199,7 @@ LinearLayout lay_seq_stap,lay_taskname;
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("record_id",id);
+        paramObject.addProperty("record_id", id);
 
         obj.add("data", paramObject);
         retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
@@ -154,7 +216,7 @@ LinearLayout lay_seq_stap,lay_taskname;
                         Type listType = new TypeToken<ManualTaskDetailsModel>() {
                         }.getType();
                         ManualTaskDetailsModel manualTaskDetailsModel = new Gson().fromJson(headerString, listType);
-                        manualDetails= manualTaskDetailsModel.get_0();
+                        manualDetails = manualTaskDetailsModel.get_0();
                         setData();
 
                         try {
@@ -210,19 +272,19 @@ LinearLayout lay_seq_stap,lay_taskname;
         if (!Global.IsNotNull(manualDetails.getSeqId()) || manualDetails.getSeqId() != 0) {
             lay_seq_stap.setVisibility(View.VISIBLE);
             lay_taskname.setVisibility(View.GONE);
-            tv_stap.setText("Step#"+manualDetails.getStep_no()+" Manual sms -");
+            tv_stap.setText("Step#" + manualDetails.getStep_no() + " Manual sms -");
 
-        }else {
+        } else {
             lay_seq_stap.setVisibility(View.GONE);
             lay_taskname.setVisibility(View.VISIBLE);
         }
     }
 
     private void IntentUI() {
-        tv_stap=findViewById(R.id.tv_stap);
-        tv_taskname=findViewById(R.id.tv_taskname);
-        lay_seq_stap=findViewById(R.id.lay_seq_stap);
-        lay_taskname=findViewById(R.id.lay_taskname);
+        tv_stap = findViewById(R.id.tv_stap);
+        tv_taskname = findViewById(R.id.tv_taskname);
+        lay_seq_stap = findViewById(R.id.lay_seq_stap);
+        lay_taskname = findViewById(R.id.lay_taskname);
         ev_titale = findViewById(R.id.ev_titale);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -374,7 +436,7 @@ LinearLayout lay_seq_stap,lay_taskname;
                         case "SNOOZE":
                             Intent intent = new Intent(getApplicationContext(), Manual_Shooz_Time_Date_Activity.class);
                             intent.putExtra("id", manualDetails.getId());
-                            intent.putExtra("Type","SMS");
+                            intent.putExtra("Type", "SMS");
                             startActivity(intent);
                             finish();
                             break;
@@ -433,67 +495,7 @@ LinearLayout lay_seq_stap,lay_taskname;
             }
         });
     }
-    public static void compareDates(String d1, String d2, TextView tv_status) {
-        try {
-            // If you already have date objects then skip 1
 
-            //1
-            // Create 2 dates starts
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-            Date date1 = sdf.parse(d1);
-            Date date2 = sdf.parse(d2);
-
-            Log.e("Date1", sdf.format(date1));
-            Log.e("Date2", sdf.format(date2));
-
-            // Create 2 dates ends
-            //1
-
-            // Date object is having 3 methods namely after,before and equals for comparing
-            // after() will return true if and only if date1 is after date 2
-            if (date1.after(date2)) {
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Due");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                Log.e("", "Date1 is after Date2");
-            }
-            // before() will return true if and only if date1 is before date2
-            if (date1.before(date2)) {
-
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Upcoming");
-                    tv_status.setTextColor(Color.parseColor("#2DA602"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-
-                Log.e("", "Date1 is before Date2");
-                System.out.println("Date1 is before Date2");
-            }
-
-            //equals() returns true if both the dates are equal
-            if (date1.equals(date2)) {
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Today");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                Log.e("", "Date1 is equal Date2");
-                System.out.println("Date1 is equal Date2");
-            }
-
-            System.out.println();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-    }
     private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
@@ -560,8 +562,7 @@ LinearLayout lay_seq_stap,lay_taskname;
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200)
-                {
+                if (response.body().getHttp_status() == 200) {
                     userLinkedGmailList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -569,11 +570,11 @@ LinearLayout lay_seq_stap,lay_taskname;
                     }.getType();
                     ContecModel userLinkedGmail = new Gson().fromJson(headerString, listType);
                     userLinkedGmailList = userLinkedGmail.getPhoneData();
-                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
                     phoneDatum.setIsDefault(1);
                     phoneDatum.setPhoneNumber("System Assigned");
-                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    userLinkedGmailList.add(userLinkedGmailList.size(), phoneDatum);
                     Collections.reverse(userLinkedGmailList);
 
                     Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
@@ -596,19 +597,18 @@ LinearLayout lay_seq_stap,lay_taskname;
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
-                }
-                else {
-                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                } else {
+                    ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
                     phoneDatum.setIsDefault(1);
                     phoneDatum.setPhoneNumber("System Assigned");
-                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    userLinkedGmailList.add(userLinkedGmailList.size(), phoneDatum);
 
                     ev_from.setText(userLinkedGmailList.get(0).getPhoneNumber());
                     defult_id = userLinkedGmailList.get(0).getId();
                     select_userLinkedGmailList.add(userLinkedGmailList.get(0));
-                    from_ac="USERSMS";
-                    from_ac_id= String.valueOf(userLinkedGmailList.get(0).getId());
+                    from_ac = "USERSMS";
+                    from_ac_id = String.valueOf(userLinkedGmailList.get(0).getId());
 
                 }
             }
@@ -643,8 +643,6 @@ LinearLayout lay_seq_stap,lay_taskname;
                     }.getType();
                     HastagList hastagList = new Gson().fromJson(headerString, listType);
                     templateTextList = hastagList.getHashtag();
-
-
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
@@ -744,7 +742,7 @@ LinearLayout lay_seq_stap,lay_taskname;
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         bottomSheetDialog_templateList = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
-          LinearLayout layout_list_template=bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
+        LinearLayout layout_list_template = bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
         layout_list_template.setVisibility(View.VISIBLE);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
@@ -773,24 +771,22 @@ LinearLayout lay_seq_stap,lay_taskname;
         paramObject.addProperty("type", "SMS");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("perPage", 10000000);
-        paramObject.addProperty("page",1);
+        paramObject.addProperty("page", 1);
         obj.add("data", paramObject);
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                templateList.clear();
                 if (response.body().getHttp_status() == 200) {
-                    loadingDialog.cancelLoading();
-                    templateList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
                     TemplateList list = new Gson().fromJson(headerString, listType);
-                    templateList=list.getTemplate();
+                    templateList = list.getTemplate();
 
 
-                }else {
-                    bottomSheetDialog_templateList.dismiss();
                 }
 
                 TemplateList.Template template1 = new TemplateList.Template();
@@ -840,6 +836,7 @@ LinearLayout lay_seq_stap,lay_taskname;
                         R.layout.add_titale_for_templet,
                         null);
         builder.setView(customLayout);
+        CoordinatorLayout c_layout = customLayout.findViewById(R.id.c_layout);
         EditText editText = customLayout.findViewById(R.id.editText);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
         TextView tv_add = customLayout.findViewById(R.id.tv_add);
@@ -850,8 +847,20 @@ LinearLayout lay_seq_stap,lay_taskname;
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                dialog.dismiss();
+                if (editText.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                } else {
+                    try {
+                        if (Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, MainActivity.mMainLayout)) {
+                            if (isValidation(editText.getText().toString().trim(), dialog)) {
+                                CreateTemplate(editText.getText().toString().trim());
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
@@ -863,6 +872,70 @@ LinearLayout lay_seq_stap,lay_taskname;
 
     }
 
+    private void CreateTemplate(String template_name) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Text_Detail_Activty.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("template_name", template_name);
+        String template_slug = template_name.toUpperCase().replace(" ", "_");
+        paramObject.addProperty("template_slug", template_slug);
+        paramObject.addProperty("content_body", edit_compose.getText().toString().trim());
+        paramObject.addProperty("type", "EMAIL");
+
+        obj.add("data", paramObject);
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    onBackPressed();
+
+                } else {
+                    bottomSheetDialog_templateList.dismiss();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+
+
+        });
+
+
+    }
+
+    private boolean isValidation(String name, AlertDialog dialog) {
+
+        if (name.equals("")) {
+            dialog.dismiss();
+            bottomSheetDialog_templateList.dismiss();
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+        } else if (edit_compose.getText().toString().equals("")) {
+            bottomSheetDialog_templateList.dismiss();
+            dialog.dismiss();
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+        } else {
+            return true;
+        }
+
+        return false;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
