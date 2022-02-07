@@ -897,7 +897,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     try {
                         if (Global.isNetworkAvailable(Item_List_Email_Detail_activty.this, MainActivity.mMainLayout)) {
                             if (isValidation(editText.getText().toString().trim(), dialog)) {
-                                CreateTemplate(editText.getText().toString().trim());
+                                CreateTemplate(editText.getText().toString().trim(),dialog);
                             }
                         }
                     } catch (JSONException e) {
@@ -938,7 +938,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         return false;
     }
 
-    private void CreateTemplate(String template_name) throws JSONException {
+    private void CreateTemplate(String template_name, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Email_Detail_activty.this);
         String token = Global.getToken(sessionManager);
@@ -960,7 +960,10 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    onBackPressed();
+                    Global.Messageshow(getApplicationContext(), mMainLayout,
+                            response.body().getMessage(), true);
+                    dialog.dismiss();
+                    bottomSheetDialog_templateList.dismiss();
 
                 } else {
                     bottomSheetDialog_templateList.dismiss();

@@ -468,7 +468,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     try {
                         if (Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
                             if (isValidation(editText.getText().toString().trim(), dialog)) {
-                                CreateTemplate(editText.getText().toString().trim());
+                                CreateTemplate(editText.getText().toString().trim(),dialog);
                             }
                         }
                     } catch (JSONException e) {
@@ -509,7 +509,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         return false;
     }
 
-    private void CreateTemplate(String template_name) throws JSONException {
+    private void CreateTemplate(String template_name, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
         String token = Global.getToken(sessionManager);
@@ -531,8 +531,10 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    onBackPressed();
-
+                    Global.Messageshow(getApplicationContext(), mMainLayout,
+                            response.body().getMessage(), true);
+                    dialog.dismiss();
+                    bottomSheetDialog_templateList.dismiss();
                 } else {
                     bottomSheetDialog_templateList.dismiss();
                     Gson gson = new Gson();
