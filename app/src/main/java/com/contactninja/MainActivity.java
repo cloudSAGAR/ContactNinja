@@ -3,6 +3,7 @@ package com.contactninja;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -30,16 +31,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.contactninja.Broadcast.Broadcst_Activty;
 import com.contactninja.Campaign.Campaign_List_Activity;
-import com.contactninja.Fragment.ContectFragment;
 import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;
@@ -49,6 +42,7 @@ import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
 import com.contactninja.Model.Csv_InviteListData;
+import com.contactninja.Model.EmailModel;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -95,6 +89,12 @@ import java.util.OptionalInt;
 import java.util.TimeZone;
 import java.util.stream.IntStream;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static int navItemIndex = 0;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     public static RelativeLayout mMainLayout;
+    public static MainActivity activity;
     private static int RC_APP_UPDATE = 0;
     private final List<ContectListData.Contact> contectListData = new ArrayList<>();
     InstallStateUpdatedListener installStateUpdatedListener;
@@ -142,14 +143,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean shouldLoadHomeFragOnBackPress = true;
     @RequiresApi(api = Build.VERSION_CODES.N)
     private BroadcastReceiver mNetworkReceiver;
-    public static MainActivity activity;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        activity=MainActivity.this;
+        activity = MainActivity.this;
         mNetworkReceiver = new ConnectivityReceiver();
         registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String localTime = date.format(currentLocalTime);
         String offset = localTime.substring(0, 1);
 
+        //  Log.e("Email is",new Gson().toJson(getNameEmailDetails()));
         UpdateManageCheck();
         EnableRuntimePermission();
         navItemIndex = 0;
@@ -208,8 +209,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-                if (sessionManager.getContectList(getApplicationContext()).size() == 0) {
-                   loadingDialog.showLoadingDialog();
+                if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
+                    loadingDialog.showLoadingDialog();
                 }
                 MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
                 myAsyncTasks.execute();
@@ -237,42 +238,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
-    public class MyAsyncTasks extends AsyncTask<String, String, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // display a progress dialog for good user experiance
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        protected String doInBackground(String... params) {
-
-            // implement API in background and store the response in current variable
-            String current = "";
-            try {
-                if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                         GetContactsIntoArrayList();
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "Exception: " + e.getMessage();
-            }
-            return current;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
-
-    }
-
     private void IntentUI() {
         mMainLayout = findViewById(R.id.mMainLayout);
         llHome = findViewById(R.id.llHome);
@@ -289,15 +254,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void GetContactsIntoArrayList() {
-
+        List<EmailModel> emailModels = new ArrayList<>();
         String firstname = "", lastname = "";
 
         cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+        Cursor cursor1 = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+
         while (cursor.moveToNext()) {
+
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+
+
+            while (cursor1.moveToNext()) {
+                contect_email = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
+                Log.e("Email is ", contect_email);
+                String name = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+
+                EmailModel emailModel = new EmailModel();
+                emailModel.setId(name);
+                emailModel.setName(contect_email);
+                emailModels.add(emailModel);
+            }
+
+            //String phonne_id=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+
+
+
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
             user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
@@ -310,15 +294,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
                 countryCode = numberProto.getCountryCode();
                 user_phone_number = user_phone_number.replace(" ", "");
+             //   Log.e("Mobile Number ", user_phone_number);
                 user_phone_number = user_phone_number.replace("-", "");
                 if (!user_phone_number.contains("+")) {
-                    user_phone_number = String.valueOf("+" + countryCode + user_phone_number);
+                    user_phone_number = "+" + countryCode + user_phone_number;
                 }
             } catch (NumberParseException e) {
-                System.err.println("NumberParseException was thrown: " + e.toString());
+                System.err.println("NumberParseException was thrown: " + e);
             }
             try {
-                contect_email = "";
+                // contect_email = "";
                 region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
                 contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
                 contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
@@ -355,6 +340,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (found) {
 
                 } else {
+
                     //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                     Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getTaskId())));
                     String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
@@ -363,10 +349,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             user_image,
                             user_des,
                             "", ""));
+                    String email="";
+                    for (int i = 0; i < emailModels.size(); i++) {
+           //             Log.e("Phone ID", userName);
+         //               Log.e("Email Id", emailModels.get(i).getId());
+                        if (userName.equals(emailModels.get(i).getId())) {
+                           email = emailModels.get(i).getName();
+                        } else {
+                            // contect_email="";
+                        }
+
+                    }
 
 
                     try {
-                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, email, note, country, city, region, street, "" + lastname));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -396,6 +393,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
 
+       // Log.e("CSV LIST", new Gson().toJson(csv_inviteListData));
         if (csv_inviteListData.size() == 0) {
             loadingDialog.cancelLoading();
             //Log.e("Csv Size is ","0");
@@ -410,19 +408,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 } else {
                     //Upload Contect Then If Call
-                    getTasks();
+                     getTasks();
 
                 }
             } else {
                 //Upload Contect Then If Call
-                getTasks();
+                 getTasks();
 
             }
         }
         cursor.close();
 
     }
-
 
     private void splitdata(List<Csv_InviteListData> response) {
 
@@ -499,7 +496,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     private void Uploadcsv(File path) throws JSONException {
 
         Log.e("File is", String.valueOf(path));
@@ -534,7 +530,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             user_data.getUser().setIs_contact_exist(1);
                             SessionManager.setUserdata(getApplicationContext(), user_data);
 
-                         //   loadingDialog.cancelLoading();
+                            //   loadingDialog.cancelLoading();
                             try {
                                 limit = csv_inviteListData.size();
                                 ContectEvent();
@@ -563,7 +559,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
 
     private void ContectEvent() throws JSONException {
 
@@ -650,7 +645,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Global.getInstance().setConnectivityListener(MainActivity.this);
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -732,7 +726,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user_select));
                 break;
-
 
 
         }
@@ -857,7 +850,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     private void broadcast_manu() {
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.brodcaste_dialog_item, null);
@@ -866,7 +858,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView selected_campaign = bottomSheetDialog.findViewById(R.id.selected_campaign);
 
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
-        TextView selected_task=bottomSheetDialog.findViewById(R.id.selected_task);
+        TextView selected_task = bottomSheetDialog.findViewById(R.id.selected_task);
         selected_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -875,8 +867,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SessionManager.setCampaign_type("");
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setEmail_screen_name("");
-                Intent intent1=new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
-                intent1.putExtra("flag","add");
+                Intent intent1 = new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag", "add");
                 startActivity(intent1);//  finish();
                 bottomSheetDialog.dismiss();
             }
@@ -886,7 +878,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                sessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
+                SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
 
                 Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
                 startActivity(intent);
@@ -967,10 +959,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Global.checkConnectivity(MainActivity.this, mMainLayout);
     }
 
-
     private void getTasks() {
-//Get All Contect Locale Room Database
-
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
             protected List<Contect_Db> doInBackground(Void... voids) {
@@ -1006,7 +995,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 } else {
-                    Log.e("Same Data", "No");
+                    // Log.e("Same Data", "No");
                     //Call Phone Number Exits OR N0t
                     getUser_check(csv_inviteListData);
                 }
@@ -1063,7 +1052,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gt.execute();
     }
 
-
     public void check_list_for_Update(String userName, String last_name, String userPhoneNumber) {
         //  Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
@@ -1106,7 +1094,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         GetTasks gt = new GetTasks();
         gt.execute();
     }
-
 
     public void AddContect_Api1(String userName, String last_name, String userPhoneNumber, String contect_id, Integer contactId) throws JSONException {
 
@@ -1153,7 +1140,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
-
 
     private void SetDatainDatabase(List<ContectListData.Contact> contectListData) {
         //Log.e("List is", new Gson().toJson(contectListData));
@@ -1213,5 +1199,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SaveTask st = new SaveTask();
         st.execute();
+    }
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        GetContactsIntoArrayList();
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
     }
 }
