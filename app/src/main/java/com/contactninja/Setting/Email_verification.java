@@ -62,15 +62,21 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         retrofitCalls = new RetrofitCalls(this);
 
 
+
+        try {
+            if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)){
+                Mail_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         mMainLayout = findViewById(R.id.mMainLayout);
         webEmail = findViewById(R.id.webEmail);
-        webEmail.clearCache(true);
-        webEmail.clearHistory();
-        webEmail.loadUrl(Global.Email_auth);
-        webEmail.getSettings().setJavaScriptEnabled(true);
-        webEmail.getSettings().setUserAgentString("contactninja");
-        webEmail.setHorizontalScrollBarEnabled(false);
-        webEmail.setWebViewClient(new HelloWebViewClient());
+
+
+
 
     }
 
@@ -168,6 +174,14 @@ public class Email_verification extends AppCompatActivity implements Connectivit
                     List<UserLinkedList.UserLinkedGmail> setUserLinkedGmail = userLinkedGmail.getUserLinkedGmail();
                     sessionManager.setUserLinkedGmail(getApplicationContext(),setUserLinkedGmail);
                     finish();
+                }else {
+                    webEmail.clearCache(true);
+                    webEmail.clearHistory();
+                    webEmail.loadUrl(Global.Email_auth);
+                    webEmail.getSettings().setJavaScriptEnabled(true);
+                    webEmail.getSettings().setUserAgentString("contactninja");
+                    webEmail.setHorizontalScrollBarEnabled(false);
+                    webEmail.setWebViewClient(new HelloWebViewClient());
                 }
             }
 
