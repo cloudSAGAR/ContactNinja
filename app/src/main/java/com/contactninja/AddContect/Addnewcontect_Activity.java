@@ -163,7 +163,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
             iv_user.setOnClickListener(this);
-            if (Contect_data.getIs_blocked().equals("1"))
+            if (Contect_data.getIs_blocked().equals(1))
             {
                 iv_block.setVisibility(View.VISIBLE);
             }
@@ -219,7 +219,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            if (Contect_data.getIs_blocked().equals("1"))
+            if (Contect_data.getIs_blocked().equals(1))
             {
                 iv_block.setVisibility(View.VISIBLE);
             }
@@ -1290,7 +1290,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         selected_un_block.setText(getString(R.string.remove_blacklist));
         selected_delete.setText(getString(R.string.delete_contact));
 
-        if (contact_item.getIs_blocked().equals("1"))
+        if (contact_item.getIs_blocked().equals(1))
         {
             selected_block.setVisibility(View.GONE);
             line_block.setVisibility(View.GONE);

@@ -809,7 +809,7 @@ e.printStackTrace();
                         holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                     }
 
-                    if (contacts.get(position).getIs_blocked().equals("1"))
+                    if (contacts.get(position).getIs_blocked().equals(1))
                     {
 
                         holder1.iv_block.setVisibility(View.VISIBLE);
@@ -934,7 +934,7 @@ e.printStackTrace();
                             @Override
                             public void onClick(View v) {
 
-                                if (contacts.get(position).getIs_blocked().equals("1"))
+                                if (contacts.get(position).getIs_blocked().equals(1))
                                 {
                                     Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.contect_block),false);
                                 }
@@ -1099,7 +1099,7 @@ e.printStackTrace();
             for (int i=0;i<contectListData.size();i++)
             {
 
-                if (contectListData.get(i).getIs_blocked().equals("1"))
+                if (contectListData.get(i).getIs_blocked().equals(1))
                 {
                     group_flag="true";
                     contectListData.get(i).setFlag("true");

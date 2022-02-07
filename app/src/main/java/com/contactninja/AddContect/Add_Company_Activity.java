@@ -119,7 +119,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
             no_image.setText(add_text);
             iv_block.setVisibility(View.VISIBLE);
 
-            if (WorkData.getIs_blocked().equals("1")) {
+            if (WorkData.getIs_blocked().equals(1)) {
                 iv_block.setVisibility(View.VISIBLE);
                 no_image.setVisibility(View.VISIBLE);
             } else {
@@ -166,7 +166,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
             no_image.setText(add_text);
             iv_block.setVisibility(View.VISIBLE);
 
-            if (WorkData.getIs_blocked().equals("1")) {
+            if (WorkData.getIs_blocked().equals(1)) {
                 iv_block.setVisibility(View.VISIBLE);
                 no_image.setVisibility(View.VISIBLE);
             } else {
@@ -391,7 +391,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
         selected_un_block.setText(getString(R.string.remove_blacklist));
         selected_delete.setText(getString(R.string.delete_contact));
 
-        if (Company.getIs_blocked().equals("1")) {
+        if (Company.getIs_blocked().equals(1)) {
             selected_block.setVisibility(View.GONE);
             line_block.setVisibility(View.GONE);
             selected_un_block.setVisibility(View.VISIBLE);

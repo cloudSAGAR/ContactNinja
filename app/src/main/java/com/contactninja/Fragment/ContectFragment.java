@@ -1512,7 +1512,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     MovieViewHolder holder1 = (MovieViewHolder) holder;
                     try {
 
-                        if (Contact_data.getIs_blocked().equals("1"))
+                        if (Contact_data.getIs_blocked().equals(1))
                         {
                             holder1.iv_block.setVisibility(View.VISIBLE);
                             holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
@@ -1739,7 +1739,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         selected_un_block.setText(getString(R.string.remove_blacklist));
         selected_delete.setText(getString(R.string.delete_contact));
 
-        if (contact_item.getIs_blocked().equals("1"))
+        if (contact_item.getIs_blocked().equals(1))
         {
             selected_block.setVisibility(View.GONE);
             line_block.setVisibility(View.GONE);
@@ -1931,7 +1931,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     List<ContectListData.Contact> block__list_data=new ArrayList<>();
                     for (int i=0;i<block_data.size();i++)
                     {
-                        if (block_data.get(i).getIs_blocked().equals("1"))
+                        if (block_data.get(i).getIs_blocked().equals(1))
                         {
                             block__list_data.add(block_data.get(i));
                         }

@@ -632,19 +632,27 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             holder.userName.setText(inviteUserDetails.getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+            if (inviteUserDetails.getFirstname().equals(null))
+            {
 
-            if (second_latter.equals("")) {
-                current_latter = first_latter;
-                second_latter = first_latter;
-
-            } else if (second_latter.equals(first_latter)) {
-                current_latter = second_latter;
-            } else {
-
-                current_latter = first_latter;
-                second_latter = first_latter;
             }
+            else {
+                String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+
+                if (second_latter.equals("")) {
+                    current_latter = first_latter;
+                    second_latter = first_latter;
+
+                } else if (second_latter.equals(first_latter)) {
+                    current_latter = second_latter;
+                } else {
+
+                    current_latter = first_latter;
+                    second_latter = first_latter;
+                }
+
+            }
+
 
 
             holder.no_image.setVisibility(View.VISIBLE);

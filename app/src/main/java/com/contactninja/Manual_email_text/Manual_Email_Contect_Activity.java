@@ -481,7 +481,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     holder1.first_latter.setVisibility(View.VISIBLE);
                     holder1.top_layout.setVisibility(View.VISIBLE);
 
-                    if (contacts.get(position).getIs_blocked().equals("1"))
+                    if (contacts.get(position).getIs_blocked().equals(1))
                     {
 
                         holder1.iv_block.setVisibility(View.VISIBLE);
@@ -553,7 +553,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                         public void onClick(View view) {
 
 
-                            if (contacts.get(position).getIs_blocked().equals("1"))
+                            if (contacts.get(position).getIs_blocked().equals(1))
                             {
                                 Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.contect_block),false);
                             }
