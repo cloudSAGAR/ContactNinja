@@ -1034,7 +1034,7 @@ public class ContectFragment extends Fragment  {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
-        }
+       }
         ev_search.setText("");
         Filter="";
 

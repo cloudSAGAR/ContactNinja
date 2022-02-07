@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        GetContactsIntoArrayList();
+                         GetContactsIntoArrayList();
                     }
                 }
 
@@ -821,7 +821,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (navItemIndex) {
             case 0:
 
-                fragment = new Main_home_Fragment();
+                fragment = new Main_home_Fragment(MainActivity.this);
                 shouldLoadHomeFragOnBackPress = false;
                 break;
             case 1:

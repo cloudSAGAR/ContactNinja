@@ -459,7 +459,7 @@ Number</string>
         <item>DELETE</item>
     </string-array>
     <string-array name="Select_Tab">
-        <item>Taxt</item>
+        <item>Text</item>
         <item>Email</item>
     </string-array>
 
