@@ -53,7 +53,7 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/image_icon"
-                android:layout_gravity="end"
+                android:layout_gravity="center"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"/>
             <TextView
@@ -62,6 +62,7 @@
                 style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/_2sdp"
                 android:gravity="center|left"
                 android:layout_gravity="center"
                 android:singleLine="true"
@@ -90,6 +91,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:gravity="center"
                 android:singleLine="true"
+                android:padding="@dimen/_2sdp"
                 android:text="Hey , Everyone check this out ..."
                 android:textColor="@color/text_gray"
                 android:textStyle="bold" />
@@ -108,7 +110,8 @@
             style="@style/tv_regular_13"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@color/text_reg"
             android:textSize="@dimen/_10sdp"

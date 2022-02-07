@@ -164,57 +164,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.layout_mail_box:
 
-
-                try {
-                    if (Global.isNetworkAvailable(SettingActivity.this, MainActivity.mMainLayout)) {
-                        Mail_list();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
 
                 break;
         }
     }
 
-    private void Mail_list() throws JSONException {
-
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(SettingActivity.this);
-        String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(SettingActivity.this), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    /*is a list to email show*/
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<UserLinkedList>() {
-                    }.getType();
-                    UserLinkedList userLinkedGmail = new Gson().fromJson(headerString, listType);
-                    List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = userLinkedGmail.getUserLinkedGmail();
-                    if (userLinkedGmailList.size() == 0) {
-                        startActivity(new Intent(getApplicationContext(), Email_verification.class));
-                    } else {
-                        startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
-                    }
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-
-
-    }
 
     public void showAlertDialogButtonClicked() {
 

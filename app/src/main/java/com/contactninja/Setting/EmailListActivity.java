@@ -95,9 +95,10 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp",1);
         obj.add("data", paramObject);
         retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(EmailListActivity.this),Global.Device, new RetrofitCallback() {
             @Override
@@ -113,12 +114,17 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                     UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
 
                     userLinkedGmailList=userLinkedGmail.getUserLinkedGmail();
-
+                    if (userLinkedGmailList.size() == 0) {
+                        startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                    }else {
+                        sessionManager.setUserLinkedGmail(getApplicationContext(),userLinkedGmailList);
+                    }
                     rv_email_list.setLayoutManager(new LinearLayoutManager(EmailListActivity.this, LinearLayoutManager.VERTICAL, false));
                     emailAdepter=new EmailAdepter(EmailListActivity.this,userLinkedGmailList);
                     rv_email_list.setAdapter(emailAdepter);
 
-
+                }else {
+                    startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 
