@@ -507,12 +507,12 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
             WorkingHoursModel.WorkingHour workingHour = workingHourList.get(position);
             if(Global.IsNotNull(workingHour.getName())){
                 holder.tv_time_name.setText(workingHour.getName());
-            }
-            if(Global.IsNotNull(workingHour.getIsDefault())){
-                if(workingHour.getIsDefault().equals("1")){
-                    holder.iv_is_default.setVisibility(View.VISIBLE);
-                }else {
-                    holder.iv_is_default.setVisibility(View.GONE);
+                if(Global.IsNotNull(workingHour.getIsDefault())){
+                    if(workingHour.getIsDefault().equals("1")){
+                        holder.iv_is_default.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.iv_is_default.setVisibility(View.GONE);
+                    }
                 }
             }
             holder.layout_time.setOnClickListener(new View.OnClickListener() {
