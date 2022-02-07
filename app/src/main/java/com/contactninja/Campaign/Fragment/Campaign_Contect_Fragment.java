@@ -1574,7 +1574,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                                 }
                                 else {
 
-                                    Log.e("Contect Detail Size is", String.valueOf(contacts.get(position).getContactDetails().size()));
+                                 //   Log.e("Contect Detail Size is", String.valueOf(contacts.get(position).getContactDetails().size()));
                                     List<ContectListData.Contact.ContactDetail> detailList = new ArrayList<>();
                                     List<ContectListData.Contact.ContactDetail> detailList1 = new ArrayList<>();
                                     detailList.clear();
