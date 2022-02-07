@@ -76,6 +76,7 @@ android:visibility="gone"
         android:gravity="center"
         android:hint="Lorem ipsum dolor sit amet \n  loren ipsum"
         android:textColorHint="@color/text_gray"
+        android:textColor="@color/text_gray"
         tools:ignore="HardcodedText,SelectableText">
 
     </TextView>

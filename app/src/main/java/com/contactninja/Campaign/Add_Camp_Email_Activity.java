@@ -470,18 +470,15 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Email_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                templateList.clear();
                 if (response.body().getHttp_status() == 200) {
-                    loadingDialog.cancelLoading();
-                    templateList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
                     TemplateList list = new Gson().fromJson(headerString, listType);
                     templateList = list.getTemplate();
-
-                } else {
-                    bottomSheetDialog_templateList.dismiss();
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
                 template1.setTemplateName("Save current as template");
@@ -532,6 +529,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                         R.layout.add_titale_for_templet,
                         null);
         builder.setView(customLayout);
+        CoordinatorLayout c_layout = customLayout.findViewById(R.id.c_layout);
         EditText edt_template_name = customLayout.findViewById(R.id.editText);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
         TextView tv_add = customLayout.findViewById(R.id.tv_add);
@@ -543,14 +541,21 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             @SuppressLint("SyntheticAccessor")
             @Override
             public void onClick(View v) {
-                try {
-                    if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
-                        if (isValidation(edit_template, ev_subject, edt_template_name))
-                            CreateTemplate(edit_template, ev_subject, edt_template_name, dialog);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+               if (edt_template_name.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                } else if (edit_template.equals("")) {
+                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template Text ", false);
+
+                } else {
+                   try {
+                       if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
+                           if (isValidation(edit_template, ev_subject, edt_template_name))
+                               CreateTemplate(edit_template, ev_subject, edt_template_name, dialog);
+                       }
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
+               }
 
             }
         });
@@ -712,7 +717,10 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout,
+                            response.body().getMessage(), true);
                     dialog.dismiss();
+                    bottomSheetDialog_templateList.dismiss();
                 } else {
                     dialog.dismiss();
                     Gson gson = new Gson();

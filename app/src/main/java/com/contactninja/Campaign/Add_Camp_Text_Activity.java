@@ -328,9 +328,9 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                templateList.clear();
                 if (response.body().getHttp_status() == 200) {
-                    loadingDialog.cancelLoading();
-                    templateList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
@@ -338,8 +338,6 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     TemplateList list = new Gson().fromJson(headerString, listType);
                     templateList=list.getTemplate();
 
-                }else {
-                    bottomSheetDialog_templateList.dismiss();
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
                 template1.setTemplateName("Save current as template");
@@ -651,7 +649,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                 } else {
                     try {
                         dialog.dismiss();
-                        CreateTemplate(body_text, editText.getText().toString());
+                        CreateTemplate(body_text, editText.getText().toString(),dialog);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -802,7 +800,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         });
     }
 
-    private void CreateTemplate(String body_text, String s) throws JSONException {
+    private void CreateTemplate(String body_text, String s, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Text_Activity.this);
         String token = Global.getToken(sessionManager);
@@ -812,7 +810,6 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("template_name", s);
-        paramObject.addProperty("content_header", "");
         String template_slug = s.toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
         paramObject.addProperty("content_body", body_text);
@@ -824,7 +821,10 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    // onBackPressed();
+                    Global.Messageshow(getApplicationContext(), mMainLayout,
+                            response.body().getMessage(), true);
+                    dialog.dismiss();
+                    bottomSheetDialog_templateList.dismiss();
                 } else {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
