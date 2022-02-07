@@ -12,21 +12,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.Fragment;
+
 import com.contactninja.R;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
-
-import androidx.fragment.app.Fragment;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Manual_Auto_Selection_Email_Fragment extends Fragment implements View.OnClickListener, YourFragmentInterface {
 
     LinearLayout auto_layout, manual_layout;
-    ImageView select_manual, select_automated,iv_back_image;
+    ImageView select_manual, select_automated, iv_back_image;
     int click = 0;
     SessionManager sessionManager;
     String c_name = "", c_type = "";
-    LinearLayout layout_email_second_automated, layout_email_second_manual;
     EditText edit_day, edit_minutes, edit_day_manual, edit_minutes_manual;
 
     @Override
@@ -128,13 +127,11 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
         manual_layout = view.findViewById(R.id.manual_layout);
         select_manual = view.findViewById(R.id.select_manual);
         select_automated = view.findViewById(R.id.select_automated);
-        layout_email_second_automated = view.findViewById(R.id.layout_email_second_automated);
-        layout_email_second_manual = view.findViewById(R.id.layout_email_second_manual);
         edit_day = view.findViewById(R.id.edit_day);
         edit_minutes = view.findViewById(R.id.edit_minutes);
         edit_day_manual = view.findViewById(R.id.edit_day_manual);
         edit_minutes_manual = view.findViewById(R.id.edit_minutes_manual);
-        iv_back_image=view.findViewById(R.id.iv_back_image);
+        iv_back_image = view.findViewById(R.id.iv_back_image);
     }
 
     @Override
@@ -150,23 +147,12 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
                 SessionManager.setCampaign_type_name("AUTO");
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
-                layout_email_second_manual.setVisibility(View.GONE);
                 edit_day_manual.setText("1");
                 edit_minutes_manual.setText("00");
 
 
                 if (SessionManager.getTask(getActivity()) != null) {
-
-
-                    if (SessionManager.getTask(getActivity()).size() >= 1) {
-                        layout_email_second_automated.setVisibility(View.VISIBLE);
-                        SessionManager.setCampaign_Day(edit_day.getText().toString());
-                        SessionManager.setCampaign_minute(edit_minutes.getText().toString());
-                        iv_back_image.setVisibility(View.GONE);
-                    } else {
-                        layout_email_second_automated.setVisibility(View.GONE);
-                        iv_back_image.setVisibility(View.VISIBLE);
-                    }
+                    iv_back_image.setVisibility(View.VISIBLE);
                 }
 
                 break;
@@ -176,23 +162,10 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
                 SessionManager.setCampaign_type_name("MANUAL");
                 select_automated.setVisibility(View.GONE);
                 select_manual.setVisibility(View.VISIBLE);
-                layout_email_second_automated.setVisibility(View.GONE);
                 edit_day.setText("1");
                 edit_minutes.setText("00");
                 if (SessionManager.getTask(getActivity()) != null) {
-
-
-                    if (SessionManager.getTask(getActivity()).size() >= 1) {
-                        Log.e("Visible is","Yes");
-                        layout_email_second_manual.setVisibility(View.VISIBLE);
-                        SessionManager.setCampaign_Day(edit_day_manual.getText().toString());
-                        SessionManager.setCampaign_minute(edit_minutes_manual.getText().toString());
-                        iv_back_image.setVisibility(View.GONE);
-                    } else {
-                        Log.e("Visible is","No");
-                        layout_email_second_manual.setVisibility(View.GONE);
-                        iv_back_image.setVisibility(View.VISIBLE);
-                    }
+                    iv_back_image.setVisibility(View.VISIBLE);
                 }
 
                 break;
@@ -221,7 +194,7 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
 
     @Override
     public void fragmentBecameVisible() {
-       // sessionManager = new SessionManager(getActivity());
+        // sessionManager = new SessionManager(getActivity());
         c_name = SessionManager.getCampaign_type_name(getActivity());
         c_type = SessionManager.getCampaign_type(getActivity());
 

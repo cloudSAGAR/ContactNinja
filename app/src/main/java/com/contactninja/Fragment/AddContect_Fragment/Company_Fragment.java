@@ -316,15 +316,12 @@ public class Company_Fragment extends Fragment {
     private void CompanyList() throws JSONException {
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
@@ -463,14 +460,11 @@ public class Company_Fragment extends Fragment {
     public void Contect_BLock(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("is_block", block);
         JSONArray block_array = new JSONArray();
         block_array.put(Company.getId());
@@ -512,14 +506,11 @@ public class Company_Fragment extends Fragment {
     public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JSONObject obj = new JSONObject();
+       JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id",1 );
+        paramObject.put("team_id",1 );
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("id", Company.getId());
         paramObject.put("status", "D");
         obj.put("data", paramObject);

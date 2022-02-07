@@ -232,15 +232,12 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("q", ev_search.getText().toString());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);

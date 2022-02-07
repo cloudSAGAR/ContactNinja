@@ -156,8 +156,9 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                 if(checkVelidaction()){
                     tv_error_title.setVisibility(View.GONE);
                     tv_error_day.setVisibility(View.GONE);
-
-                    AddName();
+                    if(Global.isNetworkAvailable(Campaign_Name_Activity.this,mMainLayout)){
+                        AddName();
+                    }
                 }
 
 
@@ -302,12 +303,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
     public void AddName() {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-
-        if (SessionManager.getTask(getApplicationContext()).size() != 0) {
+              if (SessionManager.getTask(getApplicationContext()).size() != 0) {
             sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
         } else {
             Intent getintent = getIntent();
@@ -317,10 +313,10 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
         Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("record_id", sequence_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("seq_name", edt_titale.getText().toString());
         paramObject.addProperty("max_prospects", edt_day.getText().toString());
         paramObject.addProperty("working_hours_ids", WorkingHoursID);
@@ -355,15 +351,11 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-        JsonObject obj = new JsonObject();
+       JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id",1 );
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("q", "");
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);

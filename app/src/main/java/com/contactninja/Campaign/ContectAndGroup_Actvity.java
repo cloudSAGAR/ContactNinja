@@ -102,32 +102,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
             fragmentTransaction.commitAllowingStateLoss();
-            /*tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
-//            tabLayout.addTab(tabLayout.newTab().setText("Groups"));
-            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-            adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
-                    tabLayout.getTabCount(), strtext);
 
-            viewPager.setAdapter(adapter);
-
-            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
-                }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
-*/
         }
         else if (SessionManager.getContect_flag(getApplicationContext()).equals("read"))
         {
@@ -217,7 +192,9 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             case R.id.save_button:
                 Global.hideKeyboard(ContectAndGroup_Actvity.this);
                 try {
-                    AddContectAndGroup(seq_task_id,sequence_id);
+                    if(Global.isNetworkAvailable(ContectAndGroup_Actvity.this,main_layout)){
+                        AddContectAndGroup(seq_task_id,sequence_id);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -305,15 +282,13 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
     public void AddContectAndGroup(int seq_task_id, int sequence_id) throws JSONException {
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
+        paramObject.put("organization_id", 1);
         paramObject.put("seq_task_id", seq_task_id);
         paramObject.put("seq_id", sequence_id);
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         List<ContectListData.Contact> contactdetails=sessionManager.getGroupList(this);
         JSONArray jsonArray = new JSONArray();
         Log.e("Contec List Size",String.valueOf(contactdetails.size()));

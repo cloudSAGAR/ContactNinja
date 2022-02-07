@@ -206,10 +206,6 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
     public void StepData() {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
 
         if (SessionManager.getTask(getApplicationContext()).size() != 0) {
             sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
@@ -222,10 +218,10 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("id", sequence_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         obj.add("data", paramObject);
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();
@@ -249,14 +245,8 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
                             }.getType();
 
                             CampaignTask_overview campData = new Gson().fromJson(headerString, listType);
-                            //Log.e("User Model",new Gson().toJson(user_model1));
                             SessionManager.setCampaign_data(campData);
-                          //  Log.e("Email Task",user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
-                           // Log.e("SMS",user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
-
-                          //  tv_email.setText(user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
-                            //tv_sms.setText(user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
-                            try {
+                              try {
                                 String prospect_count=campData.getSeqProspectCount().getTotal().toString();
                                 tv_contect.setText(prospect_count);
                                 tv_camp_name.setText(campData.get0().getSeqName());
@@ -284,7 +274,6 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
                         } else {
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());
-                            // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
 
                         }
                     }

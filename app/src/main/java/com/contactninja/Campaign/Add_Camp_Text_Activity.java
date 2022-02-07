@@ -261,7 +261,8 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         bottomSheetDialog_templateList = new BottomSheetDialog(Add_Camp_Text_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
-        //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
+        LinearLayout layout_list_template=bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
+        layout_list_template.setVisibility(View.VISIBLE);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
@@ -317,9 +318,12 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("type", "SMS");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("perPage", 10000000);
+        paramObject.addProperty("page",1);
         obj.add("data", paramObject);
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
@@ -332,61 +336,21 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
                     TemplateList list = new Gson().fromJson(headerString, listType);
-                    String CurrentType = SessionManager.getCampaign_type(getApplicationContext());
+                    templateList=list.getTemplate();
 
-                    TemplateList.Template template2 = new TemplateList.Template();
-                    template2.setTemplateName("Please select template");
-                    template2.setSelect(false);
-                    templateList.add(0, template2);
-
-                    for (int i = 0; i < list.getTemplate().size(); i++) {
-                        if (CurrentType.equals("Email")) {
-                            if (list.getTemplate().get(i).getType().equals("EMAIL")) {
-                                TemplateList.Template template = new TemplateList.Template();
-                                template.setId(list.getTemplate().get(i).getId());
-                                template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
-                                template.setTeamId(list.getTemplate().get(i).getTeamId());
-                                template.setTemplateName(list.getTemplate().get(i).getTemplateName());
-                                template.setTemplateSlug(list.getTemplate().get(i).getTemplateSlug());
-                                template.setContentHeader(list.getTemplate().get(i).getContentHeader());
-                                template.setType(list.getTemplate().get(i).getType());
-                                template.setContentBody(list.getTemplate().get(i).getContentBody());
-                                template.setStatus(list.getTemplate().get(i).getStatus());
-                                template.setCreatedAt(list.getTemplate().get(i).getCreatedAt());
-                                template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
-                                templateList.add(template);
-                            }
-                        } else {
-                            if (list.getTemplate().get(i).getType().equals("SMS")) {
-                                TemplateList.Template template = new TemplateList.Template();
-                                template.setId(list.getTemplate().get(i).getId());
-                                template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
-                                template.setTeamId(list.getTemplate().get(i).getTeamId());
-                                template.setTemplateName(list.getTemplate().get(i).getTemplateName());
-                                template.setTemplateSlug(list.getTemplate().get(i).getTemplateSlug());
-                                template.setContentHeader(list.getTemplate().get(i).getContentHeader());
-                                template.setType(list.getTemplate().get(i).getType());
-                                template.setContentBody(list.getTemplate().get(i).getContentBody());
-                                template.setStatus(list.getTemplate().get(i).getStatus());
-                                template.setCreatedAt(list.getTemplate().get(i).getCreatedAt());
-                                template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
-                                templateList.add(template);
-                            }
-                        }
-                    }
-
-
-                    TemplateList.Template template1 = new TemplateList.Template();
-                    template1.setTemplateName("Save Current as template");
-                    template1.setSelect(true);
-                    templateList.add(templateList.size(), template1);
-
-
-                    templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick);
-                    templet_list.setAdapter(templateAdepter);
-                    bottomSheetDialog_templateList.show();
+                }else {
+                    bottomSheetDialog_templateList.dismiss();
                 }
+                TemplateList.Template template1 = new TemplateList.Template();
+                template1.setTemplateName("Save current as template");
+                template1.setSelect(true);
+                templateList.add(templateList.size(), template1);
+
+
+                templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick);
+                templet_list.setAdapter(templateAdepter);
+                bottomSheetDialog_templateList.show();
             }
 
             @Override
@@ -991,7 +955,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (holder.tv_item.getText().toString().equals("Save Current as template")) {
+                    if (holder.tv_item.getText().toString().equals("Save current as template")) {
                         showAlertDialogButtonClicked(view, edit_template.getText().toString());
                         bottomSheetDialog_templateList.cancel();
                     } else {

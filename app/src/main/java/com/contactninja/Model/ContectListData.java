@@ -133,13 +133,13 @@ public class ContectListData {
 
         @SerializedName("is_blocked")
         @Expose
-        private String is_blocked;
+        private Integer is_blocked=0;
 
-        public String getIs_blocked() {
+        public Integer getIs_blocked() {
             return is_blocked;
         }
 
-        public void setIs_blocked(String is_blocked) {
+        public void setIs_blocked(Integer is_blocked) {
             this.is_blocked = is_blocked;
         }
 

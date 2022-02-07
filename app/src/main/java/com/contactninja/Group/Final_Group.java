@@ -368,9 +368,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             loadingDialog.showLoadingDialog();
 
             SignResponseModel user_data = sessionManager.getGetUserdata(this);
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < inviteListData.size(); i++) {
                 Log.e("Contec List Size", String.valueOf(inviteListData.get(0).getContactDetails().size()));
@@ -412,9 +409,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             paramObject.put("image_extension", File_extension);
             paramObject.put("group_image_name", File_name);
             paramObject.put("group_image", user_image_Url);
-            paramObject.put("organization_id", "1");
-            paramObject.put("team_id", "1");
-            paramObject.put("user_id", user_id);
+            paramObject.put("organization_id", 1);
+            paramObject.put("team_id", 1);
+            paramObject.put("user_id", user_data.getUser().getId());
             paramObject.put("contact_ids", jsonArray);
             paramObject.put("description", group_description);
             obj.put("data", paramObject);

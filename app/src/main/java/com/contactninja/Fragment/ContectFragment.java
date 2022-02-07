@@ -211,13 +211,17 @@ public class ContectFragment extends Fragment  {
                 try {
                     try {
         //                GetContactsIntoArrayList();
-                        ContectEvent();
+                        if(Global.isNetworkAvailable(getActivity(),mMainLayout)){
+                            ContectEvent();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } catch (Exception e) {
                     try {
-                        ContectEvent();
+                        if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                            ContectEvent();
+                        }
                    //     GetContactsIntoArrayList();
                     } catch (JSONException e1) {
                         e1.printStackTrace();
@@ -725,15 +729,12 @@ public class ContectFragment extends Fragment  {
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(sessionManager);
+       String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("page", "1");
         paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "A");
@@ -871,15 +872,12 @@ public class ContectFragment extends Fragment  {
     private void ContectEvent() throws JSONException {
         //  loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(sessionManager);
+       String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("page", currentPage);
         paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "A");
@@ -959,15 +957,12 @@ public class ContectFragment extends Fragment  {
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(sessionManager);
+       String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("page", currentPage);
         paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "");
@@ -1363,10 +1358,8 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
 
+        JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
 
         //Other Company Add
@@ -1388,13 +1381,13 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         paramObject.put("job_title", "");
         paramObject.put("lastname", contact_data.getLastname());
         paramObject.put("linkedin_link", "");
-        paramObject.put("organization_id", "1");
+        paramObject.put("organization_id", 1);
         paramObject.put("state", "");
-        paramObject.put("team_id", "1");
+        paramObject.put("team_id", 1);
         // addcontectModel.getTime()
         paramObject.put("timezone_id", "");
         paramObject.put("twitter_link", "");
-        paramObject.put("user_id", user_id);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("zipcode", "");
         paramObject.put("zoom_id","");
         paramObject.put("contact_image", "");
@@ -1814,13 +1807,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void Contect_BLock(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("is_block",block);
         JSONArray block_array = new JSONArray();
         block_array.put(contact_data.getId());
@@ -1864,13 +1855,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void Contect_Remove(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+       JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("id",contact_data.getId());
         paramObject.put("status","D");
 

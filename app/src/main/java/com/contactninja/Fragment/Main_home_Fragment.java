@@ -57,7 +57,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewpaggerAdapter adapter;
-    String token_api = "", user_id = "", organization_id = "", team_id = "";
+    Integer user_id=0;
+    String token_api = "",  organization_id = "", team_id = "";
     SignResponseModel user_data;
     MainActivity mainActivity;
 
@@ -76,7 +77,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         token_api = Global.getToken(sessionManager);
         user_data = SessionManager.getGetUserdata(getActivity());
-        user_id = String.valueOf(user_data.getUser().getId());
+        user_id =user_data.getUser().getId();
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
@@ -242,8 +243,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     private void Timezone(String id) throws JSONException {
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
         retrofitCalls.Timezone(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
@@ -281,8 +282,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("timezone_id", value);
         paramObject.addProperty("is_default", "1");
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
         String version_name=Global.getVersionname(mainActivity);

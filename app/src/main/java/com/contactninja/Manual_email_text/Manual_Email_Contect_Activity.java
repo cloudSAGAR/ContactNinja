@@ -12,7 +12,6 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -579,7 +578,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                                     //Log.e("Selction List is",new Gson().toJson(select_contectListData));
                                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                                     SessionManager.setGroupList(getApplicationContext(), select_contectListData);
-                                    Intent intent = new Intent(getApplicationContext(), Manual_Mail_Send_Activty.class);
+                                    Intent intent = new Intent(getApplicationContext(), Manual_Email_Send_Activty.class);
                                     intent.putExtra("task_name", task_name);
                                     startActivity(intent);
                                     finish();
@@ -796,7 +795,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                             SessionManager.setGroupList(getApplicationContext(), select_contectListData);
                             num_count.setText(select_contectListData.size() + " Contact Selcted");
                             contacts.get(position).setFlag("false");
-                            Intent intent = new Intent(getApplicationContext(), Manual_Mail_Send_Activty.class);
+                            Intent intent = new Intent(getApplicationContext(), Manual_Email_Send_Activty.class);
                             intent.putExtra("task_name", task_name);
                             startActivity(intent);
                             finish();

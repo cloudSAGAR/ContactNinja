@@ -146,9 +146,6 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
     }
     public void StepData() {
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
         if (SessionManager.getTask(getApplicationContext()).size() != 0) {
@@ -162,10 +159,10 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("id", sequence_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         obj.add("data", paramObject);
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();

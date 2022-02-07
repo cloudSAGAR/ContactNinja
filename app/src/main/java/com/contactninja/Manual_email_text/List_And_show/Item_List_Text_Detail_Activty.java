@@ -134,8 +134,8 @@ LinearLayout lay_seq_stap,lay_taskname;
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("record_id",id);
 
@@ -395,14 +395,11 @@ LinearLayout lay_seq_stap,lay_taskname;
     private void SMSAPI(String type) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("record_id", manualDetails.getId());
         switch (type) {
             case "PAUSED":
@@ -500,15 +497,12 @@ LinearLayout lay_seq_stap,lay_taskname;
     private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("user_id", user_data.getUser().getId());
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "SMS");
         paramObject.addProperty("from_ac", from_ac);
@@ -552,15 +546,15 @@ LinearLayout lay_seq_stap,lay_taskname;
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("q", "");
         paramObject.addProperty("status", "");
         paramObject.addProperty("orderBy", "");
         paramObject.addProperty("order", "");
-        paramObject.addProperty("perPage", "10");
-        paramObject.addProperty("page", "1");
+        paramObject.addProperty("perPage", 1000000);
+        paramObject.addProperty("page", 1);
         obj.add("data", paramObject);
         retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
@@ -583,7 +577,7 @@ LinearLayout lay_seq_stap,lay_taskname;
                     Collections.reverse(userLinkedGmailList);
 
                     Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
-                    if (userLinkedGmailList.size() == 1) {
+                    if (userLinkedGmailList.size() == 0) {
                         iv_down.setVisibility(View.GONE);
                     } else if (userLinkedGmailList.size() == 1) {
                         iv_down.setVisibility(View.GONE);
@@ -632,8 +626,8 @@ LinearLayout lay_seq_stap,lay_taskname;
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
         retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {
@@ -750,7 +744,8 @@ LinearLayout lay_seq_stap,lay_taskname;
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         bottomSheetDialog_templateList = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
-        //  LinearLayout layout_list_template=bottomSheetDialog.findViewById(R.id.layout_list_template);
+          LinearLayout layout_list_template=bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
+        layout_list_template.setVisibility(View.VISIBLE);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
         templet_list.setVisibility(View.VISIBLE);
@@ -773,9 +768,12 @@ LinearLayout lay_seq_stap,lay_taskname;
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("type", "SMS");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("perPage", 10000000);
+        paramObject.addProperty("page",1);
         obj.add("data", paramObject);
         retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
@@ -788,61 +786,22 @@ LinearLayout lay_seq_stap,lay_taskname;
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
                     TemplateList list = new Gson().fromJson(headerString, listType);
-                    String CurrentType = SessionManager.getCampaign_type(getApplicationContext());
-
-                    TemplateList.Template template2 = new TemplateList.Template();
-                    template2.setTemplateName("Please select template");
-                    template2.setSelect(false);
-                    templateList.add(0, template2);
-
-                    for (int i = 0; i < list.getTemplate().size(); i++) {
-                        if (CurrentType.equals("Email")) {
-                            if (list.getTemplate().get(i).getType().equals("EMAIL")) {
-                                TemplateList.Template template = new TemplateList.Template();
-                                template.setId(list.getTemplate().get(i).getId());
-                                template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
-                                template.setTeamId(list.getTemplate().get(i).getTeamId());
-                                template.setTemplateName(list.getTemplate().get(i).getTemplateName());
-                                template.setTemplateSlug(list.getTemplate().get(i).getTemplateSlug());
-                                template.setContentHeader(list.getTemplate().get(i).getContentHeader());
-                                template.setType(list.getTemplate().get(i).getType());
-                                template.setContentBody(list.getTemplate().get(i).getContentBody());
-                                template.setStatus(list.getTemplate().get(i).getStatus());
-                                template.setCreatedAt(list.getTemplate().get(i).getCreatedAt());
-                                template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
-                                templateList.add(template);
-                            }
-                        } else {
-                            if (list.getTemplate().get(i).getType().equals("SMS")) {
-                                TemplateList.Template template = new TemplateList.Template();
-                                template.setId(list.getTemplate().get(i).getId());
-                                template.setOrganizationId(list.getTemplate().get(i).getOrganizationId());
-                                template.setTeamId(list.getTemplate().get(i).getTeamId());
-                                template.setTemplateName(list.getTemplate().get(i).getTemplateName());
-                                template.setTemplateSlug(list.getTemplate().get(i).getTemplateSlug());
-                                template.setContentHeader(list.getTemplate().get(i).getContentHeader());
-                                template.setType(list.getTemplate().get(i).getType());
-                                template.setContentBody(list.getTemplate().get(i).getContentBody());
-                                template.setStatus(list.getTemplate().get(i).getStatus());
-                                template.setCreatedAt(list.getTemplate().get(i).getCreatedAt());
-                                template.setUpdatedAt(list.getTemplate().get(i).getUpdatedAt());
-                                templateList.add(template);
-                            }
-                        }
-                    }
+                    templateList=list.getTemplate();
 
 
-                    TemplateList.Template template1 = new TemplateList.Template();
-                    template1.setTemplateName("Save Current as template");
-                    template1.setSelect(true);
-                    templateList.add(templateList.size(), template1);
-
-
-                    templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick);
-                    templet_list.setAdapter(templateAdepter);
-
+                }else {
+                    bottomSheetDialog_templateList.dismiss();
                 }
+
+                TemplateList.Template template1 = new TemplateList.Template();
+                template1.setTemplateName("Save current as template");
+                template1.setSelect(true);
+                templateList.add(templateList.size(), template1);
+
+
+                templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick);
+                templet_list.setAdapter(templateAdepter);
             }
 
             @Override
@@ -955,7 +914,7 @@ LinearLayout lay_seq_stap,lay_taskname;
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (holder.tv_item.getText().toString().equals("Save Current as template")) {
+                    if (holder.tv_item.getText().toString().equals("Save current as template")) {
                         showAlertDialogButtonClicked(view);
                     } else {
                         temaplet_id = item.getId();

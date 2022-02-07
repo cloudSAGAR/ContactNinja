@@ -101,7 +101,7 @@ public class ManualTaskDetailsModel {
                 private String contentBody;
                 @SerializedName("mail_module")
                 @Expose
-                private String mailModule;
+                private String mailModule="";
                 @SerializedName("sent_tbl_id")
                 @Expose
                 private Integer sentTblId=0;

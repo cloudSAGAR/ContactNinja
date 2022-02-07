@@ -212,8 +212,8 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
         JSONObject paramObject = new JSONObject();
 
         paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
         paramObject.put("user_id", user_id);
         paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", tv_time.getText().toString());

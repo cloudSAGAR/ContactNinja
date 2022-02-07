@@ -1084,16 +1084,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     private void RemoveContect(int id) throws JSONException {
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", SessionManager.getOneCotect_deatil(getActivity()).getOrganizationId());
-        paramObject.put("team_id", SessionManager.getOneCotect_deatil(getActivity()).getTeamId());
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("id", id);
         paramObject.put("contact_id", SessionManager.getOneCotect_deatil(getActivity()).getId());
         paramObject.put("status", "D");
@@ -1123,16 +1120,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private void UpdateContect(Contactdetail id) throws JSONException {
         Log.e("Update Api Call","Yes");
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", SessionManager.getOneCotect_deatil(getActivity()).getOrganizationId());
-        paramObject.put("team_id", SessionManager.getOneCotect_deatil(getActivity()).getTeamId());
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id",1);
+        paramObject.put("user_id", user_data.getUser().getId());
         Log.e("Id is", String.valueOf(id.getId()));
         if (id.getId() == 0) {
 
@@ -1307,21 +1301,19 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         Log.e("Phone Number", email);
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
         JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
 
         paramObject.put("type", "SMS");
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", "MANUAL");
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
-        paramObject.put("assign_to", user_id);
+        paramObject.put("assign_to", user_data.getUser().getId());
         paramObject.put("task_description", text);
 
         JSONArray jsonArray = new JSONArray();
@@ -1384,19 +1376,16 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JsonObject obj = new JsonObject();
+      JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("content_body", text);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("prospect_id", id);
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "SMS");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("team_id", 1);
         obj.add("data", paramObject);
 
         retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
@@ -1416,21 +1405,18 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JSONObject obj = new JSONObject();
+       JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
 
         paramObject.put("type", "EMAIL");
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", "MANUAL");
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
-        paramObject.put("assign_to", user_id);
+        paramObject.put("assign_to", user_data.getUser().getId());
         paramObject.put("task_description", text);
 
         JSONArray jsonArray = new JSONArray();
@@ -1493,20 +1479,17 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JsonObject obj = new JsonObject();
+         JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("content_body", text);
         paramObject.addProperty("content_header", subject);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("prospect_id", id);
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "EMAIL");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("team_id", 1);
         obj.add("data", paramObject);
 
         retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
@@ -2496,16 +2479,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         //loadingDialog.showLoadingDialog();
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JsonObject obj = new JsonObject();
+       JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
 
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
+        paramObject.addProperty("team_id", 1);
         obj.add("data", paramObject);
 
 
@@ -2661,15 +2641,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private void CompanyList() throws JSONException {
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
