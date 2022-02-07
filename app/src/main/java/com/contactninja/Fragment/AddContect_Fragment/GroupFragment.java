@@ -242,15 +242,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(sessionManager);
+       String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", page);
         paramObject.put("perPage", limit);
         paramObject.put("q", "");
@@ -305,16 +302,13 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     private void GroupEvent1() throws JSONException {
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id",1 );
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", page);
         paramObject.put("perPage", limit);
         paramObject.put("q", "");

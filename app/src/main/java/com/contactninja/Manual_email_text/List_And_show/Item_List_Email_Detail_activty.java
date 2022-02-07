@@ -186,8 +186,8 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("record_id",id);
 
@@ -577,14 +577,11 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     private void SMSAPI(String type) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("record_id",manualDetails.getId());
         switch (type){
             case "PAUSED":
@@ -625,13 +622,10 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("record_id", record_id);
@@ -683,8 +677,8 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
         retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Item_List_Email_Detail_activty.this),Global.Device, new RetrofitCallback() {
@@ -947,8 +941,8 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("template_name", template_name);
         paramObject.addProperty("content_header", ev_subject.getText().toString().trim());
@@ -1045,21 +1039,18 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
 
         paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
-        paramObject.put("assign_to", user_id);
+        paramObject.put("assign_to", user_data.getUser().getId());
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < 1; i++) {
@@ -1130,20 +1121,17 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         Log.e("Defuilt id", String.valueOf(defult_id));
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("content_body", text);
         paramObject.addProperty("content_header", subject);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("prospect_id", id);
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "EMAIL");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_ggmail_id", select_userLinkedGmailList.get(0).getId());
         paramObject.addProperty("email_recipients", email);
         obj.add("data", paramObject);

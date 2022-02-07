@@ -1,6 +1,5 @@
 package com.contactninja.AddContect;
 
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -29,7 +28,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Campaign.Add_Camp_Email_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -42,11 +40,9 @@ import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Setting.Email_verification;
-import com.contactninja.Setting.TemplateActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
-import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -321,8 +317,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             public void onClick(View view) {
 
                 try {
-
-                    EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
+                    if(Global.isNetworkAvailable(EmailSend_Activity.this,mMainLayout)){
+                        EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -516,8 +513,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("template_name", template_name);
         paramObject.addProperty("content_header", ev_subject.getText().toString().trim());
@@ -614,9 +611,6 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
@@ -624,11 +618,11 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.put("type", SessionManager.getCampaign_type(getApplicationContext()));
         paramObject.put("team_id", 1);
         paramObject.put("organization_id", 1);
-        paramObject.put("user_id", user_id);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
-        paramObject.put("assign_to", user_id);
+        paramObject.put("assign_to", user_data.getUser().getId());
 
 
         JSONArray jsonArray = new JSONArray();
@@ -699,20 +693,17 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Log.e("Defuilt id", String.valueOf(defult_id));
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("content_body", text);
         paramObject.addProperty("content_header", subject);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("prospect_id", id);
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "EMAIL");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_ggmail_id", select_userLinkedGmailList.get(0).getId());
         paramObject.addProperty("email_recipients", email);
         obj.add("data", paramObject);

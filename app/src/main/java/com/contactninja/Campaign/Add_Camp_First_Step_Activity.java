@@ -57,7 +57,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
     private BroadcastReceiver mNetworkReceiver;
     SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +138,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
 
                 viewPager.setOnTouchListener(new View.OnTouchListener()
                 {
+                    @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public boolean onTouch(View v, MotionEvent event)
                     {

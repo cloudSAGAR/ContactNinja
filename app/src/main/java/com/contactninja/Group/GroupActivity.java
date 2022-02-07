@@ -618,15 +618,12 @@ e.printStackTrace();
       //  loadingDialog.showLoadingDialog();
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("page", currentPage);
         paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "A");
@@ -693,15 +690,12 @@ e.printStackTrace();
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("page", currentPage);
         paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "");

@@ -58,7 +58,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     TextView num_count;
-    int page = 1, limit = 10, totale_group;
+    int page = 1, limit = 20, totale_group;
     PaginationAdapter paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
@@ -208,14 +208,12 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", page);
         paramObject.put("perPage", limit);
         paramObject.put("q", "");

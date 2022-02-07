@@ -1,7 +1,10 @@
 package com.contactninja.AddContect;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,9 +15,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -31,32 +39,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 
-public class Add_Company_Activity extends AppCompatActivity implements View.OnClickListener {
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
+public class Add_Company_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
     ImageView iv_back, iv_toolbar_manu_vertical, iv_block;
     TextView save_button, no_image, tv_remain_txt, tv_error, iv_invalid, iv_invalid1;
     EditText add_name, add_detail, edit_Mobile, edit_email, edit_address, edit_company_url;
     CountryCodePicker ccp_id;
-    ConstraintLayout main_layout;
+    ConstraintLayout mMainLayout;
     String flag;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     CompanyModel.Company WorkData;
     String id="";
-
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_company);
+        mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         WorkData = SessionManager.getCompnay_detail(getApplicationContext());
         sessionManager = new SessionManager(getApplicationContext());
@@ -199,7 +206,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     }
 
     private void IntentUI() {
-        main_layout = findViewById(R.id.main_layout);
+        mMainLayout = findViewById(R.id.mMainLayout);
         iv_invalid1 = findViewById(R.id.iv_invalid1);
         edit_email = findViewById(R.id.edit_email);
         iv_invalid = findViewById(R.id.iv_invalid);
@@ -222,7 +229,36 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
         iv_block = findViewById(R.id.iv_block);
         iv_toolbar_manu_vertical.setOnClickListener(this);
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Add_Company_Activity.this, mMainLayout);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
     private void enterPhoneNumber() {
         edit_Mobile.addTextChangedListener(new TextWatcher() {
@@ -245,8 +281,6 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                     } else {
                         iv_invalid.setText(getResources().getString(R.string.invalid_phone));
                     }
-                } else {
-                    //Toast.makeText(getApplicationContext(), "Country Code and Phone Number is required", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -284,45 +318,47 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.save_button:
-                if (flag.equals("read"))
-                {
-                    Intent intent=new Intent(getApplicationContext(),Add_Company_Activity.class);
-                    intent.putExtra("flag","edit");
-                    startActivity(intent);
-                    finish();
-                }
-                else {
-                    if (add_name.getText().toString().equals("")) {
-                        Global.Messageshow(getApplicationContext(), main_layout, "Add Company Name", false);
-
-                    } else if (add_detail.getText().toString().equals("")) {
-                        Global.Messageshow(getApplicationContext(), main_layout, "Add Company Detail", false);
-
+                if(Global.isNetworkAvailable(this,mMainLayout)){
+                    if (flag.equals("read"))
+                    {
+                        Intent intent=new Intent(getApplicationContext(),Add_Company_Activity.class);
+                        intent.putExtra("flag","edit");
+                        startActivity(intent);
+                        finish();
                     }
-                    else if (edit_Mobile.getText().toString().trim().equals("")) {
-                        iv_invalid.setVisibility(View.VISIBLE);
-                    }
-                    else if (edit_email.getText().toString().trim().equals("")) {
-                        iv_invalid.setVisibility(View.GONE);
-                        iv_invalid1.setText(getResources().getString(R.string.invalid_email));
-                        iv_invalid1.setVisibility(View.VISIBLE);
-                    }
-                    else if (edit_company_url.getText().toString().equals("")) {
-                        iv_invalid.setVisibility(View.GONE);
-                        iv_invalid1.setVisibility(View.GONE);
-                        Global.Messageshow(getApplicationContext(), main_layout, "Add company url", false);
-                    } else if (edit_address.getText().toString().equals("")) {
-                        iv_invalid.setVisibility(View.GONE);
-                        iv_invalid1.setVisibility(View.GONE);
-                        Global.Messageshow(getApplicationContext(), main_layout, "Add company address", false);
+                    else {
+                        if (add_name.getText().toString().equals("")) {
+                            Global.Messageshow(getApplicationContext(), mMainLayout, "Add Company Name", false);
 
-                    } else {
-                        iv_invalid.setVisibility(View.GONE);
-                        iv_invalid1.setVisibility(View.GONE);
-                        try {
-                            AddConpany();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else if (add_detail.getText().toString().equals("")) {
+                            Global.Messageshow(getApplicationContext(), mMainLayout, "Add Company Detail", false);
+
+                        }
+                        else if (edit_Mobile.getText().toString().trim().equals("")) {
+                            iv_invalid.setVisibility(View.VISIBLE);
+                        }
+                        else if (edit_email.getText().toString().trim().equals("")) {
+                            iv_invalid.setVisibility(View.GONE);
+                            iv_invalid1.setText(getResources().getString(R.string.invalid_email));
+                            iv_invalid1.setVisibility(View.VISIBLE);
+                        }
+                        else if (edit_company_url.getText().toString().equals("")) {
+                            iv_invalid.setVisibility(View.GONE);
+                            iv_invalid1.setVisibility(View.GONE);
+                            Global.Messageshow(getApplicationContext(), mMainLayout, "Add company url", false);
+                        } else if (edit_address.getText().toString().equals("")) {
+                            iv_invalid.setVisibility(View.GONE);
+                            iv_invalid1.setVisibility(View.GONE);
+                            Global.Messageshow(getApplicationContext(), mMainLayout, "Add company address", false);
+
+                        } else {
+                            iv_invalid.setVisibility(View.GONE);
+                            iv_invalid1.setVisibility(View.GONE);
+                            try {
+                                AddConpany();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -333,7 +369,9 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.iv_toolbar_manu_vertical:
-                broadcast_manu(SessionManager.getCompnay_detail(getApplicationContext()));
+                if(Global.isNetworkAvailable(this,mMainLayout)){
+                    broadcast_manu(SessionManager.getCompnay_detail(getApplicationContext()));
+                }
                 break;
         }
     }
@@ -373,7 +411,9 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 //Block Contect
 
                 try {
-                    Contect_BLock(Company, "1", bottomSheetDialog);
+                    if(Global.isNetworkAvailable(Add_Company_Activity.this,mMainLayout)) {
+                        Contect_BLock(Company, 1, bottomSheetDialog);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -388,7 +428,9 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 //Block Contect
 
                 try {
-                    Contect_BLock(Company, "0", bottomSheetDialog);
+                    if(Global.isNetworkAvailable(Add_Company_Activity.this,mMainLayout)) {
+                        Contect_BLock(Company, 0, bottomSheetDialog);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -403,7 +445,9 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 //Block Contect
 
                 try {
-                    Company_Remove(Company,"0",bottomSheetDialog);
+                    if(Global.isNetworkAvailable(Add_Company_Activity.this,mMainLayout)) {
+                        Company_Remove(Company,  bottomSheetDialog);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -416,17 +460,14 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     }
 
 
-    public void Contect_BLock(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Contect_BLock(CompanyModel.Company Company, int block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("is_block", block);
         JSONArray block_array = new JSONArray();
         block_array.put(Company.getId());
@@ -442,9 +483,9 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
 
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getApplicationContext(), main_layout, response.body().getMessage(), false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
 
-                    if (block.equals("1")) {
+                    if (block==1) {
                         WorkData.setIs_blocked(block);
                         iv_block.setVisibility(View.VISIBLE);
                     } else {
@@ -453,7 +494,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                     }
                     bottomSheetDialog.cancel();
                 } else {
-                    Global.Messageshow(getApplicationContext(), main_layout, response.body().getMessage(), false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                     bottomSheetDialog.cancel();
                 }
             }
@@ -468,17 +509,14 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     }
 
 
-    public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Company_Remove(CompanyModel.Company Company, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("id", Company.getId());
         paramObject.put("status", "D");
         obj.put("data", paramObject);
@@ -495,7 +533,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                     finish();
                     bottomSheetDialog.cancel();
                 } else {
-                    Global.Messageshow(getApplicationContext(), main_layout, response.body().getMessage(), false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                     bottomSheetDialog.cancel();
                 }
             }
@@ -513,14 +551,11 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     public void AddConpany() throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("name", add_name.getText().toString());
         paramObject.put("address", edit_address.getText().toString());
         paramObject.put("description", add_detail.getText().toString());
@@ -546,7 +581,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                     //Global.Messageshow(getApplicationContext(), main_layout, response.body().getMessage(), false);
                     finish();
                 } else {
-                    Global.Messageshow(getApplicationContext(), main_layout, response.body().getMessage(), false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
 

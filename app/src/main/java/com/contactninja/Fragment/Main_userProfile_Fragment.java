@@ -162,13 +162,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         sessionManager = new SessionManager(getActivity());
         option_type = "save";
         setTab();
-   /*     try {
-            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                Userinfo();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
+
 
         MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
         myAsyncTasks.execute();
@@ -657,9 +651,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         state = addcontectModel.getState();
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         String email_address = user_data.getUser().getEmail();
 
         String rol_id = user_data.getUser().getRoleId().toString();
@@ -679,7 +670,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JSONObject param_data = new JSONObject();
         param_data.put("organization_id", 1);
         param_data.put("team_id", 1);
-        param_data.put("user_id", Integer.parseInt(user_id));
+        param_data.put("user_id",user_data.getUser().getId());
         param_data.put("role_id", rol_id);
         param_data.put("contact_number", contect_number);
         param_data.put("email", email_address);
@@ -716,7 +707,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         // addcontectModel.getTime()
         param_data.put("timezone_id", addcontectModel.getTime());
         param_data.put("twitter_link", addcontectModel.getTwitter());
-        param_data.put("user_id", user_id);
+        param_data.put("user_id", user_data.getUser().getId());
         param_data.put("zipcode", addcontectModel.getZip_code());
         param_data.put("zoom_id", addcontectModel.getZoom_id());
 

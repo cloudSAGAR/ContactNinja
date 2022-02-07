@@ -134,8 +134,8 @@ LinearLayout lay_seq_stap,lay_taskname;
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("record_id",id);
 
@@ -395,14 +395,11 @@ LinearLayout lay_seq_stap,lay_taskname;
     private void SMSAPI(String type) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("record_id", manualDetails.getId());
         switch (type) {
             case "PAUSED":
@@ -500,15 +497,12 @@ LinearLayout lay_seq_stap,lay_taskname;
     private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("user_id", user_data.getUser().getId());
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "SMS");
         paramObject.addProperty("from_ac", from_ac);

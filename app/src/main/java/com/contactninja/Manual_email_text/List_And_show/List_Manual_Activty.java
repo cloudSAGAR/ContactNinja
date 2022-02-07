@@ -545,8 +545,8 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("q", ev_search.getText().toString());
         paramObject.addProperty("filter_by", Filter);
