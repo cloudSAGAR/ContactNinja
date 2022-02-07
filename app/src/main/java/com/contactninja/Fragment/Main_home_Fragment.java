@@ -59,6 +59,11 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     ViewpaggerAdapter adapter;
     String token_api = "", user_id = "", organization_id = "", team_id = "";
     SignResponseModel user_data;
+    MainActivity mainActivity;
+
+    public Main_home_Fragment(MainActivity mainActivity) {
+        this.mainActivity=mainActivity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,8 +87,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                     Timezone( tz.getID());
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
             }
         }
 
@@ -281,7 +285,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
-        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+        String version_name=Global.getVersionname(mainActivity);
+        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api,version_name , Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
