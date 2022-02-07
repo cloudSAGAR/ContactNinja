@@ -71,7 +71,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     List<CampaignTask_overview.SequenceTask> campaignTasks = new ArrayList<>();
     int sequence_id, sequence_task_id;
     BottomSheetDialog bottomSheetDialog;
-    EditText tv_name;
+    TextView tv_name;
     TextView contect_count;
     ImageView iv_toolbar_manu;
     Toolbar toolbar;
@@ -82,6 +82,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     List<CampaignTask_overview.SequenceTask> main_data = new ArrayList<>();
     String Camp_name = "";
     private BroadcastReceiver mNetworkReceiver;
+    LinearLayout layout_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
             // StepData();
-            tv_name.setEnabled(false);
+       //     tv_name.setEnabled(false);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
@@ -108,7 +109,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else {
-            tv_name.setEnabled(true);
+          //  tv_name.setEnabled(true);
             save_button.setText("Done");
             save_button.setVisibility(View.VISIBLE);
             add_icon.setVisibility(View.VISIBLE);
@@ -153,6 +154,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     }
 
     private void IntentUI() {
+        layout_name=findViewById(R.id.layout_name);
         mMainLayout = findViewById(R.id.mMainLayout);
         add_icon = findViewById(R.id.add_icon);
         add_icon.setVisibility(View.GONE);
@@ -171,6 +173,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         item_list.setLayoutManager(new LinearLayoutManager(this));
         item_list.setItemViewCacheSize(500);
         tv_name = findViewById(R.id.tv_name);
+        layout_name.setOnClickListener(this);
+        tv_name.setOnClickListener(this);
         user_contect = findViewById(R.id.user_contect);
         user_contect.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         user_contect.setOnClickListener(this);
@@ -273,6 +277,23 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     }
                 }
 
+                break;
+
+            case R.id.layout_name:
+                Intent name_intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
+                name_intent.putExtra("sequence_id", sequence_id);
+                name_intent.putExtra("seq_task_id", sequence_task_id);
+                name_intent.putExtra("sequence_Name", tv_name.getText().toString());
+                startActivity(name_intent);
+                finish();
+                break;
+            case R.id.tv_name:
+                Intent name_intent1 = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
+                name_intent1.putExtra("sequence_id", sequence_id);
+                name_intent1.putExtra("seq_task_id", sequence_task_id);
+                name_intent1.putExtra("sequence_Name", tv_name.getText().toString());
+                startActivity(name_intent1);
+                finish();
                 break;
 
         }

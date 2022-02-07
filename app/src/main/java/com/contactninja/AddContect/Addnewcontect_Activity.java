@@ -149,6 +149,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_addnewcontect);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
+
+
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
         Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
@@ -610,21 +612,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         city = addcontectModel.getCity();
         state = addcontectModel.getState();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-
-
         List<Contactdetail> contactdetails = new ArrayList<>();
         contactdetails.addAll(addcontectModel.getContactdetails());
-
-
         List<Contactdetail> contactdetails_email = new ArrayList<>();
         contactdetails_email.addAll(addcontectModel.getContactdetails_email());
         contactdetails.addAll(contactdetails_email);
-
-
         JSONObject obj = new JSONObject();
-
         JSONObject paramObject = new JSONObject();
-
         //Other Company Add
         if (addcontectModel.getCompany().equals("")) {
             paramObject.put("company_name", "");
@@ -660,10 +654,15 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("zipcode", zip_code);
         paramObject.put("zoom_id", zoom_id);
+        String str = android.os.Build.MODEL;
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        int version = Build.VERSION.SDK_INT;
+        String versionRelease = Build.VERSION.RELEASE;
+        paramObject.put("imei",str+" "+versionRelease);
         paramObject.put("contact_image", user_image_Url);
         paramObject.put("image_extension", File_extension);
         paramObject.put("contact_image_name", File_name);
-
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
@@ -681,6 +680,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             }
             jsonArray.put(paramObject1);
         }
+
 
         paramObject.put("contact_detail", jsonArray);
 
@@ -878,96 +878,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
 
 
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-
-    }
-
-    public void AddContect_Api1() throws JSONException {
-
-        loadingDialog.showLoadingDialog();
-        ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
-        f_name = edt_FirstName.getText().toString().trim();
-        l_name = edt_lastname.getText().toString().trim();
-        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
-        zip_code = addcontectModel.getZip_code();
-        zoom_id = addcontectModel.getZoom_id();
-        address = addcontectModel.getAddress();
-        note = addcontectModel.getNote();
-        city = addcontectModel.getCity();
-        state = addcontectModel.getState();
-        SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        List<Contactdetail> contactdetails = new ArrayList<>();
-        contactdetails.addAll(addcontectModel.getContactdetails());
-
-
-        List<Contactdetail> contactdetails_email = new ArrayList<>();
-        contactdetails_email.addAll(addcontectModel.getContactdetails_email());
-        contactdetails.addAll(contactdetails_email);
-
-
-        JSONObject obj = new JSONObject();
-
-        JSONObject paramObject = new JSONObject();
-        paramObject.put("id", Contect_data.getId());
-        paramObject.put("address", address);
-        paramObject.put("breakout_link", addcontectModel.getBreakoutu());
-        paramObject.put("city", city);
-        paramObject.put("company_id", addcontectModel.getCompany_id());
-        paramObject.put("company_name", addcontectModel.getCompany());
-        paramObject.put("company_url", "");
-        paramObject.put("dob", addcontectModel.getBirthday());
-        paramObject.put("dynamic_fields_value", "");
-        paramObject.put("facebook_link", addcontectModel.getFacebook());
-        paramObject.put("firstname", edt_FirstName.getText().toString().trim());
-        paramObject.put("lastname", l_name);
-        paramObject.put("job_title", addcontectModel.getJob_title());
-        paramObject.put("lastname", edt_lastname.getText().toString().trim());
-        paramObject.put("linkedin_link", addcontectModel.getLinkedin());
-        paramObject.put("organization_id", Contect_data.getOrganizationId());
-        paramObject.put("state", state);
-        paramObject.put("team_id", Contect_data.getTeamId());
-        // addcontectModel.getTime()
-        paramObject.put("timezone_id", addcontectModel.getTime());
-        paramObject.put("twitter_link", addcontectModel.getTwitter());
-        paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("zipcode", zip_code);
-        paramObject.put("zoom_id", zoom_id);
-        paramObject.put("contact_image", user_image_Url);
-        paramObject.put("image_extension", File_extension);
-        paramObject.put("contact_image_name", File_name);
-        if (olld_image != null) {
-            paramObject.put("oldImage", olld_image);
-        } else {
-            paramObject.put("oldImage", "");
-        }
-
-        obj.put("data", paramObject);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-
-        Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Addnewcontect_Activity.this), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
-                    long rowContactId = getRawContactId();
-                    save_button.setText("Save Contact");
-                    /*           updateContect(edt_FirstName.getText().toString(),phone,phone_type);*/
-
-                    updateContactPhoneByName(edt_FirstName.getText().toString(), edt_lastname.getText().toString(), phone, phone_type);
-                    finish();
-                } else {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
 

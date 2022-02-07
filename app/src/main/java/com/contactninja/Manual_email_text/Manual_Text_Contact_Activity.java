@@ -24,13 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
@@ -60,20 +53,25 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Manual_Text_Contact_Activity extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
-    ImageView iv_back;
-    TextView save_button;
-
-    BottomSheetDialog bottomSheetDialog_templateList1;
-    String  group_flag="true";
+public class Manual_Text_Contact_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static ArrayList<GroupListData> inviteListData = new ArrayList<>();
     public static List<GroupListData> select_inviteListData = new ArrayList<>();
+    ImageView iv_back;
+    TextView save_button;
+    BottomSheetDialog bottomSheetDialog_templateList1;
+    String group_flag = "true";
     List<ContectListData.Contact> pre_seleact = new ArrayList<>();
     RecyclerView contect_list_unselect;
     LinearLayoutManager layoutManager, layoutManager1;
@@ -101,6 +99,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
 
     ConstraintLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,15 +150,12 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                                         .toUpperCase()// Grab the first letter and capitalize it
                         );
                         return fastScrollItemIndicator;
-                    }
-                    catch (Exception e)
-                    {
-                        return  null;
+                    } catch (Exception e) {
+                        return null;
                     }
 
                 }
         );
-
 
 
         contect_search.addTextChangedListener(new TextWatcher() {
@@ -189,17 +185,14 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
             }
         });
         if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
-            List<ContectListData.Contact> list_data= SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
-            Log.e("List Data is",new Gson().toJson(list_data));
-            for (int i=0;i<list_data.size();i++)
-            {
+            List<ContectListData.Contact> list_data = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
+            Log.e("List Data is", new Gson().toJson(list_data));
+            for (int i = 0; i < list_data.size(); i++) {
 
-                List<ContectListData.Contact.ContactDetail> contect_detail=list_data.get(i).getContactDetails();
+                List<ContectListData.Contact.ContactDetail> contect_detail = list_data.get(i).getContactDetails();
 
-                for (int j=0;j<contect_detail.size();j++)
-                {
-                    if (!contect_detail.get(j).getType().equals("EMAIL"))
-                    {
+                for (int j = 0; j < contect_detail.size(); j++) {
+                    if (!contect_detail.get(j).getType().equals("EMAIL")) {
 
                         contectListData.add(list_data.get(i));
                         break;
@@ -213,16 +206,15 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
         }
 
 
-
         call_updatedata();
     }
 
 
     public void call_updatedata() {
-        if (sessionManager.getGroupList(getApplicationContext()).size() != 0) {
+        if (SessionManager.getGroupList(getApplicationContext()).size() != 0) {
             select_contectListData.clear();
             pre_seleact.clear();
-            pre_seleact.addAll(sessionManager.getGroupList(getApplicationContext()));
+            pre_seleact.addAll(SessionManager.getGroupList(getApplicationContext()));
             select_contectListData.addAll(pre_seleact);
 
 
@@ -254,9 +246,8 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
         add_new_contect_layout = findViewById(R.id.add_new_contect_layout);
 
 
-
-
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Manual_Text_Contact_Activity.this, mMainLayout);
@@ -299,39 +290,6 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                 break;
 
         }
-    }
-
-
-    public class MyAsyncTasks extends AsyncTask<String, String, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // display a progress dialog for good user experiance
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            // implement API in background and store the response in current variable
-            String current = "";
-            try {
-                if(Global.isNetworkAvailable(Manual_Text_Contact_Activity.this,mMainLayout)) {
-                    ContectEvent();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "Exception: " + e.getMessage();
-            }
-            return current;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
-
     }
 
     private void ContectEvent() throws JSONException {
@@ -465,6 +423,62 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
 
     }
 
+    private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int position) {
+
+        final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1.setContentView(mView);
+        TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        TextView tv_txt = bottomSheetDialog_templateList1.findViewById(R.id.tv_txt);
+        /*  tv_txt.setText("Please select contact");*/
+        RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
+        email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        PhoneListAdepter emailListAdepter = new PhoneListAdepter(getApplicationContext(), detailList, holder1, contacts, position,
+                tv_done);
+        email_list.setAdapter(emailListAdepter);
+        email_list.setVisibility(View.VISIBLE);
+
+
+        bottomSheetDialog_templateList1.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(Manual_Text_Contact_Activity.this, mMainLayout)) {
+                    ContectEvent();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
+    }
 
     public class GroupContectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -516,22 +530,20 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                     holder1.add_new_contect_icon.setVisibility(View.GONE);
 
                     //Log.e("List is", new Gson().toJson(select_contectListData));
-                    holder1.userName.setText(Contact_data.getFirstname()+" "+Contact_data.getLastname());
+                    holder1.userName.setText(Contact_data.getFirstname() + " " + Contact_data.getLastname());
                     holder1.userNumber.setVisibility(View.GONE);
 
                     holder1.first_latter.setVisibility(View.VISIBLE);
                     holder1.top_layout.setVisibility(View.VISIBLE);
 
-                    if (contacts.get(position).getIs_blocked().equals(1))
-                    {
+                    if (contacts.get(position).getIs_blocked().equals(1)) {
 
                         holder1.iv_block.setVisibility(View.VISIBLE);
                         holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                         holder1.remove_contect_icon.setVisibility(View.GONE);
                         holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
 
-                    }
-                    else {
+                    } else {
                         holder1.iv_block.setVisibility(View.GONE);
                         holder1.userName.setTextColor(Color.parseColor("#4A4A4A"));
 
@@ -593,25 +605,19 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                         public void onClick(View view) {
 
 
-                            if (contacts.get(position).getIs_blocked().equals(1))
-                            {
-                                Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.contect_block),false);
-                            }
-                            else {
-                                List<ContectListData.Contact.ContactDetail> detailList=new ArrayList<>();
+                            if (contacts.get(position).getIs_blocked().equals(1)) {
+                                Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.contect_block), false);
+                            } else {
+                                List<ContectListData.Contact.ContactDetail> detailList = new ArrayList<>();
                                 detailList.clear();
-                                for (int i=0;i<contacts.get(position).getContactDetails().size();i++)
-                                {
-                                    if (contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
-                                    {
+                                for (int i = 0; i < contacts.get(position).getContactDetails().size(); i++) {
+                                    if (contacts.get(position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("")) {
                                         detailList.add(contacts.get(position).getContactDetails().get(i));
-                                    }
-                                    else {
+                                    } else {
                                         // detailList.add(contacts.get(position).getContactDetails().get(i));
                                     }
                                 }
-                                if (detailList.size()==1)
-                                {
+                                if (detailList.size() == 1) {
 
                                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                     holder1.add_new_contect_icon.setVisibility(View.GONE);
@@ -624,28 +630,26 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                                     // SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                                     //SessionManager.setGroupList(getApplicationContext(), select_contectListData);
 
-                                    Intent data=getIntent();
-                                    Bundle bundle=data.getExtras();
-                                    String task_name=bundle.getString("task_name");
-                                    Intent intent=new Intent(Manual_Text_Contact_Activity.this, Manual_Text_Send_Activty.class);
-                                    intent.putExtra("number",detailList.get(0).getEmailNumber());
-                                    intent.putExtra("id",detailList.get(0).getContactId());
-                                    intent.putExtra("type","app");
-                                    intent.putExtra("task_name",task_name);
+                                    Intent data = getIntent();
+                                    Bundle bundle = data.getExtras();
+                                    String task_name = bundle.getString("task_name");
+                                    Intent intent = new Intent(Manual_Text_Contact_Activity.this, Manual_Text_Send_Activty.class);
+                                    intent.putExtra("number", detailList.get(0).getEmailNumber());
+                                    intent.putExtra("id", detailList.get(0).getContactId());
+                                    intent.putExtra("type", "app");
+                                    intent.putExtra("task_name", task_name);
                                     startActivity(intent);
                                     finish();
-                                }
-                                else if (detailList.size()>=1)
-                                {
-                                    for(int i=0;i<detailList.size();i++){
-                                        if(detailList.get(i).getIsDefault()==1){
+                                } else if (detailList.size() >= 1) {
+                                    for (int i = 0; i < detailList.size(); i++) {
+                                        if (detailList.get(i).getIsDefault() == 1) {
                                             detailList.get(i).setPhoneSelect(true);
                                             break;
                                         }
                                     }
 
-                                    Log.e("DataList SI",new Gson().toJson(detailList));
-                                    Phone_bouttomSheet(detailList,holder1,contacts,position);
+                                    Log.e("DataList SI", new Gson().toJson(detailList));
+                                    Phone_bouttomSheet(detailList, holder1, contacts, position);
                                 }
 
                             }
@@ -674,7 +678,6 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
             // Log.e("Size is :: ",contacts.size()+"");
             return contacts == null ? 0 : contacts.size();
         }
-
 
 
         @Override
@@ -722,13 +725,13 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
             TextView no_image;
             TextView userName, userNumber, first_latter;
             CircleImageView profile_image;
-            LinearLayout top_layout,layout_contec;
+            LinearLayout top_layout, layout_contec;
 
-            ImageView add_new_contect_icon, remove_contect_icon,iv_block;
+            ImageView add_new_contect_icon, remove_contect_icon, iv_block;
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
-                iv_block=itemView.findViewById(R.id.iv_block);
+                iv_block = itemView.findViewById(R.id.iv_block);
                 first_latter = itemView.findViewById(R.id.first_latter);
                 userName = itemView.findViewById(R.id.username);
                 userNumber = itemView.findViewById(R.id.user_number);
@@ -738,7 +741,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                 add_new_contect_icon = itemView.findViewById(R.id.add_new_contect_icon);
                 remove_contect_icon = itemView.findViewById(R.id.remove_contect_icon);
                 add_new_contect_icon.setVisibility(View.VISIBLE);
-                layout_contec=itemView.findViewById(R.id.layout_contec);
+                layout_contec = itemView.findViewById(R.id.layout_contec);
             }
         }
 
@@ -755,32 +758,12 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
 
     }
 
-
-    private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int position) {
-
-        final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
-        bottomSheetDialog_templateList1 = new BottomSheetDialog(this, R.style.CoffeeDialog);
-        bottomSheetDialog_templateList1.setContentView(mView);
-        TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
-        TextView tv_txt=bottomSheetDialog_templateList1.findViewById(R.id.tv_txt);
-        /*  tv_txt.setText("Please select contact");*/
-        RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
-        email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        PhoneListAdepter emailListAdepter = new PhoneListAdepter(getApplicationContext(), detailList,holder1,contacts,position,
-                tv_done);
-        email_list.setAdapter(emailListAdepter);
-        email_list.setVisibility(View.VISIBLE);
-
-
-        bottomSheetDialog_templateList1.show();
-    }
-
     class PhoneListAdepter extends RecyclerView.Adapter<PhoneListAdepter.viewholder> {
 
         public Context mCtx;
         List<ContectListData.Contact.ContactDetail> userLinkedGmailList;
 
-       GroupContectAdapter.MovieViewHolder holder1;
+        GroupContectAdapter.MovieViewHolder holder1;
 
         List<ContectListData.Contact> contacts;
         int s_position;
@@ -790,10 +773,10 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
         public PhoneListAdepter(Context applicationContext, List<ContectListData.Contact.ContactDetail> userLinkedGmailList, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int s_position, TextView tv_done) {
             this.mCtx = applicationContext;
             this.userLinkedGmailList = userLinkedGmailList;
-            this.holder1=holder1;
-            this.contacts=contacts;
-            this.s_position=s_position;
-            this.tv_done=tv_done;
+            this.holder1 = holder1;
+            this.contacts = contacts;
+            this.s_position = s_position;
+            this.tv_done = tv_done;
         }
 
         @NonNull
@@ -808,15 +791,13 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
         public void onBindViewHolder(@NonNull PhoneListAdepter.viewholder holder, int position) {
 
             userLinkedGmailList.get(position).setFlag("false");
-            holder.tv_item.setText("Phone("+userLinkedGmailList.get(position).getLabel()+")");
+            holder.tv_item.setText("Phone(" + userLinkedGmailList.get(position).getLabel() + ")");
             holder.tv_phone.setText(userLinkedGmailList.get(position).getEmailNumber());
             holder.tv_phone.setVisibility(View.VISIBLE);
-            if (userLinkedGmailList.get(position).isPhoneSelect())
-            {
+            if (userLinkedGmailList.get(position).isPhoneSelect()) {
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }
@@ -828,14 +809,12 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
             }
 
 
-
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    for(int i=0; i<userLinkedGmailList.size();i++){
-                        if (userLinkedGmailList.get(i).isPhoneSelect())
-                        {
+                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
+                        if (userLinkedGmailList.get(i).isPhoneSelect()) {
                             userLinkedGmailList.get(i).setPhoneSelect(false);
                             break;
                         }
@@ -843,19 +822,15 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                     userLinkedGmailList.get(position).setPhoneSelect(true);
 
 
-
                     tv_done.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
-                            for (int i=0;i<contacts.get(s_position).getContactDetails().size();i++)
-                            {
-                                if (contacts.get(s_position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals(""))
-                                {
+                            for (int i = 0; i < contacts.get(s_position).getContactDetails().size(); i++) {
+                                if (contacts.get(s_position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("")) {
                                     userLinkedGmailList.add(contacts.get(s_position).getContactDetails().get(i));
                                     break;
-                                }
-                                else {
+                                } else {
 
                                 }
                             }
@@ -863,25 +838,25 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                             holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                             holder1.add_new_contect_icon.setVisibility(View.GONE);
 
-                            List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
+                            List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
                             contactDetails.add(userLinkedGmailList.get(position));
-                            contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size()-1));
+                            contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size() - 1));
                             //Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
                             contacts.get(s_position).setContactDetails(contactDetails);
                             select_contectListData.add(contacts.get(position));
                             //userDetailsfull.get(position).setId(position);
                             SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                             SessionManager.setGroupList(getApplicationContext(), select_contectListData);
-                            num_count.setText(select_contectListData.size()+" Contact Selcted");
+                            num_count.setText(select_contectListData.size() + " Contact Selcted");
                             contacts.get(position).setFlag("false");
-                            Intent data=getIntent();
-                            Bundle bundle=data.getExtras();
-                            String task_name=bundle.getString("task_name");
-                            Intent intent=new Intent(Manual_Text_Contact_Activity.this, Manual_Text_Send_Activty.class);
-                            intent.putExtra("number",userLinkedGmailList.get(0).getEmailNumber());
-                            intent.putExtra("id",userLinkedGmailList.get(0).getContactId());
-                            intent.putExtra("type","app");
-                            intent.putExtra("task_name",task_name);
+                            Intent data = getIntent();
+                            Bundle bundle = data.getExtras();
+                            String task_name = bundle.getString("task_name");
+                            Intent intent = new Intent(Manual_Text_Contact_Activity.this, Manual_Text_Send_Activty.class);
+                            intent.putExtra("number", userLinkedGmailList.get(0).getEmailNumber());
+                            intent.putExtra("id", userLinkedGmailList.get(0).getContactId());
+                            intent.putExtra("type", "app");
+                            intent.putExtra("task_name", task_name);
                             startActivity(intent);
                             finish();
                             bottomSheetDialog_templateList1.cancel();
@@ -905,7 +880,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
         }
 
         public class viewholder extends RecyclerView.ViewHolder {
-            TextView tv_item,tv_phone;
+            TextView tv_item, tv_phone;
             View line_view;
             ImageView iv_dufult, iv_selected, iv_unselected;
             LinearLayout layout_select;
@@ -918,13 +893,8 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity  implements 
                 iv_selected = view.findViewById(R.id.iv_selected);
                 layout_select = view.findViewById(R.id.layout_select);
                 iv_unselected = view.findViewById(R.id.iv_unselected);
-                tv_phone=view.findViewById(R.id.tv_phone);
+                tv_phone = view.findViewById(R.id.tv_phone);
             }
         }
-    }
-    @Override
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
     }
 }
