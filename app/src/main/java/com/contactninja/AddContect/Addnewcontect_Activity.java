@@ -710,12 +710,19 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }.getType();
                     UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
                     try {
-                        if (uservalidateModel.getFirstname().size() != 0) {
-                            Global.Messageshow(getApplicationContext(), mMainLayout, uservalidateModel.getFirstname().get(0).toString(), false);
+                        String message = "";
+                        if (uservalidateModel.getEmail_number().size() != 0) {
+                            message = uservalidateModel.getEmail_number().get(0).toString();
                         }
+                        if (uservalidateModel.getFirstname().size() != 0) {
+                            message = uservalidateModel.getFirstname().get(0).toString();
+                        }
+                        Global.Messageshow(getApplicationContext(), mMainLayout, message, false);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
 
 
                 }

@@ -447,12 +447,12 @@ Number</string>
     <string name="manual_aleart_snooze_des">Are you sure that you would like to task snooze?</string>
 
     <string-array name="manual_filter">
-        <item>TODAY</item>
-        <item>UPCOMING</item>
-        <item>DUE</item>
-        <item>FINISHED</item>
-        <item>SKIPPED</item>
-        <item>PAUSED</item>
+        <item>today</item>
+        <item>upcoming</item>
+        <item>due</item>
+        <item>finished</item>
+        <item>skipped</item>
+        <item>paused</item>
     </string-array>
     <string-array name="manual_Select">
         <item>PAUSED</item>

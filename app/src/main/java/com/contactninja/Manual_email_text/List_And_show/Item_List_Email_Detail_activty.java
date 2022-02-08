@@ -307,15 +307,16 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         edit_compose.setText(manualDetails.getContentBody());
         ev_titale.setText(manualDetails.getTaskName());
         tv_taskname.setText(manualDetails.getTaskName());
-        try {
-            String time =Global.getDate(manualDetails.getStartTime());
+      //  try {
+         //   String time =Global.getDate(manualDetails.getStartTime());
+            String time = manualDetails.getDate()+" "+manualDetails.getTime();
+
             tv_date.setText(time);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-            String currentDateandTime = sdf.format(new Date());
-            compareDates(currentDateandTime,time,tv_status);
-        } catch (ParseException e) {
+
+            compareDates(time,tv_status);
+       /* } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
         if (!Global.IsNotNull(manualDetails.getSeqId()) || manualDetails.getSeqId() != 0) {
             lay_seq_stap.setVisibility(View.VISIBLE);
             lay_taskname.setVisibility(View.GONE);
@@ -327,19 +328,16 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         }
 
     }
-    public static void compareDates(String d1, String d2, TextView tv_status)
+    public static void compareDates(String d2, TextView tv_status)
     {
         try{
             // If you already have date objects then skip 1
 
             //1
             // Create 2 dates starts
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-            Date date1 = sdf.parse(d1);
-            Date date2 = sdf.parse(d2);
+            Date date1 = Global.defoult_date_time_formate.parse(Global.getCurrentTimeandDate());
+            Date date2 = Global.defoult_date_time_formate.parse(d2);
 
-            Log.e("Date1",sdf.format(date1));
-            Log.e("Date2",sdf.format(date2));
 
             // Create 2 dates ends
             //1

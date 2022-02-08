@@ -40,6 +40,9 @@ import java.util.regex.Pattern;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Global extends Application {
+    public  static SimpleDateFormat defoult_date_time_formate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    //public  static SimpleDateFormat defoult_date_month_formate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
     public static final String Device = "APP_ANDR";
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static String AppVersion = "";
@@ -66,7 +69,11 @@ public class Global extends Application {
         String date = df.format(Calendar.getInstance().getTime());
         return date;
     }
-
+    public static String getCurrentTimeandDate() {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = df.format(Calendar.getInstance().getTime());
+        return date;
+    }
     public static String getVersionname(Activity activity) {
         String version = "";
         try {
@@ -252,7 +259,7 @@ public class Global extends Application {
             return token;
         }
     */
-    public static String getDate(Integer time) throws ParseException {
+   /* public static String getDate(Integer time) throws ParseException {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
         cal.setTimeInMillis(Long.valueOf(time) * 1000);
@@ -261,7 +268,7 @@ public class Global extends Application {
         String date1 = format1.format(date);
 
         return String.valueOf(date1);
-    }
+    }*/
 
     @Override
     public void onCreate() {
