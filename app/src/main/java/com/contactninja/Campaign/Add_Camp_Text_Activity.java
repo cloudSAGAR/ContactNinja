@@ -30,12 +30,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
-import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
-import com.contactninja.Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.ContecModel;
@@ -66,15 +63,15 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
-public class Add_Camp_Text_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick , ConnectivityReceiver.ConnectivityReceiverListener,CardClick{
-    List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
+public class Add_Camp_Text_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
+    public String template_id_is = "";
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
     CardListAdepter cardListAdepter;
-    ImageView iv_back,iv_down;
+    ImageView iv_back, iv_down;
     BottomSheetDialog bottomSheetDialog_templateList1;
     TextView save_button, tv_use_tamplet, tv_step;
     List<ContecModel.PhoneDatum> select_userLinkedGmailList = new ArrayList<>();
     List<ContecModel.PhoneDatum> userLinkedGmailList = new ArrayList<>();
-
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -85,13 +82,12 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList = new ArrayList<>();
     CoordinatorLayout mMainLayout;
-    String step_no = "1", time = "09:00", sequence_id = "",seq_task_id="",from_ac="",from_ac_id="";
-    int minite = 00, day = 1 ,defult_id;
+    String step_no = "1", time = "09:00", sequence_id = "", seq_task_id = "", from_ac = "", from_ac_id = "";
+    int minite = 00, day = 1, defult_id;
     TemplateClick templateClick;
     BottomSheetDialog bottomSheetDialog_templateList;
-    public String template_id_is="";
-    private BroadcastReceiver mNetworkReceiver;
     EditText ev_from;
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +100,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
         try {
-            if(Global.isNetworkAvailable(Add_Camp_Text_Activity.this,mMainLayout)){
+            if (Global.isNetworkAvailable(Add_Camp_Text_Activity.this, mMainLayout)) {
                 Contect_list();
             }
         } catch (JSONException e) {
@@ -124,39 +120,36 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
         } else {
-            List<CampaignTask> step=   SessionManager.getTask(getApplicationContext());
+            List<CampaignTask> step = SessionManager.getTask(getApplicationContext());
 
-            int step_id = step.get(0).getStepNo()+1;
+            int step_id = step.get(0).getStepNo() + 1;
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
         }
 
-        Intent inten=getIntent();
-        Bundle bundle=inten.getExtras();
-        String flag=bundle.getString("flag");
-        if (flag.equals("edit"))
-        {
+        Intent inten = getIntent();
+        Bundle bundle = inten.getExtras();
+        String flag = bundle.getString("flag");
+        if (flag.equals("edit")) {
             edit_template.setText(bundle.getString("body"));
 
-            seq_task_id= String.valueOf(bundle.getInt("seq_task_id"));
-            sequence_id= String.valueOf(bundle.getInt("sequence_id"));
+            seq_task_id = String.valueOf(bundle.getInt("seq_task_id"));
+            sequence_id = String.valueOf(bundle.getInt("sequence_id"));
 
-            step_no= String.valueOf(bundle.getInt("step"));
+            step_no = String.valueOf(bundle.getInt("step"));
 
-          //  SessionManager.setCampaign_type(bundle.getString("type"));
+            //  SessionManager.setCampaign_type(bundle.getString("type"));
             //SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
 
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
             try {
-               // minite= bundle.getInt("minute");
+                // minite= bundle.getInt("minute");
                 //day= bundle.getInt("day");
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -174,14 +167,14 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("q","");
-        paramObject.addProperty("status","");
-        paramObject.addProperty("orderBy","");
-        paramObject.addProperty("order","");
-        paramObject.addProperty("perPage","10");
-        paramObject.addProperty("page","1");
+        paramObject.addProperty("q", "");
+        paramObject.addProperty("status", "");
+        paramObject.addProperty("orderBy", "");
+        paramObject.addProperty("order", "");
+        paramObject.addProperty("perPage", "10");
+        paramObject.addProperty("page", "1");
         obj.add("data", paramObject);
-        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Text_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -197,11 +190,11 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
 
                     Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
 
-                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
                     phoneDatum.setIsDefault(1);
                     phoneDatum.setPhoneNumber("System Assigned");
-                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    userLinkedGmailList.add(userLinkedGmailList.size(), phoneDatum);
                     Collections.reverse(userLinkedGmailList);
                     if (userLinkedGmailList.size() == 1) {
                         iv_down.setVisibility(View.GONE);
@@ -213,26 +206,24 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
 
                     for (int i = 0; i < userLinkedGmailList.size(); i++) {
 
-                        Intent inten=getIntent();
-                        Bundle bundle=inten.getExtras();
-                        String flag=bundle.getString("flag");
-                        if (flag.equals("edit"))
-                        {
+                        Intent inten = getIntent();
+                        Bundle bundle = inten.getExtras();
+                        String flag = bundle.getString("flag");
+                        if (flag.equals("edit")) {
                             if (userLinkedGmailList.get(i).getId().toString().equals(bundle.getString("from_ac_id"))) {
                                 ev_from.setText(userLinkedGmailList.get(i).getPhoneNumber());
                                 defult_id = userLinkedGmailList.get(i).getId();
                                 select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-                                from_ac="USERSMS";
-                                from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
+                                from_ac = "USERSMS";
+                                from_ac_id = String.valueOf(userLinkedGmailList.get(i).getId());
                             }
-                        }
-                        else {
+                        } else {
                             if (userLinkedGmailList.get(i).getIsDefault().toString().equals("1")) {
                                 ev_from.setText(userLinkedGmailList.get(i).getPhoneNumber());
                                 defult_id = userLinkedGmailList.get(i).getId();
                                 select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-                                from_ac="USERSMS";
-                                from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
+                                from_ac = "USERSMS";
+                                from_ac_id = String.valueOf(userLinkedGmailList.get(i).getId());
                             }
                         }
 
@@ -240,17 +231,17 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
 
-                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
                     phoneDatum.setIsDefault(1);
                     phoneDatum.setPhoneNumber("System Assigned");
-                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    userLinkedGmailList.add(userLinkedGmailList.size(), phoneDatum);
 
                     ev_from.setText(userLinkedGmailList.get(0).getPhoneNumber());
                     defult_id = userLinkedGmailList.get(0).getId();
                     select_userLinkedGmailList.add(userLinkedGmailList.get(0));
-                    from_ac="USERSMS";
-                    from_ac_id= String.valueOf(userLinkedGmailList.get(0).getId());
+                    from_ac = "USERSMS";
+                    from_ac_id = String.valueOf(userLinkedGmailList.get(0).getId());
 
                     //Global.openEmailAuth(from_ac.this);
                     // startActivity(new Intent(getApplicationContext(), Email_verification.class));
@@ -271,7 +262,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         bottomSheetDialog_templateList = new BottomSheetDialog(Add_Camp_Text_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
-        LinearLayout layout_list_template=bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
+        LinearLayout layout_list_template = bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
         layout_list_template.setVisibility(View.VISIBLE);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
@@ -333,9 +324,9 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("type", "SMS");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("perPage", 10000000);
-        paramObject.addProperty("page",1);
+        paramObject.addProperty("page", 1);
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Text_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -346,7 +337,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
                     TemplateList list = new Gson().fromJson(headerString, listType);
-                    templateList=list.getTemplate();
+                    templateList = list.getTemplate();
 
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
@@ -382,7 +373,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Text_Activity.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -419,7 +410,6 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     templateTextList.add(2, templateText);
 
 
-
                     Listset(templateTextList);
 
                     //   sessionManager.setUserdata(getApplicationContext(),data);
@@ -446,8 +436,8 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
     }
 
     private void IntentUI() {
-        ev_from=findViewById(R.id.ev_from);
-        iv_down=findViewById(R.id.iv_down);
+        ev_from = findViewById(R.id.ev_from);
+        iv_down = findViewById(R.id.iv_down);
         iv_down.setOnClickListener(this);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -476,7 +466,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                 //Add Api Call
                 Global.hideKeyboard(Add_Camp_Text_Activity.this);
                 Global.count = 1;
-                String body=edit_template.getText().toString();
+                String body = edit_template.getText().toString();
                 if (body.equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_message), false);
 
@@ -505,8 +495,8 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
 
 
-        for(int i=0;i<userLinkedGmailList.size();i++){
-            if(userLinkedGmailList.get(i).getIsDefault()==1){
+        for (int i = 0; i < userLinkedGmailList.size(); i++) {
+            if (userLinkedGmailList.get(i).getIsDefault() == 1) {
                 select_userLinkedGmailList.clear();
                 userLinkedGmailList.get(i).setEmailSelect(true);
                 select_userLinkedGmailList.add(userLinkedGmailList.get(i));
@@ -524,9 +514,9 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
-                if(select_userLinkedGmailList.size()!=0){
-                    from_ac="USERSMS";
-                    from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
+                if (select_userLinkedGmailList.size() != 0) {
+                    from_ac = "USERSMS";
+                    from_ac_id = String.valueOf(select_userLinkedGmailList.get(0).getId());
                     ev_from.setText(select_userLinkedGmailList.get(0).getPhoneNumber());
                 }
             }
@@ -537,14 +527,329 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
 
     @Override
     public void Onclick(Broadcast_image_list broadcastImageList) {
-        for(int i=0;i<broadcast_image_list.size();i++){
-            if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
+        for (int i = 0; i < broadcast_image_list.size(); i++) {
+            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
                 broadcast_image_list.get(i).setScelect(true);
-            }else {
+            } else {
                 broadcast_image_list.get(i).setScelect(false);
             }
         }
         cardListAdepter.notifyDataSetChanged();
+    }
+
+    public void OnClick(@SuppressLint("UnknownNullness") String s) {
+        String curenttext = edit_template.getText().toString();
+        String Newtext = curenttext + s;
+        edit_template.setText(Newtext);
+        edit_template.setSelection(edit_template.getText().length());
+    }
+
+    @Override
+    public void OnClick(TemplateList.Template template) {
+        edit_template.setText(template.getContentBody());
+        edit_template.setSelection(edit_template.getText().length());
+        template_id_is = String.valueOf(template.getId());
+        bottomSheetDialog_templateList.dismiss();
+    }
+
+    public void showAlertDialogButtonClicked(View view, String body_text) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this, R.style.BottomSheetDialog);
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.add_titale_for_templet,
+                        null);
+        builder.setView(customLayout);
+        CoordinatorLayout c_layout = customLayout.findViewById(R.id.c_layout);
+        EditText editText = customLayout.findViewById(R.id.editText);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        TextView tv_add = customLayout.findViewById(R.id.tv_add);
+        AlertDialog dialog
+                = builder.create();
+
+        dialog.show();
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editText.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                } else if (body_text.equals("")) {
+                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template Text ", false);
+
+                } else {
+                    try {
+                        dialog.dismiss();
+                        CreateTemplate(body_text, editText.getText().toString(), dialog);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    public void StepData() {
+
+        Intent inten = getIntent();
+        Bundle bundle = inten.getExtras();
+        String flag = bundle.getString("flag");
+        JsonObject obj = new JsonObject();
+        if (flag.equals("add")) {
+            loadingDialog.showLoadingDialog();
+            SignResponseModel user_data = SessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+            try {
+                if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
+
+                    CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
+
+                    int step = main_data.getStepNo() + 1;
+                    step_no = String.valueOf(step);
+                    day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
+                    minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
+
+                    if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
+                        sequence_id = "null";
+                    } else {
+                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString();
+                    }
+                } else {
+                    sequence_id = "null";
+                }
+            } catch (Exception e) {
+                sequence_id = "null";
+            }
+
+
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("day", day);
+            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
+            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("organization_id", "1");
+            if (!template_id_is.equals("")) {
+                paramObject.addProperty("template_id", template_id_is);
+            }
+
+
+            if (!sequence_id.equals("null")) {
+                paramObject.addProperty("sequence_id", sequence_id);
+            }
+            paramObject.addProperty("step_no", step_no);
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
+            paramObject.addProperty("time", Global.getCurrentTime());
+            paramObject.addProperty("user_id", user_id);
+            paramObject.addProperty("from_ac", from_ac);
+            paramObject.addProperty("from_ac_id", from_ac_id);
+            obj.add("data", paramObject);
+        } else {
+            SignResponseModel user_data = SessionManager.getGetUserdata(this);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
+            paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+            paramObject.addProperty("organization_id", "1");
+            paramObject.addProperty("sequence_id", bundle.getString("sequence_id"));
+            paramObject.addProperty("team_id", "1");
+            paramObject.addProperty("seq_task_id", seq_task_id);
+            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
+            paramObject.addProperty("time", Global.getCurrentTime());
+            paramObject.addProperty("user_id", user_id);
+            paramObject.addProperty("step_no", step_no);
+            paramObject.addProperty("from_ac", from_ac);
+            paramObject.addProperty("from_ac_id", from_ac_id);
+
+            if (!template_id_is.equals("")) {
+                paramObject.addProperty("template_id", template_id_is);
+            }
+            obj.add("data", paramObject);
+        }
+
+        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Camp_Text_Activity.this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+
+                loadingDialog.cancelLoading();
+
+                if (response.body().getHttp_status() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<List<CampaignTask>>() {
+                    }.getType();
+                    List<CampaignTask> user_model1 = new Gson().fromJson(headerString, listType);
+                    Log.e("User Model ", new Gson().toJson(user_model1));
+                    Intent inten = getIntent();
+                    Bundle bundle = inten.getExtras();
+                    String flag = bundle.getString("flag");
+                    if (flag.equals("edit")) {
+                        finish();
+                    } else {
+                        SessionManager.setTask(getApplicationContext(), user_model1);
+                        startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
+                        finish();
+                    }
+
+                } else {
+
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+    private void CreateTemplate(String body_text, String s, AlertDialog dialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Text_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("template_name", s);
+        String template_slug = s.toUpperCase().replace(" ", "_");
+        paramObject.addProperty("template_slug", template_slug);
+        paramObject.addProperty("content_body", body_text);
+        paramObject.addProperty("type", "SMS");
+
+        obj.add("data", paramObject);
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Text_Activity.this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout,
+                            response.body().getMessage(), true);
+                    dialog.dismiss();
+                    bottomSheetDialog_templateList.dismiss();
+                } else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    if (user_model.getTemplate_slug() != null) {
+                        Global.Messageshow(getApplicationContext(), mMainLayout,
+                                "The template title has already been taken.", false);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+        intent.putExtra("flag", "new");
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
+
+    static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        CardClick cardClick;
+        BottomSheetDialog bottomSheetDialog;
+        TextClick interfaceClick;
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.cardClick = cardClick;
+            this.bottomSheetDialog = bottomSheetDialog;
+            this.interfaceClick = interfaceClick;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new CardListAdepter.cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                bottomSheetDialog.dismiss();
+                interfaceClick.OnClick("BzczrdLink");
+            });
+            if (item.isScelect()) {
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
+            } else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public static class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
     }
 
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
@@ -587,12 +892,10 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             }
 
 
-            if (userLinkedGmailList.get(position).isEmailSelect())
-            {
+            if (userLinkedGmailList.get(position).isEmailSelect()) {
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }
@@ -601,9 +904,8 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    for(int i=0; i<userLinkedGmailList.size();i++){
-                        if (userLinkedGmailList.get(i).isEmailSelect())
-                        {
+                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
+                        if (userLinkedGmailList.get(i).isEmailSelect()) {
                             userLinkedGmailList.get(i).setEmailSelect(false);
                             break;
                         }
@@ -642,249 +944,6 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                 layout_select = view.findViewById(R.id.layout_select);
             }
         }
-    }
-
-    public void OnClick(@SuppressLint("UnknownNullness") String s) {
-        String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + s;
-        edit_template.setText(Newtext);
-        edit_template.setSelection(edit_template.getText().length());
-    }
-
-    @Override
-    public void OnClick(TemplateList.Template template) {
-        edit_template.setText(template.getContentBody());
-        edit_template.setSelection(edit_template.getText().length());
-        template_id_is= String.valueOf(template.getId());
-        bottomSheetDialog_templateList.dismiss();
-    }
-
-    public void showAlertDialogButtonClicked(View view, String body_text) {
-
-        // Create an alert builder
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(this, R.style.BottomSheetDialog);
-        final View customLayout
-                = getLayoutInflater()
-                .inflate(
-                        R.layout.add_titale_for_templet,
-                        null);
-        builder.setView(customLayout);
-        CoordinatorLayout c_layout = customLayout.findViewById(R.id.c_layout);
-        EditText editText = customLayout.findViewById(R.id.editText);
-        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
-        TextView tv_add = customLayout.findViewById(R.id.tv_add);
-        AlertDialog dialog
-                = builder.create();
-
-        dialog.show();
-        tv_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editText.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
-                } else if (body_text.equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template Text ", false);
-
-                } else {
-                    try {
-                        dialog.dismiss();
-                        CreateTemplate(body_text, editText.getText().toString(),dialog);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-            }
-        });
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-    }
-
-    public void StepData() {
-
-        Intent inten=getIntent();
-        Bundle bundle=inten.getExtras();
-        String flag=bundle.getString("flag");
-        JsonObject obj = new JsonObject();
-        if (flag.equals("add"))
-        {
-            loadingDialog.showLoadingDialog();
-            SignResponseModel user_data = SessionManager.getGetUserdata(this);
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-            try {
-                if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
-
-                    CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
-
-                    int step = main_data.getStepNo() + 1;
-                    step_no = String.valueOf(step);
-                    day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
-                    minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
-
-                    if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
-                        sequence_id = "null";
-                    } else {
-                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString();
-                    }
-                } else {
-                    sequence_id = "null";
-                }
-            } catch (Exception e) {
-                sequence_id = "null";
-            }
-
-
-            JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("content_body", edit_template.getText().toString());
-            paramObject.addProperty("day", day);
-            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", minite);
-            paramObject.addProperty("organization_id", "1");
-            if (!template_id_is.equals(""))
-            {
-                paramObject.addProperty("template_id",template_id_is);
-            }
-
-
-            if (!sequence_id.equals("null"))
-            {
-                paramObject.addProperty("sequence_id", sequence_id);
-            }
-            paramObject.addProperty("step_no", step_no);
-            paramObject.addProperty("team_id", "1");
-            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
-            paramObject.addProperty("user_id", user_id);
-            paramObject.addProperty("from_ac",from_ac);
-            paramObject.addProperty("from_ac_id",from_ac_id);
-            obj.add("data", paramObject);
-        }
-        else {
-            SignResponseModel user_data = SessionManager.getGetUserdata(this);
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-            JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("content_body", edit_template.getText().toString());
-            paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
-            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
-            paramObject.addProperty("organization_id", "1");
-            paramObject.addProperty("sequence_id", bundle.getString("sequence_id"));
-            paramObject.addProperty("team_id", "1");
-            paramObject.addProperty("seq_task_id", seq_task_id);
-            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
-            paramObject.addProperty("user_id", user_id);
-            paramObject.addProperty("step_no", step_no);
-            paramObject.addProperty("from_ac",from_ac);
-            paramObject.addProperty("from_ac_id",from_ac_id);
-
-            if (!template_id_is.equals(""))
-            {
-                paramObject.addProperty("template_id",template_id_is);
-            }
-            obj.add("data", paramObject);
-        }
-
-        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device,new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                //Log.e("Response is",new Gson().toJson(response));
-
-                loadingDialog.cancelLoading();
-
-                if (response.body().getHttp_status() == 200) {
-
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<List<CampaignTask>>() {
-                    }.getType();
-                    List<CampaignTask> user_model1 = new Gson().fromJson(headerString, listType);
-                    Log.e("User Model ", new Gson().toJson(user_model1));
-                    Intent inten=getIntent();
-                    Bundle bundle=inten.getExtras();
-                    String flag=bundle.getString("flag");
-                    if (flag.equals("edit"))
-                    {
-                        finish();
-                    }
-                    else {
-                        SessionManager.setTask(getApplicationContext(), user_model1);
-                        startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
-                        finish();
-                    }
-
-                } else {
-
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-    }
-
-    private void CreateTemplate(String body_text, String s, AlertDialog dialog) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Text_Activity.this);
-        String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("template_name", s);
-        String template_slug = s.toUpperCase().replace(" ", "_");
-        paramObject.addProperty("template_slug", template_slug);
-        paramObject.addProperty("content_body", body_text);
-        paramObject.addProperty("type", "SMS");
-
-        obj.add("data", paramObject);
-        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(Add_Camp_Text_Activity.this),Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout,
-                            response.body().getMessage(), true);
-                    dialog.dismiss();
-                    bottomSheetDialog_templateList.dismiss();
-                } else {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<UservalidateModel>() {
-                    }.getType();
-                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
-                    if (user_model.getTemplate_slug() != null) {
-                        Global.Messageshow(getApplicationContext(), mMainLayout,
-                                "The template title has already been taken.", false);
-                    }
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-
-
     }
 
     class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
@@ -964,70 +1023,15 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 0) {
+                    if (position == 1) {
 
-//                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-//                        chooseFile.setType("*/*");
-//                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-//                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
-
-
-
-                        final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Add_Camp_Text_Activity.this, R.style.DialogStyle);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Add_Camp_Text_Activity.this,
+                                R.style.DialogStyle);
                         bottomSheetDialog.setContentView(mView);
-                        TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
-                        ImageView iv_send = bottomSheetDialog.findViewById(R.id.iv_send);
-                        ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
-                        ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
-                        ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
-                        ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
-                        LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
-                        LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
-                        EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
-                        CoordinatorLayout layout_select_image = bottomSheetDialog.findViewById(R.id.layout_select_image);
-                        LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
-                        LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
-
-                        lay_sendnow.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent1 = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
-                                intent1.putExtra("s_name", "default");
-                                startActivity(intent1);
-
-                            }
-                        });
-                        lay_schedule.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
-                            }
-                        });
-                        edit_message.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                iv_card_list.setImageResource(R.drawable.ic_card_blank);
-                                rv_image_card.setVisibility(View.GONE);
-                                iv_card_list.setSelected(false);
-                            }
-                        });
-
-                        iv_send.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-                                Broadcast_Data broadcast_data = new Broadcast_Data();
-                                broadcast_data.setLink(tv_text_link.getText().toString());
-                                broadcast_data.setLink_text(edit_message.getText().toString());
-                                broadcast_data.setBroadcast_image_lists(broadcast_image_list);
-                                sessionManager.setAdd_Broadcast_Data(broadcast_data);
-                                lay_main_choose_send.setVisibility(View.VISIBLE);
-
-                            }
-                        });
 
 
                         broadcast_image_list.clear();
@@ -1047,61 +1051,13 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                         rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Camp_Text_Activity.this,
                                 LinearLayoutManager.HORIZONTAL, false));
                         rv_image_card.setHasFixedSize(true);
-                        cardListAdepter = new CardListAdepter(Add_Camp_Text_Activity.this, broadcast_image_list, iv_selected, Add_Camp_Text_Activity.this, layout_select_image);
+                        cardListAdepter = new CardListAdepter(Add_Camp_Text_Activity.this, broadcast_image_list,
+                                Add_Camp_Text_Activity.this, bottomSheetDialog, interfaceClick);
                         rv_image_card.setAdapter(cardListAdepter);
 
 
-                        lay_link_copy.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                iv_link_icon.setImageResource(R.drawable.ic_link_dark);
-                                tv_text_link.setTextColor(getResources().getColor(R.color.purple_200));
-                                tv_text_link.setText(getResources().getString(R.string.link_click));
-                            }
-                        });
-                        iv_card_list.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (v.isSelected()) {
-
-
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-
-                                    iv_card_list.setImageResource(R.drawable.ic_card_blank);
-                                    rv_image_card.setVisibility(View.GONE);
-                                    iv_card_list.setSelected(false);
-                                } else {
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-
-                                    iv_card_list.setImageResource(R.drawable.ic_card_fill);
-                                    rv_image_card.setVisibility(View.VISIBLE);
-                                    iv_card_list.setSelected(true);
-                                }
-                            }
-                        });
-
-
-                        iv_cancle_select_image.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                layout_select_image.setVisibility(View.GONE);
-                                for (int i = 0; i < broadcast_image_list.size(); i++) {
-                                    if (broadcast_image_list.get(i).isScelect()) {
-                                        broadcast_image_list.get(i).setScelect(false);
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-
                         bottomSheetDialog.show();
-                    }else {
-                       // Global.Messageshow(Add_Camp_Text_Activity.this,mMainLayout,getResources().getString(R.string.add_contact),false);
                     }
-
-
 
 
                 }
@@ -1119,6 +1075,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             TextView tv_item;
             View line_view;
             ImageView im_file;
+
             public viewholder(View view) {
                 super(view);
                 tv_item = view.findViewById(R.id.tv_item);
@@ -1194,91 +1151,5 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             }
         }
     }
-
-
-    @Override
-    public void onBackPressed() {
-        Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
-        intent.putExtra("flag","new");
-        startActivity(intent);
-        finish();
-        super.onBackPressed();
-    }
-
-    class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
-
-        Activity activity;
-        List<Broadcast_image_list> broadcast_image_list;
-        ImageView iv_selected;
-        CardClick cardClick;
-        CoordinatorLayout layout_select_image;
-
-
-        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
-                               ImageView iv_selected,CardClick cardClick,CoordinatorLayout coordinatorLayout) {
-            this.activity = activity;
-            this.broadcast_image_list = broadcast_image_list;
-            this.iv_selected = iv_selected;
-            this.cardClick = cardClick;
-            this.layout_select_image = coordinatorLayout;
-        }
-
-
-        @NonNull
-        @Override
-        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
-            return new CardListAdepter.cardListData(view);
-        }
-
-        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
-        @Override
-        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
-            Broadcast_image_list item = this.broadcast_image_list.get(position);
-
-
-            int resID = activity.getResources().getIdentifier(item.getImagename()
-                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-            if (resID != 0) {
-                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
-            }
-            holder.layout_select_image.setOnClickListener(v -> {
-                cardClick.Onclick(item);
-                item.setScelect(true);
-                layout_select_image.setVisibility(View.VISIBLE);
-                int resID1 = activity.getResources().getIdentifier(item.getImagename()
-                        .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-                if (resID1 != 0) {
-                    Glide.with(activity.getApplicationContext()).load(resID1).into(iv_selected);
-                }
-            });
-            if(item.isScelect()){
-                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
-            }else {
-                holder.layout_select_image.setBackground(null);
-            }
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return broadcast_image_list.size();
-        }
-
-        public  class cardListData extends RecyclerView.ViewHolder {
-
-            ImageView iv_card;
-            LinearLayout layout_select_image;
-
-            public cardListData(@NonNull View itemView) {
-                super(itemView);
-                iv_card = itemView.findViewById(R.id.iv_card);
-                layout_select_image = itemView.findViewById(R.id.layout_select_image);
-            }
-        }
-
-
-    }
-
 
 }

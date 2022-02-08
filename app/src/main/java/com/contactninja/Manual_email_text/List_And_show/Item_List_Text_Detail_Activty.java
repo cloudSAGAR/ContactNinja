@@ -34,15 +34,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
-import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
-import com.contactninja.Broadcast.Brodcsast_Tankyou;
-import com.contactninja.Campaign.Add_Camp_Email_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.Email_Tankyou;
 import com.contactninja.Manual_email_text.Manual_Shooz_Time_Date_Activity;
-import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
@@ -69,7 +65,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -78,11 +73,11 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Item_List_Text_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener,CardClick{
+public class Item_List_Text_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
     public static final int PICKFILE_RESULT_CODE = 1;
     static ManualTaskDetailsModel.ManualDetails manualDetails;
     SessionManager sessionManager;
-    List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
     CardListAdepter cardListAdepter;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -110,7 +105,7 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
 
-    public static void compareDates( String d2, TextView tv_status) {
+    public static void compareDates(String d2, TextView tv_status) {
         try {
             // If you already have date objects then skip 1
 
@@ -270,12 +265,12 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
         edit_compose.setText(manualDetails.getContentBody());
         ev_titale.setText(manualDetails.getTaskName());
         tv_taskname.setText(manualDetails.getTaskName());
-      //  try {
-           // String time = Global.getDate(manualDetails.getStartTime());
-            String time = manualDetails.getDate()+" "+manualDetails.getTime();
-            tv_date.setText(time);
+        //  try {
+        // String time = Global.getDate(manualDetails.getStartTime());
+        String time = manualDetails.getDate() + " " + manualDetails.getTime();
+        tv_date.setText(time);
 
-            compareDates(time, tv_status);
+        compareDates(time, tv_status);
      /*   } catch (ParseException e) {
             e.printStackTrace();
         }*/
@@ -655,7 +650,6 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                     templateTextList = hastagList.getHashtag();
 
 
-
                     HastagList.TemplateText text1 = new HastagList.TemplateText();
                     text1.setFile(R.drawable.ic_card_blank);
                     text1.setSelect(false);
@@ -873,7 +867,7 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                     try {
                         if (Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, MainActivity.mMainLayout)) {
                             if (isValidation(editText.getText().toString().trim(), dialog)) {
-                                CreateTemplate(editText.getText().toString().trim(),dialog);
+                                CreateTemplate(editText.getText().toString().trim(), dialog);
                             }
                         }
                     } catch (JSONException e) {
@@ -971,16 +965,87 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
             }
         }
     }
+
     @Override
     public void Onclick(Broadcast_image_list broadcastImageList) {
-        for(int i=0;i<broadcast_image_list.size();i++){
-            if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
+        for (int i = 0; i < broadcast_image_list.size(); i++) {
+            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
                 broadcast_image_list.get(i).setScelect(true);
-            }else {
+            } else {
                 broadcast_image_list.get(i).setScelect(false);
             }
         }
         cardListAdepter.notifyDataSetChanged();
+    }
+
+    static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        CardClick cardClick;
+        BottomSheetDialog bottomSheetDialog;
+        TextClick interfaceClick;
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.cardClick = cardClick;
+            this.bottomSheetDialog = bottomSheetDialog;
+            this.interfaceClick = interfaceClick;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new CardListAdepter.cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                bottomSheetDialog.dismiss();
+                interfaceClick.OnClick("BzczrdLink");
+            });
+            if (item.isScelect()) {
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
+            } else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public static class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
     }
 
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
@@ -1099,70 +1164,15 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 0) {
+                    if (position == 1) {
 
-//                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-//                        chooseFile.setType("*/*");
-//                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-//                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
-
-
-
-                        final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.DialogStyle);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Text_Detail_Activty.this,
+                                R.style.DialogStyle);
                         bottomSheetDialog.setContentView(mView);
-                        TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
-                        ImageView iv_send = bottomSheetDialog.findViewById(R.id.iv_send);
-                        ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
-                        ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
-                        ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
-                        ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
-                        LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
-                        LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
-                        EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
-                        CoordinatorLayout layout_select_image = bottomSheetDialog.findViewById(R.id.layout_select_image);
-                        LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
-                        LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
-
-                        lay_sendnow.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent1 = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
-                                intent1.putExtra("s_name", "default");
-                                startActivity(intent1);
-
-                            }
-                        });
-                        lay_schedule.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
-                            }
-                        });
-                        edit_message.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                iv_card_list.setImageResource(R.drawable.ic_card_blank);
-                                rv_image_card.setVisibility(View.GONE);
-                                iv_card_list.setSelected(false);
-                            }
-                        });
-
-                        iv_send.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-                                Broadcast_Data broadcast_data = new Broadcast_Data();
-                                broadcast_data.setLink(tv_text_link.getText().toString());
-                                broadcast_data.setLink_text(edit_message.getText().toString());
-                                broadcast_data.setBroadcast_image_lists(broadcast_image_list);
-                                sessionManager.setAdd_Broadcast_Data(broadcast_data);
-                                lay_main_choose_send.setVisibility(View.VISIBLE);
-
-                            }
-                        });
 
 
                         broadcast_image_list.clear();
@@ -1182,60 +1192,13 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                         rv_image_card.setLayoutManager(new LinearLayoutManager(Item_List_Text_Detail_Activty.this,
                                 LinearLayoutManager.HORIZONTAL, false));
                         rv_image_card.setHasFixedSize(true);
-                        cardListAdepter = new CardListAdepter(Item_List_Text_Detail_Activty.this, broadcast_image_list, iv_selected, Item_List_Text_Detail_Activty.this, layout_select_image);
+                        cardListAdepter = new CardListAdepter(Item_List_Text_Detail_Activty.this, broadcast_image_list,
+                                Item_List_Text_Detail_Activty.this, bottomSheetDialog, interfaceClick);
                         rv_image_card.setAdapter(cardListAdepter);
 
 
-                        lay_link_copy.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                iv_link_icon.setImageResource(R.drawable.ic_link_dark);
-                                tv_text_link.setTextColor(getResources().getColor(R.color.purple_200));
-                                tv_text_link.setText(getResources().getString(R.string.link_click));
-                            }
-                        });
-                        iv_card_list.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (v.isSelected()) {
-
-
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-
-                                    iv_card_list.setImageResource(R.drawable.ic_card_blank);
-                                    rv_image_card.setVisibility(View.GONE);
-                                    iv_card_list.setSelected(false);
-                                } else {
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-
-                                    iv_card_list.setImageResource(R.drawable.ic_card_fill);
-                                    rv_image_card.setVisibility(View.VISIBLE);
-                                    iv_card_list.setSelected(true);
-                                }
-                            }
-                        });
-
-
-                        iv_cancle_select_image.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                layout_select_image.setVisibility(View.GONE);
-                                for (int i = 0; i < broadcast_image_list.size(); i++) {
-                                    if (broadcast_image_list.get(i).isScelect()) {
-                                        broadcast_image_list.get(i).setScelect(false);
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-
                         bottomSheetDialog.show();
-                    }else {
                     }
-
-
 
 
                 }
@@ -1384,82 +1347,5 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
             }
         }
     }
-
-
-    class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
-
-        Activity activity;
-        List<Broadcast_image_list> broadcast_image_list;
-        ImageView iv_selected;
-        CardClick cardClick;
-        CoordinatorLayout layout_select_image;
-
-
-        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
-                               ImageView iv_selected,CardClick cardClick,CoordinatorLayout coordinatorLayout) {
-            this.activity = activity;
-            this.broadcast_image_list = broadcast_image_list;
-            this.iv_selected = iv_selected;
-            this.cardClick = cardClick;
-            this.layout_select_image = coordinatorLayout;
-        }
-
-
-        @NonNull
-        @Override
-        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
-            return new CardListAdepter.cardListData(view);
-        }
-
-        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
-        @Override
-        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
-            Broadcast_image_list item = this.broadcast_image_list.get(position);
-
-
-            int resID = activity.getResources().getIdentifier(item.getImagename()
-                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-            if (resID != 0) {
-                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
-            }
-            holder.layout_select_image.setOnClickListener(v -> {
-                cardClick.Onclick(item);
-                item.setScelect(true);
-                layout_select_image.setVisibility(View.VISIBLE);
-                int resID1 = activity.getResources().getIdentifier(item.getImagename()
-                        .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-                if (resID1 != 0) {
-                    Glide.with(activity.getApplicationContext()).load(resID1).into(iv_selected);
-                }
-            });
-            if(item.isScelect()){
-                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
-            }else {
-                holder.layout_select_image.setBackground(null);
-            }
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return broadcast_image_list.size();
-        }
-
-        public  class cardListData extends RecyclerView.ViewHolder {
-
-            ImageView iv_card;
-            LinearLayout layout_select_image;
-
-            public cardListData(@NonNull View itemView) {
-                super(itemView);
-                iv_card = itemView.findViewById(R.id.iv_card);
-                layout_select_image = itemView.findViewById(R.id.layout_select_image);
-            }
-        }
-
-
-    }
-
 
 }

@@ -33,13 +33,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
-import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
-import com.contactninja.Broadcast.Broadcst_Activty;
-import com.contactninja.Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
@@ -70,12 +66,12 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener,CardClick {
+public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
     public static final int PICKFILE_RESULT_CODE = 1;
     static CoordinatorLayout mMainLayout;
     public String template_id_is = "";
     ImageView iv_back;
-    List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
     CardListAdepter cardListAdepter;
     TextView save_button, tv_use_tamplet;
     SessionManager sessionManager;
@@ -396,7 +392,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
                 } else {
-                    if(Global.isNetworkAvailable(Add_Camp_Email_Activity.this,mMainLayout)){
+                    if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, mMainLayout)) {
                         StepData();
                     }
                 }
@@ -560,21 +556,21 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             @SuppressLint("SyntheticAccessor")
             @Override
             public void onClick(View v) {
-               if (edt_template_name.getText().toString().equals("")) {
+                if (edt_template_name.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
                 } else if (edit_template.equals("")) {
                     Global.Messageshow(getApplicationContext(), c_layout, "Enter template Text ", false);
 
                 } else {
-                   try {
-                       if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
-                           if (isValidation(edit_template, ev_subject, edt_template_name))
-                               CreateTemplate(edit_template, ev_subject, edt_template_name, dialog);
-                       }
-                   } catch (JSONException e) {
-                       e.printStackTrace();
-                   }
-               }
+                    try {
+                        if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
+                            if (isValidation(edit_template, ev_subject, edt_template_name))
+                                CreateTemplate(edit_template, ev_subject, edt_template_name, dialog);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
@@ -796,14 +792,84 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
     @Override
     public void Onclick(Broadcast_image_list broadcastImageList) {
-        for(int i=0;i<broadcast_image_list.size();i++){
-            if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
+        for (int i = 0; i < broadcast_image_list.size(); i++) {
+            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
                 broadcast_image_list.get(i).setScelect(true);
-            }else {
+            } else {
                 broadcast_image_list.get(i).setScelect(false);
             }
         }
         cardListAdepter.notifyDataSetChanged();
+    }
+
+    static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        CardClick cardClick;
+        BottomSheetDialog bottomSheetDialog;
+        TextClick interfaceClick;
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.cardClick = cardClick;
+            this.bottomSheetDialog = bottomSheetDialog;
+            this.interfaceClick = interfaceClick;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new CardListAdepter.cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                bottomSheetDialog.dismiss();
+                interfaceClick.OnClick("BzczrdLink");
+            });
+            if (item.isScelect()) {
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
+            } else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public static class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
     }
 
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
@@ -1024,68 +1090,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 public void onClick(View view) {
                     if (position == 1) {
 
-//                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-//                        chooseFile.setType("*/*");
-//                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-//                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
-
-
-
-                        final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Add_Camp_Email_Activity.this, R.style.DialogStyle);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Add_Camp_Email_Activity.this,
+                                R.style.DialogStyle);
                         bottomSheetDialog.setContentView(mView);
-                        TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
-                        ImageView iv_send = bottomSheetDialog.findViewById(R.id.iv_send);
-                        ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
-                        ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
-                        ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
-                        ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
-                        LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
-                        LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
-                        EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
-                        CoordinatorLayout layout_select_image = bottomSheetDialog.findViewById(R.id.layout_select_image);
-                        LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
-                        LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
-
-                        lay_sendnow.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent1 = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
-                                intent1.putExtra("s_name", "default");
-                                startActivity(intent1);
-
-                            }
-                        });
-                        lay_schedule.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
-                            }
-                        });
-                        edit_message.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                iv_card_list.setImageResource(R.drawable.ic_card_blank);
-                                rv_image_card.setVisibility(View.GONE);
-                                iv_card_list.setSelected(false);
-                            }
-                        });
-
-                        iv_send.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-                                Broadcast_Data broadcast_data = new Broadcast_Data();
-                                broadcast_data.setLink(tv_text_link.getText().toString());
-                                broadcast_data.setLink_text(edit_message.getText().toString());
-                                broadcast_data.setBroadcast_image_lists(broadcast_image_list);
-                                sessionManager.setAdd_Broadcast_Data(broadcast_data);
-                                lay_main_choose_send.setVisibility(View.VISIBLE);
-
-                            }
-                        });
 
 
                         broadcast_image_list.clear();
@@ -1105,62 +1116,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                         rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Camp_Email_Activity.this,
                                 LinearLayoutManager.HORIZONTAL, false));
                         rv_image_card.setHasFixedSize(true);
-                        cardListAdepter = new CardListAdepter(Add_Camp_Email_Activity.this, broadcast_image_list, iv_selected, Add_Camp_Email_Activity.this, layout_select_image);
+                        cardListAdepter = new CardListAdepter(Add_Camp_Email_Activity.this, broadcast_image_list,
+                                Add_Camp_Email_Activity.this, bottomSheetDialog, interfaceClick);
                         rv_image_card.setAdapter(cardListAdepter);
 
 
-                        lay_link_copy.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                iv_link_icon.setImageResource(R.drawable.ic_link_dark);
-                                tv_text_link.setTextColor(getResources().getColor(R.color.purple_200));
-                                tv_text_link.setText(getResources().getString(R.string.link_click));
-                            }
-                        });
-                        iv_card_list.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (v.isSelected()) {
-
-
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-
-                                    iv_card_list.setImageResource(R.drawable.ic_card_blank);
-                                    rv_image_card.setVisibility(View.GONE);
-                                    iv_card_list.setSelected(false);
-                                } else {
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-
-                                    iv_card_list.setImageResource(R.drawable.ic_card_fill);
-                                    rv_image_card.setVisibility(View.VISIBLE);
-                                    iv_card_list.setSelected(true);
-                                }
-                            }
-                        });
-
-
-                        iv_cancle_select_image.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                layout_select_image.setVisibility(View.GONE);
-                                for (int i = 0; i < broadcast_image_list.size(); i++) {
-                                    if (broadcast_image_list.get(i).isScelect()) {
-                                        broadcast_image_list.get(i).setScelect(false);
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-
                         bottomSheetDialog.show();
-                    }else {
                     }
-
-
-
-
                 }
             });
             if (item.isSelect()) {
@@ -1209,83 +1171,6 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 im_file = view.findViewById(R.id.im_file);
             }
         }
-    }
-
-
-
-    class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
-
-        Activity activity;
-        List<Broadcast_image_list> broadcast_image_list;
-        ImageView iv_selected;
-        CardClick cardClick;
-        CoordinatorLayout layout_select_image;
-
-
-        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
-                               ImageView iv_selected,CardClick cardClick,CoordinatorLayout coordinatorLayout) {
-            this.activity = activity;
-            this.broadcast_image_list = broadcast_image_list;
-            this.iv_selected = iv_selected;
-            this.cardClick = cardClick;
-            this.layout_select_image = coordinatorLayout;
-        }
-
-
-        @NonNull
-        @Override
-        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
-            return new CardListAdepter.cardListData(view);
-        }
-
-        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
-        @Override
-        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
-            Broadcast_image_list item = this.broadcast_image_list.get(position);
-
-
-            int resID = activity.getResources().getIdentifier(item.getImagename()
-                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-            if (resID != 0) {
-                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
-            }
-            holder.layout_select_image.setOnClickListener(v -> {
-                cardClick.Onclick(item);
-                item.setScelect(true);
-                layout_select_image.setVisibility(View.VISIBLE);
-                int resID1 = activity.getResources().getIdentifier(item.getImagename()
-                        .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
-                if (resID1 != 0) {
-                    Glide.with(activity.getApplicationContext()).load(resID1).into(iv_selected);
-                }
-            });
-            if(item.isScelect()){
-                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
-            }else {
-                holder.layout_select_image.setBackground(null);
-            }
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return broadcast_image_list.size();
-        }
-
-        public  class cardListData extends RecyclerView.ViewHolder {
-
-            ImageView iv_card;
-            LinearLayout layout_select_image;
-
-            public cardListData(@NonNull View itemView) {
-                super(itemView);
-                iv_card = itemView.findViewById(R.id.iv_card);
-                layout_select_image = itemView.findViewById(R.id.layout_select_image);
-            }
-        }
-
-
     }
 
 
