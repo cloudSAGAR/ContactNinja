@@ -33,6 +33,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;

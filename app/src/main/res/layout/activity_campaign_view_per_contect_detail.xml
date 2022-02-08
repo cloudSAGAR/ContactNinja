@@ -9,7 +9,7 @@
     android:background="@color/white"
     android:id="@+id/mMainLayout"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Campaign_view_per_contect_Detail">
+    tools:context=".Campaign.List_itm.Campaign_view_per_contect_Detail">
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />

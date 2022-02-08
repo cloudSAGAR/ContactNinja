@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.contactninja.Broadcast.Broadcst_Activty;
-import com.contactninja.Campaign.Campaign_List_Activity;
+import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;

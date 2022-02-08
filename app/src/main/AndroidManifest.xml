@@ -116,7 +116,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Campaign_view_per_contect_Detail"
+            android:name=".Campaign.List_itm.Campaign_view_per_contect_Detail"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -124,11 +124,11 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Campaign_Viewcontect"
+            android:name=".Campaign.List_itm.Campaign_Viewcontect"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Campaign_Final_Start"
+            android:name=".Campaign.List_itm.Campaign_Final_Start"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -172,7 +172,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Campaign_List_Activity"
+            android:name=".Campaign.List_itm.Campaign_List_Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

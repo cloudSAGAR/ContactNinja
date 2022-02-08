@@ -1,4 +1,4 @@
-package com.contactninja.Campaign;
+package com.contactninja.Campaign.List_itm;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;

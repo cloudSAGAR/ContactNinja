@@ -24,7 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Campaign.Campaign_view_per_contect_Detail;
+import com.contactninja.Campaign.List_itm.Campaign_view_per_contect_Detail;
 import com.contactninja.Campaign.ContectAndGroup_Actvity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.Contactdetail;

@@ -328,8 +328,8 @@ Number</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
     <string name="create_task">Create your </string>
 
-    <string name="campaign_step_one_email">Automated email</string>
-    <string name="campaign_step_one_email_manual">Manual email</string>
+    <string name="campaign_step_one_email">Automated Email</string>
+    <string name="campaign_step_one_email_manual">Manual Email</string>
     <string name="campaign_step_one_email_txt">Automated emails are sent using automation and Manual emails create a task on your /n dashboard for you to approve it before sending.</string>
 
     <string name="campaign_step_one_text">Automated Text</string>
@@ -347,7 +347,7 @@ Number</string>
     <string name="and">and</string>
     <string name="Day">Day</string>
     <string name="Run_this_step_on">Run this step on</string>
-    <string name="mail_title">Step#2 (Automated email)</string>
+    <string name="mail_title">Step#2 (Automated Email)</string>
     <string name="mail_subject">Subject:</string>
     <string name="ComposeEmail">Compose email</string>
     <string name="camp_done">Please add title of \n  your campaign</string>
