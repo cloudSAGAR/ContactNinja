@@ -334,24 +334,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                             Global.Messageshow(getApplicationContext(), mMainLayout, "Add Company Detail", false);
 
                         }
-                        else if (edit_Mobile.getText().toString().trim().equals("")) {
-                            iv_invalid.setVisibility(View.VISIBLE);
-                        }
-                        else if (edit_email.getText().toString().trim().equals("")) {
-                            iv_invalid.setVisibility(View.GONE);
-                            iv_invalid1.setText(getResources().getString(R.string.invalid_email));
-                            iv_invalid1.setVisibility(View.VISIBLE);
-                        }
-                        else if (edit_company_url.getText().toString().equals("")) {
-                            iv_invalid.setVisibility(View.GONE);
-                            iv_invalid1.setVisibility(View.GONE);
-                            Global.Messageshow(getApplicationContext(), mMainLayout, "Add company url", false);
-                        } else if (edit_address.getText().toString().equals("")) {
-                            iv_invalid.setVisibility(View.GONE);
-                            iv_invalid1.setVisibility(View.GONE);
-                            Global.Messageshow(getApplicationContext(), mMainLayout, "Add company address", false);
-
-                        } else {
+                       else {
                             iv_invalid.setVisibility(View.GONE);
                             iv_invalid1.setVisibility(View.GONE);
                             try {

@@ -1715,6 +1715,8 @@ public class Campaign_Contect_Fragment extends Fragment {
                 //  save_button.setTextColor(getResources().getColor(R.color.purple_200));
 
             }
+            SessionManager.setGroupList(getActivity(), new ArrayList<>());
+            SessionManager.setGroupList(getActivity(), select_contectListData);
 
         }
 
@@ -1743,6 +1745,9 @@ public class Campaign_Contect_Fragment extends Fragment {
                 //  save_button.setTextColor(getResources().getColor(R.color.purple_200));
 
             }
+            SessionManager.setGroupList(getActivity(), new ArrayList<>());
+            SessionManager.setGroupList(getActivity(), select_contectListData);
+
 
         }
 

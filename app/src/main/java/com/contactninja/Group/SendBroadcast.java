@@ -8,6 +8,9 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,7 +47,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     SessionManager sessionManager;
     RoundedImageView add_new_contect_icon;
     ConstraintLayout mMainLayout;
-    TextView no_image;
+    TextView no_image,topic_remainingCharacter;
 
     private BroadcastReceiver mNetworkReceiver;
     @Override
@@ -124,6 +127,29 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
 
 
 
+        add_detail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                Log.e("Test Clcik ",String.valueOf(charSequence));
+                if (charSequence.toString().length() <= 100) {
+                    int num = 100 - charSequence.toString().length();
+                    topic_remainingCharacter.setText(num + " " + getResources().getString(R.string.camp_remaingn));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //    topic_remainingCharacter.setText(100 - editable.length() + " Characters Remaining.");
+
+            }
+        });
 
         viewPager.addOnPageChangeListener(this);
     }
@@ -140,6 +166,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         add_new_contect=findViewById(R.id.add_new_contect);
         mMainLayout=findViewById(R.id.mMainLayout);
         no_image=findViewById(R.id.no_image);
+        topic_remainingCharacter=findViewById(R.id.topic_remainingCharacter);
     }
 
     @Override

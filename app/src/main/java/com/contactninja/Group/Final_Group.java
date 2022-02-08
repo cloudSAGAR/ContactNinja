@@ -100,6 +100,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     LinearLayout mMainLayout;
     RetrofitCalls retrofitCalls;
     String old_image = "", group_id = "";
+    TextView topic_remainingCharacter;
 
     private BroadcastReceiver mNetworkReceiver;
 
@@ -287,10 +288,35 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             }
         });
         deleteCache(this);
+
+        add_detail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                Log.e("Test Clcik ",String.valueOf(charSequence));
+                if (charSequence.toString().length() <= 100) {
+                    int num = 100 - charSequence.toString().length();
+                    topic_remainingCharacter.setText(num + " " + getResources().getString(R.string.camp_remaingn));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //    topic_remainingCharacter.setText(100 - editable.length() + " Characters Remaining.");
+
+            }
+        });
     }
     // Handled permission Result
 
     private void IntentUI() {
+        topic_remainingCharacter=findViewById(R.id.topic_remainingCharacter);
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_back = findViewById(R.id.iv_back);
