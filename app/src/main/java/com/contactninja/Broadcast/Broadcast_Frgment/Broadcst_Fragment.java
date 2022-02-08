@@ -137,7 +137,7 @@ public class Broadcst_Fragment extends Fragment implements ViewPager.OnPageChang
 
             switch (position) {
                 case 0:
-                    ContectFragment contectFragment = new ContectFragment(strtext1, getView(), getActivity());
+                    ContectFragment contectFragment = new ContectFragment(getView(), getActivity());
                     return contectFragment;
 
                 case 1:

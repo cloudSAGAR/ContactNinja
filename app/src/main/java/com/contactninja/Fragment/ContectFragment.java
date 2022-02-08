@@ -142,9 +142,8 @@ public class ContectFragment extends Fragment  {
     List<Csv_InviteListData> csv_multiple_data = new ArrayList<>();
 
 
-    public ContectFragment(String strtext, View view, FragmentActivity activity) {
+    public ContectFragment(View view, FragmentActivity activity) {
 
-        this.strtext = strtext;
         this.view1 = view;
         this.fragmentActivity = activity;
         // Log.e("View is ", String.valueOf(view1.getVisibility()));
