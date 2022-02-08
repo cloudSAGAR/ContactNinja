@@ -264,7 +264,8 @@ public class ContectFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 loadingDialog.showLoadingDialog();
-                splitdata(csv_inviteListData);
+                EnableRuntimePermission();
+               // splitdata(csv_inviteListData);
             }
         });
 
@@ -688,6 +689,7 @@ public class ContectFragment extends Fragment  {
             //loadingDialog.cancelLoading();
             //Log.e("Csv Size is ","0");
         } else {
+            splitdata(csv_inviteListData);
             main_store = new ArrayList<>();
 
             for (int i = 0; i < csv_inviteListData.size(); i++) {
@@ -710,12 +712,13 @@ public class ContectFragment extends Fragment  {
             }
 
             if (SessionManager.getContectList(getActivity()).size() != 0) {
+
                /* num_count.setText(""+SessionManager.getContectList(getActivity()).get(0).getContacts().size() + " Contacts");
                 compareLists(SessionManager.getContectList(getActivity()).get(0).getContacts(),main_store);
 */
-                ContectEvent1(main_store);
+               // ContectEvent1(main_store);
             } else {
-                ContectEvent1(main_store);
+               // ContectEvent1(main_store);
             }
 
 

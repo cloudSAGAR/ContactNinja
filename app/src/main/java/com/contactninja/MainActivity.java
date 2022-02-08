@@ -90,6 +90,7 @@ import java.util.stream.IntStream;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -481,10 +482,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             File file = new File(context.getFilesDir(), "CSV_Data_" + time + ".csv");
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
+            Log.e("Pathe And", String.valueOf(path));
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
+     /*   Intent intent = ShareCompat.IntentBuilder.from(this)
+                    .setType("application/pdf")
+                    .setStream(path)
+                    .setChooserTitle("Choose bar")
+                    .createChooserIntent()
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-
+            startActivity(intent);
+*/
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
                 Uploadcsv(file);
             }
@@ -859,36 +868,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SessionManager.setCampaign_Day("00");
-                SessionManager.setCampaign_minute("00");
-                SessionManager.setCampaign_type("");
-                SessionManager.setCampaign_type_name("");
-                SessionManager.setEmail_screen_name("");
-                Intent intent1 = new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
-                intent1.putExtra("flag", "add");
-                startActivity(intent1);//  finish();
-                bottomSheetDialog.dismiss();
+
+                if (SessionManager.getContectList(getApplicationContext()).equals(null))
+                {
+
+                }
+                else {
+                    SessionManager.setCampaign_Day("00");
+                    SessionManager.setCampaign_minute("00");
+                    SessionManager.setCampaign_type("");
+                    SessionManager.setCampaign_type_name("");
+                    SessionManager.setEmail_screen_name("");
+                    Intent intent1 = new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
+                    intent1.putExtra("flag", "add");
+                    startActivity(intent1);//  finish();
+                    bottomSheetDialog.dismiss();
+                }
+
             }
         });
 
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
 
-                Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
-                startActivity(intent);
-                //finish();
-                bottomSheetDialog.dismiss();
+                if (SessionManager.getContectList(getApplicationContext()).equals(null))
+                {
+
+                }
+                else {
+                    SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
+                    SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
+
+                    Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
+                    startActivity(intent);
+                    //finish();
+                    bottomSheetDialog.dismiss();
+                }
             }
         });
         selected_campaign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
-                startActivity(intent);
-                bottomSheetDialog.dismiss();
+                if (SessionManager.getContectList(getApplicationContext()).equals(null))
+                {
+
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
+                    startActivity(intent);
+                    bottomSheetDialog.dismiss();
+                }
             }
         });
 
