@@ -1,6 +1,7 @@
 package com.contactninja.Manual_email_text;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,10 +30,17 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
+import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
+import com.contactninja.Broadcast.Brodcsast_Tankyou;
+import com.contactninja.Campaign.Add_Camp_Email_Activity;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
+import com.contactninja.Model.Broadcast_Data;
+import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
@@ -63,13 +72,14 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Manual_Text_Send_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener{
+public class Manual_Text_Send_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener,CardClick{
     public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     RelativeLayout mMainLayout;
-
+    List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
+    CardListAdepter cardListAdepter;
     ImageView iv_back;
     TextView save_button, tv_use_tamplet;
 
@@ -275,11 +285,21 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     templateTextList.add(1, text1);*/
 
 
+                    HastagList.TemplateText text1 = new HastagList.TemplateText();
+                    text1.setFile(R.drawable.ic_card_blank);
+                    text1.setSelect(false);
+                    templateTextList.add(0, text1);
+
+                    HastagList.TemplateText text2 = new HastagList.TemplateText();
+                    text2.setFile(R.drawable.ic_video);
+                    text2.setSelect(false);
+                    templateTextList.add(1, text2);
+
+
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(0, templateText);
-
+                    templateTextList.add(3, templateText);
 
                     Listset(templateTextList);
 
@@ -820,6 +840,18 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         }
     }
 
+    @Override
+    public void Onclick(Broadcast_image_list broadcastImageList) {
+        for(int i=0;i<broadcast_image_list.size();i++){
+            if(broadcastImageList.getId()==broadcast_image_list.get(i).getId()){
+                broadcast_image_list.get(i).setScelect(true);
+            }else {
+                broadcast_image_list.get(i).setScelect(false);
+            }
+        }
+        cardListAdepter.notifyDataSetChanged();
+    }
+
 
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
 
@@ -937,14 +969,172 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
-                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                        chooseFile.setType("*/*");
-                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                    if (position == 0) {
+//                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+//                        chooseFile.setType("*/*");
+//                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+//                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+//
+
+                        final View mView = getLayoutInflater().inflate(R.layout.brodcaste_link_dialog_item, null);
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Manual_Text_Send_Activty.this, R.style.DialogStyle);
+                        bottomSheetDialog.setContentView(mView);
+                        TextView tv_text_link = bottomSheetDialog.findViewById(R.id.tv_text_link);
+                        ImageView iv_send = bottomSheetDialog.findViewById(R.id.iv_send);
+                        ImageView iv_card_list = bottomSheetDialog.findViewById(R.id.iv_card_list);
+                        ImageView iv_link_icon = bottomSheetDialog.findViewById(R.id.iv_link_icon);
+                        ImageView iv_cancle_select_image = bottomSheetDialog.findViewById(R.id.iv_cancle_select_image);
+                        ImageView iv_selected = bottomSheetDialog.findViewById(R.id.iv_selected);
+                        LinearLayout lay_link_copy = bottomSheetDialog.findViewById(R.id.lay_link_copy);
+                        LinearLayout lay_main_choose_send = bottomSheetDialog.findViewById(R.id.lay_main_choose_send);
+                        RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
+                        EditText edit_message = bottomSheetDialog.findViewById(R.id.edit_message);
+                        CoordinatorLayout layout_select_image = bottomSheetDialog.findViewById(R.id.layout_select_image);
+                        LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
+                        LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
+
+                        lay_sendnow.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent1 = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
+                                intent1.putExtra("s_name", "default");
+                                startActivity(intent1);
+
+                            }
+                        });
+                        lay_schedule.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startActivity(new Intent(getApplicationContext(), Broadcast_to_repeat.class));
+                            }
+                        });
+                        edit_message.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                iv_card_list.setImageResource(R.drawable.ic_card_blank);
+                                rv_image_card.setVisibility(View.GONE);
+                                iv_card_list.setSelected(false);
+                            }
+                        });
+
+                        iv_send.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+                                Broadcast_Data broadcast_data = new Broadcast_Data();
+                                broadcast_data.setLink(tv_text_link.getText().toString());
+                                broadcast_data.setLink_text(edit_message.getText().toString());
+                                broadcast_data.setBroadcast_image_lists(broadcast_image_list);
+                                sessionManager.setAdd_Broadcast_Data(broadcast_data);
+                                lay_main_choose_send.setVisibility(View.VISIBLE);
+
+                            }
+                        });
+
+
+                        broadcast_image_list.clear();
+                        for (int i = 0; i <= 20; i++) {
+                            Broadcast_image_list item = new Broadcast_image_list();
+                            if (i % 2 == 0) {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_1");
+                            } else {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_2");
+                            }
+                            broadcast_image_list.add(item);
+                        }
+                        rv_image_card.setLayoutManager(new LinearLayoutManager(Manual_Text_Send_Activty.this,
+                                LinearLayoutManager.HORIZONTAL, false));
+                        rv_image_card.setHasFixedSize(true);
+                        cardListAdepter = new CardListAdepter(Manual_Text_Send_Activty.this, broadcast_image_list, iv_selected, Manual_Text_Send_Activty.this, layout_select_image);
+                        rv_image_card.setAdapter(cardListAdepter);
+
+
+                        lay_link_copy.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                iv_link_icon.setImageResource(R.drawable.ic_link_dark);
+                                tv_text_link.setTextColor(getResources().getColor(R.color.purple_200));
+                                tv_text_link.setText(getResources().getString(R.string.link_click));
+                            }
+                        });
+                        iv_card_list.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (v.isSelected()) {
+
+
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+
+                                    iv_card_list.setImageResource(R.drawable.ic_card_blank);
+                                    rv_image_card.setVisibility(View.GONE);
+                                    iv_card_list.setSelected(false);
+                                } else {
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+
+                                    iv_card_list.setImageResource(R.drawable.ic_card_fill);
+                                    rv_image_card.setVisibility(View.VISIBLE);
+                                    iv_card_list.setSelected(true);
+                                }
+                            }
+                        });
+
+
+                        iv_cancle_select_image.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                layout_select_image.setVisibility(View.GONE);
+                                for (int i = 0; i < broadcast_image_list.size(); i++) {
+                                    if (broadcast_image_list.get(i).isScelect()) {
+                                        broadcast_image_list.get(i).setScelect(false);
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+
+                        bottomSheetDialog.show();
+                    }else {
+
+                    }
+
+
+
+
+                }
+            });
+            if (item.isSelect()) {
+                holder.tv_item.setBackground(null);
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
+                holder.line_view.setVisibility(View.VISIBLE);
+            } else {
+                holder.line_view.setVisibility(View.GONE);
+            }
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!item.isSelect()) {
+                        Handler handler = new Handler();
+                        Runnable r = new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            public void run() {
+                                notifyDataSetChanged();
+                            }
+                        };
+                        handler.postDelayed(r, 1000);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
+                        holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
+                        interfaceClick.OnClick(item.getHashtag());
                     }
                 }
             });
+
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
@@ -1093,6 +1283,82 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                 layout_select = view.findViewById(R.id.layout_select);
             }
         }
+    }
+
+
+    class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        ImageView iv_selected;
+        CardClick cardClick;
+        CoordinatorLayout layout_select_image;
+
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               ImageView iv_selected,CardClick cardClick,CoordinatorLayout coordinatorLayout) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.iv_selected = iv_selected;
+            this.cardClick = cardClick;
+            this.layout_select_image = coordinatorLayout;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new CardListAdepter.cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                layout_select_image.setVisibility(View.VISIBLE);
+                int resID1 = activity.getResources().getIdentifier(item.getImagename()
+                        .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+                if (resID1 != 0) {
+                    Glide.with(activity.getApplicationContext()).load(resID1).into(iv_selected);
+                }
+            });
+            if(item.isScelect()){
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
+            }else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public  class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
     }
 
     @Override
