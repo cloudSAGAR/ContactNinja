@@ -1669,6 +1669,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
         });
 
+        add_new.setVisibility(View.GONE);
         add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

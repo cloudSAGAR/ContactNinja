@@ -1457,7 +1457,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 return isLoading;
             }
         });
-
+        add_new.setVisibility(View.GONE);
         add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
