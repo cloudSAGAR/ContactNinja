@@ -30,12 +30,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.contactninja.Broadcast.Broadcst_Activty;
 import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
+import com.contactninja.Manual_email_text.List_And_show.List_Manual_Activty;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
@@ -88,13 +96,6 @@ import java.util.OptionalInt;
 import java.util.TimeZone;
 import java.util.stream.IntStream;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ShareCompat;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IntentUI();
         Calendar cal = Calendar.getInstance();
         TimeZone tz1 = cal.getTimeZone();
-        Calendar calendar = Calendar.getInstance(tz1,Locale.getDefault());
+        Calendar calendar = Calendar.getInstance(tz1, Locale.getDefault());
         Date currentLocalTime = calendar.getTime();
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
@@ -824,7 +825,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 shouldLoadHomeFragOnBackPress = false;
                 break;
             case 1:
-                fragment = new Main_send_Fragment();
+                //fragment = new Main_send_Fragment();
+                startActivity(new Intent(getApplicationContext(), List_Manual_Activty.class));
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 2:
@@ -869,11 +871,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
 
-                if (SessionManager.getContectList(getApplicationContext()).equals(null))
-                {
 
-                }
-                else {
+                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     SessionManager.setCampaign_Day("00");
                     SessionManager.setCampaign_minute("00");
                     SessionManager.setCampaign_type("");
@@ -882,8 +881,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent1 = new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
                     intent1.putExtra("flag", "add");
                     startActivity(intent1);//  finish();
-                    bottomSheetDialog.dismiss();
                 }
+
+                bottomSheetDialog.dismiss();
+
 
             }
         });
@@ -891,34 +892,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (SessionManager.getContectList(getApplicationContext()).equals(null))
-                {
-
-                }
-                else {
+                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                     SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
-
                     Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
                     startActivity(intent);
-                    //finish();
-                    bottomSheetDialog.dismiss();
                 }
+                bottomSheetDialog.dismiss();
             }
         });
         selected_campaign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SessionManager.getContectList(getApplicationContext()).equals(null))
-                {
-
-                }
-                else {
+                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
                     startActivity(intent);
-                    bottomSheetDialog.dismiss();
                 }
+                bottomSheetDialog.dismiss();
+
             }
         });
 
@@ -1144,7 +1135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String model = Build.MODEL;
         int version = Build.VERSION.SDK_INT;
         String versionRelease = Build.VERSION.RELEASE;
-        paramObject.put("imei",str+" "+versionRelease);
+        paramObject.put("imei", str + " " + versionRelease);
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());

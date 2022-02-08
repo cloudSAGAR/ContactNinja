@@ -424,8 +424,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[0];
-                    // refresf_api();
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
+                     refresf_api();
                 }
 
             }
@@ -437,8 +436,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[1];
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
-                    //refresf_api();
+                    refresf_api();
                 }
 
             }
@@ -450,8 +448,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[2];
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
-                    //refresf_api();
+                    refresf_api();
                 }
 
             }
@@ -463,8 +460,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[3];
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
-                    //refresf_api();
+                    refresf_api();
                 }
 
             }
@@ -476,8 +472,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[4];
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
-                    //refresf_api();
+                    refresf_api();
                 }
 
             }
@@ -489,8 +484,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[5];
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Under development",false);
-                    //refresf_api();
+                    refresf_api();
                 }
 
             }
@@ -624,12 +618,12 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
     }
 
     public void onRefresh() {
+        iv_filter_icon.setImageResource(R.drawable.ic_filter);
+        Filter = "";
         refresf_api();
     }
 
     private void refresf_api() {
-        Filter = "";
-        iv_filter_icon.setImageResource(R.drawable.ic_filter);
         currentPage = PAGE_START;
         isLastPage = false;
         manualTaskModelList.clear();

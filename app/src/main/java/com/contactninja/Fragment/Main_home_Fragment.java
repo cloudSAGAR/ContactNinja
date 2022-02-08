@@ -146,11 +146,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.iv_toolbar_select:
-                if (SessionManager.getContectList(getActivity()).equals(null))
-                {
 
-                }
-                else {
+                if(Global.IsNotNull(SessionManager.getContectList(getActivity()))){
                     startActivity(new Intent(getActivity(), List_Manual_Activty.class));
                 }
                 break;
