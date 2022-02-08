@@ -97,19 +97,23 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
             // StepData();
-       //     tv_name.setEnabled(false);
+            tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name")) {
             // StepData();
+            tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else {
-          //  tv_name.setEnabled(true);
+            tv_name.setEnabled(true);
+            layout_name.setEnabled(true);
             save_button.setText("Done");
             save_button.setVisibility(View.VISIBLE);
             add_icon.setVisibility(View.VISIBLE);
@@ -285,7 +289,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 name_intent.putExtra("seq_task_id", sequence_task_id);
                 name_intent.putExtra("sequence_Name", tv_name.getText().toString());
                 startActivity(name_intent);
-                finish();
+               // finish();
                 break;
             case R.id.tv_name:
                 Intent name_intent1 = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
@@ -293,7 +297,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 name_intent1.putExtra("seq_task_id", sequence_task_id);
                 name_intent1.putExtra("sequence_Name", tv_name.getText().toString());
                 startActivity(name_intent1);
-                finish();
+              //  finish();
                 break;
 
         }

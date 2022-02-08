@@ -195,8 +195,11 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
 
                 for (int j = 0; j < contect_detail.size(); j++) {
                     if (contect_detail.get(j).getType().equals("EMAIL")) {
-
+                        List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
+                        contactDetails.add(contect_detail.get(j));
+                        list_data.get(i).setContactDetails(contactDetails);
                         contectListData.add(list_data.get(i));
+                       Log.e("Contect Detail is",new Gson().toJson(contectListData));
                         break;
                     }
                 }
