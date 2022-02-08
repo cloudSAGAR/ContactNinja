@@ -450,21 +450,21 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 ev_bob.setEnabled(false);
                 ev_note.setEnabled(false);
                 tv_add_social.setVisibility(View.GONE);
-                edt_mobile_no.setTextColor(getActivity().getColor(R.color.purple_200));
-                edt_email.setTextColor(getActivity().getColor(R.color.purple_200));
+                edt_mobile_no.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
 
 
-                tv_add_social.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_company.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_company_url.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_job.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_zoom.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_address.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_city.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_state.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_zip.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_bob.setTextColor(getActivity().getColor(R.color.purple_200));
-                ev_note.setTextColor(getActivity().getColor(R.color.purple_200));
+                tv_add_social.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_company.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_company_url.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_job.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_zoom.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_address.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_city.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_state.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_zip.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_bob.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+                ev_note.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
 
                 // ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
                 Userprofile Contect_data = user_data_model.getUserprofile();
