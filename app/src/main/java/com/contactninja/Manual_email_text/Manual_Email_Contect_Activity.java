@@ -188,7 +188,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
         });
         if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
             List<ContectListData.Contact> list_data = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
-            Log.e("List Data is", new Gson().toJson(list_data));
+            //Log.e("List Data is", new Gson().toJson(list_data));
             for (int i = 0; i < list_data.size(); i++) {
 
                 List<ContectListData.Contact.ContactDetail> contect_detail = list_data.get(i).getContactDetails();

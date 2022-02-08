@@ -562,7 +562,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         startActivity(intent);
                     }
                 });
-                try {
+           /*     try {
                     if (Contect_data.getLinkedin_link().equals("")) {
                         img_linkdin.setVisibility(View.GONE);
                     } else {
@@ -571,10 +571,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } catch (Exception e) {
                     img_linkdin.setVisibility(View.GONE);
 
-                }
+                }*/
 
 
-                try {
+             /*   try {
 
                     if (Contect_data.getBreakout_link().equals("")) {
                         img_breakout.setVisibility(View.GONE);
@@ -585,7 +585,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } catch (Exception e) {
                     img_breakout.setVisibility(View.GONE);
 
-                }
+                }*/
 
 
 
@@ -1313,7 +1313,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
 
-                EnableRuntimePermission();
+                //EnableRuntimePermission();
             }
 
         };
@@ -1798,7 +1798,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
 
             } else if (flag.equals("read")) {
-                EnableRuntimePermission();
+               // EnableRuntimePermission();
                 holder.layout_icon_call.setVisibility(View.GONE);
                 holder.layout_icon_message.setVisibility(View.GONE);
                 holder.swipe_layout.setLeftSwipeEnabled(false);

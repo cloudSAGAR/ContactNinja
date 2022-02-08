@@ -1162,19 +1162,21 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     }
 
-    public void EnableRuntimePermission() {
+    public void EnableRuntimePermission(Contactdetail item) {
 
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + item.getEmail_number()));
+                getActivity().startActivity(intent);
 
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
 
-                EnableRuntimePermission();
+             //   EnableRuntimePermission();
             }
 
         };
@@ -2023,7 +2025,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
             } else if (flag.equals("read")) {
-                EnableRuntimePermission();
+             //   EnableRuntimePermission();
                 holder.swipe_layout.setLeftSwipeEnabled(false);
                 holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_label.setVisibility(View.GONE);
@@ -2286,9 +2288,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + item.getEmail_number()));
-                    getActivity().startActivity(intent);
+                   EnableRuntimePermission(item);
                 }
             });
 
