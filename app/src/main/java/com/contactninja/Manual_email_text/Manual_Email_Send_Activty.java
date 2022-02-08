@@ -107,10 +107,12 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         List<ContectListData.Contact> list_data=SessionManager.getGroupList(getApplicationContext());
         Log.e("List Data is ",new Gson().toJson(list_data));
         id= String.valueOf(list_data.get(0).getId());
-        email=list_data.get(0).getContactDetails().get(0).getEmailNumber();
 
-
-
+        for (int j = 0; j < list_data.get(0).getContactDetails().size(); j++) {
+            if (list_data.get(0).getContactDetails().get(j).getType().equals("EMAIL")) {
+                email = list_data.get(0).getContactDetails().get(j).getEmailNumber();
+            }
+        }
 
         Log.e("Id is", id);
         Log.e("email", email);
