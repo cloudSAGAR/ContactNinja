@@ -1202,19 +1202,20 @@ public class Campaign_Contect_Fragment extends Fragment {
             // Log.e("First Name",select_contectListData.get(position).getFirstname());
             holder.userName.setText(select_contectListData.get(position).getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
+            if(Global.IsNotNull(select_contectListData.get(position).getFirstname())||!select_contectListData.get(position).getFirstname().equals("")){
+                String first_latter = select_contectListData.get(position).getFirstname().substring(0, 1).toUpperCase();
+                if (second_latter.equals("")) {
+                    current_latter = first_latter;
+                    second_latter = first_latter;
 
-            String first_latter = select_contectListData.get(position).getFirstname().substring(0, 1).toUpperCase();
+                } else if (second_latter.equals(first_latter)) {
+                    current_latter = second_latter;
+                } else {
 
-            if (second_latter.equals("")) {
-                current_latter = first_latter;
-                second_latter = first_latter;
+                    current_latter = first_latter;
+                    second_latter = first_latter;
+                }
 
-            } else if (second_latter.equals(first_latter)) {
-                current_latter = second_latter;
-            } else {
-
-                current_latter = first_latter;
-                second_latter = first_latter;
             }
 
 
