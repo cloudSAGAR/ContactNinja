@@ -915,7 +915,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                     SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
-                    Intent intent = new Intent(getApplicationContext(), List_Broadcast_activity.class);
+                    SessionManager.setCampaign_Day("00");
+                    SessionManager.setCampaign_minute("00");
+                    SessionManager.setCampaign_type("");
+                    SessionManager.setCampaign_type_name("");
+                    Intent intent = new Intent(getApplicationContext(),List_Broadcast_activity.class);
                     startActivity(intent);
                 }else {
                     EnableRuntimePermission();

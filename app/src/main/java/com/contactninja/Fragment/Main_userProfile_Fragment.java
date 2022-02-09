@@ -400,6 +400,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         SessionManager.setOneCotect_deatil(getActivity(), set_contact);
 
         if (flag.equals("edit")) {
+            pulse_icon.setEnabled(true);
+            tv_nameLetter.setEnabled(true);
             iv_edit.setVisibility(View.VISIBLE);
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             edt_FirstName.setText(Contect_data.getFirstname());
@@ -447,10 +449,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
         } else if (flag.equals("read")) {
 
-
+            pulse_icon.setEnabled(false);
+            tv_nameLetter.setEnabled(false);
             save_button.setVisibility(View.GONE);
-            edt_FirstName.setEnabled(false);
-            edt_lastname.setEnabled(false);
+
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             edt_FirstName.setText(Contect_data.getFirstname() + " " + Contect_data.getLastname());
@@ -490,7 +492,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
             olld_image = Contect_data.getContactImage();
 
-        } else {
+        }
+        else {
+            pulse_icon.setEnabled(false);
+            tv_nameLetter.setEnabled(false);
             Log.e("Null", "No Call");
         }
 

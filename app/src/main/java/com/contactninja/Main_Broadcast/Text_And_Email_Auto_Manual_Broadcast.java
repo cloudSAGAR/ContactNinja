@@ -194,11 +194,13 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                 else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
-                    startActivity(new Intent(getApplicationContext(), Manual_Auto_Task_Name_Activity.class));
+                    SessionManager.setContect_flag("add");
+                    startActivity(new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class));
                     finish();
                 }
                 else {
-                    startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
+                    SessionManager.setContect_flag("add");
+                    startActivity(new Intent(getApplicationContext(),Broadcast_Contact_Selction_Actvity.class));
                     finish();
                 }
 
@@ -266,10 +268,10 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    Manual_Auto_Selection_Fragment campaign_sms_fragment = new Manual_Auto_Selection_Fragment();
+                    Broadcast_Auto_Selection_Fragment campaign_sms_fragment = new Broadcast_Auto_Selection_Fragment();
                     return campaign_sms_fragment;
                 case 1:
-                    Manual_Auto_Selection_Email_Fragment campaign_email_fragment = new Manual_Auto_Selection_Email_Fragment();
+                    Broadcast_Auto_Selection_Email_Fragment campaign_email_fragment = new Broadcast_Auto_Selection_Email_Fragment();
                     return campaign_email_fragment;
                 default:
                     return null;

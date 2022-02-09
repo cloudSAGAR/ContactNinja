@@ -9,6 +9,14 @@
     tools:ignore="ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
+        android:id="@+id/layout_common"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            layout="@layout/common_dialog"></include>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

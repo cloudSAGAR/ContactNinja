@@ -69,6 +69,7 @@ import retrofit2.Response;
 public class Company_Fragment extends Fragment {
     private long mLastClickTime = 0;
     ConstraintLayout mMainLayout;
+    TextView tv_create;
     BottomSheetDialog bottomSheetDialog_fillter;
     Context mCtx;
     RecyclerView rvinviteuserdetails;
@@ -93,6 +94,7 @@ public class Company_Fragment extends Fragment {
     List<CompanyModel.Company> companyList = new ArrayList<>();
     int perPage = 20;
     String Filter="";//BLOCK / ALL
+    LinearLayout layout_common,demo_layout,linearLayout3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -182,6 +184,20 @@ public class Company_Fragment extends Fragment {
                 startActivity(intent);
             }
         });
+        demo_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                SessionManager.setCampaign_data(new CampaignTask_overview());
+                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                intent.putExtra("flag", "add");
+                startActivity(intent);
+            }
+        });
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,11 +268,24 @@ public class Company_Fragment extends Fragment {
                 }
         );
 
+        if (companyAdapter.getItemCount()==0)
+        {
+            linearLayout3.setVisibility(View.GONE);
+            demo_layout.setVisibility(View.VISIBLE);
+            layout_common.setVisibility(View.VISIBLE);
+
+        }
+
         return content_view;
     }
 
 
     private void IntentUI(View content_view) {
+        linearLayout3=content_view.findViewById(R.id.linearLayout3);
+        tv_create=content_view.findViewById(R.id.tv_create);
+        tv_create.setText(getResources().getString(R.string.create_company));
+        demo_layout=content_view.findViewById(R.id.demo_layout);
+        layout_common=content_view.findViewById(R.id.layout_common);
         iv_filter_icon = content_view.findViewById(R.id.iv_filter_icon);
         mMainLayout = content_view.findViewById(R.id.mMainLayout);
         rvinviteuserdetails = content_view.findViewById(R.id.contact_list);
@@ -350,7 +379,7 @@ public class Company_Fragment extends Fragment {
         retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                //Log.e("Response is",new Gson().toJson(response));
+                Log.e("Response is",new Gson().toJson(response));
                 if (response.body().getHttp_status().equals(200)) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -371,8 +400,11 @@ public class Company_Fragment extends Fragment {
                         }
                         isLoading = false;
                         swipeToRefresh.setRefreshing(false);
-
+                        linearLayout3.setVisibility(View.VISIBLE);
                     } else {
+                        linearLayout3.setVisibility(View.GONE);
+                        demo_layout.setVisibility(View.VISIBLE);
+                        layout_common.setVisibility(View.VISIBLE);
                         // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
 
                     }
@@ -382,6 +414,9 @@ public class Company_Fragment extends Fragment {
 
             @Override
             public void error(Response<ApiResponse> response) {
+                linearLayout3.setVisibility(View.GONE);
+                demo_layout.setVisibility(View.VISIBLE);
+                layout_common.setVisibility(View.VISIBLE);
             }
         });
     }

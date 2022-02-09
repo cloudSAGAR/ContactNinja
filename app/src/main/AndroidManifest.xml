@@ -48,6 +48,9 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Main_Broadcast.Recuring_email_broadcast_activity"
+            android:exported="false" />
+        <activity
             android:name=".Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast"
             android:exported="false" />
         <activity
@@ -294,6 +297,21 @@
         <activity
             android:name=".Auth.Thankyou_Screen"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Main_Broadcast.Broadcast_Contact_Selction_Actvity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Main_Broadcast.Add_Broad_Email_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Main_Broadcast.Add_Broad_Text_Activity"
+            android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

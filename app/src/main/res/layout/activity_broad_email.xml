@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_above="@+id/lay_bouttom"
+            android:id="@+id/lay_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/toolbar" />
+
+            <LinearLayout
+                android:id="@+id/top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:src="@drawable/ic_email">
+
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/add_new_contect"
+                    style="@style/tv_Medium_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/mail_title"
+                    android:textColor="@color/text_reg"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_10sdp"
+                android:weightSum="1"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/tv_Medium_14"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_gravity="center"
+                    android:text="@string/from"
+                    android:textColor="@color/purple_200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <EditText
+                    android:enabled="false"
+                    android:layout_weight="1"
+                    android:id="@+id/ev_from"
+                    style="@style/tv_regular_13"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/add_contect_transpernt"
+                    android:focusable="true"
+                    android:gravity="left|center"
+                    android:imeOptions="actionDone"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:textColor="@color/text_reg"
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                <ImageView
+                    android:padding="@dimen/_10sdp"
+                    android:id="@+id/iv_more"
+                    android:src="@drawable/ic_down"
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"/>
+
+
+
+            </LinearLayout>
+            <View
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/line_separator"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_height="1dp">
+
+            </View>
+            <LinearLayout
+                android:id="@+id/layout_email_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_title"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10sdp">
+
+                    <TextView
+                        style="@style/tv_Medium_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:text="@string/Subject"
+                        android:textColor="@color/purple_200"
+                        />
+
+                    <EditText
+                        android:id="@+id/ev_subject"
+                        style="@style/tv_regular_13"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center|left"
+                        android:hint="@string/Enter_subject_here"
+                        android:imeOptions="actionDone"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/text_reg"
+                        android:textColorHint="@color/otp_header_text_color"
+                        tools:ignore="Autofill,RtlHardcoded" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@color/line_separator">
+
+            </View>
+
+            <EditText
+                android:id="@+id/edit_template"
+                style="@style/tv_regular_13"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left"
+                android:hint="@string/ComposeEmail"
+                android:imeOptions="actionDone"
+                android:padding="15dp"
+                android:textColor="@color/text_reg"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lay_bouttom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_use_tamplet"
+                style="@style/tv_regular_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:background="@drawable/shape_5_blue"
+                android:gravity="center"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_8sdp"
+                android:text="@string/temp_txt"
+                android:textColor="@color/white">
+
+            </TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_direct_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/_5sdp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

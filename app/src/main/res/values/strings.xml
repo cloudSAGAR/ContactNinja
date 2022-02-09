@@ -400,6 +400,7 @@ Number</string>
     <string name="email_task_txt">Schedule my task</string>
     <string name="email_date">Please select date</string>
     <string name="email_time">Select time</string>
+    <string name="broad_recurrence">Recurrence</string>
     <string name="text_txt">Message</string>
     <string name="verifition_title_text">Enter the code We just \n texted you</string>
     <string name="enter_campaign_name">Enter campaign name</string>
@@ -469,4 +470,9 @@ Number</string>
 
 
     <string name="add_brodcaste">Create new broadcast</string>
+    <string name="broadcast_email">Recuring email broadcast</string>
+    <string name="broadcast_text">Recuring text broadcast</string>
+    <string name="broadcast_info_text">ContactNinja allows you to schedule texts or emails with multiple \n  occurrences. You can schedule these in daily, \n weekly, and monthly increments.</string>
+    <string name="create_company">Create new Company</string>
+
 </resources>

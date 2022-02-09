@@ -1280,6 +1280,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_timezone"
+                            android:singleLine="true"
                             android:textColor="@color/text_reg"
                             >
 
@@ -1308,6 +1309,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="@string/add_timezone"
+                            android:singleLine="true"
                             android:textColor="@color/home_list_sub_data"
                             >
 
