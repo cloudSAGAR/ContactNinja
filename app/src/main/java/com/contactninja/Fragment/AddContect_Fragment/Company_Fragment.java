@@ -379,7 +379,7 @@ public class Company_Fragment extends Fragment {
         retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                Log.e("Response is",new Gson().toJson(response));
+             //   Log.e("Response is",new Gson().toJson(response));
                 if (response.body().getHttp_status().equals(200)) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -401,6 +401,9 @@ public class Company_Fragment extends Fragment {
                         isLoading = false;
                         swipeToRefresh.setRefreshing(false);
                         linearLayout3.setVisibility(View.VISIBLE);
+                        demo_layout.setVisibility(View.GONE);
+                        layout_common.setVisibility(View.GONE);
+
                     } else {
                         linearLayout3.setVisibility(View.GONE);
                         demo_layout.setVisibility(View.VISIBLE);
