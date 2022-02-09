@@ -41,7 +41,8 @@ import java.util.regex.Pattern;
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Global extends Application {
     public  static SimpleDateFormat defoult_date_time_formate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    //public  static SimpleDateFormat defoult_date_month_formate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    public  static SimpleDateFormat defoult_date_formate = new SimpleDateFormat("yyyy-MM-dd");
+    public  static SimpleDateFormat defoult_month_formate = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
 
     public static final String Device = "APP_ANDR";
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
@@ -250,6 +251,20 @@ public class Global extends Application {
         String token = sessionManager.getAccess_token();
         Log.e("token", token);
         return token;
+    }
+
+    public static String formateChange(String dateTime) {
+       Date oneWayTripDate=null;
+       String tripDate="";
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        try {
+            oneWayTripDate = input.parse(dateTime);                 // parse input
+            tripDate= output.format(oneWayTripDate);    // format output
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return tripDate;
     }
 
     /*

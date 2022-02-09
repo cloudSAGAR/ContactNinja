@@ -698,11 +698,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             holder.userName.setText(inviteUserDetails.getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            if (inviteUserDetails.getFirstname().equals(null))
-            {
-
-            }
-            else {
+            if(Global.IsNotNull(inviteUserDetails.getFirstname())||!inviteUserDetails.getFirstname().equals("")){
                 String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
 
                 if (second_latter.equals("")) {
@@ -716,8 +712,9 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     current_latter = first_latter;
                     second_latter = first_latter;
                 }
-
             }
+
+
 
 
 

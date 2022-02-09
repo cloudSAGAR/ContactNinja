@@ -549,56 +549,12 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public static void compareDates(String d2, TextView tv_status, TextView tv_time, ManualTaskModel item) {
+    public static void compareDates(String onlyDate, String FullDate, TextView tv_status, TextView tv_time, ManualTaskModel item) {
         try {
-            // If you already have date objects then skip 1
-
-            //1
-            // Create 2 dates starts
-
-            Date date1 = Global.defoult_date_time_formate.parse(Global.getCurrentTimeandDate());
-            Date date2 = Global.defoult_date_time_formate.parse(d2);
-
-            // Create 2 dates ends
-            //1
-
-            // Date object is having 3 methods namely after,before and equals for comparing
-            // after() will return true if and only if date1 is after date 2
 
 
-        /*    String convTime = null;
-            try {
-                String prefix = "";
-                String suffix = "Ago";
-
-
-                long dateDiff = date2.getTime() - date1.getTime();
-                    Log.e("dateDiff", String.valueOf(dateDiff));
-                    long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
-                    long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
-                    long hour = TimeUnit.MILLISECONDS.toHours(dateDiff);
-                    long day = TimeUnit.MILLISECONDS.toDays(dateDiff);
-
-                    Log.e("Second", String.valueOf(second));
-                    Log.e("Minute", String.valueOf(minute));
-                    Log.e("hour", String.valueOf(hour));
-                    Log.e("day", String.valueOf(day));
-                    if (second < 60) {
-                        convTime = second + " Sec " + suffix;
-                    } else if (minute < 60) {
-                        convTime = minute + " Min " + suffix;
-                    } else if (hour < 24) {
-                        convTime = hour + " Hours " + suffix;
-                    } else {
-                        convTime = d2;
-                    }
-
-                tv_time.setText(convTime);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                //  Log.e("ConvTimeE", e.getMessage());
-            }*/
+            Date date1 = Global.defoult_date_formate.parse(Global.getCurrentDate());
+            Date date2 = Global.defoult_date_formate.parse(onlyDate);
 
 
             if (date1.after(date2)) {
@@ -609,11 +565,10 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     tv_status.setText(Global.setFirstLetter(item.getStatus()));
                     tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
-                tv_time.setText(d2);
-                //    Log.e("","Date1 is after Date2");
-            }
-            // before() will return true if and only if date1 is before date2
-            if (date1.before(date2)) {
+                String formateChnage=Global.formateChange(FullDate);
+                tv_time.setText(formateChnage.replace(" ", "\n"));
+
+            } else if (date1.before(date2)) {
                 if (item.getStatus().equals("NOT_STARTED")) {
                     tv_status.setText("Upcoming");
                     tv_status.setTextColor(Color.parseColor("#2DA602"));
@@ -622,13 +577,10 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
 
-                tv_time.setText(d2);
-                //  Log.e("","Date1 is before Date2");
-                //System.out.println("Date1 is before Date2");
-            }
+                String formateChnage=Global.formateChange(FullDate);
+                tv_time.setText(formateChnage.replace(" ", "\n"));
 
-            //equals() returns true if both the dates are equal
-            if (date1.equals(date2)) {
+            } else if (date1.equals(date2)) {
                 if (item.getStatus().equals("NOT_STARTED")) {
                     tv_status.setText("Today");
                     tv_status.setTextColor(Color.parseColor("#EC5454"));
@@ -636,17 +588,63 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     tv_status.setText(Global.setFirstLetter(item.getStatus()));
                     tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
+                tv_time.setText(parseDate(FullDate));
 
-                tv_time.setText(d2);
-
-                //Log.e("","Date1 is equal Date2");
-                //System.out.println("Date1 is equal Date2");
             }
 
             System.out.println();
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static String parseDate(String timeAtMiliseconds) throws ParseException {
+        String result = "now";
+
+        Date CurrentDate = Global.defoult_date_time_formate.parse(Global.getCurrentTimeandDate());
+        Date CreateDate = Global.defoult_date_time_formate.parse(timeAtMiliseconds);
+
+
+        long different = Math.abs(CurrentDate.getTime() - CreateDate.getTime());
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+
+        long elapsedSeconds = different / secondsInMilli;
+
+        different = different % secondsInMilli;
+        if (elapsedDays == 0) {
+            if (elapsedHours == 0) {
+                if (elapsedMinutes == 0) {
+                    if (elapsedSeconds < 0) {
+                        return "0" + " s";
+                    } else {
+                        if (elapsedDays > 0 && elapsedSeconds < 59) {
+                            return "now";
+                        }
+                    }
+                } else {
+                    return String.valueOf(elapsedMinutes) + "m ago";
+                }
+            } else {
+                return String.valueOf(elapsedHours) + "h ago";
+            }
+
+        }
+
+
+        return result;
     }
 
     public class ListItemAdepter extends RecyclerView.Adapter<ListItemAdepter.viewData> {
@@ -745,8 +743,8 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 holder.tv_username.setText(Global.setFirstLetter(conactname));
                 holder.tv_task_description.setText(Global.setFirstLetter(item.getTask_name()));
 
-                String time = item.getDate() + " " + item.getTime();
-                compareDates(time, holder.tv_status, holder.tv_time, item);
+                String FullDate = item.getDate() + " " + item.getTime();
+                compareDates(item.getDate(), FullDate, holder.tv_status, holder.tv_time, item);
 
                 String name = conactname;
                 String add_text = "";
