@@ -297,7 +297,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(3, templateText);
+                    templateTextList.add(2, templateText);
 
                     Listset(templateTextList);
 
