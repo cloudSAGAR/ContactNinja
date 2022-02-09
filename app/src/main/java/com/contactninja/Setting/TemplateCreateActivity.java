@@ -472,10 +472,6 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (!item.isSelect()) {
                         Handler handler = new Handler();
                         Runnable r = new Runnable() {

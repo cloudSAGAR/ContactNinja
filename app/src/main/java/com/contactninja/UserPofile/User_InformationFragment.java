@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -296,7 +298,15 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             addcontectModel.setContactdetails(contactdetails);
             SessionManager.setOneCotect_deatil(getActivity(), set_contact);
 
-            Showlayout();
+            getActivity().runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Showlayout();
+                }
+            });
+
+
             if (flag.equals("edit")) {
                 company_layout.setEnabled(true);
                 tv_add_social.setVisibility(View.GONE);

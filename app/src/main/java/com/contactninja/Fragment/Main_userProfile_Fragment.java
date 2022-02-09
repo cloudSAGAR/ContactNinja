@@ -1139,34 +1139,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     }
 
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(getActivity(), mMainLayout);
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void registerNetworkBroadcastForNougat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            getActivity().registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getActivity().registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    protected void unregisterNetworkChanges() {
-        try {
-            getActivity().unregisterReceiver(mNetworkReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterNetworkChanges();
     }
 
     public class MyAsyncTasks extends AsyncTask<String, String, String> {

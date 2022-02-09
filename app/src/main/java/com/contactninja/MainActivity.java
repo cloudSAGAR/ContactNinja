@@ -257,7 +257,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void GetContactsIntoArrayList() {
-        List<EmailModel> emailModels = new ArrayList<>();
+        try {
+            ContectEvent(1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } List<EmailModel> emailModels = new ArrayList<>();
+
+
         String firstname = "", lastname = "";
 
         cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
@@ -395,8 +401,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Log.e("CSV LIST", new Gson().toJson(csv_inviteListData));
         if (csv_inviteListData.size() == 0) {
-            loadingDialog.cancelLoading();
-            //Log.e("Csv Size is ","0");
+            try {
+                ContectEvent(0);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } else {
             String isContact = SessionManager.getcontectexits();
             if (isContact.equals("0")) {
@@ -541,14 +550,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //   loadingDialog.cancelLoading();
                             try {
                                 limit = csv_inviteListData.size();
-                                ContectEvent();
+                                ContectEvent(0);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
-                            loadingDialog.cancelLoading();
+
                             try {
-                                ContectEvent();
+                                ContectEvent(0);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -568,7 +577,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void ContectEvent() throws JSONException {
+    private void ContectEvent(int check) throws JSONException {
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -596,7 +605,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
+               if(check!=1){
+                   loadingDialog.cancelLoading();
+               }
 
                 if (response.body().getHttp_status() == 200) {
 
@@ -1160,7 +1171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     try {
-                        ContectEvent();
+                        ContectEvent(0);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
