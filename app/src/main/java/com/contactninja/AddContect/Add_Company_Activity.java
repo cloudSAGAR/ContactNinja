@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -58,7 +59,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     CompanyModel.Company WorkData;
     String id="";
     private BroadcastReceiver mNetworkReceiver;
-
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -318,6 +319,10 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if(Global.isNetworkAvailable(this,mMainLayout)){
                     if (flag.equals("read"))
                     {
@@ -352,6 +357,10 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.iv_toolbar_manu_vertical:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if(Global.isNetworkAvailable(this,mMainLayout)){
                     broadcast_manu(SessionManager.getCompnay_detail(getApplicationContext()));
                 }
