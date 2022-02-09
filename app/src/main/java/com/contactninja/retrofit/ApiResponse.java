@@ -11,7 +11,7 @@ public class ApiResponse {
 
     @SerializedName("http_status")
     @Expose
-    private Integer http_status;
+    private Integer http_status=0;
     @SerializedName("message")
     @Expose
     private String message;

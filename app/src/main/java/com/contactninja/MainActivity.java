@@ -37,11 +37,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.contactninja.Broadcast.Broadcst_Activty;
 import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
+import com.contactninja.Fragment.Main_Task_Fragment;
 import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
-import com.contactninja.Fragment.Main_send_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
 import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
 import com.contactninja.Manual_email_text.List_And_show.List_Manual_Activty;
@@ -836,8 +835,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 shouldLoadHomeFragOnBackPress = false;
                 break;
             case 1:
-                //fragment = new Main_send_Fragment();
-                startActivity(new Intent(getApplicationContext(), List_Manual_Activty.class));
+                fragment = new Main_Task_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 2:

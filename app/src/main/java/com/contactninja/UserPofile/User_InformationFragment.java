@@ -360,13 +360,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             }
             catch (Exception e)
             {
-
+                e.printStackTrace();
             }
 
 
             try {
                 List<ContactDetail> detail_contect = Contect_data.getContactDetails();
-
                 for (int i = 0; i < detail_contect.size(); i++) {
                     if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                         if (detail_contect.get(i).getType().equals("EMAIL")) {
@@ -388,6 +387,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                             rv_email.setAdapter(emailAdapter);
                             addcontectModel.setContactdetails(contactdetails);
+
 
                         } else {
                             //    Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
@@ -412,13 +412,16 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                             rv_phone.setAdapter(phoneAdapter);
                             addcontectModel.setContactdetails(contactdetails);
+                            Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
+
 
 
                         }
                     }
                 }
+                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
 
 

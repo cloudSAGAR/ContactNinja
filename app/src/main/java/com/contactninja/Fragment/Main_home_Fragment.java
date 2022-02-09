@@ -53,7 +53,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
-    ImageView iv_toolbar_select, iv_toolbar_notification;
+    ImageView  iv_toolbar_notification;
     LinearLayout layout_toolbar_logo;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -90,6 +90,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                     Timezone( tz.getID());
                 }
             } catch (Exception e) {
+            e.printStackTrace();
             }
         }
 
@@ -129,9 +130,9 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
         iv_toolbar_notification.setVisibility(View.VISIBLE);
 
-        iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
+      /*  iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
         iv_toolbar_select.setVisibility(View.VISIBLE);
-        iv_toolbar_select.setOnClickListener(this);
+        iv_toolbar_select.setOnClickListener(this);*/
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         tabLayout = view.findViewById(R.id.tabLayout);
@@ -150,7 +151,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 Intent intent = new Intent(getActivity(), NotificationListActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.iv_toolbar_select:
+           /* case R.id.iv_toolbar_select:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
@@ -158,7 +159,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 if(Global.IsNotNull(SessionManager.getContectList(getActivity()))){
                     startActivity(new Intent(getActivity(), List_Manual_Activty.class));
                 }
-                break;
+                break;*/
 
         }
     }

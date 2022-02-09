@@ -65,7 +65,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Company_Fragment extends Fragment {
     private long mLastClickTime = 0;
     ConstraintLayout mMainLayout;
@@ -191,7 +191,6 @@ public class Company_Fragment extends Fragment {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-
                 SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                 intent.putExtra("flag", "add");
