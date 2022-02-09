@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -84,6 +85,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     String Camp_name = "";
     private BroadcastReceiver mNetworkReceiver;
     LinearLayout layout_name;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,6 +238,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.add_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setContect_flag("edit");
                 Intent intent_two = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
                 intent_two.putExtra("sequence_id", sequence_id);
@@ -243,6 +249,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 startActivity(intent_two);
                 break;
             case R.id.contect_count:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setContect_flag("read");
                 Intent intent1 = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
                 intent1.putExtra("sequence_id", sequence_id);
@@ -251,7 +261,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.user_contect:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                     sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
                 } else {
@@ -267,6 +280,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Campaign_Preview.this);
                 if (Camp_name.equals(tv_name.getText().toString())) {
                     SessionManager.setCampign_flag("read");
@@ -285,6 +302,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.layout_name:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent name_intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
                 name_intent.putExtra("sequence_id", sequence_id);
                 name_intent.putExtra("seq_task_id", sequence_task_id);
@@ -293,6 +314,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                // finish();
                 break;
             case R.id.tv_name:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent name_intent1 = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
                 name_intent1.putExtra("sequence_id", sequence_id);
                 name_intent1.putExtra("seq_task_id", sequence_task_id);
@@ -340,7 +365,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         edit_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (sequenceTask.getType().equals("EMAIL")) {
                     if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                         sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();

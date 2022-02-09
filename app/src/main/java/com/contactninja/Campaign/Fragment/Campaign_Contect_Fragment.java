@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -91,6 +92,7 @@ public class Campaign_Contect_Fragment extends Fragment {
     List<ContectListData.Contact> select_contectListData;
     Activity activity;
     String group_flag = "true";
+    private long mLastClickTime=0;
 
     public Campaign_Contect_Fragment(Activity activity0) {
         this.activity = activity0;
@@ -216,6 +218,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -239,6 +245,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -261,6 +271,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -349,6 +363,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -372,6 +390,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -394,6 +416,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -435,6 +461,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -460,6 +490,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -481,6 +515,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (add_new_contect_icon1.getVisibility() == View.GONE) {
                         add_new_contect_icon1.setVisibility(View.VISIBLE);
                         add_new_contect_icon.setVisibility(View.GONE);
@@ -1220,6 +1258,10 @@ public class Campaign_Contect_Fragment extends Fragment {
                 holder.top_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         for (int i = 0; i < contectListData.size(); i++) {
                             if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId())) {
                                 groupContectAdapter.notifyItemChanged(i);
@@ -1538,6 +1580,10 @@ public class Campaign_Contect_Fragment extends Fragment {
                             @Override
                             public void onClick(View v) {
 
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
                                 if (contacts.get(position).getIs_blocked().equals(1)) {
                                     Global.Messageshow(getActivity(), mMainLayout, getString(R.string.contect_block), false);
                                 } else {
@@ -1618,6 +1664,10 @@ public class Campaign_Contect_Fragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 // Log.e("On Click Remove ","Remove");
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
 
                                 holder1.remove_contect_icon.setVisibility(View.GONE);
                                 holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
@@ -1871,6 +1921,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     for (int i = 0; i < userLinkedGmailList.size(); i++) {
                         if (userLinkedGmailList.get(i).isPhoneSelect()) {
                             userLinkedGmailList.get(i).setPhoneSelect(false);

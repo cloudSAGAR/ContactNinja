@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
     String c_name="",c_type="";
     LinearLayout layout_sms_second_automated,layout_sms_second_manual;
     EditText edit_day,edit_minutes,edit_day_manual,edit_minutes_manual;
+    private long mLastClickTime=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -207,6 +209,10 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
         switch (view.getId())
         {
             case R.id.auto_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setCampaign_type("SMS");
                 SessionManager.setCampaign_type_name("AUTO");
                 Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
@@ -233,6 +239,10 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
 
                 break;
             case R.id.manual_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 SessionManager.setCampaign_type("SMS");
                 SessionManager.setCampaign_type_name("MANUAL");

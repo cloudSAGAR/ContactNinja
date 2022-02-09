@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -81,6 +82,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
     CampaignTask_overview contect_list_data;
     String s_type="";
     List<CampaignTask_overview.SequenceProspect> sequenceProspects=new ArrayList<>();
+    private long mLastClickTime=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -148,12 +150,20 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_TimeZone();
             }
         });
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_TimeZone();
             }
         });
@@ -161,6 +171,10 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
             @Override
             public void onClick(View v) {
 
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_TimeZone();
                /* Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                 SessionManager.setContect_flag("save");
@@ -358,6 +372,10 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     SessionManager.setContect_flag("check");
                     SessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
                     SessionManager.setGroupList(getActivity(),new ArrayList<>());
@@ -535,6 +553,10 @@ e.printStackTrace();
                         holder1.main_layout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
                                 Intent intent=new Intent(getActivity(), Campaign_view_per_contect_Detail.class);
                                 intent.putExtra("position",String.valueOf(position));
                                 startActivity(intent);

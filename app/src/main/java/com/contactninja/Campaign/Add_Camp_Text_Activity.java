@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +89,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
     BottomSheetDialog bottomSheetDialog_templateList;
     EditText ev_from;
     private BroadcastReceiver mNetworkReceiver;
+    private static long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,13 +147,6 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             tv_step.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
-            try {
-                // minite= bundle.getInt("minute");
-                //day= bundle.getInt("day");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
         }
 
@@ -463,6 +458,10 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                 onBackPressed();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 //Add Api Call
                 Global.hideKeyboard(Add_Camp_Text_Activity.this);
                 Global.count = 1;
@@ -477,9 +476,17 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
 
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_down:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
 
@@ -819,6 +826,10 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                 Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
             }
             holder.layout_select_image.setOnClickListener(v -> {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 cardClick.Onclick(item);
                 item.setScelect(true);
                 bottomSheetDialog.dismiss();
@@ -904,6 +915,10 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     for (int i = 0; i < userLinkedGmailList.size(); i++) {
                         if (userLinkedGmailList.get(i).isEmailSelect()) {
                             userLinkedGmailList.get(i).setEmailSelect(false);

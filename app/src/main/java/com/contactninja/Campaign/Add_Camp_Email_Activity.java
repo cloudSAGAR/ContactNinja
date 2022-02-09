@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -99,6 +100,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
     private int FirstTime = 0;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -385,6 +387,10 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 onBackPressed();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Add_Camp_Email_Activity.this);
                 if (ev_subject.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
@@ -398,9 +404,17 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 }
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_more:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
 

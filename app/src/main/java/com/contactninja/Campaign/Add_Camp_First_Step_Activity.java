@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -57,6 +58,8 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
     private BroadcastReceiver mNetworkReceiver;
     SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;
+    private long mLastClickTime=0;
+
     @SuppressLint({"UseCompatLoadingForDrawables", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,7 +192,11 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
                 finish();
                 break;
             case R.id.save_button:
-               if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }

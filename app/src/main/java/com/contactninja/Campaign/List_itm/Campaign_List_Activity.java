@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +81,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     private boolean isLoading = false;
 
     private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -310,6 +312,10 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 break;
             case R.id.demo_layout:
             case R.id.add_campaign_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if(SessionManager.getContectList(Campaign_List_Activity.this).size()!=0){
 
 
@@ -448,18 +454,30 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 holder.campaign_name.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         campaingClick.OnClick(campaign);
                     }
                 });
                 holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showAlertDialogButtonClicked(campaign.getId(),1);
                     }
                 });
                 holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showAlertDialogButtonClicked(campaign.getId(),0);
                     }
                 });

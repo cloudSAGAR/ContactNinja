@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -69,6 +70,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +177,10 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(ContectAndGroup_Actvity.this);
                 try {
                     if (Global.isNetworkAvailable(ContectAndGroup_Actvity.this, main_layout)) {

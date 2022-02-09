@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,6 +73,8 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     LinearLayout mMainLayout;
     ImageView add_new_contect_icon1,add_new_contect_icon;
     TextView add_new_contect;
+    private long mLastClickTime=0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -168,6 +171,10 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (add_new_contect_icon1.getVisibility()==View.GONE)
                 {
                     add_new_contect_icon1.setVisibility(View.VISIBLE);
@@ -191,9 +198,17 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
                 break;
             case R.id.group_name:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
             case R.id.main_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
                 /*getActivity().finish();*/
@@ -672,6 +687,10 @@ e.printStackTrace();
             holder.top_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     for (int i=0;i<grouplists.size();i++)
                     {
                         if (grouplists.get(i).getId().equals(select_contectListData.get(position).getId()))

@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -76,6 +77,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +150,17 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                 finish();
                 break;
             case R.id.layout_time_zone:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_Time();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Campaign_Name_Activity.this);
                 //Add Api Call
                 if(checkVelidaction()){
@@ -160,9 +170,6 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                         AddName();
                     }
                 }
-
-
-
                 break;
 
         }
