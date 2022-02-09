@@ -43,6 +43,7 @@ import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_send_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
+import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
 import com.contactninja.Manual_email_text.List_And_show.List_Manual_Activty;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
@@ -902,7 +903,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                     SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
-                    Intent intent = new Intent(getApplicationContext(), Broadcst_Activty.class);
+                    Intent intent = new Intent(getApplicationContext(), List_Broadcast_activity.class);
                     startActivity(intent);
                 }
                 bottomSheetDialog.dismiss();

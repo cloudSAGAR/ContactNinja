@@ -78,6 +78,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
     private boolean isLastPage = false;
     private boolean isLoading = false;
     private long mLastClickTime=0;
+    String flag="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
             sequence_id = bundle.getInt("sequence_id");
             seq_task_id = bundle.getInt("seq_task_id");
             sequence_Name = bundle.getString("sequence_Name");
+            flag=bundle.getString("flag");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -336,12 +338,24 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
 
                         if (response.body().getHttp_status() == 200) {
 
-                            SessionManager.setCampign_flag("read_name");
-                            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-                            intent.putExtra("sequence_id", sequence_id);
-                            /*intent.putExtra("seq_task_id",seq_task_id);*/
-                            startActivity(intent);
-                            finish();
+                            if (flag.equals("edit"))
+                            {
+                                /*SessionManager.setCampign_flag("read_name");
+                                Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                                intent.putExtra("sequence_id", sequence_id);
+                                *//*intent.putExtra("seq_task_id",seq_task_id);*//*
+                                startActivity(intent);*/
+                                finish();
+                            }
+                            else {
+                                SessionManager.setCampign_flag("read_name");
+                                Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                                intent.putExtra("sequence_id", sequence_id);
+                                /*intent.putExtra("seq_task_id",seq_task_id);*/
+                                startActivity(intent);
+                                finish();
+                            }
+
                         } else {
 
                         }

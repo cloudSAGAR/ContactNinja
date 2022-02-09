@@ -311,13 +311,14 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                                     Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
                                     intent.putExtra("sequence_id", sequence_id);
                                     startActivity(intent);
-                                    //   finish();
+                                      finish();
 
                                 } else {
                                     Intent intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
                                     intent.putExtra("sequence_id", sequence_id);
                                     intent.putExtra("seq_task_id", seq_task_id);
                                     intent.putExtra("sequence_Name", sequence_Name);
+                                    intent.putExtra("flag","add");
                                     startActivity(intent);
                                     finish();
                                 }

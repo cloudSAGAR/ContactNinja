@@ -254,6 +254,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 intent_two.putExtra("sequence_id", sequence_id);
                 intent_two.putExtra("seq_task_id", sequence_task_id);
                 startActivity(intent_two);
+                finish();
                 break;
             case R.id.contect_count:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -313,12 +314,14 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+
                 Intent name_intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
                 name_intent.putExtra("sequence_id", sequence_id);
                 name_intent.putExtra("seq_task_id", sequence_task_id);
                 name_intent.putExtra("sequence_Name", tv_name.getText().toString());
+                name_intent.putExtra("flag","edit");
                 startActivity(name_intent);
-               // finish();
+              //  finish();
                 break;
 
             case R.id.iv_camp_edit:
@@ -330,8 +333,9 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 name_intent1.putExtra("sequence_id", sequence_id);
                 name_intent1.putExtra("seq_task_id", sequence_task_id);
                 name_intent1.putExtra("sequence_Name", tv_name.getText().toString());
+                name_intent1.putExtra("flag","edit");
                 startActivity(name_intent1);
-                // finish();
+                //finish();
                 break;
 
             case R.id.tv_name:
@@ -405,6 +409,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("from_ac",sequenceTask.getMail_module());
                     intent.putExtra("from_ac_id",sequenceTask.getSent_tbl_id());
                     startActivity(intent);
+                    finish();
                     // startActivity(new Intent(getActivity(),First_Step_Activity.class));
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
                     SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));

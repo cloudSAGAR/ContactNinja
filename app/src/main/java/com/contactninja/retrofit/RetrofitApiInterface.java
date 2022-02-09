@@ -286,4 +286,9 @@ public interface RetrofitApiInterface {
                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
+    @POST("broadcast/list")
+    Call<ApiResponse> Broadcast_Activiy_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                        @Body JsonObject jsonObject,
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
 }

@@ -467,4 +467,6 @@ Number</string>
     <string name="contect_block">This Contect Block</string>
     <string name="email_contact">Please email in contact</string>
 
+
+    <string name="add_brodcaste">Create new broadcast</string>
 </resources>
