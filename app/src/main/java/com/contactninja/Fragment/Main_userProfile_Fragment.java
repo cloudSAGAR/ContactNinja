@@ -164,9 +164,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         option_type = "save";
         setTab();
 
-
+        setdata();
         MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
         myAsyncTasks.execute();
+
+
         pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -914,9 +916,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         TextView cameraId = bottomSheetDialog.findViewById(R.id.cameraId);
         TextView tv_remove = bottomSheetDialog.findViewById(R.id.tv_remove);
         if (remove) {
-            tv_remove.setVisibility(View.VISIBLE);
-        } else {
             tv_remove.setVisibility(View.GONE);
+        } else {
+            tv_remove.setVisibility(View.VISIBLE);
         }
         tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -535,9 +535,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RequestBody organization_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody id = RequestBody.create(MediaType.parse("text/plain"), "1");
+        RequestBody imei = RequestBody.create(MediaType.parse("text/plain"), Global.imei);
 
         retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager),
-                organization_id1, team_id1, user_id1, id, body, Global.getVersionname(MainActivity.this), Global.Device, new RetrofitCallback() {
+                organization_id1, team_id1, user_id1, id, body, Global.getVersionname(MainActivity.this), Global.Device,imei, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
                         sessionManager.setcontectexits("1");
@@ -605,9 +606,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-               if(check!=1){
                    loadingDialog.cancelLoading();
-               }
 
                 if (response.body().getHttp_status() == 200) {
 
@@ -1153,12 +1152,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         paramObject.put("user_id", user_id);
         paramObject.put("organization_id", "1");
         paramObject.put("team_id", "1");
-        String str = android.os.Build.MODEL;
-        String manufacturer = Build.MANUFACTURER;
-        String model = Build.MODEL;
-        int version = Build.VERSION.SDK_INT;
-        String versionRelease = Build.VERSION.RELEASE;
-        paramObject.put("imei", str + " " + versionRelease);
+
+        paramObject.put("imei", Global.imei);
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());

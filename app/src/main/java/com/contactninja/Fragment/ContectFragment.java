@@ -540,9 +540,10 @@ public class ContectFragment extends Fragment  {
         RequestBody organization_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody id = RequestBody.create(MediaType.parse("text/plain"), "1");
+        RequestBody imei = RequestBody.create(MediaType.parse("text/plain"), Global.imei);
 
         retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager),
-                organization_id1, team_id1, user_id1, id, body, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+                organization_id1, team_id1, user_id1, id, body, Global.getVersionname(getActivity()), Global.Device,imei, new RetrofitCallback() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void success(Response<ApiResponse> response)  {
@@ -1464,12 +1465,8 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             jsonArray.put(paramObject1);
         }
-        String str = android.os.Build.MODEL;
-        String manufacturer = Build.MANUFACTURER;
-        String model = Build.MODEL;
-        int version = Build.VERSION.SDK_INT;
-        String versionRelease = Build.VERSION.RELEASE;
-        paramObject.put("imei",str+" "+versionRelease);
+
+        paramObject.put("imei",Global.imei);
         paramObject.put("contact_detail", jsonArray);
 
 

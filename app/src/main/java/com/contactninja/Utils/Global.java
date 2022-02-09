@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,6 +54,9 @@ public class Global extends Application {
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;
+
+
+    public static String imei=Build.MANUFACTURER+" "+Build.MODEL+" "+Build.VERSION.RELEASE;
 
     public static void openEmailAuth(Activity activity) {
         Uri uri = Uri.parse(Global.Email_auth); // missing 'http://' will cause crashed

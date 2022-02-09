@@ -664,12 +664,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("zipcode", zip_code);
         paramObject.put("zoom_id", zoom_id);
-        String str = android.os.Build.MODEL;
-        String manufacturer = Build.MANUFACTURER;
-        String model = Build.MODEL;
-        int version = Build.VERSION.SDK_INT;
-        String versionRelease = Build.VERSION.RELEASE;
-        paramObject.put("imei",str+" "+versionRelease);
+
+        paramObject.put("imei",Global.imei);
         paramObject.put("contact_image", user_image_Url);
         paramObject.put("image_extension", File_extension);
         paramObject.put("contact_image_name", File_name);

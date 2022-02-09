@@ -2521,11 +2521,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setVisibility(View.GONE);
             holder.edt_email.setEnabled(true);
 
-            if (Is_blocked != 1) {
-                holder.layout_icon_email.setVisibility(View.VISIBLE);
-            } else {
-                holder.layout_icon_email.setVisibility(View.GONE);
-            }
 
 
             if (edit) {
@@ -2648,6 +2643,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
             } else if (flag.equals("read")) {
+
+                if (Is_blocked != 1) {
+                    holder.layout_icon_email.setVisibility(View.VISIBLE);
+                } else {
+                    holder.layout_icon_email.setVisibility(View.GONE);
+                }
+
                 holder.swipe_layout.setLeftSwipeEnabled(false);
                 holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_email_label.setVisibility(View.GONE);
@@ -2655,6 +2657,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_email.setText(holder.tv_email.getText().toString() + "(" + item.getLabel() + ")");
             } else {
+
+
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
