@@ -3,6 +3,7 @@ package com.contactninja;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import de.hdodenhof.circleimageview.CircleImageView;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    private long mLastClickTime = 0;
     private static final int LOADING = 0;
     private static final int ITEM = 1;
     private final Context context;
@@ -150,6 +151,10 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                   holder1.main_layout.setOnClickListener(new View.OnClickListener() {
                       @Override
                       public void onClick(View v) {
+                          if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                              return;
+                          }
+                          mLastClickTime = SystemClock.elapsedRealtime();
                           SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
                           Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                           SessionManager.setOneCotect_deatil(context, Contact_data);

@@ -377,7 +377,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 ev_breakout.setText(Contect_data.getBreakout_link());
           /*  PhoneViewAdd();
             EmailViewAdd();*/
-                TextSet();
+                try {
+                    TextSet();
+                }
+                catch (Exception e)
+                {
+
+                }
+
 
                 try {
                     List<ContactDetail> detail_contect = Contect_data.getContactDetails();
@@ -674,7 +681,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             else {
                 PhoneViewAdd();
                 EmailViewAdd();
-                TextSet();
+
+                try {
+                    TextSet();
+                }
+                catch (Exception e)
+                {
+
+                }
                 iv_down.setVisibility(View.VISIBLE);
                 media_link.setVisibility(View.GONE);
                 tv_add_social.setVisibility(View.GONE);

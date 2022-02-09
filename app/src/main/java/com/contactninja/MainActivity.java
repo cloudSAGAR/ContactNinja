@@ -871,7 +871,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
 
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     SessionManager.setCampaign_Day("00");
                     SessionManager.setCampaign_minute("00");
@@ -892,6 +895,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                     SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
@@ -904,6 +911,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selected_campaign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
                     startActivity(intent);

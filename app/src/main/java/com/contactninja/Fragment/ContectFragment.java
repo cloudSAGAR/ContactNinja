@@ -48,6 +48,7 @@ import com.contactninja.AddContect.Addnewcontect_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Csv_InviteListData;
+import com.contactninja.Model.EmailModel;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
@@ -619,13 +620,24 @@ public class ContectFragment extends Fragment  {
 
 
     public void GetContactsIntoArrayList() throws JSONException {
-
+        List<EmailModel> emailModels = new ArrayList<>();
         loadingDialog.showLoadingDialog();
         String firstname = "", lastname = "";
 
         cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+        Cursor cursor1 = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         while (cursor.moveToNext()) {
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            while (cursor1.moveToNext()) {
+                contect_email = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
+                Log.e("Email is ", contect_email);
+                String name = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+
+                EmailModel emailModel = new EmailModel();
+                emailModel.setId(name);
+                emailModel.setName(contect_email);
+                emailModels.add(emailModel);
+            }
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
             user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
@@ -674,9 +686,19 @@ public class ContectFragment extends Fragment  {
                             user_des,
                             "", ""));
 
+                    String email = "";
+                    for (int i = 0; i < emailModels.size(); i++) {
+                        //             Log.e("Phone ID", userName);
+                        //               Log.e("Email Id", emailModels.get(i).getId());
+                        if (userName.equals(emailModels.get(i).getId())) {
+                            email = emailModels.get(i).getName();
+                        } else {
+                            // contect_email="";
+                        }
 
+                    }
                     try {
-                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
+                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, email, note, country, city, region, street, "" + lastname));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
