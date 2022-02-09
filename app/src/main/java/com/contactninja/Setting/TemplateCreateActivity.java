@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     TemplateList.Template template;
     boolean isEdit = false;
     String template_type = "";
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -200,6 +202,10 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                 onBackPressed();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (isEdit) {
                     //update template
                     try {
@@ -226,6 +232,10 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.layout_title:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showAlertDialogButtonClicked();
                 break;
         }
@@ -426,7 +436,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         edit_template.setSelection(edit_template.getText().length());
     }
 
-    static class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
+    class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
         public Context mCtx;
         List<HastagList.TemplateText> templateTextList;
@@ -462,6 +472,10 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (!item.isSelect()) {
                         Handler handler = new Handler();
                         Runnable r = new Runnable() {

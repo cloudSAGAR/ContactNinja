@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
     SwipeRefreshLayout swipeToRefresh;
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
     LinearLayout add_new_email;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +162,11 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                 onBackPressed();
                 break;
                 case R.id.add_new_email:
-                   // Global.openEmailAuth(EmailListActivity.this);
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    // Global.openEmailAuth(EmailListActivity.this);
                     Intent intent= new Intent(getApplicationContext(),Email_verification.class);
                     intent.putExtra("create","create");
                     startActivity(intent);
@@ -255,6 +261,10 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
             holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     try {
                         if(Global.isNetworkAvailable(EmailListActivity.this, EmailListActivity.mMainLayout)) {
                             UpdateEmail_default(String.valueOf(userLinkedGmail.getId()));
