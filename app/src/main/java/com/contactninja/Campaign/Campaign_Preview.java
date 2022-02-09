@@ -78,7 +78,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     ImageView iv_toolbar_manu;
     Toolbar toolbar;
     RelativeLayout contect_layout;
-    ImageView add_icon;
+    ImageView add_icon,iv_camp_edit;
     LinearLayout layout_toolbar_logo;
     ConstraintLayout mMainLayout;
     List<CampaignTask_overview.SequenceTask> main_data = new ArrayList<>();
@@ -86,6 +86,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     private BroadcastReceiver mNetworkReceiver;
     LinearLayout layout_name;
     private long mLastClickTime=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             // StepData();
             tv_name.setEnabled(false);
             layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.GONE);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
@@ -110,13 +112,15 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             // StepData();
             tv_name.setEnabled(false);
             layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.GONE);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else {
-            tv_name.setEnabled(true);
-            layout_name.setEnabled(true);
+            tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.VISIBLE);
             save_button.setText("Done");
             save_button.setVisibility(View.VISIBLE);
             add_icon.setVisibility(View.VISIBLE);
@@ -160,7 +164,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @SuppressLint("WrongViewCast")
     private void IntentUI() {
+        iv_camp_edit=findViewById(R.id.iv_camp_edit);
+        iv_camp_edit.setOnClickListener(this);
         layout_name=findViewById(R.id.layout_name);
         mMainLayout = findViewById(R.id.mMainLayout);
         add_icon = findViewById(R.id.add_icon);
@@ -313,7 +320,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 startActivity(name_intent);
                // finish();
                 break;
-            case R.id.tv_name:
+
+            case R.id.iv_camp_edit:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
@@ -323,7 +331,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 name_intent1.putExtra("seq_task_id", sequence_task_id);
                 name_intent1.putExtra("sequence_Name", tv_name.getText().toString());
                 startActivity(name_intent1);
-              //  finish();
+                // finish();
+                break;
+
+            case R.id.tv_name:
+
                 break;
 
         }
