@@ -62,7 +62,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     TextView num_count;
-    int page = 1,  limit = 10, totale_group;
+    int page = 1, limit = 10, totale_group;
     PaginationAdapter paginationAdapter;
     int currentPage = 1, TOTAL_PAGES = 10;
     boolean isLoading = false;
@@ -70,8 +70,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private List<Grouplist.Group> grouplists;
     // private GroupAdapter groupAdapter;
     private ProgressBar loadingPB;
-    LinearLayout mMainLayout1,demo_layout;
+    LinearLayout mMainLayout1, demo_layout;
     LinearLayout mMainLayout;
+
     public GroupFragment() {
         // Required empty public constructor
     }
@@ -98,6 +99,13 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         group_name.setOnClickListener(this);
         demo_layout.setOnClickListener(this);
 
+        try {
+            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                GroupEvent();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         group_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -116,8 +124,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 if (!isLoading && !isLastPage) {
                     if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
                         try {
-                            currentPage=currentPage + 1;
-                            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                            currentPage = currentPage + 1;
+                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                 GroupEvent1();
                             }
                         } catch (JSONException e) {
@@ -137,7 +145,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 group_recyclerView.setAdapter(paginationAdapter);
 
                 try {
-                    if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                         GroupEvent();
                     }
                 } catch (JSONException e) {
@@ -151,7 +159,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     private void IntentUI(View view) {
 
-     /*   main_layout = view.findViewById(R.id.main_layout);*/
+        /*   main_layout = view.findViewById(R.id.main_layout);*/
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         group_recyclerView = view.findViewById(R.id.group_list);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -160,10 +168,10 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         num_count = view.findViewById(R.id.num_count);
         loadingPB = view.findViewById(R.id.idPBLoading);
         grouplists = new ArrayList<>();
-        mMainLayout1=view.findViewById(R.id.mMainLayout1);
-        mMainLayout=view.findViewById(R.id.mMainLayout);
-        demo_layout=view.findViewById(R.id.demo_layout);
-        swipeToRefresh=view.findViewById(R.id.swipeToRefresh);
+        mMainLayout1 = view.findViewById(R.id.mMainLayout1);
+        mMainLayout = view.findViewById(R.id.mMainLayout);
+        demo_layout = view.findViewById(R.id.demo_layout);
+        swipeToRefresh = view.findViewById(R.id.swipeToRefresh);
 
     }
 
@@ -179,15 +187,15 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                if(SessionManager.getContectList(getActivity()).size() !=0){
-                    SessionManager.setGroupList(getActivity(),new ArrayList<>());
-                    SessionManager.setGroupData(getActivity(),new Grouplist.Group());
+                if (SessionManager.getContectList(getActivity()).size() != 0) {
+                    SessionManager.setGroupList(getActivity(), new ArrayList<>());
+                    SessionManager.setGroupData(getActivity(), new Grouplist.Group());
                     startActivity(new Intent(getActivity(), GroupActivity.class));
-                }else {
-                    Global.Messageshow(getActivity(), MainActivity.mMainLayout,getActivity().getResources().getString(R.string.add_contact),false);
+                } else {
+                    Global.Messageshow(getActivity(), MainActivity.mMainLayout, getActivity().getResources().getString(R.string.add_contact), false);
                 }
 
-              /*  getActivity().finish();*/
+                /*  getActivity().finish();*/
                 break;
             case R.id.group_name:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -209,50 +217,17 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
-                //loadingDialog.showLoadingDialog();
-                MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-                myAsyncTasks.execute();
+        //loadingDialog.showLoadingDialog();
+
 
     }
 
 
-
-    public class MyAsyncTasks extends AsyncTask<String, String, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // display a progress dialog for good user experiance
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            // implement API in background and store the response in current variable
-            String current = "";
-            try {
-                if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
-                    GroupEvent();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "Exception: " + e.getMessage();
-            }
-            return current;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
-
-    }
     private void GroupEvent() throws JSONException {
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-       String token = Global.getToken(sessionManager);
+        String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
         paramObject.put("organization_id", 1);
@@ -265,7 +240,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 swipeToRefresh.setRefreshing(false);
@@ -317,7 +292,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
         paramObject.put("organization_id", 1);
-        paramObject.put("team_id",1 );
+        paramObject.put("team_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", page);
         paramObject.put("perPage", limit);
@@ -326,7 +301,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -413,27 +388,20 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     movieViewHolder.group_name.setText(Group_data.getGroupName());
 
 
-
-                    if (Group_data.getGroupImage()==null)
-                    {
-                        String name =Group_data.getGroupName();
-                        String add_text="";
-                        String[] split_data=name.split(" ");
+                    if (Group_data.getGroupImage() == null) {
+                        String name = Group_data.getGroupName();
+                        String add_text = "";
+                        String[] split_data = name.split(" ");
                         try {
-                            for (int i=0;i<split_data.length;i++)
-                            {
-                                if (i==0)
-                                {
-                                    add_text=split_data[i].substring(0,1);
-                                }
-                                else {
-                                    add_text=add_text+split_data[i].substring(0,1);
+                            for (int i = 0; i < split_data.length; i++) {
+                                if (i == 0) {
+                                    add_text = split_data[i].substring(0, 1);
+                                } else {
+                                    add_text = add_text + split_data[i].substring(0, 1);
                                     break;
                                 }
                             }
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -441,8 +409,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                         movieViewHolder.no_image.setText(add_text);
                         movieViewHolder.no_image.setVisibility(View.VISIBLE);
                         movieViewHolder.group_image.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         Glide.with(context).
                                 load(Group_data.getGroupImage()).
                                 placeholder(R.drawable.shape_primary_back).
@@ -456,10 +423,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                return;
-                            }
-                            mLastClickTime = SystemClock.elapsedRealtime();
                             SessionManager.setGroupData(context, Group_data);
                             startActivity(new Intent(getActivity(), SendBroadcast.class));
                             //getActivity().finish();
@@ -518,7 +481,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
         public class MovieViewHolder extends RecyclerView.ViewHolder {
-            private final TextView group_name,no_image;
+            private final TextView group_name, no_image;
             private final CircleImageView group_image;
             LinearLayout group_layout;
 

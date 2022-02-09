@@ -895,6 +895,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent1 = new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
                     intent1.putExtra("flag", "add");
                     startActivity(intent1);//  finish();
+                }else {
+                    EnableRuntimePermission();
                 }
 
                 bottomSheetDialog.dismiss();
@@ -915,6 +917,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
                     Intent intent = new Intent(getApplicationContext(), List_Broadcast_activity.class);
                     startActivity(intent);
+                }else {
+                    EnableRuntimePermission();
                 }
                 bottomSheetDialog.dismiss();
             }
@@ -929,6 +933,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
                     startActivity(intent);
+                }else {
+                    EnableRuntimePermission();
                 }
                 bottomSheetDialog.dismiss();
 

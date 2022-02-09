@@ -14,6 +14,7 @@
      layout="@layout/common_dialog"/>
 
  <LinearLayout
+     android:visibility="gone"
      android:id="@+id/mMainLayout1"
 
      android:orientation="vertical"
