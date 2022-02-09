@@ -9,9 +9,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +56,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
 
@@ -87,6 +86,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
     private boolean isLoading = false;
 
 
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +148,10 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         demo_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setCampaign_Day("00");
                 SessionManager.setCampaign_minute("00");
                 SessionManager.setCampaign_type("");
@@ -162,6 +165,10 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setCampaign_Day("00");
                 SessionManager.setCampaign_minute("00");
                 SessionManager.setCampaign_type("");
@@ -259,6 +266,10 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.iv_filter_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 filter_manu();
                 break;
         }
@@ -537,6 +548,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
     }
+
     public static void compareDates(String d2, TextView tv_status, TextView tv_time, ManualTaskModel item) {
         try {
             // If you already have date objects then skip 1
@@ -589,7 +601,6 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             }*/
 
 
-
             if (date1.after(date2)) {
                 if (item.getStatus().equals("NOT_STARTED")) {
                     tv_status.setText("Due");
@@ -637,6 +648,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             ex.printStackTrace();
         }
     }
+
     public class ListItemAdepter extends RecyclerView.Adapter<ListItemAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
@@ -758,10 +770,18 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                     public void onClick(View view) {
 
                         if (item.getType().toString().equals("SMS")) {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
                             Intent intent = new Intent(getApplicationContext(), Item_List_Text_Detail_Activty.class);
                             intent.putExtra("record_id", item.getId());
                             startActivity(intent);
                         } else {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
                             Intent intent = new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class);
                             intent.putExtra("record_id", item.getId());
                             startActivity(intent);

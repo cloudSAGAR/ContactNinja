@@ -2,6 +2,7 @@ package com.contactninja.Manual_email_text;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
     SessionManager sessionManager;
     String c_name = "", c_type = "";
     EditText edit_day, edit_minutes, edit_day_manual, edit_minutes_manual;
+    private long mLastClickTime = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -139,7 +141,10 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
         switch (view.getId()) {
             case R.id.auto_layout:
 
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
                 //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
                 //Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
@@ -157,6 +162,10 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
 
                 break;
             case R.id.manual_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("MANUAL");

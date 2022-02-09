@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,6 +105,7 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     LinearLayout lay_seq_stap, lay_taskname;
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
+    private long mLastClickTime = 0;
 
     public static void compareDates(String d2, TextView tv_status) {
         try {
@@ -318,12 +320,20 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_toolbar_manu1:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Select_to_update();
                 break;
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.bt_done:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 try {
                     SMS_execute(edit_compose.getText().toString(), manualDetails.getProspectId(),
                             manualDetails.getContactNumber(), String.valueOf(manualDetails.getId()));
@@ -332,9 +342,17 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                 }
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_down:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
         }

@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -62,6 +63,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     TextView tv_date,tv_time;
     private int mYear, mMonth, mDay, mHour, mMinute;
     String id,text,p_number,Type;
+    private long mLastClickTime=0;
 
 
     @Override
@@ -179,6 +181,10 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
               onBackPressed();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (tv_date.getText().toString().equals(""))
                 {
 
@@ -199,9 +205,17 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                 }
                 break;
             case R.id.la_date:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
                 break;
             case R.id.la_time:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 onTimer();
                 break;
 

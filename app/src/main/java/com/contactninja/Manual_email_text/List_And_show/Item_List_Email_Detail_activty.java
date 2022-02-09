@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -117,65 +118,8 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
     private int FirstTime = 0;
+    private long mLastClickTime = 0;
 
-    public static void compareDates(String d2, TextView tv_status) {
-        try {
-            // If you already have date objects then skip 1
-
-            //1
-            // Create 2 dates starts
-            Date date1 = Global.defoult_date_time_formate.parse(Global.getCurrentTimeandDate());
-            Date date2 = Global.defoult_date_time_formate.parse(d2);
-
-
-            // Create 2 dates ends
-            //1
-
-            // Date object is having 3 methods namely after,before and equals for comparing
-            // after() will return true if and only if date1 is after date 2
-            if (date1.after(date2)) {
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Due");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                Log.e("", "Date1 is after Date2");
-            }
-            // before() will return true if and only if date1 is before date2
-            if (date1.before(date2)) {
-
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Upcoming");
-                    tv_status.setTextColor(Color.parseColor("#2DA602"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-
-                Log.e("", "Date1 is before Date2");
-                System.out.println("Date1 is before Date2");
-            }
-
-            //equals() returns true if both the dates are equal
-            if (date1.equals(date2)) {
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Today");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                Log.e("", "Date1 is equal Date2");
-                System.out.println("Date1 is equal Date2");
-            }
-
-            System.out.println();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +145,10 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         tv_bold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
                 spannableString.setSpan(new StyleSpan(Typeface.BOLD),
                         edit_compose.getSelectionStart(),
@@ -216,7 +164,10 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         tv_ital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
                 spannableString.setSpan(new StyleSpan(Typeface.ITALIC),
                         edit_compose.getSelectionStart(),
@@ -230,7 +181,10 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         tv_uline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
                 spannableString.setSpan(new UnderlineSpan(),
                         edit_compose.getSelectionStart(),
@@ -430,18 +384,34 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_toolbar_manu1:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Select_to_update();
                 break;
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_more:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
             case R.id.bt_done:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 try {
                     SMS_execute(edit_compose.getText().toString(), manualDetails.getProspectId(),
                             manualDetails.getEmail(), String.valueOf(manualDetails.getId()));
@@ -647,7 +617,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     intent.putExtra("s_name", "add");
                     startActivity(intent);
                     finish();
-                } else if (response.body().getHttp_status() == 406) {
+                } else if (response.body().getHttp_status() == 404) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
@@ -696,6 +666,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     text.setFile(R.drawable.ic_a);
                     text.setSelect(false);
                     templateTextList.add(0, text);
+
                     HastagList.TemplateText text1 = new HastagList.TemplateText();
                     text1.setFile(R.drawable.ic_card_blank);
                     text1.setSelect(false);
@@ -1343,7 +1314,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             if (item.getFile() != 0) {
                 holder.im_file.setVisibility(View.VISIBLE);
                 holder.tv_item.setVisibility(View.GONE);
-                holder.im_file.setImageDrawable(mCtx.getDrawable(item.getFile()));
+                holder.im_file.setImageDrawable(mCtx.getResources().getDrawable(item.getFile()));
                 holder.line_view.setVisibility(View.GONE);
 
             } else {
@@ -1448,6 +1419,65 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                 line_view = view.findViewById(R.id.line_view);
                 im_file = view.findViewById(R.id.im_file);
             }
+        }
+    }
+
+    public static void compareDates(String d2, TextView tv_status) {
+        try {
+            // If you already have date objects then skip 1
+
+            //1
+            // Create 2 dates starts
+            Date date1 = Global.defoult_date_time_formate.parse(Global.getCurrentTimeandDate());
+            Date date2 = Global.defoult_date_time_formate.parse(d2);
+
+
+            // Create 2 dates ends
+            //1
+
+            // Date object is having 3 methods namely after,before and equals for comparing
+            // after() will return true if and only if date1 is after date 2
+            if (date1.after(date2)) {
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                Log.e("", "Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if (date1.before(date2)) {
+
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+                Log.e("", "Date1 is before Date2");
+                System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if (date1.equals(date2)) {
+                if (manualDetails.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Today");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                Log.e("", "Date1 is equal Date2");
+                System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
         }
     }
 

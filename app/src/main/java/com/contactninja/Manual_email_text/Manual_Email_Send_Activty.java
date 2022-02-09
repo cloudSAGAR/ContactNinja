@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +98,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     private int amountOfItemsSelected = 0;
     private BroadcastReceiver mNetworkReceiver;
     private int FirstTime = 0;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -296,9 +298,17 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showAlertDialogButtonClicked();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (ev_subject.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
                 } else if (edit_template.getText().toString().equals("")) {
@@ -324,9 +334,17 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
                 }
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_more:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
 

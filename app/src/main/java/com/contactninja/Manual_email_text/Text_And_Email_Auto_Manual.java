@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,6 +53,8 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
     private BroadcastReceiver mNetworkReceiver;
     SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;
+    private long mLastClickTime=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,6 +182,10 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
