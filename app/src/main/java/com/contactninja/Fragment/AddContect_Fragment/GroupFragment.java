@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,8 +54,7 @@ import retrofit2.Response;
 
 @SuppressLint("UnknownNullness,SyntheticAccessor,SetTextI18n,StaticFieldLeak")
 public class GroupFragment extends Fragment implements View.OnClickListener {
-
-
+    private long mLastClickTime = 0;
     LinearLayout main_layout, add_new_contect_layout, group_name;
     SessionManager sessionManager;
     RecyclerView group_recyclerView;
@@ -174,6 +174,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
             case R.id.demo_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 if(SessionManager.getContectList(getActivity()).size() !=0){
                     SessionManager.setGroupList(getActivity(),new ArrayList<>());
                     SessionManager.setGroupData(getActivity(),new Grouplist.Group());
@@ -185,6 +190,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
               /*  getActivity().finish();*/
                 break;
             case R.id.group_name:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
 
@@ -446,6 +456,10 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
                             SessionManager.setGroupData(context, Group_data);
                             startActivity(new Intent(getActivity(), SendBroadcast.class));
                             //getActivity().finish();

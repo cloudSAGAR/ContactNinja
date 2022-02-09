@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -38,6 +39,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener  , ConnectivityReceiver.ConnectivityReceiverListener {
+    private long mLastClickTime = 0;
     TextView save_button;
     ImageView iv_Setting, iv_back;
     EditText add_detail,add_new_contect;
@@ -173,9 +175,17 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(),Final_Group.class));
                 finish();
                 break;

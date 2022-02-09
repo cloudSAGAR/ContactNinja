@@ -323,6 +323,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+
                 if(Global.isNetworkAvailable(this,mMainLayout)){
                     if (flag.equals("read"))
                     {

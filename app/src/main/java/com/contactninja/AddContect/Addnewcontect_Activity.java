@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -82,6 +83,7 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
+    private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -322,12 +324,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 onBackPressed();
             }
         });
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
@@ -900,12 +910,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pulse_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
                     captureimageDialog(false);
                 }
                 break;
             case R.id.iv_user:
             case R.id.tv_nameLetter:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
                     if (olld_image != null && !olld_image.equals("")||user_image_Url != null && !user_image_Url.equals("")) {
                         captureimageDialog(true);
@@ -917,6 +935,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
                 break;
             case R.id.iv_toolbar_manu_vertical:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
                 broadcast_manu(Contect_data);
                 break;
@@ -940,7 +962,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 tv_nameLetter.setVisibility(View.GONE);
@@ -951,7 +976,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         cameraId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, 0);
                 bottomSheetDialog.dismiss();
@@ -961,6 +989,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         galleryId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
                 bottomSheetDialog.dismiss();
@@ -1225,7 +1257,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         selected_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 //Block Contect
 
                 try {
@@ -1242,7 +1277,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         selected_un_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 //Block Contect
 
                 try {
@@ -1259,7 +1297,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         selected_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 //Block Contect
 
                 try {

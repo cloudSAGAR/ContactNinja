@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -140,7 +141,7 @@ public class ContectFragment extends Fragment  {
     Cursor cursor;
     List<Csv_InviteListData> csv_inviteListData = new ArrayList<>();
     List<Csv_InviteListData> csv_multiple_data = new ArrayList<>();
-
+    private long mLastClickTime = 0;
 
     public ContectFragment(View view, FragmentActivity activity) {
 
@@ -235,6 +236,11 @@ public class ContectFragment extends Fragment  {
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                 SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
@@ -243,6 +249,11 @@ public class ContectFragment extends Fragment  {
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                 SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
@@ -251,6 +262,11 @@ public class ContectFragment extends Fragment  {
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
                 SessionManager.setContect_flag("save");
                 Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
@@ -262,7 +278,12 @@ public class ContectFragment extends Fragment  {
         tv_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadingDialog.showLoadingDialog();
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+            //    loadingDialog.showLoadingDialog();
                 EnableRuntimePermission();
                // splitdata(csv_inviteListData);
             }
@@ -524,6 +545,7 @@ public class ContectFragment extends Fragment  {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void success(Response<ApiResponse> response)  {
+                        loadingDialog.cancelLoading();
                         sessionManager.setcontectexits("1");
                         if (response.body().getHttp_status() == 200) {
 
@@ -685,11 +707,13 @@ public class ContectFragment extends Fragment  {
         String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
 
         if (csv_inviteListData.size() == 0) {
-            //loadingDialog.cancelLoading();
+            loadingDialog.cancelLoading();
             //Log.e("Csv Size is ","0");
         } else {
+            loadingDialog.cancelLoading();
+
             splitdata(csv_inviteListData);
-            main_store = new ArrayList<>();
+         /*   main_store = new ArrayList<>();
 
             for (int i = 0; i < csv_inviteListData.size(); i++) {
                 ContectListData.Contact contact = new ContectListData.Contact();
@@ -709,16 +733,19 @@ public class ContectFragment extends Fragment  {
                 main_store.add(contact);
                 //      Log.e("Contect List Is ",new Gson().toJson(main_store));
             }
+            */
+/*
 
             if (SessionManager.getContectList(getActivity()).size() != 0) {
 
-               /* num_count.setText(""+SessionManager.getContectList(getActivity()).get(0).getContacts().size() + " Contacts");
+               *//* num_count.setText(""+SessionManager.getContectList(getActivity()).get(0).getContacts().size() + " Contacts");
                 compareLists(SessionManager.getContectList(getActivity()).get(0).getContacts(),main_store);
-*/
-               // ContectEvent1(main_store);
-            } else {
+*//*
                // ContectEvent1(main_store);
             }
+            else {
+               // ContectEvent1(main_store);
+            }*/
 
 
         }
@@ -859,6 +886,11 @@ public class ContectFragment extends Fragment  {
         iv_filter_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 showBottomSheetDialog_Filtter();
             }
         });
@@ -1605,6 +1637,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         holder1.main_layout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+
                                 SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
                                 Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                                 SessionManager.setOneCotect_deatil(context, Contact_data);
@@ -1766,6 +1803,10 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             public void onClick(View view) {
 
                 //Block Contect
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 try {
                     Contect_BLock(contact_item,"1",bottomSheetDialog);
@@ -1781,6 +1822,10 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             public void onClick(View view) {
 
                 //Block Contect
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 try {
                     Contect_BLock(contact_item,"0",bottomSheetDialog);
@@ -1796,6 +1841,10 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             public void onClick(View view) {
 
                 //Block Contect
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 try {
                     Contect_Remove(contact_item,"0",bottomSheetDialog);

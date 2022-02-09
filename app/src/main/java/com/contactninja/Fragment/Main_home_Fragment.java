@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity=mainActivity;
     }
-
+    private long mLastClickTime = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -142,11 +143,18 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_toolbar_notification:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getActivity(), NotificationListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.iv_toolbar_select:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if(Global.IsNotNull(SessionManager.getContectList(getActivity()))){
                     startActivity(new Intent(getActivity(), List_Manual_Activty.class));
                 }

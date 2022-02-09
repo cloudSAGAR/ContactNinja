@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -86,7 +87,7 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class Main_userProfile_Fragment extends Fragment implements View.OnClickListener {
-
+    private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -170,6 +171,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
@@ -849,7 +854,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pulse_icon:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 if (checkAndRequestPermissions(getActivity())) {
                     captureimageDialog(false);
@@ -913,7 +921,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 tv_nameLetter.setVisibility(View.GONE);
@@ -924,7 +935,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         cameraId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePicture, 0);
 
@@ -935,6 +949,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         galleryId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
                 bottomSheetDialog.dismiss();

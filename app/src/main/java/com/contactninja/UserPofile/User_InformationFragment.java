@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -79,7 +80,7 @@ import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class User_InformationFragment extends Fragment implements View.OnClickListener {
-
+    private long mLastClickTime = 0;
     List<TimezoneModel> timezoon;
     List<TimezoneModel> timezoneModels = new ArrayList<>();
     BottomSheetDialog bottomSheetDialog_time, bottomSheetDialog_company;
@@ -151,18 +152,30 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         layout_bod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
             }
         });
         ev_bob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
             }
         });
         tv_more_field.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 media_layout.setVisibility(View.VISIBLE);
 
                 company_url_layout.setVisibility(View.VISIBLE);
@@ -181,6 +194,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         company_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_Company();
             }
         });
@@ -534,6 +551,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 img_fb.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         Uri uri = Uri.parse(Contect_data.getFacebook_link()); // missing 'http://' will cause crashed
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
@@ -557,6 +578,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 img_twitter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         Uri uri = Uri.parse(Contect_data.getTwitter_link()); // missing 'http://' will cause crashed
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
@@ -939,6 +964,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         select_label_zone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_TimeZone();
 
             }
@@ -1160,13 +1189,20 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
@@ -1428,6 +1464,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 ev_search.requestFocus();
             }
         });
@@ -1461,7 +1501,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bottomSheetDialog_company.cancel();
             }
         });
@@ -1597,6 +1640,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (WorkData.getTitale().equals("Add custom")) {
                         showAlertDialogButtonClicked(v);
                     } else {
@@ -1780,6 +1827,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         addcontectModel.setContactdetails(contactdetails);
                         SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
@@ -1790,6 +1841,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -1896,12 +1951,20 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -1918,6 +1981,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2032,12 +2099,20 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2054,6 +2129,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2226,6 +2305,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item,position);
                     }
                 });
@@ -2269,6 +2352,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2319,6 +2406,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item,position);
                     }
                 });
@@ -2357,6 +2448,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2374,6 +2469,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2456,7 +2555,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     bottomSheetDialog_time.cancel();
                     zone_txt.setText(holder.tv_item.getText().toString());
                     addcontectModel.setTime(String.valueOf(WorkData.getValue()));
@@ -2569,6 +2671,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 holder.tv_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         bottomSheetDialog_company.cancel();
                         ev_company.setText(holder.tv_item.getText().toString());
                         //addcontectModel.setCompany(String.valueOf(WorkData.getName()));

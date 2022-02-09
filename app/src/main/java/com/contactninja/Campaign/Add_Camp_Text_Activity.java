@@ -1023,8 +1023,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
-
+                    if (position == 0) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);

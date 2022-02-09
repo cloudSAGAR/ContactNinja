@@ -15,6 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -79,6 +80,7 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Final_Group extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+    private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static UserListDataAdapter userListDataAdapter;
     public static List<ContectListData.Contact> inviteListData = new ArrayList<>();
@@ -341,10 +343,18 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 try {
                     if (Global.isNetworkAvailable(Final_Group.this, mMainLayout)) {
                         SaveEvent();
@@ -354,13 +364,20 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 }
                 break;
             case R.id.add_new_member:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 sessionManager.setGroupList(getApplicationContext(), inviteListData);
                 startActivity(new Intent(getApplicationContext(), GroupActivity.class));
                 finish();
 
                 break;
             case R.id.iv_dummy:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Final_Group.this)) {
                     captureimageDialog(false);
                 }
@@ -369,6 +386,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 break;
 
             case R.id.iv_user:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Final_Group.this)) {
                     captureimageDialog(true);
                 }
@@ -564,7 +585,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 iv_user.setVisibility(View.GONE);
                 iv_dummy.setVisibility(View.VISIBLE);
                 bottomSheetDialog.dismiss();
@@ -574,7 +598,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         cameraId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePicture, 0);
 
@@ -585,6 +612,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         galleryId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
                 bottomSheetDialog.dismiss();
@@ -673,7 +704,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             holder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     //  Log.e("Posirion is", String.valueOf(position));
                     userDetails.get(position).setFlag("true");
                     removeite(position);

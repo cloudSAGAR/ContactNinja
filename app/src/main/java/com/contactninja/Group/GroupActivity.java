@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -66,6 +67,7 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class GroupActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     //public static UserListDataAdapter userListDataAdapter;
+    private long mLastClickTime = 0;
     public static TopUserListDataAdapter topUserListDataAdapter;
     public static ArrayList<GroupListData> inviteListData = new ArrayList<>();
     public static List<GroupListData> select_inviteListData = new ArrayList<>();
@@ -255,6 +257,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 add_contect_list.setItemViewCacheSize(5000);
                 if (add_new_contect_icon1.getVisibility() == View.GONE) {
                     add_new_contect_icon1.setVisibility(View.VISIBLE);
@@ -281,6 +287,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 contect_list_unselect.setItemViewCacheSize(5000);
                 add_contect_list.setItemViewCacheSize(5000);
 
@@ -305,6 +315,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 contect_list_unselect.setItemViewCacheSize(5000);
                 add_contect_list.setItemViewCacheSize(5000);
 
@@ -374,10 +388,18 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setGroupData(this, new Grouplist.Group());
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 // Log.e("Main Data ",new Gson().toJson(select_inviteListData));
                 if (select_contectListData.size() != 0) {
                     SessionManager.setGroupList(this, new ArrayList<>());
@@ -572,7 +594,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 Log.e("Size is", String.valueOf(detailList_phone.size()));
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (detailList_phone.size() == 0) {
 
                     tv_error1.setVisibility(View.VISIBLE);
@@ -598,6 +623,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         layout_email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 v_phone.setVisibility(View.VISIBLE);
                 v_phone1.setVisibility(View.GONE);
                 v_email1.setVisibility(View.VISIBLE);
@@ -626,6 +655,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         tv_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
                 contactDetails.clear();
                 userLinkedGmailList.clear();
@@ -850,6 +883,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             holder.top_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     for (int i = 0; i < contectListData.size(); i++) {
                         if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId())) {
                             group_flag = "true";
@@ -1099,7 +1136,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     holder1.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
                             if (contacts.get(position).getIs_blocked().equals(1)) {
                                 Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.contect_block), false);
                             } else {
@@ -1180,7 +1220,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onClick(View v) {
                             //    Log.e("On Click Remove ","Remove");
-
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
                             holder1.remove_contect_icon.setVisibility(View.GONE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                             topUserListDataAdapter.remove_item(position, contacts.get(position).getId());
@@ -1388,7 +1431,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     for (int i = 0; i < userLinkedGmailList.size(); i++) {
                         if (userLinkedGmailList.get(i).isPhoneSelect()) {
                             userLinkedGmailList.get(i).setPhoneSelect(false);
@@ -1502,7 +1548,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     for (int i = 0; i < userLinkedGmailList1.size(); i++) {
                         if (userLinkedGmailList1.get(i).isPhoneSelect()) {
                             userLinkedGmailList1.get(i).setPhoneSelect(false);

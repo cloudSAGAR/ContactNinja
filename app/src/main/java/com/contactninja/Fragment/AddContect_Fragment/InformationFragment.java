@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -78,7 +79,7 @@ import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class InformationFragment extends Fragment implements View.OnClickListener {
-
+    private long mLastClickTime = 0;
     public int PhoneFieldNumber = 0;// total Phone add count
     public int emailFieldNumber = 0;// total email add count
     List<TimezoneModel> timezoneModels = new ArrayList<>();
@@ -335,6 +336,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             img_fb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Uri uri = Uri.parse(Contect_data.getFacebook_link()); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
@@ -358,6 +363,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             img_twitter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Uri uri = Uri.parse(Contect_data.getTwitter_link()); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
@@ -378,6 +387,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             img_linkdin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Uri uri = Uri.parse(Contect_data.getLinkedin_link()); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
@@ -399,6 +412,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             img_breakout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Uri uri = Uri.parse(Contect_data.getBreakout_link()); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
@@ -469,18 +486,30 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         layout_bod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
             }
         });
         ev_bob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
             }
         });
         tv_more_field.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 media_layout.setVisibility(View.VISIBLE);
 
                 company_url_layout.setVisibility(View.VISIBLE);
@@ -499,6 +528,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         company_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_Company();
             }
         });
@@ -810,6 +843,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         select_label_zone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_TimeZone();
 
             }
@@ -1027,13 +1064,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
@@ -1216,7 +1260,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (type.equals("sim")) {
                     sendSMS(p_num, editText.getText().toString());
                     dialog.dismiss();
@@ -1235,6 +1282,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
@@ -1262,6 +1313,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_munual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showAlertDialogButtonClicked1(p_num, id, "sim");
                 dialog.dismiss();
             }
@@ -1269,6 +1324,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_api.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
                 SessionManager.setMessage_number(p_num);
                 SessionManager.setMessage_type("app");
@@ -1543,12 +1602,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
                 try {
                     EmailAPI(ev_subject.getText().toString(), ev_type.getText().toString(), id, email);
@@ -1639,6 +1706,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 ev_search.requestFocus();
             }
         });
@@ -1673,7 +1744,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bottomSheetDialog_company.cancel();
             }
         });
@@ -1805,6 +1879,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (WorkData.getTitale().equals("Add custom")) {
                         showAlertDialogButtonClicked(v);
                     } else {
@@ -1980,6 +2058,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + holder.edt_mobile_no.getText().toString());
                         item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
                         String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
@@ -1993,6 +2075,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2008,6 +2094,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2125,12 +2215,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2146,6 +2244,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2247,12 +2349,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2268,6 +2378,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2288,7 +2402,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                    EnableRuntimePermission(item);
                 }
             });
@@ -2297,6 +2414,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Log.e("Sms Event Call", "Yes");
                     Log.e("Number is", item.getEmail_number());
                     //showAlertDialogButtonClicked1(item.getEmail_number());
@@ -2443,6 +2564,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item);
                     }
                 });
@@ -2481,6 +2606,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2496,6 +2625,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2555,6 +2688,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item);
                     }
                 });
@@ -2593,6 +2730,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2608,6 +2749,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2632,7 +2777,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     SessionManager.setMessage_number(item.getEmail_number());
                     SessionManager.setMessage_id(String.valueOf(item.getId()));
 
@@ -2719,7 +2867,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     bottomSheetDialog_time.cancel();
                     zone_txt.setText(holder.tv_item.getText().toString());
                     addcontectModel.setTime(String.valueOf(WorkData.getValue()));
@@ -2832,6 +2983,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.tv_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         bottomSheetDialog_company.cancel();
                         ev_company.setText(holder.tv_item.getText().toString());
                         //addcontectModel.setCompany(String.valueOf(WorkData.getName()));

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -66,6 +67,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 public class Company_Fragment extends Fragment {
+    private long mLastClickTime = 0;
     ConstraintLayout mMainLayout;
     BottomSheetDialog bottomSheetDialog_fillter;
     Context mCtx;
@@ -169,6 +171,11 @@ public class Company_Fragment extends Fragment {
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                 intent.putExtra("flag", "add");
@@ -178,6 +185,11 @@ public class Company_Fragment extends Fragment {
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                 intent.putExtra("flag", "add");
@@ -187,6 +199,11 @@ public class Company_Fragment extends Fragment {
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                 intent.putExtra("flag", "add");
@@ -255,6 +272,11 @@ public class Company_Fragment extends Fragment {
         iv_filter_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 showBottomSheetDialog_Filtter();
             }
         });
@@ -411,6 +433,10 @@ public class Company_Fragment extends Fragment {
         selected_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 //Block Contect
 
@@ -426,6 +452,10 @@ public class Company_Fragment extends Fragment {
         selected_un_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 //Block Contect
 
@@ -441,6 +471,10 @@ public class Company_Fragment extends Fragment {
         selected_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 //Block Contect
 
@@ -695,6 +729,11 @@ public class Company_Fragment extends Fragment {
                 holder.main_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+
                         SessionManager.setCompnay_detail(WorkData);
                         Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                         intent.putExtra("flag", "read");
