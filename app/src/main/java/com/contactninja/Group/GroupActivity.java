@@ -217,7 +217,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             contectListData.addAll(SessionManager.getContectList(this).get(0).getContacts());
             Log.e("contectListData", new Gson().toJson(contectListData));
             groupContectAdapter.addAll(contectListData);
-            num_count.setText(contectListData.size() + " Contacts");
+          //  num_count.setText(contectListData.size() + " Contacts");
 
 
         } else {
@@ -271,6 +271,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             pre_seleact.clear();
             pre_seleact.addAll(SessionManager.getGroupList(this));
             select_contectListData.addAll(pre_seleact);
+            num_count.setText(select_contectListData.size() + " Contacts");
             //  topUserListDataAdapter.notifyDataSetChanged();
 
 
@@ -339,7 +340,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        call_updatedata();
+
         Log.e("Selcete List Is", new Gson().toJson(select_contectListData));
         select_contectListData.clear();
         add_contect_list.setItemViewCacheSize(5000);
@@ -347,6 +348,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
         contect_list_unselect.setAdapter(groupContectAdapter);
+        call_updatedata();
       /*  try {
             ContectEvent();
         } catch (JSONException e) {
