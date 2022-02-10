@@ -1,15 +1,11 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,16 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.SearchView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.AddContect.Add_Company_Activity;
 import com.contactninja.MainActivity;
@@ -63,14 +49,26 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.SearchView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Company_Fragment extends Fragment {
-    private long mLastClickTime = 0;
     ConstraintLayout mMainLayout;
     TextView tv_create;
     BottomSheetDialog bottomSheetDialog_fillter;
@@ -98,6 +96,7 @@ public class Company_Fragment extends Fragment {
     List<CompanyModel.Company> companyList = new ArrayList<>();
     String Filter = "";//BLOCK / ALL
     LinearLayout demo_layout, linearLayout3;
+    private long mLastClickTime = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -376,39 +375,50 @@ public class Company_Fragment extends Fragment {
             public void success(Response<ApiResponse> response) {
                 //   Log.e("Response is",new Gson().toJson(response));
                 if (response.body().getHttp_status().equals(200)) {
-                        Gson gson = new Gson();
-                        String headerString = gson.toJson(response.body().getData());
-                        //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
-                        Type listType = new TypeToken<CompanyModel>() {
-                        }.getType();
-                        CompanyModel data = new Gson().fromJson(headerString, listType);
-                        num_count.setText(String.valueOf(data.getTotal()+" Company"));
-                        List<CompanyModel.Company> companyList;
-                        if (Filter.equals("BLOCK")) {
-                            companyList = data.getBlocked_companies();
-                        } else {
-                            companyList = data.getData();
-                        }
-                        if (currentPage != PAGE_START)
-                        companyAdapter.removeLoading();
-                        companyAdapter.addItems(companyList);
-                        // check weather is last page or not
-                        if (data.getTotal() > companyAdapter.getItemCount()) {
-                            companyAdapter.addLoading();
-                        } else {
-                            isLastPage = true;
-                        }
-                        isLoading = false;
-                        swipeToRefresh.setRefreshing(false);
-                        linearLayout3.setVisibility(View.VISIBLE);
-                        demo_layout.setVisibility(View.GONE);
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
+                    Type listType = new TypeToken<CompanyModel>() {
+                    }.getType();
+                    CompanyModel data = new Gson().fromJson(headerString, listType);
+                    num_count.setText(String.valueOf(data.getTotal() + " Company"));
+                    List<CompanyModel.Company> companyList;
+                    if (Filter.equals("BLOCK")) {
+                        companyList = data.getBlocked_companies();
 
-                }else {
-                    if(Filter.equals("")&&ev_search.getText().toString().equals("")){
+
+                    } else {
+
+                        companyList = data.getData();
+
+                    }
+
+                    Collections.sort(companyList, new Comparator<CompanyModel.Company>() {
+                        @Override
+                        public int compare(CompanyModel.Company s1, CompanyModel.Company s2) {
+                            return s1.getName().compareToIgnoreCase(s2.getName());
+                        }
+                    });
+                    if (currentPage != PAGE_START)
+                        companyAdapter.removeLoading();
+                    companyAdapter.addItems(companyList);
+                    // check weather is last page or not
+                    if (data.getTotal() > companyAdapter.getItemCount()) {
+                        companyAdapter.addLoading();
+                    } else {
+                        isLastPage = true;
+                    }
+                    isLoading = false;
+                    swipeToRefresh.setRefreshing(false);
+                    linearLayout3.setVisibility(View.VISIBLE);
+                    demo_layout.setVisibility(View.GONE);
+
+                } else {
+                    if (Filter.equals("") && ev_search.getText().toString().equals("")) {
                         linearLayout3.setVisibility(View.GONE);
                         demo_layout.setVisibility(View.VISIBLE);
                     }
-                    num_count.setText(String.valueOf(0+" Company"));
+                    num_count.setText(String.valueOf(0 + " Company"));
                 }
             }
 

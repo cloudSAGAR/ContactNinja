@@ -588,7 +588,7 @@ public class ContectFragment extends Fragment  {
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                EnableRuntimePermission();
+              //  EnableRuntimePermission();
             }
 
         };
