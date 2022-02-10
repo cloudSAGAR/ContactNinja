@@ -169,7 +169,8 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         layout_day.setOnClickListener(this);
         tv_info = findViewById(R.id.tv_info);
         tv_recurrence = findViewById(R.id.tv_recurrence);
-        tv_recurrence.setOnClickListener(this);
+        layout_rec = findViewById(R.id.layout_rec);
+        layout_rec.setOnClickListener(this);
         iv_down_arrow = findViewById(R.id.iv_down_arrow);
         iv_date = findViewById(R.id.iv_date);
         iv_date.setOnClickListener(this);
@@ -243,7 +244,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 onTimer();
                 break;
 
-            case R.id.tv_recurrence:
+            case R.id.layout_rec:
                 Phone_bouttomSheet();
                 break;
             case R.id.iv_selected:

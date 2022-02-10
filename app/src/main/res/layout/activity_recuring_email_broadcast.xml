@@ -83,7 +83,7 @@
             android:layout_marginEnd="@dimen/_20sdp"
             android:background="@color/spinner"
             android:layout_width="match_parent"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
         <LinearLayout
 
             android:weightSum="1"
@@ -124,7 +124,7 @@
             android:layout_marginEnd="@dimen/_20sdp"
             android:background="@color/spinner"
             android:layout_width="match_parent"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
 
         <LinearLayout
             android:id="@+id/layout_rec"
@@ -152,12 +152,12 @@
             </TextView>
             <ImageView
                 android:id="@+id/iv_down_arrow"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/ic_down"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:src="@drawable/ic_gray_down"
                 android:backgroundTint="@color/home_list_sub_data"
                 android:layout_gravity="center"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp">
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp">
 
             </ImageView>
         </LinearLayout>
@@ -166,7 +166,7 @@
             android:layout_marginEnd="@dimen/_20sdp"
             android:background="@color/spinner"
             android:layout_width="match_parent"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
 
         <TextView
             android:id="@+id/tc_time_zone"
@@ -176,7 +176,7 @@
             android:layout_marginStart="@dimen/_22sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:hint="@string/email_date"
-            android:textColor="@color/text_reg"></TextView>
+            android:textColor="@color/text_reg"/>
 
         <LinearLayout
             android:visibility="gone"
@@ -251,7 +251,7 @@
             android:layout_marginEnd="@dimen/_20sdp"
             android:background="@color/spinner"
             android:layout_width="match_parent"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
 
 
         <LinearLayout
@@ -295,8 +295,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_22sdp"
-
-            android:textColor="@color/text_reg"></TextView>
+            android:textColor="@color/text_reg"/>
 
         <LinearLayout
             android:id="@+id/layout_month"

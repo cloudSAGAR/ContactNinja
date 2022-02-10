@@ -54,6 +54,7 @@
         app:tabTextColor="@color/text_reg"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
         android:layout_height="wrap_content"
         android:background="@color/white">
     </com.google.android.material.tabs.TabLayout>
