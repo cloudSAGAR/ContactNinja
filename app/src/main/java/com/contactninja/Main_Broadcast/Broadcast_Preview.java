@@ -327,19 +327,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
-
-            startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
-            finish();
-        } else if (SessionManager.getCampign_flag(getApplicationContext()).equals("edit")) {
-            startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
-            finish();
-        } else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name")) {
-            //  startActivity(new Intent(getApplicationContext(),Campaign_List_Activity.class));
-            finish();
-        } else {
-            finish();
-        }
+        finish();
         super.onBackPressed();
     }
 

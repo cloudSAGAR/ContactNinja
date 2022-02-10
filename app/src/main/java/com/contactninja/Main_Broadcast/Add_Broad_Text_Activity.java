@@ -661,9 +661,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
-        intent.putExtra("flag", "new");
-        startActivity(intent);
+
         finish();
         super.onBackPressed();
     }
