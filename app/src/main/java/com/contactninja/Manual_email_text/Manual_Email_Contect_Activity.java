@@ -488,11 +488,11 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                         holder1.iv_block.setVisibility(View.VISIBLE);
                         holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                         holder1.remove_contect_icon.setVisibility(View.GONE);
-                        holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
+                        holder1.userName.setTextColor(context.getResources().getColor(R.color.block_item));
 
                     } else {
                         holder1.iv_block.setVisibility(View.GONE);
-                        holder1.userName.setTextColor(Color.parseColor("#4A4A4A"));
+                        holder1.userName.setTextColor(context.getResources().getColor(R.color.unblock_item));
 
                     }
 

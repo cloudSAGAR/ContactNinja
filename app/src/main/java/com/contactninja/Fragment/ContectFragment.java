@@ -1530,11 +1530,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         if (Contact_data.getIs_blocked().equals(1))
                         {
                             holder1.iv_block.setVisibility(View.VISIBLE);
-                            holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
+                            holder1.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
 
                         }
                         else {
-                            holder1.userName.setTextColor(Color.parseColor("#4A4A4A"));
+                            holder1.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
                             holder1.iv_block.setVisibility(View.GONE);
 
                         }

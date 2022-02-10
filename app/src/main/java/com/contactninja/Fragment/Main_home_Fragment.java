@@ -84,7 +84,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         TimeZone tz = TimeZone.getDefault();
         Log.e("offset", tz.getID());
-        if (Global.IsNotNull(user_data.getUser().getWorkingHoursList())||user_data.getUser().getWorkingHoursList().size() == 0) {
+        if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList())||user_data.getUser().getWorkingHoursList().size() == 0) {
             try {
                 if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                     Timezone( tz.getID());
@@ -274,18 +274,12 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                             break;
                         }
                     }
-
-
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
             }
         });
-
-//
-
-
     }
 
     private void Working_hour(Integer value) {

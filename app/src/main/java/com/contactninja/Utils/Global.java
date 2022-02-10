@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -35,9 +36,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.michaelrocks.libphonenumber.android.NumberParseException;
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Global extends Application {
@@ -269,6 +273,34 @@ public class Global extends Application {
             e.printStackTrace();
         }
         return tripDate;
+    }
+
+    public static int Countrycode_Country(Activity activity, String email_number) {
+        TelephonyManager tm = (TelephonyManager) activity.getSystemService(activity.TELEPHONY_SERVICE);
+        String country = tm.getNetworkCountryIso();
+        int countryCode = 0;
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(activity);
+        try {
+            // phone must begin with '+'
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(email_number, country.toUpperCase());
+            countryCode = numberProto.getCountryCode();
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        return countryCode;
+    }
+    public static int Countrycode(Activity activity, String email_number) {
+        int countryCode = 0;
+
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(activity);
+        try {
+            // phone must begin with '+'
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(email_number, "");
+            countryCode = numberProto.getCountryCode();
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        return countryCode;
     }
 
     /*

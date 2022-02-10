@@ -65,6 +65,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
+
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Company_Fragment extends Fragment {
     private long mLastClickTime = 0;
@@ -93,8 +94,8 @@ public class Company_Fragment extends Fragment {
     CompanyAdapter companyAdapter;
     List<CompanyModel.Company> companyList = new ArrayList<>();
     int perPage = 20;
-    String Filter="";//BLOCK / ALL
-    LinearLayout layout_common,demo_layout,linearLayout3;
+    String Filter = "";//BLOCK / ALL
+    LinearLayout  demo_layout, linearLayout3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -267,24 +268,22 @@ public class Company_Fragment extends Fragment {
                 }
         );
 
-        if (companyAdapter.getItemCount()==0)
-        {
+      /*  if (companyAdapter.getItemCount() == 0) {
             linearLayout3.setVisibility(View.GONE);
             demo_layout.setVisibility(View.VISIBLE);
             layout_common.setVisibility(View.VISIBLE);
 
-        }
+        }*/
 
         return content_view;
     }
 
 
     private void IntentUI(View content_view) {
-        linearLayout3=content_view.findViewById(R.id.linearLayout3);
-        tv_create=content_view.findViewById(R.id.tv_create);
+        linearLayout3 = content_view.findViewById(R.id.linearLayout3);
+        tv_create = content_view.findViewById(R.id.tv_create);
         tv_create.setText(getResources().getString(R.string.create_company));
-        demo_layout=content_view.findViewById(R.id.demo_layout);
-        layout_common=content_view.findViewById(R.id.layout_common);
+        demo_layout = content_view.findViewById(R.id.demo_layout);
         iv_filter_icon = content_view.findViewById(R.id.iv_filter_icon);
         mMainLayout = content_view.findViewById(R.id.mMainLayout);
         rvinviteuserdetails = content_view.findViewById(R.id.contact_list);
@@ -338,8 +337,9 @@ public class Company_Fragment extends Fragment {
                 if (isChecked) {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
-
-                    Filter="BLOCK";
+                    Filter = "BLOCK";
+                 //   RefreshList();
+//
                 }
 
             }
@@ -351,8 +351,9 @@ public class Company_Fragment extends Fragment {
                 if (isChecked) {
                     bottomSheetDialog.dismiss();
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    Filter = "All";
+                  //  RefreshList();
 
-                    Filter="All";
                 }
 
             }
@@ -374,11 +375,14 @@ public class Company_Fragment extends Fragment {
         paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
+        if(Filter.equals("BLOCK")){
+            paramObject.addProperty("is_blocked", 1);
+        }
         obj.add("data", paramObject);
         retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-             //   Log.e("Response is",new Gson().toJson(response));
+                //   Log.e("Response is",new Gson().toJson(response));
                 if (response.body().getHttp_status().equals(200)) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -401,12 +405,10 @@ public class Company_Fragment extends Fragment {
                         swipeToRefresh.setRefreshing(false);
                         linearLayout3.setVisibility(View.VISIBLE);
                         demo_layout.setVisibility(View.GONE);
-                        layout_common.setVisibility(View.GONE);
 
                     } else {
                         linearLayout3.setVisibility(View.GONE);
                         demo_layout.setVisibility(View.VISIBLE);
-                        layout_common.setVisibility(View.VISIBLE);
                         // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
 
                     }
@@ -418,7 +420,6 @@ public class Company_Fragment extends Fragment {
             public void error(Response<ApiResponse> response) {
                 linearLayout3.setVisibility(View.GONE);
                 demo_layout.setVisibility(View.VISIBLE);
-                layout_common.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -426,7 +427,11 @@ public class Company_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Filter="";
+        Filter = "";
+        RefreshList();
+    }
+
+    private void RefreshList() {
         currentPage = PAGE_START;
         isLastPage = false;
         companyList.clear();
@@ -578,10 +583,10 @@ public class Company_Fragment extends Fragment {
     public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-       JSONObject obj = new JSONObject();
+        JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id",1 );
-        paramObject.put("team_id",1 );
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("id", Company.getId());
         paramObject.put("status", "D");
@@ -694,12 +699,13 @@ public class Company_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CompanyAdapter.viewData holder, int position) {
             CompanyModel.Company WorkData = companyList.get(position);
-            if (Global.IsNotNull(WorkData) && ! WorkData.getName().equals("")) {
+            if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
                 if (WorkData.getIs_blocked().equals(1)) {
                     holder.iv_block.setVisibility(View.VISIBLE);
+                    holder.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
                 } else {
                     holder.iv_block.setVisibility(View.GONE);
-
+                    holder.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
                 }
                 holder.userName.setText(WorkData.getName());
                 holder.userNumber.setVisibility(View.GONE);
@@ -771,9 +777,9 @@ public class Company_Fragment extends Fragment {
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
 
-                        SessionManager.setCompnay_detail(WorkData);
                         Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                         intent.putExtra("flag", "read");
+                        intent.putExtra("id", WorkData.getId());
                         startActivity(intent);
                     }
                 });

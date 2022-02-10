@@ -4,6 +4,7 @@ import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -12,10 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,7 +33,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.CompanyModel;
@@ -1730,12 +1727,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.InviteListDataclass> {
 
 
-        public Context mCtx;
+        public Activity mCtx;
 
         List<Contactdetail> contactdetails;
         LinearLayout layout_Add_phone;
 
-        public PhoneAdapter(Context context, List<Contactdetail> contactdetails, LinearLayout layout_Add_phone) {
+        public PhoneAdapter(Activity context, List<Contactdetail> contactdetails, LinearLayout layout_Add_phone) {
             this.mCtx = context;
             this.contactdetails = contactdetails;
             this.layout_Add_phone = layout_Add_phone;
@@ -1769,7 +1766,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
-                String main_data = item.getEmail_number().replace("+91", "");
+                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx,item.getEmail_number())));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx,item.getEmail_number()));
+                holder.ccp_id.resetToDefaultCountry();
+                String main_data = item.getEmail_number().replace("+" + String.valueOf(Global.Countrycode(mCtx,item.getEmail_number())), "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
                 holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
@@ -2041,7 +2041,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
-                TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
+     /*           TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
                 String country = tm.getNetworkCountryIso();
                 int countryCode = 0;
                 PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(getActivity());
@@ -2052,7 +2052,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } catch (NumberParseException e) {
                     System.err.println("NumberParseException was thrown: " + e.toString());
                 }
-                String main_data = item.getEmail_number().replace("+" + countryCode, "");
+                String main_data = item.getEmail_number().replace("+" + countryCode, "");*/
+                String main_data = item.getEmail_number().replace("+" +Global.Countrycode_Country(mCtx,item.getEmail_number()), "");
 
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());

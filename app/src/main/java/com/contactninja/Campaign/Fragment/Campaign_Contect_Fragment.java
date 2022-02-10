@@ -1685,31 +1685,18 @@ public class Campaign_Contect_Fragment extends Fragment {
 
                     }
 
-
-
-                    /*}
-                    catch (Exception e)
-                    {
-                        contacts.remove(position);
-                    }*/
-
                     try {
                         if (contacts.get(position).getIs_blocked().equals(1)) {
-
                             holder1.iv_block.setVisibility(View.VISIBLE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                             holder1.remove_contect_icon.setVisibility(View.GONE);
-                            holder1.userName.setTextColor(Color.parseColor("#ABABAB"));
-
-
+                            holder1.userName.setTextColor(context.getResources().getColor(R.color.block_item));
                         } else {
-
                             holder1.iv_block.setVisibility(View.GONE);
-                            holder1.userName.setTextColor(Color.parseColor("#4A4A4A"));
-
+                            holder1.userName.setTextColor(context.getResources().getColor(R.color.unblock_item));
                         }
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
 
                     break;
