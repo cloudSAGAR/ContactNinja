@@ -33,6 +33,7 @@ import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
@@ -191,10 +192,14 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                 else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
+                    SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+
                     startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
                     finish();
                 }
                 else {
+                    SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+
                     startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
                     finish();
                     }

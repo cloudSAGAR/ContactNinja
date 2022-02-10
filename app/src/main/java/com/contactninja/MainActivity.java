@@ -830,6 +830,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+                 SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     SessionManager.setCampaign_Day("00");
                     SessionManager.setCampaign_minute("00");
