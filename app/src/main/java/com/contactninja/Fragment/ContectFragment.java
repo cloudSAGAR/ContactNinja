@@ -148,7 +148,6 @@ public class ContectFragment extends Fragment  {
 
         this.view1 = view;
         this.fragmentActivity = activity;
-        // Log.e("View is ", String.valueOf(view1.getVisibility()));
     }
 
 
@@ -219,14 +218,7 @@ public class ContectFragment extends Fragment  {
                         e.printStackTrace();
                     }
                 } catch (Exception e) {
-                    try {
-                        if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
-                            ContectEvent();
-                        }
-                   //     GetContactsIntoArrayList();
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
+                    e.printStackTrace();
                 }
 
 
@@ -303,7 +295,6 @@ public class ContectFragment extends Fragment  {
                 for (ContectListData.Contact d : contectListData) {
                     if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
                         temp.add(d);
-                        // Log.e("Same Data ",d.getUserName());
                     }
                 }
                 paginationAdapter.updateList(temp);
@@ -465,8 +456,8 @@ public class ContectFragment extends Fragment  {
                 "Fax");
 
         for (int i = 0; i < response.size(); i++) {
-            data.append('\n' + response.get(i).getUserName() +
-                    ',' + response.get(i).getLast_name() +
+            data.append('\n' + response.get(i).getUserName().replaceAll("[-+.^:,]","") +
+                    ',' + response.get(i).getLast_name().replaceAll("[-+.^:,]","") +
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
@@ -522,7 +513,6 @@ public class ContectFragment extends Fragment  {
 
 
     private void Uploadcsv(File path) throws JSONException {
-        Log.e("File is", String.valueOf(path));
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -631,17 +621,13 @@ public class ContectFragment extends Fragment  {
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             while (cursor1.moveToNext()) {
                 contect_email = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
-                Log.e("Email is ", contect_email);
                 String name = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-
                 EmailModel emailModel = new EmailModel();
                 emailModel.setId(name);
                 emailModel.setName(contect_email);
                 emailModels.add(emailModel);
             }
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
-            user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
             TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
             String country = tm.getNetworkCountryIso();
             int countryCode = 0;
@@ -658,14 +644,7 @@ public class ContectFragment extends Fragment  {
             } catch (NumberParseException e) {
                 System.err.println("NumberParseException was thrown: " + e.toString());
             }
-            try {
-                contect_email = "";
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
-                firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
             String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                     .substring(0, 1)
                     .toUpperCase();
@@ -675,9 +654,7 @@ public class ContectFragment extends Fragment  {
                 found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
 
 
-                if (found) {
-
-                } else {
+                if (!found) {
                     //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                     Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getActivity().getTaskId())));
                     String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
@@ -689,12 +666,9 @@ public class ContectFragment extends Fragment  {
 
                     String email = "";
                     for (int i = 0; i < emailModels.size(); i++) {
-                        //             Log.e("Phone ID", userName);
-                        //               Log.e("Email Id", emailModels.get(i).getId());
+
                         if (userName.equals(emailModels.get(i).getId())) {
                             email = emailModels.get(i).getName();
-                        } else {
-                            // contect_email="";
                         }
 
                     }
@@ -709,12 +683,10 @@ public class ContectFragment extends Fragment  {
                                 .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
                                 .findFirst();
                         if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
-                            // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
                             csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
                             csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
                             csv_inviteListData.remove(indexOpt.getAsInt() + 1);
                         }
-                        //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
 
                     }
 
@@ -731,7 +703,6 @@ public class ContectFragment extends Fragment  {
 
         if (csv_inviteListData.size() == 0) {
             loadingDialog.cancelLoading();
-            //Log.e("Csv Size is ","0");
         } else {
             loadingDialog.cancelLoading();
 
@@ -754,7 +725,6 @@ public class ContectFragment extends Fragment  {
                 }
                 contact.setContactDetails(main_contect);
                 main_store.add(contact);
-                //      Log.e("Contect List Is ",new Gson().toJson(main_store));
             }
             */
 /*
@@ -815,7 +785,6 @@ public class ContectFragment extends Fragment  {
                     }.getType();
                     ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                     contectListData.addAll(contectListData1.getContacts());
-                    Log.e("Contect Size is", String.valueOf(contectListData.size()));
                     num_count.setText("" + contectListData1.getTotal() + " Contacts");
 
                     totale_group = contectListData1.getTotal();
@@ -833,7 +802,6 @@ public class ContectFragment extends Fragment  {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
                 //loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
             }
@@ -875,7 +843,6 @@ public class ContectFragment extends Fragment  {
 
 
     void filter(String text, View view, FragmentActivity activity) {
-        Log.e("Text is", text);
         if (!text.equals("")) {
             List<ContectListData.Contact> temp = new ArrayList();
             for (ContectListData.Contact d : contectListData) {
@@ -953,8 +920,6 @@ public class ContectFragment extends Fragment  {
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
 
-
-                Log.e("Reponse is", new Gson().toJson(response.body()));
                 try {
                     //   if (response.body().getStatus() == 200) {.
 
@@ -1000,7 +965,6 @@ public class ContectFragment extends Fragment  {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
                 swipeToRefresh.setRefreshing(false);
                 loadingDialog.cancelLoading();
 
@@ -1028,7 +992,6 @@ public class ContectFragment extends Fragment  {
         paramObject.addProperty("order", "asc");
         obj.add("data", paramObject);
 
-        Log.e("Request data", new Gson().toJson(obj));
 
 
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
@@ -1064,7 +1027,6 @@ public class ContectFragment extends Fragment  {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
 
             }
         });
@@ -1179,7 +1141,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         ContectListData.Contact Contact_data = contacts.get(position);
-        //Log.e("Postion is",String.valueOf(position));
         switch (getItemViewType(position)) {
             case ITEM:
                 ContectListAdapter.MovieViewHolder holder1 = (ContectListAdapter.MovieViewHolder) holder;
@@ -1285,7 +1246,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                           }
                           else {
                               SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
-                              Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                               SessionManager.setOneCotect_deatil(context, Contact_data);
                               Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
                               SessionManager.setContect_flag("read");
@@ -1317,7 +1277,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-       // Log.e("Size is :: ",contacts.size()+"");
         return contacts == null ? 0 : contacts.size();
     }
 
@@ -1475,7 +1434,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
-        Log.e("Main Data is ", new Gson().toJson(gsonObject));
         retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -1564,7 +1522,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
             ContectListData.Contact Contact_data = contacts.get(position);
-            //Log.e("Postion is",String.valueOf(position));
             switch (getItemViewType(position)) {
                 case ITEM:
                     MovieViewHolder holder1 = (MovieViewHolder) holder;
@@ -1662,7 +1619,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 mLastClickTime = SystemClock.elapsedRealtime();
 
                                 SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
-                                Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                                 SessionManager.setOneCotect_deatil(context, Contact_data);
                                 Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
                                 SessionManager.setContect_flag("read");
@@ -1699,7 +1655,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public int getItemCount() {
-            // Log.e("Size is :: ",contacts.size()+"");
             return contacts == null ? 0 : contacts.size();
         }
 
@@ -1894,7 +1849,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Main Data is ", new Gson().toJson(gsonObject));
         retrofitCalls.Block_contact(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -1941,7 +1895,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Main Data is ", new Gson().toJson(gsonObject));
         retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

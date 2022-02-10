@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String localTime = date.format(currentLocalTime);
         String offset = localTime.substring(0, 1);
 
-        //  Log.e("Email is",new Gson().toJson(getNameEmailDetails()));
         UpdateManageCheck();
         EnableRuntimePermission();
         navItemIndex = 0;
@@ -209,6 +208,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
@@ -256,12 +261,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void GetContactsIntoArrayList() {
-        try {
-            ContectEvent(1);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } List<EmailModel> emailModels = new ArrayList<>();
 
+        List<EmailModel> emailModels = new ArrayList<>();
 
         String firstname = "", lastname = "";
 
@@ -272,24 +273,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
 
-
             while (cursor1.moveToNext()) {
                 contect_email = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
-                Log.e("Email is ", contect_email);
                 String name = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-
                 EmailModel emailModel = new EmailModel();
                 emailModel.setId(name);
                 emailModel.setName(contect_email);
                 emailModels.add(emailModel);
             }
 
-            //String phonne_id=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
-
-
             user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            user_image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
-            user_des = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA2));
             TelephonyManager tm = (TelephonyManager) getSystemService(getApplicationContext().TELEPHONY_SERVICE);
             String country = tm.getNetworkCountryIso();
             int countryCode = 0;
@@ -299,40 +292,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
                 countryCode = numberProto.getCountryCode();
                 user_phone_number = user_phone_number.replace(" ", "");
-                //   Log.e("Mobile Number ", user_phone_number);
                 user_phone_number = user_phone_number.replace("-", "");
                 if (!user_phone_number.contains("+")) {
                     user_phone_number = "+" + countryCode + user_phone_number;
                 }
             } catch (NumberParseException e) {
-                System.err.println("NumberParseException was thrown: " + e);
+               e.printStackTrace();
             }
-            try {
-                // contect_email = "";
-                region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA8));
-                contect_type = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_HOME)));
-                contect_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_WORK)));
-                email_type_home = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_HOME)));
-                email_type_work = cursor.getString(cursor.getColumnIndex(String.valueOf(ContactsContract.CommonDataKinds.Email.TYPE_WORK)));
-                country = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-                // StructuredPostal.CITY == data7
-                city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-                // StructuredPostal.REGION == data8
-                //region = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-                // StructuredPostal.STREET == data4
-                street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-                // StructuredPostal.POSTCODE == data9
-                postcode = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
-                // StructuredPostal.TYPE == data2
-                postType = String.valueOf(cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE)));
-                note = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
 
-
-                firstname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                lastname = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
                     .substring(0, 1)
                     .toUpperCase();
@@ -342,11 +309,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
 
 
-                if (found) {
-
-                } else {
-
-                    //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                if (!found) {
                     Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getTaskId())));
                     String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
                     inviteListData.add(new InviteListData("" + userName.trim(),
@@ -356,19 +319,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             "", ""));
                     String email = "";
                     for (int i = 0; i < emailModels.size(); i++) {
-                        //             Log.e("Phone ID", userName);
-                        //               Log.e("Email Id", emailModels.get(i).getId());
+
                         if (userName.equals(emailModels.get(i).getId())) {
                             email = emailModels.get(i).getName();
-                        } else {
-                            // contect_email="";
                         }
-
                     }
 
-
                     try {
-                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, email, note, country, city, region, street, "" + lastname));
+                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number,
+                                email, note, country, city, region, street, "" + lastname));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -378,12 +337,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
                                 .findFirst();
                         if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
-                            // Log.e("postion is", String.valueOf(indexOpt.getAsInt()+1));
                             csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
                             csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
                             csv_inviteListData.remove(indexOpt.getAsInt() + 1);
                         }
-                        //Log.e("Data Is",new Gson().toJson(csv_inviteListData));
 
                     }
 
@@ -398,10 +355,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
 
-        // Log.e("CSV LIST", new Gson().toJson(csv_inviteListData));
         if (csv_inviteListData.size() == 0) {
             try {
-                ContectEvent(0);
+                ContectEvent();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -411,16 +367,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Not Upload Contect Then If Call
                 if (Is_contact_exist.equals("0")) {
                     limit = csv_inviteListData.size();
-                    // Log.e("Csv List",""+limit);
                     splitdata(csv_inviteListData);
-
                 } else {
-                    //Upload Contect Then If Call
                     getTasks();
-
                 }
             } else {
-                //Upload Contect Then If Call
                 getTasks();
 
             }
@@ -449,8 +400,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "Fax");
 
         for (int i = 0; i < response.size(); i++) {
-            data.append('\n' + response.get(i).getUserName() +
-                    ',' + response.get(i).getLast_name() +
+            data.append('\n' + response.get(i).getUserName().replaceAll("[-+.^:,]","")+
+                    ',' + response.get(i).getLast_name().replaceAll("[-+.^:,]","")+
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
@@ -492,7 +443,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             File file = new File(context.getFilesDir(), "CSV_Data_" + time + ".csv");
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
-            Log.e("Pathe And", String.valueOf(path));
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
      /*   Intent intent = ShareCompat.IntentBuilder.from(this)
@@ -513,8 +463,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void Uploadcsv(File path) throws JSONException {
-
-        Log.e("File is", String.valueOf(path));
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
@@ -550,14 +498,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //   loadingDialog.cancelLoading();
                             try {
                                 limit = csv_inviteListData.size();
-                                ContectEvent(0);
+                                ContectEvent();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
 
                             try {
-                                ContectEvent(0);
+                                ContectEvent();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -577,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void ContectEvent(int check) throws JSONException {
+    private void ContectEvent() throws JSONException {
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -630,7 +578,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
                 loadingDialog.cancelLoading();
 
             }
@@ -848,7 +795,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 shouldLoadHomeFragOnBackPress = true;
                 break;
             case 4:
-                Log.e("Brodcaste Call", "Yes");
                 SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
                 SessionManager.setContectList_broadcste(getApplicationContext(), new ArrayList<>());
                 Broadcast_Data broadcast_data = new Broadcast_Data();
@@ -964,7 +910,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                Log.e("Delete Task", "Yes");
                 SetDatainDatabase(contectListData);
                 super.onPostExecute(aVoid);
 
@@ -992,7 +937,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                //   Log.e("Delete Task","Yes"+c);
                 super.onPostExecute(aVoid);
 
             }
@@ -1023,8 +967,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected void onPostExecute(List<Contect_Db> contect_list) {
 
-                //  Log.e("ContectList", String.valueOf(contect_list.size()));
-                // Log.e("Store", String.valueOf(csv_inviteListData.size()));
+
                 //Get All Contect Locale Room Database  No Data Then Upload Csv Code Call
                 if (contect_list.size() == 0) {
                     splitdata(csv_inviteListData);
@@ -1043,7 +986,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 } else {
-                    // Log.e("Same Data", "No");
                     //Call Phone Number Exits OR N0t
                     getUser_check(csv_inviteListData);
                 }
@@ -1101,7 +1043,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void check_list_for_Update(String userName, String last_name, String userPhoneNumber) {
-        //  Log.e("Name is ",userName+" "+last_name+" "+userPhoneNumber);
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
             protected List<Contect_Db> doInBackground(Void... voids) {
@@ -1118,7 +1059,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     splitdata(csv_inviteListData1);
                 } else {
                     //Update Contect Api Call
-                    Log.e("Update Name ", "Yes");
                     try {
                         if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
 
@@ -1166,7 +1106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
-        Log.e("Final Data is", new Gson().toJson(gsonObject));
         retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(MainActivity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
@@ -1174,7 +1113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     try {
-                        ContectEvent(0);
+                        ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -1199,7 +1138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Contect_Db contect_db = new Contect_Db();
             for (int j = 0; j < contectListData.get(i).getContactDetails().size(); j++) {
                 ContectListData.Contact.ContactDetail data = contectListData.get(i).getContactDetails().get(j);
-                Log.e("Number is", data.getEmailNumber());
                 if (!data.getEmailNumber().equals(" ")) {
                     contect_db.setId1(data.getId());
                     contect_db.setContect_id(String.valueOf(contectListData.get(i).getId()));
@@ -1209,7 +1147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     contect_db.setFirst_name(contectListData.get(i).getFirstname());
                     contect_db.setLast_name(contectListData.get(i).getLastname());
                     contect_db.setFlag("csv");
-                    Log.e("Number is", data.getEmailNumber());
                     contect_db.setEmailNumber(data.getEmailNumber());
                     contect_db.setCountryCode(data.getCountryCode());
                     contect_db.setType(data.getType());
@@ -1221,7 +1158,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     contect_db.setUpdatedAt(data.getUpdatedAt());
                 }
             }
-            Log.e("Data Is ", new Gson().toJson(contect_db));
             save_data(contect_db);
         }
 
@@ -1242,7 +1178,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                Log.e("Insert Data", "Yes");
                 super.onPostExecute(aVoid);
             }
         }

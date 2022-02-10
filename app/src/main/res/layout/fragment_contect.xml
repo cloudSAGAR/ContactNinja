@@ -81,14 +81,15 @@
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
+                android:layout_weight="1"
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
                 style="@style/tv_Medium_14"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:gravity="center"
+                android:gravity="center|left"
                 android:singleLine="true"
                 android:text="@string/add_new_contect"
                 android:textColor="@color/text_reg"
@@ -101,7 +102,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
-                android:layout_marginStart="@dimen/_60sdp"
                 android:gravity="center|left"
                 android:singleLine="true"
                 android:text="@string/add_sink"
