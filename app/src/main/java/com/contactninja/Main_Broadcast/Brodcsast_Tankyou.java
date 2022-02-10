@@ -1,4 +1,4 @@
-package com.contactninja.Broadcast;
+package com.contactninja.Main_Broadcast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;

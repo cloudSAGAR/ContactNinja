@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mMainLayout"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    tools:context=".Campaign.Campaign_Name_Activity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            layout="@layout/toolbar"/>
+        <LinearLayout
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/ic_small_logo"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp">
+
+            </ImageView>
+            <TextView
+                android:layout_marginTop="@dimen/_10sdp"
+                android:id="@+id/add_new_contect"
+                style="@style/tv_Medium_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/_17sdp"
+                android:text="Please add title of \n your Broadcast"
+                android:textColor="@color/text_reg"
+                android:layout_marginBottom="@dimen/_10sdp"
+                />
+
+            <EditText
+                android:maxEms="40"
+                android:id="@+id/ev_titale"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:background="@color/add_contect_transpernt"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_width="match_parent"
+                android:focusable="true"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="40"
+                style="@style/tv_Medium_14"
+                android:layout_height="wrap_content"/>
+            <View
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:background="@color/home_list_sub_data"
+                android:layout_width="match_parent"
+                android:layout_height="1dp">
+
+            </View>
+            <TextView
+                android:id="@+id/tv_remain_txt"
+                android:layout_marginTop="@dimen/_10sdp"
+                style="@style/tv_regular_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:singleLine="true"
+                android:text="@string/camp_remaingn"
+                android:textColor="@color/home_list_sub_data"
+                android:layout_marginBottom="@dimen/_10sdp" />
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_marginTop="@dimen/_10sdp"
+                style="@style/tv_regular_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:singleLine="true"
+                android:textSize="@dimen/_14sdp"
+                android:text="@string/task_title"
+                android:textColor="@color/shape_red"
+                android:layout_marginBottom="@dimen/_10sdp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

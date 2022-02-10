@@ -471,7 +471,8 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
                     Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_message), false);
 
                 } else {
-                    StepData();
+                    Intent intent=new Intent(getApplicationContext(),Recuring_email_broadcast_activity.class);
+                    startActivity(intent);
                 }
 
 
@@ -609,130 +610,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
 
     }
 
-    public void StepData() {
 
-        Intent inten = getIntent();
-        Bundle bundle = inten.getExtras();
-        String flag = bundle.getString("flag");
-        JsonObject obj = new JsonObject();
-        if (flag.equals("add")) {
-            loadingDialog.showLoadingDialog();
-            SignResponseModel user_data = SessionManager.getGetUserdata(this);
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-            try {
-                if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
-
-                    CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
-
-                    int step = main_data.getStepNo() + 1;
-                    step_no = String.valueOf(step);
-                    day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
-                    minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
-
-                    if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
-                        sequence_id = "null";
-                    } else {
-                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString();
-                    }
-                } else {
-                    sequence_id = "null";
-                }
-            } catch (Exception e) {
-                sequence_id = "null";
-            }
-
-
-            JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("content_body", edit_template.getText().toString());
-            paramObject.addProperty("day", day);
-            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", minite);
-            paramObject.addProperty("organization_id", "1");
-            if (!template_id_is.equals("")) {
-                paramObject.addProperty("template_id", template_id_is);
-            }
-
-
-            if (!sequence_id.equals("null")) {
-                paramObject.addProperty("sequence_id", sequence_id);
-            }
-            paramObject.addProperty("step_no", step_no);
-            paramObject.addProperty("team_id", "1");
-            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
-            paramObject.addProperty("user_id", user_id);
-            paramObject.addProperty("from_ac", from_ac);
-            paramObject.addProperty("from_ac_id", from_ac_id);
-            obj.add("data", paramObject);
-        } else {
-            SignResponseModel user_data = SessionManager.getGetUserdata(this);
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-            JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("content_body", edit_template.getText().toString());
-            paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
-            paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
-            paramObject.addProperty("organization_id", "1");
-            paramObject.addProperty("sequence_id", bundle.getString("sequence_id"));
-            paramObject.addProperty("team_id", "1");
-            paramObject.addProperty("seq_task_id", seq_task_id);
-            paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
-            paramObject.addProperty("user_id", user_id);
-            paramObject.addProperty("step_no", step_no);
-            paramObject.addProperty("from_ac", from_ac);
-            paramObject.addProperty("from_ac_id", from_ac_id);
-
-            if (!template_id_is.equals("")) {
-                paramObject.addProperty("template_id", template_id_is);
-            }
-            obj.add("data", paramObject);
-        }
-
-        retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Broad_Text_Activity.this), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                //Log.e("Response is",new Gson().toJson(response));
-
-                loadingDialog.cancelLoading();
-
-                if (response.body().getHttp_status() == 200) {
-
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<List<CampaignTask>>() {
-                    }.getType();
-                    List<CampaignTask> user_model1 = new Gson().fromJson(headerString, listType);
-                    Log.e("User Model ", new Gson().toJson(user_model1));
-                    Intent inten = getIntent();
-                    Bundle bundle = inten.getExtras();
-                    String flag = bundle.getString("flag");
-                    if (flag.equals("edit")) {
-                        finish();
-                    } else {
-                        SessionManager.setTask(getApplicationContext(), user_model1);
-                        startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
-                        finish();
-                    }
-
-                } else {
-
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-    }
 
     private void CreateTemplate(String body_text, String s, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();

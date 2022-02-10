@@ -6,6 +6,11 @@
     android:background="@color/white"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"  tools:context=".Auth.Thankyou_Screen">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -50,7 +55,7 @@
             android:gravity="left|center"
             android:weightSum="1"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_30sdp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_marginStart="5dp"
@@ -88,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_gravity="center|left"
             android:gravity="left|center"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="@dimen/_10sdp">
@@ -121,25 +126,15 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"></View>
 
-        <TextView
-            android:id="@+id/tc_time_zone"
-            android:layout_marginStart="@dimen/_22sdp"
-            style="@style/tv_regular_12"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/email_date"
-            android:textColor="@color/text_reg"
-            >
-        </TextView>
         <LinearLayout
+            android:id="@+id/layout_rec"
             android:weightSum="1"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             android:layout_width="match_parent"
             android:layout_gravity="center|left"
             android:gravity="left|center"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="@dimen/_10sdp">
@@ -172,11 +167,376 @@
             android:background="@color/spinner"
             android:layout_width="match_parent"
             android:layout_height="1dp"></View>
+
         <TextView
+            android:id="@+id/tc_time_zone"
+            style="@style/tv_regular_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_22sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:hint="@string/email_date"
+            android:textColor="@color/text_reg"></TextView>
+
+        <LinearLayout
+            android:visibility="gone"
+          android:id="@+id/layout_daily_selction"
+          android:layout_marginEnd="@dimen/_20sdp"
+          android:layout_marginStart="@dimen/_20sdp"
+          android:layout_marginTop="@dimen/_20sdp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <TextView
+              android:layout_gravity="center|left"
+              android:gravity="center|left"
+              android:layout_weight="1"
+              android:layout_marginStart="@dimen/_5sdp"
+              style="@style/tv_Medium_14"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/repet_every"
+              android:textColor="@color/text_reg"
+              >
+
+          </TextView>
+          <LinearLayout
+              android:id="@+id/layout_day"
+              android:background="@drawable/shape_5_white_ccc_line"
+             android:padding="@dimen/_5sdp"
+              android:layout_width="@dimen/_100sdp"
+              android:layout_height="wrap_content">
+              <TextView
+                  android:id="@+id/tv_day"
+                  android:layout_weight="1"
+                  android:layout_marginStart="@dimen/_5sdp"
+                  style="@style/tv_Medium_14"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="1"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+                  android:textColor="@color/text_reg"
+                  >
+              </TextView>
+              <ImageView
+                  android:layout_marginEnd="@dimen/_10sdp"
+                  android:layout_gravity="center"
+                  android:src="@drawable/ic_down"
+                  android:layout_width="@dimen/_10sdp"
+                  android:layout_height="@dimen/_10sdp">
+
+              </ImageView>
+          </LinearLayout>
+
+          <TextView
+              android:id="@+id/tv_day_txt"
+              android:layout_gravity="center|end"
+              android:gravity="center|end"
+              android:layout_weight="1"
+              android:layout_marginStart="@dimen/_5sdp"
+              style="@style/tv_Medium_14"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/repet_day"
+              android:textColor="@color/text_reg"
+              >
+
+          </TextView>
+      </LinearLayout>
+        <View
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:id="@+id/view_day"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@color/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"></View>
+
+
+        <LinearLayout
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:visibility="gone"
+            android:id="@+id/layout_occurs_weekly"
+            android:weightSum="1"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_occurs_weekly"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_5sdp"
+                style="@style/tv_Medium_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/occurs_weekly"
+                android:textColor="@color/text_reg"
+                >
+
+            </TextView>
+            <ImageView
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/ic_right"
+                android:backgroundTint="@color/home_list_sub_data"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp">
+
+            </ImageView>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_daylist"
+            style="@style/tv_regular_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_22sdp"
+
+            android:textColor="@color/text_reg"></TextView>
+
+        <LinearLayout
+            android:id="@+id/layout_month"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_weight="1"
+                style="@style/tv_Medium_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Occurs monthly"
+                android:textColor="@color/text_reg"
+                >
+
+            </TextView>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:id="@+id/layout_select"
+                    android:orientation="vertical"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_gravity="center"
+                    android:gravity="left">
+
+                    <ImageView
+                        android:visibility="gone"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:id="@+id/iv_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|end"
+                        android:background="@drawable/ic_ellipse"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/shape_primary_circle"/>
+
+
+                    <ImageView
+                        android:layout_margin="@dimen/_15sdp"
+                        android:id="@+id/iv_unselected"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|end"
+                        android:background="@drawable/ic_ellipse"
+                        tools:ignore="ContentDescription" />
+
+
+                </LinearLayout>
+                <TextView
+                    android:layout_gravity="center|left"
+                    android:gravity="center|left"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    style="@style/tv_Medium_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/Day"
+                    android:textColor="@color/text_reg"
+                    >
+
+                </TextView>
+                <LinearLayout
+                    android:id="@+id/layout_month_selction"
+                    android:background="@drawable/shape_5_white_ccc_line"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_month"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        style="@style/tv_Medium_14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/text_reg"
+                        >
+                    </TextView>
+                    <ImageView
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_down"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp">
+
+                    </ImageView>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_gravity="center|start"
+                    android:gravity="center|start"
+
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    style="@style/tv_Medium_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="of the month"
+                    android:textColor="@color/text_reg"
+                    >
+
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_gravity="center"
+                    android:gravity="left">
+
+                    <ImageView
+                        android:id="@+id/iv_every_selcted"
+                        android:visibility="gone"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|end"
+                        android:background="@drawable/ic_ellipse"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/shape_primary_circle"/>
+
+
+                    <ImageView
+                        android:id="@+id/iv_every_unselcted"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|end"
+                        android:background="@drawable/ic_ellipse"
+                        tools:ignore="ContentDescription" />
+
+
+                </LinearLayout>
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_gravity="center|left"
+                    android:gravity="center|left"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    style="@style/tv_Medium_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Every"
+                    android:textColor="@color/text_reg"
+                    >
+
+                </TextView>
+                <LinearLayout
+                    android:id="@+id/layout_selcond"
+                    android:background="@drawable/shape_5_white_ccc_line"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_second"
+                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        style="@style/tv_Medium_14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Second"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/text_reg"
+                        >
+                    </TextView>
+                    <ImageView
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_down"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp">
+
+                    </ImageView>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_day_selction"
+                    android:background="@drawable/shape_5_white_ccc_line"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_day_selction"
+                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        style="@style/tv_Medium_14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Monday"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/text_reg"
+                        >
+                    </TextView>
+                    <ImageView
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_down"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp">
+
+                    </ImageView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_info"
             android:layout_gravity="center"
             android:gravity="center"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             style="@style/tv_regular_12"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/broadcast_info_text"
@@ -184,7 +544,9 @@
             >
         </TextView>
 
+
     </LinearLayout>
 
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

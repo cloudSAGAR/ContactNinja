@@ -239,7 +239,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast.Brodcsast_Tankyou"
+            android:name=".Main_Broadcast.Brodcsast_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -311,6 +311,17 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Main_Broadcast.Add_Broad_Text_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".Main_Broadcast.Broadcast_Name_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Main_Broadcast.Broadcast_Preview"
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

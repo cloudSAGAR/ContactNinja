@@ -155,49 +155,6 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             add_new_contect.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
         }
-   /*     if (flag.equals("edit"))
-        {
-            edit_template.setText(bundle.getString("body"));
-
-            seq_task_id= String.valueOf(bundle.getInt("seq_task_id"));
-            sequence_id= String.valueOf(bundle.getInt("sequence_id"));
-
-            ev_subject.setText(bundle.getString("header"));
-            step_no= String.valueOf(bundle.getInt("step"));
-
-          //  SessionManager.setCampaign_type(bundle.getString("type"));
-           // SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
-          try {
-              day= Integer.parseInt(bundle.getString("day"));
-              minite= Integer.parseInt(bundle.getString("minute"));
-             // SessionManager.setCampaign_Day(String.valueOf(day));
-              //SessionManager.setCampaign_minute(String.valueOf(minite));
-          }
-          catch (Exception e)
-          {
-            e.printStackTrace();
-          }
-
-        }*/
-
-
-        if (flag.equals("edit")) {
-            edit_template.setText(bundle.getString("body"));
-
-            seq_task_id = String.valueOf(bundle.getInt("seq_task_id"));
-            sequence_id = String.valueOf(bundle.getInt("sequence_id"));
-
-            step_no = String.valueOf(bundle.getInt("step"));
-            ev_subject.setText(bundle.getString("header"));
-            //  SessionManager.setCampaign_type(bundle.getString("type"));
-            //SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
-
-            Log.e("Step ", step_no);
-            String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
-            add_new_contect.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
-
-
-        }
 
     }
 

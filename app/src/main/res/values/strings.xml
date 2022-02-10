@@ -232,7 +232,8 @@ Number</string>
         <item>First</item>
         <item>Second</item>
         <item>Three</item>
-        <item>fourth</item>
+        <item>Fourth</item>
+        <item>Last</item>
     </array>
     <string name="add_done">Done</string>
     <string name="add_day">Day</string>
@@ -465,6 +466,13 @@ Number</string>
         <item>Email</item>
     </string-array>
 
+
+    <string-array name="Select_Recurrence">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
     <string name="contect_block">This Contect Block</string>
     <string name="email_contact">Please email in contact</string>
 
@@ -474,5 +482,23 @@ Number</string>
     <string name="broadcast_text">Recuring text broadcast</string>
     <string name="broadcast_info_text">ContactNinja allows you to schedule texts or emails with multiple \n  occurrences. You can schedule these in daily, \n weekly, and monthly increments.</string>
     <string name="create_company">Create new Company</string>
+    <string name="repet_every">Repeat every</string>
+    <string name="repet_day">Day</string>
+    <string name="occurs_weekly">Occurs weekly</string>
+    <string-array name="Select_day">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
 
 </resources>
