@@ -302,7 +302,6 @@
 
         <LinearLayout
             android:id="@+id/company_url_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -363,7 +362,6 @@
 
         <LinearLayout
             android:id="@+id/job_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -609,7 +607,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/state_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -769,7 +766,6 @@
 
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/time_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -798,9 +794,8 @@
 
                     <LinearLayout
 
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -821,10 +816,12 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
                         android:id="@+id/select_label_zone"
                         android:paddingTop="@dimen/_4sdp"
                         android:paddingBottom="@dimen/_4sdp"
-                        android:layout_width="@dimen/_170sdp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape_5_white_ccc_line"
                         android:paddingStart="@dimen/_5sdp"
@@ -874,7 +871,6 @@
 
         </LinearLayout>
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/layout_bod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -939,7 +935,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/note_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1016,7 +1011,6 @@
 
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/media_layout"
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -1348,6 +1342,7 @@
         </LinearLayout>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_more_field"
             style="@style/tv_regular_13"
             android:layout_width="match_parent"
