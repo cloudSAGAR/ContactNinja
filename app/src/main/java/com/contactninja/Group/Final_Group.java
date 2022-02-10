@@ -21,9 +21,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -88,7 +90,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     TextView save_button;
     ImageView iv_Setting, iv_back;
     String fragment_name, user_image_Url;
-    EditText add_new_contect, add_detail, contect_search;
+    EditText add_new_contect, add_detail, ev_search;
     LinearLayout add_new_member;
     RecyclerView contect_list_unselect;
     RecyclerView.LayoutManager layoutManager;
@@ -261,32 +263,26 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         contect_list_unselect.setAdapter(userListDataAdapter);
         loadingDialog = new LoadingDialog(this);
 
-        contect_search.addTextChangedListener(new TextWatcher() {
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : inviteListData) {
-                    if (d.getFirstname().contains(s.toString())) {
-                        temp.add(d);
-                         //Log.e("Same Data ",d.getFirstname());
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Global.hideKeyboard(Final_Group.this);
+                    List<ContectListData.Contact> temp = new ArrayList();
+                    for (ContectListData.Contact d : inviteListData) {
+                        if (d.getFirstname().contains(ev_search.getText().toString())) {
+                            temp.add(d);
+                            //Log.e("Same Data ",d.getFirstname());
+                        }
                     }
+
+                    userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
+                    contect_list_unselect.setAdapter(userListDataAdapter);
+                    userListDataAdapter.notifyDataSetChanged();
+                    userListDataAdapter.updateList(temp);
+                    return true;
                 }
-
-                userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
-                contect_list_unselect.setAdapter(userListDataAdapter);
-                userListDataAdapter.notifyDataSetChanged();
-                userListDataAdapter.updateList(temp);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                return false;
             }
         });
         deleteCache(this);
@@ -331,7 +327,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         contect_list_unselect.setLayoutManager(layoutManager);
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
-        contect_search = findViewById(R.id.contect_search);
+        ev_search = findViewById(R.id.ev_search);
         iv_user = findViewById(R.id.iv_user);
         iv_dummy = findViewById(R.id.iv_dummy);
         iv_dummy.setOnClickListener(this);
@@ -473,7 +469,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
                     loadingDialog.cancelLoading();
                     if (response.body().getHttp_status() == 200) {
-                        Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
                         finish();
                     } else {
                         Gson gson = new Gson();

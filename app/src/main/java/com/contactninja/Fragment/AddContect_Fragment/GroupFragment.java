@@ -1,16 +1,20 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,6 +35,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -62,16 +67,16 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     TextView num_count;
-    int page = 1, limit = 10, totale_group;
     PaginationAdapter paginationAdapter;
-    int currentPage = 1, TOTAL_PAGES = 10;
+    int currentPage = 1;
+    int perPage = 20;
     boolean isLoading = false;
     boolean isLastPage = false;
-    private List<Grouplist.Group> grouplists;
+    private List<Grouplist.Group> grouplists=new ArrayList<>();
     // private GroupAdapter groupAdapter;
     private ProgressBar loadingPB;
-    LinearLayout mMainLayout1, demo_layout;
-    LinearLayout mMainLayout;
+    LinearLayout mMainLayout1, demo_layout,mMainLayout;
+    EditText ev_search;
 
     public GroupFragment() {
         // Required empty public constructor
@@ -99,42 +104,32 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         group_name.setOnClickListener(this);
         demo_layout.setOnClickListener(this);
 
-        try {
-            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                GroupEvent();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        group_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        group_recyclerView.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
-            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @SuppressLint("SyntheticAccessor")
-            @Override
-            public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int visibleItem = layoutManager.getChildCount();
-                int totalItem = layoutManager.getItemCount();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                if (!isLoading && !isLastPage) {
-                    if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
-                        try {
-                            currentPage = currentPage + 1;
-                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                GroupEvent1();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                try {
+                    if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                        GroupEvent();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
         });
+
 
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -143,6 +138,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             public void onRefresh() {
                 paginationAdapter = new PaginationAdapter(getActivity());
                 group_recyclerView.setAdapter(paginationAdapter);
+
+                ev_search.setText("");
+                currentPage = PAGE_START;
+                isLastPage = false;
+                grouplists.clear();
+                paginationAdapter.clear();
 
                 try {
                     if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
@@ -153,7 +154,17 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                   Global.hideKeyboard(getActivity());
+                    onResume();
+                    return true;
+                }
+                return false;
+            }
+        });
         return view;
     }
 
@@ -161,6 +172,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
         /*   main_layout = view.findViewById(R.id.main_layout);*/
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
+        ev_search = view.findViewById(R.id.ev_search);
         group_recyclerView = view.findViewById(R.id.group_list);
         layoutManager = new LinearLayoutManager(getActivity());
         group_recyclerView.setLayoutManager(layoutManager);
@@ -218,13 +230,22 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
         //loadingDialog.showLoadingDialog();
-
+        currentPage = PAGE_START;
+        isLastPage = false;
+        grouplists.clear();
+        paginationAdapter.clear();
+        try {
+            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                GroupEvent();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
 
     private void GroupEvent() throws JSONException {
-
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String token = Global.getToken(sessionManager);
@@ -233,9 +254,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("page", page);
-        paramObject.put("perPage", limit);
-        paramObject.put("q", "");
+        paramObject.put("page", currentPage);
+        paramObject.put("perPage", perPage);
+        paramObject.put("q", ev_search.getText().toString());
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -247,30 +268,33 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     Gson gson = new Gson();
-                    grouplists.clear();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Grouplist>() {
                     }.getType();
                     Grouplist group_model = new Gson().fromJson(headerString, listType);
                     grouplists.addAll(group_model.getGroups());
+
+                    if (currentPage != PAGE_START) {
+                        paginationAdapter.removeLoadingFooter();
+                    }
                     paginationAdapter.addAll(grouplists);
-                    if (group_model.getGroups().size() == limit) {
-                        if (currentPage <= TOTAL_PAGES) paginationAdapter.addLoadingFooter();
-                        else isLastPage = true;
+                    // check weather is last page or not
+                    if (group_model.getTotal() > paginationAdapter.getItemCount()) {
+                        paginationAdapter.addLoadingFooter();
                     } else {
                         isLastPage = true;
-                        isLoading = false;
-
                     }
+                    isLoading = false;
+                    num_count.setText(String.valueOf(group_model.getTotal() + " Group"));
 
-                    num_count.setText("" + group_model.getTotal() + " Group");
-
-                    totale_group = group_model.getTotal();
-
-
+                    demo_layout.setVisibility(View.GONE);
+                    mMainLayout1.setVisibility(View.VISIBLE);
                 } else {
-                    demo_layout.setVisibility(View.VISIBLE);
-                    mMainLayout1.setVisibility(View.GONE);
+                    num_count.setText(String.valueOf(0 + " Group"));
+                    if(ev_search.getText().toString().equals("")){
+                        demo_layout.setVisibility(View.VISIBLE);
+                        mMainLayout1.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -283,62 +307,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
 
     }
-
-
-    private void GroupEvent1() throws JSONException {
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-
-        String token = Global.getToken(sessionManager);
-        JSONObject obj = new JSONObject();
-        JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", 1);
-        paramObject.put("team_id", 1);
-        paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("page", page);
-        paramObject.put("perPage", limit);
-        paramObject.put("q", "");
-        obj.put("data", paramObject);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<Grouplist>() {
-                    }.getType();
-
-                    grouplists.clear();
-                    paginationAdapter.removeLoadingFooter();
-                    Grouplist group_model = new Gson().fromJson(headerString, listType);
-                    grouplists.addAll(group_model.getGroups());
-                    paginationAdapter.addAll(grouplists);
-                    if (group_model.getGroups().size() == limit) {
-                        if (currentPage != TOTAL_PAGES) paginationAdapter.addLoadingFooter();
-                        else isLastPage = true;
-                    } else {
-                        isLastPage = true;
-                        isLoading = false;
-                    }
-
-                    num_count.setText("" + group_model.getTotal() + " Group");
-
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-
-
-    }
-
 
     public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -441,6 +409,10 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         public int getItemCount() {
             return movieList == null ? 0 : movieList.size();
         }
+        public void clear() {
+            movieList.clear();
+            notifyDataSetChanged();
+        }
 
         @Override
         public int getItemViewType(int position) {
@@ -469,10 +441,10 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             notifyItemInserted(movieList.size() - 1);
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         public void addAll(List<Grouplist.Group> moveResults) {
-            for (Grouplist.Group result : moveResults) {
-                add(result);
-            }
+            movieList.addAll(moveResults);
+            notifyDataSetChanged();
         }
 
         public Grouplist.Group getItem(int position) {

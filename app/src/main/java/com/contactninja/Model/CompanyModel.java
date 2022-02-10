@@ -27,6 +27,10 @@ public class CompanyModel {
     @SerializedName("data")
     @Expose
     private List<Company> companies_data = new ArrayList<>();
+
+    @SerializedName("blocked")
+    @Expose
+    private List<Company> blocked_companies = new ArrayList<>();
     @SerializedName("message")
     @Expose
     private String message;
@@ -77,6 +81,14 @@ public class CompanyModel {
 
     public void setCompanies_data(List<Company> companies_data) {
         this.companies_data = companies_data;
+    }
+
+    public List<Company> getBlocked_companies() {
+        return blocked_companies;
+    }
+
+    public void setBlocked_companies(List<Company> blocked_companies) {
+        this.blocked_companies = blocked_companies;
     }
 
     public static class Company {

@@ -9,20 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
-import com.contactninja.Fragment.AddContect_Fragment.BzcardFragment;
 import com.contactninja.Fragment.AddContect_Fragment.Company_Fragment;
-import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
+import com.contactninja.Fragment.AddContect_Fragment.ContectFragment;
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
-import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 

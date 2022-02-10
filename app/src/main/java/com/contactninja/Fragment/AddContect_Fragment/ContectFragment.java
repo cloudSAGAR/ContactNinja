@@ -1,4 +1,4 @@
-package com.contactninja.Fragment;
+package com.contactninja.Fragment.AddContect_Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

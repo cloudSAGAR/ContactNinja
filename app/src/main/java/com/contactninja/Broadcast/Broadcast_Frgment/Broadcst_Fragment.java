@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
-import com.contactninja.Fragment.ContectFragment;
+import com.contactninja.Fragment.AddContect_Fragment.ContectFragment;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 

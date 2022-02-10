@@ -11,9 +11,11 @@ import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -85,7 +87,8 @@ public class Company_Fragment extends Fragment {
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-    int currentPage = 1, TOTAL_PAGES = 10;
+    int currentPage = 1;
+    int perPage = 20;
     boolean isLoading = false;
     boolean isLastPage = false;
     LinearLayoutManager layoutManager;
@@ -93,9 +96,8 @@ public class Company_Fragment extends Fragment {
     EditText ev_search;
     CompanyAdapter companyAdapter;
     List<CompanyModel.Company> companyList = new ArrayList<>();
-    int perPage = 20;
     String Filter = "";//BLOCK / ALL
-    LinearLayout  demo_layout, linearLayout3;
+    LinearLayout demo_layout, linearLayout3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,7 +135,8 @@ public class Company_Fragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    ev_search.setText("");
                     currentPage = PAGE_START;
                     isLastPage = false;
                     companyList.clear();
@@ -227,29 +230,17 @@ public class Company_Fragment extends Fragment {
             }
         });
 
-        ev_search.addTextChangedListener(new TextWatcher() {
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<CompanyModel.Company> temp = new ArrayList();
-                for (CompanyModel.Company d : companyList) {
-                    if (d.getName().toLowerCase().contains(s.toString().toLowerCase())) {
-                        temp.add(d);
-                        // Log.e("Same Data ",d.getUserName());
-                    }
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    onResume();
+                    return true;
                 }
-                companyAdapter.updateList(temp);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                return false;
             }
         });
+
         fastscroller.setupWithRecyclerView(
                 rvinviteuserdetails,
                 (position) -> {
@@ -338,7 +329,7 @@ public class Company_Fragment extends Fragment {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = "BLOCK";
-                 //   RefreshList();
+                    RefreshList();
 //
                 }
 
@@ -350,9 +341,9 @@ public class Company_Fragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     bottomSheetDialog.dismiss();
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Filter = "All";
-                  //  RefreshList();
+                    RefreshList();
 
                 }
 
@@ -373,9 +364,10 @@ public class Company_Fragment extends Fragment {
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_data.getUser().getId());
+        paramObject.addProperty("q", ev_search.getText().toString());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
-        if(Filter.equals("BLOCK")){
+        if (Filter.equals("BLOCK")) {
             paramObject.addProperty("is_blocked", 1);
         }
         obj.add("data", paramObject);
@@ -384,16 +376,21 @@ public class Company_Fragment extends Fragment {
             public void success(Response<ApiResponse> response) {
                 //   Log.e("Response is",new Gson().toJson(response));
                 if (response.body().getHttp_status().equals(200)) {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    if (response.body().getHttp_status() == 200) {
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
                         //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
                         Type listType = new TypeToken<CompanyModel>() {
                         }.getType();
                         CompanyModel data = new Gson().fromJson(headerString, listType);
-                        List<CompanyModel.Company> companyList = data.getData();
+                        num_count.setText(String.valueOf(data.getTotal()+" Company"));
+                        List<CompanyModel.Company> companyList;
+                        if (Filter.equals("BLOCK")) {
+                            companyList = data.getBlocked_companies();
+                        } else {
+                            companyList = data.getData();
+                        }
                         if (currentPage != PAGE_START)
-                            companyAdapter.removeLoading();
+                        companyAdapter.removeLoading();
                         companyAdapter.addItems(companyList);
                         // check weather is last page or not
                         if (data.getTotal() > companyAdapter.getItemCount()) {
@@ -406,13 +403,12 @@ public class Company_Fragment extends Fragment {
                         linearLayout3.setVisibility(View.VISIBLE);
                         demo_layout.setVisibility(View.GONE);
 
-                    } else {
+                }else {
+                    if(Filter.equals("")&&ev_search.getText().toString().equals("")){
                         linearLayout3.setVisibility(View.GONE);
                         demo_layout.setVisibility(View.VISIBLE);
-                        // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
-
                     }
-
+                    num_count.setText(String.valueOf(0+" Company"));
                 }
             }
 
@@ -428,6 +424,7 @@ public class Company_Fragment extends Fragment {
     public void onResume() {
         super.onResume();
         Filter = "";
+        iv_filter_icon.setImageResource(R.drawable.ic_filter);
         RefreshList();
     }
 
@@ -564,11 +561,10 @@ public class Company_Fragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    bottomSheetDialog.cancel();
                 } else {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
                 }
+                bottomSheetDialog.cancel();
             }
 
             @Override
@@ -791,11 +787,6 @@ public class Company_Fragment extends Fragment {
         @Override
         public int getItemCount() {
             return companyList.size();
-        }
-
-        public void updateList(List<CompanyModel.Company> list) {
-            companyList = list;
-            notifyDataSetChanged();
         }
 
         public void removeitem() {

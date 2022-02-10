@@ -167,19 +167,18 @@
 
         </ImageView>
         <EditText
+            android:id="@+id/ev_search"
             style="@style/tv_Medium_14"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_gravity="center|left"
-            android:gravity="center|left"
-            android:textColor="@color/text_reg"
-            android:hint="@string/search_hint"
-            android:id="@+id/contect_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:layout_marginStart="@dimen/_5sdp"
             android:background="@color/add_contect_transpernt"
-            >
-
-        </EditText>
+            android:gravity="center|left"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textColor="@color/text_reg" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/add_new_member"

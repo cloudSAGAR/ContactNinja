@@ -73,8 +73,8 @@
 
             <ImageView
                 android:id="@+id/add_new_contect_icon"
-                android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/shape_oval_border_10_white"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/ic_plus1"
@@ -88,7 +88,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_5sdp"
                 android:gravity="center|left"
                 android:singleLine="true"
                 android:text="@string/add_new_contect"
@@ -103,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:gravity="center|left"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:singleLine="true"
                 android:text="@string/add_sink"
                 android:textColor="@color/purple_200"
