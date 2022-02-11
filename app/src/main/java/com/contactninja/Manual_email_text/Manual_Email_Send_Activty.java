@@ -117,11 +117,12 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         ev_titale.setText(task_name);
         List<ContectListData.Contact> list_data = SessionManager.getGroupList(getApplicationContext());
         Log.e("List Data is ", new Gson().toJson(list_data));
-        id = String.valueOf(list_data.get(0).getId());
+
 
         for (int j = 0; j < list_data.get(0).getContactDetails().size(); j++) {
             if (list_data.get(0).getContactDetails().get(j).getType().equals("EMAIL")) {
                 email = list_data.get(0).getContactDetails().get(j).getEmailNumber();
+                id = String.valueOf(list_data.get(0).getContactDetails().get(j).getContactId());
             }
         }
 

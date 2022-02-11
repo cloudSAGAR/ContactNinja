@@ -62,8 +62,6 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
 
-
-
         try {
             Intent intent=getIntent();
             Bundle bundle=intent.getExtras();
@@ -72,13 +70,20 @@ public class Email_verification extends AppCompatActivity implements Connectivit
             e.printStackTrace();
         }
         if(Global.IsNotNull(create)||create.equals("create")){
-            webEmail.clearCache(true);
-            webEmail.clearHistory();
-            webEmail.loadUrl(Global.Email_auth);
-            webEmail.getSettings().setJavaScriptEnabled(true);
-            webEmail.getSettings().setUserAgentString("contactninja");
-            webEmail.setHorizontalScrollBarEnabled(false);
-            webEmail.setWebViewClient(new HelloWebViewClient());
+          try {
+              webEmail.clearCache(true);
+              webEmail.clearHistory();
+              webEmail.loadUrl(Global.Email_auth);
+              webEmail.getSettings().setJavaScriptEnabled(true);
+              webEmail.getSettings().setUserAgentString("contactninja");
+              webEmail.setHorizontalScrollBarEnabled(false);
+              webEmail.setWebViewClient(new HelloWebViewClient());
+          }
+          catch (Exception e)
+          {
+
+          }
+
         }else {
             try {
                 if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)){
