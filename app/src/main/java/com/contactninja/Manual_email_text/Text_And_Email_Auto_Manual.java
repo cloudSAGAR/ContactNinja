@@ -203,10 +203,6 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
                     startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
                     finish();
                     }
-
-
-
-
                 //
                 break;
 

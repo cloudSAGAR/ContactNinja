@@ -466,7 +466,7 @@ public class Company_Fragment extends Fragment {
         selected_un_block.setText(getString(R.string.remove_blacklist));
         selected_delete.setText(getString(R.string.delete_contact));
 
-        if (Company.getIs_blocked().equals("1")) {
+        if (Company.getIs_blocked().equals(1)) {
             selected_block.setVisibility(View.GONE);
             line_block.setVisibility(View.GONE);
             selected_un_block.setVisibility(View.VISIBLE);
