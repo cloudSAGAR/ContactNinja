@@ -21,7 +21,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -43,7 +42,6 @@ import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
 import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
-import com.contactninja.Manual_email_text.List_And_show.List_Manual_Activty;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.ContectListData;
@@ -668,25 +666,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (imageName) {
             case "Home":
                 llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home_select));
-                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_chat_icon));
+                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_task));
                 llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Send":
                 llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_chat_icon_select));
+                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_task_select));
                 llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Contact":
                 llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_chat_icon));
+                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_task));
                 llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts_selece));
                 llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "User":
                 llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_chat_icon));
+                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_task));
                 llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
                 llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user_select));
                 break;

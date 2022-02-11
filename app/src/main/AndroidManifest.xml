@@ -114,7 +114,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_text.List_And_show.List_Manual_Activty"
+            android:name=".Manual_email_text.List_And_show.unused_List_Manual_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

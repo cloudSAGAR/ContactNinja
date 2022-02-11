@@ -21,7 +21,6 @@ import com.contactninja.Fragment.Home.Affiliate_Groth_Fragment;
 import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_text.List_And_show.List_Manual_Activty;
 import com.contactninja.Model.Timezon;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;

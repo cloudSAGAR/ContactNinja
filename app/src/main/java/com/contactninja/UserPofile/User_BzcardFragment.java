@@ -33,7 +33,7 @@ public class User_BzcardFragment extends Fragment {
     private void IntentUI(View view) {
         demo_layout=view.findViewById(R.id.demo_layout);
         tv_create=view.findViewById(R.id.tv_create);
-        demo_layout.setVisibility(View.VISIBLE);
+       // demo_layout.setVisibility(View.VISIBLE);
         tv_create.setText("Click to create\n" +
                 " BZcard");
     }

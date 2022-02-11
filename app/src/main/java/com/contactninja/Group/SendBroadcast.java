@@ -23,7 +23,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -40,9 +39,9 @@ import com.makeramen.roundedimageview.RoundedImageView;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener  , ConnectivityReceiver.ConnectivityReceiverListener {
     private long mLastClickTime = 0;
-    TextView save_button;
+    TextView save_button,tv_start_broadcast,tv_group_text;
     ImageView iv_Setting, iv_back;
-    EditText add_detail,add_new_contect;
+    EditText add_detail,add_new_contect,ev_search;
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewpaggerAdapter adapter;
@@ -153,9 +152,12 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             }
         });
 
+
         viewPager.addOnPageChangeListener(this);
     }
     private void IntentUI() {
+        tv_start_broadcast = findViewById(R.id.tv_start_broadcast);
+        tv_group_text = findViewById(R.id.tv_group_text);
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
@@ -169,6 +171,8 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         mMainLayout=findViewById(R.id.mMainLayout);
         no_image=findViewById(R.id.no_image);
         topic_remainingCharacter=findViewById(R.id.topic_remainingCharacter);
+        tv_start_broadcast.setOnClickListener(this);
+        tv_group_text.setOnClickListener(this);
     }
 
     @Override
@@ -188,6 +192,12 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
                 mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(),Final_Group.class));
                 finish();
+                break;
+                case R.id.tv_start_broadcast:
+                    Global.Messageshow(SendBroadcast.this,mMainLayout,"Under Development",false);
+                break;
+            case R.id.tv_group_text:
+                Global.Messageshow(SendBroadcast.this,mMainLayout,"Under Development",false);
                 break;
             default:
 

@@ -83,24 +83,24 @@
             <TextView
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_regular_13"
+                style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_12sdp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/create_new_text"
                 android:textColor="@color/text_reg" />
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/num_count"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center|end"
                 android:singleLine="true"
                 android:text=""

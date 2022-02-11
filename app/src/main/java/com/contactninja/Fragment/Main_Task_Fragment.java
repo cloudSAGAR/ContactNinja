@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -31,7 +33,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.List_And_show.Item_List_Email_Detail_activty;
 import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
-import com.contactninja.Manual_email_text.List_And_show.List_Manual_Activty;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
@@ -149,21 +150,16 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         retrofitCalls = new RetrofitCalls(getActivity());
         IntentUI(view);
 
-
-        ev_search.addTextChangedListener(new TextWatcher() {
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                filter(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    Global.hideKeyboard(getActivity());
+                    filter(ev_search.getText().toString());
+                    return true;
+                }
+                return false;
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

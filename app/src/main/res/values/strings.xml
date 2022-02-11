@@ -162,9 +162,9 @@ Number</string>
     //Group
 
     <string name="group_to">To</string>
-    <string name="add_new_group">Add New group</string>
+    <string name="add_new_group">Add new group</string>
     <string name="add_new_group_all">Add all group</string>
-    <string name="remove_new_group_all">Add all Group</string>
+    <string name="remove_new_group_all">Add all group</string>
     <string name="add_task_email">Create a new \n email task</string>
     <string name="add_task_text">Create a new \n Text task</string>
     <string name="add_new_group_name">Intricare technologies</string>
@@ -174,7 +174,7 @@ Number</string>
 
     <string name="add_broadcast">Broadcast</string>
     <string name="link_add">add your affiliate link</string>
-    <string name="text_ok">password has been sent \n to your register email</string>
+    <string name="text_ok">Password has been sent \n to your register email</string>
     <string name="link_click">your link is attached</string>
     <string name="type_message">Type your message here…</string>
     <string name="error_opps">Oops</string>\
@@ -422,7 +422,7 @@ Number</string>
     <string name="fillter_all">All Contacts</string>
     <string name="fillter_compnay_block">Blacklist Companies</string>
     <string name="fillter_compnay_all">All Contacts</string>
-    <string name="company_add">Add New Company</string>
+    <string name="company_add">Add new company</string>
     <string name="company_blacklst">Blacklist Companies</string>
     <string name="company_all">All Companies</string>
     <string name="delete_company">Delete company</string>

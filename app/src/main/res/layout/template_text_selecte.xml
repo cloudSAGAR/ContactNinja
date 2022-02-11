@@ -10,7 +10,6 @@
         android:layout_width="@dimen/_40sdp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_a"
         android:visibility="gone">
 

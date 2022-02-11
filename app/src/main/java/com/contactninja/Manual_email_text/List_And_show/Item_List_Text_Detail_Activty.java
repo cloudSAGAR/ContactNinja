@@ -1162,7 +1162,7 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
+                    if (position == 0) {
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

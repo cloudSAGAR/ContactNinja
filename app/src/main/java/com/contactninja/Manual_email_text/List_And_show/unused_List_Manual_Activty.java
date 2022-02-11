@@ -60,7 +60,7 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class List_Manual_Activty extends AppCompatActivity implements View.OnClickListener,
+public class unused_List_Manual_Activty extends AppCompatActivity implements View.OnClickListener,
         ConnectivityReceiver.ConnectivityReceiverListener, SwipeRefreshLayout.OnRefreshListener {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -117,7 +117,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
             }
         });
         rv_email_list.setLayoutManager(layoutManager);
-        emailAdepter = new ListItemAdepter(List_Manual_Activty.this, new ArrayList<>());
+        emailAdepter = new ListItemAdepter(unused_List_Manual_Activty.this, new ArrayList<>());
         rv_email_list.setAdapter(emailAdepter);
         rv_email_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
@@ -127,7 +127,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
                 isLoading = true;
                 currentPage++;
                 try {
-                    if (Global.isNetworkAvailable(List_Manual_Activty.this, MainActivity.mMainLayout)) {
+                    if (Global.isNetworkAvailable(unused_List_Manual_Activty.this, MainActivity.mMainLayout)) {
                         Mail_list();
                     }
                 } catch (JSONException e) {
@@ -211,7 +211,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         manualTaskModelList.clear();
         emailAdepter.clear();
         try {
-            if (Global.isNetworkAvailable(List_Manual_Activty.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(unused_List_Manual_Activty.this, MainActivity.mMainLayout)) {
                 if (!swipeToRefresh.isRefreshing()) {
                     loadingDialog.showLoadingDialog();
                 }
@@ -255,7 +255,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(List_Manual_Activty.this, mMainLayout);
+        Global.checkConnectivity(unused_List_Manual_Activty.this, mMainLayout);
     }
 
     @Override
@@ -283,7 +283,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         */
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.filter_solo_list, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(List_Manual_Activty.this, R.style.CoffeeDialog);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(unused_List_Manual_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         CheckBox ch_today = bottomSheetDialog.findViewById(R.id.ch_today);
         CheckBox ch_upcoming = bottomSheetDialog.findViewById(R.id.ch_upcoming);
@@ -538,7 +538,7 @@ public class List_Manual_Activty extends AppCompatActivity implements View.OnCli
         manualTaskModelList.clear();
         emailAdepter.clear();
         try {
-            if (Global.isNetworkAvailable(List_Manual_Activty.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(unused_List_Manual_Activty.this, MainActivity.mMainLayout)) {
                 if (!swipeToRefresh.isRefreshing()) {
                     loadingDialog.showLoadingDialog();
                 }

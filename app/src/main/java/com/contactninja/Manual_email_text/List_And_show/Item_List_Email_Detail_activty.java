@@ -698,8 +698,6 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
 
         });
-
-
     }
 
     private void Listset(List<HastagList.TemplateText> templateTextList) {
@@ -722,7 +720,6 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             public void onClick(View view) {
 
                 try {
-
                     EmailAPI(ev_subject.getText().toString(), edit_compose.getText().toString(), id, email);
                 } catch (JSONException e) {
                     e.printStackTrace();
