@@ -196,13 +196,13 @@ Number</string>
     </array>
 
     <array name="broadcast_days">
-        <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
         <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>
+        <item>Sunday</item>
     </array>
 
     <string name="daily_text">I want my broadcast to repeat</string>
@@ -505,6 +505,9 @@ Number</string>
         <item>10</item>
         <item>11</item>
         <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
     </string-array>
 
 

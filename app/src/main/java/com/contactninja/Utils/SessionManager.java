@@ -12,6 +12,7 @@ import com.contactninja.Auth.LoginActivity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Broadcast_Data;
+import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.CompanyModel;
@@ -73,6 +74,10 @@ public class SessionManager {
 
     private static final String message_id="message_id";
     private static final String message_type="message_type";
+
+    public static final String Broadcaste_save_data = "broadcaste_save_data";
+
+    public static final String Broadcast_flag="broadcast_flag";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -177,10 +182,33 @@ public class SessionManager {
 
     }
 
+
+
     public static void setContect_flag(String plantype) {
         editor.putString(Contect_flag, plantype);
         editor.commit();
     }
+
+
+
+    public static String getBroadcast_flag(Context context) {
+
+        String type = pref.getString(Broadcast_flag, "");
+        return type;
+
+    }
+
+
+
+    public static void setBroadcast_flag(String flag) {
+        editor.putString(Broadcast_flag, flag);
+        editor.commit();
+    }
+
+
+
+
+
 
     public static String getCampign_flag(Context context) {
 
@@ -594,6 +622,25 @@ public class SessionManager {
         editor.commit();
     }
 
+    public static Broadcate_save_data getBroadcate_save_data(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Broadcaste_save_data, "");
+        Type type = new TypeToken<Broadcate_save_data>() {
+        }.getType();
+        Broadcate_save_data signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new Broadcate_save_data();
+        }
+        return signModel;
+    }
+
+    public static void setBroadcate_save_data(Context context, Broadcate_save_data add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Broadcaste_save_data, json);
+        editor.apply();
+    }
 
 
 

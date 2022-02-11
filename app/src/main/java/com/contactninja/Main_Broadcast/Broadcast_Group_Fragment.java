@@ -140,9 +140,21 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 }
             }
         });
-
+        call_updatedata();
 
         return view;
+    }
+
+    public void call_updatedata() {
+
+        if (SessionManager.getgroup_broadcste(getActivity()).size() != 0) {
+            grouplists.clear();
+            select_contectListData.clear();
+            select_contectListData.addAll(SessionManager.getgroup_broadcste(getActivity()));
+            select_contectListData.addAll(select_contectListData);
+            topUserListDataAdapter.notifyDataSetChanged();
+        }
+
     }
 
     private void IntentUI(View view) {
@@ -396,6 +408,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                         movieViewHolder.add_new_contect_icon.setVisibility(View.GONE);
                     }
 
+
                     movieViewHolder.group_name.setText(Group_data.getGroupName());
                     if (Group_data.getGroupImage()==null)
                     {
@@ -434,14 +447,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                         movieViewHolder.no_image.setVisibility(View.GONE);
                         movieViewHolder.group_image.setVisibility(View.VISIBLE);
                     }
-             /*       movieViewHolder.group_layout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            SessionManager.setGroupData(context, Group_data);
-                            startActivity(new Intent(getActivity(), SendBroadcast.class));
-                            getActivity().finish();
-                        }
-                    });*/
+
 
 
 
@@ -488,6 +494,21 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                         }
                     });
 
+                    for (int i = 0; i < select_contectListData.size(); i++) {
+                        if (select_contectListData.get(i).getId().equals(movieList.get(position).getId())) {
+
+
+                            if (movieViewHolder.add_new_contect_icon.getVisibility() == View.VISIBLE) {
+                                movieViewHolder.remove_contect_icon.setVisibility(View.VISIBLE);
+                                movieViewHolder.add_new_contect_icon.setVisibility(View.GONE);
+                            } else {
+                                movieList.get(position).setFlag("true");
+                                movieViewHolder.remove_contect_icon.setVisibility(View.GONE);
+                                movieViewHolder.add_new_contect_icon.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                    }
                     break;
 
                 case LOADING:

@@ -1,5 +1,4 @@
 package com.contactninja.Main_Broadcast;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -22,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.Broadcste_Coman_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -31,6 +31,7 @@ import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,12 +48,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 public class Recuring_email_broadcast_activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     TextView tc_time_zone, tv_day,tv_daylist;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
+
     ImageView iv_back, iv_time, iv_date, iv_down_arrow;
     TextView save_button,tv_day_txt,tv_occurs_weekly;
     LinearLayout la_date, la_time, linearLayout, layout_rec,
@@ -71,7 +72,8 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
     private long mLastClickTime = 0;
     View view_day;
     ImageView iv_unselected,iv_selected,iv_every_selcted,iv_every_unselcted;
-
+    Broadcate_save_data broadcate_save_data=new Broadcate_save_data();
+    String occurs_monthly="Day",day_list_id="1",second_id="1",day_section_id="1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +88,8 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         } else {
             tv_titele.setText(getResources().getString(R.string.broadcast_email));
         }
+        broadcate_save_data=SessionManager.getBroadcate_save_data(getApplicationContext());
+        Log.e("Save Data is",new Gson().toJson(broadcate_save_data));
 
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
@@ -226,8 +230,28 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent broad_caste=new Intent(getApplicationContext(),Broadcast_Name_Activity.class);
-                startActivity(broad_caste);
+
+               if (tv_recurrence.getText().toString().equals("Recurrence"))
+               {
+                   Global.Messageshow(getApplicationContext(),mMainLayout,"Select Recurrence",false);
+               }
+               else {
+                   broadcate_save_data.setDate(tv_date.getText().toString());
+                   broadcate_save_data.setTime(tv_time.getText().toString());
+                   broadcate_save_data.setRecurrence(tv_recurrence.getText().toString());
+                   broadcate_save_data.setRepeat_every(tv_day.getText().toString());
+                   broadcate_save_data.setOccurs_weekly(day_list_id);
+                   broadcate_save_data.setOccurs_monthly(occurs_monthly);
+                   broadcate_save_data.setDay_of_month(tv_month.getText().toString());
+                   broadcate_save_data.setEvery_second(second_id);
+                   broadcate_save_data.setEvery_day(day_section_id);
+                   SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
+                   Intent broad_caste=new Intent(getApplicationContext(),Broadcast_Name_Activity.class);
+                   startActivity(broad_caste);
+                   finish();
+               }
+
+
                 break;
             case R.id.iv_date:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -258,6 +282,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 break;
 
             case R.id.iv_unselected:
+                occurs_monthly="Day";
                 layout_month_selction.setEnabled(true);
                 layout_selcond.setEnabled(false);
                 layout_day_selction.setEnabled(false);
@@ -267,6 +292,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 iv_every_unselcted.setVisibility(View.VISIBLE);
                 break;
             case R.id.iv_every_unselcted:
+                occurs_monthly="Every";
                 layout_selcond.setEnabled(true);
                 layout_selcond.setEnabled(false);
                 layout_day_selction.setEnabled(true);
@@ -315,9 +341,10 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         String[] recursion_array = getResources().getStringArray(R.array.broadcast_days);
 
         for (int i = 0; i < recursion_array.length; i++) {
-
+                int count=i+1;
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
                 broadcste_coman_model.setData(recursion_array[i]);
+                broadcste_coman_model.setNum(String.valueOf(count));
                 broadcste_coman_model.setPhoneSelect(false);
                 broadcste_coman_models.add(broadcste_coman_model);
 
@@ -347,14 +374,18 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
         for (int i = 0; i < recursion_array.length; i++) {
             if (i == 0) {
+                int count=i+1;
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
                 broadcste_coman_model.setData(recursion_array[i]);
+                broadcste_coman_model.setNum(String.valueOf(count));
                 broadcste_coman_model.setPhoneSelect(true);
                 broadcste_coman_models.add(broadcste_coman_model);
 
             } else {
+                int count=i+1;
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
                 broadcste_coman_model.setData(recursion_array[i]);
+                broadcste_coman_model.setNum(String.valueOf(count));
                 broadcste_coman_model.setPhoneSelect(false);
                 broadcste_coman_models.add(broadcste_coman_model);
 
@@ -383,15 +414,21 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
         for (int i = 0; i < recursion_array.length; i++) {
             if (i == 0) {
+                int count=i+1;
+
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
                 broadcste_coman_model.setData(recursion_array[i]);
+                broadcste_coman_model.setNum(String.valueOf(count));
                 broadcste_coman_model.setPhoneSelect(true);
                 broadcste_coman_models.add(broadcste_coman_model);
 
             } else {
+                int count=i+1;
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
                 broadcste_coman_model.setData(recursion_array[i]);
                 broadcste_coman_model.setPhoneSelect(false);
+                broadcste_coman_model.setNum(String.valueOf(count));
+
                 broadcste_coman_models.add(broadcste_coman_model);
 
             }
@@ -420,7 +457,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         if (tv_recurrence.getText().toString().equals("Daily"))
         {
 
-            count=5;
+            count=15;
         }
         else if (tv_recurrence.getText().toString().equals("Weekly"))
         {
@@ -808,6 +845,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 @Override
                 public void onClick(View view) {
                     String day_list="";
+
                     for (int i=0;i<userLinkedGmailList.size();i++)
                     {
                         if (userLinkedGmailList.get(i).isPhoneSelect()==true)
@@ -815,9 +853,19 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                             if (day_list.equals(""))
                             {
                                 day_list=userLinkedGmailList.get(i).getData();
+
                             }
                             else {
                                 day_list=day_list+","+userLinkedGmailList.get(i).getData();
+
+                            }
+                            if (day_list_id.equals(""))
+                            {
+                                day_list_id=userLinkedGmailList.get(i).getNum();
+
+                            }
+                            else {
+                                day_list_id=day_list_id+","+userLinkedGmailList.get(i).getNum();
 
                             }
 
@@ -1112,6 +1160,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                             tv_second.setText(userLinkedGmailList.get(position).getData());
                             tv_info.setVisibility(View.GONE);
                             bottomSheetDialog_second.cancel();
+                            second_id=userLinkedGmailList.get(position).getNum();
                         }
                     });
 
@@ -1210,6 +1259,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                             tv_day_selction.setText(userLinkedGmailList.get(position).getData());
                             tv_info.setVisibility(View.GONE);
                             bottomSheetDialog_day_second.cancel();
+                            day_section_id=userLinkedGmailList.get(position).getNum();
                         }
                     });
 

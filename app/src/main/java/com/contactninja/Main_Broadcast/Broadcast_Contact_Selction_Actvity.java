@@ -9,39 +9,20 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.Campaign.Add_Camp_Email_Activity;
-import com.contactninja.Campaign.Campaign_Name_Activity;
-import com.contactninja.Campaign.Campaign_Preview;
-import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
-import com.contactninja.Campaign.Fragment.Campaign_Group_Fragment;
-import com.contactninja.Campaign.List_itm.Campaign_Final_Start;
 import com.contactninja.Model.Broadcast_image_list;
-import com.contactninja.Model.ContectListData;
-import com.contactninja.Model.Grouplist;
-import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.retrofit.ApiResponse;
-import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
@@ -65,14 +44,13 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
     ImageView search_icon;
     ImageView iv_back, iv_Setting;
     TextView save_button;
-    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
     LinearLayout main_layout;
     SessionManager sessionManager;
     String sequence_Name = "";
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     private BroadcastReceiver mNetworkReceiver;
-    private long mLastClickTime=0;
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,60 +62,33 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
 
-        if (SessionManager.getContect_flag(getApplicationContext()).equals("edit")) {
-            tabLayout.setVisibility(View.GONE);
-            viewPager.setVisibility(View.GONE);
-            Fragment fragment = new Broadcast_Contect_Fragment(this);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
-            fragmentTransaction.commitAllowingStateLoss();
 
-        } else if (SessionManager.getContect_flag(getApplicationContext()).equals("read")) {
-            tabLayout.setVisibility(View.GONE);
-            viewPager.setVisibility(View.GONE);
-            Fragment fragment = new Broadcast_Contect_Fragment(this);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
-            fragmentTransaction.commitAllowingStateLoss();
-        } else if (SessionManager.getContect_flag(getApplicationContext()).equals("check")) {
-            tabLayout.setVisibility(View.GONE);
-            viewPager.setVisibility(View.GONE);
-            Fragment fragment = new Broadcast_Contect_Fragment(this);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
-            fragmentTransaction.commitAllowingStateLoss();
-        } else {
+        tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
+        tabLayout.addTab(tabLayout.newTab().setText("Groups"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
+                tabLayout.getTabCount(), strtext);
 
-            tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
-            tabLayout.addTab(tabLayout.newTab().setText("Groups"));
-            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-            adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
-                    tabLayout.getTabCount(), strtext);
+        viewPager.setAdapter(adapter);
 
-            viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
-                }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
-                }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
 
-                }
-            });
-
-        }
 
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +96,8 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
                 contect_search.requestFocus();
             }
         });
+
+
 
     }
 
@@ -180,17 +133,17 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Broadcast_Contact_Selction_Actvity.this);
 
-                if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS"))
-                {
-                    Intent new_task=new Intent(getApplicationContext(), Add_Broad_Text_Activity.class);
-                    new_task.putExtra("flag","add");
+                if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
+                    Intent new_task = new Intent(getApplicationContext(), Add_Broad_Text_Activity.class);
+                    new_task.putExtra("flag", "add");
                     startActivity(new_task);
-                    finish();                }
-                else {
-                    Intent new_task=new Intent(getApplicationContext(), Add_Broad_Email_Activity.class);
-                    new_task.putExtra("flag","add");
+                    finish();
+                } else {
+                    Intent new_task = new Intent(getApplicationContext(), Add_Broad_Email_Activity.class);
+                    new_task.putExtra("flag", "add");
                     startActivity(new_task);
-                    finish();                }
+                    finish();
+                }
                 //startActivity(new Intent(getApplicationContext(),Campaign_Name_Activity.class));
                 break;
         }

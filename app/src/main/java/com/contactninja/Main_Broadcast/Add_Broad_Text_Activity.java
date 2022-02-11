@@ -30,6 +30,7 @@ import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Broadcast_image_list;
+import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
@@ -91,7 +92,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
     EditText ev_from;
     private BroadcastReceiver mNetworkReceiver;
     private static long mLastClickTime=0;
-
+    Broadcate_save_data broadcate_save_data=new Broadcate_save_data();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,6 +150,14 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
             tv_step.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
 
+        }
+        if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit"))
+        {
+            broadcate_save_data=SessionManager.getBroadcate_save_data(getApplicationContext());
+            edit_template.setText(broadcate_save_data.getContent_body());
+            from_ac=broadcate_save_data.getFrom_ac();
+            from_ac_id=broadcate_save_data.getFrom_ac_id();
+            template_id_is=broadcate_save_data.getTemplate_id();
         }
 
     }
@@ -471,8 +480,15 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
                     Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_message), false);
 
                 } else {
+
+                    broadcate_save_data.setFrom_ac(from_ac);
+                    broadcate_save_data.setFrom_ac_id(from_ac_id);
+                    broadcate_save_data.setTemplate_id(template_id_is);
+                    broadcate_save_data.setContent_body(edit_template.getText().toString());
+                    SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
                     Intent intent=new Intent(getApplicationContext(),Recuring_email_broadcast_activity.class);
                     startActivity(intent);
+                    finish();
                 }
 
 

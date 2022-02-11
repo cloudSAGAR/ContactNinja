@@ -30,8 +30,11 @@ import com.contactninja.Campaign.Add_Camp_First_Step_Activity;
 import com.contactninja.Campaign.Campaign_Name_Activity;
 import com.contactninja.Campaign.ContectAndGroup_Actvity;
 import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
+import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
+import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -65,46 +68,77 @@ import retrofit2.Response;
 public class Broadcast_Preview extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     public static TopUserListDataAdapter topUserListDataAdapter;
     ImageView iv_back;
-    TextView save_button,tv_start_broadcast;
+    TextView save_button,tv_start_broadcast,tv_repete_type;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     RecyclerView  user_contect;
     /* List<String> stringList;*/
-    List<CampaignTask_overview.SequenceTask> campaignTasks = new ArrayList<>();
     int sequence_id, sequence_task_id;
     BottomSheetDialog bottomSheetDialog;
-    TextView tv_name;
-    TextView contect_count;
-    ImageView iv_toolbar_manu;
+    TextView tv_name,tv_title,tv_detail;
+    TextView contect_count,tv_date;
+    ImageView iv_toolbar_manu,iv_manu;
     Toolbar toolbar;
     RelativeLayout contect_layout;
-    ImageView add_icon,iv_camp_edit;
+    ImageView add_icon,iv_camp_edit,tv_item_num;
     LinearLayout layout_toolbar_logo;
     ConstraintLayout mMainLayout;
-    List<CampaignTask_overview.SequenceTask> main_data = new ArrayList<>();
     String Camp_name = "";
     private BroadcastReceiver mNetworkReceiver;
-    LinearLayout layout_name;
+    LinearLayout layout_name,layout_email_subject;
     private long mLastClickTime=0;
-
-
+    Broadcate_save_data broadcate_save_data=new Broadcate_save_data();
+    List<ContectListData.Contact> Contect_List=new ArrayList<>();
+    EditText ev_subject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast_preview);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
+        Log.e("Main Data Is",new Gson().toJson(SessionManager.getBroadcate_save_data(getApplicationContext())));
+        broadcate_save_data=SessionManager.getBroadcate_save_data(getApplicationContext());
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         Global.count = 1;
         toolbar.inflateMenu(R.menu.option_menu);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        tv_name.setText(broadcate_save_data.getBroadcastname());
+        Contect_List=  SessionManager.getGroupList(getApplicationContext());
+        contect_count.setText(Contect_List.size()+"prospects");
+        topUserListDataAdapter=new TopUserListDataAdapter(this,getApplicationContext(),Contect_List);
+        user_contect.setAdapter(topUserListDataAdapter);
+        tv_title.setText(SessionManager.getCampaign_type_name(getApplicationContext())+" "+SessionManager.getCampaign_type(getApplicationContext()));
+        ev_subject.setText(broadcate_save_data.getContent_header());
+        tv_detail.setText(broadcate_save_data.getContent_body());
 
+        if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS"))
+        {
 
+            tv_item_num.setImageDrawable(getResources().getDrawable(R.drawable.ic_message_select));
+            layout_email_subject.setVisibility(View.GONE);
+        }
+        else {
+            layout_email_subject.setVisibility(View.VISIBLE);
+            tv_item_num.setImageDrawable(getResources().getDrawable(R.drawable.ic_email_mini));
 
+        }
+        tv_date.setText(broadcate_save_data.getDate()+" @ "+broadcate_save_data.getTime());
+        tv_repete_type.setText(broadcate_save_data.getRecurrence());
 
+        if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit"))
+        {
+            iv_manu.setVisibility(View.VISIBLE);
+            add_icon.setVisibility(View.VISIBLE);
+            iv_camp_edit.setVisibility(View.VISIBLE);
+        }
+        else {
+            iv_manu.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+            iv_camp_edit.setVisibility(View.GONE);
+        }
     }
 
 
@@ -122,13 +156,12 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         //Log.e("Option Manu is Select", "Yes");
         switch (item.getItemId()) {
             case R.id.mv_save:
-                startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
+                startActivity(new Intent(getApplicationContext(), List_Broadcast_activity.class));
                 finish();
                 return true;
             case R.id.mv_edit:
-                SessionManager.setCampign_flag("edit");
+                SessionManager.setBroadcast_flag("edit");
                 Intent intent = new Intent(getApplicationContext(), Broadcast_Preview.class);
-                intent.putExtra("sequence_id", sequence_id);
                 startActivity(intent);
                 finish();
                 return true;
@@ -140,6 +173,14 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
     @SuppressLint("WrongViewCast")
     private void IntentUI() {
+        iv_manu=findViewById(R.id.iv_manu);
+        tv_repete_type=findViewById(R.id.tv_repete_type);
+        tv_date=findViewById(R.id.tv_date);
+        layout_email_subject=findViewById(R.id.layout_email_subject);
+        tv_item_num=findViewById(R.id.tv_item_num);
+        tv_detail=findViewById(R.id.tv_detail);
+        ev_subject=findViewById(R.id.ev_subject);
+        tv_title=findViewById(R.id.tv_title);
         tv_start_broadcast=findViewById(R.id.tv_start_broadcast);
         tv_start_broadcast.setOnClickListener(this);
         iv_camp_edit=findViewById(R.id.iv_camp_edit);
@@ -227,11 +268,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setContect_flag("edit");
-                Intent intent_two = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
-                intent_two.putExtra("sequence_id", sequence_id);
-                intent_two.putExtra("seq_task_id", sequence_task_id);
-                startActivity(intent_two);
+                startActivity(new Intent(getApplicationContext(),Broadcast_Contact_Selction_Actvity.class));
                 finish();
                 break;
             case R.id.contect_count:
@@ -239,11 +276,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setContect_flag("read");
-                Intent intent1 = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
-                intent1.putExtra("sequence_id", sequence_id);
-                intent1.putExtra("seq_task_id", sequence_task_id);
-                startActivity(intent1);
+
                 break;
 
             case R.id.user_contect:
@@ -251,15 +284,6 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (SessionManager.getTask(getApplicationContext()).size() != 0) {
-                    sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
-                } else {
-                    Intent getintent = getIntent();
-                    Bundle bundle = getintent.getExtras();
-                    sequence_id = bundle.getInt("sequence_id");
-                }
-                SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
-                SessionManager.setGroupList(this, new ArrayList<>());
 
                 break;
             case R.id.save_button:
@@ -268,24 +292,9 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Broadcast_Preview.this);
-                Intent intent2=new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
-                intent2.putExtra("s_name","final");
-                startActivity(intent2);
 
 
-              /*  if (Camp_name.equals(tv_name.getText().toString())) {
-                    SessionManager.setCampign_flag("read");
-                    Intent in = new Intent(getApplicationContext(), Broadcast_Preview.class);
-                    in.putExtra("sequence_id", sequence_id);
-                    startActivity(in);
-                    finish();
-                } else {
-                    if(!tv_name.getText().toString().equals("")){
 
-                    }else {
-                        Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.enter_campaign_name),false);
-                    }
-                }*/
 
                 break;
 
@@ -295,13 +304,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                Intent name_intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
-                name_intent.putExtra("sequence_id", sequence_id);
-                name_intent.putExtra("seq_task_id", sequence_task_id);
-                name_intent.putExtra("sequence_Name", tv_name.getText().toString());
-                name_intent.putExtra("flag","edit");
-                startActivity(name_intent);
-              //  finish();
+
                 break;
 
             case R.id.iv_camp_edit:
@@ -309,13 +312,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent name_intent1 = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
-                name_intent1.putExtra("sequence_id", sequence_id);
-                name_intent1.putExtra("seq_task_id", sequence_task_id);
-                name_intent1.putExtra("sequence_Name", tv_name.getText().toString());
-                name_intent1.putExtra("flag","edit");
-                startActivity(name_intent1);
-                //finish();
+                startActivity(new Intent(getApplicationContext(),Broadcast_Name_Activity.class));
                 break;
 
             case R.id.tv_name:
@@ -442,15 +439,15 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
     public static class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
-        private final List<CampaignTask_overview.SequenceProspect> userDetailsfull;
-        private final List<CampaignTask_overview.SequenceProspect> userDetails;
+        private final List<ContectListData.Contact> userDetailsfull;
+        private final List<ContectListData.Contact> userDetails;
         public Activity mCtx;
         int last_postion = 0;
         String second_latter = "";
         String current_latter = "", image_url = "";
 
 
-        public TopUserListDataAdapter(Activity Ctx, Context mCtx, List<CampaignTask_overview.SequenceProspect> userDetails) {
+        public TopUserListDataAdapter(Activity Ctx, Context mCtx, List<ContectListData.Contact> userDetails) {
             this.mcntx = mCtx;
             this.mCtx = Ctx;
             this.userDetails = userDetails;
@@ -467,7 +464,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
         @Override
         public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
-            CampaignTask_overview.SequenceProspect inviteUserDetails = userDetails.get(position);
+            ContectListData.Contact inviteUserDetails = userDetails.get(position);
             last_postion = position;
             holder.userName.setText(inviteUserDetails.getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);

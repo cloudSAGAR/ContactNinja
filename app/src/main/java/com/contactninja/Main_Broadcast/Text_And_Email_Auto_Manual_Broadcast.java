@@ -27,7 +27,9 @@ import com.contactninja.Manual_email_text.Manual_Auto_Selection_Email_Fragment;
 import com.contactninja.Manual_email_text.Manual_Auto_Selection_Fragment;
 import com.contactninja.Manual_email_text.Manual_Auto_Task_Name_Activity;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
+import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -37,6 +39,7 @@ import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
@@ -194,18 +197,21 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                 else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
-                    SessionManager.setContect_flag("add");
+                    SessionManager.setGroupList(this,new ArrayList<>());
+                    SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
+                    SessionManager.setBroadcast_flag("add");
+                    SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
                     startActivity(new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class));
                     finish();
                 }
                 else {
-                    SessionManager.setContect_flag("add");
+                    SessionManager.setGroupList(this,new ArrayList<>());
+                    SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
+                    SessionManager.setBroadcast_flag("add");
+                    SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
                     startActivity(new Intent(getApplicationContext(),Broadcast_Contact_Selction_Actvity.class));
                     finish();
                 }
-
-
-
 
                 //
                 break;

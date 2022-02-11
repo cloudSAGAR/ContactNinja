@@ -335,7 +335,6 @@
                     android:gravity="left">
 
                     <ImageView
-                        android:visibility="gone"
                         android:layout_margin="@dimen/_15sdp"
                         android:id="@+id/iv_selected"
                         android:layout_width="match_parent"
@@ -347,6 +346,7 @@
 
 
                     <ImageView
+                        android:visibility="gone"
                         android:layout_margin="@dimen/_15sdp"
                         android:id="@+id/iv_unselected"
                         android:layout_width="match_parent"

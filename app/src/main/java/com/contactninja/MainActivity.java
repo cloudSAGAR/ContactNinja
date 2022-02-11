@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-              //  EnableRuntimePermission();
+                //  EnableRuntimePermission();
             }
 
         };

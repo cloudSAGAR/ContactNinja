@@ -33,6 +33,7 @@ import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Broadcast_image_list;
+import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
@@ -102,6 +103,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
     private int amountOfItemsSelected = 0;
     private int FirstTime = 0;
     private long mLastClickTime=0;
+    Broadcate_save_data broadcate_save_data=new Broadcate_save_data();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
         retrofitCalls = new RetrofitCalls(this);
         templateClick = Add_Broad_Email_Activity.this;
 
+
         IntentUI();
         try {
             if (Global.isNetworkAvailable(Add_Broad_Email_Activity.this, MainActivity.mMainLayout)) {
@@ -120,6 +123,16 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+        if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit"))
+        {
+            broadcate_save_data=SessionManager.getBroadcate_save_data(getApplicationContext());
+            ev_subject.setText(broadcate_save_data.getContent_header());
+            edit_template.setText(broadcate_save_data.getContent_body());
+            from_ac=broadcate_save_data.getFrom_ac();
+            from_ac_id=broadcate_save_data.getFrom_ac_id();
+            template_id_is=broadcate_save_data.getTemplate_id();
         }
 
 
@@ -352,12 +365,19 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
                 } else if (edit_template.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
-
                 } else {
                     if (Global.isNetworkAvailable(Add_Broad_Email_Activity.this, mMainLayout)) {
 
-                        startActivity(new Intent(getApplicationContext(),Recuring_email_broadcast_activity.class));
-                        //  StepData();
+                        broadcate_save_data.setFrom_ac(from_ac);
+                        broadcate_save_data.setFrom_ac_id(from_ac_id);
+                        broadcate_save_data.setTemplate_id(template_id_is);
+                        broadcate_save_data.setContent_body(edit_template.getText().toString());
+                        broadcate_save_data.setContent_header(ev_subject.getText().toString());
+                        SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
+
+                         startActivity(new Intent(getApplicationContext(),Recuring_email_broadcast_activity.class));
+                         finish();
+                         //  StepData();
                     }
                 }
                 break;

@@ -84,13 +84,14 @@
 
             <ImageView
                 android:layout_margin="@dimen/_15sdp"
-                android:src="@drawable/ic_plus"
+
                 android:id="@+id/iv_unselected"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"
                 android:padding="@dimen/_5sdp"
-                android:background="@drawable/shape_primary_back"
+                android:src="@drawable/ic_plus_blue"
+                android:background="@drawable/shape_oval_border_10_blue"
                 tools:ignore="ContentDescription" />
 
 

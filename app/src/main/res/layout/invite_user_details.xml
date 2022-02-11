@@ -137,9 +137,9 @@
                         android:visibility="gone"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:id="@+id/add_new_contect_icon"
-                        android:src="@drawable/ic_plus_blue"
                         android:padding="@dimen/_8sdp"
                         android:layout_gravity="center"
+                        android:src="@drawable/ic_plus_blue"
                         android:background="@drawable/shape_oval_border_10_blue"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"/>

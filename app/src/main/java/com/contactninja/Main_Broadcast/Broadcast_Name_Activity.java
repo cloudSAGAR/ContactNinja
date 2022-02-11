@@ -28,6 +28,7 @@ import com.contactninja.Manual_email_text.Manual_Auto_Task_Name_Activity;
 import com.contactninja.Manual_email_text.Manual_Email_Contect_Activity;
 import com.contactninja.Manual_email_text.Manual_Text_Contact_Activity;
 import com.contactninja.Manual_email_text.Manual_Text_Send_Activty;
+import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.WorkingHoursModel;
 import com.contactninja.R;
@@ -40,6 +41,7 @@ import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.play.core.review.i;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -74,13 +76,14 @@ public class Broadcast_Name_Activity extends AppCompatActivity implements View.O
     ConstraintLayout mMainLayout;
     String sequence_Name = "";
     private long mLastClickTime = 0;
+    Broadcate_save_data broadcate_save_data=new Broadcate_save_data();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broad_name);
-
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
+        broadcate_save_data=SessionManager.getBroadcate_save_data(getApplicationContext());
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
@@ -116,6 +119,12 @@ public class Broadcast_Name_Activity extends AppCompatActivity implements View.O
 
             }
         });
+        if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit"))
+        {
+            ev_titale.setText(broadcate_save_data.getBroadcastname());
+
+        }
+
 
     }
 
@@ -145,8 +154,19 @@ public class Broadcast_Name_Activity extends AppCompatActivity implements View.O
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent broad_caste=new Intent(getApplicationContext(),Broadcast_Preview.class);
-                startActivity(broad_caste);
+
+                if (ev_titale.getText().toString().equals(""))
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Ad Title",false);
+                }
+                else {
+                    SessionManager.setBroadcast_flag("add");
+                    broadcate_save_data.setBroadcastname(ev_titale.getText().toString());
+                    SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
+                    Intent broad_caste=new Intent(getApplicationContext(),Broadcast_Preview.class);
+                    startActivity(broad_caste);
+                }
+
                 break;
 
         }
