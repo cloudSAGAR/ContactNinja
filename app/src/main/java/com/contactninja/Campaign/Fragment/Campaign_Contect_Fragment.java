@@ -165,7 +165,17 @@ public class Campaign_Contect_Fragment extends Fragment {
                 List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
                 detail = new ContectListData.Contact.ContactDetail();
                 detail.setContactId(main_sesion.getSequenceProspects().get(i).getContactId());
-                detail.setType("NUMBER");
+                if (main_sesion.getSequenceProspects().get(i).getEmail().equals(null))
+                {
+                    detail.setEmailNumber(main_sesion.getSequenceProspects().get(i).getContact_number());
+                    detail.setType("NUMBER");
+                }
+                else {
+                    detail.setEmailNumber(main_sesion.getSequenceProspects().get(i).getContact_number());
+                    detail.setType("EMAIL");
+                }
+
+               // detail.setType("NUMBER");
                 contactDetails.add(detail);
                 contact.setContactDetails(contactDetails);
                 select_contectListData.add(contact);
