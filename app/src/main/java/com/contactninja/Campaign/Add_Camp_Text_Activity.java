@@ -499,6 +499,8 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         bottomSheetDialog_templateList1 = new BottomSheetDialog(Add_Camp_Text_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        TextView tv_txt = bottomSheetDialog_templateList1.findViewById(R.id.tv_txt);
+        tv_txt.setText(getResources().getString(R.string.please_select_sender));
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
 
 

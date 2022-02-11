@@ -141,13 +141,6 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
         switch (view.getId()) {
             case R.id.auto_layout:
 
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
-                //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
-                //Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("AUTO");
                 select_automated.setVisibility(View.VISIBLE);
@@ -155,18 +148,12 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
                 edit_day_manual.setText("1");
                 edit_minutes_manual.setText("00");
 
-
                 if (SessionManager.getTask(getActivity()) != null) {
                     iv_back_image.setVisibility(View.VISIBLE);
                 }
 
                 break;
             case R.id.manual_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("MANUAL");
                 select_automated.setVisibility(View.GONE);

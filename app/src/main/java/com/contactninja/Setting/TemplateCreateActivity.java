@@ -243,22 +243,22 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
 
     private boolean isValidation() {
         if (template_type.equals("SMS")) {
-            if (edit_template_name.getText().toString().equals("")) {
+            if (edit_template_name.getText().toString().trim().replaceAll("[-+.^:,]","").equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
             }else
-            if (edit_template.getText().toString().equals("")) {
+            if (edit_template.getText().toString().trim().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
             } else {
                 return true;
             }
         } else {
-            if (edit_template_name.getText().toString().equals("")) {
+            if (edit_template_name.getText().toString().replaceAll("[-+.^:,]","").trim().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
             }else
-            if (edit_template_subject.getText().toString().equals("")) {
+            if (edit_template_subject.getText().toString().trim().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
             }else
-            if (edit_template.getText().toString().equals("")) {
+            if (edit_template.getText().toString().trim().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
             } else {
                 return true;
@@ -277,7 +277,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("id", template.getId());
-        paramObject.addProperty("template_name", edit_template_name.getText().toString().trim());
+        paramObject.addProperty("template_name", edit_template_name.getText().toString().trim().replaceAll("[-+.^:,]",""));
         if(template_type.equals("EMAIL")){
             paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
         }

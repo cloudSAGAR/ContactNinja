@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
+import com.contactninja.Group.SendBroadcast;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -959,9 +960,10 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Global.Messageshow(mCtx, mMainLayout, "Under Development", false);
                     if (position == 1) {
 
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                     /*   InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
                         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(EmailSend_Activity.this, R.style.DialogStyle);
@@ -990,8 +992,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                                 EmailSend_Activity.this, bottomSheetDialog, interfaceClick);
                         rv_image_card.setAdapter(cardListAdepter);
 
-
-                        bottomSheetDialog.show();
+*/
+                  //      bottomSheetDialog.show();
                     }
 
 

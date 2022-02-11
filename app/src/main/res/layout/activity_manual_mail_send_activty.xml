@@ -41,6 +41,7 @@
                 android:focusable="true"
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
+                android:maxLines="1"
                 android:hint="@string/ComposeEmail"
                 android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />

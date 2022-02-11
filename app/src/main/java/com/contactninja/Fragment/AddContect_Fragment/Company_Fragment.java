@@ -97,6 +97,7 @@ public class Company_Fragment extends Fragment {
     String Filter = "";//BLOCK / ALL
     LinearLayout demo_layout, linearLayout3;
     private long mLastClickTime = 0;
+    LinearLayout lay_no_list,layout_list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -270,6 +271,8 @@ public class Company_Fragment extends Fragment {
 
 
     private void IntentUI(View content_view) {
+        layout_list = content_view.findViewById(R.id.layout_list);
+        lay_no_list = content_view.findViewById(R.id.lay_no_list);
         linearLayout3 = content_view.findViewById(R.id.linearLayout3);
         tv_create = content_view.findViewById(R.id.tv_create);
         tv_create.setText(getResources().getString(R.string.create_company));
@@ -386,10 +389,11 @@ public class Company_Fragment extends Fragment {
                     if (Filter.equals("BLOCK")) {
                         companyList = data.getBlocked_companies();
 
-
                     } else {
 
                         companyList = data.getData();
+                        lay_no_list.setVisibility(View.GONE);
+                        layout_list.setVisibility(View.VISIBLE);
 
                     }
 
@@ -417,6 +421,19 @@ public class Company_Fragment extends Fragment {
                     if (Filter.equals("") && ev_search.getText().toString().equals("")) {
                         linearLayout3.setVisibility(View.GONE);
                         demo_layout.setVisibility(View.VISIBLE);
+                    }
+
+                    if (Filter.equals("BLOCK")) {
+                        if (companyList.size() == 0) {
+                            lay_no_list.setVisibility(View.VISIBLE);
+                            layout_list.setVisibility(View.GONE);
+                        } else {
+                            lay_no_list.setVisibility(View.GONE);
+                            layout_list.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                        lay_no_list.setVisibility(View.GONE);
+                        layout_list.setVisibility(View.VISIBLE);
                     }
                     num_count.setText(String.valueOf(0 + " Company"));
                 }
@@ -706,12 +723,16 @@ public class Company_Fragment extends Fragment {
         public void onBindViewHolder(@NonNull CompanyAdapter.viewData holder, int position) {
             CompanyModel.Company WorkData = companyList.get(position);
             if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
-                if (WorkData.getIs_blocked().equals(1)) {
-                    holder.iv_block.setVisibility(View.VISIBLE);
-                    holder.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
-                } else {
-                    holder.iv_block.setVisibility(View.GONE);
-                    holder.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
+                try {
+                    if (WorkData.getIs_blocked().equals(1)) {
+                        holder.iv_block.setVisibility(View.VISIBLE);
+                        holder.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
+                    } else {
+                        holder.iv_block.setVisibility(View.GONE);
+                        holder.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
                 holder.userName.setText(WorkData.getName());
                 holder.userNumber.setVisibility(View.GONE);

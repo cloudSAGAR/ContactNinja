@@ -112,7 +112,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity implements
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Manual_Auto_Task_Name_Activity.this);
                 //Add Api Call
-                if (ev_titale.getText().toString().equals("")) {
+                if (ev_titale.getText().toString().trim().equals("")) {
                     tv_error.setVisibility(View.VISIBLE);
                 } else {
                     tv_error.setVisibility(View.GONE);
@@ -124,7 +124,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity implements
                         intent.putExtra("number", SessionManager.getMessage_number(getApplicationContext()));
                         intent.putExtra("id", Integer.parseInt(SessionManager.getMessage_id(getApplicationContext())));
                         intent.putExtra("type", SessionManager.getMessage_tyep(getApplicationContext()));
-                        intent.putExtra("task_name", ev_titale.getText().toString());
+                        intent.putExtra("task_name", ev_titale.getText().toString().trim());
                         startActivity(intent);
                         finish();
 
@@ -132,7 +132,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity implements
                         Intent intent = new Intent(getApplicationContext(), EmailSend_Activity.class);
                         intent.putExtra("email", SessionManager.getMessage_number(getApplicationContext()));
                         intent.putExtra("id", SessionManager.getMessage_id(getApplicationContext()));
-                        intent.putExtra("task_name", ev_titale.getText().toString());
+                        intent.putExtra("task_name", ev_titale.getText().toString().trim());
                         startActivity(intent);
                         finish();
 

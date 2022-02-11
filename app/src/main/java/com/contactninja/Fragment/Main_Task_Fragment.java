@@ -281,7 +281,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         demo_layout = view.findViewById(R.id.demo_layout);
         mMainLayout = view.findViewById(R.id.mMainLayout);
         tv_create = view.findViewById(R.id.tv_create);
-        tv_create.setText(getString(R.string.email_txt));
+        tv_create.setText(getString(R.string.txt_task));
         rv_email_list = view.findViewById(R.id.email_list);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
 

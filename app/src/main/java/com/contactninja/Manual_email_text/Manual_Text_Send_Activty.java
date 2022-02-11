@@ -155,6 +155,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         rv_direct_list = findViewById(R.id.rv_direct_list);
         mMainLayout = findViewById(R.id.mMainLayout);
         edit_template = findViewById(R.id.ev_txt);
+        edit_template.requestFocus();
         iv_submit = findViewById(R.id.iv_submit);
         iv_submit.setOnClickListener(this);
         ev_task_title = findViewById(R.id.ev_task_title);
@@ -413,6 +414,8 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         bottomSheetDialog_templateList1 = new BottomSheetDialog(Manual_Text_Send_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        TextView tv_txt = bottomSheetDialog_templateList1.findViewById(R.id.tv_txt);
+        tv_txt.setText(getResources().getString(R.string.please_select_sender));
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
 
 
@@ -1055,7 +1058,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
+                    if (position == 0) {
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

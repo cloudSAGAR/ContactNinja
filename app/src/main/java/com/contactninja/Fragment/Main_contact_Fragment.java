@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -31,6 +32,7 @@ public class Main_contact_Fragment extends Fragment {
     String strtext = "";
    // ViewpaggerAdapter adapter;
     ImageView search_icon;
+    LinearLayout layout_toolbar_logo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -138,7 +140,8 @@ public class Main_contact_Fragment extends Fragment {
      //   viewPager = view.findViewById(R.id.viewPager);
         contect_search = view.findViewById(R.id.contect_search);
         search_icon = view.findViewById(R.id.search_icon);
-
+        layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
+        layout_toolbar_logo.setVisibility(View.VISIBLE);
     }
 
 

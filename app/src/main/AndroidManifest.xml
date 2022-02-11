@@ -49,13 +49,16 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Main_Broadcast.Recuring_email_broadcast_activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Main_Broadcast.List_And_show.List_Broadcast_activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddContect.Add_Company_Activity"
             android:exported="false"

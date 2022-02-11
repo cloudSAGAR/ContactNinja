@@ -46,6 +46,7 @@
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
                 android:gravity="left|center"
+                android:maxLines="1"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"
                 tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
@@ -149,6 +150,7 @@
             style="@style/tv_Medium_16"
             android:paddingStart="@dimen/_15sdp"
             android:hint="Enter Your Message"
+            android:focusable="true"
             android:padding="@dimen/_10sdp"
             android:text=""
             android:layout_width="match_parent"

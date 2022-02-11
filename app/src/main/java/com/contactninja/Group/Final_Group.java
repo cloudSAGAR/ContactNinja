@@ -401,7 +401,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     private void SaveEvent() throws JSONException {
 
 
-        group_name = add_new_contect.getText().toString();
+        group_name = add_new_contect.getText().toString().trim();
         group_description = add_detail.getText().toString();
         if (group_name.equals("")) {
             Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_txt), false);

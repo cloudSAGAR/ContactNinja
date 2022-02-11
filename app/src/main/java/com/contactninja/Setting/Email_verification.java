@@ -61,7 +61,8 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-
+        mMainLayout = findViewById(R.id.mMainLayout);
+        webEmail = findViewById(R.id.webEmail);
         try {
             Intent intent=getIntent();
             Bundle bundle=intent.getExtras();
@@ -81,7 +82,7 @@ public class Email_verification extends AppCompatActivity implements Connectivit
           }
           catch (Exception e)
           {
-
+            e.printStackTrace();
           }
 
         }else {
@@ -95,8 +96,7 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         }
 
 
-        mMainLayout = findViewById(R.id.mMainLayout);
-        webEmail = findViewById(R.id.webEmail);
+
 
 
 

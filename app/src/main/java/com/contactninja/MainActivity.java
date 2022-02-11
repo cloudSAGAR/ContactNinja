@@ -41,6 +41,7 @@ import com.contactninja.Fragment.Main_Task_Fragment;
 import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
 import com.contactninja.Fragment.Main_userProfile_Fragment;
+import com.contactninja.Group.SendBroadcast;
 import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
@@ -842,10 +843,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }else {
                     EnableRuntimePermission();
                 }
-
                 bottomSheetDialog.dismiss();
-
-
             }
         });
 

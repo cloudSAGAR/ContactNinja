@@ -135,21 +135,36 @@
             android:layout_height="1dp"
             android:background="@color/line_separator" />
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/contect_search"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_45sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/shape_25_white_eee_line"
+        <LinearLayout
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent">
+            android:id="@+id/lay_no_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/lay_bouttom"
+            android:layout_below="@+id/line"
+            android:layout_gravity="center"
+            android:layout_marginTop="-2dp"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        </androidx.appcompat.widget.SearchView>
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_small_logo" />
 
+            <TextView
+                style="@style/tv_Medium_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_block_company"
+                android:textColor="@color/text_reg" />
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -210,6 +225,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/fastscroller"
                 app:layout_constraintTop_toTopOf="@+id/fastscroller" />
         </LinearLayout>
+
+
 
     </LinearLayout>
 

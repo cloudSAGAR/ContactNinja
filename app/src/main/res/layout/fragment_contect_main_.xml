@@ -43,7 +43,9 @@
 
         </EditText>
     </LinearLayout>
-
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
 
     <com.google.android.material.tabs.TabLayout
         android:layout_marginTop="@dimen/_5sdp"

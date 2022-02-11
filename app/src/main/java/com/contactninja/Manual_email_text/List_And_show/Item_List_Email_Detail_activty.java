@@ -1314,21 +1314,14 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                 holder.tv_item.setVisibility(View.GONE);
                 holder.im_file.setImageDrawable(mCtx.getResources().getDrawable(item.getFile()));
                 holder.line_view.setVisibility(View.GONE);
-
             } else {
-
                 holder.im_file.setVisibility(View.GONE);
                 holder.tv_item.setVisibility(View.VISIBLE);
-
             }
             if (position == 0) {
-
                 holder.line_view.setVisibility(View.GONE);
-
             } else if (position == 1) {
                 holder.line_view.setVisibility(View.GONE);
-            } else {
-
             }
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override

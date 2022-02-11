@@ -37,20 +37,21 @@ import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener  , ConnectivityReceiver.ConnectivityReceiverListener {
+public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private long mLastClickTime = 0;
-    TextView save_button,tv_start_broadcast,tv_group_text;
+    TextView save_button, tv_start_broadcast, tv_group_text;
     ImageView iv_Setting, iv_back;
-    EditText add_detail,add_new_contect,ev_search;
+    EditText add_detail, add_new_contect, ev_search;
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewpaggerAdapter adapter;
     SessionManager sessionManager;
     RoundedImageView add_new_contect_icon;
     ConstraintLayout mMainLayout;
-    TextView no_image,topic_remainingCharacter;
+    TextView no_image, topic_remainingCharacter;
 
     private BroadcastReceiver mNetworkReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         Global.checkConnectivity(SendBroadcast.this, mMainLayout);
-        sessionManager=new SessionManager(this);
+        sessionManager = new SessionManager(this);
         Grouplist.Group group_data = SessionManager.getGroupData(this);
 
         add_new_contect.setText(group_data.getGroupName());
@@ -81,43 +82,38 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
 
-        if (group_data.getGroupImage()==null)
-        {
-            String name =group_data.getGroupName();
-            String add_text="";
-            String[] split_data=name.split(" ");
+        if (group_data.getGroupImage() == null) {
+            String name = group_data.getGroupName();
+            String add_text = "";
+            String[] split_data = name.split(" ");
             try {
-                for (int i=0;i<split_data.length;i++)
-                {
-                    if (i==0)
-                    {
-                        add_text=split_data[i].substring(0,1);
-                    }
-                    else {
-                        add_text=add_text+split_data[i].substring(0,1);
+                for (int i = 0; i < split_data.length; i++) {
+                    if (i == 0) {
+                        add_text = split_data[i].substring(0, 1);
+                    } else {
+                        add_text = add_text + split_data[i].substring(0, 1);
                         break;
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             no_image.setText(add_text);
             no_image.setVisibility(View.VISIBLE);
             add_new_contect_icon.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             Glide.with(getApplicationContext()).
                     load(group_data.getGroupImage()).
                     placeholder(R.drawable.shape_primary_back).
@@ -125,7 +121,6 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             no_image.setVisibility(View.GONE);
             add_new_contect_icon.setVisibility(View.VISIBLE);
         }
-
 
 
         add_detail.addTextChangedListener(new TextWatcher() {
@@ -137,24 +132,21 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                Log.e("Test Clcik ",String.valueOf(charSequence));
+                Log.e("Test Clcik ", String.valueOf(charSequence));
                 if (charSequence.toString().length() <= 100) {
                     int num = 100 - charSequence.toString().length();
                     topic_remainingCharacter.setText(num + " " + getResources().getString(R.string.camp_remaingn));
-
                 }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 //    topic_remainingCharacter.setText(100 - editable.length() + " Characters Remaining.");
-
             }
         });
-
-
         viewPager.addOnPageChangeListener(this);
     }
+
     private void IntentUI() {
         tv_start_broadcast = findViewById(R.id.tv_start_broadcast);
         tv_group_text = findViewById(R.id.tv_group_text);
@@ -163,14 +155,14 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         iv_Setting.setVisibility(View.VISIBLE);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
-        add_detail=findViewById(R.id.add_detail);
+        add_detail = findViewById(R.id.add_detail);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
-        add_new_contect_icon=findViewById(R.id.add_new_contect_icon);
-        add_new_contect=findViewById(R.id.add_new_contect);
-        mMainLayout=findViewById(R.id.mMainLayout);
-        no_image=findViewById(R.id.no_image);
-        topic_remainingCharacter=findViewById(R.id.topic_remainingCharacter);
+        add_new_contect_icon = findViewById(R.id.add_new_contect_icon);
+        add_new_contect = findViewById(R.id.add_new_contect);
+        mMainLayout = findViewById(R.id.mMainLayout);
+        no_image = findViewById(R.id.no_image);
+        topic_remainingCharacter = findViewById(R.id.topic_remainingCharacter);
         tv_start_broadcast.setOnClickListener(this);
         tv_group_text.setOnClickListener(this);
     }
@@ -190,14 +182,14 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                startActivity(new Intent(getApplicationContext(),Final_Group.class));
+                startActivity(new Intent(getApplicationContext(), Final_Group.class));
                 finish();
                 break;
-                case R.id.tv_start_broadcast:
-                    Global.Messageshow(SendBroadcast.this,mMainLayout,"Under Development",false);
+            case R.id.tv_start_broadcast:
+                Global.Messageshow(SendBroadcast.this, mMainLayout, "Under Development", false);
                 break;
             case R.id.tv_group_text:
-                Global.Messageshow(SendBroadcast.this,mMainLayout,"Under Development",false);
+                Global.Messageshow(SendBroadcast.this, mMainLayout, "Under Development", false);
                 break;
             default:
 
@@ -221,8 +213,6 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     }
 
 
-
-
     static class ViewpaggerAdapter extends FragmentPagerAdapter {
 
         Context context;
@@ -234,12 +224,13 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             this.totalTabs = totalTabs;
 
         }
+
         @Override
         public Fragment getItem(int position) {
 
             switch (position) {
                 case 0:
-                   MembersFragment membersFragment = new MembersFragment();
+                    MembersFragment membersFragment = new MembersFragment();
                     return membersFragment;
 
                 case 1:
@@ -249,6 +240,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
                     return null;
             }
         }
+
         @Override
         public int getCount() {
             return totalTabs;
@@ -265,6 +257,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(SendBroadcast.this, mMainLayout);

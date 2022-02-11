@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
+        android:id="@+id/mMainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:background="@color/white"
         android:orientation="vertical"
-        android:id="@+id/mMainLayout"
         tools:context=".Fragment.AddContect_Fragment.InformationFragment">
 
         <LinearLayout
@@ -24,30 +24,31 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:padding="@dimen/_10sdp"
+                android:id="@+id/layout_referenceCode"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_gravity="center"
                 android:layout_weight="3"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
 
 
-                    <TextView
-                        android:layout_weight="1"
-                        style="@style/tv_regular_13"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/AffiliateCode"
-                        android:textColor="@color/text_reg"
-                        tools:ignore="NestedWeights" />
+                <TextView
+                    style="@style/tv_regular_13"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/AffiliateCode"
+                    android:textColor="@color/text_reg"
+                    tools:ignore="NestedWeights" />
 
 
-                    <ImageView
-                        android:padding="@dimen/_5sdp"
-                        android:src="@drawable/ic_copy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_copy" />
 
 
             </LinearLayout>
@@ -61,13 +62,13 @@
                 android:background="@color/home_list_add_contect_view" />
 
         </LinearLayout>
+
         <ru.rambler.libs.swipe_layout.SwipeLayout
             android:id="@+id/swipe_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:left_swipe_enabled="true"
-            app:right_swipe_enabled="true"
-            >
+            app:right_swipe_enabled="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,12 +88,12 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight="3"
                         android:gravity="center"
-                        android:layout_gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -120,8 +121,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/add_phone"
-                                        android:textColor="@color/text_reg"
-                                        >
+                                        android:textColor="@color/text_reg">
 
                                     </TextView>
 
@@ -224,19 +224,20 @@
 
                             </LinearLayout>
                         </LinearLayout>
+
                         <LinearLayout
-                            android:background="@color/white"
-                            android:layout_alignParentRight="true"
-                            android:visibility="gone"
                             android:id="@+id/layout_swap"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
                             android:layout_gravity="center|top"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:background="@color/white"
                             android:gravity="center|top"
+                            android:visibility="gone"
                             app:bring_to_clamp="150dp"
                             app:clamp="self"
                             app:gravity="right"
-                            android:layout_marginStart="@dimen/_10sdp"
                             app:sticky="100dp">
 
                             <LinearLayout
@@ -271,8 +272,7 @@
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:text="@string/add_defult_text"
-                                    android:textColor="@color/white"
-                                    />
+                                    android:textColor="@color/white" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -284,12 +284,13 @@
 
 
                 <LinearLayout
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:orientation="horizontal">
+
                     <LinearLayout
                         android:id="@+id/layout_country_piker"
                         android:layout_width="wrap_content"
@@ -303,18 +304,17 @@
                             android:layout_gravity="center|left"
                             android:gravity="center|left"
                             app:ccpDialog_showTitle="false"
-                            app:ccpDialog_textColor="@color/white"
+                            app:ccpDialog_textColor="@color/text_reg"
                             app:ccp_autoDetectCountry="true"
-                            app:ccp_contentColor="@color/text_gray"
-                            app:ccp_showNameCode="false"
-                            />
+                            app:ccp_contentColor="@color/text_reg"
+                            app:ccp_showNameCode="false" />
 
                         <View
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
                             android:background="@color/home_list_add_contect_view" />
                     </LinearLayout>
 
@@ -335,6 +335,7 @@
                         tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -345,11 +346,12 @@
 
             </LinearLayout>
         </ru.rambler.libs.swipe_layout.SwipeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
             android:id="@+id/rv_phone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -383,8 +385,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_mobile_a"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -401,9 +402,9 @@
                     <ImageView
                         android:id="@+id/pulse_icon"
                         android:layout_width="@dimen/_10sdp"
-                        android:tint="@color/purple_200"
                         android:layout_height="@dimen/_10sdp"
                         android:src="@drawable/ic_plus"
+                        android:tint="@color/purple_200"
                         tools:ignore="UseAppTint" />
 
                 </LinearLayout>
@@ -418,13 +419,14 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/home_list_add_contect_view" />
         </LinearLayout>
-        <ru.rambler.libs.swipe_layout.SwipeLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <ru.rambler.libs.swipe_layout.SwipeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:left_swipe_enabled="true"
             app:right_swipe_enabled="true"
             tools:ignore="MissingConstraints">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -435,11 +437,11 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_weight="3"
-                    android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -463,8 +465,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/add_email"
-                                android:textColor="@color/text_reg"
-                                >
+                                android:textColor="@color/text_reg">
 
                             </TextView>
 
@@ -490,8 +491,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text="@string/add_home"
-                                android:textColor="@color/home_list_sub_data"
-                                >
+                                android:textColor="@color/home_list_sub_data">
 
                             </TextView>
 
@@ -533,31 +533,31 @@
 
                 <EditText
 
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:id="@+id/edt_email"
                     style="@style/tv_regular_13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:background="@color/add_contect_transpernt"
                     android:hint="@string/add_email_a"
+                    android:singleLine="true"
                     android:textColor="@color/text_reg"
-                    android:textColorHint="@color/text_gray"
-                    >
+                    android:textColorHint="@color/text_gray">
 
                 </EditText>
+
                 <TextView
-                    android:text="@string/invalid_email"
-                    android:visibility="gone"
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:id="@+id/iv_invalid"
                     style="@style/tv_regular_13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_5sdp"
+                    android:text="@string/invalid_email"
                     android:textColor="@color/red"
-                    />
+                    android:visibility="gone" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -569,10 +569,10 @@
         </ru.rambler.libs.swipe_layout.SwipeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
             android:id="@+id/rv_email"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -607,8 +607,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_email_address"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -626,8 +625,8 @@
                         android:id="@+id/pulse_icon1"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_10sdp"
-                        android:tint="@color/purple_200"
                         android:src="@drawable/ic_plus"
+                        android:tint="@color/purple_200"
                         tools:ignore="UseAppTint" />
 
                 </LinearLayout>
@@ -644,12 +643,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/other_company_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -672,10 +671,9 @@
                         style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/other_company"
                         android:drawableRight="@drawable/ic_down"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:text="@string/other_company"
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -689,8 +687,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_company_a"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -705,6 +702,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/home_list_add_contect_view" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/company_layout"
             android:layout_width="match_parent"
@@ -728,17 +726,28 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_company"
-                        style="@style/tv_regular_13"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_company"
-                        android:drawableRight="@drawable/ic_down"
-                        android:textColor="@color/text_reg"
-                       >
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
 
-                    </TextView>
+                        <TextView
+                            android:id="@+id/tv_company"
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/add_company"
+                            android:textColor="@color/text_reg" />
+
+                        <ImageView
+                            android:id="@+id/copany_down_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_down" />
+                    </LinearLayout>
 
                     <EditText
 
@@ -747,12 +756,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
-                         android:enabled="false"
                         android:background="@color/add_contect_transpernt"
+                        android:enabled="false"
                         android:hint="@string/add_company_a"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -771,11 +779,11 @@
 
         <LinearLayout
             android:id="@+id/company_url_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -799,8 +807,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_company_url"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -813,8 +820,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_company_url_a"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -832,11 +838,11 @@
 
         <LinearLayout
             android:id="@+id/job_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -860,8 +866,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_job"
-                        android:textColor="@color/text_reg"
-                       >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -875,8 +880,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_job_a"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -921,8 +925,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_zoom"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -936,8 +939,7 @@
                         android:hint="@string/add_zoom_a"
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -981,8 +983,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_address"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -996,8 +997,7 @@
                         android:hint="@string/add_address_a"
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -1044,8 +1044,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_city"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -1059,8 +1058,7 @@
                         android:hint="@string/add_city_a"
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -1078,12 +1076,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/state_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1107,8 +1105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_state"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -1122,8 +1119,7 @@
                         android:hint="@string/add_state"
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -1147,8 +1143,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/add_state_a"
-                        android:textColor="@color/home_list_sub_data"
-                        >
+                        android:textColor="@color/home_list_sub_data">
 
                     </TextView>
 
@@ -1201,8 +1196,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_zip"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -1217,8 +1211,7 @@
                         android:inputType="number"
                         android:maxLength="6"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -1234,7 +1227,6 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/home_list_add_contect_view" />
         </LinearLayout>
-
 
 
         <LinearLayout
@@ -1274,14 +1266,13 @@
 
                         <TextView
                             style="@style/tv_regular_13"
-                            android:layout_gravity="center|left"
-                            android:gravity="left|center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/add_timezone"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
                             android:singleLine="true"
-                            android:textColor="@color/text_reg"
-                            >
+                            android:text="@string/add_timezone"
+                            android:textColor="@color/text_reg">
 
                         </TextView>
 
@@ -1289,16 +1280,16 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_weight="1"
                         android:id="@+id/select_label_zone"
                         android:layout_width="match_parent"
-                        android:paddingTop="@dimen/_4sdp"
-                        android:paddingBottom="@dimen/_4sdp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
                         android:background="@drawable/shape_5_white_ccc_line"
                         android:paddingStart="@dimen/_20sdp"
-                        android:paddingEnd="@dimen/_20sdp">
+                        android:paddingTop="@dimen/_4sdp"
+                        android:paddingEnd="@dimen/_20sdp"
+                        android:paddingBottom="@dimen/_4sdp">
 
                         <TextView
                             android:id="@+id/zone_txt"
@@ -1309,10 +1300,9 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="@string/add_timezone"
                             android:singleLine="true"
-                            android:textColor="@color/home_list_sub_data"
-                            >
+                            android:text="@string/add_timezone"
+                            android:textColor="@color/home_list_sub_data">
 
                         </TextView>
 
@@ -1341,15 +1331,15 @@
             </LinearLayout>
 
 
-
         </LinearLayout>
+
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/layout_bod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1372,8 +1362,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_bod"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -1383,14 +1372,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
-                        android:enabled="false"
-
                         android:background="@color/add_contect_transpernt"
+
+                        android:enabled="false"
                         android:hint="@string/add_bob_a"
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
@@ -1409,13 +1397,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/note_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:orientation="vertical"
-            >
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1438,8 +1425,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_note"
-                        android:textColor="@color/text_reg"
-                        >
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 
@@ -1453,22 +1439,22 @@
                         android:hint="@string/add_note_a"
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data"
-                        >
+                        android:textColorHint="@color/home_list_sub_data">
 
                     </EditText>
 
                 </LinearLayout>
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/layout_icon_edit"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:background="@drawable/ic_note"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
-                    android:orientation="horizontal"/>
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/ic_note"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone" />
 
 
             </LinearLayout>
@@ -1484,21 +1470,19 @@
         </LinearLayout>
 
 
-
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/media_layout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/fb_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1513,36 +1497,38 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
+
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center|left"
                             android:gravity="center|left"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
+
                             <ImageView
-                                android:src="@drawable/facebook"
-                                android:layout_gravity="center"
                                 android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp">
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/facebook">
 
                             </ImageView>
 
 
                             <TextView
-                                android:layout_marginStart="@dimen/_10sdp"
                                 style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
                                 android:text="@string/add_fb"
-                                android:textColor="@color/text_reg"
-                                >
+                                android:textColor="@color/text_reg">
 
                             </TextView>
                         </LinearLayout>
+
                         <EditText
                             android:id="@+id/ev_fb"
                             style="@style/tv_regular_13"
@@ -1553,8 +1539,7 @@
                             android:hint="@string/add_fb_a"
                             android:inputType="text|textCapSentences"
                             android:textColor="@color/home_list_sub_data"
-                            android:textColorHint="@color/home_list_sub_data"
-                            >
+                            android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
 
@@ -1577,8 +1562,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1593,36 +1577,38 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
+
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center|left"
                             android:gravity="center|left"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
+
                             <ImageView
-                                android:src="@drawable/twitter"
-                                android:layout_gravity="center"
                                 android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp">
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/twitter">
 
                             </ImageView>
 
 
                             <TextView
-                                android:layout_marginStart="@dimen/_10sdp"
                                 style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
                                 android:text="@string/add_twitter"
-                                android:textColor="@color/text_reg"
-                                >
+                                android:textColor="@color/text_reg">
 
                             </TextView>
                         </LinearLayout>
+
                         <EditText
                             android:id="@+id/ev_twitter"
                             style="@style/tv_regular_13"
@@ -1633,8 +1619,7 @@
                             android:hint="@string/add_fb_a"
                             android:inputType="text|textCapSentences"
                             android:textColor="@color/home_list_sub_data"
-                            android:textColorHint="@color/home_list_sub_data"
-                            >
+                            android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
 
@@ -1652,14 +1637,12 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:id="@+id/linkedin_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1674,36 +1657,38 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
+
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center|left"
                             android:gravity="center|left"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
+
                             <ImageView
-                                android:src="@drawable/linkdin"
-                                android:layout_gravity="center"
                                 android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp">
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/linkdin">
 
                             </ImageView>
 
 
                             <TextView
-                                android:layout_marginStart="@dimen/_10sdp"
                                 style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
                                 android:text="@string/add_linkedin"
-                                android:textColor="@color/text_reg"
-                                >
+                                android:textColor="@color/text_reg">
 
                             </TextView>
                         </LinearLayout>
+
                         <EditText
                             android:id="@+id/ev_linkedin"
                             style="@style/tv_regular_13"
@@ -1714,8 +1699,7 @@
                             android:hint="@string/add_fb_a"
                             android:inputType="text|textCapSentences"
                             android:textColor="@color/home_list_sub_data"
-                            android:textColorHint="@color/home_list_sub_data"
-                            >
+                            android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
 
@@ -1733,15 +1717,12 @@
             </LinearLayout>
 
 
-
-
             <LinearLayout
                 android:id="@+id/breakout_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1756,37 +1737,39 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
+
                         <LinearLayout
-                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center|left"
                             android:gravity="center|left"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
+
                             <ImageView
-                                android:background="@drawable/ic_breakout"
-                                android:layout_gravity="center"
-                                android:padding="5dp"
                                 android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp">
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/ic_breakout"
+                                android:padding="5dp">
 
                             </ImageView>
 
 
                             <TextView
-                                android:layout_marginStart="@dimen/_10sdp"
                                 style="@style/tv_regular_13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
                                 android:text="@string/add_breactout"
-                                android:textColor="@color/text_reg"
-                                >
+                                android:textColor="@color/text_reg">
 
                             </TextView>
                         </LinearLayout>
+
                         <EditText
                             android:id="@+id/ev_breakout"
                             style="@style/tv_regular_13"
@@ -1797,8 +1780,7 @@
                             android:hint="@string/add_fb_a"
                             android:inputType="text|textCapSentences"
                             android:textColor="@color/home_list_sub_data"
-                            android:textColorHint="@color/home_list_sub_data"
-                            >
+                            android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
 
@@ -1827,17 +1809,14 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/add_more_field"
-            android:textColor="@color/purple_200"
-            >
+            android:textColor="@color/purple_200">
 
         </TextView>
-
 
 
         <TextView
             android:id="@+id/tv_add_social"
             style="@style/tv_regular_13"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -1846,47 +1825,51 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/add_social"
             android:textColor="@color/purple_200"
-            >
+            android:visibility="gone">
 
         </TextView>
+
         <LinearLayout
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/media_link"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone">
+
             <ImageView
                 android:id="@+id/img_fb"
-                android:src="@drawable/facebook"
                 android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp">
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/facebook">
 
             </ImageView>
+
             <ImageView
-                android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/img_twitter"
-                android:src="@drawable/twitter"
                 android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp">
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/twitter">
 
             </ImageView>
 
             <ImageView
-                android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/img_linkdin"
-                android:src="@drawable/linkdin"
                 android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp">
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/linkdin">
 
             </ImageView>
+
             <ImageView
-                android:layout_marginStart="@dimen/_5sdp"
                 android:id="@+id/img_breakout"
-                android:padding="@dimen/_5sdp"
-                android:background="@drawable/ic_breakout"
                 android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp">
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:background="@drawable/ic_breakout"
+                android:padding="@dimen/_5sdp">
 
             </ImageView>
 

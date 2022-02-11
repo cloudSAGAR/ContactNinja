@@ -7,10 +7,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -97,9 +99,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     BottomSheetDialog bottomSheetDialog;
     LinearLayout city_layout, zoom_layout, note_layout, company_url_layout, job_layout,
             layout_time_zone, select_label_zone, layout_bod, twitter_layout, breakout_layout,
-            linkedin_layout, state_layout, time_layout, media_layout, media_link;
+            linkedin_layout, state_layout, time_layout, media_layout, media_link, layout_referenceCode;
     String show = "0";
-    String organization_id = "", team_id = "";
+    String organization_id = "", team_id = "", referenceCode = "";
     int contect_id = 0;
     PhoneAdapter phoneAdapter;
     EmailAdapter emailAdapter;
@@ -115,12 +117,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     ImageView iv_down;
     EditText edt_mobile_no;
     LinearLayout layout_country_piker;
-
+    ImageView copany_down_arrow;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
 
     CompanyAdapter companyAdapter;
-    List<CompanyModel.Company> companyList=new ArrayList<>();
+    List<CompanyModel.Company> companyList = new ArrayList<>();
     int perPage = 20;
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
@@ -226,8 +228,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
-
         User user_data_model = user_data.getUser();
+        referenceCode = String.valueOf(user_data_model.getReferenceCode());
 
         ContectListData.Contact set_contact = new ContectListData.Contact();
         set_contact.setFirstname(user_data_model.getFirstName());
@@ -254,8 +256,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 contactdetail2.setIs_default(0);
                 contactdetail2.setLabel(user_data.getUser().getUserprofile().getContactDetails().get(i).getLabel());
                 contactdetails.add(i, contactdetail2);
-
-
             }
         }
 
@@ -297,6 +297,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             // Log.e("Null", "No Call");
             edit = true;
             iv_down.setVisibility(View.VISIBLE);
+            copany_down_arrow.setVisibility(View.VISIBLE);
             //ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             Userprofile Contect_data = user_data_model.getUserprofile();
 
@@ -354,9 +355,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             EmailViewAdd();*/
             try {
                 TextSet();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -392,11 +391,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             /*                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());*/
                             contactdetail.setType(detail_contect.get(i).getType());
                             contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                            try {
-                                //                        contactdetail.setId(detail_contect.get(i).getId());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+
 
                             contactdetail.setLabel(detail_contect.get(i).getLabel());
                             contactdetail.setIs_default(0);
@@ -412,7 +407,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
 
 
-
                         }
                     }
                 }
@@ -422,13 +416,11 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             }
 
 
-
             EmailViewAdd();
             PhoneViewAdd();
 
 
-        }
-        else if (flag.equals("read")) {
+        } else if (flag.equals("read")) {
 
             Log.e("Model Data", new Gson().toJson(user_data_model));
             edt_mobile_no.setEnabled(false);
@@ -443,6 +435,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_company.setEnabled(false);
             ev_company_url.setEnabled(false);
             iv_down.setVisibility(View.GONE);
+            copany_down_arrow.setVisibility(View.GONE);
             ev_job.setEnabled(false);
             ev_zoom.setEnabled(false);
             ev_address.setEnabled(false);
@@ -644,7 +637,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 }
 
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
 
             phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
@@ -655,17 +648,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             rv_email.setAdapter(emailAdapter);
 
 
-        }
-        else {
+        } else {
             PhoneViewAdd();
             EmailViewAdd();
 
             try {
                 TextSet();
-            }
-            catch (Exception e)
-            {
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             iv_down.setVisibility(View.VISIBLE);
             media_link.setVisibility(View.GONE);
@@ -685,34 +675,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         time_layout.setVisibility(View.VISIBLE);
         layout_bod.setVisibility(View.VISIBLE);
         note_layout.setVisibility(View.GONE);
-    }
-
-
-
-    public class MyAsyncTasks extends AsyncTask<String, String, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // display a progress dialog for good user experiance
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        protected String doInBackground(String... params) {
-
-            // implement API in background and store the response in current variable
-            String current = "";
-
-
-            return current;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
-
     }
 
 
@@ -1099,9 +1061,11 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     }
 
     private void IntentUI(View view) {
+        layout_referenceCode = view.findViewById(R.id.layout_referenceCode);
         layout_country_piker = view.findViewById(R.id.layout_country_piker);
         edt_email = view.findViewById(R.id.edt_email);
         edt_mobile_no = view.findViewById(R.id.edt_mobile_no);
+        copany_down_arrow = view.findViewById(R.id.copany_down_arrow);
         iv_down = view.findViewById(R.id.iv_down);
         tv_phone = view.findViewById(R.id.tv_phone);
         ev_address = view.findViewById(R.id.ev_address);
@@ -1159,11 +1123,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         company_layout.setOnClickListener(this);
         other_company_layout = view.findViewById(R.id.other_company_layout);
         ev_othre_company = view.findViewById(R.id.ev_othre_company);
+        layout_referenceCode.setOnClickListener(this);
 
     }
 
 
-    void showBottomSheetDialog_For_Home(String moble, TextView phone_txt, TextView email_txt, Contactdetail item,int item_postion) {
+    void showBottomSheetDialog_For_Home(String moble, TextView phone_txt, TextView email_txt, Contactdetail item, int item_postion) {
         bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_for_home);
         RecyclerView home_type_list = bottomSheetDialog.findViewById(R.id.home_type_list);
@@ -1182,17 +1147,20 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         workTypeData.add(2, nameList2);
         workTypeData.add(3, nameList3);
         workTypeData.add(4, nameList4);
-        WorkAdapter workAdapter = new WorkAdapter(getActivity(), workTypeData, moble, phone_txt, email_txt, item,item_postion);
+        WorkAdapter workAdapter = new WorkAdapter(getActivity(), workTypeData, moble, phone_txt, email_txt, item, item_postion);
         home_type_list.setAdapter(workAdapter);
-
         bottomSheetDialog.show();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
-
+            case R.id.layout_referenceCode:
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Code", referenceCode);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getContext(), "Code copy", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -1480,14 +1448,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         bottomSheetDialog_company = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
         bottomSheetDialog_company.setContentView(R.layout.bottom_sheet_dialog_for_compnay);
         RecyclerView home_type_list = bottomSheetDialog_company.findViewById(R.id.home_type_list);
-        TextView tv_item=bottomSheetDialog_company.findViewById(R.id.tv_item);
+        TextView tv_item = bottomSheetDialog_company.findViewById(R.id.tv_item);
         tv_item.setText("Please select company");
         tv_item.setVisibility(View.VISIBLE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         home_type_list.setLayoutManager(layoutManager);
-        ImageView search_icon=bottomSheetDialog_company.findViewById(R.id.search_icon);
-        EditText ev_search=bottomSheetDialog_company.findViewById(R.id.ev_search);
-        LinearLayout add_new=bottomSheetDialog_company.findViewById(R.id.add_new);
+        ImageView search_icon = bottomSheetDialog_company.findViewById(R.id.search_icon);
+        EditText ev_search = bottomSheetDialog_company.findViewById(R.id.ev_search);
+        LinearLayout add_new = bottomSheetDialog_company.findViewById(R.id.add_new);
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1544,8 +1512,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 List<CompanyModel.Company> temp = new ArrayList();
-                for(CompanyModel.Company d: companyList){
-                    if(d.getName().toLowerCase().contains(charSequence.toString().toLowerCase())){
+                for (CompanyModel.Company d : companyList) {
+                    if (d.getName().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                         temp.add(d);
                         // Log.e("Same Data ",d.getUserName());
                     }
@@ -1593,11 +1561,11 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
-        retrofitCalls.CompanyList(sessionManager, obj, loadingDialog,  Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+        retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
-                if(response.body().getHttp_status().equals(200)){
+                if (response.body().getHttp_status().equals(200)) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     if (response.body().getHttp_status() == 200) {
@@ -1605,7 +1573,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         Type listType = new TypeToken<CompanyModel>() {
                         }.getType();
                         CompanyModel data = new Gson().fromJson(headerString, listType);
-                        List<CompanyModel.Company> companyList=data.getData();
+                        List<CompanyModel.Company> companyList = data.getData();
                         // sessionManager.setCompanylist(getActivity(), data.getData());
 
 
@@ -1642,6 +1610,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         Contactdetail item;
         private List<WorkTypeData> worklist;
         int item_postion;
+
         public WorkAdapter(Context context, List<WorkTypeData> worklist, String type, TextView phone_txt, TextView email_txt, Contactdetail item, int item_postion) {
             this.mCtx = context;
             this.worklist = worklist;
@@ -1649,7 +1618,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             this.phone_txt = phone_txt;
             this.email_txt = email_txt;
             this.item = item;
-            this.item_postion=item_postion;
+            this.item_postion = item_postion;
         }
 
         @NonNull
@@ -1678,7 +1647,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             bottomSheetDialog.cancel();
                             phone_txt.setText(holder.tv_item.getText().toString());
                             item.setLabel(holder.tv_item.getText().toString());
-                            List<Contactdetail> s= addcontectModel.getContactdetails();
+                            List<Contactdetail> s = addcontectModel.getContactdetails();
                             s.get(item_postion).setLabel(holder.tv_item.getText().toString());
                             addcontectModel.setContactdetails(s);
                             SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
@@ -1688,7 +1657,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             bottomSheetDialog.cancel();
                             email_txt.setText(holder.tv_item.getText().toString());
                             item.setLabel(holder.tv_item.getText().toString());
-                            List<Contactdetail> s= addcontectModel.getContactdetails();
+                            List<Contactdetail> s = addcontectModel.getContactdetails();
                             s.get(item_postion).setLabel(holder.tv_item.getText().toString());
                             addcontectModel.setContactdetails(s);
                             SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
@@ -1766,10 +1735,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
-                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx,item.getEmail_number())));
-                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx,item.getEmail_number()));
+                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx, item.getEmail_number()));
                 holder.ccp_id.resetToDefaultCountry();
-                String main_data = item.getEmail_number().replace("+" + String.valueOf(Global.Countrycode(mCtx,item.getEmail_number())), "");
+                String main_data = item.getEmail_number().replace("+" + String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())), "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
                 holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
@@ -1824,8 +1793,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         // Log.e("Swipe Call ","MOveto right");
                         if (holder.layout_swap.getVisibility() == View.GONE) {
                             holder.layout_swap.setVisibility(View.VISIBLE);
-                       holder.layout_defult.setVisibility(View.GONE);
-                        holder.select_label.setVisibility(View.GONE);
+                            holder.layout_defult.setVisibility(View.GONE);
+                            holder.select_label.setVisibility(View.GONE);
                         } else {
                             holder.layout_defult.setVisibility(View.GONE);
 
@@ -1864,7 +1833,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         addcontectModel.setContactdetails(contactdetails);
                         SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
-                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
+                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item, position);
                     }
                 });
 
@@ -1883,7 +1852,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
 
             } else if (flag.equals("read")) {
-               // EnableRuntimePermission();
+                // EnableRuntimePermission();
                 holder.layout_icon_call.setVisibility(View.GONE);
                 holder.layout_icon_message.setVisibility(View.GONE);
                 holder.swipe_layout.setLeftSwipeEnabled(false);
@@ -1985,7 +1954,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
+                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item, position);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
@@ -2053,7 +2022,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     System.err.println("NumberParseException was thrown: " + e.toString());
                 }
                 String main_data = item.getEmail_number().replace("+" + countryCode, "");*/
-                String main_data = item.getEmail_number().replace("+" +Global.Countrycode_Country(mCtx,item.getEmail_number()), "");
+                String main_data = item.getEmail_number().replace("+" + Global.Countrycode_Country(mCtx, item.getEmail_number()), "");
 
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
@@ -2134,7 +2103,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item,position);
+                        showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item, position);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
@@ -2340,7 +2309,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item,position);
+                        showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item, position);
                     }
                 });
 
@@ -2441,7 +2410,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item,position);
+                        showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item, position);
                     }
                 });
 
@@ -2640,7 +2609,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         @NonNull
         @Override
-        public CompanyAdapter.viewData  onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public CompanyAdapter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
                     return new CompanyAdapter.viewData(
@@ -2653,6 +2622,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             }
 
         }
+
         @Override
         public int getItemViewType(int position) {
             if (isLoaderVisible) {
@@ -2689,7 +2659,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         }
 
 
-
         CompanyModel.Company getItem(int position) {
             return companyList.get(position);
         }
@@ -2697,7 +2666,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         @Override
         public void onBindViewHolder(@NonNull CompanyAdapter.viewData holder, int position) {
             CompanyModel.Company WorkData = companyList.get(position);
-            if(Global.IsNotNull(WorkData)&&!WorkData.getName().equals("")){
+            if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
                 holder.tv_item.setText(WorkData.getName());
                 holder.tv_item.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -2721,10 +2690,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         public int getItemCount() {
             return companyList.size();
         }
+
         public void updateList(List<CompanyModel.Company> list) {
             companyList = list;
             notifyDataSetChanged();
         }
+
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_item;
 
