@@ -32,6 +32,7 @@ import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.R;
+import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -65,7 +66,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
     EditText contect_search;
     TextView add_new_contect, num_count;
     ImageView add_new_contect_icon,filter_icon;
-    LinearLayout add_new_contect_layout;
+    LinearLayout add_new_contect_layout,mMainLayout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
             contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
@@ -154,7 +155,15 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                showBottomSheetDialog_For_TimeZone();
+
+                if (contect_list_data.get0().getStatus().toString().equals("A"))
+                {
+                    Global.Messageshow(getActivity(),mMainLayout,"Pause the campaign before adding new prospects",false);
+                }
+                else {
+                    showBottomSheetDialog_For_TimeZone();
+                }
+
             }
         });
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +173,13 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                showBottomSheetDialog_For_TimeZone();
+                if (contect_list_data.get0().getStatus().toString().equals("A"))
+                {
+                    Global.Messageshow(getActivity(),mMainLayout,"Pause the campaign before adding new prospects",false);
+                }
+                else {
+                    showBottomSheetDialog_For_TimeZone();
+                }
             }
         });
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +190,13 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                showBottomSheetDialog_For_TimeZone();
+                if (contect_list_data.get0().getStatus().toString().equals("A"))
+                {
+                    Global.Messageshow(getActivity(),mMainLayout,"Pause the campaign before adding new prospects",false);
+                }
+                else {
+                    showBottomSheetDialog_For_TimeZone();
+                }
                /* Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                 SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
@@ -252,7 +273,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
 
 
     private void IntentUI(View view) {
-
+        mMainLayout=view.findViewById(R.id.mMainLayout);
         contect_list_unselect = view.findViewById(R.id.contect_list_unselect);
         layoutManager1 = new LinearLayoutManager(getActivity());
         contect_list_unselect.setLayoutManager(layoutManager1);

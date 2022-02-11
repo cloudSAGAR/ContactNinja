@@ -150,7 +150,8 @@ public class Campaign_Contect_Fragment extends Fragment {
             groupContectAdapter.addAll(select_contectListData);
 
 
-        } else if (SessionManager.getContect_flag(getActivity()).equals("edit")) {
+        }
+        else if (SessionManager.getContect_flag(getActivity()).equals("edit")) {
             select_contectListData.clear();
             CampaignTask_overview main_sesion = SessionManager.getCampaign_data(getActivity());
             ContectListData.Contact.ContactDetail detail;
@@ -165,14 +166,15 @@ public class Campaign_Contect_Fragment extends Fragment {
                 List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
                 detail = new ContectListData.Contact.ContactDetail();
                 detail.setContactId(main_sesion.getSequenceProspects().get(i).getContactId());
-                if (main_sesion.getSequenceProspects().get(i).getEmail().equals(null))
+                if (!main_sesion.getSequenceProspects().get(i).getEmail().equals(""))
+                {
+                    detail.setEmailNumber(main_sesion.getSequenceProspects().get(i).getEmail());
+                    detail.setType("EMAIL");
+                }
+                else if (!main_sesion.getSequenceProspects().get(i).getContact_number().equals(""))
                 {
                     detail.setEmailNumber(main_sesion.getSequenceProspects().get(i).getContact_number());
                     detail.setType("NUMBER");
-                }
-                else {
-                    detail.setEmailNumber(main_sesion.getSequenceProspects().get(i).getContact_number());
-                    detail.setType("EMAIL");
                 }
 
                // detail.setType("NUMBER");
@@ -320,7 +322,16 @@ public class Campaign_Contect_Fragment extends Fragment {
                 List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
                 detail = new ContectListData.Contact.ContactDetail();
                 detail.setContactId(main_sesion.getSequenceProspects().get(i).getContactId());
-                detail.setType("NUMBER");
+                if (!main_sesion.getSequenceProspects().get(i).getEmail().equals(""))
+                {
+                    detail.setEmailNumber(main_sesion.getSequenceProspects().get(i).getEmail());
+                    detail.setType("EMAIL");
+                }
+                else if (!main_sesion.getSequenceProspects().get(i).getContact_number().equals(""))
+                {
+                    detail.setEmailNumber(main_sesion.getSequenceProspects().get(i).getContact_number());
+                    detail.setType("NUMBER");
+                }
                 contactDetails.add(detail);
                 contact.setContactDetails(contactDetails);
                 select_contectListData.add(contact);
