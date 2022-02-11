@@ -401,6 +401,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
         if (flag.equals("edit")) {
             pulse_icon.setEnabled(true);
+            iv_user.setEnabled(true);
             tv_nameLetter.setEnabled(true);
             iv_edit.setVisibility(View.VISIBLE);
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
@@ -449,6 +450,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
         } else if (flag.equals("read")) {
 
+            iv_user.setEnabled(false);
             pulse_icon.setEnabled(false);
             tv_nameLetter.setEnabled(false);
             save_button.setVisibility(View.GONE);
@@ -874,17 +876,26 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
             case R.id.iv_user:
             case R.id.tv_nameLetter:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
                 if (checkAndRequestPermissions(getActivity())) {
                     captureimageDialog(true);
                 }
                 break;
 
             case R.id.iv_Setting:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
                 Intent i = new Intent(getActivity(), SettingActivity.class);
                 getActivity().startActivity(i);
                 break;
 
             case R.id.edit_profile:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
                 layout_toolbar_logo.setVisibility(View.GONE);
                 iv_back.setVisibility(View.VISIBLE);
                 SessionManager.setContect_flag("edit");
@@ -900,6 +911,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
                 break;
             case R.id.iv_back:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
                 layout_toolbar_logo.setVisibility(View.VISIBLE);
                 iv_back.setVisibility(View.GONE);
                 SessionManager.setContect_flag("read");
