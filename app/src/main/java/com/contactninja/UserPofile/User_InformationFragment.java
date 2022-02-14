@@ -261,7 +261,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         set_contact.setContactDetails(contactDetails_list);
         addcontectModel.setContactdetails(contactdetails);
-        SessionManager.setOneCotect_deatil(getActivity(), set_contact);
+   //     SessionManager.setOneCotect_deatil(getActivity(), set_contact);
 
         getActivity().runOnUiThread(new Runnable() {
 
@@ -1749,14 +1749,20 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                        item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
-                        item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
-                        String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
-                        String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
-                        if (contactdetails.size() <= 12) {
-                            layout_Add_phone.setVisibility(View.VISIBLE);
-                            addcontectModel.setContactdetails(contactdetails);
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                        if (edt_mobile_no.getText().toString().equals(""))
+                        {
+
+                        }
+                       else {
+                            item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
+                            item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
+                            String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
+                            String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
+                            if (contactdetails.size() <= 12) {
+                                layout_Add_phone.setVisibility(View.VISIBLE);
+                                addcontectModel.setContactdetails(contactdetails);
+                                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                            }
                         }
 
                     }
@@ -1881,42 +1887,31 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                        item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
-                        item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
-                        String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
-                        String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
-                        if (contactdetails.size() <= 12) {
-                            layout_Add_phone.setVisibility(View.VISIBLE);
-                            Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
-                            addcontectModel.setContactdetails(contactdetails);
-                            Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                        if (edt_mobile_no.getText().toString().equals(""))
+                        {
 
                         }
+                        else {
+                            item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
+                            item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
+                            String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
+                            String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
+                            if (contactdetails.size() <= 12) {
+                                layout_Add_phone.setVisibility(View.VISIBLE);
+                                Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
+                                addcontectModel.setContactdetails(contactdetails);
+                                Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
+                                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+                            }
+                        }
+
 
                     }
 
                     @Override
                     public void afterTextChanged(Editable s) {
 
-                    }
-                });
-                holder.edt_mobile_no.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    UpdateContect(contactdetails.get(position));
-                                }
-                                //break;
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-
-                            return true;
-                        }
-                        return false;
                     }
                 });
 
@@ -2035,10 +2030,16 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
-                        item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
-                        String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
-                        String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
+
+                        if (holder.edt_mobile_no.getText().toString().equals(""))
+                        {
+
+                        }
+                        else {
+                            item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
+                            item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
+                            String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
+                            String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
                    /* if (countryCode.length() > 0 && phoneNumber.length() > 0) {
                         if (Global.isValidPhoneNumber(phoneNumber)) {
                             boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
@@ -2052,12 +2053,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             iv_invalid.setText(getResources().getString(R.string.invalid_phone));
                         }
                     }*/
-                        if (contactdetails.size() <= 4) {
-                            layout_Add_phone.setVisibility(View.VISIBLE);
-                            addcontectModel.setContactdetails(contactdetails);
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                            if (contactdetails.size() <= 4) {
+                                layout_Add_phone.setVisibility(View.VISIBLE);
+                                addcontectModel.setContactdetails(contactdetails);
+                                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
+                            }
                         }
+
 
                     }
 
@@ -2262,18 +2265,26 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         Log.e("Action done", "Yes");
-                        if (Global.emailValidator(s.toString())) {
-                            holder.iv_invalid.setVisibility(View.GONE);
-                            item.setEmail_number(s.toString());
-                            if (contactdetails.size() <= 4) {
-                                layout_Add_email.setVisibility(View.VISIBLE);
-                            }
-                            addcontectModel.setContactdetails_email(contactdetails);
-                            //addcontectModel.setContactdetails(contactdetails);
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-                        } else {
-                            holder.iv_invalid.setVisibility(View.VISIBLE);
+                        if (holder.edt_email.getText().toString().equals(""))
+                        {
+
                         }
+                        else {
+                            if (Global.emailValidator(s.toString())) {
+                                holder.iv_invalid.setVisibility(View.GONE);
+                                item.setEmail_number(s.toString());
+                                if (contactdetails.size() <= 4) {
+                                    layout_Add_email.setVisibility(View.VISIBLE);
+                                }
+                                addcontectModel.setContactdetails_email(contactdetails);
+                                //addcontectModel.setContactdetails(contactdetails);
+                                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                            } else {
+                                holder.iv_invalid.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+
 
                     }
 
