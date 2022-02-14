@@ -13,44 +13,52 @@
     <include layout="@layout/toolbar" />
 
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layout_list_number_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|center"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:gravity="center|left"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/save_button"
-            style="@style/tv_regular_13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:gravity="end|center"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/group_to"
-            android:textColor="@color/text_reg">
-
-        </TextView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/add_contect_list"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center|left"
+            android:orientation="horizontal">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:id="@+id/save_button"
+                style="@style/tv_regular_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:gravity="end|center"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/group_to"
+                android:textColor="@color/text_reg">
 
+            </TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/add_contect_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/home_list_back_line">
+
+        </View>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/home_list_back_line">
-
-    </View>
 
     <LinearLayout
 
@@ -70,6 +78,7 @@
             android:src="@drawable/ic_search">
 
         </ImageView>
+
         <EditText
             android:id="@+id/ev_search"
             style="@style/tv_Medium_14"
@@ -200,7 +209,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/fastscroller"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fastscroller"
-            app:layout_constraintTop_toTopOf="@+id/fastscroller"/>
+            app:layout_constraintTop_toTopOf="@+id/fastscroller" />
     </LinearLayout>
 
 

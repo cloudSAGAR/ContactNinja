@@ -198,7 +198,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-
+            android:padding="@dimen/_5sdp"
             style="@style/tv_Medium_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,20 +209,21 @@
             android:text="@string/add_group_all_more"
             android:textColor="@color/text_reg"
              />
+
         <TextView
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_gravity="center|end"
-            android:layout_marginStart="@dimen/_12sdp"
             android:id="@+id/num_count"
+            style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:gravity="center|end"
-            android:textColor="@color/purple_500"
-            style="@style/tv_regular_13"
-            android:textStyle="bold"
+            android:padding="@dimen/_5sdp"
             android:singleLine="true"
             android:text=""
-            />
+            android:textColor="@color/purple_500"
+            android:textStyle="bold" />
 
     </LinearLayout>
     <View
