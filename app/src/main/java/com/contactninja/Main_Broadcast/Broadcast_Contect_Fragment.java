@@ -151,7 +151,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                         topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
                         add_contect_list.setAdapter(topUserListDataAdapter);
                         topUserListDataAdapter.notifyDataSetChanged();
-                        group_flag = "true";
+                        group_flag = "false";
                         groupContectAdapter.notifyDataSetChanged();
                         add_new_contect.setText(getString(R.string.add_new_contect1));
                     }
@@ -180,7 +180,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                         topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
                         add_contect_list.setAdapter(topUserListDataAdapter);
                         topUserListDataAdapter.notifyDataSetChanged();
-                        group_flag = "true";
+                        group_flag = "false";
                         groupContectAdapter.notifyDataSetChanged();
                         add_new_contect.setText(getString(R.string.add_new_contect1));
                     }
@@ -205,7 +205,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                         topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
                         add_contect_list.setAdapter(topUserListDataAdapter);
                         topUserListDataAdapter.notifyDataSetChanged();
-                        group_flag = "true";
+                        group_flag = "false";
                         groupContectAdapter.notifyDataSetChanged();
                         add_new_contect.setText(getString(R.string.add_new_contect1));
                     }
@@ -1310,7 +1310,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                     contect_list_unselect.setItemViewCacheSize(5000);
                     groupContectAdapter = new GroupContectAdapter(getContext());
                     contect_list_unselect.setAdapter(groupContectAdapter);
-                    group_flag = "false";
+                    group_flag = "true";
                     contectListData.get(i).setFlag("false");
                     groupContectAdapter.addAll(contectListData);
                     groupContectAdapter.notifyDataSetChanged();
