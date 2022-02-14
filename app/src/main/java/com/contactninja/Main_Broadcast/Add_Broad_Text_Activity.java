@@ -24,8 +24,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
-import com.contactninja.Campaign.Add_Camp_First_Step_Activity;
-import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;

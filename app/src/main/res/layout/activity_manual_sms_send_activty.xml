@@ -129,43 +129,46 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_below="@+id/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/layout_template"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        android:gravity="bottom"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_below="@+id/layout_header"
         android:layout_gravity="bottom"
-        android:layout_width="match_parent" android:layout_height="wrap_content">
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
         <EditText
 
-            android:layout_weight="1"
+            android:id="@+id/ev_txt"
+            style="@style/tv_Medium_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight="1"
             android:background="@drawable/shape_25_white_gray_line_1"
-            android:id="@+id/ev_txt"
-            android:textSize="@dimen/_15sdp"
-            android:textColor="@color/text_reg"
-            style="@style/tv_Medium_16"
-            android:paddingStart="@dimen/_15sdp"
-            android:hint="Enter Your Message"
             android:focusable="true"
+            android:hint="Enter Your Message"
             android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_15sdp"
             android:text=""
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:textColor="@color/text_reg"
+            android:textSize="@dimen/_15sdp">
 
         </EditText>
+
         <ImageView
             android:id="@+id/iv_submit"
-            android:background="@drawable/shape_primary_circle"
             android:layout_width="@dimen/_35sdp"
-            android:padding="@dimen/_11sdp"
-
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/ic_send_message"
             android:layout_height="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+
+            android:background="@drawable/shape_primary_circle"
+            android:padding="@dimen/_11sdp"
+            android:src="@drawable/ic_send_message"
             tools:ignore="UseAppTint">
 
         </ImageView>

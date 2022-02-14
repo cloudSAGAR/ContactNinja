@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Fragment.Campaign_Email_Fragment">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Campaign.Fragment.Campaign_Email_Fragment"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
 
     <LinearLayout
@@ -62,11 +62,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_email_second_automated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="match_parent"
@@ -80,11 +80,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:padding="@dimen/_5sdp"
                         style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:padding="@dimen/_5sdp"
                         android:text="@string/Run_this_step_on"
                         android:textColor="@color/text_reg" />
 
@@ -123,8 +123,8 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
-                                android:text="1"
                                 android:padding="5dp"
+                                android:text="1"
                                 android:textColor="@color/purple_200"
                                 android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
@@ -163,9 +163,9 @@
                                 android:imeOptions="actionDone"
                                 android:inputType="number"
                                 android:maxLength="3"
-                                android:text="00"
                                 android:maxLines="1"
                                 android:padding="5dp"
+                                android:text="00"
                                 android:textColor="@color/purple_200"
                                 android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
@@ -199,6 +199,7 @@
 
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/manual_layout"
             android:layout_width="match_parent"
@@ -246,11 +247,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_email_second_manual"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="match_parent"
@@ -264,11 +265,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:padding="@dimen/_5sdp"
                         style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:padding="@dimen/_5sdp"
                         android:text="@string/Run_this_step_on"
                         android:textColor="@color/text_reg" />
 
@@ -307,8 +308,8 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
-                                android:text="1"
                                 android:padding="5dp"
+                                android:text="1"
                                 android:textColor="@color/purple_200"
                                 android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
@@ -348,8 +349,8 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
-                                android:text="00"
                                 android:padding="5dp"
+                                android:text="00"
                                 android:textColor="@color/purple_200"
                                 android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
@@ -383,30 +384,22 @@
 
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            style="@style/tv_regular_12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:gravity="center"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            android:text="@string/campaign_step_one_email_txt"
-            android:textColor="@color/home_list_sub_data"
-            >
 
-        </TextView>
+
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_back_image"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        style="@style/tv_regular_12"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
-        android:src="@drawable/ic_manual_auto_email"
-        tools:ignore="ContentDescription,RtlHardcoded">
-
-    </ImageView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:gravity="center"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:text="@string/campaign_step_one_email_txt"
+        android:textColor="@color/home_list_sub_data"/>
+</LinearLayout>

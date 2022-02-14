@@ -23,7 +23,7 @@ import com.contactninja.Utils.YourFragmentInterface;
 public class Manual_Auto_Selection_Email_Fragment extends Fragment implements View.OnClickListener, YourFragmentInterface {
 
     LinearLayout auto_layout, manual_layout;
-    ImageView select_manual, select_automated, iv_back_image;
+    ImageView select_manual, select_automated;
     int click = 0;
     SessionManager sessionManager;
     String c_name = "", c_type = "";
@@ -133,36 +133,30 @@ public class Manual_Auto_Selection_Email_Fragment extends Fragment implements Vi
         edit_minutes = view.findViewById(R.id.edit_minutes);
         edit_day_manual = view.findViewById(R.id.edit_day_manual);
         edit_minutes_manual = view.findViewById(R.id.edit_minutes_manual);
-        iv_back_image = view.findViewById(R.id.iv_back_image);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.auto_layout:
+                select_automated.setVisibility(View.VISIBLE);
+                select_manual.setVisibility(View.GONE);
 
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("AUTO");
-                select_automated.setVisibility(View.VISIBLE);
-                select_manual.setVisibility(View.GONE);
                 edit_day_manual.setText("1");
                 edit_minutes_manual.setText("00");
 
-                if (SessionManager.getTask(getActivity()) != null) {
-                    iv_back_image.setVisibility(View.VISIBLE);
-                }
 
                 break;
             case R.id.manual_layout:
+                select_manual.setVisibility(View.VISIBLE);
+                select_automated.setVisibility(View.GONE);
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("MANUAL");
-                select_automated.setVisibility(View.GONE);
-                select_manual.setVisibility(View.VISIBLE);
                 edit_day.setText("1");
                 edit_minutes.setText("00");
-                if (SessionManager.getTask(getActivity()) != null) {
-                    iv_back_image.setVisibility(View.VISIBLE);
-                }
+
 
                 break;
         }

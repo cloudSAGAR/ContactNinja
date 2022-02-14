@@ -164,7 +164,7 @@ Number</string>
     <string name="group_to">To</string>
     <string name="add_new_group">Add new group</string>
     <string name="add_new_group_all">Add all group</string>
-    <string name="remove_new_group_all">Add all group</string>
+    <string name="remove_new_group_all">Remove all group</string>
     <string name="add_task_email">Create a new \n email task</string>
     <string name="add_task_text">Create a new \n Text task</string>
     <string name="add_new_group_name">Intricare technologies</string>
@@ -417,6 +417,8 @@ Number</string>
     <string name="select_User">User</string>
     <string name="select">Select</string>
     <string name="selected">Selected</string>
+    <string name="contacts">Contacts</string>
+    <string name="groups">Groups</string>
 
 
     <string name="add_blacklist">Add to blacklist</string>

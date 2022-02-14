@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.contactninja.Campaign.Add_Camp_First_Step_Activity;
+import com.contactninja.Campaign.Add_Camp_Tab_Select_Activity;
 import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.Campaign.Campaign_Preview;
 import com.contactninja.Interface.CampaingClick;
@@ -325,7 +325,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_minute("");
                 Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                 intent.putExtra("flag","new");
                 startActivity(intent);
                 }else {

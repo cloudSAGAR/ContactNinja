@@ -395,7 +395,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     }
                     Log.e("Sequence is is", String.valueOf(sequence_id));
 
-                    Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
                     intent.putExtra("day", sequenceTask.getDay());
@@ -432,7 +432,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         Bundle bundle = getintent.getExtras();
                         sequence_id = bundle.getInt("sequence_id");
                     }
-                    Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
                     intent.putExtra("day", sequenceTask.getDay());
@@ -931,7 +931,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                                     campaignTaskList.add(campaignTask);
                                     SessionManager.setTask(getApplicationContext(), campaignTaskList);
                                 }
-                                Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                                Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                                 intent.putExtra("flag", "new");
                                 startActivity(intent);
                                 finish();

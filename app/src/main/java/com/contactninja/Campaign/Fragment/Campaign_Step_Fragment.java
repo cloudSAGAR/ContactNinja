@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.Campaign.Add_Camp_First_Step_Activity;
+import com.contactninja.Campaign.Add_Camp_Tab_Select_Activity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -202,7 +202,7 @@ public class Campaign_Step_Fragment extends Fragment {
                             SessionManager.setCampaign_type_name("");
                             SessionManager.setCampaign_minute("00");
                             SessionManager.setCampaign_Day("1");
-                            Intent intent=new Intent(getContext(), Add_Camp_First_Step_Activity.class);
+                            Intent intent=new Intent(getContext(), Add_Camp_Tab_Select_Activity.class);
                             startActivity(intent);
                         }
                     });
@@ -393,7 +393,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     campaignTask.setStepNo(sequenceTask.getStepNo());;
 
                     campaignTasks1.add(campaignTask);*/
-                    Intent intent=new Intent(getActivity(), Add_Camp_First_Step_Activity.class);
+                    Intent intent=new Intent(getActivity(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -459,7 +459,7 @@ public class Campaign_Step_Fragment extends Fragment {
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Intent intent=new Intent(getActivity(), Add_Camp_First_Step_Activity.class);
+                    Intent intent=new Intent(getActivity(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());

@@ -784,7 +784,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+        Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
         intent.putExtra("flag", "new");
         startActivity(intent);
         finish();

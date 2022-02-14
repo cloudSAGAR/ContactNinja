@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.contactninja.Model.CampaignTask;
@@ -50,7 +51,7 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
             R.drawable.ic_message_tab,
             R.drawable.ic_email,
     };
-    LinearLayout mMainLayout;
+    RelativeLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
     SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;

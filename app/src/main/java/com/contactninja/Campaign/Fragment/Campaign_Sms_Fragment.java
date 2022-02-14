@@ -209,22 +209,15 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
         switch (view.getId())
         {
             case R.id.auto_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setCampaign_type("SMS");
-                SessionManager.setCampaign_type_name("AUTO");
-                Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
-                Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
                 layout_sms_second_manual.setVisibility(View.GONE);
+
+                SessionManager.setCampaign_type("SMS");
+                SessionManager.setCampaign_type_name("AUTO");
                 edit_day_manual.setText("1");
                 edit_minutes_manual.setText("00");
                 if (SessionManager.getTask(getActivity())!=null) {
-
-
                     if (SessionManager.getTask(getActivity()).size() >= 1) {
                         layout_sms_second_automated.setVisibility(View.VISIBLE);
                         SessionManager.setCampaign_Day(edit_day.getText().toString());
@@ -233,23 +226,15 @@ public class Campaign_Sms_Fragment extends Fragment implements View.OnClickListe
                     } else {
                         layout_sms_second_automated.setVisibility(View.GONE);
                         iv_back_image.setVisibility(View.VISIBLE);
-
                     }
                 }
 
                 break;
             case R.id.manual_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
+                select_manual.setVisibility(View.VISIBLE);
+                select_automated.setVisibility(View.GONE);
                 SessionManager.setCampaign_type("SMS");
                 SessionManager.setCampaign_type_name("MANUAL");
-                Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
-                Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
-                select_automated.setVisibility(View.GONE);
-                select_manual.setVisibility(View.VISIBLE);
                 layout_sms_second_automated.setVisibility(View.GONE);
                 edit_day.setText("1");
                 edit_minutes.setText("00");

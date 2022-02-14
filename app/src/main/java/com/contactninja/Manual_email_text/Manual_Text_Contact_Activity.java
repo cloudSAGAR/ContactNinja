@@ -359,69 +359,6 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
 
     }
 
-    private void ContectEventnext() throws JSONException {
-
-
-        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("page", currentPage);
-        paramObject.addProperty("perPage", limit);
-        paramObject.addProperty("status", "");
-        paramObject.addProperty("q", "");
-        paramObject.addProperty("orderBy", "firstname");
-        paramObject.addProperty("order", "asc");
-        obj.add("data", paramObject);
-
-        Log.e("Request data", new Gson().toJson(obj));
-
-
-        RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(this), Global.Device);
-        call.enqueue(new Callback<ApiResponse>() {
-            @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.body().getHttp_status() == 200) {
-
-
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<ContectListData>() {
-                    }.getType();
-                    groupContectAdapter.removeLoadingFooter();
-                    ContectListData group_model = new Gson().fromJson(headerString, listType);
-                    contectListData.clear();
-                    contectListData.addAll(group_model.getContacts());
-                    groupContectAdapter.addAll(contectListData);
-
-                    if (group_model.getContacts().size() == limit) {
-                        if (currentPage != TOTAL_PAGES) groupContectAdapter.addLoadingFooter();
-                        else isLastPage = true;
-                    } else {
-                        isLastPage = true;
-                        isLoading = false;
-                    }
-
-                    num_count.setText("" + group_model.getTotal() + " Group");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
-
-            }
-        });
-
-
-    }
 
     private void Phone_bouttomSheet(List<ContectListData.Contact.ContactDetail> detailList, GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts, int position) {
 
@@ -433,7 +370,8 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
         /*  tv_txt.setText("Please select contact");*/
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
         email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        PhoneListAdepter emailListAdepter = new PhoneListAdepter(getApplicationContext(), detailList, holder1, contacts, position,
+        PhoneListAdepter emailListAdepter = new PhoneListAdepter(getApplicationContext(), detailList,
+                holder1, contacts, position,
                 tv_done);
         email_list.setAdapter(emailListAdepter);
         email_list.setVisibility(View.VISIBLE);
@@ -539,11 +477,11 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     if (contacts.get(position).getIs_blocked().equals(1)) {
 
                         holder1.iv_block.setVisibility(View.VISIBLE);
-                        holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                         holder1.remove_contect_icon.setVisibility(View.GONE);
                         holder1.userName.setTextColor(context.getResources().getColor(R.color.block_item));
 
                     } else {
+                        holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                         holder1.iv_block.setVisibility(View.GONE);
                         holder1.userName.setTextColor(context.getResources().getColor(R.color.unblock_item));
 
@@ -794,6 +732,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
             holder.tv_item.setText("Phone(" + userLinkedGmailList.get(position).getLabel() + ")");
             holder.tv_phone.setText(userLinkedGmailList.get(position).getEmailNumber());
             holder.tv_phone.setVisibility(View.VISIBLE);
+
             if (userLinkedGmailList.get(position).isPhoneSelect()) {
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
@@ -821,45 +760,6 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     }
                     userLinkedGmailList.get(position).setPhoneSelect(true);
 
-
-                    tv_done.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Log.e("Main List Is",new Gson().toJson(contacts));
-                            Log.e("Postion is",String.valueOf(s_position));
-                            Log.e("Contect Size ",String.valueOf(contacts.get(s_position).getContactDetails().size()));
-                            Log.e("User SELCT List",new Gson().toJson(userLinkedGmailList));
-
-
-                            holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                            holder1.add_new_contect_icon.setVisibility(View.GONE);
-
-                            List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
-                            contactDetails.add(userLinkedGmailList.get(position));
-                            contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size() - 1));
-                            //Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
-                            contacts.get(s_position).setContactDetails(contactDetails);
-                            select_contectListData.add(contacts.get(s_position));
-                            //userDetailsfull.get(position).setId(position);
-                            Log.e("OHH DATA",new Gson().toJson(select_contectListData));
-                            SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                            SessionManager.setGroupList(getApplicationContext(), select_contectListData);
-                            num_count.setText(select_contectListData.size() + " Contact Selcted");
-                            contacts.get(s_position).setFlag("false");
-                            Intent data = getIntent();
-                            Bundle bundle = data.getExtras();
-                            String task_name = bundle.getString("task_name");
-                            Intent intent = new Intent(Manual_Text_Contact_Activity.this, Manual_Text_Send_Activty.class);
-                            intent.putExtra("number", userLinkedGmailList.get(position).getEmailNumber());
-                            intent.putExtra("id", userLinkedGmailList.get(position).getContactId());
-                            intent.putExtra("type", "app");
-                            intent.putExtra("task_name", task_name);
-                            startActivity(intent);
-                            finish();
-                            bottomSheetDialog_templateList1.cancel();
-                        }
-                    });
-
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
                     notifyItemChanged(position);
@@ -867,7 +767,43 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     notifyDataSetChanged();
                 }
             });
+            tv_done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e("Main List Is",new Gson().toJson(contacts));
+                    Log.e("Postion is",String.valueOf(s_position));
+                    Log.e("Contect Size ",String.valueOf(contacts.get(s_position).getContactDetails().size()));
+                    Log.e("User SELCT List",new Gson().toJson(userLinkedGmailList));
 
+
+                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+
+                    List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
+                    contactDetails.add(userLinkedGmailList.get(position));
+                    contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size() - 1));
+                    //Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+                    contacts.get(s_position).setContactDetails(contactDetails);
+                    select_contectListData.add(contacts.get(s_position));
+                    //userDetailsfull.get(position).setId(position);
+                    Log.e("OHH DATA",new Gson().toJson(select_contectListData));
+                    SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
+                    SessionManager.setGroupList(getApplicationContext(), select_contectListData);
+                    num_count.setText(select_contectListData.size() + " Contact Selcted");
+                    contacts.get(s_position).setFlag("false");
+                    Intent data = getIntent();
+                    Bundle bundle = data.getExtras();
+                    String task_name = bundle.getString("task_name");
+                    Intent intent = new Intent(Manual_Text_Contact_Activity.this, Manual_Text_Send_Activty.class);
+                    intent.putExtra("number", userLinkedGmailList.get(position).getEmailNumber());
+                    intent.putExtra("id", userLinkedGmailList.get(position).getContactId());
+                    intent.putExtra("type", "app");
+                    intent.putExtra("task_name", task_name);
+                    startActivity(intent);
+                    finish();
+                    bottomSheetDialog_templateList1.cancel();
+                }
+            });
 
         }
 

@@ -22,7 +22,7 @@ import com.contactninja.Utils.YourFragmentInterface;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Manual_Auto_Selection_Fragment extends Fragment implements View.OnClickListener, YourFragmentInterface {
     LinearLayout auto_layout, manual_layout;
-    ImageView select_manual, select_automated, iv_back_image;
+    ImageView select_manual, select_automated;
     SessionManager sessionManager;
 
     String c_name = "", c_type = "";
@@ -139,7 +139,6 @@ public class Manual_Auto_Selection_Fragment extends Fragment implements View.OnC
 
         edit_day_manual = view.findViewById(R.id.edit_day_manual);
         edit_minutes_manual = view.findViewById(R.id.edit_minutes_manual);
-        iv_back_image = view.findViewById(R.id.iv_back_image);
     }
 
     @Override
@@ -147,44 +146,20 @@ public class Manual_Auto_Selection_Fragment extends Fragment implements View.OnC
 
         switch (view.getId()) {
             case R.id.auto_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setCampaign_type("SMS");
-                SessionManager.setCampaign_type_name("AUTO");
-                Log.e("sessionManager", sessionManager.getCampaign_type(getActivity()));
-                Log.e("sessionManager", sessionManager.getCampaign_type_name(getActivity()));
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
+                SessionManager.setCampaign_type("SMS");
+                SessionManager.setCampaign_type_name("AUTO");
                 edit_day_manual.setText("1");
                 edit_minutes_manual.setText("00");
-                if (SessionManager.getTask(getActivity()) != null) {
-
-                    iv_back_image.setVisibility(View.VISIBLE);
-
-
-                }
-
                 break;
             case R.id.manual_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
+                select_manual.setVisibility(View.VISIBLE);
+                select_automated.setVisibility(View.GONE);
                 SessionManager.setCampaign_type("SMS");
                 SessionManager.setCampaign_type_name("MANUAL");
-                Log.e("sessionManager", sessionManager.getCampaign_type(getActivity()));
-                Log.e("sessionManager", sessionManager.getCampaign_type_name(getActivity()));
-                select_automated.setVisibility(View.GONE);
-                select_manual.setVisibility(View.VISIBLE);
                 edit_day.setText("1");
                 edit_minutes.setText("00");
-                if (SessionManager.getTask(getActivity()) != null) {
-                    iv_back_image.setVisibility(View.VISIBLE);
-
-                }
                 break;
         }
 

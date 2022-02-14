@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,7 +41,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.List;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
-public class Add_Camp_First_Step_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
+public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -54,7 +55,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
             R.drawable.ic_email,
             R.drawable.ic_message_tab,
     };
-    LinearLayout mMainLayout;
+    RelativeLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
     SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;
@@ -376,7 +377,7 @@ public class Add_Camp_First_Step_Activity extends AppCompatActivity implements V
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Add_Camp_First_Step_Activity.this, mMainLayout);
+        Global.checkConnectivity(Add_Camp_Tab_Select_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

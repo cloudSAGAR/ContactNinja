@@ -121,7 +121,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             e.printStackTrace();
         }
 
-
+        edit_template.requestFocus();
         edit_template.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -248,7 +248,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+        Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
         intent.putExtra("flag", "new");
         startActivity(intent);
         finish();

@@ -763,46 +763,44 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     }
                     userLinkedGmailList.get(position).setPhoneSelect(true);
 
-
-                    tv_done.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            for (int i = 0; i < contacts.get(s_position).getContactDetails().size(); i++) {
-                                if (contacts.get(s_position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("")) {
-                                    // detailList.add(contacts.get(position).getContactDetails().get(i));
-                                } else {
-                                    userLinkedGmailList.add(contacts.get(s_position).getContactDetails().get(i));
-                                    break;
-                                }
-                            }
-                            holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                            holder1.add_new_contect_icon.setVisibility(View.GONE);
-
-                            List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
-                            contactDetails.add(userLinkedGmailList.get(position));
-                            contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size() - 1));
-                            //Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
-                            contacts.get(s_position).setContactDetails(contactDetails);
-                            select_contectListData.add(contacts.get(position));
-                            //userDetailsfull.get(position).setId(position);
-                            SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                            SessionManager.setGroupList(getApplicationContext(), select_contectListData);
-                            num_count.setText(select_contectListData.size() + " Contact Selcted");
-                            contacts.get(position).setFlag("false");
-                            Intent intent = new Intent(getApplicationContext(), Manual_Email_Send_Activty.class);
-                            intent.putExtra("task_name", task_name);
-                            startActivity(intent);
-                            finish();
-                            bottomSheetDialog_templateList1.cancel();
-                        }
-                    });
-
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
                     notifyItemChanged(position);
                     userLinkedGmailList.get(position).setFlag("false");
                     notifyDataSetChanged();
+                }
+            });
+            tv_done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    for (int i = 0; i < contacts.get(s_position).getContactDetails().size(); i++) {
+                        if (contacts.get(s_position).getContactDetails().get(i).getType().equals("NUMBER") && !contacts.get(position).getContactDetails().get(i).getEmailNumber().equals("")) {
+                            // detailList.add(contacts.get(position).getContactDetails().get(i));
+                        } else {
+                            userLinkedGmailList.add(contacts.get(s_position).getContactDetails().get(i));
+                            break;
+                        }
+                    }
+                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                    holder1.add_new_contect_icon.setVisibility(View.GONE);
+
+                    List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
+                    contactDetails.add(userLinkedGmailList.get(position));
+                    contactDetails.add(userLinkedGmailList.get(userLinkedGmailList.size() - 1));
+                    //Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+                    contacts.get(s_position).setContactDetails(contactDetails);
+                    select_contectListData.add(contacts.get(position));
+                    //userDetailsfull.get(position).setId(position);
+                    SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
+                    SessionManager.setGroupList(getApplicationContext(), select_contectListData);
+                    num_count.setText(select_contectListData.size() + " Contact Selcted");
+                    contacts.get(position).setFlag("false");
+                    Intent intent = new Intent(getApplicationContext(), Manual_Email_Send_Activty.class);
+                    intent.putExtra("task_name", task_name);
+                    startActivity(intent);
+                    finish();
+                    bottomSheetDialog_templateList1.cancel();
                 }
             });
 
