@@ -73,7 +73,10 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -112,6 +115,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     LinearLayout layout_toolbar_logo;
     TextView edit_profile;
     private BroadcastReceiver mNetworkReceiver;
+    View view_single;
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
@@ -156,6 +160,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_profile_main, container, false);
         intentView(view);
+        SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
+
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
@@ -519,13 +525,59 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
-                        fragment = new User_InformationFragment();
+                        if (flag.equals("edit"))
+                        {
+                            view_single.setVisibility(View.VISIBLE);
+                            fragment = new User_InformationFragment();
+
+                        }
+                        else {
+                            view_single.setVisibility(View.VISIBLE);
+                            fragment = new User_InformationFragment();
+
+                        }
                         break;
                     case 1:
-                        fragment = new User_BzcardFragment();
+                        if (flag.equals("edit"))
+                        {
+                            view_single.setVisibility(View.GONE);
+                            layout_toolbar_logo.setVisibility(View.VISIBLE);
+                            iv_back.setVisibility(View.GONE);
+                            SessionManager.setContect_flag("read");
+                            save_button.setVisibility(View.GONE);
+                            iv_Setting.setVisibility(View.VISIBLE);
+                            save_button.setText("Save");
+                            iv_edit.setVisibility(View.GONE);
+                            edt_lastname.setVisibility(View.GONE);
+                            edit_profile.setVisibility(View.VISIBLE);
+                            edt_FirstName.setEnabled(false);
+                            setdata();
+                            fragment = new User_BzcardFragment();
+                        }
+                        else {
+                            fragment = new User_BzcardFragment();
+                        }
                         break;
                     case 2:
-                        fragment = new User_ExposuresFragment();
+                        if (flag.equals("edit"))
+                        {
+                            view_single.setVisibility(View.VISIBLE);
+                            layout_toolbar_logo.setVisibility(View.VISIBLE);
+                            iv_back.setVisibility(View.GONE);
+                            SessionManager.setContect_flag("read");
+                            save_button.setVisibility(View.GONE);
+                            iv_Setting.setVisibility(View.VISIBLE);
+                            save_button.setText("Save");
+                            iv_edit.setVisibility(View.GONE);
+                            edt_lastname.setVisibility(View.GONE);
+                            edit_profile.setVisibility(View.VISIBLE);
+                            setdata();
+                            edt_FirstName.setEnabled(false);
+                            fragment = new User_ExposuresFragment();
+                        }
+                        else {
+                            fragment = new User_ExposuresFragment();
+                        }
                         break;
 
                 }
@@ -548,10 +600,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         });
 
+
+
     }
 
     private void intentView(View view) {
-
+        view_single=view.findViewById(R.id.view_single);
         iv_edit = view.findViewById(R.id.iv_edit);
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
@@ -655,7 +709,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         loadingDialog.showLoadingDialog();
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
-        ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+      //  ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
         AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
         zip_code = addcontectModel.getZip_code();
         zoom_id = addcontectModel.getZoom_id();
@@ -671,8 +725,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         String contect_number = user_data.getUser().getContactNumber();
 
         List<Contactdetail> contactdetails = new ArrayList<>();
-
+        contactdetails.clear();
         List<Contactdetail> contactdetails1 = new ArrayList<>();
+        contactdetails1.clear();
         contactdetails.addAll(addcontectModel.getContactdetails());
 
 
@@ -749,6 +804,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             if (contactdetails.get(i).getEmail_number().equals("")) {
 
             } else {
+
+
                 if (contactdetails.get(i).getEmail_number().equals(user_data.getUser().getContactNumber()) || contactdetails.get(i).getEmail_number().equals(user_data.getUser().getEmail())) {
 
                 } else {
@@ -762,27 +819,32 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
             }
 
-        }
+
+
+                    }
+
+
+
         JSONArray jsonArray = new JSONArray();
         JSONObject paramObject1 = null;
 
+        Log.e("Size is ",String.valueOf(contactdetails1.size()));
+        contactdetails1=removeDuplicates((ArrayList<Contactdetail>) contactdetails1);
         for (int i = 0; i < contactdetails1.size(); i++) {
             paramObject1 = new JSONObject();
             if (contactdetails1.get(i).getEmail_number().equals("")) {
 
             } else {
+                        if (contactdetails1.get(i).getType().equals("NUMBER")) {
+                            phone = contactdetails1.get(i).getEmail_number();
+                        }
+                        phone_type = contactdetails1.get(i).getLabel();
+                        paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
+                        paramObject1.put("label", contactdetails1.get(i).getLabel());
+                        paramObject1.put("type", contactdetails1.get(i).getType());
 
+                    }
 
-                if (contactdetails.get(i).getType().equals("NUMBER")) {
-                    phone = contactdetails.get(i).getEmail_number();
-                }
-                phone_type = contactdetails1.get(i).getLabel();
-                paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
-                paramObject1.put("label", contactdetails1.get(i).getLabel());
-                paramObject1.put("type", contactdetails1.get(i).getType());
-
-
-            }
             jsonArray.put(paramObject1);
         }
         param_data.put("contact_details", jsonArray);
@@ -792,13 +854,13 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
+
+
         retrofitCalls.UpdateUser_Profile(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-
-
                     layout_toolbar_logo.setVisibility(View.VISIBLE);
                     iv_back.setVisibility(View.GONE);
                     SessionManager.setContect_flag("read");
@@ -856,8 +918,25 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         });
 
+
     }
 
+    public ArrayList<Contactdetail>  removeDuplicates(ArrayList<Contactdetail> list){
+        Set<Contactdetail> set = new TreeSet(new Comparator<Contactdetail>() {
+
+            @Override
+            public int compare(Contactdetail o1, Contactdetail o2) {
+                if(o1.getEmail_number().equalsIgnoreCase(o2.getEmail_number())){
+                    return 0;
+                }
+                return 1;
+            }
+        });
+        set.addAll(list);
+
+        final ArrayList newList = new ArrayList(set);
+        return newList;
+    }
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
