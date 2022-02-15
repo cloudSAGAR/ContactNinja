@@ -86,7 +86,6 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
 
         select_contectListData=new ArrayList<>();
         grouplists=new ArrayList<>();
-        SessionManager.setGroupList(getActivity(), new ArrayList<>());
         try {
             if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
                 GroupEvent();
@@ -105,9 +104,6 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         group_recyclerView.setItemViewCacheSize(500);
         add_contect_list.setHasFixedSize(true);
         add_contect_list.setItemViewCacheSize(500);
-
-        SessionManager.setGroupList(getActivity(), new ArrayList<>());
-
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
         main_layout.setOnClickListener(this);

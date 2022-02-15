@@ -1,5 +1,4 @@
 package com.contactninja.Main_Broadcast;
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,7 +32,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     TabLayout tabLayout;
@@ -132,7 +130,6 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Broadcast_Contact_Selction_Actvity.this);
-
                 if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
                     Intent new_task = new Intent(getApplicationContext(), Add_Broad_Text_Activity.class);
                     new_task.putExtra("flag", "add");

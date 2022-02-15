@@ -83,6 +83,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
+        SessionManager.getGroupList(getApplicationContext());
         if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
             tv_titele.setText(getResources().getString(R.string.broadcast_text));
         } else {
@@ -101,6 +102,72 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String currentDateandTime = sdf.format(new Date());
         tv_time.setText(currentDateandTime);
+
+
+        if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit"))
+        {
+            broadcate_save_data=SessionManager.getBroadcate_save_data(getApplicationContext());
+            tv_time.setText(broadcate_save_data.getTime());
+            tv_date.setText(broadcate_save_data.getDate());
+            tv_recurrence.setText(broadcate_save_data.getRecurrence());
+            tv_day.setText(broadcate_save_data.getRepeat_every());
+            tv_occurs_weekly.setText(broadcate_save_data.getOccurs_weekly());
+
+
+            if (broadcate_save_data.getOccurs_monthly().equals("Day"))
+            {
+                iv_selected.setVisibility(View.VISIBLE);
+                iv_every_selcted.setVisibility(View.GONE);
+                iv_every_unselcted.setVisibility(View.VISIBLE);
+
+            }
+            else {
+                iv_selected.setVisibility(View.GONE);
+                iv_unselected.setVisibility(View.VISIBLE);
+                iv_every_unselcted.setVisibility(View.VISIBLE);
+
+            }
+
+            tv_month.setText(broadcate_save_data.getDay_of_month());
+            String[] recursion_array = getResources().getStringArray(R.array.broadcast_week_txt);
+            second_id=broadcate_save_data.getEvery_second();
+            tv_second.setText(recursion_array[Integer.parseInt(broadcate_save_data.getEvery_second())]);
+            String[] recursion_array1 = getResources().getStringArray(R.array.broadcast_day_txt);
+            tv_day_selction.setText(recursion_array1[Integer.parseInt(broadcate_save_data.getEvery_day())]);
+            day_section_id=broadcate_save_data.getEvery_day();
+            if (broadcate_save_data.getRecurrence().equals("Daily")) {
+                layout_month.setVisibility(View.GONE);
+                tv_info.setVisibility(View.GONE);
+                layout_daily_selction.setVisibility(View.VISIBLE);
+                tv_day_txt.setText("Day");
+                view_day.setVisibility(View.VISIBLE);
+                layout_occurs_weekly.setVisibility(View.GONE);
+            }
+            else if (broadcate_save_data.getRecurrence().equals("Weekly")) {
+
+                layout_month.setVisibility(View.GONE);
+                tv_info.setVisibility(View.GONE);
+                layout_daily_selction.setVisibility(View.VISIBLE);
+                tv_day_txt.setText("Week");
+                view_day.setVisibility(View.VISIBLE);
+                layout_occurs_weekly.setVisibility(View.VISIBLE);
+            }
+            else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
+                tv_daylist.setText("");
+                layout_month.setVisibility(View.VISIBLE);
+                tv_info.setVisibility(View.GONE);
+                layout_daily_selction.setVisibility(View.VISIBLE);
+                tv_day_txt.setText("Month");
+                view_day.setVisibility(View.VISIBLE);
+                layout_occurs_weekly.setVisibility(View.GONE);
+            }
+            else {
+                layout_month.setVisibility(View.GONE);
+                layout_occurs_weekly.setVisibility(View.GONE);
+                layout_daily_selction.setVisibility(View.GONE);
+                view_day.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
