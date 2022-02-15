@@ -43,7 +43,9 @@
 
         </EditText>
     </LinearLayout>
-
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
 
     <com.google.android.material.tabs.TabLayout
         android:layout_marginTop="@dimen/_5sdp"
@@ -54,6 +56,7 @@
         app:tabTextColor="@color/text_reg"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="2dp"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
         android:layout_height="wrap_content"
         android:background="@color/white">
     </com.google.android.material.tabs.TabLayout>
@@ -62,11 +65,9 @@
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
-    <androidx.viewpager.widget.ViewPager
-        android:layout_marginTop="@dimen/_3sdp"
-        android:id="@+id/viewPager"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tabLayout"
-        />
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llFooter" />
 </LinearLayout>

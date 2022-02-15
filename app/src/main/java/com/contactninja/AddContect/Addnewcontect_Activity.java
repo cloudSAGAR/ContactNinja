@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -82,6 +83,7 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
+    private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -149,6 +151,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_addnewcontect);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
+
+
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
         Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
@@ -163,7 +167,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
             iv_user.setOnClickListener(this);
-            if (Contect_data.getIs_blocked().equals("1"))
+            if (Contect_data.getIs_blocked().equals(1))
             {
                 iv_block.setVisibility(View.VISIBLE);
             }
@@ -208,7 +212,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             save_button.setText("Save Contact");
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
             edt_FirstName.setEnabled(false);
             edt_lastname.setEnabled(false);
             iv_user.setOnClickListener(null);
@@ -218,7 +223,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            if (Contect_data.getIs_blocked().equals("1"))
+            if (Contect_data.getIs_blocked().equals(1))
             {
                 iv_block.setVisibility(View.VISIBLE);
             }
@@ -259,7 +264,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             olld_image = Contect_data.getContactImage();
 
             save_button.setText("Edit Contact");
-        } else {
+        }
+        else {
+            iv_toolbar_manu_vertical.setVisibility(View.GONE);
             Log.e("Null", "No Call");
         }
         retrofitCalls = new RetrofitCalls(this);
@@ -317,12 +324,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 onBackPressed();
             }
         });
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
                 zip_code = addcontectModel.getZip_code();
                 zoom_id = addcontectModel.getZoom_id();
@@ -334,10 +349,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     if (f_name.equals("")) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
 
-                    } /*else if (l_name.equals("")) {
-                        Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_last_name), false);
-
-                    }*/ else {
+                    }  else {
                         try {
                             if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
                                 AddContect_Update();
@@ -353,10 +365,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     if (f_name.equals("")) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
 
-                    } /*else if (l_name.equals("")) {
-                        Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_last_name), false);
-
-                    }*/ else if (addcontectModel.getContactdetails().size() == 0) {
+                    } else if (addcontectModel.getContactdetails().size() == 0) {
 
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.enter_phone), false);
 
@@ -478,7 +487,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 Global.Messageshow(getApplicationContext(), mMainLayout, "Permission Canceled, Now your application cannot access CONTACTS", false);
                 startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                         Uri.fromParts("package", getPackageName(), null)));
-                // Toast.makeText(MainActivity.this, "Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
             }
         }
         if (RC == REQUEST_ID_MULTIPLE_PERMISSIONS) {
@@ -614,24 +622,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         city = addcontectModel.getCity();
         state = addcontectModel.getState();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-
         List<Contactdetail> contactdetails = new ArrayList<>();
         contactdetails.addAll(addcontectModel.getContactdetails());
-
-
         List<Contactdetail> contactdetails_email = new ArrayList<>();
         contactdetails_email.addAll(addcontectModel.getContactdetails_email());
         contactdetails.addAll(contactdetails_email);
-
-
         JSONObject obj = new JSONObject();
-
         JSONObject paramObject = new JSONObject();
-
         //Other Company Add
         if (addcontectModel.getCompany().equals("")) {
             paramObject.put("company_name", "");
@@ -658,19 +655,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("job_title", addcontectModel.getJob_title());
         paramObject.put("lastname", edt_lastname.getText().toString().trim());
         paramObject.put("linkedin_link", addcontectModel.getLinkedin());
-        paramObject.put("organization_id", "1");
+        paramObject.put("organization_id", 1);
         paramObject.put("state", state);
-        paramObject.put("team_id", "1");
+        paramObject.put("team_id", 1);
         // addcontectModel.getTime()
         paramObject.put("timezone_id", addcontectModel.getTime());
         paramObject.put("twitter_link", addcontectModel.getTwitter());
-        paramObject.put("user_id", user_id);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("zipcode", zip_code);
         paramObject.put("zoom_id", zoom_id);
+
+        paramObject.put("imei",Global.imei);
         paramObject.put("contact_image", user_image_Url);
         paramObject.put("image_extension", File_extension);
         paramObject.put("contact_image_name", File_name);
-
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
@@ -688,6 +686,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             }
             jsonArray.put(paramObject1);
         }
+
 
         paramObject.put("contact_detail", jsonArray);
 
@@ -717,12 +716,19 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }.getType();
                     UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
                     try {
-                        if (uservalidateModel.getFirstname().size() != 0) {
-                            Global.Messageshow(getApplicationContext(), mMainLayout, uservalidateModel.getFirstname().get(0).toString(), false);
+                        String message = "";
+                        if (uservalidateModel.getEmail_number().size() != 0) {
+                            message = uservalidateModel.getEmail_number().get(0).toString();
                         }
+                        if (uservalidateModel.getFirstname().size() != 0) {
+                            message = uservalidateModel.getFirstname().get(0).toString();
+                        }
+                        Global.Messageshow(getApplicationContext(), mMainLayout, message, false);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
 
 
                 }
@@ -750,9 +756,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         city = addcontectModel.getCity();
         state = addcontectModel.getState();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
         List<Contactdetail> contactdetails = new ArrayList<>();
@@ -767,7 +770,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JSONObject param_data = new JSONObject();
         param_data.put("organization_id", 1);
         param_data.put("team_id", 1);
-        param_data.put("user_id", Integer.parseInt(user_id));
+        param_data.put("user_id",user_data.getUser().getId());
         JSONArray jsonArray_contect = new JSONArray();
 
 
@@ -795,13 +798,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("job_title", addcontectModel.getJob_title());
         paramObject.put("lastname", edt_lastname.getText().toString().trim());
         paramObject.put("linkedin_link", addcontectModel.getLinkedin());
-        paramObject.put("organization_id", "1");
+        paramObject.put("organization_id", 1);
         paramObject.put("state", state);
-        paramObject.put("team_id", "1");
+        paramObject.put("team_id", 1);
         // addcontectModel.getTime()
         paramObject.put("timezone_id", addcontectModel.getTime());
         paramObject.put("twitter_link", addcontectModel.getTwitter());
-        paramObject.put("user_id", user_id);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("zipcode", zip_code);
         paramObject.put("zoom_id", zoom_id);
         if (!user_image_Url.equals("")) {
@@ -899,107 +902,24 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     }
 
-    public void AddContect_Api1() throws JSONException {
-
-        loadingDialog.showLoadingDialog();
-        ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
-        f_name = edt_FirstName.getText().toString().trim();
-        l_name = edt_lastname.getText().toString().trim();
-        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getApplicationContext());
-        zip_code = addcontectModel.getZip_code();
-        zoom_id = addcontectModel.getZoom_id();
-        address = addcontectModel.getAddress();
-        note = addcontectModel.getNote();
-        city = addcontectModel.getCity();
-        state = addcontectModel.getState();
-        SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        List<Contactdetail> contactdetails = new ArrayList<>();
-        contactdetails.addAll(addcontectModel.getContactdetails());
-
-
-        List<Contactdetail> contactdetails_email = new ArrayList<>();
-        contactdetails_email.addAll(addcontectModel.getContactdetails_email());
-        contactdetails.addAll(contactdetails_email);
-
-
-        JSONObject obj = new JSONObject();
-
-        JSONObject paramObject = new JSONObject();
-        paramObject.put("id", Contect_data.getId());
-        paramObject.put("address", address);
-        paramObject.put("breakout_link", addcontectModel.getBreakoutu());
-        paramObject.put("city", city);
-        paramObject.put("company_id", addcontectModel.getCompany_id());
-        paramObject.put("company_name", addcontectModel.getCompany());
-        paramObject.put("company_url", "");
-        paramObject.put("dob", addcontectModel.getBirthday());
-        paramObject.put("dynamic_fields_value", "");
-        paramObject.put("facebook_link", addcontectModel.getFacebook());
-        paramObject.put("firstname", edt_FirstName.getText().toString().trim());
-        paramObject.put("lastname", l_name);
-        paramObject.put("job_title", addcontectModel.getJob_title());
-        paramObject.put("lastname", edt_lastname.getText().toString().trim());
-        paramObject.put("linkedin_link", addcontectModel.getLinkedin());
-        paramObject.put("organization_id", Contect_data.getOrganizationId());
-        paramObject.put("state", state);
-        paramObject.put("team_id", Contect_data.getTeamId());
-        // addcontectModel.getTime()
-        paramObject.put("timezone_id", addcontectModel.getTime());
-        paramObject.put("twitter_link", addcontectModel.getTwitter());
-        paramObject.put("user_id", user_id);
-        paramObject.put("zipcode", zip_code);
-        paramObject.put("zoom_id", zoom_id);
-        paramObject.put("contact_image", user_image_Url);
-        paramObject.put("image_extension", File_extension);
-        paramObject.put("contact_image_name", File_name);
-        if (olld_image != null) {
-            paramObject.put("oldImage", olld_image);
-        } else {
-            paramObject.put("oldImage", "");
-        }
-
-        obj.put("data", paramObject);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-
-        Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Addnewcontect_Activity.this), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
-                    long rowContactId = getRawContactId();
-                    save_button.setText("Save Contact");
-                    /*           updateContect(edt_FirstName.getText().toString(),phone,phone_type);*/
-
-                    updateContactPhoneByName(edt_FirstName.getText().toString(), edt_lastname.getText().toString(), phone, phone_type);
-                    finish();
-                } else {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pulse_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
                     captureimageDialog(false);
                 }
                 break;
             case R.id.iv_user:
             case R.id.tv_nameLetter:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
                     if (olld_image != null && !olld_image.equals("")||user_image_Url != null && !user_image_Url.equals("")) {
                         captureimageDialog(true);
@@ -1011,6 +931,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
                 break;
             case R.id.iv_toolbar_manu_vertical:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
                 broadcast_manu(Contect_data);
                 break;
@@ -1034,7 +958,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 tv_nameLetter.setVisibility(View.GONE);
@@ -1045,7 +972,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         cameraId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, 0);
                 bottomSheetDialog.dismiss();
@@ -1055,6 +985,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         galleryId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
                 bottomSheetDialog.dismiss();
@@ -1301,7 +1235,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         selected_un_block.setText(getString(R.string.remove_blacklist));
         selected_delete.setText(getString(R.string.delete_contact));
 
-        if (contact_item.getIs_blocked().equals("1"))
+        if (contact_item.getIs_blocked().equals(1))
         {
             selected_block.setVisibility(View.GONE);
             line_block.setVisibility(View.GONE);
@@ -1319,11 +1253,16 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         selected_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 //Block Contect
 
                 try {
-                    Contect_BLock(contact_item,"1",bottomSheetDialog);
+                    if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)){
+                        Contect_BLock(contact_item,1,bottomSheetDialog);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1334,11 +1273,16 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         selected_un_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 //Block Contect
 
                 try {
-                    Contect_BLock(contact_item,"0",bottomSheetDialog);
+                    if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)){
+                        Contect_BLock(contact_item,0,bottomSheetDialog);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1349,11 +1293,16 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         selected_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 //Block Contect
 
                 try {
-                    Contect_Remove(contact_item,"0",bottomSheetDialog);
+                    if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)){
+                        Contect_Remove(contact_item,bottomSheetDialog);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1366,16 +1315,14 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     }
 
 
-    public void Contect_BLock(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Contect_BLock(ContectListData.Contact contact_data, int block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+        JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("is_block",block);
         JSONArray block_array = new JSONArray();
         block_array.put(contact_data.getId());
@@ -1392,7 +1339,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                   if (block.equals("1"))
+                   if (block==1)
                    {
                        iv_block.setVisibility(View.VISIBLE);
                    }
@@ -1422,16 +1369,14 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
 
 
-    public void Contect_Remove(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Contect_Remove(ContectListData.Contact contact_data ,BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());JSONObject obj = new JSONObject();
+        JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("id",contact_data.getId());
         paramObject.put("status","D");
 

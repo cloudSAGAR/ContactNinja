@@ -24,6 +24,13 @@ public class CompanyModel {
     @SerializedName("company")
     @Expose
     private List<Company> companies = new ArrayList<>();
+    @SerializedName("data")
+    @Expose
+    private List<Company> companies_data = new ArrayList<>();
+
+    @SerializedName("blocked")
+    @Expose
+    private List<Company> blocked_companies = new ArrayList<>();
     @SerializedName("message")
     @Expose
     private String message;
@@ -68,43 +75,67 @@ public class CompanyModel {
         this.message = message;
     }
 
+    public List<Company> getCompanies_data() {
+        return companies_data;
+    }
+
+    public void setCompanies_data(List<Company> companies_data) {
+        this.companies_data = companies_data;
+    }
+
+    public List<Company> getBlocked_companies() {
+        return blocked_companies;
+    }
+
+    public void setBlocked_companies(List<Company> blocked_companies) {
+        this.blocked_companies = blocked_companies;
+    }
+
     public static class Company {
         @SerializedName("id")
         @Expose
-        private Integer id=0;
+        private Integer id = 0;
         @SerializedName("organization_id")
         @Expose
-        private Integer organizationId=0;
+        private Integer organizationId = 0;
         @SerializedName("team_id")
         @Expose
-        private Integer teamId=0;
+        private Integer teamId = 0;
         @SerializedName("name")
         @Expose
-        private String name="";
-
+        private String name = "";
+        @SerializedName("address")
+        @Expose
+        private String address = "";
+        @SerializedName("description")
+        @Expose
+        private String description = "";
+        @SerializedName("contact_number")
+        @Expose
+        private String contact_number = "";
 
         @SerializedName("is_blocked")
         @Expose
-        private String is_blocked="";
+        private Integer is_blocked = 0;
 
         @SerializedName("email")
         @Expose
-        private String email="";
+        private String email = "";
         @SerializedName("status")
         @Expose
-        private String status="";
+        private String status = "";
         @SerializedName("created_at")
         @Expose
-        private String createdAt="";
+        private String createdAt = "";
         @SerializedName("updated_at")
         @Expose
-        private String updatedAt="";
+        private String updatedAt = "";
 
-        public String getIs_blocked() {
+        public Integer getIs_blocked() {
             return is_blocked;
         }
 
-        public void setIs_blocked(String is_blocked) {
+        public void setIs_blocked(Integer is_blocked) {
             this.is_blocked = is_blocked;
         }
 
@@ -170,6 +201,30 @@ public class CompanyModel {
 
         public void setUpdatedAt(String updatedAt) {
             this.updatedAt = updatedAt;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getContact_number() {
+            return contact_number;
+        }
+
+        public void setContact_number(String contact_number) {
+            this.contact_number = contact_number;
         }
     }
 

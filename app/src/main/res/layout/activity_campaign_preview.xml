@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".Campaign.Add_Camp_SMS_Activity">
+        tools:context=".Campaign.Add_Camp_Text_Activity">
         <include
             layout="@layout/toolbar"/>
 
@@ -97,22 +97,36 @@
                             </View>
                         </LinearLayout>
                         <LinearLayout
+                            android:id="@+id/layout_name"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/shape_5_white_ccc_line"
                             android:layout_width="match_parent"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:layout_height="@dimen/_50sdp">
-                            <EditText
-                                android:id="@+id/tv_name"
-                                android:background="@color/add_contect_transpernt"
-                                android:layout_marginEnd="@dimen/_10sdp"
+
+                            <ImageView
+                                android:visibility="gone"
                                 android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_width="match_parent"
-                                android:focusable="true"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_camp_edit"
+                                android:id="@+id/iv_camp_edit"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp">
+
+                            </ImageView>
+                            <TextView
+                                android:layout_gravity="left|center"
+                                android:gravity="center|left"
+                                android:id="@+id/tv_name"
                                 style="@style/tv_Medium_14"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:background="@color/add_contect_transpernt"
+                                android:focusable="true"
                                 android:textColor="@color/text_reg"
-                                android:textColorHint="@color/text_reg"
-                                android:layout_height="match_parent"/>
+                                android:textColorHint="@color/text_reg" />
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout

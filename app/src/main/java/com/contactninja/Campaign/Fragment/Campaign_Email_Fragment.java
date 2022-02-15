@@ -3,6 +3,7 @@ package com.contactninja.Campaign.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
     String c_name = "", c_type = "";
     LinearLayout layout_email_second_automated, layout_email_second_manual;
     EditText edit_day, edit_minutes, edit_day_manual, edit_minutes_manual;
+    private long mLastClickTime=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -194,7 +196,10 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.auto_layout:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
                 //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
@@ -224,7 +229,10 @@ public class Campaign_Email_Fragment extends Fragment implements View.OnClickLis
 
                 break;
             case R.id.manual_layout:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("MANUAL");
                 select_automated.setVisibility(View.GONE);

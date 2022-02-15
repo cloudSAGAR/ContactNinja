@@ -130,7 +130,7 @@
                         <ImageView
                             android:layout_marginStart="@dimen/_5sdp"
                             android:id="@+id/iv_mesage"
-                            android:src="@drawable/ic_message"
+                            android:src="@drawable/ic_message_tab"
                             android:layout_gravity="center"
                             android:layout_width="@dimen/_18sdp"
                             android:layout_height="@dimen/_18sdp">

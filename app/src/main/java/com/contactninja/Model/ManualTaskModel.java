@@ -76,7 +76,7 @@ public class ManualTaskModel {
 
     @SerializedName("task_name")
     @Expose
-    private String task_name;
+    private String task_name="";
 
 
     @SerializedName("mail_module")

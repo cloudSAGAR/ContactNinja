@@ -48,19 +48,32 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".AddContect.Add_Company_Activity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".Manual_email_sms.Manual_Shooz_Time_Date_Activity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".Manual_email_sms.Manual_Auto_Task_Name_Activity"
+            android:name=".Main_Broadcast.Recuring_email_broadcast_activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Sms_And_Email_Auto_Manual"
+            android:name=".Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Main_Broadcast.List_And_show.List_Broadcast_activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddContect.Add_Company_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_text.Manual_Shooz_Time_Date_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Manual_email_text.Manual_Auto_Task_Name_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name=".Manual_email_text.Text_And_Email_Auto_Manual"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -68,47 +81,43 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.List_And_show.Item_List_Sms_Detail_Activty"
+            android:name=".Manual_email_text.List_And_show.Item_List_Text_Detail_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Manual_Sms_TaskActivity"
+            android:name=".Manual_email_text.Manual_Text_TaskActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Manual_Sms_Send_Activty"
+            android:name=".Manual_email_text.Manual_Text_Send_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.List_And_show.Item_List_Email_Detail_activty"
+            android:name=".Manual_email_text.List_And_show.Item_List_Email_Detail_activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Manual_Sms_Contact_Activity"
+            android:name=".Manual_email_text.Manual_Text_Contact_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Manual_Email_TaskActivity_"
+            android:name=".Manual_email_text.Manual_Email_TaskActivity_"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Email_Tankyou"
+            android:name=".Manual_email_text.Email_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Manual_Mail_Send_Activty"
+            android:name=".Manual_email_text.Manual_Email_Send_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.Manual_Email_Contect_Activity"
+            android:name=".Manual_email_text.Manual_Email_Contect_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_sms.List_And_show.List_Manual_Activty"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Unuse.Email.Mail_Send_Activity"
+            android:name=".Manual_email_text.List_And_show.unused_List_Manual_Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -120,19 +129,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Unuse.Email.Email_Selction_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Unuse.Email.Email_List_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".AddContect.Message_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Campaign.Campaign_view_per_contect_Detail"
+            android:name=".Campaign.List_itm.Campaign_view_per_contect_Detail"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -140,11 +137,11 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Campaign_Viewcontect"
+            android:name=".Campaign.List_itm.Campaign_Viewcontect"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Campaign_Final_Start"
+            android:name=".Campaign.List_itm.Campaign_Final_Start"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -180,7 +177,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Add_Camp_SMS_Activity"
+            android:name=".Campaign.Add_Camp_Text_Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
@@ -188,11 +185,11 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Campaign_List_Activity"
+            android:name=".Campaign.List_itm.Campaign_List_Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Campaign.Add_Camp_First_Step_Activity"
+            android:name=".Campaign.Add_Camp_Tab_Select_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -245,7 +242,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast.Brodcsast_Tankyou"
+            android:name=".Main_Broadcast.Brodcsast_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -303,6 +300,32 @@
         <activity
             android:name=".Auth.Thankyou_Screen"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Main_Broadcast.Broadcast_Contact_Selction_Actvity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Main_Broadcast.Add_Broad_Email_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Main_Broadcast.Add_Broad_Text_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".Main_Broadcast.Broadcast_Name_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Main_Broadcast.Broadcast_Preview"
+            android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

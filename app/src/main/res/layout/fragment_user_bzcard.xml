@@ -10,5 +10,6 @@
     tools:context=".Fragment.AddContect_Fragment.BzcardFragment">
     <include
         layout="@layout/common_dialog"/>
+    <include layout="@layout/under_development"/>
 
 </LinearLayout>

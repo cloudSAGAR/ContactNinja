@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
-import com.contactninja.Fragment.ContectFragment;
+import com.contactninja.Fragment.AddContect_Fragment.ContectFragment;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -137,7 +137,7 @@ public class Broadcst_Fragment extends Fragment implements ViewPager.OnPageChang
 
             switch (position) {
                 case 0:
-                    ContectFragment contectFragment = new ContectFragment(strtext1, getView(), getActivity());
+                    ContectFragment contectFragment = new ContectFragment(getView(), getActivity());
                     return contectFragment;
 
                 case 1:

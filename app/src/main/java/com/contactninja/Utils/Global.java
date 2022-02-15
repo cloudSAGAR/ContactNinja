@@ -11,7 +11,9 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -34,12 +36,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.michaelrocks.libphonenumber.android.NumberParseException;
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
+
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Global extends Application {
+    public  static SimpleDateFormat defoult_date_time_formate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    public  static SimpleDateFormat defoult_date_formate = new SimpleDateFormat("yyyy-MM-dd");
+    public  static SimpleDateFormat defoult_month_formate = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
+
     public static final String Device = "APP_ANDR";
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static String AppVersion = "";
@@ -49,6 +58,9 @@ public class Global extends Application {
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;
+
+
+    public static String imei=Build.MANUFACTURER+" "+Build.MODEL+" "+Build.VERSION.RELEASE;
 
     public static void openEmailAuth(Activity activity) {
         Uri uri = Uri.parse(Global.Email_auth); // missing 'http://' will cause crashed
@@ -66,7 +78,11 @@ public class Global extends Application {
         String date = df.format(Calendar.getInstance().getTime());
         return date;
     }
-
+    public static String getCurrentTimeandDate() {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = df.format(Calendar.getInstance().getTime());
+        return date;
+    }
     public static String getVersionname(Activity activity) {
         String version = "";
         try {
@@ -245,6 +261,48 @@ public class Global extends Application {
         return token;
     }
 
+    public static String formateChange(String dateTime) {
+       Date oneWayTripDate=null;
+       String tripDate="";
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        try {
+            oneWayTripDate = input.parse(dateTime);                 // parse input
+            tripDate= output.format(oneWayTripDate);    // format output
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return tripDate;
+    }
+
+    public static int Countrycode_Country(Activity activity, String email_number) {
+        TelephonyManager tm = (TelephonyManager) activity.getSystemService(activity.TELEPHONY_SERVICE);
+        String country = tm.getNetworkCountryIso();
+        int countryCode = 0;
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(activity);
+        try {
+            // phone must begin with '+'
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(email_number, country.toUpperCase());
+            countryCode = numberProto.getCountryCode();
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        return countryCode;
+    }
+    public static int Countrycode(Activity activity, String email_number) {
+        int countryCode = 0;
+
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(activity);
+        try {
+            // phone must begin with '+'
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(email_number, "");
+            countryCode = numberProto.getCountryCode();
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        return countryCode;
+    }
+
     /*
         public static String getcontectexits(SessionManager sessionManager){
 
@@ -252,7 +310,7 @@ public class Global extends Application {
             return token;
         }
     */
-    public static String getDate(Integer time) throws ParseException {
+   /* public static String getDate(Integer time) throws ParseException {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
         cal.setTimeInMillis(Long.valueOf(time) * 1000);
@@ -261,7 +319,7 @@ public class Global extends Application {
         String date1 = format1.format(date);
 
         return String.valueOf(date1);
-    }
+    }*/
 
     @Override
     public void onCreate() {

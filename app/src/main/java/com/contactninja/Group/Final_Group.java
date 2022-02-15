@@ -15,14 +15,17 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -79,6 +82,7 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Final_Group extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+    private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static UserListDataAdapter userListDataAdapter;
     public static List<ContectListData.Contact> inviteListData = new ArrayList<>();
@@ -86,7 +90,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     TextView save_button;
     ImageView iv_Setting, iv_back;
     String fragment_name, user_image_Url;
-    EditText add_new_contect, add_detail, contect_search;
+    EditText add_new_contect, add_detail, ev_search;
     LinearLayout add_new_member;
     RecyclerView contect_list_unselect;
     RecyclerView.LayoutManager layoutManager;
@@ -100,6 +104,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     LinearLayout mMainLayout;
     RetrofitCalls retrofitCalls;
     String old_image = "", group_id = "";
+    TextView topic_remainingCharacter;
 
     private BroadcastReceiver mNetworkReceiver;
 
@@ -258,39 +263,58 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         contect_list_unselect.setAdapter(userListDataAdapter);
         loadingDialog = new LoadingDialog(this);
 
-        contect_search.addTextChangedListener(new TextWatcher() {
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : inviteListData) {
-                    if (d.getFirstname().contains(s.toString())) {
-                        temp.add(d);
-                         //Log.e("Same Data ",d.getFirstname());
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Global.hideKeyboard(Final_Group.this);
+                    List<ContectListData.Contact> temp = new ArrayList();
+                    for (ContectListData.Contact d : inviteListData) {
+                        if (d.getFirstname().contains(ev_search.getText().toString())) {
+                            temp.add(d);
+                            //Log.e("Same Data ",d.getFirstname());
+                        }
                     }
+
+                    userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
+                    contect_list_unselect.setAdapter(userListDataAdapter);
+                    userListDataAdapter.notifyDataSetChanged();
+                    userListDataAdapter.updateList(temp);
+                    return true;
                 }
-
-                userListDataAdapter = new UserListDataAdapter(Final_Group.this, getApplicationContext(), inviteListData);
-                contect_list_unselect.setAdapter(userListDataAdapter);
-                userListDataAdapter.notifyDataSetChanged();
-                userListDataAdapter.updateList(temp);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                return false;
             }
         });
         deleteCache(this);
+
+        add_detail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                Log.e("Test Clcik ",String.valueOf(charSequence));
+                if (charSequence.toString().length() <= 100) {
+                    int num = 100 - charSequence.toString().length();
+                    topic_remainingCharacter.setText(num + " " + getResources().getString(R.string.camp_remaingn));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //    topic_remainingCharacter.setText(100 - editable.length() + " Characters Remaining.");
+
+            }
+        });
     }
     // Handled permission Result
 
     private void IntentUI() {
+        topic_remainingCharacter=findViewById(R.id.topic_remainingCharacter);
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_back = findViewById(R.id.iv_back);
@@ -303,7 +327,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         contect_list_unselect.setLayoutManager(layoutManager);
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
-        contect_search = findViewById(R.id.contect_search);
+        ev_search = findViewById(R.id.ev_search);
         iv_user = findViewById(R.id.iv_user);
         iv_dummy = findViewById(R.id.iv_dummy);
         iv_dummy.setOnClickListener(this);
@@ -315,10 +339,18 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 try {
                     if (Global.isNetworkAvailable(Final_Group.this, mMainLayout)) {
                         SaveEvent();
@@ -328,13 +360,20 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 }
                 break;
             case R.id.add_new_member:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 sessionManager.setGroupList(getApplicationContext(), inviteListData);
                 startActivity(new Intent(getApplicationContext(), GroupActivity.class));
                 finish();
 
                 break;
             case R.id.iv_dummy:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Final_Group.this)) {
                     captureimageDialog(false);
                 }
@@ -343,6 +382,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 break;
 
             case R.id.iv_user:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Final_Group.this)) {
                     captureimageDialog(true);
                 }
@@ -358,7 +401,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     private void SaveEvent() throws JSONException {
 
 
-        group_name = add_new_contect.getText().toString();
+        group_name = add_new_contect.getText().toString().trim();
         group_description = add_detail.getText().toString();
         if (group_name.equals("")) {
             Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_txt), false);
@@ -368,9 +411,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             loadingDialog.showLoadingDialog();
 
             SignResponseModel user_data = sessionManager.getGetUserdata(this);
-            String user_id = String.valueOf(user_data.getUser().getId());
-            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < inviteListData.size(); i++) {
                 Log.e("Contec List Size", String.valueOf(inviteListData.get(0).getContactDetails().size()));
@@ -412,9 +452,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             paramObject.put("image_extension", File_extension);
             paramObject.put("group_image_name", File_name);
             paramObject.put("group_image", user_image_Url);
-            paramObject.put("organization_id", "1");
-            paramObject.put("team_id", "1");
-            paramObject.put("user_id", user_id);
+            paramObject.put("organization_id", 1);
+            paramObject.put("team_id", 1);
+            paramObject.put("user_id", user_data.getUser().getId());
             paramObject.put("contact_ids", jsonArray);
             paramObject.put("description", group_description);
             obj.put("data", paramObject);
@@ -429,7 +469,6 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
                     loadingDialog.cancelLoading();
                     if (response.body().getHttp_status() == 200) {
-                        Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
                         finish();
                     } else {
                         Gson gson = new Gson();
@@ -541,7 +580,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 iv_user.setVisibility(View.GONE);
                 iv_dummy.setVisibility(View.VISIBLE);
                 bottomSheetDialog.dismiss();
@@ -551,7 +593,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         cameraId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePicture, 0);
 
@@ -562,6 +607,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         galleryId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
                 bottomSheetDialog.dismiss();
@@ -650,7 +699,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             holder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     //  Log.e("Posirion is", String.valueOf(position));
                     userDetails.get(position).setFlag("true");
                     removeite(position);

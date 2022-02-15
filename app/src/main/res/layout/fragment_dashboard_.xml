@@ -6,7 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".MainActivity">
+    <include layout="@layout/under_development"/>
+<LinearLayout
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
 
     <CalendarView
         android:visibility="gone"
@@ -28,7 +36,6 @@
       <LinearLayout
           android:layout_gravity="center"
           android:gravity="center"
-          xmlns:android="http://schemas.android.com/apk/res/android"
           android:orientation="horizontal"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content">
@@ -344,4 +351,5 @@
         android:layout_height="1dp">
 
     </View>
+</LinearLayout>
 </LinearLayout>

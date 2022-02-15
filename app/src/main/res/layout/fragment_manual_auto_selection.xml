@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Fragment.Campaign_Sms_Fragment">
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Campaign.Fragment.Campaign_Sms_Fragment"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-
+        android:orientation="vertical">
 
 
         <LinearLayout
@@ -45,7 +43,7 @@
                     android:layout_weight="1"
                     android:gravity="center|left"
                     android:padding="@dimen/_15sdp"
-                    android:text="@string/campaign_step_one_sms"
+                    android:text="@string/campaign_step_one_text"
                     android:textColor="@color/text_reg"
                     tools:ignore="RtlHardcoded,RtlSymmetry">
 
@@ -65,11 +63,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_sms_second_automated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="match_parent"
@@ -83,11 +81,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:padding="@dimen/_5sdp"
                         style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:padding="@dimen/_5sdp"
                         android:text="@string/Run_this_step_on"
                         android:textColor="@color/text_reg" />
 
@@ -167,8 +165,8 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
-                                android:text="00"
                                 android:padding="5dp"
+                                android:text="00"
                                 android:textColor="@color/purple_200"
                                 android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
@@ -202,6 +200,7 @@
 
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/manual_layout"
             android:layout_width="match_parent"
@@ -229,7 +228,7 @@
                     android:layout_weight="1"
                     android:gravity="center|left"
                     android:padding="@dimen/_15sdp"
-                    android:text="@string/campaign_step_one_sms_manual"
+                    android:text="@string/campaign_step_one_text_manual"
                     android:textColor="@color/text_reg"
                     tools:ignore="RtlHardcoded,RtlSymmetry">
 
@@ -249,11 +248,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_sms_second_manual"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="match_parent"
@@ -267,11 +266,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:padding="@dimen/_5sdp"
                         style="@style/tv_regular_13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:padding="@dimen/_5sdp"
                         android:text="@string/Run_this_step_on"
                         android:textColor="@color/text_reg" />
 
@@ -310,8 +309,8 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
-                                android:text="1"
                                 android:padding="5dp"
+                                android:text="1"
                                 android:textColor="@color/purple_200"
                                 android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
@@ -347,12 +346,12 @@
                                 android:layout_gravity="center"
                                 android:background="@null"
                                 android:gravity="center"
-                                android:text="00"
                                 android:imeOptions="actionDone"
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:maxLines="1"
                                 android:padding="5dp"
+                                android:text="00"
                                 android:textColor="@color/purple_200"
                                 android:textStyle="bold"
                                 tools:ignore="Autofill,LabelFor,RtlHardcoded" />
@@ -386,27 +385,19 @@
 
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:layout_marginTop="@dimen/_30sdp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            style="@style/tv_regular_12"
-            android:text="@string/campaign_step_one_sms_txt"
-            android:textColor="@color/home_list_sub_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
 
     </LinearLayout>
-    <ImageView
-        android:id="@+id/iv_back_image"
-        android:layout_gravity="bottom|left"
-        android:src="@drawable/ic_manual_auto_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-    </ImageView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <TextView
+        style="@style/tv_regular_12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:gravity="center"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:text="@string/campaign_step_one_text_txt"
+        android:textColor="@color/home_list_sub_data" />
+
+</LinearLayout>

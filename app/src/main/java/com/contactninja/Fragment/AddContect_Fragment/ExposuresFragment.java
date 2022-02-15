@@ -12,7 +12,7 @@ import com.contactninja.R;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class ExposuresFragment extends Fragment {
-
+    private long mLastClickTime = 0;
     public ExposuresFragment() {
         // Required empty public constructor
     }

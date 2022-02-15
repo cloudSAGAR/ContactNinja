@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.DatabaseClient;
@@ -32,9 +34,14 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 import retrofit2.Response;
 
@@ -44,16 +51,17 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     LinearLayout layout_logout, layout_resetPassword, layout_template, layout_Current_plan, layout_about, layout_mail_box;
     SessionManager sessionManager;
     RelativeLayout mMainLayout;
-    private BroadcastReceiver mNetworkReceiver;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
+    private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         mNetworkReceiver = new ConnectivityReceiver();
-        loadingDialog=new LoadingDialog(SettingActivity.this);
+        loadingDialog = new LoadingDialog(SettingActivity.this);
         retrofitCalls = new RetrofitCalls(SettingActivity.this);
         sessionManager = new SessionManager(getApplicationContext());
         intentView();
@@ -139,70 +147,55 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(@SuppressLint("UnknownNullness") View v) {
         switch (v.getId()) {
             case R.id.layout_logout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showAlertDialogButtonClicked();
                 break;
             case R.id.layout_resetPassword:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(), ResetActivity.class));
                 break;
             case R.id.layout_template:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(), TemplateActivity.class));
                 break;
             case R.id.layout_Current_plan:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(), CurrentPlanActivity.class));
                 break;
             case R.id.layout_about:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getApplicationContext(), WebActivity.class);
                 intent.putExtra("WebUrl", Global.about);
                 startActivity(intent);
                 break;
 
             case R.id.layout_mail_box:
-
-
-                try {
-                    if(Global.isNetworkAvailable(SettingActivity.this, MainActivity.mMainLayout)) {
-                        Mail_list();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
                 }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
 
                 break;
         }
     }
-    private void Mail_list() throws JSONException {
-
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(SettingActivity.this);
-        String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        obj.add("data", paramObject);
-        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(SettingActivity.this),Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    /*is a list to email show*/
-                    startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
-                }else {
-
-                    /*is a email permission link open */
-                    //Global.openEmailAuth(SettingActivity.this);
-                    startActivity(new Intent(getApplicationContext(),Email_verification.class));
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
 
 
-    }
     public void showAlertDialogButtonClicked() {
 
         // Create an alert builder

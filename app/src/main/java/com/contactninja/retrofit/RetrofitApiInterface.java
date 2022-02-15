@@ -54,12 +54,10 @@ public interface RetrofitApiInterface {
                                  @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
-
     @POST("user/profile/update")
     Call<ApiResponse> update_user_profiel(@Header("Accept") String api, @Header("Authorization") String auth,
                                           @Body JsonObject body,
                                           @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
-
 
 
     @POST("contact/bulk/update")
@@ -68,51 +66,50 @@ public interface RetrofitApiInterface {
                                     @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
-
     @POST("contact/group/add")
     Call<ApiResponse> Addgroup(@Header("Accept") String api, @Header("Authorization") String auth,
                                @Body JsonObject jsonObject,
-                               @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                               @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/group/list")
     Call<ApiResponse> Group_List(@Header("Accept") String api, @Header("Authorization") String auth,
                                  @Body JsonObject jsonObject,
-                                 @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/details/update")
     Call<ApiResponse> Contect_delete(@Header("Accept") String api, @Header("Authorization") String auth,
                                      @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                     @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("contact/list")
     Call<ApiResponse> Contect_List(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
-                                    @Header("appVersion") String appVersion,@Header("deviceType") String deviceType);
+                                   @Header("appVersion") String appVersion, @Header("deviceType") String deviceType);
 
 
     @POST("contact/details/update")
     Call<ApiResponse> update_contect(@Header("Accept") String api, @Header("Authorization") String auth,
                                      @Body JsonObject jsonObject,
-                                     @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                     @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("refreshToken")
     Call<ApiResponse> RefressToken(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
-                                   @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("user/changepassword")
     Call<ApiResponse> ResetPassword(@Header("Accept") String api, @Header("Authorization") String auth,
                                     @Body JsonObject jsonObject,
-                                    @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("hashtags/list")
     Call<ApiResponse> Hastag_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                   @Body JsonObject jsonObject,
-                                  @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                  @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("templates/list")
     Call<ApiResponse> Template_list(@Header("Accept") String api, @Header("Authorization") String auth,
@@ -128,11 +125,12 @@ public interface RetrofitApiInterface {
     @POST("usergmail/list")
     Call<ApiResponse> Mail_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                 @Body JsonObject jsonObject,
-                                @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
     @POST("user/listphonenumber")
     Call<ApiResponse> Contect_list(@Header("Accept") String api, @Header("Authorization") String auth,
-                                @Body JsonObject jsonObject,
-                                @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                   @Body JsonObject jsonObject,
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("manual_task/list")
@@ -143,7 +141,7 @@ public interface RetrofitApiInterface {
     @POST("smtpdefault_update")
     Call<ApiResponse> Mail_setDefault(@Header("Accept") String api, @Header("Authorization") String auth,
                                       @Body JsonObject jsonObject,
-                                      @Header("deviceType") String deviceType , @Header("appVersion") String appVersion);
+                                      @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
 
@@ -176,6 +174,11 @@ public interface RetrofitApiInterface {
                                      @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
+    @POST("timezone/list")
+    Call<ApiResponse> Timezone(@Header("Accept") String api, @Header("Authorization") String auth,
+                                   @Body JsonObject jsonObject,
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
     @POST("working_hour/add/default")
     Call<ApiResponse> Working_hour(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
@@ -205,8 +208,8 @@ public interface RetrofitApiInterface {
 
     @POST("sequence/task_delete")
     Call<ApiResponse> Task_delete(@Header("Accept") String api, @Header("Authorization") String auth,
-                                 @Body JsonObject jsonObject,
-                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+                                  @Body JsonObject jsonObject,
+                                  @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("manual_task/store")
@@ -234,8 +237,8 @@ public interface RetrofitApiInterface {
 
     @POST("working_hour/list")
     Call<ApiResponse> working_hour(@Header("Accept") String api, @Header("Authorization") String auth,
-                                    @Body JsonObject jsonObject,
-                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+                                   @Body JsonObject jsonObject,
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
     @POST("gmailauth_update")
@@ -268,8 +271,8 @@ public interface RetrofitApiInterface {
 
     @POST("contact/block")
     Call<ApiResponse> Block_contact(@Header("Accept") String api, @Header("Authorization") String auth,
-                                 @Body JsonObject body,
-                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+                                    @Body JsonObject body,
+                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("company/block")
     Call<ApiResponse> Block_Company(@Header("Accept") String api, @Header("Authorization") String auth,
@@ -279,8 +282,13 @@ public interface RetrofitApiInterface {
 
     @POST("company/add")
     Call<ApiResponse> Add_Company(@Header("Accept") String api, @Header("Authorization") String auth,
-                                    @Body JsonObject body,
-                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+                                  @Body JsonObject body,
+                                  @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
+
+    @POST("broadcast/list")
+    Call<ApiResponse> Broadcast_Activiy_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                        @Body JsonObject jsonObject,
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 }

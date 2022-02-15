@@ -7,9 +7,11 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -73,10 +75,10 @@ public class MembersFragment extends Fragment {
 
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
-    EditText contect_search;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
+    EditText ev_search;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -118,8 +120,6 @@ public class MembersFragment extends Fragment {
                 (position) -> {
                     // ItemModel item = data.get(position);
                     FastScrollItemIndicator fastScrollItemIndicator= new FastScrollItemIndicator.Text(
-
-
                             contectListData.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
@@ -128,14 +128,29 @@ public class MembersFragment extends Fragment {
                 }
         );
 
-
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    List<ContectListData.Contact> temp = new ArrayList();
+                    for (ContectListData.Contact d : selected_contectListData) {
+                        if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString())) {
+                            temp.add(d);
+                        }
+                        userListDataAdapter.updateList(temp);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         return view;
     }
     private void IntentUI(View view) {
-        contect_search = view.findViewById(R.id.contect_search);
         rvinviteuserdetails=view.findViewById(R.id.contact_list);
         fastscroller=view.findViewById(R.id.fastscroller);
         fastscroller_thumb=view.findViewById(R.id.fastscroller_thumb);
+        ev_search = view.findViewById(R.id.ev_search);
 
     }
 
@@ -306,16 +321,13 @@ public class MembersFragment extends Fragment {
 
     private void Single_group() throws JSONException {
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        Grouplist.Group group_data = SessionManager.getGroupData(getActivity());
+       Grouplist.Group group_data = SessionManager.getGroupData(getActivity());
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", "1");
-        paramObject.put("team_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", 1);
         paramObject.put("perPage", 10);
         paramObject.put("id", group_data.getId());
@@ -359,7 +371,7 @@ public class MembersFragment extends Fragment {
                        }
                        catch (Exception e)
                        {
-
+                            e.printStackTrace();
                        }
 
                     }

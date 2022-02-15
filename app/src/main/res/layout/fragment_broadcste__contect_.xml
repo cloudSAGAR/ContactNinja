@@ -10,6 +10,13 @@
     tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Group.GroupActivity">
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layout_select_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_gravity="left|center"
         android:gravity="center|left"
@@ -45,6 +52,7 @@
         android:layout_height="1dp">
 
     </View>
+    </LinearLayout>
 
     <LinearLayout
 
@@ -110,14 +118,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_12sdp"
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/add_new_contect1"
             android:textColor="@color/text_reg"
           />
         <TextView
-            android:layout_marginEnd="@dimen/_20sdp"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_gravity="center|end"
             android:layout_marginStart="@dimen/_12sdp"
             android:id="@+id/num_count"

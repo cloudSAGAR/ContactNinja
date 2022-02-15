@@ -19,11 +19,11 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
+            >
 
             <CheckBox
                 android:id="@+id/ch_Paused"
-                style="@style/tv_Medium_16"
+                style="@style/tv_regular_13"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -31,8 +31,8 @@
                 android:text="@string/manual_Paused" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_man_today"
                 tools:ignore="ContentDescription" />
@@ -49,11 +49,11 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
+           >
 
             <CheckBox
                 android:id="@+id/ch_snooze"
-                style="@style/tv_Medium_16"
+                style="@style/tv_regular_13"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -61,8 +61,8 @@
                 android:text="@string/manual_Snooze" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_man_upcoming"
                 tools:ignore="ContentDescription" />
@@ -79,11 +79,11 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
+            >
 
             <CheckBox
                 android:id="@+id/ch_delete"
-                style="@style/tv_Medium_16"
+                style="@style/tv_regular_13"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -91,9 +91,8 @@
                 android:text="@string/manual_Delete" />
 
             <ImageView
-                android:padding="@dimen/_5sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_man_delete"
                 tools:ignore="ContentDescription" />

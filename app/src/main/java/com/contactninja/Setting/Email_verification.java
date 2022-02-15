@@ -3,6 +3,7 @@ package com.contactninja.Setting;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
@@ -19,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -27,11 +29,15 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.util.List;
 
 import retrofit2.Response;
 
@@ -43,7 +49,7 @@ public class Email_verification extends AppCompatActivity implements Connectivit
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-
+    String create="";
     private BroadcastReceiver mNetworkReceiver;
 
     @Override
@@ -55,17 +61,45 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-
-
         mMainLayout = findViewById(R.id.mMainLayout);
         webEmail = findViewById(R.id.webEmail);
-        webEmail.clearCache(true);
-        webEmail.clearHistory();
-        webEmail.loadUrl(Global.Email_auth);
-        webEmail.getSettings().setJavaScriptEnabled(true);
-        webEmail.getSettings().setUserAgentString("contactninja");
-        webEmail.setHorizontalScrollBarEnabled(false);
-        webEmail.setWebViewClient(new HelloWebViewClient());
+        try {
+            Intent intent=getIntent();
+            Bundle bundle=intent.getExtras();
+            create=bundle.getString("create");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if(Global.IsNotNull(create)||create.equals("create")){
+          try {
+              webEmail.clearCache(true);
+              webEmail.clearHistory();
+              webEmail.loadUrl(Global.Email_auth);
+              webEmail.getSettings().setJavaScriptEnabled(true);
+              webEmail.getSettings().setUserAgentString("contactninja");
+              webEmail.setHorizontalScrollBarEnabled(false);
+              webEmail.setWebViewClient(new HelloWebViewClient());
+          }
+          catch (Exception e)
+          {
+            e.printStackTrace();
+          }
+
+        }else {
+            try {
+                if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)){
+                    Mail_list();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+
+
 
     }
 
@@ -116,12 +150,17 @@ public class Email_verification extends AppCompatActivity implements Connectivit
                     @Override
                     public void success(Response<ApiResponse> response) {
                         if (response.body().getHttp_status() == 200) {
-                            loadingDialog.cancelLoading();
                             webEmail.clearHistory();
                             webEmail.clearFormData();
                             webEmail.clearCache(true);
 
-                            finish();
+                            try {
+                                if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)){
+                                    Mail_list();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
                         } else {
                             loadingDialog.cancelLoading();
@@ -133,6 +172,49 @@ public class Email_verification extends AppCompatActivity implements Connectivit
                         loadingDialog.cancelLoading();
                     }
                 });
+    }
+    private void Mail_list() throws JSONException {
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Email_verification.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp","1");
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Email_verification.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail = new Gson().fromJson(headerString, listType);
+                    List<UserLinkedList.UserLinkedGmail> setUserLinkedGmail = userLinkedGmail.getUserLinkedGmail();
+                    sessionManager.setUserLinkedGmail(getApplicationContext(),setUserLinkedGmail);
+                    finish();
+                }else {
+                    webEmail.clearCache(true);
+                    webEmail.clearHistory();
+                    webEmail.loadUrl(Global.Email_auth);
+                    webEmail.getSettings().setJavaScriptEnabled(true);
+                    webEmail.getSettings().setUserAgentString("contactninja");
+                    webEmail.setHorizontalScrollBarEnabled(false);
+                    webEmail.setWebViewClient(new HelloWebViewClient());
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
     }
 
     private class HelloWebViewClient extends WebViewClient {

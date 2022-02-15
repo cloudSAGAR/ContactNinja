@@ -4,6 +4,7 @@ import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -11,8 +12,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.telephony.SmsManager;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -34,7 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.Sms_And_Email_Auto_Manual;
+import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
@@ -78,17 +79,19 @@ import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class InformationFragment extends Fragment implements View.OnClickListener {
-
-    List<TimezoneModel> timezoneModels=new ArrayList<>();
-    BottomSheetDialog bottomSheetDialog_time,bottomSheetDialog_company;
+    private long mLastClickTime = 0;
+    public int PhoneFieldNumber = 0;// total Phone add count
+    public int emailFieldNumber = 0;// total email add count
+    List<TimezoneModel> timezoneModels = new ArrayList<>();
+    BottomSheetDialog bottomSheetDialog_time, bottomSheetDialog_company;
     EditText ev_address, ev_city, ev_zip, ev_zoom, ev_note,
             ev_company_url, ev_state, ev_job, ev_bob, ev_fb, ev_twitter, ev_breakout,
             ev_linkedin;
     LinearLayout select_state, add_mobile_Number,
             layout_Add_phone, layout_Add_email, layout_mobile, fb_layout;
     TextView tv_phone, tv_more_field, tv_company_url, tv_job,
-            zone_txt, tv_add_social,ev_company;
-    ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout,image_list_show;
+            zone_txt, tv_add_social, ev_company;
+    ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout, image_list_show;
     String Name = "", job_titel = "";
     SessionManager sessionManager;
     AddcontectModel addcontectModel;
@@ -107,21 +110,18 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     List<Contactdetail> emaildetails_list = new ArrayList<>();
     LoadingDialog loadingDialog;
     RetrofitCalls retrofitCalls;
-    LinearLayout mMainLayout,company_layout,other_company_layout;
+    LinearLayout mMainLayout, company_layout, other_company_layout;
     boolean edit = false;
-    private int mYear, mMonth, mDay, mHour, mMinute;
     EditText ev_othre_company;
-    public int PhoneFieldNumber=0;// total Phone add count
-    public int emailFieldNumber=0;// total email add count
     ImageView iv_down;
-
     CompanyAdapter companyAdapter;
-    List<CompanyModel.Company> companyList=new ArrayList<>();
+    List<CompanyModel.Company> companyList = new ArrayList<>();
     int perPage = 20;
+    Integer contact_Is_Block = 0;
+    private int mYear, mMonth, mDay, mHour, mMinute;
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -141,6 +141,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         List<ContectListData.Contact> test_list = new ArrayList<>();
         test_list.add(SessionManager.getOneCotect_deatil(getActivity()));
         // Log.e("Size is", String.valueOf(test_list));
+        ContectListData.Contact contact = SessionManager.getOneCotect_deatil(getActivity());
+        contact_Is_Block = contact.getIs_blocked();
+
+
         String flag = sessionManager.getContect_flag(getActivity());
         Showlayout();
         if (flag.equals("edit")) {
@@ -181,12 +185,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_company.setText(Contect_data.getCompanyName());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
-            if (String.valueOf(Contect_data.getTimezoneId()).equals("null"))
-            {
-                String time_zone= TimeZone.getDefault().getID();
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
+                String time_zone = TimeZone.getDefault().getID();
                 zone_txt.setText(time_zone);
-            }
-            else {
+            } else {
                 zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
             }
             ev_job.setText(Contect_data.getJobTitle());
@@ -202,7 +204,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             TextSet();
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
-            Log.e("Contect Detail is ",new Gson().toJson(detail_contect));
+            Log.e("Contect Detail is ", new Gson().toJson(detail_contect));
             for (int i = 0; i < detail_contect.size(); i++) {
                 if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
@@ -218,7 +220,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetails.add(contactdetail);
 
                         layout_Add_email.setVisibility(View.GONE);
-                        emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+                        emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email
+                                , contact_Is_Block);
                         rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                         rv_email.setAdapter(emailAdapter);
 
@@ -237,7 +240,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         Collections.reverse(phonedetails_list);
                         contactdetails.add(contactdetail);
 
-                        phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                        phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone, contact_Is_Block);
                         rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                         rv_phone.setAdapter(phoneAdapter);
 
@@ -246,13 +249,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 }
             }
 
-                EmailViewAdd();
-                PhoneViewAdd();
+            EmailViewAdd();
+            PhoneViewAdd();
 
 
-
-        }
-        else if (flag.equals("read")) {
+        } else if (flag.equals("read")) {
             iv_down.setVisibility(View.GONE);
 
             company_layout.setEnabled(false);
@@ -271,20 +272,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             tv_add_social.setVisibility(View.GONE);
 
 
-            tv_add_social.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_company.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_company_url.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_job.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_zoom.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_address.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_city.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_state.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_zip.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_bob.setTextColor(getActivity().getColor(R.color.purple_200));
-            ev_note.setTextColor(getActivity().getColor(R.color.purple_200));
+            tv_add_social.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_company.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_company_url.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_job.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_zoom.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_address.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_city.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_state.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_zip.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_bob.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_note.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            Log.e("All Contect Data",new Gson().toJson(Contect_data));
+            Log.e("All Contect Data", new Gson().toJson(Contect_data));
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
             addcontectModel.setJob_title(Contect_data.getJobTitle());
             addcontectModel.setState(Contect_data.getState());
@@ -306,12 +307,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_company.setText(Contect_data.getCompanyName());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
-            if (String.valueOf(Contect_data.getTimezoneId()).equals("null"))
-            {
-                String time_zone= TimeZone.getDefault().getID();
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
+                String time_zone = TimeZone.getDefault().getID();
                 zone_txt.setText(time_zone);
-            }
-            else {
+            } else {
                 zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
             }
 
@@ -337,6 +336,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             img_fb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Uri uri = Uri.parse(Contect_data.getFacebook_link()); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
@@ -360,6 +363,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             img_twitter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Uri uri = Uri.parse(Contect_data.getTwitter_link()); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
@@ -380,6 +387,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             img_linkdin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Uri uri = Uri.parse(Contect_data.getLinkedin_link()); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
@@ -401,6 +412,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             img_breakout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Uri uri = Uri.parse(Contect_data.getBreakout_link()); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
@@ -409,7 +424,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
-            Log.e("Contect Detail",new Gson().toJson(detail_contect));
+            Log.e("Contect Detail", new Gson().toJson(detail_contect));
             for (int i = 0; i < detail_contect.size(); i++) {
                 if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
@@ -417,7 +432,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        contactdetail.setId(detail_contect.get(i).getContactId());
+                        contactdetail.setId(detail_contect.get(i).getId());
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
                         emaildetails_list.add(contactdetail);
@@ -425,7 +440,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetails.add(contactdetail);
 
                         layout_Add_email.setVisibility(View.GONE);
-                        emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+                        emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email
+                                , contact_Is_Block);
                         rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                         rv_email.setAdapter(emailAdapter);
 
@@ -435,7 +451,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                        contactdetail.setId(detail_contect.get(i).getContactId());
+                        contactdetail.setId(detail_contect.get(i).getId());
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
 
@@ -443,7 +459,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         Collections.reverse(phonedetails_list);
                         contactdetails.add(contactdetail);
 
-                        phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                        phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone, contact_Is_Block);
                         rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                         rv_phone.setAdapter(phoneAdapter);
 
@@ -470,18 +486,30 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         layout_bod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
             }
         });
         ev_bob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
             }
         });
         tv_more_field.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 media_layout.setVisibility(View.VISIBLE);
 
                 company_url_layout.setVisibility(View.VISIBLE);
@@ -500,12 +528,17 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         company_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_Company();
             }
         });
 
         return view;
     }
+
     private void Showlayout() {
         tv_more_field.setVisibility(View.GONE);
         media_layout.setVisibility(View.VISIBLE);
@@ -519,17 +552,18 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         layout_bod.setVisibility(View.VISIBLE);
         note_layout.setVisibility(View.VISIBLE);
     }
+
     private void EmailViewAdd() {
 
         String flag = sessionManager.getContect_flag(getActivity());
         if (flag.equals("edit")) {
 
-            for(int i=0;i<contactdetails.size();i++){
-                if(contactdetails.get(i).getType().equals("EMAIL")){
+            for (int i = 0; i < contactdetails.size(); i++) {
+                if (contactdetails.get(i).getType().equals("EMAIL")) {
                     emailFieldNumber++;
-                                   }
+                }
             }
-            if(emailFieldNumber<5){
+            if (emailFieldNumber < 5) {
                 layout_Add_email.setVisibility(View.VISIBLE);
             }
             layout_Add_email.setOnClickListener(v -> {
@@ -543,7 +577,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 contactdetails.add(contactdetail1);
                 //emailAdapter.notifyDataSetChanged();
                 layout_Add_email.setVisibility(View.GONE);
-                emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+                emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email, contact_Is_Block);
                 rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_email.setAdapter(emailAdapter);
                 //     Log.e("layout_Add_email",new Gson().toJson(emaildetails_list));
@@ -561,7 +595,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             contactdetail.setType("EMAIL");
             emaildetails_list.add(contactdetail);
             contactdetails.add(contactdetail);
-            emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+            emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email, contact_Is_Block);
             rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
             rv_email.setAdapter(emailAdapter);
 
@@ -576,7 +610,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 contactdetails.add(contactdetail1);
                 //emailAdapter.notifyDataSetChanged();
                 layout_Add_email.setVisibility(View.GONE);
-                emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+                emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email, contact_Is_Block);
                 rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_email.setAdapter(emailAdapter);
                 //     Log.e("layout_Add_email",new Gson().toJson(emaildetails_list));
@@ -591,17 +625,17 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         String flag = sessionManager.getContect_flag(getActivity());
         if (flag.equals("edit")) {
-            for(int i=0;i<contactdetails.size();i++){
-                if(contactdetails.get(i).getType().equals("NUMBER")){
+            for (int i = 0; i < contactdetails.size(); i++) {
+                if (contactdetails.get(i).getType().equals("NUMBER")) {
                     PhoneFieldNumber++;
                 }
             }
-            if(PhoneFieldNumber<5){
+            if (PhoneFieldNumber < 5) {
                 layout_Add_phone.setVisibility(View.VISIBLE);
             }
 
             layout_Add_phone.setOnClickListener(v -> {
-                Log.e("On Click","Yes");
+                Log.e("On Click", "Yes");
                 Contactdetail contactdetail1 = new Contactdetail();
                 //Defult id 0 Set Edit
                 contactdetail1.setId(0);
@@ -611,7 +645,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 contactdetail1.setType("NUMBER");
                 phonedetails_list.add(contactdetail1);
                 contactdetails.add(contactdetail1);
-                phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone, contact_Is_Block);
                 rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_phone.setAdapter(phoneAdapter);
                 layout_Add_phone.setVisibility(View.GONE);
@@ -633,7 +667,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             //   Log.e("phonedetails_list",new Gson().toJson(phonedetails_list));
 
 
-            phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+            phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone, contact_Is_Block);
             rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
             rv_phone.setAdapter(phoneAdapter);
 
@@ -646,7 +680,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 contactdetail1.setType("NUMBER");
                 phonedetails_list.add(contactdetail1);
                 contactdetails.add(contactdetail1);
-                phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone, contact_Is_Block);
                 rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_phone.setAdapter(phoneAdapter);
                 layout_Add_phone.setVisibility(View.GONE);
@@ -809,6 +843,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         select_label_zone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_TimeZone();
 
             }
@@ -965,11 +1003,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         img_twitter = view.findViewById(R.id.img_twitter);
         img_linkdin = view.findViewById(R.id.img_linkdin);
         img_breakout = view.findViewById(R.id.img_breakout);
-        company_layout=view.findViewById(R.id.company_layout);
-        image_list_show=view.findViewById(R.id.image_list_show);
-        other_company_layout=view.findViewById(R.id.other_company_layout);
-        ev_othre_company=view.findViewById(R.id.ev_othre_company);
-        iv_down=view.findViewById(R.id.iv_down);
+        company_layout = view.findViewById(R.id.company_layout);
+        image_list_show = view.findViewById(R.id.image_list_show);
+        other_company_layout = view.findViewById(R.id.other_company_layout);
+        ev_othre_company = view.findViewById(R.id.ev_othre_company);
+        iv_down = view.findViewById(R.id.iv_down);
     }
 
 
@@ -1026,13 +1064,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
@@ -1084,16 +1129,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     private void RemoveContect(int id) throws JSONException {
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", SessionManager.getOneCotect_deatil(getActivity()).getOrganizationId());
-        paramObject.put("team_id", SessionManager.getOneCotect_deatil(getActivity()).getTeamId());
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("id", id);
         paramObject.put("contact_id", SessionManager.getOneCotect_deatil(getActivity()).getId());
         paramObject.put("status", "D");
@@ -1101,7 +1143,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Contact_details_update(sessionManager, gsonObject, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Contact_details_update(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -1121,18 +1163,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     }
 
     private void UpdateContect(Contactdetail id) throws JSONException {
-        Log.e("Update Api Call","Yes");
+        Log.e("Update Api Call", "Yes");
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", SessionManager.getOneCotect_deatil(getActivity()).getOrganizationId());
-        paramObject.put("team_id", SessionManager.getOneCotect_deatil(getActivity()).getTeamId());
-        paramObject.put("user_id", user_id);
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         Log.e("Id is", String.valueOf(id.getId()));
         if (id.getId() == 0) {
 
@@ -1149,7 +1188,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.update_contect(sessionManager, gsonObject, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.update_contect(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -1167,19 +1206,21 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     }
 
-    public void EnableRuntimePermission() {
+    public void EnableRuntimePermission(Contactdetail item) {
 
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + item.getEmail_number()));
+                getActivity().startActivity(intent);
 
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
 
-                EnableRuntimePermission();
+             //   EnableRuntimePermission();
             }
 
         };
@@ -1219,7 +1260,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (type.equals("sim")) {
                     sendSMS(p_num, editText.getText().toString());
                     dialog.dismiss();
@@ -1238,6 +1282,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
@@ -1265,6 +1313,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_munual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showAlertDialogButtonClicked1(p_num, id, "sim");
                 dialog.dismiss();
             }
@@ -1272,6 +1324,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_api.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
                 SessionManager.setMessage_number(p_num);
                 SessionManager.setMessage_type("app");
@@ -1281,9 +1337,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 SessionManager.setCampaign_type_name("");
                 SessionManager.setCampaign_Day("");
                 SessionManager.setCampaign_minute("");
-                Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
-                intent1.putExtra("flag","edit");
-                intent1.putExtra("type","SMS");
+                Intent intent1 = new Intent(getActivity(), Text_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag", "edit");
+                intent1.putExtra("type", "SMS");
                 startActivity(intent1); //  finish();
 
 
@@ -1293,8 +1349,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
            intent.putExtra("type","app");
            startActivity(intent);*/
 
-         //  showAlertDialogButtonClicked1(p_num, id, "app");
-
+                //  showAlertDialogButtonClicked1(p_num, id, "app");
 
 
             }
@@ -1307,21 +1362,19 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         Log.e("Phone Number", email);
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
         JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
 
         paramObject.put("type", "SMS");
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", "MANUAL");
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
-        paramObject.put("assign_to", user_id);
+        paramObject.put("assign_to", user_data.getUser().getId());
         paramObject.put("task_description", text);
 
         JSONArray jsonArray = new JSONArray();
@@ -1347,7 +1400,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -1384,22 +1437,19 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private void SMS_execute(String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("content_body", text);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("prospect_id", id);
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "SMS");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("team_id", 1);
         obj.add("data", paramObject);
 
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -1416,21 +1466,18 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private void EmailAPI(String subject, String text, int id, String email) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
 
         paramObject.put("type", "EMAIL");
-        paramObject.put("team_id", "1");
-        paramObject.put("organization_id", "1");
-        paramObject.put("user_id", user_id);
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", "MANUAL");
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
-        paramObject.put("assign_to", user_id);
+        paramObject.put("assign_to", user_data.getUser().getId());
         paramObject.put("task_description", text);
 
         JSONArray jsonArray = new JSONArray();
@@ -1456,7 +1503,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -1493,23 +1540,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
         JsonObject obj = new JsonObject();
 
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("content_body", text);
         paramObject.addProperty("content_header", subject);
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("prospect_id", id);
         paramObject.addProperty("record_id", record_id);
         paramObject.addProperty("type", "EMAIL");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("team_id", 1);
         obj.add("data", paramObject);
 
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -1558,12 +1602,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
             }
         });
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 dialog.dismiss();
                 try {
                     EmailAPI(ev_subject.getText().toString(), ev_type.getText().toString(), id, email);
@@ -1573,6 +1625,225 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
         });
 
+    }
+
+    private void Timezoneget() throws JSONException {
+
+        //loadingDialog.showLoadingDialog();
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getContext());
+        JsonObject obj = new JsonObject();
+
+        JsonObject paramObject = new JsonObject();
+
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
+        paramObject.addProperty("team_id", 1);
+        obj.add("data", paramObject);
+
+
+        retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getHttp_status() == 200) {
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<List<TimezoneModel>>() {
+                    }.getType();
+                    List<TimezoneModel> timezoon = new Gson().fromJson(headerString, listType);
+                    timezoneModels.addAll(timezoon);
+                    loadingDialog.cancelLoading();
+                    for (int i = 0; i < timezoon.size(); i++) {
+                        if (zone_txt.getText().toString().equals(timezoon.get(i).getValue().toString())) {
+                            zone_txt.setText(timezoon.get(i).getText());
+                            Log.e("No Same Data", "NO");
+                        } else {
+                            Log.e("No Same Data", "Yes");
+                        }
+                    }
+                } else {
+                    // loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                //  loadingDialog.cancelLoading();
+            }
+        });
+    }
+
+    void showBottomSheetDialog_For_TimeZone() {
+        bottomSheetDialog_time = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
+        bottomSheetDialog_time.setContentView(R.layout.bottom_sheet_dialog_for_home);
+        RecyclerView home_type_list = bottomSheetDialog_time.findViewById(R.id.home_type_list);
+        TextView tv_item = bottomSheetDialog_time.findViewById(R.id.tv_item);
+        tv_item.setText("Please select Timezone");
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        home_type_list.setLayoutManager(layoutManager);
+
+        TimezoneAdapter timezoneAdapter = new TimezoneAdapter(getActivity(), timezoneModels);
+        home_type_list.setAdapter(timezoneAdapter);
+
+        bottomSheetDialog_time.show();
+    }
+
+    void showBottomSheetDialog_For_Company() {
+        bottomSheetDialog_company = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
+        bottomSheetDialog_company.setContentView(R.layout.bottom_sheet_dialog_for_compnay);
+        RecyclerView home_type_list = bottomSheetDialog_company.findViewById(R.id.home_type_list);
+        TextView tv_item = bottomSheetDialog_company.findViewById(R.id.tv_item);
+        tv_item.setText("Please select company");
+        tv_item.setVisibility(View.VISIBLE);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        home_type_list.setLayoutManager(layoutManager);
+        ImageView search_icon = bottomSheetDialog_company.findViewById(R.id.search_icon);
+        EditText ev_search = bottomSheetDialog_company.findViewById(R.id.ev_search);
+        LinearLayout add_new = bottomSheetDialog_company.findViewById(R.id.add_new);
+        search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                ev_search.requestFocus();
+            }
+        });
+
+        home_type_list.setAdapter(companyAdapter);
+        home_type_list.addOnScrollListener(new PaginationListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                try {
+                    if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                        CompanyList();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+        add_new.setVisibility(View.GONE);
+        add_new.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                bottomSheetDialog_company.cancel();
+            }
+        });
+        ev_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                List<CompanyModel.Company> temp = new ArrayList();
+                for (CompanyModel.Company d : companyList) {
+                    if (d.getName().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                        temp.add(d);
+                        // Log.e("Same Data ",d.getUserName());
+                    }
+                }
+                companyAdapter.updateList(temp);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        bottomSheetDialog_company.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        currentPage = PAGE_START;
+        isLastPage = false;
+        companyList.clear();
+        companyAdapter.clear();
+        try {
+            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+
+                CompanyList();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void CompanyList() throws JSONException {
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
+        paramObject.addProperty("perPage", perPage);
+        paramObject.addProperty("page", currentPage);
+        obj.add("data", paramObject);
+        retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+                if (response.body().getHttp_status().equals(200)) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    if (response.body().getHttp_status() == 200) {
+                        //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
+                        Type listType = new TypeToken<CompanyModel>() {
+                        }.getType();
+                        CompanyModel data = new Gson().fromJson(headerString, listType);
+                        List<CompanyModel.Company> companyList = data.getData();
+                        // sessionManager.setCompanylist(getActivity(), data.getData());
+
+
+                        if (currentPage != PAGE_START) companyAdapter.removeLoading();
+                        companyAdapter.addItems(companyList);
+                        // check weather is last page or not
+                        if (data.getTotal() > companyAdapter.getItemCount()) {
+                            companyAdapter.addLoading();
+                        } else {
+                            isLastPage = true;
+                        }
+                        isLoading = false;
+
+                    } else {
+                        // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
     }
 
     public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.InviteListDataclass> {
@@ -1608,6 +1879,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if (WorkData.getTitale().equals("Add custom")) {
                         showAlertDialogButtonClicked(v);
                     } else {
@@ -1658,14 +1933,16 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.InviteListDataclass> {
 
-        public Context mCtx;
+        public Activity mCtx;
         List<Contactdetail> contactdetails;
         LinearLayout layout_Add_phone;
+        Integer Is_blocked;
 
-        public PhoneAdapter(Context context, List<Contactdetail> contactdetails, LinearLayout layout_Add_phone) {
+        public PhoneAdapter(Activity context, List<Contactdetail> contactdetails, LinearLayout layout_Add_phone, Integer Is_blocked) {
             this.mCtx = context;
             this.contactdetails = contactdetails;
             this.layout_Add_phone = layout_Add_phone;
+            this.Is_blocked = Is_blocked;
         }
 
         @NonNull
@@ -1681,7 +1958,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             Contactdetail item = contactdetails.get(position);
             Log.e("All Mobile Data ", new Gson().toJson(contactdetails));
             String flag = sessionManager.getContect_flag(getActivity());
-
+            if (Is_blocked != 1) {
+                holder.layout_icon_message.setVisibility(View.VISIBLE);
+            } else {
+                holder.layout_icon_message.setVisibility(View.GONE);
+            }
             holder.select_label.setVisibility(View.VISIBLE);
             holder.contect_msg.setVisibility(View.GONE);
             holder.ccp_id.setVisibility(View.VISIBLE);
@@ -1695,20 +1976,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
 
-                int countryCode = 0;
-                PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(getActivity());
-                try {
-                    // phone must begin with '+'
-                    Phonenumber.PhoneNumber numberProto = phoneUtil.parse(item.getEmail_number(), "");
-                    countryCode = numberProto.getCountryCode();
-                } catch (NumberParseException e) {
-                    System.err.println("NumberParseException was thrown: " + e.toString());
-                }
 
-                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(countryCode));
-                holder.ccp_id.setDefaultCountryUsingPhoneCode(countryCode);
+
+                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx,item.getEmail_number())));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx,item.getEmail_number()));
                 holder.ccp_id.resetToDefaultCountry();
-                String main_data = item.getEmail_number().replace("+"+String.valueOf(countryCode), "");
+                String main_data = item.getEmail_number().replace("+" + String.valueOf(Global.Countrycode(mCtx,item.getEmail_number())), "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
 
@@ -1726,12 +1999,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
 
 
-                            addcontectModel.setContactdetails(contactdetails);
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                        addcontectModel.setContactdetails(contactdetails);
+                        SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
-                        if(PhoneFieldNumber < 5){
+                        if (PhoneFieldNumber < 5) {
                             layout_Add_phone.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             layout_Add_phone.setVisibility(View.GONE);
                         }
 
@@ -1777,7 +2050,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() +holder.edt_mobile_no.getText().toString());
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + holder.edt_mobile_no.getText().toString());
                         item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
                         String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
                         String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
@@ -1790,6 +2067,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -1805,6 +2086,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -1822,9 +2107,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-            }
-            else if (flag.equals("read")) {
-                EnableRuntimePermission();
+            } else if (flag.equals("read")) {
+             //   EnableRuntimePermission();
                 holder.swipe_layout.setLeftSwipeEnabled(false);
                 holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_label.setVisibility(View.GONE);
@@ -1861,9 +2145,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
                         SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
-                        if(PhoneFieldNumber < 5){
+                        if (PhoneFieldNumber < 5) {
                             layout_Add_phone.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             layout_Add_phone.setVisibility(View.GONE);
                         }
 
@@ -1923,12 +2207,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -1944,6 +2236,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -1961,8 +2257,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-            }
-            else {
+            } else {
 
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
@@ -1971,7 +2266,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
-                TelephonyManager tm = (TelephonyManager)getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
+             /*   TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
                 String country = tm.getNetworkCountryIso();
                 int countryCode = 0;
                 PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(getActivity());
@@ -1981,8 +2276,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     countryCode = numberProto.getCountryCode();
                 } catch (NumberParseException e) {
                     System.err.println("NumberParseException was thrown: " + e.toString());
-                }
-                String main_data = item.getEmail_number().replace("+"+countryCode, "");
+                }*/
+                String main_data = item.getEmail_number().replace("+" +Global.Countrycode_Country(mCtx,item.getEmail_number()), "");
 
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
@@ -2046,12 +2341,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item);
                     }
                 });
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2067,6 +2370,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2087,10 +2394,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + item.getEmail_number()));
-                    getActivity().startActivity(intent);
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                   EnableRuntimePermission(item);
                 }
             });
 
@@ -2098,6 +2406,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     Log.e("Sms Event Call", "Yes");
                     Log.e("Number is", item.getEmail_number());
                     //showAlertDialogButtonClicked1(item.getEmail_number());
@@ -2137,7 +2449,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ImageView iv_set_default;
             SwipeLayout swipe_layout;
             LinearLayout layout_swap, select_label, layout_defult, layout_remove, contect_msg, layout_icon_call,
-                    layout_icon_message,layout_country_piker;
+                    layout_icon_message, layout_country_piker;
             TextView phone_txt;
             CountryCodePicker ccp_id;
             TextView tv_phone;
@@ -2174,11 +2486,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         private final List<Contactdetail> contactdetails;
         public Context mCtx;
         LinearLayout layout_Add_email;
+        Integer Is_blocked;
 
-        public EmailAdapter(Context context, List<Contactdetail> contactdetails, LinearLayout layout_Add_email) {
+        public EmailAdapter(Context context, List<Contactdetail> contactdetails, LinearLayout layout_Add_email, Integer Is_blocked) {
             this.mCtx = context;
             this.contactdetails = contactdetails;
             this.layout_Add_email = layout_Add_email;
+            this.Is_blocked = Is_blocked;
         }
 
         @NonNull
@@ -2198,6 +2512,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.select_email_label.setVisibility(View.VISIBLE);
             holder.layout_icon_email.setVisibility(View.GONE);
             holder.edt_email.setEnabled(true);
+
 
 
             if (edit) {
@@ -2236,6 +2551,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item);
                     }
                 });
@@ -2274,6 +2593,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2289,6 +2612,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2307,20 +2634,23 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
+            } else if (flag.equals("read")) {
 
+                if (Is_blocked != 1) {
+                    holder.layout_icon_email.setVisibility(View.VISIBLE);
+                } else {
+                    holder.layout_icon_email.setVisibility(View.GONE);
+                }
 
-
-            }
-            else if (flag.equals("read")) {
                 holder.swipe_layout.setLeftSwipeEnabled(false);
                 holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_email_label.setVisibility(View.GONE);
-                holder.layout_icon_email.setVisibility(View.VISIBLE);
                 holder.edt_email.setEnabled(false);
                 holder.edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_email.setText(holder.tv_email.getText().toString() + "(" + item.getLabel() + ")");
-            }
-            else {
+            } else {
+
+
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
@@ -2354,6 +2684,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.select_email_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showBottomSheetDialog_For_Home("email", holder.email_txt, holder.email_txt, item);
                     }
                 });
@@ -2392,6 +2726,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_defult.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         for (int i = 0; i < contactdetails.size(); i++) {
                             if (item.getId() == contactdetails.get(i).getId()) {
@@ -2407,6 +2745,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.layout_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         holder.layout_swap.setVisibility(View.GONE);
                         contactdetails.remove(position);
                         notifyDataSetChanged();
@@ -2431,6 +2773,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     SessionManager.setMessage_number(item.getEmail_number());
                     SessionManager.setMessage_id(String.valueOf(item.getId()));
 
@@ -2440,9 +2786,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     SessionManager.setCampaign_type_name("");
                     SessionManager.setCampaign_Day("");
                     SessionManager.setCampaign_minute("");
-                    Intent intent1=new Intent(getActivity(), Sms_And_Email_Auto_Manual.class);
-                    intent1.putExtra("flag","edit");
-                    intent1.putExtra("type","EMAIL");
+                    Intent intent1 = new Intent(getActivity(), Text_And_Email_Auto_Manual.class);
+                    intent1.putExtra("flag", "edit");
+                    intent1.putExtra("type", "EMAIL");
                     startActivity(intent1);
 
 
@@ -2489,230 +2835,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     }
 
-
-
-    private void Timezoneget() throws JSONException {
-
-        //loadingDialog.showLoadingDialog();
-
-        SignResponseModel user_data = SessionManager.getGetUserdata(getContext());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        JsonObject obj = new JsonObject();
-
-        JsonObject paramObject = new JsonObject();
-
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("team_id", "1");
-        obj.add("data", paramObject);
-
-
-        retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                if (response.body().getHttp_status() == 200) {
-
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken< List<TimezoneModel>>() {
-                    }.getType();
-                    List<TimezoneModel> timezoon = new Gson().fromJson(headerString, listType);
-                    timezoneModels.addAll(timezoon);
-                    loadingDialog.cancelLoading();
-                    for (int i=0;i<timezoon.size();i++)
-                    {
-                        if (zone_txt.getText().toString().equals(timezoon.get(i).getValue().toString()))
-                        {
-                            zone_txt.setText(timezoon.get(i).getText());
-                            Log.e("No Same Data","NO");
-                        }
-                        else {
-                            Log.e("No Same Data","Yes");
-                        }
-                    }
-                } else {
-                   // loadingDialog.cancelLoading();
-                }
-
-
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-              //  loadingDialog.cancelLoading();
-            }
-        });
-    }
-
-
-    void showBottomSheetDialog_For_TimeZone() {
-        bottomSheetDialog_time = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
-        bottomSheetDialog_time.setContentView(R.layout.bottom_sheet_dialog_for_home);
-        RecyclerView home_type_list = bottomSheetDialog_time.findViewById(R.id.home_type_list);
-        TextView tv_item=bottomSheetDialog_time.findViewById(R.id.tv_item);
-        tv_item.setText("Please select Timezone");
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        home_type_list.setLayoutManager(layoutManager);
-
-        TimezoneAdapter timezoneAdapter = new TimezoneAdapter(getActivity(), timezoneModels);
-        home_type_list.setAdapter(timezoneAdapter);
-
-        bottomSheetDialog_time.show();
-    }
-
-
-    void showBottomSheetDialog_For_Company() {
-        bottomSheetDialog_company = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
-        bottomSheetDialog_company.setContentView(R.layout.bottom_sheet_dialog_for_compnay);
-        RecyclerView home_type_list = bottomSheetDialog_company.findViewById(R.id.home_type_list);
-        TextView tv_item=bottomSheetDialog_company.findViewById(R.id.tv_item);
-        tv_item.setText("Please select company");
-        tv_item.setVisibility(View.VISIBLE);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        home_type_list.setLayoutManager(layoutManager);
-        ImageView search_icon=bottomSheetDialog_company.findViewById(R.id.search_icon);
-       EditText ev_search=bottomSheetDialog_company.findViewById(R.id.ev_search);
-        LinearLayout add_new=bottomSheetDialog_company.findViewById(R.id.add_new);
-       search_icon.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               ev_search.requestFocus();
-           }
-       });
-
-        home_type_list.setAdapter(companyAdapter);
-       home_type_list.addOnScrollListener(new PaginationListener(layoutManager) {
-           @Override
-           protected void loadMoreItems() {
-               isLoading = true;
-               currentPage++;
-               try {
-                   if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                       CompanyList();
-                   }
-               } catch (JSONException e) {
-                   e.printStackTrace();
-               }
-           }
-
-           @Override
-           public boolean isLastPage() {
-               return isLastPage;
-           }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
-
-     add_new.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View view) {
-
-             bottomSheetDialog_company.cancel();
-         }
-     });
-     ev_search.addTextChangedListener(new TextWatcher() {
-         @Override
-         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-         }
-
-       @Override
-       public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-           List<CompanyModel.Company> temp = new ArrayList();
-           for(CompanyModel.Company d: companyList){
-               if(d.getName().toLowerCase().contains(charSequence.toString().toLowerCase())){
-                   temp.add(d);
-                   // Log.e("Same Data ",d.getUserName());
-               }
-           }
-           companyAdapter.updateList(temp);
-       }
-
-       @Override
-       public void afterTextChanged(Editable editable) {
-
-         }
-     });
-        bottomSheetDialog_company.show();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        currentPage = PAGE_START;
-        isLastPage = false;
-        companyList.clear();
-        companyAdapter.clear();
-        try {
-            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-
-                CompanyList();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void CompanyList() throws JSONException {
-
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("perPage", perPage);
-        paramObject.addProperty("page", currentPage);
-        obj.add("data", paramObject);
-        retrofitCalls.CompanyList(sessionManager, obj, loadingDialog,  Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                //Log.e("Response is",new Gson().toJson(response));
-                if(response.body().getHttp_status().equals(200)){
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    if (response.body().getHttp_status() == 200) {
-                    //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
-                        Type listType = new TypeToken<CompanyModel>() {
-                        }.getType();
-                        CompanyModel data = new Gson().fromJson(headerString, listType);
-                        List<CompanyModel.Company> companyList=data.getData();
-                       // sessionManager.setCompanylist(getActivity(), data.getData());
-
-
-                        if (currentPage != PAGE_START) companyAdapter.removeLoading();
-                        companyAdapter.addItems(companyList);
-                        // check weather is last page or not
-                        if (data.getTotal() > companyAdapter.getItemCount()) {
-                            companyAdapter.addLoading();
-                        } else {
-                            isLastPage = true;
-                        }
-                        isLoading = false;
-
-                    } else {
-                        // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-            }
-        });
-    }
-
     public class TimezoneAdapter extends RecyclerView.Adapter<TimezoneAdapter.InviteListDataclass> {
 
         public Context mCtx;
@@ -2741,11 +2863,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                            bottomSheetDialog_time.cancel();
-                            zone_txt.setText(holder.tv_item.getText().toString());
-                            addcontectModel.setTime(String.valueOf(WorkData.getValue()));
-                            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    bottomSheetDialog_time.cancel();
+                    zone_txt.setText(holder.tv_item.getText().toString());
+                    addcontectModel.setTime(String.valueOf(WorkData.getValue()));
+                    SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
 
                 }
@@ -2779,10 +2904,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
-        private boolean isLoaderVisible = false;
         public Context mCtx;
         TextView phone_txt;
         Contactdetail item;
+        private boolean isLoaderVisible = false;
         private List<CompanyModel.Company> companyList;
 
         public CompanyAdapter(Context context, List<CompanyModel.Company> companyList) {
@@ -2792,7 +2917,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         @NonNull
         @Override
-        public CompanyAdapter.viewData  onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public CompanyAdapter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
                     return new CompanyAdapter.viewData(
@@ -2805,6 +2930,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
 
         }
+
         @Override
         public int getItemViewType(int position) {
             if (isLoaderVisible) {
@@ -2841,7 +2967,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         }
 
 
-
         CompanyModel.Company getItem(int position) {
             return companyList.get(position);
         }
@@ -2849,11 +2974,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         @Override
         public void onBindViewHolder(@NonNull viewData holder, int position) {
             CompanyModel.Company WorkData = companyList.get(position);
-            if(Global.IsNotNull(WorkData)&&!WorkData.getName().equals("")){
+            if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
                 holder.tv_item.setText(WorkData.getName());
                 holder.tv_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         bottomSheetDialog_company.cancel();
                         ev_company.setText(holder.tv_item.getText().toString());
                         //addcontectModel.setCompany(String.valueOf(WorkData.getName()));
@@ -2869,10 +2998,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         public int getItemCount() {
             return companyList.size();
         }
+
         public void updateList(List<CompanyModel.Company> list) {
             companyList = list;
             notifyDataSetChanged();
         }
+
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_item;
 

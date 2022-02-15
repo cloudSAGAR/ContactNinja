@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -44,6 +45,7 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
     RetrofitCalls retrofitCalls;
     Handler mHandler=new Handler();
     private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -81,6 +83,10 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(@SuppressLint("UnknownNullness") View v) {
         switch (v.getId()){
             case R.id.btn_Create_password:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if(checkVelidaction()){
                     iv_invalid.setText("");
                     try {
@@ -95,53 +101,62 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
                 case R.id.iv_current_showPassword:
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if(iv_current_showPassword.isSelected()){
                         iv_current_showPassword.setSelected(false);
                         //hide password
                         iv_current_showPassword.setImageResource(R.drawable.ic_visibility_off);
                         edit_Current_Password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        edit_Current_Password.setSelection(edit_Current_Password.getText().length());
 
                     }else {
                         iv_current_showPassword.setSelected(true);
                         //show password
                         iv_current_showPassword.setImageResource(R.drawable.ic_visibility);
                         edit_Current_Password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        edit_Current_Password.setSelection(edit_Current_Password.getText().length());
                     }
-                break;
+                    edit_Current_Password.setSelection(edit_Current_Password.getText().length());
+                    break;
                 case R.id.iv_new_showPassword:
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if(iv_new_showPassword.isSelected()){
                         iv_new_showPassword.setSelected(false);
                         //hide password
                         iv_new_showPassword.setImageResource(R.drawable.ic_visibility_off);
                         edit_New_Password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        edit_New_Password.setSelection(edit_New_Password.getText().length());
 
                     }else {
                         iv_new_showPassword.setSelected(true);
                         //show password
                         iv_new_showPassword.setImageResource(R.drawable.ic_visibility);
                         edit_New_Password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        edit_New_Password.setSelection(edit_New_Password.getText().length());
                     }
-                break;
+                    edit_New_Password.setSelection(edit_New_Password.getText().length());
+                    break;
                 case R.id.iv_Confirm_showPassword:
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     if(iv_Confirm_showPassword.isSelected()){
                         iv_Confirm_showPassword.setSelected(false);
                         //hide password
                         iv_Confirm_showPassword.setImageResource(R.drawable.ic_visibility_off);
                         edit_Confirm_Password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        edit_Confirm_Password.setSelection(edit_Confirm_Password.getText().length());
 
                     }else {
                         iv_Confirm_showPassword.setSelected(true);
                         //show password
                         iv_Confirm_showPassword.setImageResource(R.drawable.ic_visibility);
                         edit_Confirm_Password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        edit_Confirm_Password.setSelection(edit_Confirm_Password.getText().length());
                     }
-                break;
+                    edit_Confirm_Password.setSelection(edit_Confirm_Password.getText().length());
+                    break;
         }
     }
 

@@ -51,6 +51,8 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_width="match_parent"
                 android:focusable="true"
+                android:imeOptions="actionDone"
+                android:inputType="text"
                 android:maxLength="40"
                 style="@style/tv_Medium_14"
                 android:layout_height="wrap_content"/>

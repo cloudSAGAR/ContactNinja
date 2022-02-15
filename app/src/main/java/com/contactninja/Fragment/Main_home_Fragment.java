@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,7 +22,7 @@ import com.contactninja.Fragment.Home.Affiliate_Groth_Fragment;
 import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_sms.List_And_show.List_Manual_Activty;
+import com.contactninja.Model.Timezon;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;
 import com.contactninja.R;
@@ -38,13 +40,9 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
 
@@ -55,18 +53,27 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
-    ImageView iv_toolbar_select, iv_toolbar_notification;
+    ImageView  iv_toolbar_notification;
     LinearLayout layout_toolbar_logo;
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewpaggerAdapter adapter;
-    String token_api = "", user_id = "", organization_id = "", team_id = "";
+    Integer user_id=0;
+    String token_api = "",  organization_id = "", team_id = "";
     SignResponseModel user_data;
+    MainActivity mainActivity;
 
+    public Main_home_Fragment(MainActivity mainActivity) {
+        this.mainActivity=mainActivity;
+    }
+    private long mLastClickTime = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_home, container, false);
+
+
+
 
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
@@ -74,24 +81,20 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         token_api = Global.getToken(sessionManager);
         user_data = SessionManager.getGetUserdata(getActivity());
-        user_id = String.valueOf(user_data.getUser().getId());
+        user_id =user_data.getUser().getId();
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-
-     /*   try {
-            if(Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                Refreess_token();
-            }
-        } catch (JSONException e) {
+        TimeZone tz = TimeZone.getDefault();
+        Log.e("offset", tz.getID());
+        if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList())||user_data.getUser().getWorkingHoursList().size() == 0) {
+            try {
+                if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                    Timezone( tz.getID());
+                }
+            } catch (Exception e) {
             e.printStackTrace();
-        }*/
-        try {
-            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                TimeZooneUpdate();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         intentView(view);
@@ -130,9 +133,9 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
         iv_toolbar_notification.setVisibility(View.VISIBLE);
 
-        iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
+      /*  iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
         iv_toolbar_select.setVisibility(View.VISIBLE);
-        iv_toolbar_select.setOnClickListener(this);
+        iv_toolbar_select.setOnClickListener(this);*/
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         tabLayout = view.findViewById(R.id.tabLayout);
@@ -144,13 +147,22 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_toolbar_notification:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getActivity(), NotificationListActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.iv_toolbar_select:
-                startActivity(new Intent(getActivity(), List_Manual_Activty.class));
-
-                break;
+           /* case R.id.iv_toolbar_select:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                if(Global.IsNotNull(SessionManager.getContectList(getActivity()))){
+                    startActivity(new Intent(getActivity(), List_Manual_Activty.class));
+                }
+                break;*/
 
         }
     }
@@ -242,45 +254,57 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void TimeZooneUpdate() throws JSONException {
+    private void Timezone(String id) throws JSONException {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Timezone(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
 
-        Calendar cal = Calendar.getInstance();
-        TimeZone tz1 = cal.getTimeZone();
-        Calendar calendar = Calendar.getInstance(tz1,
-                Locale.getDefault());
 
-        Date currentLocalTime = calendar.getTime();
-        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
-        String localTime = date.format(currentLocalTime);
-        String offset = localTime.substring(0, 1);
+                Gson gson = new Gson();
+                String headerString = gson.toJson(response.body().getData());
+                Type listType = new TypeToken<ArrayList<Timezon.TimezonData>>() {
+                }.getType();
+                List<Timezon.TimezonData> timezonDataList = new Gson().fromJson(headerString, listType);
+                    for (int i=0;i<timezonDataList.size();i++){
+                        if(id.equals(timezonDataList.get(i).getTzname())){
+                            Working_hour(timezonDataList.get(i).getValue());
+                            break;
+                        }
+                    }
+            }
 
-//      //  Log.e("GMT offset is %s hours",""+ TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS));
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
+    }
 
-        String time = offset + TimeUnit.MINUTES.convert(tz1.getRawOffset(), TimeUnit.MILLISECONDS);
-        Log.e("offset", time);
+    private void Working_hour(Integer value) {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("timezone_id", value);
+        paramObject.addProperty("is_default", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        String version_name=Global.getVersionname(mainActivity);
+        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api,version_name , Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                //Log.e("Response is",new Gson().toJson(response));
+            }
 
-//        Log.e("Size is",new Gson().toJson(user_data.getUser().getWorkingHoursList()));
-        if (user_data.getUser().getWorkingHoursList().size() == 0) {
-            JsonObject obj = new JsonObject();
-            JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("diff_minutes", time);
-            paramObject.addProperty("is_default", "1");
-            paramObject.addProperty("organization_id", "1");
-            paramObject.addProperty("team_id", "1");
-            paramObject.addProperty("user_id", user_id);
-            obj.add("data", paramObject);
-            retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-                @Override
-                public void success(Response<ApiResponse> response) {
-                    //Log.e("Response is",new Gson().toJson(response));
-                }
-
-                @Override
-                public void error(Response<ApiResponse> response) {
-                }
-            });
-        }
-
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
 
     }
 }

@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -58,12 +59,12 @@ import retrofit2.Response;
 public class Campaign_Name_Activity extends AppCompatActivity implements View.OnClickListener,
         ConnectivityReceiver.ConnectivityReceiverListener, TimeZoneClick {
     ImageView iv_back;
-    TextView save_button, topic_remainingCharacter, tv_error_title,tv_error_day, txt_Curent_time, txt_timezon;
+    TextView save_button, topic_remainingCharacter, tv_error_title, tv_error_day, txt_Curent_time, txt_timezon;
     Integer WorkingHoursID = 0;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    EditText edt_titale,edt_day;
+    EditText edt_titale, edt_day;
     int sequence_id = 0, seq_task_id = 0;
     ConstraintLayout mMainLayout;
     String sequence_Name = "";
@@ -76,6 +77,8 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
+    private long mLastClickTime = 0;
+    String flag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
             sequence_id = bundle.getInt("sequence_id");
             seq_task_id = bundle.getInt("seq_task_id");
             sequence_Name = bundle.getString("sequence_Name");
+            flag = bundle.getString("flag");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,35 +152,43 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                 finish();
                 break;
             case R.id.layout_time_zone:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog_For_Time();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Campaign_Name_Activity.this);
                 //Add Api Call
-                if(checkVelidaction()){
+                if (checkVelidaction()) {
                     tv_error_title.setVisibility(View.GONE);
                     tv_error_day.setVisibility(View.GONE);
-
-                    AddName();
+                    if (Global.isNetworkAvailable(Campaign_Name_Activity.this, mMainLayout)) {
+                        AddName();
+                    }
                 }
-
-
-
                 break;
 
         }
     }
+
     private boolean checkVelidaction() {
 
-            if (edt_titale.getText().toString().trim().equals("")) {
-                tv_error_title.setVisibility(View.VISIBLE);
-            }else  if(edt_day.getText().toString().trim().equals("")){
-                tv_error_day.setVisibility(View.VISIBLE);
-            }else {
-                return true;
-            }
+        if (edt_titale.getText().toString().trim().equals("")) {
+            tv_error_title.setVisibility(View.VISIBLE);
+        } else if (edt_day.getText().toString().trim().equals("")) {
+            tv_error_day.setVisibility(View.VISIBLE);
+        } else {
+            return true;
+        }
         return false;
     }
+
     private void showBottomSheetDialog_For_Time() {
         bottomSheetDialog_time = new BottomSheetDialog(Campaign_Name_Activity.this, R.style.BottomSheetDialog);
         bottomSheetDialog_time.setContentView(R.layout.bottom_sheet_dialog_for_timezone);
@@ -302,11 +314,6 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
     public void AddName() {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-
         if (SessionManager.getTask(getApplicationContext()).size() != 0) {
             sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
         } else {
@@ -317,10 +324,10 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
         Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("record_id", sequence_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("seq_name", edt_titale.getText().toString());
         paramObject.addProperty("max_prospects", edt_day.getText().toString());
         paramObject.addProperty("working_hours_ids", WorkingHoursID);
@@ -333,12 +340,22 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
 
                         if (response.body().getHttp_status() == 200) {
 
-                            SessionManager.setCampign_flag("read_name");
-                            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-                            intent.putExtra("sequence_id", sequence_id);
-                            /*intent.putExtra("seq_task_id",seq_task_id);*/
-                            startActivity(intent);
-                            finish();
+                            if (flag.equals("edit")) {
+                                /*SessionManager.setCampign_flag("read_name");
+                                Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                                intent.putExtra("sequence_id", sequence_id);
+                                *//*intent.putExtra("seq_task_id",seq_task_id);*//*
+                                startActivity(intent);*/
+                                finish();
+                            } else {
+                                SessionManager.setCampign_flag("read_name");
+                                Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                                intent.putExtra("sequence_id", sequence_id);
+                                /*intent.putExtra("seq_task_id",seq_task_id);*/
+                                startActivity(intent);
+                                finish();
+                            }
+
                         } else {
 
                         }
@@ -355,15 +372,11 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
 
 
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("q", "");
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
@@ -385,14 +398,17 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                             }.getType();
                             WorkingHoursModel workingHoursModel = new Gson().fromJson(headerString, listType);
                             workingHourList = workingHoursModel.getWorkingHours();
-                            WorkingHoursModel.UserTimezone userTimezone=workingHoursModel.getUserTimezone();
+                            WorkingHoursModel.UserTimezone userTimezone = workingHoursModel.getUserTimezone();
                             txt_Curent_time.setText(String.valueOf(userTimezone.getZoneName()));
                             if (Global.IsNotNull(workingHourList) && workingHourList.size() != 0) {
                                 for (int i = 0; i < workingHourList.size(); i++) {
-                                    if(workingHourList.get(i).getIsDefault().equals("1")){
+                                    if (workingHourList.get(i).getIsDefault().equals("1")) {
                                         txt_timezon.setText(workingHourList.get(i).getName());
                                         WorkingHoursID = workingHourList.get(i).getId();
                                         break;
+                                    } else {
+                                        txt_timezon.setText(workingHourList.get(0).getName());
+                                        WorkingHoursID = workingHourList.get(0).getId();
                                     }
                                 }
                             }
@@ -512,23 +528,28 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
 
         @Override
         public void onBindViewHolder(@NonNull TimeZoneAdepter.viewData holder, int position) {
-            WorkingHoursModel.WorkingHour workingHour = workingHourList.get(position);
-            if(Global.IsNotNull(workingHour.getName())){
-                holder.tv_time_name.setText(workingHour.getName());
+            switch (getItemViewType(position)) {
+                case VIEW_TYPE_NORMAL:
+
+                    WorkingHoursModel.WorkingHour workingHour = workingHourList.get(position);
+                    if (Global.IsNotNull(workingHour.getName())) {
+                        holder.tv_time_name.setText(workingHour.getName());
+                        if (Global.IsNotNull(workingHour.getIsDefault())) {
+                            if (workingHour.getIsDefault().equals("1")) {
+                                holder.iv_is_default.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.iv_is_default.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                    holder.layout_time.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            timeZoneClick.OnClick(workingHour);
+                        }
+                    });
+                    break;
             }
-            if(Global.IsNotNull(workingHour.getIsDefault())){
-                if(workingHour.getIsDefault().equals("1")){
-                    holder.iv_is_default.setVisibility(View.VISIBLE);
-                }else {
-                    holder.iv_is_default.setVisibility(View.GONE);
-                }
-            }
-            holder.layout_time.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    timeZoneClick.OnClick(workingHour);
-                }
-            });
         }
 
 

@@ -83,6 +83,7 @@
             android:id="@+id/add_detail"
             style="@style/tv_regular_13"
             android:enabled="false"
+            android:maxEms="100"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"
             android:layout_gravity="center|left"
@@ -91,13 +92,14 @@
             android:layout_marginEnd="@dimen/_15sdp"
             android:background="@drawable/shape_5_white_ccc_line"
             android:gravity="top|left"
+            android:maxLength="100"
             android:hint="@string/add_group_description"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_5sdp"
-            android:singleLine="true"
             android:textColor="@color/text_reg" />
         <TextView
+            android:id="@+id/topic_remainingCharacter"
             android:layout_marginTop="@dimen/_10sdp"
             style="@style/tv_regular_12"
             android:textColor="@color/min_text"
@@ -113,6 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_start_broadcast"
                 android:layout_weight="1"
                 android:layout_marginTop="@dimen/_10sdp"
                 style="@style/tv_regular_13"
@@ -127,6 +130,7 @@
 
             </TextView>
             <TextView
+                android:id="@+id/tv_group_text"
                 android:layout_weight="1"
                 android:layout_marginTop="@dimen/_10sdp"
                 style="@style/tv_regular_13"

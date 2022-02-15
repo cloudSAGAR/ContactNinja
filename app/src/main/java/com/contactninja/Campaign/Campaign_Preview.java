@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -71,17 +73,20 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     List<CampaignTask_overview.SequenceTask> campaignTasks = new ArrayList<>();
     int sequence_id, sequence_task_id;
     BottomSheetDialog bottomSheetDialog;
-    EditText tv_name;
+    TextView tv_name;
     TextView contect_count;
     ImageView iv_toolbar_manu;
     Toolbar toolbar;
     RelativeLayout contect_layout;
-    ImageView add_icon;
+    ImageView add_icon,iv_camp_edit;
     LinearLayout layout_toolbar_logo;
     ConstraintLayout mMainLayout;
     List<CampaignTask_overview.SequenceTask> main_data = new ArrayList<>();
     String Camp_name = "";
     private BroadcastReceiver mNetworkReceiver;
+    LinearLayout layout_name;
+    private long mLastClickTime=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,18 +102,25 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
             // StepData();
             tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.GONE);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name")) {
             // StepData();
+            tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.GONE);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else {
-            tv_name.setEnabled(true);
+            tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.VISIBLE);
             save_button.setText("Done");
             save_button.setVisibility(View.VISIBLE);
             add_icon.setVisibility(View.VISIBLE);
@@ -152,7 +164,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @SuppressLint("WrongViewCast")
     private void IntentUI() {
+        iv_camp_edit=findViewById(R.id.iv_camp_edit);
+        iv_camp_edit.setOnClickListener(this);
+        layout_name=findViewById(R.id.layout_name);
         mMainLayout = findViewById(R.id.mMainLayout);
         add_icon = findViewById(R.id.add_icon);
         add_icon.setVisibility(View.GONE);
@@ -171,6 +187,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         item_list.setLayoutManager(new LinearLayoutManager(this));
         item_list.setItemViewCacheSize(500);
         tv_name = findViewById(R.id.tv_name);
+        layout_name.setOnClickListener(this);
+        tv_name.setOnClickListener(this);
         user_contect = findViewById(R.id.user_contect);
         user_contect.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         user_contect.setOnClickListener(this);
@@ -227,13 +245,22 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.add_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setContect_flag("edit");
                 Intent intent_two = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
                 intent_two.putExtra("sequence_id", sequence_id);
                 intent_two.putExtra("seq_task_id", sequence_task_id);
                 startActivity(intent_two);
+                finish();
                 break;
             case R.id.contect_count:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setContect_flag("read");
                 Intent intent1 = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
                 intent1.putExtra("sequence_id", sequence_id);
@@ -242,7 +269,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.user_contect:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                     sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
                 } else {
@@ -258,6 +288,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Campaign_Preview.this);
                 if (Camp_name.equals(tv_name.getText().toString())) {
                     SessionManager.setCampign_flag("read");
@@ -272,6 +306,39 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.enter_campaign_name),false);
                     }
                 }
+
+                break;
+
+            case R.id.layout_name:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                Intent name_intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
+                name_intent.putExtra("sequence_id", sequence_id);
+                name_intent.putExtra("seq_task_id", sequence_task_id);
+                name_intent.putExtra("sequence_Name", tv_name.getText().toString());
+                name_intent.putExtra("flag","edit");
+                startActivity(name_intent);
+              //  finish();
+                break;
+
+            case R.id.iv_camp_edit:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                Intent name_intent1 = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
+                name_intent1.putExtra("sequence_id", sequence_id);
+                name_intent1.putExtra("seq_task_id", sequence_task_id);
+                name_intent1.putExtra("sequence_Name", tv_name.getText().toString());
+                name_intent1.putExtra("flag","edit");
+                startActivity(name_intent1);
+                //finish();
+                break;
+
+            case R.id.tv_name:
 
                 break;
 
@@ -314,56 +381,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         edit_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-             /*   if (sequenceTask.getType().equals("EMAIL"))
-                {
-                    if (SessionManager.getTask(getApplicationContext()).size()!=0)
-                    {
-                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
-                    }
-                    else {
-                        Intent getintent=getIntent();
-                        Bundle bundle=getintent.getExtras();
-                        sequence_id=bundle.getInt("sequence_id");
-                    }
-                    Intent new_task=new Intent(getApplicationContext(),Automated_Email_Activity.class);
-                    new_task.putExtra("flag","edit");
-                    new_task.putExtra("body",sequenceTask.getContentBody());
-                    new_task.putExtra("day",sequenceTask.getDay());
-                    new_task.putExtra("manage_by",sequenceTask.getManageBy());
-                    new_task.putExtra("seq_task_id",String.valueOf(sequenceTask.getId()));
-                    new_task.putExtra("sequence_id",String.valueOf(sequence_id));
-                    new_task.putExtra("type",sequenceTask.getType());
-                    new_task.putExtra("minute",sequenceTask.getMinute());
-                    new_task.putExtra("header",sequenceTask.getContentHeader());
-                    new_task.putExtra("step",sequenceTask.getStepNo());
-                    startActivity(new_task);
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
                 }
-                else {
-                    if (SessionManager.getTask(getApplicationContext()).size()!=0)
-                    {
-                        sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
-                    }
-                    else {
-                        Intent getintent=getIntent();
-                        Bundle bundle=getintent.getExtras();
-                        sequence_id=bundle.getInt("sequence_id");
-                    }
-                    Log.e("sequence id", String.valueOf(sequence_id));
-                    Intent new_task=new Intent(getApplicationContext(),First_Step_Start_Activity.class);
-                    new_task.putExtra("flag","edit");
-                    new_task.putExtra("body",sequenceTask.getContentBody());
-                    new_task.putExtra("day",sequenceTask.getDay());
-                    new_task.putExtra("manage_by",sequenceTask.getManageBy());
-                    new_task.putExtra("seq_task_id",String.valueOf(sequenceTask.getId()));
-                    new_task.putExtra("sequence_id",String.valueOf(sequence_id));
-                    new_task.putExtra("type",sequenceTask.getType());
-                    new_task.putExtra("minute",sequenceTask.getMinute());
-                    new_task.putExtra("step",sequenceTask.getStepNo());
-                    startActivity(new_task);
-                }*/
-
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (sequenceTask.getType().equals("EMAIL")) {
                     if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                         sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
@@ -373,35 +394,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         sequence_id = bundle.getInt("sequence_id");
                     }
                     Log.e("Sequence is is", String.valueOf(sequence_id));
-                /*    Intent new_task=new Intent(getActivity(), Automated_Email_Activity.class);
-                    new_task.putExtra("flag","edit");
-                    new_task.putExtra("body",sequenceTask.getContentBody());
-                    new_task.putExtra("day",sequenceTask.getDay());
-                    new_task.putExtra("manage_by",sequenceTask.getManageBy());
-                    new_task.putExtra("seq_task_id",String.valueOf(sequenceTask.getId()));
-                    new_task.putExtra("sequence_id",String.valueOf(sequence_id));
-                    new_task.putExtra("type",sequenceTask.getType());
-                    new_task.putExtra("minute",sequenceTask.getMinute());
-                    new_task.putExtra("header",sequenceTask.getContentHeader());
-                    new_task.putExtra("step",sequenceTask.getStepNo());
-                    startActivity(new_task);*/
-                   /* List<CampaignTask> campaignTasks1=new ArrayList<>();
-                    CampaignTask campaignTask=new CampaignTask();
-                    campaignTask.setId(sequenceTask.getId());
-                    campaignTask.setOrganizationId(1);
-                    campaignTask.setTeamId(1);
-                    campaignTask.setSequenceId(sequence_id);
-                    campaignTask.setType(sequenceTask.getType());
-                    campaignTask.setContentHeader(sequenceTask.getContentHeader());
-                    campaignTask.setContentBody(sequenceTask.getContentBody());
-                    campaignTask.setManageBy(sequenceTask.getManageBy());
-                    campaignTask.setDay(sequenceTask.getDay());
-                    campaignTask.setMinute(sequenceTask.getMinute());
-                    campaignTask.setPriority(sequenceTask.getPriority());
-                    campaignTask.setStepNo(sequenceTask.getStepNo());;
 
-                    campaignTasks1.add(campaignTask);*/
-                    Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
                     intent.putExtra("day", sequenceTask.getDay());
@@ -415,6 +409,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("from_ac",sequenceTask.getMail_module());
                     intent.putExtra("from_ac_id",sequenceTask.getSent_tbl_id());
                     startActivity(intent);
+                    finish();
                     // startActivity(new Intent(getActivity(),First_Step_Activity.class));
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
                     SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
@@ -427,34 +422,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 } else {
 
                     Log.e("sequence id", String.valueOf(sequence_id));
-                /*    Intent new_task=new Intent(getActivity(), First_Step_Start_Activity.class);
-                    new_task.putExtra("flag","edit");
-                    new_task.putExtra("body",sequenceTask.getContentBody());
-                    new_task.putExtra("day",sequenceTask.getDay());
-                    new_task.putExtra("manage_by",sequenceTask.getManageBy());
-                    new_task.putExtra("seq_task_id",String.valueOf(sequenceTask.getId()));
-                    new_task.putExtra("sequence_id",String.valueOf(sequence_id));
-                    new_task.putExtra("type",sequenceTask.getType());
-                    new_task.putExtra("minute",sequenceTask.getMinute());
-                    new_task.putExtra("step",sequenceTask.getStepNo());
-                    startActivity(new_task);*/
-/*
-                    List<CampaignTask> campaignTasks1=new ArrayList<>();
-                    CampaignTask campaignTask=new CampaignTask();
-                    campaignTask.setId(sequenceTask.getId());
-                    campaignTask.setOrganizationId(1);
-                    campaignTask.setTeamId(1);
-                    campaignTask.setSequenceId(sequence_id);
-                    campaignTask.setType(sequenceTask.getType());
-                    campaignTask.setContentHeader(sequenceTask.getContentHeader());
-                    campaignTask.setContentBody(sequenceTask.getContentBody());
-                    campaignTask.setManageBy(sequenceTask.getManageBy());
-                    campaignTask.setDay(sequenceTask.getDay());
-                    campaignTask.setMinute(sequenceTask.getMinute());
-                    campaignTask.setPriority(sequenceTask.getPriority());
-                    campaignTask.setStepNo(sequenceTask.getStepNo());;
 
-                    campaignTasks1.add(campaignTask);*/
 
                     Log.e("Sequence is is", String.valueOf(sequence_id));
                     if (SessionManager.getTask(getApplicationContext()).size() != 0) {
@@ -464,7 +432,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         Bundle bundle = getintent.getExtras();
                         sequence_id = bundle.getInt("sequence_id");
                     }
-                    Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
                     intent.putExtra("day", sequenceTask.getDay());
@@ -498,9 +466,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     public void RemoveTaskData(Integer task_id, String d, int position) {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
         if (SessionManager.getTask(getApplicationContext()).size() != 0) {
@@ -513,12 +478,12 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("seq_task_id", task_id);
         paramObject.addProperty("sequence_id", sequence_id);
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("status", d);
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         obj.add("data", paramObject);
         retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
                 Global.getVersionname(Campaign_Preview.this), Global.Device, new RetrofitCallback() {
@@ -545,9 +510,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     public void StepData() {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
         if (SessionManager.getTask(getApplicationContext()).size() != 0) {
@@ -561,10 +523,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("id", sequence_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         obj.add("data", paramObject);
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();
@@ -618,9 +580,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     public void StartCampignApi() {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
         if (SessionManager.getTask(getApplicationContext()).size() != 0) {
@@ -633,10 +592,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("record_id", sequence_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("status", "A");
         obj.add("data", paramObject);
         retrofitCalls.Sequence_settings(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
@@ -669,9 +628,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     public void AddName() {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
 
         if (SessionManager.getTask(getApplicationContext()).size() != 0) {
@@ -684,10 +640,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("record_id", sequence_id);
-        paramObject.addProperty("team_id", "1");
-        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
         paramObject.addProperty("seq_name", tv_name.getText().toString());
         obj.add("data", paramObject);
         retrofitCalls.Sequence_settings(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
@@ -747,19 +703,24 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             holder.userName.setText(inviteUserDetails.getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+            if(Global.IsNotNull(inviteUserDetails.getFirstname())||!inviteUserDetails.getFirstname().equals("")){
+                String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
 
-            if (second_latter.equals("")) {
-                current_latter = first_latter;
-                second_latter = first_latter;
+                if (second_latter.equals("")) {
+                    current_latter = first_latter;
+                    second_latter = first_latter;
 
-            } else if (second_latter.equals(first_latter)) {
-                current_latter = second_latter;
-            } else {
+                } else if (second_latter.equals(first_latter)) {
+                    current_latter = second_latter;
+                } else {
 
-                current_latter = first_latter;
-                second_latter = first_latter;
+                    current_latter = first_latter;
+                    second_latter = first_latter;
+                }
             }
+
+
+
 
 
             holder.no_image.setVisibility(View.VISIBLE);
@@ -970,7 +931,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                                     campaignTaskList.add(campaignTask);
                                     SessionManager.setTask(getApplicationContext(), campaignTaskList);
                                 }
-                                Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                                Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                                 intent.putExtra("flag", "new");
                                 startActivity(intent);
                                 finish();

@@ -227,8 +227,8 @@ public class RetrofitCalls {
     }
 
     public void Upload_csv(SessionManager session,LoadingDialog loadingDialog, String token, RequestBody organization_id,
-                           RequestBody team_id, RequestBody user_id,RequestBody id, MultipartBody.Part import_file,
-                           String version ,String device_id, RetrofitCallback retrofitCallback) {
+                           RequestBody team_id, RequestBody user_id,RequestBody id,MultipartBody.Part import_file,
+                           String version ,String device_id,RequestBody imei, RetrofitCallback retrofitCallback) {
        call = retrofitApiInterface.Upload_csv(RetrofitApiClient.API_Header,token,import_file,team_id,user_id,organization_id,id,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
@@ -249,6 +249,13 @@ public class RetrofitCalls {
 
 
 
+    public void Timezone(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Timezone(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
     public void Working_hour(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Working_hour(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
@@ -411,6 +418,14 @@ public class RetrofitCalls {
 
     public void Company_add(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Add_Company(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+    public void Broadcast_Activiy_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Broadcast_Activiy_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);

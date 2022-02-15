@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
     SwipeRefreshLayout swipeToRefresh;
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
     LinearLayout add_new_email;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +97,10 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp",1);
         obj.add("data", paramObject);
         retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(EmailListActivity.this),Global.Device, new RetrofitCallback() {
             @Override
@@ -113,12 +116,17 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                     UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
 
                     userLinkedGmailList=userLinkedGmail.getUserLinkedGmail();
-
+                    if (userLinkedGmailList.size() == 0) {
+                        startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                    }else {
+                        sessionManager.setUserLinkedGmail(getApplicationContext(),userLinkedGmailList);
+                    }
                     rv_email_list.setLayoutManager(new LinearLayoutManager(EmailListActivity.this, LinearLayoutManager.VERTICAL, false));
                     emailAdepter=new EmailAdepter(EmailListActivity.this,userLinkedGmailList);
                     rv_email_list.setAdapter(emailAdepter);
 
-
+                }else {
+                    startActivity(new Intent(getApplicationContext(), Email_verification.class));
                 }
             }
 
@@ -154,8 +162,14 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                 onBackPressed();
                 break;
                 case R.id.add_new_email:
-                   // Global.openEmailAuth(EmailListActivity.this);
-                    startActivity(new Intent(getApplicationContext(),Email_verification.class));
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    // Global.openEmailAuth(EmailListActivity.this);
+                    Intent intent= new Intent(getApplicationContext(),Email_verification.class);
+                    intent.putExtra("create","create");
+                    startActivity(intent);
                 break;
         }
     }
@@ -247,6 +261,10 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
             holder.iv_unselected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     try {
                         if(Global.isNetworkAvailable(EmailListActivity.this, EmailListActivity.mMainLayout)) {
                             UpdateEmail_default(String.valueOf(userLinkedGmail.getId()));

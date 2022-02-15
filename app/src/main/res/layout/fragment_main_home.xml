@@ -41,6 +41,7 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_5sdp"
         android:id="@+id/tabLayout"
         style="@style/tv_bold_16"
@@ -56,10 +57,12 @@
     </com.google.android.material.tabs.TabLayout>
 
     <View
+        android:visibility="gone"
         android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
     <androidx.viewpager.widget.ViewPager
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_3sdp"
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
@@ -67,4 +70,19 @@
         android:layout_below="@id/tabLayout"
         />
 
+
+    <ScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarAlwaysDrawVerticalTrack="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="Specs"
+            android:scrollbars="vertical"
+            android:src="@drawable/dashboard"/>
+    </ScrollView>
 </LinearLayout>
