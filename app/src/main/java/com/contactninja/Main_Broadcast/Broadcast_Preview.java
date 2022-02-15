@@ -94,7 +94,6 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_broadcast_preview);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
-        Log.e("Main Data Is", new Gson().toJson(SessionManager.getBroadcate_save_data(getApplicationContext())));
         broadcate_save_data = SessionManager.getBroadcate_save_data(getApplicationContext());
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);

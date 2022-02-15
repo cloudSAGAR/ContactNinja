@@ -48,6 +48,9 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Main_Broadcast.List_And_show.Broadcaste_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Main_Broadcast.Recuring_email_broadcast_activity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -317,7 +320,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-
         <activity
             android:name=".Main_Broadcast.Broadcast_Name_Activity"
             android:exported="true"

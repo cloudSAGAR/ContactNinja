@@ -11,6 +11,7 @@ import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.BroadcastActivityListModel;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
@@ -78,6 +79,7 @@ public class SessionManager {
     public static final String Broadcaste_save_data = "broadcaste_save_data";
 
     public static final String Broadcast_flag="broadcast_flag";
+    public static final String Broadcaste_Detail="Broadcaste_detail";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -641,6 +643,29 @@ public class SessionManager {
         editor.putString(Broadcaste_save_data, json);
         editor.apply();
     }
+
+
+    public static BroadcastActivityListModel.Broadcast getBroadcate_List_Detail(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Broadcaste_Detail, "");
+        Type type = new TypeToken<BroadcastActivityListModel.Broadcast>() {
+        }.getType();
+        BroadcastActivityListModel.Broadcast signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new BroadcastActivityListModel.Broadcast();
+        }
+        return signModel;
+    }
+
+    public static void setBroadcate_List_Detail(Context context, BroadcastActivityListModel.Broadcast add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Broadcaste_Detail, json);
+        editor.apply();
+    }
+
+
 
 
 

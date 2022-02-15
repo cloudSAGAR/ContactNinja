@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast;
 import com.contactninja.Model.BroadcastActivityListModel;
@@ -572,18 +571,6 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
 
                 }
             });
-
-            holder.iv_hold.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
-                    showAlertDialogButtonClicked(item,1);
-
-                }
-            });
             holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -595,7 +582,6 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
 
                 }
             });
-
             String conactname = item.getBroadcastName();
             holder.tv_username.setText(conactname);
             if (item.getRecurringType().equals("D")) {
@@ -609,9 +595,14 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
             }
             holder.tv_task_description.setText(item.getContentBody());
 
-            // holder.tv_task_description.setText(Global.setFirstLetter(item.getTask_name()));
-            //  String time = item.getDate() + " " + item.getTime();
-            // compareDates(time, holder.tv_status, holder.tv_time, item);
+            holder.layout_contec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SessionManager.setBroadcate_List_Detail(getApplicationContext(),item);
+                    Intent getintent=new Intent(getApplicationContext(),Broadcaste_Activity.class);
+                    startActivity(getintent);
+                }
+            });
 
         }
 
@@ -696,7 +687,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", "1");
-        paramObject.addProperty("record_id", broadcast.getId());
+        paramObject.addProperty("id", broadcast.getId());
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
         if(status==1){
@@ -705,7 +696,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
             paramObject.addProperty("status", "A");
         }
         obj.add("data", paramObject);
-        retrofitCalls.Broadcast_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+        retrofitCalls.Broadcast_Activiy_list(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
                 Global.getVersionname(List_Broadcast_activity.this), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
