@@ -73,6 +73,7 @@
 
     <color name="block_item">#ABABAB</color>
     <color name="unblock_item">#4A4A4A</color>
+    <color name="tv_push_color">#FCAC4F</color>
 
 
 </resources>
