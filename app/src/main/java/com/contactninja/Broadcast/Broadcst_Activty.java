@@ -34,7 +34,7 @@ import com.contactninja.Broadcast.Broadcast_Frgment.Broadcast_Group_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.Broadcste_Contect_Fragment;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Broadcast.Broadcast_Schedule.Broadcast_to_repeat;
-import com.contactninja.Campaign.Campaign_List_Activity;
+import com.contactninja.Main_Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.R;

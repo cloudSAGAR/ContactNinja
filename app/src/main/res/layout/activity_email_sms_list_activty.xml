@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:id="@+id/mMainLayout"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Add_Camp_First_Step_Activity">
+    tools:context=".Campaign.Add_Camp_Tab_Select_Activity">
     <include
         layout="@layout/toolbar"/>
     <include
@@ -73,33 +73,34 @@
 
             <ImageView
                 android:id="@+id/add_new_contect_icon"
-                android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/shape_oval_border_10_white"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/ic_plus1"
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_regular_13"
+                style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_12sdp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/create_new_text"
                 android:textColor="@color/text_reg" />
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/num_count"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center|end"
                 android:singleLine="true"
                 android:text=""

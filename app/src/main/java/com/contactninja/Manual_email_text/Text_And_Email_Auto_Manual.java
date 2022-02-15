@@ -15,11 +15,13 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.contactninja.Model.CampaignTask;
@@ -32,6 +34,7 @@ import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
@@ -48,10 +51,12 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
             R.drawable.ic_message_tab,
             R.drawable.ic_email,
     };
-    LinearLayout mMainLayout;
+    RelativeLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
     SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;
+    private long mLastClickTime=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,22 +184,26 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                 else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
+                    SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+
                     startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
                     finish();
                 }
                 else {
+                    SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+
                     startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
                     finish();
                     }
-
-
-
-
                 //
                 break;
 

@@ -109,6 +109,7 @@
             </EditText>
 
             <View
+                android:id="@+id/view_single"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@color/home_list_search_border"
                 android:layout_width="match_parent"
@@ -151,6 +152,7 @@
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabSelectedTextColor="@color/text_reg"
         android:layout_width="match_parent"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
         app:tabIndicatorHeight="2dp"
         app:tabTextColor="@color/text_reg"
         android:layout_height="wrap_content"

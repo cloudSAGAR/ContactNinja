@@ -1,6 +1,7 @@
 package com.contactninja.Campaign;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,12 +12,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,9 +32,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
+import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
@@ -61,11 +67,13 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
+public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
     public static final int PICKFILE_RESULT_CODE = 1;
     static CoordinatorLayout mMainLayout;
     public String template_id_is = "";
     ImageView iv_back;
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
+    CardListAdepter cardListAdepter;
     TextView save_button, tv_use_tamplet;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -92,6 +100,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
     private int FirstTime = 0;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +121,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             e.printStackTrace();
         }
 
-
+        edit_template.requestFocus();
         edit_template.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -239,7 +248,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+        Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
         intent.putExtra("flag", "new");
         startActivity(intent);
         finish();
@@ -308,13 +317,21 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     text.setFile(R.drawable.ic_a);
                     text.setSelect(false);
                     templateTextList.add(0, text);
+                    HastagList.TemplateText text1 = new HastagList.TemplateText();
+                    text1.setFile(R.drawable.ic_card_blank);
+                    text1.setSelect(false);
+                    templateTextList.add(1, text1);
 
+                    HastagList.TemplateText text2 = new HastagList.TemplateText();
+                    text2.setFile(R.drawable.ic_video);
+                    text2.setSelect(false);
+                    templateTextList.add(2, text2);
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(1, templateText);
+                    templateTextList.add(3, templateText);
 
 
                     Listset(templateTextList);
@@ -370,6 +387,10 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 onBackPressed();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Add_Camp_Email_Activity.this);
                 if (ev_subject.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
@@ -377,15 +398,23 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
                 } else {
-                    if(Global.isNetworkAvailable(Add_Camp_Email_Activity.this,mMainLayout)){
+                    if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, mMainLayout)) {
                         StepData();
                     }
                 }
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_more:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
 
@@ -541,21 +570,21 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             @SuppressLint("SyntheticAccessor")
             @Override
             public void onClick(View v) {
-               if (edt_template_name.getText().toString().equals("")) {
+                if (edt_template_name.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
                 } else if (edit_template.equals("")) {
                     Global.Messageshow(getApplicationContext(), c_layout, "Enter template Text ", false);
 
                 } else {
-                   try {
-                       if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
-                           if (isValidation(edit_template, ev_subject, edt_template_name))
-                               CreateTemplate(edit_template, ev_subject, edt_template_name, dialog);
-                       }
-                   } catch (JSONException e) {
-                       e.printStackTrace();
-                   }
-               }
+                    try {
+                        if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
+                            if (isValidation(edit_template, ev_subject, edt_template_name))
+                                CreateTemplate(edit_template, ev_subject, edt_template_name, dialog);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
@@ -775,6 +804,88 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         }
     }
 
+    @Override
+    public void Onclick(Broadcast_image_list broadcastImageList) {
+        for (int i = 0; i < broadcast_image_list.size(); i++) {
+            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
+                broadcast_image_list.get(i).setScelect(true);
+            } else {
+                broadcast_image_list.get(i).setScelect(false);
+            }
+        }
+        cardListAdepter.notifyDataSetChanged();
+    }
+
+    static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        CardClick cardClick;
+        BottomSheetDialog bottomSheetDialog;
+        TextClick interfaceClick;
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.cardClick = cardClick;
+            this.bottomSheetDialog = bottomSheetDialog;
+            this.interfaceClick = interfaceClick;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new CardListAdepter.cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                bottomSheetDialog.dismiss();
+                interfaceClick.OnClick("BzczrdLink");
+            });
+            if (item.isScelect()) {
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
+            } else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public static class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
+    }
+
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
 
         public Context mCtx;
@@ -992,10 +1103,39 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 @Override
                 public void onClick(View view) {
                     if (position == 1) {
-                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                        chooseFile.setType("*/*");
-                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Add_Camp_Email_Activity.this,
+                                R.style.DialogStyle);
+                        bottomSheetDialog.setContentView(mView);
+                        RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
+
+
+                        broadcast_image_list.clear();
+                        for (int i = 0; i <= 20; i++) {
+                            Broadcast_image_list item = new Broadcast_image_list();
+                            if (i % 2 == 0) {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_1");
+                            } else {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_2");
+                            }
+                            broadcast_image_list.add(item);
+                        }
+                        rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Camp_Email_Activity.this,
+                                LinearLayoutManager.HORIZONTAL, false));
+                        rv_image_card.setHasFixedSize(true);
+                        cardListAdepter = new CardListAdepter(Add_Camp_Email_Activity.this, broadcast_image_list,
+                                Add_Camp_Email_Activity.this, bottomSheetDialog, interfaceClick);
+                        rv_image_card.setAdapter(cardListAdepter);
+
+
+                        bottomSheetDialog.show();
                     }
                 }
             });

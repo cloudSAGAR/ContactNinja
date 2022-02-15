@@ -2,6 +2,7 @@ package com.contactninja.AddContect;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,10 +13,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,11 +31,15 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
+import com.contactninja.Group.SendBroadcast;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.Email_Tankyou;
 import com.contactninja.Manual_email_text.Manual_Email_TaskActivity_;
+import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -64,11 +71,12 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class EmailSend_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener {
+public class EmailSend_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
     public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
     BottomSheetDialog bottomSheetDialog;
-
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
+    CardListAdepter cardListAdepter;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back;
@@ -83,15 +91,16 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
 
-    EditText edit_template, ev_subject, ev_to, ev_from,ev_titale;
-    String email = "", id = "",task_name="",from_ac="",from_ac_id="";
+    EditText edit_template, ev_subject, ev_to, ev_from, ev_titale;
+    String email = "", id = "", task_name = "", from_ac = "", from_ac_id = "";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
-    int defult_id,temaplet_id=0,FirstTime=0;
+    int defult_id, temaplet_id = 0, FirstTime = 0;
     List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
     private int amountOfItemsSelected = 0;
     private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +117,13 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Bundle bundle = intent.getExtras();
         email = bundle.getString("email");
         id = bundle.getString("id");
-        task_name=bundle.getString("task_name");
+        task_name = bundle.getString("task_name");
         ev_titale.setText(task_name);
 
         ev_to.setText(email);
 
         try {
-            if(Global.isNetworkAvailable(EmailSend_Activity.this,mMainLayout)){
+            if (Global.isNetworkAvailable(EmailSend_Activity.this, mMainLayout)) {
                 Hastag_list();
             }
 
@@ -123,6 +132,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         }
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -133,8 +143,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         userLinkedGmailList = sessionManager.getUserLinkedGmail(getApplicationContext());
         if (userLinkedGmailList.size() == 0) {
             iv_more.setVisibility(View.GONE);
-            if(FirstTime==0){
-                FirstTime=1;
+            if (FirstTime == 0) {
+                FirstTime = 1;
                 startActivity(new Intent(getApplicationContext(), Email_verification.class));
             }
         } else if (userLinkedGmailList.size() == 1) {
@@ -147,8 +157,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                 ev_from.setText(userLinkedGmailList.get(i).getUserEmail());
                 defult_id = userLinkedGmailList.get(i).getId();
                 select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-                from_ac=userLinkedGmailList.get(i).getType();
-                from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
+                from_ac = userLinkedGmailList.get(i).getType();
+                from_ac_id = String.valueOf(userLinkedGmailList.get(i).getId());
 
             }
         }
@@ -172,7 +182,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         ev_from = findViewById(R.id.ev_from);
         iv_more = findViewById(R.id.iv_more);
         iv_more.setOnClickListener(this);
-        ev_titale=findViewById(R.id.ev_titale);
+        ev_titale = findViewById(R.id.ev_titale);
 
 
     }
@@ -186,7 +196,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -203,16 +213,23 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
                     HastagList.TemplateText text = new HastagList.TemplateText();
                     text.setFile(R.drawable.ic_a);
-                    text.setDescription("");
                     text.setSelect(false);
                     templateTextList.add(0, text);
+                    HastagList.TemplateText text1 = new HastagList.TemplateText();
+                    text1.setFile(R.drawable.ic_card_blank);
+                    text1.setSelect(false);
+                    templateTextList.add(1, text1);
 
+                    HastagList.TemplateText text2 = new HastagList.TemplateText();
+                    text2.setFile(R.drawable.ic_video);
+                    text2.setSelect(false);
+                    templateTextList.add(2, text2);
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(1, templateText);
+                    templateTextList.add(3, templateText);
 
 
                     Listset(templateTextList);
@@ -238,6 +255,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(EmailSend_Activity.this, mMainLayout);
@@ -268,6 +286,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         super.onDestroy();
         unregisterNetworkChanges();
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -275,15 +294,16 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.save_button:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (ev_subject.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
-                }
-                else if (edit_template.getText().toString().equals("")) {
+                } else if (edit_template.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
-                }
-                else {
+                } else {
 
                     broadcast_manu();
                     /*try {
@@ -296,9 +316,17 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_more:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
 
@@ -310,14 +338,14 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_bottom_sheet, null);
         bottomSheetDialog = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
-        LinearLayout lay_sendnow=bottomSheetDialog.findViewById(R.id.lay_sendnow);
-        LinearLayout lay_schedule=bottomSheetDialog.findViewById(R.id.lay_schedule);
+        LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
+        LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
         lay_sendnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 try {
-                    if(Global.isNetworkAvailable(EmailSend_Activity.this,mMainLayout)){
+                    if (Global.isNetworkAvailable(EmailSend_Activity.this, mMainLayout)) {
                         EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
                     }
                 } catch (JSONException e) {
@@ -330,16 +358,16 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         lay_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(), Manual_Email_TaskActivity_.class);
-                intent.putExtra("subject",ev_subject.getText().toString());
-                intent.putExtra("body",edit_template.getText().toString());
-                intent.putExtra("id",id);
-                intent.putExtra("email",email);
-                intent.putExtra("gid",String.valueOf(select_userLinkedGmailList.get(0).getId()));
-                intent.putExtra("tem_id",String.valueOf(temaplet_id));
-                intent.putExtra("task_name",task_name);
-                intent.putExtra("from_ac",from_ac);
-                intent.putExtra("from_ac_id",from_ac_id);
+                Intent intent = new Intent(getApplicationContext(), Manual_Email_TaskActivity_.class);
+                intent.putExtra("subject", ev_subject.getText().toString());
+                intent.putExtra("body", edit_template.getText().toString());
+                intent.putExtra("id", id);
+                intent.putExtra("email", email);
+                intent.putExtra("gid", String.valueOf(select_userLinkedGmailList.get(0).getId()));
+                intent.putExtra("tem_id", String.valueOf(temaplet_id));
+                intent.putExtra("task_name", task_name);
+                intent.putExtra("from_ac", from_ac);
+                intent.putExtra("from_ac_id", from_ac_id);
                 startActivity(intent);
                 finish();
             }
@@ -347,11 +375,12 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         bottomSheetDialog.show();
 
     }
+
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         bottomSheetDialog_templateList = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
-        LinearLayout layout_list_template=bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
+        LinearLayout layout_list_template = bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
         layout_list_template.setVisibility(View.VISIBLE);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
@@ -367,16 +396,13 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         }
 
 
-
-
-
         tv_error.setVisibility(View.GONE);
 
         bottomSheetDialog_templateList.show();
     }
 
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -385,9 +411,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("type", "EMAIL");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("perPage", 10000000);
-        paramObject.addProperty("page",1);
+        paramObject.addProperty("page", 1);
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 templateList.clear();
@@ -397,14 +423,14 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
-                    TemplateList list=new Gson().fromJson(headerString, listType);
-                    templateList=list.getTemplate();
+                    TemplateList list = new Gson().fromJson(headerString, listType);
+                    templateList = list.getTemplate();
 
                 }
-                TemplateList.Template template1=new TemplateList.Template();
+                TemplateList.Template template1 = new TemplateList.Template();
                 template1.setTemplateName("Save current as template");
                 template1.setSelect(true);
-                templateList.add(templateList.size(),template1);
+                templateList.add(templateList.size(), template1);
 
 
                 templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -427,7 +453,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + s ;
+        String Newtext = curenttext + s;
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
@@ -464,11 +490,11 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             public void onClick(View v) {
                 if (editText.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
-                }  else {
+                } else {
                     try {
                         if (Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
                             if (isValidation(editText.getText().toString().trim(), dialog)) {
-                                CreateTemplate(editText.getText().toString().trim(),dialog);
+                                CreateTemplate(editText.getText().toString().trim(), dialog);
                             }
                         }
                     } catch (JSONException e) {
@@ -486,25 +512,24 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         });
 
     }
-     private boolean isValidation(String name, AlertDialog dialog) {
 
-            if (name.equals("")) {
-                dialog.dismiss();
-                bottomSheetDialog_templateList.dismiss();
-                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
-            }else
-            if (ev_subject.getText().toString().equals("")) {
-                dialog.dismiss();
-                bottomSheetDialog_templateList.dismiss();
-                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
-            }else
-            if (edit_template.getText().toString().equals("")) {
-                bottomSheetDialog_templateList.dismiss();
-                dialog.dismiss();
-                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
-            } else {
-                return true;
-            }
+    private boolean isValidation(String name, AlertDialog dialog) {
+
+        if (name.equals("")) {
+            dialog.dismiss();
+            bottomSheetDialog_templateList.dismiss();
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
+        } else if (ev_subject.getText().toString().equals("")) {
+            dialog.dismiss();
+            bottomSheetDialog_templateList.dismiss();
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
+        } else if (edit_template.getText().toString().equals("")) {
+            bottomSheetDialog_templateList.dismiss();
+            dialog.dismiss();
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
+        } else {
+            return true;
+        }
 
         return false;
     }
@@ -526,7 +551,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("type", "EMAIL");
 
         obj.add("data", paramObject);
-        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -568,8 +593,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
 
 
-        for(int i=0;i<userLinkedGmailList.size();i++){
-            if(userLinkedGmailList.get(i).getIsDefault()==1){
+        for (int i = 0; i < userLinkedGmailList.size(); i++) {
+            if (userLinkedGmailList.get(i).getIsDefault() == 1) {
                 select_userLinkedGmailList.clear();
                 userLinkedGmailList.get(i).setEmailSelect(true);
                 select_userLinkedGmailList.add(userLinkedGmailList.get(i));
@@ -587,9 +612,9 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
-                if(select_userLinkedGmailList.size()!=0){
-                    from_ac=select_userLinkedGmailList.get(0).getType();
-                    from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
+                if (select_userLinkedGmailList.size() != 0) {
+                    from_ac = select_userLinkedGmailList.get(0).getType();
+                    from_ac_id = String.valueOf(select_userLinkedGmailList.get(0).getId());
                     ev_from.setText(select_userLinkedGmailList.get(0).getUserEmail());
                 }
             }
@@ -644,21 +669,19 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         contact_group_ids.put("");
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
-        paramObject.put("record_id","");
-        paramObject.put("task_name",ev_titale.getText().toString());
-        if (temaplet_id==0)
-        {
-            paramObject.put("template_id","");
+        paramObject.put("record_id", "");
+        paramObject.put("task_name", ev_titale.getText().toString());
+        if (temaplet_id == 0) {
+            paramObject.put("template_id", "");
 
-        }
-        else {
-            paramObject.put("template_id",temaplet_id);
+        } else {
+            paramObject.put("template_id", temaplet_id);
         }
 
-        paramObject.put("content_header",ev_subject.getText().toString());
-        paramObject.put("content_body",edit_template.getText().toString());
-        paramObject.put("from_ac",from_ac);
-        paramObject.put("from_ac_id",from_ac_id);
+        paramObject.put("content_header", ev_subject.getText().toString());
+        paramObject.put("content_body", edit_template.getText().toString());
+        paramObject.put("from_ac", from_ac);
+        paramObject.put("from_ac_id", from_ac_id);
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
@@ -666,14 +689,14 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
 
                     loadingDialog.cancelLoading();
-                    Intent intent=new Intent(getApplicationContext(), Email_Tankyou.class);
-                    intent.putExtra("s_name","add");
+                    Intent intent = new Intent(getApplicationContext(), Email_Tankyou.class);
+                    intent.putExtra("s_name", "add");
                     startActivity(intent);
                     finish();
 
@@ -693,7 +716,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
 
-      //  loadingDialog.showLoadingDialog();
+        //  loadingDialog.showLoadingDialog();
         Log.e("Defuilt id", String.valueOf(defult_id));
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
@@ -712,25 +735,21 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("email_recipients", email);
         obj.add("data", paramObject);
 
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
-                Log.e("Responsse",new Gson().toJson(response.body()));
-                if (response.body().getHttp_status()==200)
-                {
+                Log.e("Responsse", new Gson().toJson(response.body()));
+                if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     finish();
-                }
-                else if (response.body().getHttp_status()==406)
-                {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
+                } else if (response.body().getHttp_status() == 406) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage().toString(), false);
                     loadingDialog.cancelLoading();
-                }
-                else{
-                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
+                } else {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage().toString(), false);
                     loadingDialog.cancelLoading();
-                   /* finish();*/
+                    /* finish();*/
                 }
 
             }
@@ -740,6 +759,88 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                 loadingDialog.cancelLoading();
             }
         });
+    }
+
+    @Override
+    public void Onclick(Broadcast_image_list broadcastImageList) {
+        for (int i = 0; i < broadcast_image_list.size(); i++) {
+            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
+                broadcast_image_list.get(i).setScelect(true);
+            } else {
+                broadcast_image_list.get(i).setScelect(false);
+            }
+        }
+        cardListAdepter.notifyDataSetChanged();
+    }
+
+    static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        CardClick cardClick;
+        BottomSheetDialog bottomSheetDialog;
+        TextClick interfaceClick;
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.cardClick = cardClick;
+            this.bottomSheetDialog = bottomSheetDialog;
+            this.interfaceClick = interfaceClick;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                bottomSheetDialog.dismiss();
+                interfaceClick.OnClick("BzczrdLink");
+            });
+            if (item.isScelect()) {
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
+            } else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public static class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
     }
 
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
@@ -783,7 +884,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
                         showAlertDialogButtonClicked(view);
                     } else {
-                        temaplet_id=item.getId();
+                        temaplet_id = item.getId();
                         interfaceClick.OnClick(item);
                     }
                 }
@@ -859,12 +960,43 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Global.Messageshow(mCtx, mMainLayout, "Under Development", false);
                     if (position == 1) {
-                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                        chooseFile.setType("*/*");
-                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+
+                     /*   InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(EmailSend_Activity.this, R.style.DialogStyle);
+                        bottomSheetDialog.setContentView(mView);
+                        RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
+
+
+                        broadcast_image_list.clear();
+                        for (int i = 0; i <= 20; i++) {
+                            Broadcast_image_list item = new Broadcast_image_list();
+                            if (i % 2 == 0) {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_1");
+                            } else {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_2");
+                            }
+                            broadcast_image_list.add(item);
+                        }
+                        rv_image_card.setLayoutManager(new LinearLayoutManager(EmailSend_Activity.this,
+                                LinearLayoutManager.HORIZONTAL, false));
+                        rv_image_card.setHasFixedSize(true);
+                        cardListAdepter = new CardListAdepter(EmailSend_Activity.this, broadcast_image_list,
+                                EmailSend_Activity.this, bottomSheetDialog, interfaceClick);
+                        rv_image_card.setAdapter(cardListAdepter);
+
+*/
+                  //      bottomSheetDialog.show();
                     }
+
+
                 }
             });
             if (item.isSelect()) {
@@ -959,12 +1091,10 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             }
 
 
-            if (userLinkedGmailList.get(position).isEmailSelect())
-            {
+            if (userLinkedGmailList.get(position).isEmailSelect()) {
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }
@@ -973,9 +1103,8 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    for(int i=0; i<userLinkedGmailList.size();i++){
-                        if (userLinkedGmailList.get(i).isEmailSelect())
-                        {
+                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
+                        if (userLinkedGmailList.get(i).isEmailSelect()) {
                             userLinkedGmailList.get(i).setEmailSelect(false);
                             break;
                         }
@@ -986,7 +1115,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
                     select_userLinkedGmailList.add(userLinkedGmailList.get(position));
-                      notifyDataSetChanged();
+                    notifyDataSetChanged();
                 }
             });
 

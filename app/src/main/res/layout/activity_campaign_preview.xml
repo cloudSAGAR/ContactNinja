@@ -104,6 +104,16 @@
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:layout_height="@dimen/_50sdp">
 
+                            <ImageView
+                                android:visibility="gone"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_camp_edit"
+                                android:id="@+id/iv_camp_edit"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp">
+
+                            </ImageView>
                             <TextView
                                 android:layout_gravity="left|center"
                                 android:gravity="center|left"

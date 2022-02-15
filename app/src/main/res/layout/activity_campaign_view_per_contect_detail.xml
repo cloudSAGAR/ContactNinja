@@ -9,7 +9,7 @@
     android:background="@color/white"
     android:id="@+id/mMainLayout"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Campaign_view_per_contect_Detail">
+    tools:context=".Campaign.List_itm.Campaign_view_per_contect_Detail">
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />
@@ -132,7 +132,7 @@
                     android:layout_height="@dimen/_17sdp"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_message">
+                    android:src="@drawable/ic_message_tab">
 
                 </ImageView>
 

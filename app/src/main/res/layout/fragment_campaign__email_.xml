@@ -391,9 +391,8 @@
             android:paddingEnd="@dimen/_10sdp"
             android:text="@string/campaign_step_one_email_txt"
             android:textColor="@color/home_list_sub_data"
-            >
+            />
 
-        </TextView>
 
     </LinearLayout>
 

@@ -1,15 +1,12 @@
 package com.contactninja.Manual_email_text;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,6 +14,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.contactninja.AddContect.EmailSend_Activity;
 import com.contactninja.R;
@@ -26,7 +27,7 @@ import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
 
-public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
+public class Manual_Auto_Task_Name_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button, tv_remain_txt, tv_error;
     SessionManager sessionManager;
@@ -36,7 +37,9 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
     int sequence_id, seq_task_id;
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
-    String sequence_Name="";
+    String sequence_Name = "";
+    private long mLastClickTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
         tv_remain_txt.setText("40 " + getResources().getString(R.string.camp_remaingn));
         ev_titale.requestFocus();
 
-        if(Global.IsNotNull(sequence_Name)){
+        if (Global.IsNotNull(sequence_Name)) {
             ev_titale.setText(sequence_Name);
             ev_titale.setSelection(ev_titale.getText().length());
         }
@@ -83,7 +86,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
 
     private void IntentUI() {
 
-        mMainLayout= findViewById(R.id.mMainLayout);
+        mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
@@ -103,37 +106,37 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity  implement
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Manual_Auto_Task_Name_Activity.this);
                 //Add Api Call
-                if (ev_titale.getText().toString().equals("")) {
+                if (ev_titale.getText().toString().trim().equals("")) {
                     tv_error.setVisibility(View.VISIBLE);
                 } else {
                     tv_error.setVisibility(View.GONE);
-                    Log.e("Name ",SessionManager.getCampaign_type(getApplicationContext()));
+                    Log.e("Name ", SessionManager.getCampaign_type(getApplicationContext()));
 
-                    if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms"))
-                    {
-                      //  Toast.makeText(getApplicationContext(),SessionManager.getMessage_id(getApplicationContext()),Toast.LENGTH_LONG).show();
-                        Intent intent=new Intent(Manual_Auto_Task_Name_Activity.this, Manual_Text_Send_Activty.class);
-                        intent.putExtra("number",SessionManager.getMessage_number(getApplicationContext()));
-                        intent.putExtra("id",Integer.parseInt(SessionManager.getMessage_id(getApplicationContext())));
-                        intent.putExtra("type",SessionManager.getMessage_tyep(getApplicationContext()));
-                        intent.putExtra("task_name",ev_titale.getText().toString());
+                    if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms")) {
+                        //  Toast.makeText(getApplicationContext(),SessionManager.getMessage_id(getApplicationContext()),Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(Manual_Auto_Task_Name_Activity.this, Manual_Text_Send_Activty.class);
+                        intent.putExtra("number", SessionManager.getMessage_number(getApplicationContext()));
+                        intent.putExtra("id", Integer.parseInt(SessionManager.getMessage_id(getApplicationContext())));
+                        intent.putExtra("type", SessionManager.getMessage_tyep(getApplicationContext()));
+                        intent.putExtra("task_name", ev_titale.getText().toString().trim());
                         startActivity(intent);
                         finish();
 
-                    }
-                    else if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_email"))
-                    {
+                    } else if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_email")) {
                         Intent intent = new Intent(getApplicationContext(), EmailSend_Activity.class);
                         intent.putExtra("email", SessionManager.getMessage_number(getApplicationContext()));
                         intent.putExtra("id", SessionManager.getMessage_id(getApplicationContext()));
-                        intent.putExtra("task_name",ev_titale.getText().toString());
+                        intent.putExtra("task_name", ev_titale.getText().toString().trim());
                         startActivity(intent);
                         finish();
 
-                    }
-                    else {
+                    } else {
                         if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
                             Intent intent = new Intent(getApplicationContext(), Manual_Text_Contact_Activity.class);
                             intent.putExtra("task_name", ev_titale.getText().toString());

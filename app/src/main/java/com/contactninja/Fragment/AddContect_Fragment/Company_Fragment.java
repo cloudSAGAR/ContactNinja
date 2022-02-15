@@ -1,18 +1,17 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.SystemClock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -20,16 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.SearchView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.AddContect.Add_Company_Activity;
 import com.contactninja.MainActivity;
@@ -60,13 +49,28 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.SearchView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Company_Fragment extends Fragment {
     ConstraintLayout mMainLayout;
+    TextView tv_create;
     BottomSheetDialog bottomSheetDialog_fillter;
     Context mCtx;
     RecyclerView rvinviteuserdetails;
@@ -81,7 +85,8 @@ public class Company_Fragment extends Fragment {
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-    int currentPage = 1, TOTAL_PAGES = 10;
+    int currentPage = 1;
+    int perPage = 20;
     boolean isLoading = false;
     boolean isLastPage = false;
     LinearLayoutManager layoutManager;
@@ -89,8 +94,10 @@ public class Company_Fragment extends Fragment {
     EditText ev_search;
     CompanyAdapter companyAdapter;
     List<CompanyModel.Company> companyList = new ArrayList<>();
-    int perPage = 20;
-    String Filter="";//BLOCK / ALL
+    String Filter = "";//BLOCK / ALL
+    LinearLayout demo_layout, linearLayout3;
+    private long mLastClickTime = 0;
+    LinearLayout lay_no_list,layout_list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,7 +135,8 @@ public class Company_Fragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    ev_search.setText("");
                     currentPage = PAGE_START;
                     isLastPage = false;
                     companyList.clear();
@@ -169,6 +177,24 @@ public class Company_Fragment extends Fragment {
         add_new_contect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                SessionManager.setCampaign_data(new CampaignTask_overview());
+                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                intent.putExtra("flag", "add");
+                startActivity(intent);
+            }
+        });
+        demo_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                 intent.putExtra("flag", "add");
@@ -178,6 +204,11 @@ public class Company_Fragment extends Fragment {
         add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                 intent.putExtra("flag", "add");
@@ -187,6 +218,11 @@ public class Company_Fragment extends Fragment {
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 SessionManager.setCampaign_data(new CampaignTask_overview());
                 Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                 intent.putExtra("flag", "add");
@@ -194,29 +230,17 @@ public class Company_Fragment extends Fragment {
             }
         });
 
-        ev_search.addTextChangedListener(new TextWatcher() {
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<CompanyModel.Company> temp = new ArrayList();
-                for (CompanyModel.Company d : companyList) {
-                    if (d.getName().toLowerCase().contains(s.toString().toLowerCase())) {
-                        temp.add(d);
-                        // Log.e("Same Data ",d.getUserName());
-                    }
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    onResume();
+                    return true;
                 }
-                companyAdapter.updateList(temp);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                return false;
             }
         });
+
         fastscroller.setupWithRecyclerView(
                 rvinviteuserdetails,
                 (position) -> {
@@ -235,11 +259,24 @@ public class Company_Fragment extends Fragment {
                 }
         );
 
+      /*  if (companyAdapter.getItemCount() == 0) {
+            linearLayout3.setVisibility(View.GONE);
+            demo_layout.setVisibility(View.VISIBLE);
+            layout_common.setVisibility(View.VISIBLE);
+
+        }*/
+
         return content_view;
     }
 
 
     private void IntentUI(View content_view) {
+        layout_list = content_view.findViewById(R.id.layout_list);
+        lay_no_list = content_view.findViewById(R.id.lay_no_list);
+        linearLayout3 = content_view.findViewById(R.id.linearLayout3);
+        tv_create = content_view.findViewById(R.id.tv_create);
+        tv_create.setText(getResources().getString(R.string.create_company));
+        demo_layout = content_view.findViewById(R.id.demo_layout);
         iv_filter_icon = content_view.findViewById(R.id.iv_filter_icon);
         mMainLayout = content_view.findViewById(R.id.mMainLayout);
         rvinviteuserdetails = content_view.findViewById(R.id.contact_list);
@@ -255,6 +292,11 @@ public class Company_Fragment extends Fragment {
         iv_filter_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 showBottomSheetDialog_Filtter();
             }
         });
@@ -288,8 +330,9 @@ public class Company_Fragment extends Fragment {
                 if (isChecked) {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
-
-                    Filter="BLOCK";
+                    Filter = "BLOCK";
+                    RefreshList();
+//
                 }
 
             }
@@ -300,9 +343,10 @@ public class Company_Fragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     bottomSheetDialog.dismiss();
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Filter = "All";
+                    RefreshList();
 
-                    Filter="All";
                 }
 
             }
@@ -322,44 +366,83 @@ public class Company_Fragment extends Fragment {
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_data.getUser().getId());
+        paramObject.addProperty("q", ev_search.getText().toString());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
+        if (Filter.equals("BLOCK")) {
+            paramObject.addProperty("is_blocked", 1);
+        }
         obj.add("data", paramObject);
         retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-                //Log.e("Response is",new Gson().toJson(response));
+                //   Log.e("Response is",new Gson().toJson(response));
                 if (response.body().getHttp_status().equals(200)) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    if (response.body().getHttp_status() == 200) {
-                        //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
-                        Type listType = new TypeToken<CompanyModel>() {
-                        }.getType();
-                        CompanyModel data = new Gson().fromJson(headerString, listType);
-                        List<CompanyModel.Company> companyList = data.getData();
-                        if (currentPage != PAGE_START)
-                            companyAdapter.removeLoading();
-                        companyAdapter.addItems(companyList);
-                        // check weather is last page or not
-                        if (data.getTotal() > companyAdapter.getItemCount()) {
-                            companyAdapter.addLoading();
-                        } else {
-                            isLastPage = true;
-                        }
-                        isLoading = false;
-                        swipeToRefresh.setRefreshing(false);
+                    //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
+                    Type listType = new TypeToken<CompanyModel>() {
+                    }.getType();
+                    CompanyModel data = new Gson().fromJson(headerString, listType);
+                    num_count.setText(String.valueOf(data.getTotal() + " Company"));
+                    List<CompanyModel.Company> companyList;
+                    if (Filter.equals("BLOCK")) {
+                        companyList = data.getBlocked_companies();
 
                     } else {
-                        // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
+
+                        companyList = data.getData();
+                        lay_no_list.setVisibility(View.GONE);
+                        layout_list.setVisibility(View.VISIBLE);
 
                     }
 
+                    Collections.sort(companyList, new Comparator<CompanyModel.Company>() {
+                        @Override
+                        public int compare(CompanyModel.Company s1, CompanyModel.Company s2) {
+                            return s1.getName().compareToIgnoreCase(s2.getName());
+                        }
+                    });
+                    if (currentPage != PAGE_START)
+                        companyAdapter.removeLoading();
+                    companyAdapter.addItems(companyList);
+                    // check weather is last page or not
+                    if (data.getTotal() > companyAdapter.getItemCount()) {
+                        companyAdapter.addLoading();
+                    } else {
+                        isLastPage = true;
+                    }
+                    isLoading = false;
+                    swipeToRefresh.setRefreshing(false);
+                    linearLayout3.setVisibility(View.VISIBLE);
+                    demo_layout.setVisibility(View.GONE);
+
+                } else {
+                    if (Filter.equals("") && ev_search.getText().toString().equals("")) {
+                        linearLayout3.setVisibility(View.GONE);
+                        demo_layout.setVisibility(View.VISIBLE);
+                    }
+
+                    if (Filter.equals("BLOCK")) {
+                        if (companyList.size() == 0) {
+                            lay_no_list.setVisibility(View.VISIBLE);
+                            layout_list.setVisibility(View.GONE);
+                        } else {
+                            lay_no_list.setVisibility(View.GONE);
+                            layout_list.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                        lay_no_list.setVisibility(View.GONE);
+                        layout_list.setVisibility(View.VISIBLE);
+                    }
+                    num_count.setText(String.valueOf(0 + " Company"));
                 }
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
+                linearLayout3.setVisibility(View.GONE);
+                demo_layout.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -367,7 +450,12 @@ public class Company_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Filter="";
+        Filter = "";
+        iv_filter_icon.setImageResource(R.drawable.ic_filter);
+        RefreshList();
+    }
+
+    private void RefreshList() {
         currentPage = PAGE_START;
         isLastPage = false;
         companyList.clear();
@@ -395,7 +483,7 @@ public class Company_Fragment extends Fragment {
         selected_un_block.setText(getString(R.string.remove_blacklist));
         selected_delete.setText(getString(R.string.delete_contact));
 
-        if (Company.getIs_blocked().equals("1")) {
+        if (Company.getIs_blocked().equals(1)) {
             selected_block.setVisibility(View.GONE);
             line_block.setVisibility(View.GONE);
             selected_un_block.setVisibility(View.VISIBLE);
@@ -411,6 +499,10 @@ public class Company_Fragment extends Fragment {
         selected_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 //Block Contect
 
@@ -426,6 +518,10 @@ public class Company_Fragment extends Fragment {
         selected_un_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 //Block Contect
 
@@ -441,6 +537,10 @@ public class Company_Fragment extends Fragment {
         selected_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 //Block Contect
 
@@ -488,11 +588,10 @@ public class Company_Fragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    bottomSheetDialog.cancel();
                 } else {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
                 }
+                bottomSheetDialog.cancel();
             }
 
             @Override
@@ -507,10 +606,10 @@ public class Company_Fragment extends Fragment {
     public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-       JSONObject obj = new JSONObject();
+        JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id",1 );
-        paramObject.put("team_id",1 );
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("id", Company.getId());
         paramObject.put("status", "D");
@@ -623,12 +722,17 @@ public class Company_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CompanyAdapter.viewData holder, int position) {
             CompanyModel.Company WorkData = companyList.get(position);
-            if (Global.IsNotNull(WorkData) && ! WorkData.getName().equals("")) {
-                if (WorkData.getIs_blocked().equals(1)) {
-                    holder.iv_block.setVisibility(View.VISIBLE);
-                } else {
-                    holder.iv_block.setVisibility(View.GONE);
-
+            if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
+                try {
+                    if (WorkData.getIs_blocked().equals(1)) {
+                        holder.iv_block.setVisibility(View.VISIBLE);
+                        holder.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
+                    } else {
+                        holder.iv_block.setVisibility(View.GONE);
+                        holder.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
                 holder.userName.setText(WorkData.getName());
                 holder.userNumber.setVisibility(View.GONE);
@@ -695,9 +799,14 @@ public class Company_Fragment extends Fragment {
                 holder.main_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SessionManager.setCompnay_detail(WorkData);
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+
                         Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
                         intent.putExtra("flag", "read");
+                        intent.putExtra("id", WorkData.getId());
                         startActivity(intent);
                     }
                 });
@@ -709,11 +818,6 @@ public class Company_Fragment extends Fragment {
         @Override
         public int getItemCount() {
             return companyList.size();
-        }
-
-        public void updateList(List<CompanyModel.Company> list) {
-            companyList = list;
-            notifyDataSetChanged();
         }
 
         public void removeitem() {

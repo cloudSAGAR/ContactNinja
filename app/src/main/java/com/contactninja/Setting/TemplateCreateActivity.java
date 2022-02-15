@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     TemplateList.Template template;
     boolean isEdit = false;
     String template_type = "";
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -200,6 +202,10 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                 onBackPressed();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (isEdit) {
                     //update template
                     try {
@@ -226,6 +232,10 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.layout_title:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showAlertDialogButtonClicked();
                 break;
         }
@@ -233,22 +243,22 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
 
     private boolean isValidation() {
         if (template_type.equals("SMS")) {
-            if (edit_template_name.getText().toString().equals("")) {
+            if (edit_template_name.getText().toString().trim().replaceAll("[-+.^:,]","").equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
             }else
-            if (edit_template.getText().toString().equals("")) {
+            if (edit_template.getText().toString().trim().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
             } else {
                 return true;
             }
         } else {
-            if (edit_template_name.getText().toString().equals("")) {
+            if (edit_template_name.getText().toString().replaceAll("[-+.^:,]","").trim().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
             }else
-            if (edit_template_subject.getText().toString().equals("")) {
+            if (edit_template_subject.getText().toString().trim().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_subject), false);
             }else
-            if (edit_template.getText().toString().equals("")) {
+            if (edit_template.getText().toString().trim().equals("")) {
                 Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_dody), false);
             } else {
                 return true;
@@ -267,7 +277,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("id", template.getId());
-        paramObject.addProperty("template_name", edit_template_name.getText().toString().trim());
+        paramObject.addProperty("template_name", edit_template_name.getText().toString().trim().replaceAll("[-+.^:,]",""));
         if(template_type.equals("EMAIL")){
             paramObject.addProperty("content_header", edit_template_subject.getText().toString().trim());
         }
@@ -426,7 +436,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         edit_template.setSelection(edit_template.getText().length());
     }
 
-    static class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
+    class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
         public Context mCtx;
         List<HastagList.TemplateText> templateTextList;

@@ -24,95 +24,92 @@
             android:layout_height="@dimen/_45sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:layout_weight="3"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="horizontal">
 
 
-            <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_email"
-                    style="@style/tv_regular_13"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_email"
-                    android:textColor="@color/text_reg"
-               >
-
-                </TextView>
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/select_email_label"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_27sdp"
-                android:background="@drawable/shape_5_white_ccc_line"
-                android:paddingStart="@dimen/_20sdp"
-                android:paddingEnd="@dimen/_20sdp">
-
-                <TextView
-                    android:id="@+id/email_txt"
-                    style="@style/tv_regular_12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/add_home"
-                    android:textColor="@color/home_list_sub_data"
-                    >
+                    android:orientation="vertical">
 
-                </TextView>
+                    <TextView
+                        android:id="@+id/tv_email"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_email"
+                        android:textColor="@color/text_reg">
 
-                <ImageView
-                    android:layout_width="@dimen/_12sdp"
-                    android:layout_height="@dimen/_12sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_1sdp"
-                    android:src="@drawable/ic_down">
-
-                </ImageView>
-            </LinearLayout>
+                    </TextView>
 
 
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/layout_icon_email"
-                android:background="@drawable/shape_oval_border_10_blue"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginEnd="@dimen/_10sdp"
-                >
+                </LinearLayout>
 
-                <ImageView
+                <LinearLayout
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:id="@+id/select_email_label"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_10sdp"
-                    android:tint="@color/purple_200"
-                    android:src="@drawable/ic_email"
-                    tools:ignore="UseAppTint" />
+                    android:layout_height="@dimen/_27sdp"
+                    android:background="@drawable/shape_5_white_ccc_line"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingEnd="@dimen/_20sdp">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/email_txt"
+                        style="@style/tv_regular_12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/add_home"
+                        android:textColor="@color/home_list_sub_data">
+
+                    </TextView>
+
+                    <ImageView
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:src="@drawable/ic_down">
+
+                    </ImageView>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_icon_email"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/shape_oval_border_10_blue"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_10sdp"
+                        android:src="@drawable/ic_email"
+                        android:tint="@color/purple_200"
+                        tools:ignore="UseAppTint" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

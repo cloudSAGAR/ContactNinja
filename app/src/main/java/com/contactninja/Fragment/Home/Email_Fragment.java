@@ -1,4 +1,4 @@
-package com.contactninja.Fragment;
+package com.contactninja.Fragment.Home;
 
 import android.os.Bundle;
 

@@ -1,6 +1,7 @@
 package com.contactninja.Manual_email_text.List_And_show;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,10 +13,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -30,11 +33,14 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.Email_Tankyou;
 import com.contactninja.Manual_email_text.Manual_Shooz_Time_Date_Activity;
+import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.ManualTaskDetailsModel;
@@ -60,7 +66,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -69,10 +74,12 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Item_List_Text_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
+public class Item_List_Text_Detail_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
     public static final int PICKFILE_RESULT_CODE = 1;
     static ManualTaskDetailsModel.ManualDetails manualDetails;
     SessionManager sessionManager;
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
+    CardListAdepter cardListAdepter;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back, iv_body, iv_toolbar_manu1;
@@ -98,68 +105,8 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     LinearLayout lay_seq_stap, lay_taskname;
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
+    private long mLastClickTime = 0;
 
-    public static void compareDates(String d1, String d2, TextView tv_status) {
-        try {
-            // If you already have date objects then skip 1
-
-            //1
-            // Create 2 dates starts
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-            Date date1 = sdf.parse(d1);
-            Date date2 = sdf.parse(d2);
-
-            Log.e("Date1", sdf.format(date1));
-            Log.e("Date2", sdf.format(date2));
-
-            // Create 2 dates ends
-            //1
-
-            // Date object is having 3 methods namely after,before and equals for comparing
-            // after() will return true if and only if date1 is after date 2
-            if (date1.after(date2)) {
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Due");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                Log.e("", "Date1 is after Date2");
-            }
-            // before() will return true if and only if date1 is before date2
-            if (date1.before(date2)) {
-
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Upcoming");
-                    tv_status.setTextColor(Color.parseColor("#2DA602"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-
-                Log.e("", "Date1 is before Date2");
-                System.out.println("Date1 is before Date2");
-            }
-
-            //equals() returns true if both the dates are equal
-            if (date1.equals(date2)) {
-                if (manualDetails.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Today");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(manualDetails.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                Log.e("", "Date1 is equal Date2");
-                System.out.println("Date1 is equal Date2");
-            }
-
-            System.out.println();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,15 +207,16 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
         edit_compose.setText(manualDetails.getContentBody());
         ev_titale.setText(manualDetails.getTaskName());
         tv_taskname.setText(manualDetails.getTaskName());
-        try {
-            String time = Global.getDate(manualDetails.getStartTime());
-            tv_date.setText(time);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-            String currentDateandTime = sdf.format(new Date());
-            compareDates(currentDateandTime, time, tv_status);
-        } catch (ParseException e) {
+        //  try {
+        // String time = Global.getDate(manualDetails.getStartTime());
+        String FullDate = manualDetails.getDate() + " " + manualDetails.getTime();
+        String formateChnage=Global.formateChange(FullDate);
+        tv_date.setText(formateChnage);
+        compareDates(manualDetails.getDate(),tv_status,manualDetails);
+
+     /*   } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
         if (!Global.IsNotNull(manualDetails.getSeqId()) || manualDetails.getSeqId() != 0) {
             lay_seq_stap.setVisibility(View.VISIBLE);
             lay_taskname.setVisibility(View.GONE);
@@ -313,12 +261,20 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_toolbar_manu1:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Select_to_update();
                 break;
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.bt_done:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 try {
                     SMS_execute(edit_compose.getText().toString(), manualDetails.getProspectId(),
                             manualDetails.getContactNumber(), String.valueOf(manualDetails.getId()));
@@ -327,9 +283,17 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                 }
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_down:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
         }
@@ -645,11 +609,20 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                     templateTextList = hastagList.getHashtag();
 
 
+                    HastagList.TemplateText text1 = new HastagList.TemplateText();
+                    text1.setFile(R.drawable.ic_card_blank);
+                    text1.setSelect(false);
+                    templateTextList.add(0, text1);
+
+                    HastagList.TemplateText text2 = new HastagList.TemplateText();
+                    text2.setFile(R.drawable.ic_video);
+                    text2.setSelect(false);
+                    templateTextList.add(1, text2);
+
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(0, templateText);
-
+                    templateTextList.add(2, templateText);
 
                     Listset(templateTextList);
 
@@ -696,6 +669,45 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
             unregisterReceiver(mNetworkReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+        }
+    }
+    public static void compareDates(String onlyDate, TextView tv_status, ManualTaskDetailsModel.ManualDetails item) {
+        try {
+
+            Date date1 = Global.defoult_date_formate.parse(Global.getCurrentDate());
+            Date date2 = Global.defoult_date_formate.parse(onlyDate);
+
+
+            if (date1.after(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+            } else if (date1.before(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+            } else if (date1.equals(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Today");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+            }
+
+            System.out.println();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -853,7 +865,7 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                     try {
                         if (Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, MainActivity.mMainLayout)) {
                             if (isValidation(editText.getText().toString().trim(), dialog)) {
-                                CreateTemplate(editText.getText().toString().trim(),dialog);
+                                CreateTemplate(editText.getText().toString().trim(), dialog);
                             }
                         }
                     } catch (JSONException e) {
@@ -950,6 +962,88 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
 
             }
         }
+    }
+
+    @Override
+    public void Onclick(Broadcast_image_list broadcastImageList) {
+        for (int i = 0; i < broadcast_image_list.size(); i++) {
+            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
+                broadcast_image_list.get(i).setScelect(true);
+            } else {
+                broadcast_image_list.get(i).setScelect(false);
+            }
+        }
+        cardListAdepter.notifyDataSetChanged();
+    }
+
+    static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        CardClick cardClick;
+        BottomSheetDialog bottomSheetDialog;
+        TextClick interfaceClick;
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.cardClick = cardClick;
+            this.bottomSheetDialog = bottomSheetDialog;
+            this.interfaceClick = interfaceClick;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new CardListAdepter.cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                bottomSheetDialog.dismiss();
+                interfaceClick.OnClick("BzczrdLink");
+            });
+            if (item.isScelect()) {
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
+            } else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public static class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
     }
 
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
@@ -1068,12 +1162,43 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
-                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                        chooseFile.setType("*/*");
-                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                    if (position == 0) {
+
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Text_Detail_Activty.this,
+                                R.style.DialogStyle);
+                        bottomSheetDialog.setContentView(mView);
+                        RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
+
+
+                        broadcast_image_list.clear();
+                        for (int i = 0; i <= 20; i++) {
+                            Broadcast_image_list item = new Broadcast_image_list();
+                            if (i % 2 == 0) {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_1");
+                            } else {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_2");
+                            }
+                            broadcast_image_list.add(item);
+                        }
+                        rv_image_card.setLayoutManager(new LinearLayoutManager(Item_List_Text_Detail_Activty.this,
+                                LinearLayoutManager.HORIZONTAL, false));
+                        rv_image_card.setHasFixedSize(true);
+                        cardListAdepter = new CardListAdepter(Item_List_Text_Detail_Activty.this, broadcast_image_list,
+                                Item_List_Text_Detail_Activty.this, bottomSheetDialog, interfaceClick);
+                        rv_image_card.setAdapter(cardListAdepter);
+
+
+                        bottomSheetDialog.show();
                     }
+
+
                 }
             });
             if (item.isSelect()) {
@@ -1220,6 +1345,5 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
             }
         }
     }
-
 
 }

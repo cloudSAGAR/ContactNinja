@@ -3,6 +3,7 @@ package com.contactninja.Setting;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
@@ -48,7 +49,7 @@ public class Email_verification extends AppCompatActivity implements Connectivit
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
-
+    String create="";
     private BroadcastReceiver mNetworkReceiver;
 
     @Override
@@ -60,20 +61,42 @@ public class Email_verification extends AppCompatActivity implements Connectivit
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-
-
-
+        mMainLayout = findViewById(R.id.mMainLayout);
+        webEmail = findViewById(R.id.webEmail);
         try {
-            if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)){
-                Mail_list();
-            }
-        } catch (JSONException e) {
+            Intent intent=getIntent();
+            Bundle bundle=intent.getExtras();
+            create=bundle.getString("create");
+        }catch (Exception e){
             e.printStackTrace();
+        }
+        if(Global.IsNotNull(create)||create.equals("create")){
+          try {
+              webEmail.clearCache(true);
+              webEmail.clearHistory();
+              webEmail.loadUrl(Global.Email_auth);
+              webEmail.getSettings().setJavaScriptEnabled(true);
+              webEmail.getSettings().setUserAgentString("contactninja");
+              webEmail.setHorizontalScrollBarEnabled(false);
+              webEmail.setWebViewClient(new HelloWebViewClient());
+          }
+          catch (Exception e)
+          {
+            e.printStackTrace();
+          }
+
+        }else {
+            try {
+                if(Global.isNetworkAvailable(Email_verification.this,mMainLayout)){
+                    Mail_list();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
 
-        mMainLayout = findViewById(R.id.mMainLayout);
-        webEmail = findViewById(R.id.webEmail);
+
 
 
 

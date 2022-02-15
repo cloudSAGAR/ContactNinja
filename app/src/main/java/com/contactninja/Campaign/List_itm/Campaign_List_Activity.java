@@ -1,4 +1,4 @@
-package com.contactninja.Campaign;
+package com.contactninja.Campaign.List_itm;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.contactninja.Campaign.Add_Camp_Tab_Select_Activity;
+import com.contactninja.Campaign.Campaign_Overview;
+import com.contactninja.Campaign.Campaign_Preview;
 import com.contactninja.Interface.CampaingClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Campaign_List;
@@ -77,6 +81,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     private boolean isLoading = false;
 
     private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -307,6 +312,10 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 break;
             case R.id.demo_layout:
             case R.id.add_campaign_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if(SessionManager.getContectList(Campaign_List_Activity.this).size()!=0){
 
 
@@ -316,7 +325,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 SessionManager.setCampaign_minute("");
                 Global.count = 1;
                 SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                 intent.putExtra("flag","new");
                 startActivity(intent);
                 }else {
@@ -445,18 +454,30 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 holder.campaign_name.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         campaingClick.OnClick(campaign);
                     }
                 });
                 holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showAlertDialogButtonClicked(campaign.getId(),1);
                     }
                 });
                 holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         showAlertDialogButtonClicked(campaign.getId(),0);
                     }
                 });

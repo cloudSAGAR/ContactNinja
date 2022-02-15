@@ -477,6 +477,31 @@ public class CampaignTask_overview {
         @Expose
         private String step_no;
 
+        @SerializedName("contact_number")
+        @Expose
+        private String contact_number;
+
+
+        @SerializedName("email")
+        @Expose
+        private String email="";
+
+        public String getContact_number() {
+            return contact_number;
+        }
+
+        public void setContact_number(String contact_number) {
+            this.contact_number = contact_number;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
         public String getStep_no() {
             return step_no;
         }

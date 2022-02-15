@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
-import com.contactninja.Broadcast.Brodcsast_Tankyou;
+import com.contactninja.Main_Broadcast.Brodcsast_Tankyou;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContectListData;

@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -63,6 +64,7 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
     String task_name="",from_ac="",from_ac_id="",temaplet_id="";
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +172,10 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (tv_date.getText().toString().equals(""))
                 {
 
@@ -190,9 +196,17 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
                 }
                 break;
             case R.id.la_date:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
                 break;
             case R.id.la_time:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 onTimer();
                 break;
 

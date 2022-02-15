@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -53,6 +54,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -145,25 +147,48 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(@SuppressLint("UnknownNullness") View v) {
         switch (v.getId()) {
             case R.id.layout_logout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showAlertDialogButtonClicked();
                 break;
             case R.id.layout_resetPassword:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(), ResetActivity.class));
                 break;
             case R.id.layout_template:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(), TemplateActivity.class));
                 break;
             case R.id.layout_Current_plan:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(), CurrentPlanActivity.class));
                 break;
             case R.id.layout_about:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getApplicationContext(), WebActivity.class);
                 intent.putExtra("WebUrl", Global.about);
                 startActivity(intent);
                 break;
 
             case R.id.layout_mail_box:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
 
                 break;

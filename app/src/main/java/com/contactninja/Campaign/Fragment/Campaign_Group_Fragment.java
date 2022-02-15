@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,9 +70,11 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     RecyclerView add_contect_list;
     public static TopUserListDataAdapter topUserListDataAdapter;
     TextView tv_create;
-    LinearLayout mMainLayout;
+    LinearLayout mMainLayout,layout_select_list;
     ImageView add_new_contect_icon1,add_new_contect_icon;
     TextView add_new_contect;
+    private long mLastClickTime=0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -143,9 +146,17 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         return view;
     }
 
+    private void select_Contact(int size) {
+        if (size != 0) {
+            num_count.setText(size + " " + getResources().getString(R.string.selected));
+        } else {
+            num_count.setText(grouplists.size() + " " + getResources().getString(R.string.groups));
+        }
+    }
     private void IntentUI(View view) {
 
         mMainLayout = view.findViewById(R.id.mMainLayout);
+        layout_select_list = view.findViewById(R.id.layout_select_list);
         main_layout = view.findViewById(R.id.demo_layout);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         group_recyclerView = view.findViewById(R.id.group_list);
@@ -168,6 +179,10 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_new_contect_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (add_new_contect_icon1.getVisibility()==View.GONE)
                 {
                     add_new_contect_icon1.setVisibility(View.VISIBLE);
@@ -187,13 +202,32 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                     group_flag="false";
                     paginationAdapter.notifyDataSetChanged();
                     add_new_contect.setText(getString(R.string.add_new_group_all));
+                    /*
+                     * selected number list show
+                     * */
+                    if (select_contectListData.size() != 0) {
+                        layout_select_list.setVisibility(View.VISIBLE);
+                    } else {
+                        layout_select_list.setVisibility(View.GONE);
+                    }
+                    /*
+                     * set select contact count */
+                    select_Contact(0);
                 }
 
                 break;
             case R.id.group_name:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
             case R.id.main_layout:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setGroupData(getActivity(),new Grouplist.Group());
                 startActivity(new Intent(getActivity(), GroupActivity.class));
                 /*getActivity().finish();*/
@@ -242,8 +276,10 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                         isLoading = false;
 
                     }
+                    /*
+                     * set select contact count */
+                    select_Contact(0);
 
-                    num_count.setText("" + group_model.getTotal() + " Group");
 
                     totale_group = group_model.getTotal();
                     main_layout.setVisibility(View.GONE);
@@ -310,8 +346,9 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                         isLoading = false;
                     }
 
-                    num_count.setText("" + group_model.getTotal() + " Group");
-
+                    /*
+                     * set select contact count */
+                    select_Contact(0);
                 } else {
 
                 }
@@ -445,9 +482,19 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                           //  topUserListDataAdapter.notifyDataSetChanged();
                             topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
                             add_contect_list.setAdapter(topUserListDataAdapter);
-                            num_count.setText(select_contectListData.size()+" Group Selcted");
+                            /*
+                             * set select contact count */
+                            select_Contact(select_contectListData.size());
                             sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
                             sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
+                            /*
+                             * selected number list show
+                             * */
+                            if (select_contectListData.size() != 0) {
+                                layout_select_list.setVisibility(View.VISIBLE);
+                            } else {
+                                layout_select_list.setVisibility(View.GONE);
+                            }
 
                         }
                     });
@@ -467,9 +514,19 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
                             topUserListDataAdapter.notifyDataSetChanged();
                           //  Log.e("Size is",new Gson().toJson(select_contectListData));
-                            num_count.setText(select_contectListData.size()+" Group Selcted");
+                            /*
+                             * set select contact count */
+                            select_Contact(select_contectListData.size());
                             sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
                             sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
+                            /*
+                             * selected number list show
+                             * */
+                            if (select_contectListData.size() != 0) {
+                                layout_select_list.setVisibility(View.VISIBLE);
+                            } else {
+                                layout_select_list.setVisibility(View.GONE);
+                            }
 
                         }
                     });
@@ -542,6 +599,17 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             }
             sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
             sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
+            /*
+             * selected number list show
+             * */
+            if (select_contectListData.size() != 0) {
+                layout_select_list.setVisibility(View.VISIBLE);
+            } else {
+                layout_select_list.setVisibility(View.GONE);
+            }
+            /*
+             * set select contact count */
+            select_Contact(select_contectListData.size());
 
         }
 
@@ -672,6 +740,10 @@ e.printStackTrace();
             holder.top_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     for (int i=0;i<grouplists.size();i++)
                     {
                         if (grouplists.get(i).getId().equals(select_contectListData.get(position).getId()))

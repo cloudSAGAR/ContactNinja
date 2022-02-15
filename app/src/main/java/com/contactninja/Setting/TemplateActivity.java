@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
     int perPage = 20;
     private boolean isLastPage = false;
     private boolean isLoading = false;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -206,6 +208,10 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.demo_layout:
             case R.id.add_new_Template:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
 
                 break;
@@ -223,6 +229,10 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         layout_SMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent i=new Intent(new Intent(getApplicationContext(), TemplateCreateActivity.class));
                 i.putExtra("template_type","SMS");
                 startActivity(i);
@@ -233,6 +243,10 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         layout_email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent i=new Intent(new Intent(getApplicationContext(), TemplateCreateActivity.class));
                 i.putExtra("template_type","EMAIL");
                 startActivity(i);

@@ -1,4 +1,4 @@
-package com.contactninja.Campaign;
+package com.contactninja.Campaign.List_itm;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -63,6 +64,7 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     TextView tv_email,tv_sms,tv_contect,tv_pending,tv_contec_reach,tv_camp_name;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +138,10 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent getintent=getIntent();
                 Bundle bundle=getintent.getExtras();
                 sequence_id=bundle.getInt("sequence_id");

@@ -15,7 +15,6 @@
         layout="@layout/common_dialog"/>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/mMainLayout1"
 
         android:orientation="vertical"
@@ -51,9 +50,8 @@
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
                 android:background="@color/add_contect_transpernt"
-                >
+                />
 
-            </EditText>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/add_campaign_layout"
@@ -72,17 +70,29 @@
                 android:layout_height="@dimen/_35sdp"/>
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
                 style="@style/tv_Medium_14"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_12sdp"
                 android:gravity="center|left"
                 android:singleLine="true"
                 android:text="@string/campaign_add"
                 android:textColor="@color/text_reg"
                />
+            <TextView
+                android:padding="@dimen/_5sdp"
+                android:id="@+id/num_count"
+                style="@style/tv_Medium_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center|end"
+                android:singleLine="true"
+                android:textColor="@color/purple_500" />
 
         </LinearLayout>
         <View

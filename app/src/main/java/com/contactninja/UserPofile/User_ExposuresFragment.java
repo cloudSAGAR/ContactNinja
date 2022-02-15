@@ -3,6 +3,7 @@ package com.contactninja.UserPofile;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.contactninja.Utils.SessionManager;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class User_ExposuresFragment extends Fragment implements View.OnClickListener {
     TextView button_Affiliate_Report;
+    private long mLastClickTime = 0;
     public User_ExposuresFragment() {
         // Required empty public constructor
     }
@@ -55,6 +57,10 @@ public class User_ExposuresFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_Affiliate_Report:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getActivity(),Affiliate_Report_LavelActivity.class));
                 break;
         }

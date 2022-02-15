@@ -8,6 +8,9 @@
     android:background="@color/white"
     tools:ignore="ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
+        <include
+            layout="@layout/common_dialog"/>
+
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
@@ -37,21 +40,20 @@
             </ImageView>
 
             <EditText
-                android:id="@+id/ev_search"
-                style="@style/tv_Medium_14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|left"
-                android:layout_marginStart="@dimen/_5sdp"
                 android:layout_weight="2"
-                android:background="@color/add_contect_transpernt"
+                style="@style/tv_Medium_14"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_gravity="center|left"
                 android:gravity="center|left"
-                android:hint="@string/search_hint"
+                android:id="@+id/ev_search"
                 android:singleLine="true"
                 android:textColor="@color/text_reg"
-                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
-
-            </EditText>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionSearch"
+                android:background="@color/add_contect_transpernt"
+                />
 
             <ImageView
                 android:id="@+id/iv_filter_icon"
@@ -73,8 +75,8 @@
 
             <ImageView
                 android:id="@+id/add_new_contect_icon"
-                android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/shape_oval_border_10_white"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/ic_plus1"
@@ -86,7 +88,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_5sdp"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
                 android:singleLine="true"
@@ -112,14 +113,16 @@
                 />
 
             <TextView
-                android:id="@+id/num_count"
-                style="@style/tv_Medium_14"
 
+                android:padding="@dimen/_5sdp"
+                android:id="@+id/num_count"
+                style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@color/white"
-                android:gravity="center"
+                android:gravity="center|right"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/purple_500" />
@@ -132,21 +135,36 @@
             android:layout_height="1dp"
             android:background="@color/line_separator" />
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/contect_search"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_45sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/shape_25_white_eee_line"
+        <LinearLayout
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent">
+            android:id="@+id/lay_no_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/lay_bouttom"
+            android:layout_below="@+id/line"
+            android:layout_gravity="center"
+            android:layout_marginTop="-2dp"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        </androidx.appcompat.widget.SearchView>
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_small_logo" />
 
+            <TextView
+                style="@style/tv_Medium_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_block_company"
+                android:textColor="@color/text_reg" />
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -207,6 +225,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/fastscroller"
                 app:layout_constraintTop_toTopOf="@+id/fastscroller" />
         </LinearLayout>
+
+
 
     </LinearLayout>
 

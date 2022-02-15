@@ -162,9 +162,9 @@ Number</string>
     //Group
 
     <string name="group_to">To</string>
-    <string name="add_new_group">Add New group</string>
+    <string name="add_new_group">Add new group</string>
     <string name="add_new_group_all">Add all group</string>
-    <string name="remove_new_group_all">Add all Group</string>
+    <string name="remove_new_group_all">Remove all group</string>
     <string name="add_task_email">Create a new \n email task</string>
     <string name="add_task_text">Create a new \n Text task</string>
     <string name="add_new_group_name">Intricare technologies</string>
@@ -174,7 +174,7 @@ Number</string>
 
     <string name="add_broadcast">Broadcast</string>
     <string name="link_add">add your affiliate link</string>
-    <string name="text_ok">password has been sent \n to your register email</string>
+    <string name="text_ok">Password has been sent \n to your register email</string>
     <string name="link_click">your link is attached</string>
     <string name="type_message">Type your message here…</string>
     <string name="error_opps">Oops</string>\
@@ -196,13 +196,13 @@ Number</string>
     </array>
 
     <array name="broadcast_days">
-        <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
         <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>
+        <item>Sunday</item>
     </array>
 
     <string name="daily_text">I want my broadcast to repeat</string>
@@ -232,7 +232,8 @@ Number</string>
         <item>First</item>
         <item>Second</item>
         <item>Three</item>
-        <item>fourth</item>
+        <item>Fourth</item>
+        <item>Last</item>
     </array>
     <string name="add_done">Done</string>
     <string name="add_day">Day</string>
@@ -328,8 +329,8 @@ Number</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
     <string name="create_task">Create your </string>
 
-    <string name="campaign_step_one_email">Automated email</string>
-    <string name="campaign_step_one_email_manual">Manual email</string>
+    <string name="campaign_step_one_email">Automated Email</string>
+    <string name="campaign_step_one_email_manual">Manual Email</string>
     <string name="campaign_step_one_email_txt">Automated emails are sent using automation and Manual emails create a task on your /n dashboard for you to approve it before sending.</string>
 
     <string name="campaign_step_one_text">Automated Text</string>
@@ -347,7 +348,7 @@ Number</string>
     <string name="and">and</string>
     <string name="Day">Day</string>
     <string name="Run_this_step_on">Run this step on</string>
-    <string name="mail_title">Step#2 (Automated email)</string>
+    <string name="mail_title">Step#2 (Automated Email)</string>
     <string name="mail_subject">Subject:</string>
     <string name="ComposeEmail">Compose email</string>
     <string name="camp_done">Please add title of \n  your campaign</string>
@@ -394,12 +395,14 @@ Number</string>
     <string name="lavel4">Lavel 4</string>
     <string name="lavel5">Lavel 5</string>
     <string name="composse_email">Compose email</string>
-    <string name="email_txt">click here to send \n an email </string>
+    <string name="email_txt">Click here to send \n an email </string>
+    <string name="txt_task">Click here to create \n a task </string>
     <string name="create_new_email">Create new email</string>
     <string name="create_new_text">Create new task</string>
     <string name="email_task_txt">Schedule my task</string>
     <string name="email_date">Please select date</string>
     <string name="email_time">Select time</string>
+    <string name="broad_recurrence">Recurrence</string>
     <string name="text_txt">Message</string>
     <string name="verifition_title_text">Enter the code We just \n texted you</string>
     <string name="enter_campaign_name">Enter campaign name</string>
@@ -412,6 +415,11 @@ Number</string>
     <string name="select_Send">Send</string>
     <string name="select_Contact">Contact</string>
     <string name="select_User">User</string>
+    <string name="select">Select</string>
+    <string name="selected">Selected</string>
+    <string name="contacts">Contacts</string>
+    <string name="groups">Groups</string>
+
 
     <string name="add_blacklist">Add to blacklist</string>
     <string name="remove_blacklist">Remove to blacklist</string>
@@ -420,11 +428,13 @@ Number</string>
     <string name="fillter_all">All Contacts</string>
     <string name="fillter_compnay_block">Blacklist Companies</string>
     <string name="fillter_compnay_all">All Contacts</string>
-    <string name="company_add">Add New Company</string>
+    <string name="company_add">Add new company</string>
     <string name="company_blacklst">Blacklist Companies</string>
     <string name="company_all">All Companies</string>
+    <string name="delete_company">Delete company</string>
 
     <string name="no_Task">👍 You\'re all good ! \n You don\'t have any tasks here</string>
+    <string name="no_block_company">You haven\'t \nblack listed any company</string>
     <string name="manual_Today">Today</string>
     <string name="manual_Upcoming">Upcoming</string>
     <string name="manual_Due">Due</string>
@@ -446,12 +456,12 @@ Number</string>
     <string name="manual_aleart_snooze_des">Are you sure that you would like to task snooze?</string>
 
     <string-array name="manual_filter">
-        <item>TODAY</item>
-        <item>UPCOMING</item>
-        <item>DUE</item>
-        <item>FINISHED</item>
-        <item>SKIPPED</item>
-        <item>PAUSED</item>
+        <item>today</item>
+        <item>upcoming</item>
+        <item>due</item>
+        <item>finished</item>
+        <item>skipped</item>
+        <item>paused</item>
     </string-array>
     <string-array name="manual_Select">
         <item>PAUSED</item>
@@ -463,7 +473,47 @@ Number</string>
         <item>Email</item>
     </string-array>
 
-    <string name="contect_block">This Contect Block</string>
+
+    <string-array name="Select_Recurrence">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string name="contect_block">This contect is block</string>
     <string name="email_contact">Please email in contact</string>
+
+
+    <string name="add_brodcaste">Create new broadcast</string>
+    <string name="broadcast_email">Recuring email broadcast</string>
+    <string name="broadcast_text">Recuring text broadcast</string>
+    <string name="broadcast_info_text">ContactNinja allows you to schedule texts or emails with multiple \n  occurrences. You can schedule these in daily, \n weekly, and monthly increments.</string>
+    <string name="create_company">Create new Company</string>
+    <string name="repet_every">Repeat every</string>
+    <string name="repet_day">Day</string>
+    <string name="occurs_weekly">Occurs weekly</string>
+    <string name="please_select_sender">"Please select sender "</string>
+    <string name="company_phone">Company\'s phone</string>
+    <string name="company_email">info@company.com</string>
+    <string name="company_url">www.companyname.com</string>
+    <string name="company_address">Location</string>
+    <string-array name="Select_day">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+
 
 </resources>

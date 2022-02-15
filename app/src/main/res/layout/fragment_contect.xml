@@ -32,26 +32,23 @@
                 android:src="@drawable/ic_search"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
-                >
-
-            </ImageView>
+                />
 
             <EditText
                 android:layout_weight="2"
-                style="@style/tv_Medium_14"
                 android:id="@+id/ev_search"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:background="@color/add_contect_transpernt"
                 android:gravity="center|left"
-                android:singleLine="true"
                 android:hint="@string/search_hint"
-                android:textColor="@color/text_reg"
-                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textColor="@color/text_reg" />
 
-            </EditText>
             <ImageView
                 android:layout_gravity="center"
                 android:id="@+id/iv_filter_icon"
@@ -73,22 +70,22 @@
 
             <ImageView
                 android:id="@+id/add_new_contect_icon"
-                android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/shape_oval_border_10_white"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/ic_plus1"
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
+                android:layout_weight="1"
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
                 style="@style/tv_Medium_14"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:gravity="center"
+                android:gravity="center|left"
                 android:singleLine="true"
                 android:text="@string/add_new_contect"
                 android:textColor="@color/text_reg"
@@ -101,8 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
-                android:layout_marginStart="@dimen/_60sdp"
                 android:gravity="center|left"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:singleLine="true"
                 android:text="@string/add_sink"
                 android:textColor="@color/purple_200"
@@ -118,20 +115,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line_separator" />
-
-       <androidx.appcompat.widget.SearchView
-            android:id="@+id/contect_search"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_45sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/shape_25_white_eee_line"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </androidx.appcompat.widget.SearchView>
-
 
         <LinearLayout
             android:layout_width="match_parent"

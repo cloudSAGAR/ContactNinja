@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Group_Fragment;
+import com.contactninja.Campaign.List_itm.Campaign_Final_Start;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
@@ -68,6 +70,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +177,10 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                 finish();
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(ContectAndGroup_Actvity.this);
                 try {
                     if (Global.isNetworkAvailable(ContectAndGroup_Actvity.this, main_layout)) {
@@ -304,13 +311,14 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                                     Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
                                     intent.putExtra("sequence_id", sequence_id);
                                     startActivity(intent);
-                                    //   finish();
+                                      finish();
 
                                 } else {
                                     Intent intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
                                     intent.putExtra("sequence_id", sequence_id);
                                     intent.putExtra("seq_task_id", seq_task_id);
                                     intent.putExtra("sequence_Name", sequence_Name);
+                                    intent.putExtra("flag","add");
                                     startActivity(intent);
                                     finish();
                                 }

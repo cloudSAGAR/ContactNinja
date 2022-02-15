@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -75,6 +76,8 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
     ConstraintLayout mMainLayout;
     ImageView iv_toolbar_manu;
     List<CampaignTask_overview.SequenceTask> main_data=new ArrayList<>();
+    private long mLastClickTime=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +149,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.save_button:
                 //Add Api Call
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (SessionManager.getTask(getApplicationContext()).size()!=0)
                 {
                     sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
@@ -314,6 +320,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
                                 SessionManager.setCampaign_type("");
                                 SessionManager.setCampaign_type_name("");
                                 SessionManager.setCampaign_minute("00");
@@ -338,7 +348,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                                     campaignTaskList.add(campaignTask);
                                     SessionManager.setTask(getApplicationContext(), campaignTaskList);
                                 }
-                                Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                                Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                                 intent.putExtra("flag","new");
                                 startActivity(intent);
                                 finish();
@@ -494,7 +504,10 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         edit_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 if (sequenceTask.getType().equals("EMAIL"))
                 {
@@ -509,7 +522,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     }
                     Log.e("Sequence is is", String.valueOf(sequence_id));
 
-                    Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                    Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());
@@ -547,7 +560,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Intent intent=new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                    Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
                     intent.putExtra("day",sequenceTask.getDay());

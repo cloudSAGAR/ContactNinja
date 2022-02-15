@@ -70,4 +70,9 @@
     <color name="text_reg">#4A4A4A</color>
     <color name="text_reg_75">#BF4A4A4A</color>
 
+
+    <color name="block_item">#ABABAB</color>
+    <color name="unblock_item">#4A4A4A</color>
+
+
 </resources>

@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -76,13 +78,15 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     ImageView iv_toolbar_manu;
     Toolbar toolbar;
     RelativeLayout contect_layout;
-    ImageView add_icon;
+    ImageView add_icon,iv_camp_edit;
     LinearLayout layout_toolbar_logo;
     ConstraintLayout mMainLayout;
     List<CampaignTask_overview.SequenceTask> main_data = new ArrayList<>();
     String Camp_name = "";
     private BroadcastReceiver mNetworkReceiver;
     LinearLayout layout_name;
+    private long mLastClickTime=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,19 +101,26 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
             // StepData();
-       //     tv_name.setEnabled(false);
+            tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.GONE);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name")) {
             // StepData();
+            tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.GONE);
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else {
-          //  tv_name.setEnabled(true);
+            tv_name.setEnabled(false);
+            layout_name.setEnabled(false);
+            iv_camp_edit.setVisibility(View.VISIBLE);
             save_button.setText("Done");
             save_button.setVisibility(View.VISIBLE);
             add_icon.setVisibility(View.VISIBLE);
@@ -153,7 +164,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @SuppressLint("WrongViewCast")
     private void IntentUI() {
+        iv_camp_edit=findViewById(R.id.iv_camp_edit);
+        iv_camp_edit.setOnClickListener(this);
         layout_name=findViewById(R.id.layout_name);
         mMainLayout = findViewById(R.id.mMainLayout);
         add_icon = findViewById(R.id.add_icon);
@@ -231,13 +245,22 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.add_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setContect_flag("edit");
                 Intent intent_two = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
                 intent_two.putExtra("sequence_id", sequence_id);
                 intent_two.putExtra("seq_task_id", sequence_task_id);
                 startActivity(intent_two);
+                finish();
                 break;
             case R.id.contect_count:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setContect_flag("read");
                 Intent intent1 = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
                 intent1.putExtra("sequence_id", sequence_id);
@@ -246,7 +269,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.user_contect:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                     sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
                 } else {
@@ -262,6 +288,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.save_button:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Campaign_Preview.this);
                 if (Camp_name.equals(tv_name.getText().toString())) {
                     SessionManager.setCampign_flag("read");
@@ -280,20 +310,36 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.layout_name:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 Intent name_intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
                 name_intent.putExtra("sequence_id", sequence_id);
                 name_intent.putExtra("seq_task_id", sequence_task_id);
                 name_intent.putExtra("sequence_Name", tv_name.getText().toString());
+                name_intent.putExtra("flag","edit");
                 startActivity(name_intent);
-                finish();
+              //  finish();
                 break;
-            case R.id.tv_name:
+
+            case R.id.iv_camp_edit:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent name_intent1 = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
                 name_intent1.putExtra("sequence_id", sequence_id);
                 name_intent1.putExtra("seq_task_id", sequence_task_id);
                 name_intent1.putExtra("sequence_Name", tv_name.getText().toString());
+                name_intent1.putExtra("flag","edit");
                 startActivity(name_intent1);
-                finish();
+                //finish();
+                break;
+
+            case R.id.tv_name:
+
                 break;
 
         }
@@ -335,7 +381,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         edit_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (sequenceTask.getType().equals("EMAIL")) {
                     if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                         sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
@@ -346,7 +395,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     }
                     Log.e("Sequence is is", String.valueOf(sequence_id));
 
-                    Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
                     intent.putExtra("day", sequenceTask.getDay());
@@ -360,6 +409,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("from_ac",sequenceTask.getMail_module());
                     intent.putExtra("from_ac_id",sequenceTask.getSent_tbl_id());
                     startActivity(intent);
+                    finish();
                     // startActivity(new Intent(getActivity(),First_Step_Activity.class));
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
                     SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
@@ -382,7 +432,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         Bundle bundle = getintent.getExtras();
                         sequence_id = bundle.getInt("sequence_id");
                     }
-                    Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
                     intent.putExtra("day", sequenceTask.getDay());
@@ -653,11 +703,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             holder.userName.setText(inviteUserDetails.getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            if (inviteUserDetails.getFirstname().equals(null))
-            {
-
-            }
-            else {
+            if(Global.IsNotNull(inviteUserDetails.getFirstname())||!inviteUserDetails.getFirstname().equals("")){
                 String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
 
                 if (second_latter.equals("")) {
@@ -671,8 +717,9 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     current_latter = first_latter;
                     second_latter = first_latter;
                 }
-
             }
+
+
 
 
 
@@ -884,7 +931,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                                     campaignTaskList.add(campaignTask);
                                     SessionManager.setTask(getApplicationContext(), campaignTaskList);
                                 }
-                                Intent intent = new Intent(getApplicationContext(), Add_Camp_First_Step_Activity.class);
+                                Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                                 intent.putExtra("flag", "new");
                                 startActivity(intent);
                                 finish();

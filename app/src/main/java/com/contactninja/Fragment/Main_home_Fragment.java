@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,7 +22,6 @@ import com.contactninja.Fragment.Home.Affiliate_Groth_Fragment;
 import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
 import com.contactninja.Fragment.Home.Dashboard_Fragment;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_text.List_And_show.List_Manual_Activty;
 import com.contactninja.Model.Timezon;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;
@@ -52,7 +53,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
-    ImageView iv_toolbar_select, iv_toolbar_notification;
+    ImageView  iv_toolbar_notification;
     LinearLayout layout_toolbar_logo;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -65,11 +66,14 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity=mainActivity;
     }
-
+    private long mLastClickTime = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_home, container, false);
+
+
+
 
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
@@ -83,12 +87,13 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         TimeZone tz = TimeZone.getDefault();
         Log.e("offset", tz.getID());
-        if (Global.IsNotNull(user_data.getUser().getWorkingHoursList())||user_data.getUser().getWorkingHoursList().size() == 0) {
+        if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList())||user_data.getUser().getWorkingHoursList().size() == 0) {
             try {
                 if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                     Timezone( tz.getID());
                 }
             } catch (Exception e) {
+            e.printStackTrace();
             }
         }
 
@@ -128,9 +133,9 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
         iv_toolbar_notification.setVisibility(View.VISIBLE);
 
-        iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
+      /*  iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
         iv_toolbar_select.setVisibility(View.VISIBLE);
-        iv_toolbar_select.setOnClickListener(this);
+        iv_toolbar_select.setOnClickListener(this);*/
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         tabLayout = view.findViewById(R.id.tabLayout);
@@ -142,13 +147,22 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_toolbar_notification:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getActivity(), NotificationListActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.iv_toolbar_select:
-                startActivity(new Intent(getActivity(), List_Manual_Activty.class));
-
-                break;
+           /* case R.id.iv_toolbar_select:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                if(Global.IsNotNull(SessionManager.getContectList(getActivity()))){
+                    startActivity(new Intent(getActivity(), List_Manual_Activty.class));
+                }
+                break;*/
 
         }
     }
@@ -263,18 +277,12 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                             break;
                         }
                     }
-
-
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
             }
         });
-
-//
-
-
     }
 
     private void Working_hour(Integer value) {

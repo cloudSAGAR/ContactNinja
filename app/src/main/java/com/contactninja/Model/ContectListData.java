@@ -107,11 +107,7 @@ public class ContectListData {
         @SerializedName("contacted_at_user")
         @Expose
         private Object contactedAtUser;
-
-        private String  flag;
-
-
-
+        private String  flag ="true";
         @SerializedName("facebook_link")
         @Expose
         private String facebook_link;

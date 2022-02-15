@@ -1,6 +1,7 @@
 package com.contactninja.Manual_email_text;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,10 +12,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,10 +31,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
+import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
@@ -63,13 +68,14 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Manual_Text_Send_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,ConnectivityReceiver.ConnectivityReceiverListener{
+public class Manual_Text_Send_Activty extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
     public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     RelativeLayout mMainLayout;
-
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
+    CardListAdepter cardListAdepter;
     ImageView iv_back;
     TextView save_button, tv_use_tamplet;
 
@@ -83,16 +89,18 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
 
-    EditText edit_template,ev_task_title,ev_from;
-    String p_number = "", id = "",task_name="",from_ac="",from_ac_id="";
+    EditText edit_template, ev_task_title, ev_from;
+    String p_number = "", id = "", task_name = "", from_ac = "", from_ac_id = "";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
-    int defult_id,temaplet_id=0;
+    int defult_id, temaplet_id = 0;
     List<ContecModel.PhoneDatum> select_userLinkedGmailList = new ArrayList<>();
     List<ContecModel.PhoneDatum> userLinkedGmailList = new ArrayList<>();
+    ImageView iv_down;
     private int amountOfItemsSelected = 0;
     private BroadcastReceiver mNetworkReceiver;
-    ImageView iv_down;
+    private long mLastClickTime=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,15 +117,15 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         Bundle bundle = intent.getExtras();
         p_number = bundle.getString("number");
         id = String.valueOf(bundle.getInt("id"));
-        String type=bundle.getString("type");
-        task_name=bundle.getString("task_name");
+        String type = bundle.getString("type");
+        task_name = bundle.getString("task_name");
         ev_task_title.setText(task_name);
-       // ev_from.setText(p_number);
+        // ev_from.setText(p_number);
         ev_from.setEnabled(false);
-       // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
 
         try {
-            if(Global.isNetworkAvailable(Manual_Text_Send_Activty.this,mMainLayout)){
+            if (Global.isNetworkAvailable(Manual_Text_Send_Activty.this, mMainLayout)) {
                 Hastag_list();
             }
 
@@ -126,7 +134,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         }
 
         try {
-            if(Global.isNetworkAvailable(Manual_Text_Send_Activty.this,mMainLayout)){
+            if (Global.isNetworkAvailable(Manual_Text_Send_Activty.this, mMainLayout)) {
                 Contect_list();
             }
         } catch (JSONException e) {
@@ -145,13 +153,14 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
         tv_use_tamplet.setOnClickListener(this);
         rv_direct_list = findViewById(R.id.rv_direct_list);
-        mMainLayout=findViewById(R.id.mMainLayout);
-        edit_template=findViewById(R.id.ev_txt);
-        iv_submit=findViewById(R.id.iv_submit);
+        mMainLayout = findViewById(R.id.mMainLayout);
+        edit_template = findViewById(R.id.ev_txt);
+        edit_template.requestFocus();
+        iv_submit = findViewById(R.id.iv_submit);
         iv_submit.setOnClickListener(this);
-        ev_task_title=findViewById(R.id.ev_task_title);
-        ev_from=findViewById(R.id.ev_from);
-        iv_down=findViewById(R.id.iv_down);
+        ev_task_title = findViewById(R.id.ev_task_title);
+        ev_from = findViewById(R.id.ev_from);
+        iv_down = findViewById(R.id.iv_down);
         iv_down.setOnClickListener(this);
 
 
@@ -166,14 +175,14 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("q","");
-        paramObject.addProperty("status","");
-        paramObject.addProperty("orderBy","");
-        paramObject.addProperty("order","");
-        paramObject.addProperty("perPage","10");
-        paramObject.addProperty("page","1");
+        paramObject.addProperty("q", "");
+        paramObject.addProperty("status", "");
+        paramObject.addProperty("orderBy", "");
+        paramObject.addProperty("order", "");
+        paramObject.addProperty("perPage", "10");
+        paramObject.addProperty("page", "1");
         obj.add("data", paramObject);
-        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Manual_Text_Send_Activty.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Contect_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Manual_Text_Send_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -186,11 +195,11 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     ContecModel userLinkedGmail = new Gson().fromJson(headerString, listType);
                     userLinkedGmailList = userLinkedGmail.getPhoneData();
 
-                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
                     phoneDatum.setIsDefault(1);
                     phoneDatum.setPhoneNumber("System Assigned");
-                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    userLinkedGmailList.add(userLinkedGmailList.size(), phoneDatum);
                     Collections.reverse(userLinkedGmailList);
                     Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
                     if (userLinkedGmailList.size() == 1) {
@@ -205,25 +214,25 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                             ev_from.setText(userLinkedGmailList.get(i).getPhoneNumber());
                             defult_id = userLinkedGmailList.get(i).getId();
                             select_userLinkedGmailList.add(userLinkedGmailList.get(i));
-                            from_ac="USERSMS";
-                            from_ac_id= String.valueOf(userLinkedGmailList.get(i).getId());
+                            from_ac = "USERSMS";
+                            from_ac_id = String.valueOf(userLinkedGmailList.get(i).getId());
 
 
                         }
                     }
                     Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
-                    ContecModel.PhoneDatum phoneDatum= new ContecModel.PhoneDatum();
+                    ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
                     phoneDatum.setIsDefault(1);
                     phoneDatum.setPhoneNumber("System Assigned");
-                    userLinkedGmailList.add(userLinkedGmailList.size(),phoneDatum);
+                    userLinkedGmailList.add(userLinkedGmailList.size(), phoneDatum);
 
                     ev_from.setText(userLinkedGmailList.get(0).getPhoneNumber());
                     defult_id = userLinkedGmailList.get(0).getId();
                     select_userLinkedGmailList.add(userLinkedGmailList.get(0));
-                    from_ac="USERSMS";
-                    from_ac_id= String.valueOf(userLinkedGmailList.get(0).getId());
+                    from_ac = "USERSMS";
+                    from_ac_id = String.valueOf(userLinkedGmailList.get(0).getId());
 
                     //Global.openEmailAuth(from_ac.this);
                     // startActivity(new Intent(getApplicationContext(), Email_verification.class));
@@ -249,7 +258,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Manual_Text_Send_Activty.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Manual_Text_Send_Activty.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -275,11 +284,21 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     templateTextList.add(1, text1);*/
 
 
+                    HastagList.TemplateText text1 = new HastagList.TemplateText();
+                    text1.setFile(R.drawable.ic_card_blank);
+                    text1.setSelect(false);
+                    templateTextList.add(0, text1);
+
+                    HastagList.TemplateText text2 = new HastagList.TemplateText();
+                    text2.setFile(R.drawable.ic_video);
+                    text2.setSelect(false);
+                    templateTextList.add(1, text2);
+
+
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(0, templateText);
-
+                    templateTextList.add(2, templateText);
 
                     Listset(templateTextList);
 
@@ -304,6 +323,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Manual_Text_Send_Activty.this, mMainLayout);
@@ -334,21 +354,27 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         super.onDestroy();
         unregisterNetworkChanges();
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 showAlertDialogButtonClicked();
                 break;
             case R.id.iv_submit:
-              //  Log.e("Text is",edit_template.getText().toString());
-                if (edit_template.getText().toString().equals(""))
-                {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Message",false);
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
                 }
-                else {
-                    if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms"))
-                    {
+                mLastClickTime = SystemClock.elapsedRealtime();
+                //  Log.e("Text is",edit_template.getText().toString());
+                if (edit_template.getText().toString().equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Message", false);
+                } else {
+                    if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms")) {
                        /* try {
                             SMSAPI(edit_template.getText().toString(), Integer.parseInt(id), p_number);
                         } catch (JSONException e) {
@@ -357,8 +383,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
 */
 
                         broadcast_manu();
-                    }
-                    else {
+                    } else {
                         broadcast_manu();
                     }
 
@@ -366,9 +391,17 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
 
                 break;
             case R.id.tv_use_tamplet:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 bouttomSheet();
                 break;
             case R.id.iv_down:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
 
@@ -381,11 +414,13 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         bottomSheetDialog_templateList1 = new BottomSheetDialog(Manual_Text_Send_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
+        TextView tv_txt = bottomSheetDialog_templateList1.findViewById(R.id.tv_txt);
+        tv_txt.setText(getResources().getString(R.string.please_select_sender));
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
 
 
-        for(int i=0;i<userLinkedGmailList.size();i++){
-            if(userLinkedGmailList.get(i).getIsDefault()==1){
+        for (int i = 0; i < userLinkedGmailList.size(); i++) {
+            if (userLinkedGmailList.get(i).getIsDefault() == 1) {
                 select_userLinkedGmailList.clear();
                 userLinkedGmailList.get(i).setEmailSelect(true);
                 select_userLinkedGmailList.add(userLinkedGmailList.get(i));
@@ -403,10 +438,10 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             @Override
             public void onClick(View view) {
                 bottomSheetDialog_templateList1.cancel();
-                if(select_userLinkedGmailList.size()!=0){
-                  from_ac="USERSMS";
-                  from_ac_id= String.valueOf(select_userLinkedGmailList.get(0).getId());
-                  ev_from.setText(select_userLinkedGmailList.get(0).getPhoneNumber());
+                if (select_userLinkedGmailList.size() != 0) {
+                    from_ac = "USERSMS";
+                    from_ac_id = String.valueOf(select_userLinkedGmailList.get(0).getId());
+                    ev_from.setText(select_userLinkedGmailList.get(0).getPhoneNumber());
                 }
             }
         });
@@ -427,8 +462,8 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         androidx.appcompat.app.AlertDialog dialog
                 = builder.create();
 
-        TextView tv_title=customLayout.findViewById(R.id.tv_title);
-        TextView tv_sub_titale=customLayout.findViewById(R.id.tv_sub_titale);
+        TextView tv_title = customLayout.findViewById(R.id.tv_title);
+        TextView tv_sub_titale = customLayout.findViewById(R.id.tv_sub_titale);
         TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
         tv_title.setText("Are You Sure ?");
         tv_sub_titale.setText("Are you sure that you would like to back  home ?");
@@ -455,8 +490,8 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_bottom_sheet, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Manual_Text_Send_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
-        LinearLayout lay_sendnow=bottomSheetDialog.findViewById(R.id.lay_sendnow);
-        LinearLayout lay_schedule=bottomSheetDialog.findViewById(R.id.lay_schedule);
+        LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
+        LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
         lay_sendnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -472,14 +507,14 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             @Override
             public void onClick(View view) {
 
-                Intent intent=new Intent(getApplicationContext(), Manual_Text_TaskActivity.class);
-                intent.putExtra("text",edit_template.getText().toString());
-                intent.putExtra("id",id);
-                intent.putExtra("number",p_number);
-                intent.putExtra("tem_id",String.valueOf(temaplet_id));
-                intent.putExtra("task_name",task_name);
-                intent.putExtra("from_ac",from_ac);
-                intent.putExtra("from_ac_id",from_ac_id);
+                Intent intent = new Intent(getApplicationContext(), Manual_Text_TaskActivity.class);
+                intent.putExtra("text", edit_template.getText().toString());
+                intent.putExtra("id", id);
+                intent.putExtra("number", p_number);
+                intent.putExtra("tem_id", String.valueOf(temaplet_id));
+                intent.putExtra("task_name", task_name);
+                intent.putExtra("from_ac", from_ac);
+                intent.putExtra("from_ac_id", from_ac_id);
                 startActivity(intent);
                 finish();
 
@@ -489,6 +524,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         bottomSheetDialog.show();
 
     }
+
     private void SMSAPI(String text, int id, String email) throws JSONException {
 
         Log.e("Phone Number", email);
@@ -509,34 +545,32 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         paramObject.put("time", Global.getCurrentTime());
         paramObject.put("date", Global.getCurrentDate());
         paramObject.put("assign_to", user_id);
-     //   paramObject.put("task_description", text);
+        //   paramObject.put("task_description", text);
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < 1; i++) {
             JSONObject paramObject1 = new JSONObject();
             paramObject1.put("prospect_id", id);
             paramObject1.put("mobile", email);
-              jsonArray.put(paramObject1);
+            jsonArray.put(paramObject1);
             break;
         }
         JSONArray contact_group_ids = new JSONArray();
         contact_group_ids.put("");
         paramObject.put("contact_group_ids", contact_group_ids);
         paramObject.put("prospect_id", jsonArray);
-        paramObject.put("record_id","");
-        paramObject.put("task_name",task_name);
-        if (temaplet_id==0)
-        {
-            paramObject.put("template_id","");
+        paramObject.put("record_id", "");
+        paramObject.put("task_name", task_name);
+        if (temaplet_id == 0) {
+            paramObject.put("template_id", "");
 
-        }
-        else {
-            paramObject.put("template_id",temaplet_id);
+        } else {
+            paramObject.put("template_id", temaplet_id);
         }
         //paramObject.put("content_header","");
-        paramObject.put("content_body",edit_template.getText().toString());
-        paramObject.put("from_ac",from_ac);
-        paramObject.put("from_ac_id",from_ac_id);
+        paramObject.put("content_body", edit_template.getText().toString());
+        paramObject.put("from_ac", from_ac);
+        paramObject.put("from_ac_id", from_ac_id);
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
@@ -544,16 +578,16 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
-                        loadingDialog.cancelLoading();
-                        loadingDialog.cancelLoading();
-                        Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
-                        intent.putExtra("s_name","add");
-                        startActivity(intent);
-                        finish();
+                    loadingDialog.cancelLoading();
+                    loadingDialog.cancelLoading();
+                    Intent intent = new Intent(getApplicationContext(), Email_Tankyou.class);
+                    intent.putExtra("s_name", "add");
+                    startActivity(intent);
+                    finish();
 
                 } else {
                     loadingDialog.cancelLoading();
@@ -587,13 +621,13 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         paramObject.addProperty("team_id", "1");
         obj.add("data", paramObject);
 
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 edit_template.setText("");
                 loadingDialog.cancelLoading();
-                Intent intent=new Intent(getApplicationContext(),Email_Tankyou.class);
-                intent.putExtra("s_name","add");
+                Intent intent = new Intent(getApplicationContext(), Email_Tankyou.class);
+                intent.putExtra("s_name", "add");
                 startActivity(intent);
                 finish();
             }
@@ -609,7 +643,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         bottomSheetDialog_templateList = new BottomSheetDialog(Manual_Text_Send_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
-        LinearLayout layout_list_template=bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
+        LinearLayout layout_list_template = bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
         layout_list_template.setVisibility(View.VISIBLE);
         TextView tv_error = bottomSheetDialog_templateList.findViewById(R.id.tv_error);
         RecyclerView templet_list = bottomSheetDialog_templateList.findViewById(R.id.templet_list);
@@ -638,9 +672,9 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         paramObject.addProperty("type", "SMS");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("perPage", 10000000);
-        paramObject.addProperty("page",1);
+        paramObject.addProperty("page", 1);
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token,Global.getVersionname(Manual_Text_Send_Activty.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Manual_Text_Send_Activty.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -651,7 +685,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     Type listType = new TypeToken<TemplateList>() {
                     }.getType();
                     TemplateList list = new Gson().fromJson(headerString, listType);
-                    templateList=list.getTemplate();
+                    templateList = list.getTemplate();
                 }
 
                 TemplateList.Template template1 = new TemplateList.Template();
@@ -719,7 +753,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     try {
                         if (Global.isNetworkAvailable(Manual_Text_Send_Activty.this, MainActivity.mMainLayout)) {
                             if (isValidation(editText.getText().toString().trim(), dialog)) {
-                                CreateTemplate(editText.getText().toString().trim(),dialog);
+                                CreateTemplate(editText.getText().toString().trim(), dialog);
                             }
                         }
                     } catch (JSONException e) {
@@ -820,6 +854,93 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         }
     }
 
+    @Override
+    public void Onclick(Broadcast_image_list broadcastImageList) {
+        for (int i = 0; i < broadcast_image_list.size(); i++) {
+            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
+                broadcast_image_list.get(i).setScelect(true);
+            } else {
+                broadcast_image_list.get(i).setScelect(false);
+            }
+        }
+        cardListAdepter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        showAlertDialogButtonClicked();
+        //super.onBackPressed();
+    }
+
+    static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
+
+        Activity activity;
+        List<Broadcast_image_list> broadcast_image_list;
+        CardClick cardClick;
+        BottomSheetDialog bottomSheetDialog;
+        TextClick interfaceClick;
+
+        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
+                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+            this.activity = activity;
+            this.broadcast_image_list = broadcast_image_list;
+            this.cardClick = cardClick;
+            this.bottomSheetDialog = bottomSheetDialog;
+            this.interfaceClick = interfaceClick;
+        }
+
+
+        @NonNull
+        @Override
+        public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
+            return new CardListAdepter.cardListData(view);
+        }
+
+        @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+        @Override
+        public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
+            Broadcast_image_list item = this.broadcast_image_list.get(position);
+
+
+            int resID = activity.getResources().getIdentifier(item.getImagename()
+                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            if (resID != 0) {
+                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
+            holder.layout_select_image.setOnClickListener(v -> {
+                cardClick.Onclick(item);
+                item.setScelect(true);
+                bottomSheetDialog.dismiss();
+                interfaceClick.OnClick("BzczrdLink");
+            });
+            if (item.isScelect()) {
+                holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
+            } else {
+                holder.layout_select_image.setBackground(null);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return broadcast_image_list.size();
+        }
+
+        public static class cardListData extends RecyclerView.ViewHolder {
+
+            ImageView iv_card;
+            LinearLayout layout_select_image;
+
+            public cardListData(@NonNull View itemView) {
+                super(itemView);
+                iv_card = itemView.findViewById(R.id.iv_card);
+                layout_select_image = itemView.findViewById(R.id.layout_select_image);
+            }
+        }
+
+
+    }
 
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
 
@@ -861,7 +982,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     if (holder.tv_item.getText().toString().equals("Save current as template")) {
                         showAlertDialogButtonClicked(view);
                     } else {
-                        temaplet_id=item.getId();
+                        temaplet_id = item.getId();
                         interfaceClick.OnClick(item);
                     }
                 }
@@ -937,14 +1058,69 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
-                        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                        chooseFile.setType("*/*");
-                        chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                        startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                    if (position == 0) {
+
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Manual_Text_Send_Activty.this,
+                                R.style.DialogStyle);
+                        bottomSheetDialog.setContentView(mView);
+                        RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
+
+
+                        broadcast_image_list.clear();
+                        for (int i = 0; i <= 20; i++) {
+                            Broadcast_image_list item = new Broadcast_image_list();
+                            if (i % 2 == 0) {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_1");
+                            } else {
+                                item.setId(i);
+                                item.setScelect(false);
+                                item.setImagename("card_2");
+                            }
+                            broadcast_image_list.add(item);
+                        }
+                        rv_image_card.setLayoutManager(new LinearLayoutManager(Manual_Text_Send_Activty.this,
+                                LinearLayoutManager.HORIZONTAL, false));
+                        rv_image_card.setHasFixedSize(true);
+                        cardListAdepter = new CardListAdepter(Manual_Text_Send_Activty.this, broadcast_image_list,
+                                Manual_Text_Send_Activty.this, bottomSheetDialog, interfaceClick);
+                        rv_image_card.setAdapter(cardListAdepter);
+                        bottomSheetDialog.show();
+                    }
+
+
+                }
+            });
+            if (item.isSelect()) {
+                holder.tv_item.setBackground(null);
+                holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
+                holder.line_view.setVisibility(View.VISIBLE);
+            } else {
+                holder.line_view.setVisibility(View.GONE);
+            }
+            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!item.isSelect()) {
+                        Handler handler = new Handler();
+                        Runnable r = new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            public void run() {
+                                notifyDataSetChanged();
+                            }
+                        };
+                        handler.postDelayed(r, 1000);
+                        holder.tv_item.setBackgroundResource(R.drawable.shape_5_blue);
+                        holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.white));
+                        interfaceClick.OnClick(item.getHashtag());
                     }
                 }
             });
+
             if (item.isSelect()) {
                 holder.tv_item.setBackground(null);
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
@@ -993,8 +1169,6 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         }
     }
 
-
-
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
 
         public Context mCtx;
@@ -1038,12 +1212,10 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             }
 
 
-            if (userLinkedGmailList.get(position).isEmailSelect())
-            {
+            if (userLinkedGmailList.get(position).isEmailSelect()) {
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }
@@ -1052,9 +1224,8 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    for(int i=0; i<userLinkedGmailList.size();i++){
-                        if (userLinkedGmailList.get(i).isEmailSelect())
-                        {
+                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
+                        if (userLinkedGmailList.get(i).isEmailSelect()) {
                             userLinkedGmailList.get(i).setEmailSelect(false);
                             break;
                         }
@@ -1093,12 +1264,6 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                 layout_select = view.findViewById(R.id.layout_select);
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        showAlertDialogButtonClicked();
-        //super.onBackPressed();
     }
 
 }

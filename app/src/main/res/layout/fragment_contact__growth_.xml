@@ -6,9 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".MainActivity">
-
-    <LinearLayout
+    <include layout="@layout/under_development"/>
+<LinearLayout
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+     <LinearLayout
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_marginStart="@dimen/_10sdp"
@@ -18,7 +24,6 @@
         <LinearLayout
             android:layout_gravity="center"
             android:gravity="center"
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -205,5 +210,6 @@
         </LinearLayout>
 
     </LinearLayout>
+</LinearLayout>
 
 </LinearLayout>
