@@ -792,6 +792,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 3:
                 fragment = new Main_userProfile_Fragment();
                 shouldLoadHomeFragOnBackPress = true;
+               // SessionManager.setOneCotect_deatil(getApplicationContext(),new ContectListData.Contact());
                 break;
             case 4:
                 SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());

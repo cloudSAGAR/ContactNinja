@@ -121,6 +121,7 @@ public class Broadcast_Name_Activity extends AppCompatActivity implements View.O
         });
         if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit"))
         {
+            broadcate_save_data=SessionManager.getBroadcate_save_data(getApplicationContext());
             ev_titale.setText(broadcate_save_data.getBroadcastname());
 
         }

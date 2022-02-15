@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.contactninja.MainActivity;
+import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -45,7 +46,7 @@ public class Brodcsast_Tankyou extends AppCompatActivity implements Connectivity
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), List_Broadcast_activity.class));
                 finish();
 
             }

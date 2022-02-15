@@ -122,7 +122,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
             if (SessionManager.getContectList(getActivity()).size() != 0) {
                 contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
                 groupContectAdapter.addAll(contectListData);
-                num_count.setText(contectListData.size() + " Contacts");
+                num_count.setText(contectListData.size() + "  Contacts");
             }
             add_contect_list.setItemViewCacheSize(5000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
@@ -300,6 +300,8 @@ public class Broadcast_Contect_Fragment extends Fragment {
             pre_seleact.addAll(SessionManager.getGroupList(getActivity()));
             select_contectListData.addAll(pre_seleact);
             topUserListDataAdapter.notifyDataSetChanged();
+            SessionManager.setGroupList(getActivity(), select_contectListData);
+
         }
 
     }

@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Broadcast_Auto_Selection_Fragment extends Fragment implements View.OnClickListener, YourFragmentInterface {
     LinearLayout auto_layout, manual_layout;
-    ImageView select_manual, select_automated, iv_back_image;
+    ImageView select_manual, select_automated;
     SessionManager sessionManager;
 
     String c_name = "", c_type = "";
@@ -139,7 +139,6 @@ public class Broadcast_Auto_Selection_Fragment extends Fragment implements View.
 
         edit_day_manual = view.findViewById(R.id.edit_day_manual);
         edit_minutes_manual = view.findViewById(R.id.edit_minutes_manual);
-        iv_back_image = view.findViewById(R.id.iv_back_image);
     }
 
     @Override
@@ -161,7 +160,6 @@ public class Broadcast_Auto_Selection_Fragment extends Fragment implements View.
                 edit_minutes_manual.setText("00");
                 if (SessionManager.getTask(getActivity()) != null) {
 
-                    iv_back_image.setVisibility(View.VISIBLE);
 
 
                 }
@@ -182,7 +180,6 @@ public class Broadcast_Auto_Selection_Fragment extends Fragment implements View.
                 edit_day.setText("1");
                 edit_minutes.setText("00");
                 if (SessionManager.getTask(getActivity()) != null) {
-                    iv_back_image.setVisibility(View.VISIBLE);
 
                 }
                 break;

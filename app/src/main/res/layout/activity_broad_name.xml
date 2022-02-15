@@ -43,6 +43,7 @@
                 />
 
             <EditText
+
                 android:maxEms="40"
                 android:id="@+id/ev_titale"
                 android:layout_marginTop="@dimen/_50sdp"
@@ -52,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:focusable="true"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:inputType="text|textCapSentences"
                 android:maxLength="40"
                 style="@style/tv_Medium_14"
                 android:layout_height="wrap_content"/>

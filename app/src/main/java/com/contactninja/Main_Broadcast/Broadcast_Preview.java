@@ -311,6 +311,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getApplicationContext(), Broadcast_Name_Activity.class));
+                finish();
                 break;
 
             case R.id.iv_manu:

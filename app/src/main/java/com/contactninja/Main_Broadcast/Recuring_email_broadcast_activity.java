@@ -99,7 +99,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         String formattedDate = df.format(c);
         tv_date.setText(formattedDate);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String currentDateandTime = sdf.format(new Date());
         tv_time.setText(currentDateandTime);
 
@@ -615,7 +615,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 } else {
                     sminite = String.valueOf(selectedMinute);
                 }
-                tv_time.setText(stime + ":" + sminite);
+                tv_time.setText(stime + ":" + sminite+":" + "00");
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");

@@ -1,13 +1,5 @@
 package com.contactninja.Main_Broadcast.List_And_show;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import retrofit2.Response;
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast;
 import com.contactninja.Model.BroadcastActivityListModel;
@@ -52,6 +45,15 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import retrofit2.Response;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
@@ -82,6 +84,63 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
 
 
     private long mLastClickTime = 0;
+
+    public static void compareDates(String d2, TextView tv_status, TextView tv_time, ManualTaskModel item) {
+        try {
+
+
+            Date date1 = Global.defoult_date_time_formate.parse(Global.getCurrentTimeandDate());
+            Date date2 = Global.defoult_date_time_formate.parse(d2);
+
+
+            if (date1.after(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+                tv_time.setText(d2);
+                //    Log.e("","Date1 is after Date2");
+            }
+            // before() will return true if and only if date1 is before date2
+            if (date1.before(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+                tv_time.setText(d2);
+                //  Log.e("","Date1 is before Date2");
+                //System.out.println("Date1 is before Date2");
+            }
+
+            //equals() returns true if both the dates are equal
+            if (date1.equals(date2)) {
+                if (item.getStatus().equals("NOT_STARTED")) {
+                    tv_status.setText("Today");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+                } else {
+                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                }
+
+                tv_time.setText(d2);
+
+                //Log.e("","Date1 is equal Date2");
+                //System.out.println("Date1 is equal Date2");
+            }
+
+            System.out.println();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -265,7 +324,6 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         }
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -287,7 +345,6 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         finish();
         super.onBackPressed();
     }
-
 
     void Mail_list() throws JSONException {
 
@@ -399,112 +456,13 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         }
     }
 
-    public static void compareDates(String d2, TextView tv_status, TextView tv_time, ManualTaskModel item) {
-        try {
-            // If you already have date objects then skip 1
-
-            //1
-            // Create 2 dates starts
-
-            Date date1 = Global.defoult_date_time_formate.parse(Global.getCurrentTimeandDate());
-            Date date2 = Global.defoult_date_time_formate.parse(d2);
-
-            // Create 2 dates ends
-            //1
-
-            // Date object is having 3 methods namely after,before and equals for comparing
-            // after() will return true if and only if date1 is after date 2
-
-
-        /*    String convTime = null;
-            try {
-                String prefix = "";
-                String suffix = "Ago";
-
-
-                long dateDiff = date2.getTime() - date1.getTime();
-                    Log.e("dateDiff", String.valueOf(dateDiff));
-                    long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
-                    long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
-                    long hour = TimeUnit.MILLISECONDS.toHours(dateDiff);
-                    long day = TimeUnit.MILLISECONDS.toDays(dateDiff);
-
-                    Log.e("Second", String.valueOf(second));
-                    Log.e("Minute", String.valueOf(minute));
-                    Log.e("hour", String.valueOf(hour));
-                    Log.e("day", String.valueOf(day));
-                    if (second < 60) {
-                        convTime = second + " Sec " + suffix;
-                    } else if (minute < 60) {
-                        convTime = minute + " Min " + suffix;
-                    } else if (hour < 24) {
-                        convTime = hour + " Hours " + suffix;
-                    } else {
-                        convTime = d2;
-                    }
-
-                tv_time.setText(convTime);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                //  Log.e("ConvTimeE", e.getMessage());
-            }*/
-
-
-            if (date1.after(date2)) {
-                if (item.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Due");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-                tv_time.setText(d2);
-                //    Log.e("","Date1 is after Date2");
-            }
-            // before() will return true if and only if date1 is before date2
-            if (date1.before(date2)) {
-                if (item.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Upcoming");
-                    tv_status.setTextColor(Color.parseColor("#2DA602"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-
-                tv_time.setText(d2);
-                //  Log.e("","Date1 is before Date2");
-                //System.out.println("Date1 is before Date2");
-            }
-
-            //equals() returns true if both the dates are equal
-            if (date1.equals(date2)) {
-                if (item.getStatus().equals("NOT_STARTED")) {
-                    tv_status.setText("Today");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
-                } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
-                }
-
-                tv_time.setText(d2);
-
-                //Log.e("","Date1 is equal Date2");
-                //System.out.println("Date1 is equal Date2");
-            }
-
-            System.out.println();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public class ListItemAdepter extends RecyclerView.Adapter<ListItemAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
         List<BroadcastActivityListModel.Broadcast> broadcastActivityListModels;
         private boolean isLoaderVisible = false;
+
 
         public ListItemAdepter(Context context, List<BroadcastActivityListModel.Broadcast> broadcastActivityListModels) {
             this.mCtx = context;
@@ -580,44 +538,83 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         public void onBindViewHolder(@NonNull ListItemAdepter.viewData holder, int position) {
             BroadcastActivityListModel.Broadcast item = broadcastActivityListModels.get(position);
 
-              /*  if (item.getType().equals("SMS")) {
-                    holder.image_icon.setImageResource(R.drawable.ic_message_tab);
-                } else {
-                    holder.image_icon.setImageResource(R.drawable.ic_email);
-                }*/
-               /* if (!Global.IsNotNull(item.getSeqId()) || item.getSeqId() != 0) {
-                    holder.iv_camp.setVisibility(View.VISIBLE);
-                } else {
-                    holder.iv_camp.setVisibility(View.GONE);
-                }*/
+            if (item.getType().equals("SMS")) {
+                holder.image_icon.setImageResource(R.drawable.ic_message_tab);
+            } else {
+                holder.image_icon.setImageResource(R.drawable.ic_email);
+            }
 
-                String conactname = item.getBroadcastName() ;
-                holder.tv_username.setText(Global.setFirstLetter(conactname));
-               // holder.tv_task_description.setText(Global.setFirstLetter(item.getTask_name()));
-              //  String time = item.getDate() + " " + item.getTime();
-               // compareDates(time, holder.tv_status, holder.tv_time, item);
+            if (item.getStatus().equals("I")) {
+                holder.iv_hold.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("Inactive");
+                holder.tv_status.setTextColor(getResources().getColor(R.color.red));
 
-                String name = conactname;
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].substring(0, 1);
-                            break;
-                        }
+            } else if (item.getStatus().equals("P")) {
+                holder.iv_puse_icon.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("Active");
+                holder.tv_status.setTextColor(getResources().getColor(R.color.text_green));
+
+            } else if (item.getStatus().equals("A")) {
+                holder.iv_play_icon.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("Paused");
+                holder.tv_status.setTextColor(getResources().getColor(R.color.tv_push_color));
+
+            }
+
+            holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    showAlertDialogButtonClicked(item,1);
+
                 }
-                holder.no_image.setText(add_text.toUpperCase());
-                holder.no_image.setVisibility(View.VISIBLE);
+            });
 
+            holder.iv_hold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    showAlertDialogButtonClicked(item,1);
 
+                }
+            });
+            holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    showAlertDialogButtonClicked(item,0);
+
+                }
+            });
+
+            String conactname = item.getBroadcastName();
+            holder.tv_username.setText(conactname);
+            if (item.getRecurringType().equals("D")) {
+                holder.tv_task_time.setText("Daily - " + item.getStartTime());
+            } else if (item.getRecurringType().equals("W")) {
+                holder.tv_task_time.setText("Weekly - " + item.getStartTime());
+
+            } else if (item.getRecurringType().equals("M")) {
+                holder.tv_task_time.setText("Monthly - " + item.getStartTime());
+
+            }
+            holder.tv_task_description.setText(item.getContentBody());
+
+            // holder.tv_task_description.setText(Global.setFirstLetter(item.getTask_name()));
+            //  String time = item.getDate() + " " + item.getTime();
+            // compareDates(time, holder.tv_status, holder.tv_time, item);
 
         }
+
         @Override
         public int getItemCount() {
             return broadcastActivityListModels.size();
@@ -631,16 +628,16 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         }
 
         public class viewData extends RecyclerView.ViewHolder {
-            TextView tv_username, tv_task_description, tv_time, no_image, tv_status,tv_task_time;
+            TextView tv_username, tv_task_description, tv_time, no_image, tv_status, tv_task_time;
             LinearLayout layout_contec;
-            ImageView image_icon, iv_camp,iv_hold,iv_play_icon,iv_puse_icon;
+            ImageView image_icon, iv_camp, iv_hold, iv_play_icon, iv_puse_icon;
 
             public viewData(@NonNull View itemView) {
                 super(itemView);
-                iv_puse_icon=itemView.findViewById(R.id.iv_puse_icon);
-                iv_play_icon=itemView.findViewById(R.id.iv_play_icon);
-                iv_hold=itemView.findViewById(R.id.iv_hold);
-                tv_task_time=itemView.findViewById(R.id.tv_task_time);
+                iv_puse_icon = itemView.findViewById(R.id.iv_puse_icon);
+                iv_play_icon = itemView.findViewById(R.id.iv_play_icon);
+                iv_hold = itemView.findViewById(R.id.iv_hold);
+                tv_task_time = itemView.findViewById(R.id.tv_task_time);
                 tv_username = itemView.findViewById(R.id.tv_username);
                 tv_task_description = itemView.findViewById(R.id.tv_task_description);
                 tv_time = itemView.findViewById(R.id.tv_time);
@@ -651,6 +648,78 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 iv_camp = itemView.findViewById(R.id.iv_camp);
             }
         }
+    }
+
+    public void showAlertDialogButtonClicked(BroadcastActivityListModel.Broadcast broadcast,int status) {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this, R.style.MyDialogStyle);
+
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.campanign_aleart_dialog, null);
+        builder.setView(customLayout);
+        AlertDialog dialog
+                = builder.create();
+
+        TextView tv_message = customLayout.findViewById(R.id.tv_message);
+        if(status==1){
+            tv_message.setText("Are you sure you want to pause the broadcast");
+        }else {
+            tv_message.setText("Are you sure you want to play the broadcast");
+        }
+        TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartCampignApi(broadcast,status,dialog);
+            }
+        });
+        dialog.show();
+    }
+
+    public void StartCampignApi(BroadcastActivityListModel.Broadcast broadcast, int status, AlertDialog dialog) {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("record_id", broadcast.getId());
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        if(status==1){
+            paramObject.addProperty("status", "I");
+        }else {
+            paramObject.addProperty("status", "A");
+        }
+        obj.add("data", paramObject);
+        retrofitCalls.Broadcast_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(List_Broadcast_activity.this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                        onResume();
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                        dialog.dismiss();
+                    }
+                });
     }
 
 }

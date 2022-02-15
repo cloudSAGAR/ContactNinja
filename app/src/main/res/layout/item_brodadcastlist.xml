@@ -16,8 +16,8 @@
         android:weightSum="2">
 
         <RelativeLayout
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center">
 
             <ImageView
@@ -26,8 +26,8 @@
                 android:src="@drawable/ic_push"
                 android:padding="@dimen/_5sdp"
                 android:layout_gravity="center"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="match_parent"/>
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"/>
 
             <ImageView
                 android:visibility="gone"
@@ -35,13 +35,13 @@
                 android:src="@drawable/ic_play"
                 android:layout_gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="match_parent"/>
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"/>
 
             <ImageView
                 android:id="@+id/iv_hold"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:layout_gravity="center"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/ic_hold" />
@@ -79,7 +79,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:orientation="horizontal">
 
@@ -98,16 +98,17 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:gravity="center|left"
                     android:padding="@dimen/_2sdp"
+                    android:textSize="@dimen/_12sdp"
                     android:singleLine="true" />
             </LinearLayout>
 
             <TextView
+                android:layout_marginTop="@dimen/_5sdp"
                 android:id="@+id/tv_username"
                 style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center|left"
                 android:singleLine="true"
                 android:textColor="@color/text_reg" />
@@ -118,7 +119,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:gravity="center"
                 android:padding="@dimen/_2sdp"
                 android:singleLine="true"
@@ -131,9 +131,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:gravity="center"
                 android:padding="@dimen/_2sdp"
+                android:textSize="@dimen/_12sdp"
                 android:singleLine="true"
                 android:textColor="@color/text_gray"
                 android:textStyle="bold" />

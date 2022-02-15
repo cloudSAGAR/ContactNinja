@@ -10,29 +10,28 @@ import java.util.List;
 public class BroadcastActivityListModel
 {
 
-        @SerializedName("total")
-        @Expose
-        private Integer total;
-        @SerializedName("Broadcast")
-        @Expose
-        private List<Broadcast> broadcast = null;
+    @SerializedName("total")
+    @Expose
+    private Integer total;
+    @SerializedName("Broadcast")
+    @Expose
+    private List<Broadcast> broadcast = null;
 
-        public Integer getTotal() {
-            return total;
-        }
+    public Integer getTotal() {
+        return total;
+    }
 
-        public void setTotal(Integer total) {
-            this.total = total;
-        }
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 
-        public List<Broadcast> getBroadcast() {
-            return broadcast;
-        }
+    public List<Broadcast> getBroadcast() {
+        return broadcast;
+    }
 
-        public void setBroadcast(List<Broadcast> broadcast) {
-            this.broadcast = broadcast;
-        }
-
+    public void setBroadcast(List<Broadcast> broadcast) {
+        this.broadcast = broadcast;
+    }
 
     public static class Broadcast {
 
@@ -72,6 +71,15 @@ public class BroadcastActivityListModel
         @SerializedName("last_run_time")
         @Expose
         private Object lastRunTime;
+        @SerializedName("type")
+        @Expose
+        private String type;
+        @SerializedName("content_header")
+        @Expose
+        private Object contentHeader;
+        @SerializedName("content_body")
+        @Expose
+        private String contentBody;
         @SerializedName("created_by")
         @Expose
         private Integer createdBy;
@@ -175,6 +183,30 @@ public class BroadcastActivityListModel
             this.lastRunTime = lastRunTime;
         }
 
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public Object getContentHeader() {
+            return contentHeader;
+        }
+
+        public void setContentHeader(Object contentHeader) {
+            this.contentHeader = contentHeader;
+        }
+
+        public String getContentBody() {
+            return contentBody;
+        }
+
+        public void setContentBody(String contentBody) {
+            this.contentBody = contentBody;
+        }
+
         public Integer getCreatedBy() {
             return createdBy;
         }
@@ -197,27 +229,30 @@ public class BroadcastActivityListModel
 
         @SerializedName("repeat_every")
         @Expose
-        private Integer repeatEvery;
+        private String repeatEvery;
         @SerializedName("occurs_on")
         @Expose
-        private List<Integer> occursOn = null;
+        private List<String> occursOn = null;
 
-        public Integer getRepeatEvery() {
+        public String getRepeatEvery() {
             return repeatEvery;
         }
 
-        public void setRepeatEvery(Integer repeatEvery) {
+        public void setRepeatEvery(String repeatEvery) {
             this.repeatEvery = repeatEvery;
         }
 
-        public List<Integer> getOccursOn() {
+        public List<String> getOccursOn() {
             return occursOn;
         }
 
-        public void setOccursOn(List<Integer> occursOn) {
+        public void setOccursOn(List<String> occursOn) {
             this.occursOn = occursOn;
         }
 
     }
 
+
 }
+
+
