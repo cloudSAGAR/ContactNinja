@@ -49,7 +49,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Main_Broadcast.List_And_show.Broadcaste_Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Main_Broadcast.Recuring_email_broadcast_activity"
             android:exported="false"
@@ -221,38 +222,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast.Broadcast_Schedule.Repeat_Month_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Repeat_weekly_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Broadcast_Final_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Broadcast_time_select"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Broadcast_date_select"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Broadcast_to_repeat"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Main_Broadcast.Brodcsast_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcst_Activty"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".Group.SendBroadcast"
             android:exported="false"

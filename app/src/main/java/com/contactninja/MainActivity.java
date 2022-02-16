@@ -113,12 +113,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
-    private final static String[] DATA_COLS = {
 
-            ContactsContract.Data.MIMETYPE,
-            ContactsContract.Data.DATA1,//phone number
-            ContactsContract.Data.CONTACT_ID
-    };
     //Declare Variabls for fragment
     public static int navItemIndex = 0;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
@@ -212,12 +207,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-                /*try {
-                    ContectEvent();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-*/
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
@@ -250,8 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //splitdata(listContacts);
                     }
                 }
-             /*   MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-                myAsyncTasks.execute();*/
+
 
             }
 
@@ -292,126 +280,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void GetContactsIntoArrayList() {
-
-        List<EmailModel> emailModels = new ArrayList<>();
-
-        String firstname = "", lastname = "";
-
-        cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-        Cursor cursor1 = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-
-        while (cursor.moveToNext()) {
-
-            userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-
-            while (cursor1.moveToNext()) {
-                contect_email = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
-                String name = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                EmailModel emailModel = new EmailModel();
-                emailModel.setId(name);
-                emailModel.setName(contect_email);
-                emailModels.add(emailModel);
-            }
-
-            user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            TelephonyManager tm = (TelephonyManager) getSystemService(getApplicationContext().TELEPHONY_SERVICE);
-            String country = tm.getNetworkCountryIso();
-            int countryCode = 0;
-            PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(MainActivity.this);
-            try {
-                // phone must begin with '+'
-                Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
-                countryCode = numberProto.getCountryCode();
-                user_phone_number = user_phone_number.replace(" ", "");
-                user_phone_number = user_phone_number.replace("-", "");
-                if (!user_phone_number.contains("+")) {
-                    user_phone_number = "+" + countryCode + user_phone_number;
-                }
-            } catch (NumberParseException e) {
-               e.printStackTrace();
-            }
-
-            String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
-                    .substring(0, 1)
-                    .toUpperCase();
-
-            boolean found = false;
-            try {
-                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
-
-
-                if (!found) {
-                    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getTaskId())));
-                    String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
-                    inviteListData.add(new InviteListData("" + userName.trim(),
-                            user_phone_number.replace(" ", ""),
-                            user_image,
-                            user_des,
-                            "", ""));
-                    String email = "";
-                    for (int i = 0; i < emailModels.size(); i++) {
-
-                        if (userName.equals(emailModels.get(i).getId())) {
-                            email = emailModels.get(i).getName();
-                        }
-                    }
-
-                    try {
-                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number,
-                                email, note, country, city, region, street, "" + lastname));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    if (csv_inviteListData.size() != 0) {
-                        OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
-                                .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
-                                .findFirst();
-                        if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
-                            csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
-                            csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
-                            csv_inviteListData.remove(indexOpt.getAsInt() + 1);
-                        }
-
-                    }
-
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        SignResponseModel user_data = SessionManager.getGetUserdata(this);
-        String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
-
-        if (csv_inviteListData.size() == 0) {
-            try {
-                ContectEvent();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            String isContact = SessionManager.getcontectexits();
-            if (isContact.equals("0")) {
-                //Not Upload Contect Then If Call
-                if (Is_contact_exist.equals("0")) {
-                    limit = csv_inviteListData.size();
-                  //  splitdata(csv_inviteListData);
-                } else {
-                    getTasks();
-                }
-            } else {
-                getTasks();
-
-            }
-        }
-        cursor.close();
-
-    }
 
     private void splitdata(ArrayList<Contact> response) {
         data = new StringBuilder();
@@ -1235,39 +1103,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         st.execute();
     }
 
-    public class MyAsyncTasks extends AsyncTask<String, String, String> {
 
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // display a progress dialog for good user experiance
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        protected String doInBackground(String... params) {
-
-            // implement API in background and store the response in current variable
-            String current = "";
-            try {
-                if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                       // GetContactsIntoArrayList();
-
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "Exception: " + e.getMessage();
-            }
-            return current;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
-
-    }
 }
