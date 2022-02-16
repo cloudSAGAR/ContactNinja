@@ -430,56 +430,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (int i = 0; i < response.size(); i++) {
 
-            String email="";
-            String number="";
-            for (int j=0;j<response.get(i).emails.size();j++)
-            {
+            if(Global.IsNotNull(response.get(i).name)) {
+                String email = "";
+                String number = "";
+                for (int j = 0; j < response.get(i).emails.size(); j++) {
 
-                if (email.equals(""))
-                {
-                    email=response.get(i).emails.get(j).address;
+                    if (email.equals("")) {
+                        email = response.get(i).emails.get(j).address;
+                    } else {
+                        email = email + "," + response.get(i).emails.get(j).address;
+                    }
+
                 }
-                else {
-                    email=email+","+response.get(i).emails.get(j).address;
+
+                for (int j = 0; j < response.get(i).numbers.size(); j++) {
+
+                    if (number.equals("")) {
+                        number = response.get(i).numbers.get(j).number;
+                    } else {
+                        number = number + "," + response.get(i).numbers.get(j).number;
+                    }
+
                 }
+
+                data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]","") +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + '"' + email + ',' + '"' +
+                        ',' + '"' + number + ',' + '"' +
+                        ',' + ' '
+                );
 
             }
-
-            for (int j=0;j<response.get(i).numbers.size();j++)
-            {
-
-                if (number.equals(""))
-                {
-                    number=response.get(i).numbers.get(j).number;
-                }
-                else {
-                    number=number+","+response.get(i).numbers.get(j).number;
-                }
-
-            }
-
-            data.append('\n' + response.get(i).name+
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + '"' + email + ',' + '"' +
-                    ',' + '"' + number + ',' + '"' +
-                    ',' + ' '
-            );
-
-
         }
        // Log.e("Data Is", String.valueOf(data));
         CreateCSV(data);

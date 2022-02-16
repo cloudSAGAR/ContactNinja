@@ -38,7 +38,7 @@ public class ContactFetcher {
                 projectionFields, // the columns to retrieve
                 null, // the selection criteria (none)
                 null, // the selection args (none)
-                null // the sort order (default)
+                ContactsContract.Contacts.DISPLAY_NAME + " ASC" // the sort order (default)
         );
 
         Cursor c = cursorLoader.loadInBackground();
@@ -103,15 +103,15 @@ public class ContactFetcher {
                 CharSequence phoneType = Phone.getTypeLabel(context.getResources(), type, customLabel);
                 Phonenumber.PhoneNumber numberProto = null;
                 try {
-                    numberProto = phoneUtil.parse(number, country.toUpperCase());
-                } catch (NumberParseException e) {
-                    e.printStackTrace();
-                }
+                numberProto = phoneUtil.parse(number, country.toUpperCase());
                 countryCode = numberProto.getCountryCode();
                 number = number.replace(" ", "");
                 number = number.replace("-", "");
                 if (!number.contains("+")) {
                     number = "+" + countryCode + number;
+                }
+                } catch (NumberParseException e) {
+                    e.printStackTrace();
                 }
                 contact.addNumber(number, phoneType.toString());
                 phone.moveToNext();
