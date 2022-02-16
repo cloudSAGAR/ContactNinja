@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.contactninja.Manual_email_text.Manual_Auto_Selection_Email_Fragment;
@@ -56,7 +57,7 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
             R.drawable.ic_message_tab,
             R.drawable.ic_email,
     };
-    LinearLayout mMainLayout;
+    RelativeLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
     SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;

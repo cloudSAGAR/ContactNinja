@@ -18,49 +18,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/layout_search"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/shape_25_white_eee_line">
+
             <ImageView
                 android:id="@+id/search_icon"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_gravity="center|left"
-                android:src="@drawable/ic_search"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
-                >
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/ic_search">
 
             </ImageView>
 
             <EditText
-                android:layout_weight="1"
-                style="@style/tv_Medium_14"
                 android:id="@+id/ev_search"
+                style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
                 android:background="@color/add_contect_transpernt"
                 android:gravity="center|left"
-                android:singleLine="true"
                 android:hint="@string/search_hint"
+                android:singleLine="true"
                 android:textColor="@color/text_reg"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
             </EditText>
+
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_filter_icon"
-                android:padding="@dimen/_10sdp"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_filter"/>
+                android:layout_gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_filter"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,24 +86,24 @@
             <TextView
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_regular_13"
+                style="@style/tv_Medium_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_12sdp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/add_brodcaste"
                 android:textColor="@color/text_reg" />
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/num_count"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center|end"
                 android:singleLine="true"
                 android:text=""

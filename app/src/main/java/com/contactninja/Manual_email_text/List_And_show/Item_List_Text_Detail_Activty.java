@@ -400,6 +400,8 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                         case "SNOOZE":
                             Intent intent = new Intent(getApplicationContext(), Manual_Shooz_Time_Date_Activity.class);
                             intent.putExtra("id", manualDetails.getId());
+                            intent.putExtra("prospect_id", manualDetails.getProspectId());
+                            intent.putExtra("seq_task_id", manualDetails.getSeqTaskId());
                             intent.putExtra("Type", "SMS");
                             startActivity(intent);
                             finish();

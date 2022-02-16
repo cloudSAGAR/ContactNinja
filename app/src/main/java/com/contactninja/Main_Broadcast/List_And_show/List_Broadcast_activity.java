@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import com.contactninja.MainActivity;
 import com.contactninja.Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast;
 import com.contactninja.Model.BroadcastActivityListModel;
+import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -152,20 +155,14 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         IntentUI();
 
 
-        ev_search.addTextChangedListener(new TextWatcher() {
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                filter(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    filter(ev_search.getText().toString());
+                    return true;
+                }
+                return false;
             }
         });
         rv_email_list.setLayoutManager(layoutManager);
@@ -174,6 +171,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         rv_email_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
+                ev_search.setText("");
                 iv_filter_icon.setImageResource(R.drawable.ic_filter);
                 Filter = "";
                 isLoading = true;
@@ -246,9 +244,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 filteredlist.add(item);
             }
         }
-        if (filteredlist.isEmpty()) {
-
-        } else {
+        if (!filteredlist.isEmpty()) {
             emailAdepter.filterList(filteredlist);
         }
     }
@@ -256,6 +252,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
     @Override
     protected void onResume() {
         super.onResume();
+        ev_search.setText("");
         Filter = "";
         iv_filter_icon.setImageResource(R.drawable.ic_filter);
         currentPage = PAGE_START;

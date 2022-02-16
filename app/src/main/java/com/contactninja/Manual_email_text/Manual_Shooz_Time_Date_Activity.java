@@ -64,7 +64,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     private int mYear, mMonth, mDay, mHour, mMinute;
     String id,text,p_number,Type;
     private long mLastClickTime=0;
-
+    int prospect_id=0,seq_task_id=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +84,8 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
             Bundle bundle=intent.getExtras();
             id=bundle.getString("id");
             Type=bundle.getString("Type");
+            prospect_id=bundle.getInt("prospect_id");
+            seq_task_id=bundle.getInt("seq_task_id");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -197,7 +199,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                 }
                 else {
                     try {
-                        SMSAPI(id);
+                        SMSAPI();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -222,7 +224,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
 
         }
     }
-    private void SMSAPI(String i) throws JSONException {
+    private void SMSAPI() throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -233,7 +235,8 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("record_id", i);
+        paramObject.put("prospect_id", prospect_id);
+        paramObject.put("seq_task_id", seq_task_id);
         paramObject.put("status", "SNOOZE");
         paramObject.put("time", tv_time.getText().toString());
         paramObject.put("date", tv_date.getText().toString());
@@ -243,7 +246,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store_snooze(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {

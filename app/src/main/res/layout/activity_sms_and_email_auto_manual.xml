@@ -47,9 +47,8 @@
         android:layout_gravity="bottom|left"
         android:src="@drawable/ic_manual_auto_email"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"/>
 
-    </ImageView>
 <LinearLayout
     android:layout_marginTop="@dimen/_15sdp"
     android:layout_below="@+id/layout_title"

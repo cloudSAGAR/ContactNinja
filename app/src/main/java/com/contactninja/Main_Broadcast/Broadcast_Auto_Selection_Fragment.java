@@ -146,42 +146,26 @@ public class Broadcast_Auto_Selection_Fragment extends Fragment implements View.
 
         switch (view.getId()) {
             case R.id.auto_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
+                select_automated.setVisibility(View.VISIBLE);
+                select_manual.setVisibility(View.GONE);
+
                 SessionManager.setCampaign_type("SMS");
                 SessionManager.setCampaign_type_name("AUTO");
                 Log.e("sessionManager", sessionManager.getCampaign_type(getActivity()));
                 Log.e("sessionManager", sessionManager.getCampaign_type_name(getActivity()));
-                select_automated.setVisibility(View.VISIBLE);
-                select_manual.setVisibility(View.GONE);
                 edit_day_manual.setText("1");
                 edit_minutes_manual.setText("00");
-                if (SessionManager.getTask(getActivity()) != null) {
-
-
-
-                }
-
                 break;
             case R.id.manual_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
+                select_manual.setVisibility(View.VISIBLE);
+                select_automated.setVisibility(View.GONE);
 
                 SessionManager.setCampaign_type("SMS");
                 SessionManager.setCampaign_type_name("MANUAL");
                 Log.e("sessionManager", sessionManager.getCampaign_type(getActivity()));
                 Log.e("sessionManager", sessionManager.getCampaign_type_name(getActivity()));
-                select_automated.setVisibility(View.GONE);
-                select_manual.setVisibility(View.VISIBLE);
                 edit_day.setText("1");
                 edit_minutes.setText("00");
-                if (SessionManager.getTask(getActivity()) != null) {
-
-                }
                 break;
         }
 

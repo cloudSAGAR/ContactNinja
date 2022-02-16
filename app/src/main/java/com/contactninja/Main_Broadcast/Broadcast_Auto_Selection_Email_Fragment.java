@@ -139,40 +139,26 @@ public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.auto_layout:
-
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
-                //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
-                //Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
-                SessionManager.setCampaign_type("EMAIL");
-                SessionManager.setCampaign_type_name("AUTO");
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
+
+                //Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
+
+                // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
+                //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
+                SessionManager.setCampaign_type("EMAIL");
+                SessionManager.setCampaign_type_name("AUTO");
                 edit_day_manual.setText("1");
                 edit_minutes_manual.setText("00");
 
-
-                if (SessionManager.getTask(getActivity()) != null) {
-                }
-
                 break;
             case R.id.manual_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
+                select_manual.setVisibility(View.VISIBLE);
+                select_automated.setVisibility(View.GONE);
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("MANUAL");
-                select_automated.setVisibility(View.GONE);
-                select_manual.setVisibility(View.VISIBLE);
                 edit_day.setText("1");
                 edit_minutes.setText("00");
-                if (SessionManager.getTask(getActivity()) != null) {
-                }
 
                 break;
         }
