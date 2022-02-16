@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -31,12 +32,15 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
+import com.contactninja.Contect.Contact;
+import com.contactninja.Contect.ContactFetcher;
 import com.contactninja.Fragment.Main_Task_Fragment;
 import com.contactninja.Fragment.Main_contact_Fragment;
 import com.contactninja.Fragment.Main_home_Fragment;
@@ -143,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean shouldLoadHomeFragOnBackPress = true;
     @RequiresApi(api = Build.VERSION_CODES.N)
     private BroadcastReceiver mNetworkReceiver;
-
+    ArrayList<Contact> listContacts;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -158,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);*/
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
+
         SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
         IntentUI();
         Calendar cal = Calendar.getInstance();
@@ -207,17 +212,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-                try {
+                /*try {
                     ContectEvent();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+*/
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
-                MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-                myAsyncTasks.execute();
+
+                listContacts = new ContactFetcher(MainActivity.this).fetchAll();
+           //     Log.e("Contect List Is ", String.valueOf(listContacts));
+
+                SignResponseModel user_data = SessionManager.getGetUserdata(MainActivity.this);
+                String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
+
+                if (listContacts.size() == 0) {
+                    try {
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    String isContact = SessionManager.getcontectexits();
+                    if (isContact.equals("0")) {
+                        //Not Upload Contect Then If Call
+                        if (Is_contact_exist.equals("0")) {
+                            limit = listContacts.size();
+                            splitdata(listContacts);
+                        } else {
+                           // splitdata(listContacts);
+                           getTasks();
+                        }
+                    } else {
+                        getTasks();
+                        //splitdata(listContacts);
+                    }
+                }
+             /*   MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                myAsyncTasks.execute();*/
 
             }
 
@@ -366,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Not Upload Contect Then If Call
                 if (Is_contact_exist.equals("0")) {
                     limit = csv_inviteListData.size();
-                    splitdata(csv_inviteListData);
+                  //  splitdata(csv_inviteListData);
                 } else {
                     getTasks();
                 }
@@ -379,12 +413,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void splitdata(List<Csv_InviteListData> response) {
-
-        System.out.println("GET DATA IS " + response);
-
+    private void splitdata(ArrayList<Contact> response) {
         data = new StringBuilder();
-
         data.append("Firstname" +
                 "," + "Lastname" +
                 "," + "Company Name" +
@@ -399,8 +429,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "Fax");
 
         for (int i = 0; i < response.size(); i++) {
-            data.append('\n' + response.get(i).getUserName().replaceAll("[-+.^:,]","")+
-                    ',' + response.get(i).getLast_name().replaceAll("[-+.^:,]","")+
+
+            String email="";
+            String number="";
+            for (int j=0;j<response.get(i).emails.size();j++)
+            {
+
+                if (email.equals(""))
+                {
+                    email=response.get(i).emails.get(j).address;
+                }
+                else {
+                    email=email+","+response.get(i).emails.get(j).address;
+                }
+
+            }
+
+            for (int j=0;j<response.get(i).numbers.size();j++)
+            {
+
+                if (number.equals(""))
+                {
+                    number=response.get(i).numbers.get(j).number;
+                }
+                else {
+                    number=number+","+response.get(i).numbers.get(j).number;
+                }
+
+            }
+
+            data.append('\n' + response.get(i).name+
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
@@ -415,13 +473,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ',' + ' ' +
                     ',' + ' ' +
                     ',' + ' ' +
-                    ',' + response.get(i).getContect_email() +
-                    ',' + '"' + response.get(i).getUserPhoneNumber() + ',' + '"' +
+                    ',' + ' ' +
+                    ',' + '"' + email + ',' + '"' +
+                    ',' + '"' + number + ',' + '"' +
                     ',' + ' '
             );
 
 
         }
+       // Log.e("Data Is", String.valueOf(data));
         CreateCSV(data);
     }
 
@@ -444,7 +504,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
-     /*   Intent intent = ShareCompat.IntentBuilder.from(this)
+          /*  Intent intent = ShareCompat.IntentBuilder.from(this)
                     .setType("application/pdf")
                     .setStream(path)
                     .setChooserTitle("Choose bar")
@@ -566,8 +626,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     List<ContectListData> contectListData_store = new ArrayList<>();
                     contectListData_store.add(contectListData1);
                     SessionManager.setContectList(getApplicationContext(), contectListData_store);
-
-
                     delete(contectListData);
 
                     /*Duplicate_remove();*/
@@ -940,16 +998,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         }
-
         DeleteTask ut = new DeleteTask();
         ut.execute();
     }
-
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(MainActivity.this, mMainLayout);
     }
-
     private void getTasks() {
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
@@ -965,28 +1020,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             protected void onPostExecute(List<Contect_Db> contect_list) {
-
-
                 //Get All Contect Locale Room Database  No Data Then Upload Csv Code Call
                 if (contect_list.size() == 0) {
-                    splitdata(csv_inviteListData);
-                } else if (contect_list.size() == csv_inviteListData.size()) {
-                    //Phone Book And Local Data Size Same then Update Call
-
-                    for (int i = 0; i < csv_inviteListData.size(); i++) {
-                        String num = csv_inviteListData.get(i).getUserPhoneNumber();
-                        String f_name = csv_inviteListData.get(i).getUserName();
+                //    splitdata(csv_inviteListData);
+                } else if (contect_list.size() == listContacts.size()) {
+                    for (int i = 0; i < listContacts.size(); i++) {
+                        String num = listContacts.get(i).numbers.get(0).number;
+                        String f_name = listContacts.get(i).name;
                         boolean found = contect_list.stream().anyMatch(p -> p.getEmailNumber().equals(num));
                         boolean found1 = contect_list.stream().anyMatch(p -> p.getFirst_name().equals(f_name));
-
                         if (found == true && found1 == false) {
-                            check_list_for_Update(csv_inviteListData.get(i).getUserName(), csv_inviteListData.get(i).getLast_name(), csv_inviteListData.get(i).getUserPhoneNumber());
+                            check_list_for_Update(listContacts.get(i).name, "", listContacts.get(i).numbers.get(0).number);
                         }
                     }
-
                 } else {
-                    //Call Phone Number Exits OR N0t
-                    getUser_check(csv_inviteListData);
+                    getUser_check(listContacts);
                 }
 
                 super.onPostExecute(contect_list);
@@ -997,11 +1045,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gt.execute();
     }
 
-    private void getUser_check(List<Csv_InviteListData> csv_inviteListData) {
+    private void getUser_check(ArrayList<Contact> csv_inviteListData) {
         //Get One By One Model Data
-        for (int i = 0; i < csv_inviteListData.size(); i++) {
-            check_list(csv_inviteListData.get(i).getUserName(), csv_inviteListData.get(i).getLast_name(), csv_inviteListData.get(i).getUserPhoneNumber());
+        try {
+            for (int i = 0; i < csv_inviteListData.size(); i++) {
+                check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(0).number);
+            }
         }
+        catch (Exception e)
+        {
+
+        }
+
 
 
     }
@@ -1055,7 +1110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //No Data Then Add Contect
                     List<Csv_InviteListData> csv_inviteListData1 = new ArrayList<>();
                     csv_inviteListData1.add(new Csv_InviteListData(userName, userPhoneNumber, "", "", "", "", "", "", last_name));
-                    splitdata(csv_inviteListData1);
+                    //splitdata(csv_inviteListData1);
                 } else {
                     //Update Contect Api Call
                     try {
@@ -1203,7 +1258,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        GetContactsIntoArrayList();
+                       // GetContactsIntoArrayList();
+
                     }
                 }
 
