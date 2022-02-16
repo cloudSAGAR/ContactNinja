@@ -212,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 listContacts = new ContactFetcher(MainActivity.this).fetchAll();
-           //     Log.e("Contect List Is ", String.valueOf(listContacts));
 
                 SignResponseModel user_data = SessionManager.getGetUserdata(MainActivity.this);
                 String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());

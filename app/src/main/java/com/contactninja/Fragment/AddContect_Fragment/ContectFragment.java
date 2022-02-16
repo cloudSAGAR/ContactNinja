@@ -42,6 +42,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.Contect.Contact;
+import com.contactninja.Contect.ContactFetcher;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Csv_InviteListData;
@@ -104,6 +107,7 @@ public class ContectFragment extends Fragment {
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
+    ArrayList<Contact> listContacts;
     List<ContectListData.Contact> main_store = new ArrayList<>();
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     ConstraintLayout mMainLayout;
@@ -422,12 +426,8 @@ public class ContectFragment extends Fragment {
     }
 */
 
-    private void splitdata(List<Csv_InviteListData> response) {
-
-        System.out.println("GET DATA IS " + response);
-
+    private void splitdata(ArrayList<Contact> response) {
         data = new StringBuilder();
-
         data.append("Firstname" +
                 "," + "Lastname" +
                 "," + "Company Name" +
@@ -442,29 +442,54 @@ public class ContectFragment extends Fragment {
                 "Fax");
 
         for (int i = 0; i < response.size(); i++) {
-            data.append('\n' + response.get(i).getUserName().replaceAll("[-+.^:,]", "") +
-                    ',' + response.get(i).getLast_name().replaceAll("[-+.^:,]", "") +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + ' ' +
-                    ',' + response.get(i).getContect_email() +
-                    ',' + '"' + response.get(i).getUserPhoneNumber() + ',' + '"' +
-                    ',' + ' '
-            );
 
+            if(Global.IsNotNull(response.get(i).name)) {
+                String email = "";
+                String number = "";
+                for (int j = 0; j < response.get(i).emails.size(); j++) {
 
+                    if (email.equals("")) {
+                        email = response.get(i).emails.get(j).address;
+                    } else {
+                        email = email + "," + response.get(i).emails.get(j).address;
+                    }
+
+                }
+
+                for (int j = 0; j < response.get(i).numbers.size(); j++) {
+
+                    if (number.equals("")) {
+                        number = response.get(i).numbers.get(j).number;
+                    } else {
+                        number = number + "," + response.get(i).numbers.get(j).number;
+                    }
+
+                }
+
+                data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]","") +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + ' ' +
+                        ',' + '"' + email + ',' + '"' +
+                        ',' + '"' + number + ',' + '"' +
+                        ',' + ' '
+                );
+
+            }
         }
+        // Log.e("Data Is", String.valueOf(data));
         CreateCSV(data);
     }
 
@@ -562,11 +587,24 @@ public class ContectFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-                try {
-                    GetContactsIntoArrayList();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                listContacts = new ContactFetcher(getActivity()).fetchAll();
+
+                SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+                String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
+
+                if (listContacts.size() == 0) {
+                    try {
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+
+                            limit = listContacts.size();
+                            splitdata(listContacts);
+
                 }
+
 
             }
 
@@ -592,143 +630,6 @@ public class ContectFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-
-
-    public void GetContactsIntoArrayList() throws JSONException {
-        List<EmailModel> emailModels = new ArrayList<>();
-        loadingDialog.showLoadingDialog();
-        String firstname = "", lastname = "";
-
-        cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-        Cursor cursor1 = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-        while (cursor.moveToNext()) {
-            userName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            while (cursor1.moveToNext()) {
-                contect_email = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
-                String name = cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                EmailModel emailModel = new EmailModel();
-                emailModel.setId(name);
-                emailModel.setName(contect_email);
-                emailModels.add(emailModel);
-            }
-            user_phone_number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
-            String country = tm.getNetworkCountryIso();
-            int countryCode = 0;
-            PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(getActivity());
-            try {
-                // phone must begin with '+'
-                Phonenumber.PhoneNumber numberProto = phoneUtil.parse(user_phone_number, country.toUpperCase());
-                countryCode = numberProto.getCountryCode();
-                user_phone_number = user_phone_number.replace(" ", "");
-                user_phone_number = user_phone_number.replace("-", "");
-                if (!user_phone_number.contains("+")) {
-                    user_phone_number = String.valueOf("+" + countryCode + user_phone_number);
-                }
-            } catch (NumberParseException e) {
-                System.err.println("NumberParseException was thrown: " + e.toString());
-            }
-
-            String unik_key = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)).substring(0, 1)
-                    .substring(0, 1)
-                    .toUpperCase();
-
-            boolean found = false;
-            try {
-                found = inviteListData.stream().anyMatch(p -> p.getUserPhoneNumber().equals(user_phone_number));
-
-
-                if (!found) {
-                    //String  contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(String.valueOf(getActivity().getTaskId())));
-                    String contactID = String.valueOf(Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY));
-                    inviteListData.add(new InviteListData("" + userName.trim(),
-                            user_phone_number.replace(" ", ""),
-                            user_image,
-                            user_des,
-                            "", ""));
-
-                    String email = "";
-                    for (int i = 0; i < emailModels.size(); i++) {
-
-                        if (userName.equals(emailModels.get(i).getId())) {
-                            email = emailModels.get(i).getName();
-                        }
-
-                    }
-                    try {
-                        csv_inviteListData.add(new Csv_InviteListData("" + userName, user_phone_number, email, note, country, city, region, street, "" + lastname));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    if (csv_inviteListData.size() != 0) {
-                        OptionalInt indexOpt = IntStream.range(0, csv_inviteListData.size())
-                                .filter(i -> userName.equals(csv_inviteListData.get(i).getUserName()))
-                                .findFirst();
-                        if (!csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber().replace(" ", "").equals(user_phone_number.replace(" ", ""))) {
-                            csv_multiple_data.add(new Csv_InviteListData("" + csv_inviteListData.get(indexOpt.getAsInt()).getUserName(), csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number, contect_email, note, country, city, region, street, "" + lastname));
-                            csv_inviteListData.get(indexOpt.getAsInt()).setUserPhoneNumber(csv_inviteListData.get(indexOpt.getAsInt()).getUserPhoneNumber() + "," + user_phone_number);
-                            csv_inviteListData.remove(indexOpt.getAsInt() + 1);
-                        }
-
-                    }
-
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
-
-        if (csv_inviteListData.size() == 0) {
-            loadingDialog.cancelLoading();
-        } else {
-            loadingDialog.cancelLoading();
-
-            splitdata(csv_inviteListData);
-         /*   main_store = new ArrayList<>();
-
-            for (int i = 0; i < csv_inviteListData.size(); i++) {
-                ContectListData.Contact contact = new ContectListData.Contact();
-                contact.setFirstname(csv_inviteListData.get(i).getUserName());
-                contact.setLastname(csv_inviteListData.get(i).getLast_name());
-                contact.setState("I");
-
-                String[] contet_data = csv_inviteListData.get(i).getUserPhoneNumber().toString().split(",");
-                List<ContectListData.Contact.ContactDetail> main_contect = new ArrayList<>();
-                for (int k = 0; k < contet_data.length; k++) {
-                    ContectListData.Contact.ContactDetail contactDetail = new ContectListData.Contact.ContactDetail();
-                    contactDetail.setEmailNumber(contet_data[k]);
-                    contactDetail.setType("NUMBER");
-                    main_contect.add(contactDetail);
-                }
-                contact.setContactDetails(main_contect);
-                main_store.add(contact);
-            }
-            */
-/*
-
-            if (SessionManager.getContectList(getActivity()).size() != 0) {
-
-               *//* num_count.setText(""+SessionManager.getContectList(getActivity()).get(0).getContacts().size() + " Contacts");
-                compareLists(SessionManager.getContectList(getActivity()).get(0).getContacts(),main_store);
-*//*
-               // ContectEvent1(main_store);
-            }
-            else {
-               // ContectEvent1(main_store);
-            }*/
-
-
-        }
-        cursor.close();
-
-    }
 
 
     private void ContectEvent1(List<ContectListData.Contact> main_store) throws JSONException {
@@ -1392,13 +1293,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            GetContactsIntoArrayList();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+
                 } else {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
