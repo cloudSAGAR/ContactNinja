@@ -1044,7 +1044,8 @@ public class Broadcast_Contect_Fragment extends Fragment {
                         holder1.no_image.setText(add_text);
                         holder1.no_image.setVisibility(View.VISIBLE);
                         holder1.profile_image.setVisibility(View.GONE);
-                    } else {
+                    }
+                    else {
                         Glide.with(context).
                                 load(Contact_data.getContactImage())
                                 .placeholder(R.drawable.shape_primary_circle)
@@ -1057,12 +1058,8 @@ public class Broadcast_Contect_Fragment extends Fragment {
 
                     //  holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
 
-                    if (SessionManager.getContect_flag(getActivity()).equals("read")) {
-                        // Log.e("If ","Ok");
-                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                        holder1.add_new_contect_icon.setVisibility(View.GONE);
 
-                    } else if (SessionManager.getBroadcast_flag(getActivity()).equals("edit")) {
+                    if (SessionManager.getBroadcast_flag(getActivity()).equals("edit")) {
                         Log.e("List is", new Gson().toJson(select_contectListData));
                         for (int i = 0; i < select_contectListData.size(); i++) {
                             if (select_contectListData.get(i).getId().equals(contacts.get(position).getId())) {
@@ -1119,9 +1116,8 @@ public class Broadcast_Contect_Fragment extends Fragment {
                     }
 
 
-                    if (SessionManager.getContect_flag(getActivity()).equals("read")) {
 
-                    } else {
+
 
                         holder1.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -1228,11 +1224,6 @@ public class Broadcast_Contect_Fragment extends Fragment {
 
                             }
                         });
-
-                    }
-
-
-
                     /*}
                     catch (Exception e)
                     {
