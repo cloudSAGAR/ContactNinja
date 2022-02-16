@@ -721,7 +721,7 @@ public class ContectFragment extends Fragment {
 
         loadingDialog.cancelLoading();
         paginationAdapter.removeloist();
-        rvinviteuserdetails.setItemViewCacheSize(5000);
+        rvinviteuserdetails.setItemViewCacheSize(50000);
         paginationAdapter.addAll(main_store);
         paginationAdapter.notifyDataSetChanged();
     }
@@ -809,7 +809,7 @@ public class ContectFragment extends Fragment {
                             contectListData.clear();
                             paginationAdapter.removeloist();
                             paginationAdapter.notifyDataSetChanged();
-                            rvinviteuserdetails.setItemViewCacheSize(5000);
+                            rvinviteuserdetails.setItemViewCacheSize(50000);
                             paginationAdapter = new ContectListAdapter(getActivity());
                             rvinviteuserdetails.setAdapter(paginationAdapter);
 

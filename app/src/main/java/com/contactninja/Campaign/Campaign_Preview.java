@@ -185,7 +185,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         save_button.setVisibility(View.GONE);
         item_list = findViewById(R.id.item_list);
         item_list.setLayoutManager(new LinearLayoutManager(this));
-        item_list.setItemViewCacheSize(500);
+        item_list.setItemViewCacheSize(50000);
         tv_name = findViewById(R.id.tv_name);
         layout_name.setOnClickListener(this);
         tv_name.setOnClickListener(this);

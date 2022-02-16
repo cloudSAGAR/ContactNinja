@@ -119,8 +119,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(this);
         contect_list_unselect.setHasFixedSize(true);
-        contect_list_unselect.setItemViewCacheSize(5000);
-        add_contect_list.setItemViewCacheSize(5000);
+        contect_list_unselect.setItemViewCacheSize(50000);
+        add_contect_list.setItemViewCacheSize(50000);
 
         contectListData.clear();
         iv_Setting.setVisibility(View.GONE);
@@ -170,8 +170,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString())) {
                             temp.add(d);
                         }
-                        contect_list_unselect.setItemViewCacheSize(5000);
-                        add_contect_list.setItemViewCacheSize(5000);
+                        contect_list_unselect.setItemViewCacheSize(50000);
+                        add_contect_list.setItemViewCacheSize(50000);
                         groupContectAdapter.updateList(temp);
                     }
                     return true;
@@ -211,14 +211,14 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         if (SessionManager.getContectList(this).size() != 0) {
             //  GetContactsIntoArrayList();
-            contect_list_unselect.setItemViewCacheSize(5000);
+            contect_list_unselect.setItemViewCacheSize(50000);
             contectListData.addAll(SessionManager.getContectList(this).get(0).getContacts());
             Log.e("contectListData", new Gson().toJson(contectListData));
             groupContectAdapter.addAll(contectListData);
 
         } else {
             // GetContactsIntoArrayList();
-            contect_list_unselect.setItemViewCacheSize(5000);
+            contect_list_unselect.setItemViewCacheSize(50000);
 
             try {
                 ContectEvent();
@@ -234,8 +234,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                contect_list_unselect.setItemViewCacheSize(5000);
-                add_contect_list.setItemViewCacheSize(5000);
+                contect_list_unselect.setItemViewCacheSize(50000);
+                add_contect_list.setItemViewCacheSize(50000);
 
                 if (add_new_contect_icon1.getVisibility() == View.GONE) {
                     add_new_contect_icon1.setVisibility(View.VISIBLE);
@@ -267,8 +267,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     public void call_updatedata() {
         if (SessionManager.getGroupList(this).size() != 0) {
-            contect_list_unselect.setItemViewCacheSize(5000);
-            add_contect_list.setItemViewCacheSize(5000);
+            contect_list_unselect.setItemViewCacheSize(50000);
+            add_contect_list.setItemViewCacheSize(50000);
 
             select_contectListData.clear();
             pre_seleact.clear();
@@ -364,7 +364,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         Log.e("Selcete List Is", new Gson().toJson(select_contectListData));
         select_contectListData.clear();
-        add_contect_list.setItemViewCacheSize(5000);
+        add_contect_list.setItemViewCacheSize(50000);
         topUserListDataAdapter = new TopUserListDataAdapter(this, getApplicationContext(), select_contectListData);
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();

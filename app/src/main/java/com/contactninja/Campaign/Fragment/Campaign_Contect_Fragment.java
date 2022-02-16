@@ -109,8 +109,8 @@ public class Campaign_Contect_Fragment extends Fragment {
         retrofitCalls = new RetrofitCalls(getActivity());
         select_contectListData = new ArrayList<>();
         contect_list_unselect.setHasFixedSize(true);
-        contect_list_unselect.setItemViewCacheSize(5000);
-        add_contect_list.setItemViewCacheSize(5000);
+        contect_list_unselect.setItemViewCacheSize(50000);
+        add_contect_list.setItemViewCacheSize(50000);
         contectListData = new ArrayList<>();
 
         if (SessionManager.getContect_flag(getActivity()).equals("read")) {
@@ -137,13 +137,13 @@ public class Campaign_Contect_Fragment extends Fragment {
 
             //Log.e("Data IS",new Gson().toJson(select_contectListData));
             add_contect_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-            add_contect_list.setItemViewCacheSize(5000);
+            add_contect_list.setItemViewCacheSize(50000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
             add_contect_list.setAdapter(topUserListDataAdapter);
             topUserListDataAdapter.notifyDataSetChanged();
             add_new_contect_layout.setVisibility(View.GONE);
 
-            contect_list_unselect.setItemViewCacheSize(5000);
+            contect_list_unselect.setItemViewCacheSize(50000);
             groupContectAdapter = new GroupContectAdapter(getActivity());
             contect_list_unselect.setAdapter(groupContectAdapter);
             contectListData.clear();
@@ -185,12 +185,12 @@ public class Campaign_Contect_Fragment extends Fragment {
 
 
             add_contect_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-            add_contect_list.setItemViewCacheSize(5000);
+            add_contect_list.setItemViewCacheSize(50000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
             add_contect_list.setAdapter(topUserListDataAdapter);
             add_new_contect_layout.setVisibility(View.VISIBLE);
             SessionManager.setGroupList(getActivity(), select_contectListData);
-            contect_list_unselect.setItemViewCacheSize(5000);
+            contect_list_unselect.setItemViewCacheSize(50000);
             groupContectAdapter = new GroupContectAdapter(getActivity());
             contect_list_unselect.setAdapter(groupContectAdapter);
             contect_search.addTextChangedListener(new TextWatcher() {
@@ -302,11 +302,11 @@ public class Campaign_Contect_Fragment extends Fragment {
 
             add_contect_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
-            add_contect_list.setItemViewCacheSize(5000);
+            add_contect_list.setItemViewCacheSize(50000);
             add_contect_list.setAdapter(topUserListDataAdapter);
             add_new_contect_layout.setVisibility(View.VISIBLE);
             SessionManager.setGroupList(getActivity(), select_contectListData);
-            contect_list_unselect.setItemViewCacheSize(5000);
+            contect_list_unselect.setItemViewCacheSize(50000);
             groupContectAdapter = new GroupContectAdapter(getActivity());
             contect_list_unselect.setAdapter(groupContectAdapter);
             contect_search.addTextChangedListener(new TextWatcher() {
@@ -396,7 +396,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                  * set select contact count */
                 select_Contact(0);
             }
-            add_contect_list.setItemViewCacheSize(5000);
+            add_contect_list.setItemViewCacheSize(50000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
             add_contect_list.setAdapter(topUserListDataAdapter);
             topUserListDataAdapter.notifyDataSetChanged();
@@ -1617,7 +1617,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                     group_flag = "true";
                     contectListData.get(i).setFlag("true");
                 } else {
-                    contect_list_unselect.setItemViewCacheSize(5000);
+                    contect_list_unselect.setItemViewCacheSize(50000);
                     groupContectAdapter = new GroupContectAdapter(getContext());
                     contect_list_unselect.setAdapter(groupContectAdapter);
                     group_flag = "true";

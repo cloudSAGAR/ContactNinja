@@ -101,9 +101,9 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
         group_recyclerView.setHasFixedSize(true);
-        group_recyclerView.setItemViewCacheSize(500);
+        group_recyclerView.setItemViewCacheSize(50000);
         add_contect_list.setHasFixedSize(true);
-        add_contect_list.setItemViewCacheSize(500);
+        add_contect_list.setItemViewCacheSize(50000);
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
         main_layout.setOnClickListener(this);
@@ -566,7 +566,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 movieList1.get(i).setFlag("true");
                 paginationAdapter.addAll(movieList1);
                 paginationAdapter.notifyItemChanged(i);
-                group_recyclerView.setItemViewCacheSize(500);
+                group_recyclerView.setItemViewCacheSize(50000);
                 select_contectListData.add(movieList1.get(i));
                 topUserListDataAdapter.notifyDataSetChanged();
 

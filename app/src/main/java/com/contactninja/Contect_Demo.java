@@ -157,7 +157,7 @@ public class Contect_Demo extends AppCompatActivity  {
         layoutManager = new LinearLayoutManager(this);
         rvinviteuserdetails.setLayoutManager(layoutManager);
         rvinviteuserdetails.setHasFixedSize(true);
-        rvinviteuserdetails.setItemViewCacheSize(5000);
+        rvinviteuserdetails.setItemViewCacheSize(50000);
         paginationAdapter = new ContectListAdapter_demo(this);
         rvinviteuserdetails.setAdapter(paginationAdapter);
         //inviteListData.clear();

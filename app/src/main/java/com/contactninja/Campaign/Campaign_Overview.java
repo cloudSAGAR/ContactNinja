@@ -138,7 +138,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
         save_button.setText("Add prospects");
         item_list = findViewById(R.id.item_list);
         item_list.setLayoutManager(new LinearLayoutManager(this));
-        item_list.setItemViewCacheSize(500);
+        item_list.setItemViewCacheSize(50000);
     }
 
     @Override

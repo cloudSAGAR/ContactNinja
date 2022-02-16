@@ -103,9 +103,9 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         paginationAdapter = new PaginationAdapter(getActivity());
         group_recyclerView.setAdapter(paginationAdapter);
         group_recyclerView.setHasFixedSize(true);
-        group_recyclerView.setItemViewCacheSize(500);
+        group_recyclerView.setItemViewCacheSize(50000);
         add_contect_list.setHasFixedSize(true);
-        add_contect_list.setItemViewCacheSize(500);
+        add_contect_list.setItemViewCacheSize(50000);
 
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
 
@@ -592,7 +592,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                 movieList1.get(i).setFlag("true");
                 paginationAdapter.addAll(movieList1);
                 paginationAdapter.notifyItemChanged(i);
-                group_recyclerView.setItemViewCacheSize(500);
+                group_recyclerView.setItemViewCacheSize(50000);
                 select_contectListData.add(movieList1.get(i));
                 topUserListDataAdapter.notifyDataSetChanged();
 

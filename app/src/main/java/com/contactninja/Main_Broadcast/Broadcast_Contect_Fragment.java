@@ -109,8 +109,8 @@ public class Broadcast_Contect_Fragment extends Fragment {
         retrofitCalls = new RetrofitCalls(getActivity());
         select_contectListData = new ArrayList<>();
         contect_list_unselect.setHasFixedSize(true);
-        contect_list_unselect.setItemViewCacheSize(5000);
-        add_contect_list.setItemViewCacheSize(5000);
+        contect_list_unselect.setItemViewCacheSize(50000);
+        add_contect_list.setItemViewCacheSize(50000);
         contectListData = new ArrayList<>();
 
 
@@ -124,7 +124,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                 groupContectAdapter.addAll(contectListData);
                 num_count.setText(contectListData.size() + "  Contacts");
             }
-            add_contect_list.setItemViewCacheSize(5000);
+            add_contect_list.setItemViewCacheSize(50000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
             add_contect_list.setAdapter(topUserListDataAdapter);
             topUserListDataAdapter.notifyDataSetChanged();
@@ -1309,7 +1309,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                     group_flag = "true";
                     contectListData.get(i).setFlag("true");
                 } else {
-                    contect_list_unselect.setItemViewCacheSize(5000);
+
                     groupContectAdapter = new GroupContectAdapter(getContext());
                     contect_list_unselect.setAdapter(groupContectAdapter);
                     group_flag = "true";
@@ -1339,7 +1339,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                     group_flag = "false";
                     contectListData.get(i).setFlag("true");
                 } else {
-                    contect_list_unselect.setItemViewCacheSize(5000);
+                    contect_list_unselect.setItemViewCacheSize(50000);
                     groupContectAdapter = new GroupContectAdapter(getContext());
                     contect_list_unselect.setAdapter(groupContectAdapter);
                     group_flag = "true";

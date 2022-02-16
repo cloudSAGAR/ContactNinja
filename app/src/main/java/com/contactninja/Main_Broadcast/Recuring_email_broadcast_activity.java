@@ -418,7 +418,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
 
         }
-        email_list.setItemViewCacheSize(5000);
+        email_list.setItemViewCacheSize(50000);
 
         Day_SelctionListAdepter emailListAdepter = new Day_SelctionListAdepter(getApplicationContext(), broadcste_coman_models, tv_done);
         email_list.setItemViewCacheSize(5000);
