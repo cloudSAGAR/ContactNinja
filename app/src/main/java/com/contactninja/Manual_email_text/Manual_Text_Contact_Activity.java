@@ -216,8 +216,6 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
             pre_seleact.clear();
             pre_seleact.addAll(SessionManager.getGroupList(getApplicationContext()));
             select_contectListData.addAll(pre_seleact);
-
-
         }
 
     }
@@ -774,8 +772,6 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     Log.e("Postion is",String.valueOf(s_position));
                     Log.e("Contect Size ",String.valueOf(contacts.get(s_position).getContactDetails().size()));
                     Log.e("User SELCT List",new Gson().toJson(userLinkedGmailList));
-
-
                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                     holder1.add_new_contect_icon.setVisibility(View.GONE);
 

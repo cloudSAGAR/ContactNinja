@@ -3,6 +3,8 @@ package com.contactninja.Manual_email_text.List_And_show;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,11 +29,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -76,9 +80,12 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Response;
 
@@ -1363,6 +1370,11 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
                         bottomSheetDialog.show();
                     }
+                    else if (position==2)
+                    {
+                        broadcast_manu_zoom();
+                    }
+
 
 
                 }
@@ -1550,5 +1562,120 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                 layout_select = view.findViewById(R.id.layout_select);
             }
         }
+    }
+
+
+    private void broadcast_manu_zoom() {
+
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.zoom_layout, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Email_Detail_activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        LinearLayout la_date=bottomSheetDialog.findViewById(R.id.la_date);
+        TextView tv_date=bottomSheetDialog.findViewById(R.id.tv_date);
+        LinearLayout la_time=bottomSheetDialog.findViewById(R.id.la_time);
+        TextView tv_time=bottomSheetDialog.findViewById(R.id.tv_time);
+        TextView tc_time_zone=bottomSheetDialog.findViewById(R.id.tc_time_zone);
+        TextView tv_done=bottomSheetDialog.findViewById(R.id.tv_done);
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String formattedDate = df.format(c);
+        tv_date.setText(formattedDate);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String currentDateandTime = sdf.format(new Date());
+        tv_time.setText(currentDateandTime);
+        la_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OpenBob(tv_date);
+            }
+        });
+        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+        tc_time_zone.setText("Time Zone("+user_data.getUser().getUserTimezone().get(0).getText().toString()+")");
+        la_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onTimer(tv_time);
+            }
+        });
+        tv_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.cancel();
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+    private int mYear, mMonth, mDay, mHour, mMinute;
+    public void OpenBob(TextView tv_date) {
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(Item_List_Email_Detail_activty.this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+
+                        String sMonth = "";
+                        if (monthOfYear + 1 < 10) {
+                            sMonth = "0" + (monthOfYear + 1);
+                        } else {
+                            sMonth = String.valueOf(monthOfYear + 1);
+                        }
+
+
+                        String sdate = "";
+                        if (dayOfMonth < 10) {
+                            sdate = "0" + dayOfMonth;
+                        } else {
+                            sdate = String.valueOf(dayOfMonth);
+                        }
+
+
+                        tv_date.setText(year + "-" + sMonth + "-" + sdate);
+
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + (1000 * 60 * 60));
+
+        datePickerDialog.show();
+
+    }
+
+    public void onTimer(TextView tv_time)
+    {
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                String stime = "";
+                if (selectedHour + 1 < 10) {
+                    stime = "0" + (selectedHour);
+                } else {
+                    stime = String.valueOf(selectedHour);
+                }
+
+
+                String sminite = "";
+                if (selectedMinute < 10) {
+                    sminite = "0" + selectedMinute;
+                } else {
+                    sminite = String.valueOf(selectedMinute);
+                }
+                tv_time.setText( stime + ":" + sminite);            }
+        }, hour, minute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
     }
 }

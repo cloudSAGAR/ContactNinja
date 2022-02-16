@@ -67,6 +67,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,6 +85,7 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
     private long mLastClickTime = 0;
+    int image_flag=1;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -975,6 +977,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+                image_flag=0;
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, 0);
@@ -988,6 +991,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+                image_flag=0;
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
