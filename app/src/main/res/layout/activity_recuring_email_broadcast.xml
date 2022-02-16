@@ -28,7 +28,6 @@
                     android:layout_width="@dimen/_70sdp"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_marginStart="-25dp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:src="@drawable/ic_group_otp_logo"
                     tools:ignore="ContentDescription" />
 
@@ -40,7 +39,7 @@
                 style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:gravity="center"
                 android:textColor="@color/text_welcome"
                 android:textSize="@dimen/_18sdp"/>
@@ -51,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="left|center"
@@ -93,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="left|center"
@@ -137,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="left|center"
@@ -187,12 +186,12 @@
                 android:textColor="@color/text_reg" />
 
             <LinearLayout
-
+                android:visibility="gone"
                 android:id="@+id/layout_daily_selction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                >
 
@@ -262,6 +261,8 @@
                 android:visibility="gone" />
 
         <LinearLayout
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:id="@+id/layout_occurs_weekly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -325,6 +326,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_marginTop="@dimen/_10sdp"
                     style="@style/tv_regular_13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -340,7 +342,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -414,7 +415,6 @@
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/_10sdp"
                             android:src="@drawable/ic_down">
 
                         </ImageView>
@@ -439,7 +439,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -510,10 +509,10 @@
                             android:textColor="@color/text_reg"/>
 
                         <ImageView
+                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/_10sdp"
                             android:src="@drawable/ic_down">
 
                         </ImageView>
@@ -542,10 +541,10 @@
                             android:textColor="@color/text_reg"/>
 
                         <ImageView
+                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/_10sdp"
                             android:src="@drawable/ic_down">
 
                         </ImageView>
@@ -562,7 +561,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:gravity="center"
                 android:text="@string/broadcast_info_text"
