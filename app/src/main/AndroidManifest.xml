@@ -53,8 +53,13 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".Main_Broadcast.Recuring_email_broadcast_activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="true"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast"
             android:exported="false"
@@ -317,11 +322,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--
   <activity

@@ -7,23 +7,23 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/layout_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-            <TextView
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:id="@+id/tv_phone"
-                style="@style/tv_regular_13"
-                android:gravity="center|start"
-                android:text="Phone"
-                android:layout_weight="1"
-                android:textColor="@color/text_reg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+        <TextView
+            android:layout_marginStart="@dimen/_20sdp"
+            android:id="@+id/tv_phone"
+            android:padding="@dimen/_10sdp"
+            style="@style/tv_regular_13"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:text="Phone"
+            android:textColor="@color/text_reg" />
 
         <LinearLayout
 
@@ -41,8 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"
+                android:background="@drawable/ic_ellipse"
                 android:padding="@dimen/_5sdp"
-                android:background="@drawable/ic_planselected"/>
+                android:src="@drawable/shape_primary_circle"/>
 
 
             <ImageView
@@ -51,12 +52,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_plus_blue"
-                android:background="@drawable/shape_oval_border_10_blue"
+                android:background="@drawable/ic_ellipse"
                 tools:ignore="ContentDescription" />
 
+
         </LinearLayout>
+
+
+
 
 
 

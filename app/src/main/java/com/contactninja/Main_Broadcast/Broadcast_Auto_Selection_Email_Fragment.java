@@ -27,7 +27,6 @@ public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements
     int click = 0;
     SessionManager sessionManager;
     String c_name = "", c_type = "";
-    EditText edit_day, edit_minutes, edit_day_manual, edit_minutes_manual;
     private long mLastClickTime = 0;
 
     @Override
@@ -52,73 +51,7 @@ public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements
         auto_layout.setOnClickListener(this);
         manual_layout.setOnClickListener(this);
 
-        edit_day.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                SessionManager.setCampaign_Day(edit_day.getText().toString());
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        edit_minutes.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                SessionManager.setCampaign_minute(edit_minutes.getText().toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        edit_day_manual.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                SessionManager.setCampaign_Day(edit_day_manual.getText().toString());
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        edit_minutes_manual.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                SessionManager.setCampaign_minute(edit_minutes_manual.getText().toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
 
         return view;
@@ -129,10 +62,7 @@ public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements
         manual_layout = view.findViewById(R.id.manual_layout);
         select_manual = view.findViewById(R.id.select_manual);
         select_automated = view.findViewById(R.id.select_automated);
-        edit_day = view.findViewById(R.id.edit_day);
-        edit_minutes = view.findViewById(R.id.edit_minutes);
-        edit_day_manual = view.findViewById(R.id.edit_day_manual);
-        edit_minutes_manual = view.findViewById(R.id.edit_minutes_manual);
+
     }
 
     @Override
@@ -148,8 +78,7 @@ public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements
                 //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("AUTO");
-                edit_day_manual.setText("1");
-                edit_minutes_manual.setText("00");
+
 
                 break;
             case R.id.manual_layout:
@@ -157,8 +86,7 @@ public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements
                 select_automated.setVisibility(View.GONE);
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("MANUAL");
-                edit_day.setText("1");
-                edit_minutes.setText("00");
+
 
                 break;
         }

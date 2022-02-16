@@ -107,7 +107,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     LinearLayout layout_pulse;
     String option_type = "";
     private BroadcastReceiver mNetworkReceiver;
-    ImageView iv_toolbar_manu_vertical,iv_block;
+    ImageView iv_toolbar_manu_vertical, iv_block;
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
@@ -169,11 +169,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
             iv_user.setOnClickListener(this);
-            if (Contect_data.getIs_blocked().equals(1))
-            {
+            if (Contect_data.getIs_blocked().equals(1)) {
                 iv_block.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 iv_block.setVisibility(View.GONE);
             }
             if (Contect_data.getContactImage() == null) {
@@ -214,8 +212,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             save_button.setText("Save Contact");
 
 
-        }
-        else if (flag.equals("read")) {
+        } else if (flag.equals("read")) {
             edt_FirstName.setEnabled(false);
             edt_lastname.setEnabled(false);
             iv_user.setOnClickListener(null);
@@ -225,11 +222,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             edt_lastname.setText(Contect_data.getLastname());
             f_name = Contect_data.getFirstname();
             l_name = Contect_data.getLastname();
-            if (Contect_data.getIs_blocked().equals(1))
-            {
+            if (Contect_data.getIs_blocked().equals(1)) {
                 iv_block.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 iv_block.setVisibility(View.GONE);
             }
             if (Contect_data.getContactImage() == null) {
@@ -266,8 +261,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             olld_image = Contect_data.getContactImage();
 
             save_button.setText("Edit Contact");
-        }
-        else {
+        } else {
             iv_toolbar_manu_vertical.setVisibility(View.GONE);
             Log.e("Null", "No Call");
         }
@@ -351,7 +345,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     if (f_name.equals("")) {
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
 
-                    }  else {
+                    } else {
                         try {
                             if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
                                 AddContect_Update();
@@ -451,8 +445,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     }
 
     private void IntentUI() {
-        iv_block=findViewById(R.id.iv_block);
-        iv_toolbar_manu_vertical=findViewById(R.id.iv_toolbar_manu_vertical);
+        iv_block = findViewById(R.id.iv_block);
+        iv_toolbar_manu_vertical = findViewById(R.id.iv_toolbar_manu_vertical);
         iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -667,7 +661,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("zipcode", zip_code);
         paramObject.put("zoom_id", zoom_id);
 
-        paramObject.put("imei",Global.imei);
+        paramObject.put("imei", Global.imei);
         paramObject.put("contact_image", user_image_Url);
         paramObject.put("image_extension", File_extension);
         paramObject.put("contact_image_name", File_name);
@@ -732,7 +726,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
 
 
-
                 }
             }
 
@@ -772,7 +765,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JSONObject param_data = new JSONObject();
         param_data.put("organization_id", 1);
         param_data.put("team_id", 1);
-        param_data.put("user_id",user_data.getUser().getId());
+        param_data.put("user_id", user_data.getUser().getId());
         JSONArray jsonArray_contect = new JSONArray();
 
 
@@ -923,7 +916,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
-                    if (olld_image != null && !olld_image.equals("")||user_image_Url != null && !user_image_Url.equals("")) {
+                    if (olld_image != null && !olld_image.equals("") || user_image_Url != null && !user_image_Url.equals("")) {
                         captureimageDialog(true);
                     } else {
                         captureimageDialog(false);
@@ -1231,22 +1224,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         TextView selected_block = bottomSheetDialog.findViewById(R.id.selected_block);
-        View line_block=bottomSheetDialog.findViewById(R.id.line_block);
-        View line_unblock=bottomSheetDialog.findViewById(R.id.line_unblock);
+        View line_block = bottomSheetDialog.findViewById(R.id.line_block);
+        View line_unblock = bottomSheetDialog.findViewById(R.id.line_unblock);
         TextView selected_un_block = bottomSheetDialog.findViewById(R.id.selected_unblock);
-        TextView selected_delete=bottomSheetDialog.findViewById(R.id.selected_delete);
+        TextView selected_delete = bottomSheetDialog.findViewById(R.id.selected_delete);
         selected_block.setText(getString(R.string.add_blacklist));
         selected_un_block.setText(getString(R.string.remove_blacklist));
         selected_delete.setText(getString(R.string.delete_contact));
 
-        if (contact_item.getIs_blocked().equals(1))
-        {
+        if (contact_item.getIs_blocked().equals(1)) {
             selected_block.setVisibility(View.GONE);
             line_block.setVisibility(View.GONE);
             selected_un_block.setVisibility(View.VISIBLE);
             line_unblock.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             line_block.setVisibility(View.VISIBLE);
             selected_block.setVisibility(View.VISIBLE);
             selected_un_block.setVisibility(View.GONE);
@@ -1264,8 +1255,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 //Block Contect
 
                 try {
-                    if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)){
-                        Contect_BLock(contact_item,1,bottomSheetDialog);
+                    if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                        Contect_BLock(contact_item, 1, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1284,8 +1275,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 //Block Contect
 
                 try {
-                    if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)){
-                        Contect_BLock(contact_item,0,bottomSheetDialog);
+                    if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                        Contect_BLock(contact_item, 0, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1304,8 +1295,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 //Block Contect
 
                 try {
-                    if(Global.isNetworkAvailable(Addnewcontect_Activity.this,mMainLayout)){
-                        Contect_Remove(contact_item,bottomSheetDialog);
+                    if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                        Contect_Remove(contact_item, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1327,7 +1318,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("is_block",block);
+        paramObject.put("is_block", block);
         JSONArray block_array = new JSONArray();
         block_array.put(contact_data.getId());
         paramObject.put("blockContactIds", block_array);
@@ -1342,24 +1333,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                   if (block==1)
-                   {
-                       iv_block.setVisibility(View.VISIBLE);
-                   }
-                   else {
-                       iv_block.setVisibility(View.GONE);
-                   }
+                    finish();
+                    if (block == 1) {
+                        iv_block.setVisibility(View.VISIBLE);
+                    } else {
+                        iv_block.setVisibility(View.GONE);
+                    }
 
                     contact_data.setIs_blocked(block);
-                    SessionManager.setOneCotect_deatil(getApplicationContext(),contact_data);
-                    bottomSheetDialog.cancel();
+                    SessionManager.setOneCotect_deatil(getApplicationContext(), contact_data);
 
-                }
-                else {
+                } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
                 }
+                bottomSheetDialog.cancel();
             }
 
             @Override
@@ -1372,8 +1359,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     }
 
 
-
-    public void Contect_Remove(ContectListData.Contact contact_data ,BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Contect_Remove(ContectListData.Contact contact_data, BottomSheetDialog bottomSheetDialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         JSONObject obj = new JSONObject();
@@ -1381,8 +1367,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("id",contact_data.getId());
-        paramObject.put("status","D");
+        paramObject.put("id", contact_data.getId());
+        paramObject.put("status", "D");
 
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
@@ -1396,13 +1382,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     finish();
+                } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
                 }
-                else {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
-                }
+                bottomSheetDialog.cancel();
             }
 
             @Override

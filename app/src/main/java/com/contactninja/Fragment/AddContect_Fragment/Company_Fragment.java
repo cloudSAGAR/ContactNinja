@@ -481,7 +481,7 @@ public class Company_Fragment extends Fragment {
         TextView selected_delete = bottomSheetDialog.findViewById(R.id.selected_delete);
         selected_block.setText(getString(R.string.add_blacklist));
         selected_un_block.setText(getString(R.string.remove_blacklist));
-        selected_delete.setText(getString(R.string.delete_contact));
+        selected_delete.setText(getString(R.string.delete_company));
 
         if (Company.getIs_blocked().equals(1)) {
             selected_block.setVisibility(View.GONE);

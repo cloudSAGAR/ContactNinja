@@ -81,7 +81,6 @@
                         android:focusable="true"
                         android:gravity="left|center"
                         android:imeOptions="actionDone"
-                        android:paddingStart="@dimen/_15sdp"
                         android:textColor="@color/text_reg"
                         tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 
@@ -90,7 +89,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_10sdp"
                         android:src="@drawable/ic_down" />
 
