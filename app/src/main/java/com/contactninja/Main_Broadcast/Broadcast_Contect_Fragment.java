@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -92,7 +91,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
     List<ContectListData.Contact> select_contectListData;
     Activity activity;
     String group_flag = "true";
-    private long mLastClickTime=0;
+    private long mLastClickTime = 0;
 
     public Broadcast_Contect_Fragment(Activity activity0) {
         this.activity = activity0;
@@ -114,144 +113,142 @@ public class Broadcast_Contect_Fragment extends Fragment {
         contectListData = new ArrayList<>();
 
 
+        //  Log.e("Main Method", "NO");
 
-            //  Log.e("Main Method", "NO");
-
-            groupContectAdapter = new GroupContectAdapter(getActivity());
-            contect_list_unselect.setAdapter(groupContectAdapter);
-            if (SessionManager.getContectList(getActivity()).size() != 0) {
-                contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                groupContectAdapter.addAll(contectListData);
-                num_count.setText(contectListData.size() + "  Contacts");
-            }
-            add_contect_list.setItemViewCacheSize(50000);
-            topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
-            add_contect_list.setAdapter(topUserListDataAdapter);
-            topUserListDataAdapter.notifyDataSetChanged();
+        groupContectAdapter = new GroupContectAdapter(getActivity());
+        contect_list_unselect.setAdapter(groupContectAdapter);
+        if (SessionManager.getContectList(getActivity()).size() != 0) {
+            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+            groupContectAdapter.addAll(contectListData);
+            num_count.setText(contectListData.size() + "  Contacts");
+        }
+        add_contect_list.setItemViewCacheSize(50000);
+        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+        add_contect_list.setAdapter(topUserListDataAdapter);
+        topUserListDataAdapter.notifyDataSetChanged();
 
 
-            Log.e("New Gson is ", new Gson().toJson(select_contectListData));
+        Log.e("New Gson is ", new Gson().toJson(select_contectListData));
 
-            add_new_contect.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
-                    if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                        add_new_contect_icon1.setVisibility(View.VISIBLE);
-                        add_new_contect_icon.setVisibility(View.GONE);
-                        groupContectAdapter.addAll_item(contectListData);
-                        add_new_contect.setText(getString(R.string.remove_new_contect1));
-                    } else {
-                        add_new_contect_icon1.setVisibility(View.GONE);
-                        add_new_contect_icon.setVisibility(View.VISIBLE);
-                        select_contectListData.clear();
-                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
-                        add_contect_list.setAdapter(topUserListDataAdapter);
-                        topUserListDataAdapter.notifyDataSetChanged();
-                        group_flag = "false";
-                        groupContectAdapter.notifyDataSetChanged();
-                        add_new_contect.setText(getString(R.string.add_new_contect1));
-                    }
+        add_new_contect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                if (add_new_contect_icon1.getVisibility() == View.GONE) {
+                    add_new_contect_icon1.setVisibility(View.VISIBLE);
+                    add_new_contect_icon.setVisibility(View.GONE);
+                    groupContectAdapter.addAll_item(contectListData);
+                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+                } else {
+                    add_new_contect_icon1.setVisibility(View.GONE);
+                    add_new_contect_icon.setVisibility(View.VISIBLE);
+                    select_contectListData.clear();
+                    topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    group_flag = "false";
+                    groupContectAdapter.notifyDataSetChanged();
+                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                }
 
                     /*Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
                     SessionManager.setContect_flag("save");
                     startActivity(addnewcontect);*/
+            }
+        });
+        add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
                 }
-            });
-            add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
-                    if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                        add_new_contect_icon1.setVisibility(View.VISIBLE);
-                        add_new_contect_icon.setVisibility(View.GONE);
-                        groupContectAdapter.addAll_item(contectListData);
-                        add_new_contect.setText(getString(R.string.remove_new_contect1));
-                    } else {
-                        add_new_contect_icon1.setVisibility(View.GONE);
-                        add_new_contect_icon.setVisibility(View.VISIBLE);
-                        select_contectListData.clear();
-                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
-                        add_contect_list.setAdapter(topUserListDataAdapter);
-                        topUserListDataAdapter.notifyDataSetChanged();
-                        group_flag = "false";
-                        groupContectAdapter.notifyDataSetChanged();
-                        add_new_contect.setText(getString(R.string.add_new_contect1));
+                mLastClickTime = SystemClock.elapsedRealtime();
+                if (add_new_contect_icon1.getVisibility() == View.GONE) {
+                    add_new_contect_icon1.setVisibility(View.VISIBLE);
+                    add_new_contect_icon.setVisibility(View.GONE);
+                    groupContectAdapter.addAll_item(contectListData);
+                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+                } else {
+                    add_new_contect_icon1.setVisibility(View.GONE);
+                    add_new_contect_icon.setVisibility(View.VISIBLE);
+                    select_contectListData.clear();
+                    topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    group_flag = "false";
+                    groupContectAdapter.notifyDataSetChanged();
+                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                }
+            }
+        });
+        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                if (add_new_contect_icon1.getVisibility() == View.GONE) {
+                    add_new_contect_icon1.setVisibility(View.VISIBLE);
+                    add_new_contect_icon.setVisibility(View.GONE);
+                    groupContectAdapter.addAll_item(contectListData);
+                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+                } else {
+                    add_new_contect_icon1.setVisibility(View.GONE);
+                    add_new_contect_icon.setVisibility(View.VISIBLE);
+                    select_contectListData.clear();
+                    topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                    add_contect_list.setAdapter(topUserListDataAdapter);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    group_flag = "false";
+                    groupContectAdapter.notifyDataSetChanged();
+                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                }
+            }
+        });
+
+
+        contect_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                List<ContectListData.Contact> temp = new ArrayList();
+                for (ContectListData.Contact d : contectListData) {
+                    if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
+                        temp.add(d);
+                        // Log.e("Same Data ",d.getUserName());
                     }
                 }
-            });
-            add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
-                    if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                        add_new_contect_icon1.setVisibility(View.VISIBLE);
-                        add_new_contect_icon.setVisibility(View.GONE);
-                        groupContectAdapter.addAll_item(contectListData);
-                        add_new_contect.setText(getString(R.string.remove_new_contect1));
-                    } else {
-                        add_new_contect_icon1.setVisibility(View.GONE);
-                        add_new_contect_icon.setVisibility(View.VISIBLE);
-                        select_contectListData.clear();
-                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
-                        add_contect_list.setAdapter(topUserListDataAdapter);
-                        topUserListDataAdapter.notifyDataSetChanged();
-                        group_flag = "false";
-                        groupContectAdapter.notifyDataSetChanged();
-                        add_new_contect.setText(getString(R.string.add_new_contect1));
-                    }
-                }
-            });
-
-
-            contect_search.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    List<ContectListData.Contact> temp = new ArrayList();
-                    for (ContectListData.Contact d : contectListData) {
-                        if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
-                            temp.add(d);
-                            // Log.e("Same Data ",d.getUserName());
-                        }
-                    }
                     /*groupContectAdapter = new GroupContectAdapter(getActivity());
                     contect_list_unselect.setAdapter(groupContectAdapter);*/
-                    groupContectAdapter.updateList(temp);
-                    //groupContectAdapter.notifyDataSetChanged();
+                groupContectAdapter.updateList(temp);
+                //groupContectAdapter.notifyDataSetChanged();
 
 
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-            groupContectAdapter = new GroupContectAdapter(getActivity());
-            contect_list_unselect.setAdapter(groupContectAdapter);
-            contectListData.clear();
-            if (SessionManager.getContectList(getActivity()).size() != 0) {
-                contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                groupContectAdapter.addAll(contectListData);
-                num_count.setText(contectListData.size() + " Contacts");
             }
-            call_updatedata();
 
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        groupContectAdapter = new GroupContectAdapter(getActivity());
+        contect_list_unselect.setAdapter(groupContectAdapter);
+        contectListData.clear();
+        if (SessionManager.getContectList(getActivity()).size() != 0) {
+            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+            groupContectAdapter.addAll(contectListData);
+            num_count.setText(contectListData.size() + " Contacts");
+        }
+        call_updatedata();
 
 
         fastscroller_thumb.setupWithFastScroller(fastscroller);
@@ -780,7 +777,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
             // Log.e("First Name",select_contectListData.get(position).getFirstname());
             holder.userName.setText(select_contectListData.get(position).getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
-            if(Global.IsNotNull(select_contectListData.get(position).getFirstname())||!select_contectListData.get(position).getFirstname().equals("")){
+            if (Global.IsNotNull(select_contectListData.get(position).getFirstname()) || !select_contectListData.get(position).getFirstname().equals("")) {
                 String first_latter = select_contectListData.get(position).getFirstname().substring(0, 1).toUpperCase();
                 if (second_latter.equals("")) {
                     current_latter = first_latter;
@@ -981,21 +978,15 @@ public class Broadcast_Contect_Fragment extends Fragment {
 
                     /*     try {*/
                     //contacts.get(position).setFlag("true");
-                    if (SessionManager.getContect_flag(getActivity()).equals("read")) {
-                        contacts.get(position).setFlag(group_flag);
+
+
+                    contacts.get(position).setFlag(group_flag);
+                    if (contacts.get(position).getFlag().equals("false")) {
                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                         holder1.add_new_contect_icon.setVisibility(View.GONE);
-
-                    }
-                    else {
-                        contacts.get(position).setFlag(group_flag);
-                        if (contacts.get(position).getFlag().equals("false")) {
-                            holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                            holder1.add_new_contect_icon.setVisibility(View.GONE);
-                        } else {
-                            holder1.remove_contect_icon.setVisibility(View.GONE);
-                            holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
-                        }
+                    } else {
+                        holder1.remove_contect_icon.setVisibility(View.GONE);
+                        holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                     }
 
 
@@ -1071,8 +1062,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                         holder1.add_new_contect_icon.setVisibility(View.GONE);
 
-                    }
-                    else if (SessionManager.getBroadcast_flag(getActivity()).equals("edit")) {
+                    } else if (SessionManager.getBroadcast_flag(getActivity()).equals("edit")) {
                         Log.e("List is", new Gson().toJson(select_contectListData));
                         for (int i = 0; i < select_contectListData.size(); i++) {
                             if (select_contectListData.get(i).getId().equals(contacts.get(position).getId())) {
@@ -1089,9 +1079,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                             }
 
                         }
-                    }
-
-                    else {
+                    } else {
                         //  Log.e("Else ","Ok");
                         // Log.e("Data is",new Gson().toJson(SessionManager.getGroupList(getActivity())));
                         if (SessionManager.getGroupList(getActivity()).size() != 0) {
