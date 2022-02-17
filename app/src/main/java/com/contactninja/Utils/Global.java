@@ -156,6 +156,15 @@ public class Global extends Application {
         }
     }
 
+    public static void ShowKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+        if (Global.IsNotNull(activity.getCurrentFocus())) {
+            if (imm != null) {
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+            }
+        }
+    }
+
     @SuppressLint("NewApi")
     public static void Messageshow(Context context, View frameLayout, String message, boolean success) {
         Snackbar snackbar;

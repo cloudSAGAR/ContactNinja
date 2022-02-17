@@ -246,9 +246,17 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 onBackPressed();
+                break;
             case R.id.tv_start_broadcast:
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 try {
                     BroadcasteAPI();
                 } catch (JSONException e) {
@@ -267,7 +275,9 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                startActivity(new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class));
+                Intent broad_caste = new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
+                broad_caste.putExtra("Activty","Preview");
+                startActivity(broad_caste);
                 finish();
                 break;
             case R.id.contect_count:
@@ -309,7 +319,9 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                startActivity(new Intent(getApplicationContext(), Broadcast_Name_Activity.class));
+                Intent caste = new Intent(getApplicationContext(), Broadcast_Name_Activity.class);
+                caste.putExtra("Activty","Preview");
+                startActivity(caste);
                 finish();
                 break;
 
@@ -332,8 +344,51 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        finish();
-        super.onBackPressed();
+        showAlertDialogButtonClicked();
+    }
+
+    private void showAlertDialogButtonClicked() {
+
+        // Create an alert builder
+        androidx.appcompat.app.AlertDialog.Builder builder
+                = new androidx.appcompat.app.AlertDialog.Builder(this, R.style.MyDialogStyle);
+
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.logout_dialog, null);
+        builder.setView(customLayout);
+        androidx.appcompat.app.AlertDialog dialog
+                = builder.create();
+
+        TextView tv_title = customLayout.findViewById(R.id.tv_title);
+        TextView tv_sub_titale = customLayout.findViewById(R.id.tv_sub_titale);
+        TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
+        tv_title.setText("Are You Sure ?");
+        tv_sub_titale.setText("Are you sure that you would like to back home ?");
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),List_Broadcast_activity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+               /* Broadcast_Name_Activity.Broadcast_Name.finish();
+                Recuring_email_broadcast_activity.Recuring_email_broadcast.finish();
+                Add_Broad_Text_Activity.Add_Broad_Text.finish();
+                Add_Broad_Email_Activity.Add_Broad_Email.finish();
+                Broadcast_Contact_Selction_Actvity.Broadcast_Contact_Selction.finish();
+                Text_And_Email_Auto_Manual_Broadcast.Text_And_Email_Auto_Manual_Broadcast_Activity.finish();*/
+                finish();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void BroadcasteAPI() throws JSONException {
@@ -444,16 +499,13 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 if (response.body().getHttp_status() == 200) {
                     //  loadingDialog.cancelLoading();
                     loadingDialog.cancelLoading();
-                    Intent intent = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
-                    intent.putExtra("s_name", "final");
+                    Intent intent=new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-
                 } else {
                     loadingDialog.cancelLoading();
                 }
-
-
             }
 
             public void error(Response<ApiResponse> response) {

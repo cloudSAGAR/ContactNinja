@@ -91,6 +91,8 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
     private BroadcastReceiver mNetworkReceiver;
     private static long mLastClickTime=0;
     Broadcate_save_data broadcate_save_data=new Broadcate_save_data();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -486,7 +488,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
                     SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
                     Intent intent=new Intent(getApplicationContext(),Recuring_email_broadcast_activity.class);
                     startActivity(intent);
-                    finish();
+
                 }
 
 

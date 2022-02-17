@@ -274,15 +274,7 @@ Number</string>
     </array>
 
 
-    <array name="broadcast_day_txt">
-        <item>Sunday</item>
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
-    </array>
+
 
     <string name="forgot_password">Fogot your password?</string>
     <string name="forgot_password_txt">Enter your registerd email blow \n to receive password </string>
@@ -417,6 +409,7 @@ Number</string>
     <string name="selected">Selected</string>
     <string name="contacts">Contacts</string>
     <string name="groups">Groups</string>
+    <string name="select_Contact_group">Contact or group</string>
 
 
     <string name="add_blacklist">Add to blacklist</string>

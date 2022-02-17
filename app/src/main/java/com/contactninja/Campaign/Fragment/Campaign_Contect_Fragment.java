@@ -73,7 +73,7 @@ public class Campaign_Contect_Fragment extends Fragment {
     FastScrollerView fastscroller;
     int sequence_id;
     FastScrollerThumbView fastscroller_thumb;
-    EditText contect_search;
+    EditText ev_search;
     TextView add_new_contect, num_count;
     ImageView add_new_contect_icon, add_new_contect_icon1;
     LinearLayout add_new_contect_layout;
@@ -193,7 +193,7 @@ public class Campaign_Contect_Fragment extends Fragment {
             contect_list_unselect.setItemViewCacheSize(50000);
             groupContectAdapter = new GroupContectAdapter(getActivity());
             contect_list_unselect.setAdapter(groupContectAdapter);
-            contect_search.addTextChangedListener(new TextWatcher() {
+            ev_search.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -309,7 +309,7 @@ public class Campaign_Contect_Fragment extends Fragment {
             contect_list_unselect.setItemViewCacheSize(50000);
             groupContectAdapter = new GroupContectAdapter(getActivity());
             contect_list_unselect.setAdapter(groupContectAdapter);
-            contect_search.addTextChangedListener(new TextWatcher() {
+            ev_search.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -432,7 +432,7 @@ public class Campaign_Contect_Fragment extends Fragment {
             });
 
 
-            contect_search.addTextChangedListener(new TextWatcher() {
+            ev_search.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -577,7 +577,7 @@ public class Campaign_Contect_Fragment extends Fragment {
         contect_list_unselect.setLayoutManager(layoutManager1);
         fastscroller = view.findViewById(R.id.fastscroller);
         fastscroller_thumb = view.findViewById(R.id.fastscroller_thumb);
-        contect_search = view.findViewById(R.id.contect_search);
+        ev_search = view.findViewById(R.id.ev_search);
         add_new_contect = view.findViewById(R.id.add_new_contect);
         num_count = view.findViewById(R.id.num_count);
         add_new_contect_icon = view.findViewById(R.id.add_new_contect_icon);

@@ -474,7 +474,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         TextView tv_sub_titale = customLayout.findViewById(R.id.tv_sub_titale);
         TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
         tv_title.setText("Are You Sure ?");
-        tv_sub_titale.setText("Are you sure that you would like to back  home ?");
+        tv_sub_titale.setText("Are you sure that you would like to back home ?");
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -20,26 +20,33 @@
 
             <include layout="@layout/toolbar" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/iv_big_logo"
+                    android:layout_gravity="start"
                     android:layout_width="@dimen/_70sdp"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_marginStart="-25dp"
                     android:src="@drawable/ic_group_otp_logo"
                     tools:ignore="ContentDescription" />
 
+                <ImageView
+                    android:id="@+id/iv_small_logo"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@drawable/ic_small_logo"
+                    tools:ignore="ContentDescription" />
 
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_titele"
                 style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
                 android:textColor="@color/text_welcome"
                 android:textSize="@dimen/_18sdp"/>
@@ -150,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:hint="@string/broad_recurrence"
+                    android:text="@string/broad_recurrence"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/text_reg">
 
@@ -174,16 +181,6 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@color/line_separator" />
-
-            <TextView
-                android:id="@+id/tc_time_zone"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_22sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:hint="@string/email_date"
-                android:textColor="@color/text_reg" />
 
             <LinearLayout
                 android:visibility="gone"
@@ -226,10 +223,10 @@
                         android:textColor="@color/text_reg"/>
 
                     <ImageView
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_10sdp"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/_10sdp"
                         android:src="@drawable/ic_down">
 
                     </ImageView>
@@ -257,7 +254,7 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@color/spinner"
+                android:background="@color/line_separator"
                 android:visibility="gone" />
 
         <LinearLayout
@@ -273,7 +270,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:weightSum="1">
@@ -316,10 +313,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_22sdp"
-                android:textColor="@color/text_reg" />
+                android:textColor="@color/text_gray" />
         </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/layout_month"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -505,7 +503,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:singleLine="true"
-                            android:text="Second"
+                            android:text="First"
                             android:textColor="@color/text_reg"/>
 
                         <ImageView
@@ -537,7 +535,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:singleLine="true"
-                            android:text="Monday"
+                            android:text="Sunday"
                             android:textColor="@color/text_reg"/>
 
                         <ImageView

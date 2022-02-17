@@ -103,7 +103,6 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
     private int FirstTime = 0;
     private long mLastClickTime=0;
     Broadcate_save_data broadcate_save_data=new Broadcate_save_data();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -375,7 +374,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                         SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
 
                          startActivity(new Intent(getApplicationContext(),Recuring_email_broadcast_activity.class));
-                         finish();
+
                          //  StepData();
                     }
                 }

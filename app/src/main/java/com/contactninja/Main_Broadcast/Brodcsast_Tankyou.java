@@ -33,34 +33,26 @@ public class Brodcsast_Tankyou extends AppCompatActivity implements Connectivity
         mNetworkReceiver = new ConnectivityReceiver();
         mMainLayout = findViewById(R.id.mMainLayout);
         tv_sub_titale=findViewById(R.id.tv_sub_titale);
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        s_name=bundle.getString("s_name","");
-        if (s_name.equals("final"))
-        {
-            tv_sub_titale.setText(getString(R.string.brod_message));
-        }
-        else {
+        tv_sub_titale.setText(getString(R.string.brod_message));
 
-        }
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(getApplicationContext(), List_Broadcast_activity.class));
+                Intent intent1=new Intent(getApplicationContext(), List_Broadcast_activity.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
                 finish();
-
             }
         }, 2000);
     }
 
-
-
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        Intent intent1=new Intent(getApplicationContext(), List_Broadcast_activity.class);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent1);
         finish();
-
+        super.onBackPressed();
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {

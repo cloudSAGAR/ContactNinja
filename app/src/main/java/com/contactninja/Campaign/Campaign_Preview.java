@@ -596,7 +596,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         paramObject.addProperty("record_id", sequence_id);
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_data.getUser().getId());
-        paramObject.addProperty("status", "A");
+        paramObject.addProperty("status", "I");
         obj.add("data", paramObject);
         retrofitCalls.Sequence_settings(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
                 Global.getVersionname(Campaign_Preview.this), Global.Device, new RetrofitCallback() {

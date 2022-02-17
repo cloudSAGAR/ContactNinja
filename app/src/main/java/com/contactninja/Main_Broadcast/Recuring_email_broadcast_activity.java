@@ -1,6 +1,7 @@
 package com.contactninja.Main_Broadcast;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
@@ -28,6 +29,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.AddContect.Add_Company_Activity;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.Broadcste_Coman_Model;
 import com.contactninja.R;
@@ -42,6 +44,7 @@ import com.google.gson.Gson;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -50,12 +53,12 @@ import java.util.TimeZone;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class Recuring_email_broadcast_activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
-    TextView tc_time_zone, tv_day, tv_daylist;
+    TextView  tv_day, tv_daylist;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
 
-    ImageView iv_back, iv_time, iv_date, iv_down_arrow;
+    ImageView iv_back, iv_time, iv_date, iv_down_arrow,iv_big_logo,iv_small_logo;
     TextView save_button, tv_day_txt, tv_occurs_weekly;
     LinearLayout la_date, la_time, linearLayout, layout_rec,
             layout_day, layout_daily_selction,
@@ -74,10 +77,13 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
     Broadcate_save_data broadcate_save_data = new Broadcate_save_data();
     String occurs_monthly = "Day", day_list_id = "1", second_id = "1", day_section_id = "1";
 
+
     String[] Select_Recurrence ;
     String[] Select_day;
     String[] Days_Of_Week;
     String[] Days_31;
+    String[] Week_Of;
+
 
     List<Broadcste_Coman_Model> list_Recurrence = new ArrayList<>();
     List<Broadcste_Coman_Model> list_day_15 = new ArrayList<>();
@@ -85,6 +91,8 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
     List<Broadcste_Coman_Model> list_month_3 = new ArrayList<>();
     List<Broadcste_Coman_Model> list_DayOfWeek = new ArrayList<>();
     List<Broadcste_Coman_Model> list_Day_31 = new ArrayList<>();
+    List<Broadcste_Coman_Model> list_Week_Of = new ArrayList<>();
+    List<Broadcste_Coman_Model> list_DayOfWeek_Month = new ArrayList<>();
 
 
     @Override
@@ -100,6 +108,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         Select_day = getResources().getStringArray(R.array.Select_day);
         Days_Of_Week = getResources().getStringArray(R.array.broadcast_days);
         Days_31 = getResources().getStringArray(R.array.broadcast_day);
+        Week_Of = getResources().getStringArray(R.array.broadcast_week_txt);
 
         IntentUI();
 
@@ -123,7 +132,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         String formattedDate = df.format(c);
         tv_date.setText(formattedDate);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String currentDateandTime = sdf.format(new Date());
         tv_time.setText(currentDateandTime);
 
@@ -133,58 +142,108 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
             tv_time.setText(broadcate_save_data.getTime());
             tv_date.setText(broadcate_save_data.getDate());
             tv_recurrence.setText(broadcate_save_data.getRecurrence());
+            tv_recurrence.setTextColor(getResources().getColor(R.color.text_reg));
             tv_day.setText(broadcate_save_data.getRepeat_every());
-            tv_occurs_weekly.setText(broadcate_save_data.getOccurs_weekly());
 
 
-            if (broadcate_save_data.getOccurs_monthly().equals("Day")) {
-                iv_selected.setVisibility(View.VISIBLE);
-                iv_every_selcted.setVisibility(View.GONE);
+            switch (broadcate_save_data.getRecurrence()) {
+                case "Daily":
+                    layout_month.setVisibility(View.GONE);
+                    tv_info.setVisibility(View.GONE);
+                    layout_daily_selction.setVisibility(View.VISIBLE);
+                    tv_day_txt.setText("Day");
+                    view_day.setVisibility(View.VISIBLE);
+                    layout_occurs_weekly.setVisibility(View.GONE);
+                    break;
+                case "Weekly":
 
-            } else {
-                iv_selected.setVisibility(View.GONE);
-                iv_unselected.setVisibility(View.VISIBLE);
+                    layout_month.setVisibility(View.GONE);
+                    tv_info.setVisibility(View.GONE);
+                    layout_daily_selction.setVisibility(View.VISIBLE);
+                    tv_day_txt.setText("Week");
+                    view_day.setVisibility(View.VISIBLE);
+                    layout_occurs_weekly.setVisibility(View.VISIBLE);
 
-            }
-            iv_every_unselcted.setVisibility(View.VISIBLE);
+                    /*set day first selset */
+                    Select_day_of_week();
 
-            tv_month.setText(broadcate_save_data.getDay_of_month());
-            String[] recursion_array = getResources().getStringArray(R.array.broadcast_week_txt);
-            second_id = broadcate_save_data.getEvery_second();
-            tv_second.setText(recursion_array[Integer.parseInt(broadcate_save_data.getEvery_second())]);
-            String[] recursion_array1 = getResources().getStringArray(R.array.broadcast_day_txt);
-            tv_day_selction.setText(recursion_array1[Integer.parseInt(broadcate_save_data.getEvery_day())]);
-            day_section_id = broadcate_save_data.getEvery_day();
-            if (broadcate_save_data.getRecurrence().equals("Daily")) {
-                layout_month.setVisibility(View.GONE);
-                tv_info.setVisibility(View.GONE);
-                layout_daily_selction.setVisibility(View.VISIBLE);
-                tv_day_txt.setText("Day");
-                view_day.setVisibility(View.VISIBLE);
-                layout_occurs_weekly.setVisibility(View.GONE);
-            } else if (broadcate_save_data.getRecurrence().equals("Weekly")) {
 
-                layout_month.setVisibility(View.GONE);
-                tv_info.setVisibility(View.GONE);
-                layout_daily_selction.setVisibility(View.VISIBLE);
-                tv_day_txt.setText("Week");
-                view_day.setVisibility(View.VISIBLE);
-                layout_occurs_weekly.setVisibility(View.VISIBLE);
-            } else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
-                tv_daylist.setText("");
-                layout_month.setVisibility(View.VISIBLE);
-                tv_info.setVisibility(View.GONE);
-                layout_daily_selction.setVisibility(View.VISIBLE);
-                tv_day_txt.setText("Month");
-                view_day.setVisibility(View.VISIBLE);
-                layout_occurs_weekly.setVisibility(View.GONE);
-            } else {
-                layout_month.setVisibility(View.GONE);
-                layout_occurs_weekly.setVisibility(View.GONE);
-                layout_daily_selction.setVisibility(View.GONE);
-                view_day.setVisibility(View.GONE);
+                    break;
+                case "Monthly":
+                    tv_daylist.setText("");
+                    layout_month.setVisibility(View.VISIBLE);
+                    tv_info.setVisibility(View.GONE);
+                    layout_daily_selction.setVisibility(View.VISIBLE);
+                    tv_day_txt.setText("Month");
+                    view_day.setVisibility(View.VISIBLE);
+                    layout_occurs_weekly.setVisibility(View.GONE);
+
+
+
+                    if (broadcate_save_data.getOccurs_monthly().equals("Day")) {
+                        iv_selected.setVisibility(View.VISIBLE);
+                        iv_every_selcted.setVisibility(View.GONE);
+                        iv_every_unselcted.setVisibility(View.VISIBLE);
+
+
+                        tv_month.setText(broadcate_save_data.getDay_of_month());
+
+
+                    } else {
+
+
+                        second_id = broadcate_save_data.getEvery_second();
+                        String week_of=Week_Of[Integer.parseInt(second_id)];
+                        tv_second.setText(week_of);
+
+                        day_section_id = broadcate_save_data.getEvery_day();
+                        String week_day=Days_Of_Week[Integer.parseInt(day_section_id)];
+                        tv_day_selction.setText(week_day);
+
+
+                        iv_every_selcted.setVisibility(View.VISIBLE);
+                        iv_selected.setVisibility(View.GONE);
+                        iv_unselected.setVisibility(View.VISIBLE);
+
+                    }
+               //     iv_every_unselcted.setVisibility(View.VISIBLE);
+
+
+
+                    break;
+                default:
+                    layout_month.setVisibility(View.GONE);
+                    layout_occurs_weekly.setVisibility(View.GONE);
+                    layout_daily_selction.setVisibility(View.GONE);
+                    view_day.setVisibility(View.GONE);
+                    break;
             }
         }
+    }
+
+    private void Select_day_of_week() {
+        String[] elements = broadcate_save_data.getOccurs_weekly().split(",");
+        List<String> fixedLenghtList = Arrays.asList(elements);
+        List<Broadcste_Coman_Model> list_DayOfWeek_new = new ArrayList<>();
+
+        for (int i = 0; i < list_DayOfWeek.size(); i++) {
+            Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
+            broadcste_coman_model.setData(list_DayOfWeek.get(i).getData());
+             broadcste_coman_model.setNum(list_DayOfWeek.get(i).getNum());
+             broadcste_coman_model.setPhoneSelect(list_DayOfWeek.get(i).isPhoneSelect());
+
+            for(int j=0;j<fixedLenghtList.size();j++){
+                if(fixedLenghtList.get(j).equals(list_DayOfWeek.get(i).getNum())){
+                    broadcste_coman_model.setPhoneSelect(true);
+                    break;
+                }
+            }
+
+            list_DayOfWeek_new.add(broadcste_coman_model);
+        }
+        list_DayOfWeek=list_DayOfWeek_new;
+        SetSelected();
+
     }
 
     private void ststicListCreate() {
@@ -206,30 +265,64 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         /*select Day 31*/
         Select_day_31();
 
+        /*select Week */
+        Select_Week();
 
+        /*select Day of week Month*/
+        Select_day_week_Month();
+
+    }
+
+    private void Select_day_week_Month() {
+        int count =1;
+        for (int i = 0; i < Days_Of_Week.length; i++) {
+            Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
+            broadcste_coman_model.setData(Days_Of_Week[i]);
+            if(Days_Of_Week[i].equals(Days_Of_Week[0])){
+                broadcste_coman_model.setPhoneSelect(true);
+                broadcste_coman_model.setNum(String.valueOf(7));
+            }else {
+                broadcste_coman_model.setPhoneSelect(false);
+                broadcste_coman_model.setNum(String.valueOf(count));
+                count++;
+            }
+            list_DayOfWeek_Month.add(broadcste_coman_model);
+        }
+    }
+
+    private void Select_Week() {
+        int count=1;
+        for (int i = 0; i < Week_Of.length; i++) {
+            Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
+            if (i == 0) {
+                broadcste_coman_model.setPhoneSelect(true);
+            } else {
+                broadcste_coman_model.setPhoneSelect(false);
+            }
+            broadcste_coman_model.setData(Week_Of[i]);
+            broadcste_coman_model.setNum(String.valueOf(count));
+            list_Week_Of.add(broadcste_coman_model);
+            count++;
+        }
     }
 
     private void Select_day_31 () {
         for (int i = 0; i < Days_31.length; i++) {
-            if (i == 0) {
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
+                if (i == 0) {
+                    broadcste_coman_model.setPhoneSelect(true);
+                } else {
+                    broadcste_coman_model.setPhoneSelect(false);
+                }
                 broadcste_coman_model.setNum(Days_31[i]);
-                broadcste_coman_model.setPhoneSelect(true);
                 list_Day_31.add(broadcste_coman_model);
-
-            } else {
-                Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
-                broadcste_coman_model.setNum(Days_31[i]);
-                broadcste_coman_model.setPhoneSelect(false);
-                list_Day_31.add(broadcste_coman_model);
-            }
         }
     }
 
     private void Select_day_week() {
 
+        int count =1;
         for (int i = 0; i < Days_Of_Week.length; i++) {
-            int count =0;
             Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
             broadcste_coman_model.setData(Days_Of_Week[i]);
             if(Days_Of_Week[i].equals(Days_Of_Week[0])){
@@ -238,7 +331,6 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 broadcste_coman_model.setNum(String.valueOf(count));
                 count++;
             }
-            broadcste_coman_model.setPhoneSelect(false);
             list_DayOfWeek.add(broadcste_coman_model);
         }
 
@@ -247,53 +339,42 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
     private void Select_Monthly_3() {
         for (int i = 0; i < 3; i++) {
-            if (i == 0) {
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
                 broadcste_coman_model.setNum(Select_day[i]);
-                broadcste_coman_model.setPhoneSelect(true);
+                if (i == 0) {
+                    broadcste_coman_model.setPhoneSelect(true);
+                } else {
+                    broadcste_coman_model.setPhoneSelect(false);
+                }
                 list_month_3.add(broadcste_coman_model);
-            } else {
-                Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
-                broadcste_coman_model.setNum(Select_day[i]);
-                broadcste_coman_model.setPhoneSelect(false);
-                list_month_3.add(broadcste_coman_model);
-            }
         }
     }
 
     private void Select_Week_12() {
 
         for (int i = 0; i < 12; i++) {
-            if (i == 0) {
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
                 broadcste_coman_model.setNum(Select_day[i]);
-                broadcste_coman_model.setPhoneSelect(true);
+                if (i == 0) {
+                    broadcste_coman_model.setPhoneSelect(true);
+                } else {
+                    broadcste_coman_model.setPhoneSelect(false);
+                }
                 list_week_12.add(broadcste_coman_model);
-
-            } else {
-                Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
-                broadcste_coman_model.setNum(Select_day[i]);
-                broadcste_coman_model.setPhoneSelect(false);
-                list_week_12.add(broadcste_coman_model);
-            }
         }
     }
 
     private void Select_Day_15() {
 
         for (int i = 0; i < 15; i++) {
-            if (i == 0) {
                 Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
                 broadcste_coman_model.setNum(Select_day[i]);
-                broadcste_coman_model.setPhoneSelect(true);
+                if (i == 0) {
+                    broadcste_coman_model.setPhoneSelect(true);
+                } else {
+                    broadcste_coman_model.setPhoneSelect(false);
+                }
                 list_day_15.add(broadcste_coman_model);
-
-            } else {
-                Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
-                broadcste_coman_model.setNum(Select_day[i]);
-                broadcste_coman_model.setPhoneSelect(false);
-                list_day_15.add(broadcste_coman_model);
-            }
         }
     }
 
@@ -376,7 +457,10 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         tv_day = findViewById(R.id.tv_day);
         layout_day.setOnClickListener(this);
         tv_info = findViewById(R.id.tv_info);
+        iv_small_logo = findViewById(R.id.iv_small_logo);
+        iv_big_logo = findViewById(R.id.iv_big_logo);
         tv_recurrence = findViewById(R.id.tv_recurrence);
+        tv_recurrence.setTextColor(getResources().getColor(R.color.text_gray));
         layout_rec = findViewById(R.id.layout_rec);
         layout_rec.setOnClickListener(this);
         iv_down_arrow = findViewById(R.id.iv_down_arrow);
@@ -394,7 +478,6 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Done");
-        tc_time_zone = findViewById(R.id.tc_time_zone);
         la_date = findViewById(R.id.la_date);
         tv_date = findViewById(R.id.tv_date);
         la_time = findViewById(R.id.la_time);
@@ -410,18 +493,13 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("Z");
         String localTime = date.format(currentLocalTime);
         String time_zone = TimeZone.getDefault().getID();
-        //  tc_time_zone.setText("Time Zone("+localTime+"-"+time_zone);
-
-        // open this code used
-       /* SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        tc_time_zone.setText("Time Zone(" + user_data.getUser().getUserTimezone().get(0).getText().toString() + ")");*/
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.layout_day:
                 Day_bouttomSheet();
@@ -435,7 +513,8 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                if (tv_recurrence.getText().toString().equals("Recurrence")) {
+                String recurring_type= tv_recurrence.getText().toString();
+                if (recurring_type.equals("Recurrence")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Select Recurrence", false);
                 } else {
                     broadcate_save_data.setDate(tv_date.getText().toString());
@@ -448,21 +527,23 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                     broadcate_save_data.setEvery_second(second_id);
                     broadcate_save_data.setEvery_day(day_section_id);
                     SessionManager.setBroadcate_save_data(getApplicationContext(), broadcate_save_data);
+                    SessionManager.setBroadcast_flag("edit");
                     Intent broad_caste = new Intent(getApplicationContext(), Broadcast_Name_Activity.class);
+                    broad_caste.putExtra("Activty","Recurrence");
                     startActivity(broad_caste);
                     finish();
                 }
 
 
                 break;
-            case R.id.iv_date:
+            case R.id.la_date:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 OpenBob();
                 break;
-            case R.id.iv_time:
+            case R.id.la_time:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
@@ -517,7 +598,6 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 Second_bouttomSheet();
                 break;
             case R.id.layout_day_selction:
-                Log.e("Click", "Done");
                 Second_Day_bouttomSheet();
                 break;
 
@@ -525,6 +605,11 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     private void Day_text_bouttomSheet() {
 
@@ -548,36 +633,11 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         final View mView = getLayoutInflater().inflate(R.layout.broadcast_bottom_sheet, null);
         bottomSheetDialog_second = new BottomSheetDialog(this, R.style.CoffeeDialog);
         bottomSheetDialog_second.setContentView(mView);
-        TextView tv_done = bottomSheetDialog_second.findViewById(R.id.tv_done);
-        TextView tv_txt = bottomSheetDialog_second.findViewById(R.id.tv_txt);
-        tv_txt.setText("");
         RecyclerView number_list = bottomSheetDialog_second.findViewById(R.id.number_list);
         number_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        List<Broadcste_Coman_Model> broadcste_coman_models = new ArrayList<>();
-        String[] recursion_array = getResources().getStringArray(R.array.broadcast_week_txt);
-
-        for (int i = 0; i < recursion_array.length; i++) {
-            if (i == 0) {
-                int count = i + 1;
-                Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
-                broadcste_coman_model.setData(recursion_array[i]);
-                broadcste_coman_model.setNum(String.valueOf(count));
-                broadcste_coman_model.setPhoneSelect(true);
-                broadcste_coman_models.add(broadcste_coman_model);
-
-            } else {
-                int count = i + 1;
-                Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
-                broadcste_coman_model.setData(recursion_array[i]);
-                broadcste_coman_model.setNum(String.valueOf(count));
-                broadcste_coman_model.setPhoneSelect(false);
-                broadcste_coman_models.add(broadcste_coman_model);
-
-            }
 
 
-        }
-        SecondListAdepter emailListAdepter = new SecondListAdepter(getApplicationContext(), broadcste_coman_models, tv_done);
+        SecondListAdepter emailListAdepter = new SecondListAdepter(getApplicationContext(), list_Week_Of);
         number_list.setAdapter(emailListAdepter);
         bottomSheetDialog_second.show();
     }
@@ -587,38 +647,10 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         final View mView = getLayoutInflater().inflate(R.layout.broadcast_bottom_sheet, null);
         bottomSheetDialog_day_second = new BottomSheetDialog(this, R.style.CoffeeDialog);
         bottomSheetDialog_day_second.setContentView(mView);
-        TextView tv_done = bottomSheetDialog_day_second.findViewById(R.id.tv_done);
-        TextView tv_txt = bottomSheetDialog_day_second.findViewById(R.id.tv_txt);
-        tv_txt.setText("");
         RecyclerView number_list = bottomSheetDialog_day_second.findViewById(R.id.number_list);
         number_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        List<Broadcste_Coman_Model> broadcste_coman_models = new ArrayList<>();
-        String[] recursion_array = getResources().getStringArray(R.array.broadcast_day_txt);
 
-        for (int i = 0; i < recursion_array.length; i++) {
-            if (i == 0) {
-                int count = i + 1;
-
-                Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
-                broadcste_coman_model.setData(recursion_array[i]);
-                broadcste_coman_model.setNum(String.valueOf(count));
-                broadcste_coman_model.setPhoneSelect(true);
-                broadcste_coman_models.add(broadcste_coman_model);
-
-            } else {
-                int count = i + 1;
-                Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
-                broadcste_coman_model.setData(recursion_array[i]);
-                broadcste_coman_model.setPhoneSelect(false);
-                broadcste_coman_model.setNum(String.valueOf(count));
-
-                broadcste_coman_models.add(broadcste_coman_model);
-
-            }
-
-
-        }
-        Day_Second_ListAdepter emailListAdepter = new Day_Second_ListAdepter(getApplicationContext(), broadcste_coman_models, tv_done);
+        Day_Second_ListAdepter emailListAdepter = new Day_Second_ListAdepter(getApplicationContext(), list_DayOfWeek_Month);
         number_list.setAdapter(emailListAdepter);
         bottomSheetDialog_day_second.show();
     }
@@ -757,13 +789,11 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
         public Context mCtx;
         List<Broadcste_Coman_Model> list_Recurrence;
-        int s_position;
 
 
         public RecurrenceAdepter(Context applicationContext, List<Broadcste_Coman_Model> list_Recurrence) {
             this.mCtx = applicationContext;
             this.list_Recurrence = list_Recurrence;
-            this.s_position = s_position;
         }
 
 
@@ -797,7 +827,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                     }
                     item.setPhoneSelect(true);
                     tv_recurrence.setText(item.getData());
-
+                    tv_recurrence.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
                     /* inisilize to day */
                     Day_list_set();
 
@@ -807,21 +837,26 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                         view_day.setVisibility(View.VISIBLE);
                         layout_month.setVisibility(View.GONE);
                         tv_info.setVisibility(View.GONE);
+                        iv_big_logo.setVisibility(View.GONE);
+                        iv_small_logo.setVisibility(View.VISIBLE);
                         tv_day_txt.setText("Day");
 
                     } else if (item.getData().equals(Select_Recurrence[1])) {
                         layout_daily_selction.setVisibility(View.VISIBLE);
                         layout_month.setVisibility(View.GONE);
                         tv_info.setVisibility(View.GONE);
+                        iv_big_logo.setVisibility(View.GONE);
+                        iv_small_logo.setVisibility(View.VISIBLE);
                         tv_day_txt.setText("Week");
                         view_day.setVisibility(View.VISIBLE);
                         layout_occurs_weekly.setVisibility(View.VISIBLE);
-
+                        SetSelected();
                     } else if (item.getData().equals(Select_Recurrence[2])) {
                         layout_daily_selction.setVisibility(View.VISIBLE);
-                        tv_daylist.setText("");
                         layout_month.setVisibility(View.VISIBLE);
                         tv_info.setVisibility(View.GONE);
+                        iv_small_logo.setVisibility(View.VISIBLE);
+                        iv_big_logo.setVisibility(View.GONE);
                         tv_day_txt.setText("Month");
                         view_day.setVisibility(View.VISIBLE);
                         layout_occurs_weekly.setVisibility(View.GONE);
@@ -880,12 +915,12 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
     class Day_SelctionListAdepter extends RecyclerView.Adapter<Day_SelctionListAdepter.viewholder> {
 
         public Context mCtx;
-        List<Broadcste_Coman_Model> userLinkedGmailList;
+        List<Broadcste_Coman_Model> list_DayOfWeek;
 
 
-        public Day_SelctionListAdepter(Context applicationContext, List<Broadcste_Coman_Model> userLinkedGmailList) {
+        public Day_SelctionListAdepter(Context applicationContext, List<Broadcste_Coman_Model> list_DayOfWeek) {
             this.mCtx = applicationContext;
-            this.userLinkedGmailList = userLinkedGmailList;
+            this.list_DayOfWeek = list_DayOfWeek;
 
         }
 
@@ -899,7 +934,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
         @Override
         public void onBindViewHolder(@NonNull Day_SelctionListAdepter.viewholder holder, int position) {
-            Broadcste_Coman_Model item = userLinkedGmailList.get(position);
+            Broadcste_Coman_Model item = list_DayOfWeek.get(position);
             holder.tv_phone.setText(item.getData());
 
             if(item.isPhoneSelect()){
@@ -909,7 +944,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }
-            SetSelected();
+
 
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -923,45 +958,17 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                         holder.iv_selected.setVisibility(View.VISIBLE);
                         holder.iv_unselected.setVisibility(View.GONE);
                     }
+                    SetSelected();
                     notifyDataSetChanged();
-                  //  bottomSheetDialog_day_text.cancel();
-
                 }
             });
-
-
-
-
         }
 
-        private void SetSelected () {
-            String day_list = "";
 
-            for (int i = 0; i < userLinkedGmailList.size(); i++) {
-                if (userLinkedGmailList.get(i).isPhoneSelect() == true) {
-                    if (day_list.equals("")) {
-                        day_list = userLinkedGmailList.get(i).getData().substring(0,3);
-
-                    } else {
-                        day_list = day_list + ", " + userLinkedGmailList.get(i).getData().substring(0,3);
-
-                    }
-                    if (day_list_id.equals("")) {
-
-                        day_list_id = userLinkedGmailList.get(i).getNum();
-                    } else {
-
-                        day_list_id = day_list_id + ", " + userLinkedGmailList.get(i).getNum();
-                    }
-
-                }
-                tv_daylist.setText(day_list);
-            }
-        }
 
         @Override
         public int getItemCount() {
-            return userLinkedGmailList.size();
+            return list_DayOfWeek.size();
         }
 
         public class viewholder extends RecyclerView.ViewHolder {
@@ -979,7 +986,22 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
             }
         }
     }
-
+    private void SetSelected () {
+        String day_list = "";
+        day_list_id="";
+        for (int i = 0; i < list_DayOfWeek.size(); i++) {
+            if (list_DayOfWeek.get(i).isPhoneSelect() == true) {
+                if (day_list_id.equals("")) {
+                    day_list_id = list_DayOfWeek.get(i).getNum();
+                    day_list = list_DayOfWeek.get(i).getData().substring(0,3);
+                } else {
+                    day_list_id = day_list_id + "," + list_DayOfWeek.get(i).getNum();
+                    day_list = day_list + ", " + list_DayOfWeek.get(i).getData().substring(0,3);
+                }
+            }
+            tv_daylist.setText(day_list);
+        }
+    }
 
     class DayListAdepter extends RecyclerView.Adapter<DayListAdepter.viewholder> {
 
@@ -1026,7 +1048,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                     }
                     item.setPhoneSelect(true);
                     tv_day.setText(item.getNum());
-                    tv_info.setVisibility(View.GONE);
+                  //  tv_info.setVisibility(View.GONE);
                     bottomSheetDialog_day.cancel();
                 }
             });
@@ -1102,7 +1124,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                     holder.iv_unselected.setVisibility(View.GONE);
 
                     tv_month.setText(item.getNum());
-                    tv_info.setVisibility(View.GONE);
+                  //  tv_info.setVisibility(View.GONE);
                     bottomSheetDialog_monthday.cancel();
                 }
             });
@@ -1133,17 +1155,12 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
     class SecondListAdepter extends RecyclerView.Adapter<SecondListAdepter.viewholder> {
 
         public Context mCtx;
-        List<Broadcste_Coman_Model> userLinkedGmailList;
-        List<Broadcste_Coman_Model> contacts;
-        int s_position;
-        TextView tv_done;
+        List<Broadcste_Coman_Model> list_Week_Of;
 
 
-        public SecondListAdepter(Context applicationContext, List<Broadcste_Coman_Model> userLinkedGmailList, TextView tv_done) {
+        public SecondListAdepter(Context applicationContext, List<Broadcste_Coman_Model> list_Week_Of) {
             this.mCtx = applicationContext;
-            this.userLinkedGmailList = userLinkedGmailList;
-            this.s_position = s_position;
-            this.tv_done = tv_done;
+            this.list_Week_Of = list_Week_Of;
         }
 
 
@@ -1157,99 +1174,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
         @Override
         public void onBindViewHolder(@NonNull SecondListAdepter.viewholder holder, int position) {
-            Broadcste_Coman_Model item = userLinkedGmailList.get(position);
-            holder.tv_phone.setText(item.getData());
-            if (item.isPhoneSelect()) {
-                holder.iv_selected.setVisibility(View.VISIBLE);
-                holder.iv_unselected.setVisibility(View.GONE);
-            } else {
-                holder.iv_selected.setVisibility(View.GONE);
-                holder.iv_unselected.setVisibility(View.VISIBLE);
-            }
-
-            holder.layout_select.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
-                        if (userLinkedGmailList.get(i).isPhoneSelect()) {
-                            userLinkedGmailList.get(i).setPhoneSelect(false);
-                            break;
-                        }
-                    }
-                    item.setPhoneSelect(true);
-
-
-                    tv_done.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            tv_second.setText(item.getData());
-                            tv_info.setVisibility(View.GONE);
-                            bottomSheetDialog_second.cancel();
-                            second_id = item.getNum();
-                        }
-                    });
-
-
-                    holder.iv_selected.setVisibility(View.VISIBLE);
-                    holder.iv_unselected.setVisibility(View.GONE);
-                    notifyItemChanged(position);
-                    notifyDataSetChanged();
-                }
-            });
-
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return userLinkedGmailList.size();
-        }
-
-        public class viewholder extends RecyclerView.ViewHolder {
-            TextView tv_phone;
-            ImageView iv_selected, iv_unselected;
-            LinearLayout layout_select;
-
-            public viewholder(View view) {
-                super(view);
-                iv_selected = view.findViewById(R.id.iv_selected);
-                layout_select = view.findViewById(R.id.layout_select);
-                iv_unselected = view.findViewById(R.id.iv_unselected);
-                tv_phone = view.findViewById(R.id.tv_phone);
-            }
-        }
-    }
-
-    class Day_Second_ListAdepter extends RecyclerView.Adapter<Day_Second_ListAdepter.viewholder> {
-
-        public Context mCtx;
-        List<Broadcste_Coman_Model> userLinkedGmailList;
-        List<Broadcste_Coman_Model> contacts;
-        int s_position;
-        TextView tv_done;
-
-
-        public Day_Second_ListAdepter(Context applicationContext, List<Broadcste_Coman_Model> userLinkedGmailList, TextView tv_done) {
-            this.mCtx = applicationContext;
-            this.userLinkedGmailList = userLinkedGmailList;
-            this.s_position = s_position;
-            this.tv_done = tv_done;
-        }
-
-
-        @NonNull
-        @Override
-        public Day_Second_ListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.broadcast_select_layout, parent, false);
-            return new Day_Second_ListAdepter.viewholder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull Day_Second_ListAdepter.viewholder holder, int position) {
-            Broadcste_Coman_Model item = userLinkedGmailList.get(position);
+            Broadcste_Coman_Model item = list_Week_Of.get(position);
             holder.tv_phone.setText(item.getData());
             if (item.isPhoneSelect()) {
                 holder.iv_selected.setVisibility(View.VISIBLE);
@@ -1263,30 +1188,23 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 @Override
                 public void onClick(View view) {
 
-                    for (int i = 0; i < userLinkedGmailList.size(); i++) {
-                        if (userLinkedGmailList.get(i).isPhoneSelect()) {
-                            userLinkedGmailList.get(i).setPhoneSelect(false);
+                    for (int i = 0; i < list_Week_Of.size(); i++) {
+                        if (list_Week_Of.get(i).isPhoneSelect()) {
+                            list_Week_Of.get(i).setPhoneSelect(false);
                             break;
                         }
                     }
                     item.setPhoneSelect(true);
 
-
-                    tv_done.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            tv_day_selction.setText(item.getData());
-                            tv_info.setVisibility(View.GONE);
-                            bottomSheetDialog_day_second.cancel();
-                            day_section_id = item.getNum();
-                        }
-                    });
-
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
-                    notifyItemChanged(position);
-                    notifyDataSetChanged();
+
+
+                    tv_second.setText(item.getData());
+                    //tv_info.setVisibility(View.GONE);
+                    bottomSheetDialog_second.cancel();
+                    second_id = item.getNum();
+
                 }
             });
 
@@ -1295,7 +1213,84 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
         @Override
         public int getItemCount() {
-            return userLinkedGmailList.size();
+            return list_Week_Of.size();
+        }
+
+        public class viewholder extends RecyclerView.ViewHolder {
+            TextView tv_phone;
+            ImageView iv_selected, iv_unselected;
+            LinearLayout layout_item;
+
+            public viewholder(View view) {
+                super(view);
+                iv_selected = view.findViewById(R.id.iv_selected);
+                layout_item = view.findViewById(R.id.layout_item);
+                iv_unselected = view.findViewById(R.id.iv_unselected);
+                tv_phone = view.findViewById(R.id.tv_phone);
+            }
+        }
+    }
+
+    class Day_Second_ListAdepter extends RecyclerView.Adapter<Day_Second_ListAdepter.viewholder> {
+
+        public Context mCtx;
+        List<Broadcste_Coman_Model> list_DayOfWeek;
+
+
+        public Day_Second_ListAdepter(Context applicationContext, List<Broadcste_Coman_Model> list_DayOfWeek) {
+            this.mCtx = applicationContext;
+            this.list_DayOfWeek = list_DayOfWeek;
+        }
+
+
+        @NonNull
+        @Override
+        public Day_Second_ListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.broadcast_select_layout, parent, false);
+            return new Day_Second_ListAdepter.viewholder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull Day_Second_ListAdepter.viewholder holder, int position) {
+            Broadcste_Coman_Model item = list_DayOfWeek.get(position);
+            holder.tv_phone.setText(item.getData());
+            if (item.isPhoneSelect()) {
+                holder.iv_selected.setVisibility(View.VISIBLE);
+                holder.iv_unselected.setVisibility(View.GONE);
+            } else {
+                holder.iv_selected.setVisibility(View.GONE);
+                holder.iv_unselected.setVisibility(View.VISIBLE);
+            }
+
+            holder.layout_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    for (int i = 0; i < list_DayOfWeek.size(); i++) {
+                        if (list_DayOfWeek.get(i).isPhoneSelect()) {
+                            list_DayOfWeek.get(i).setPhoneSelect(false);
+                            break;
+                        }
+                    }
+                    item.setPhoneSelect(true);
+
+
+                    holder.iv_selected.setVisibility(View.VISIBLE);
+                    holder.iv_unselected.setVisibility(View.GONE);
+
+                    tv_day_selction.setText(item.getData());
+                  //  tv_info.setVisibility(View.GONE);
+                    bottomSheetDialog_day_second.cancel();
+                    day_section_id = item.getNum();
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return list_DayOfWeek.size();
         }
 
         public class viewholder extends RecyclerView.ViewHolder {
