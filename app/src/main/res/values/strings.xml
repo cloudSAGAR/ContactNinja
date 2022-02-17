@@ -274,8 +274,6 @@ Number</string>
     </array>
 
 
-
-
     <string name="forgot_password">Fogot your password?</string>
     <string name="forgot_password_txt">Enter your registerd email blow \n to receive password </string>
     <string name="forgot_remember">Remember password?</string>
@@ -463,12 +461,27 @@ Number</string>
         <item>Text</item>
         <item>Email</item>
     </string-array>
-
-
     <string-array name="Select_Recurrence">
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
+    </string-array>
+    <string-array name="Select_day">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
     </string-array>
 
     <string name="contect_block">This contect is block</string>
@@ -488,23 +501,10 @@ Number</string>
     <string name="company_email">info@company.com</string>
     <string name="company_url">www.companyname.com</string>
     <string name="company_address">Location</string>
-    <string-array name="Select_day">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-    </string-array>
+
+
+    <string name="connect_zoom_account">Connect zoom account</string>
+    <string name="zoom_account">Your zoom account</string>
 
 
 </resources>

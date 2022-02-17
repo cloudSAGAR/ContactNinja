@@ -630,23 +630,9 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                         return;
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
-                    switch (item.getStatus()) {
-                        case "A":
-                            SessionManager.setBroadcate_List_Detail(getApplicationContext(),item);
-                            Intent getintent1=new Intent(getApplicationContext(),Broadcaste_Activity.class);
-                            startActivity(getintent1);
-                            break;
-                        case "I":
-                            if (item.getFirstActivated() != null&&!item.getFirstActivated().equals("")) {
-                                SessionManager.setBroadcate_List_Detail(getApplicationContext(),item);
-                                Intent getintent=new Intent(getApplicationContext(),Broadcaste_Activity.class);
-                                startActivity(getintent);
-                            } else {
-                                showAlertDialogButtonClicked(item,3);
-                            }
-                            break;
-                    }
-
+                    SessionManager.setBroadcate_List_Detail(getApplicationContext(),item);
+                    Intent getintent=new Intent(getApplicationContext(),Broadcaste_Activity.class);
+                    startActivity(getintent);
 
                 }
             });

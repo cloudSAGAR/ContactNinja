@@ -361,17 +361,12 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     startActivity(intent);
                     //   finish();
                 } else {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
                     SessionManager.setCampign_flag("read");
-                    showAlertDialogButtonClicked(campaign.getId(),3);
-                   /* Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
+                    Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
                     intent.putExtra("sequence_id", campaign.getId());
                     startActivity(intent);
                     finish();
-*/
+
                 }
             }
         }

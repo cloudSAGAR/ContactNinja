@@ -150,6 +150,30 @@
                     android:src="@drawable/ic_right_arrow"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_zoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    style="@style/tv_Medium_14"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/connect_zoom_account"
+                    android:textColor="@color/text_reg" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_logout"

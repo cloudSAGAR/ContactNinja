@@ -48,14 +48,21 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Setting.Zoom_verification"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Setting.ZoomActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Main_Broadcast.List_And_show.Broadcaste_Activity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Main_Broadcast.Recuring_email_broadcast_activity"
             android:exported="false"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast"
             android:exported="false"
@@ -226,7 +233,6 @@
             android:name=".Main_Broadcast.Brodcsast_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Group.SendBroadcast"
             android:exported="false"
@@ -320,6 +326,7 @@
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -359,7 +366,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />
         </provider>
-
     </application>
 
 </manifest>
