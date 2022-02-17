@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Main_Broadcast.Text_And_Email_Auto_Manual_Broadcast;
 import com.contactninja.Model.BroadcastActivityListModel;
-import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Campaign_List;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -540,6 +539,26 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 holder.image_icon.setImageResource(R.drawable.ic_email);
             }
 
+            setImage(item,holder);
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    switch (item.getStatus()) {
+                        case "A":
+                            showAlertDialogButtonClicked(item,1);
+                            break;
+                        case "I":
+                            if (item.getFirstActivated() != null&&!item.getFirstActivated().equals("")) {
+                                showAlertDialogButtonClicked(item,0);
+                            } else {
+                                showAlertDialogButtonClicked(item,3);
+                            }
+                            break;
+                    }
+                    return false;
+                }
+            });
+
             if (item.getStatus().equals("I")) {
                 holder.iv_hold.setVisibility(View.VISIBLE);
                 holder.tv_status.setText("Inactive");
@@ -556,6 +575,17 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 holder.tv_status.setTextColor(getResources().getColor(R.color.tv_push_color));
 
             }
+            holder.iv_hold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    showAlertDialogButtonClicked(item,3);
+
+                }
+            });
 
             holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -568,6 +598,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
 
                 }
             });
+
             holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -636,6 +667,26 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 iv_camp = itemView.findViewById(R.id.iv_camp);
             }
         }
+        private void setImage(BroadcastActivityListModel.Broadcast broadcast, viewData holder) {
+            switch (broadcast.getStatus()) {
+                case "A":
+                    holder.iv_hold.setVisibility(View.GONE);
+                    holder.iv_play_icon.setVisibility(View.VISIBLE);
+                    holder.iv_puse_icon.setVisibility(View.GONE);
+                    break;
+                case "I":
+                    if (broadcast.getFirstActivated() != null&&!broadcast.getFirstActivated().equals("")) {
+                        holder.iv_puse_icon.setVisibility(View.VISIBLE);
+                        holder.iv_hold.setVisibility(View.GONE);
+                    } else {
+                        holder.iv_hold.setVisibility(View.VISIBLE);
+                        holder.iv_puse_icon.setVisibility(View.GONE);
+                    }
+                    holder.iv_play_icon.setVisibility(View.GONE);
+                    break;
+            }
+        }
+
     }
 
     public void showAlertDialogButtonClicked(BroadcastActivityListModel.Broadcast broadcast,int status) {
@@ -653,6 +704,8 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         TextView tv_message = customLayout.findViewById(R.id.tv_message);
         if(status==1){
             tv_message.setText("Are you sure you want to pause the broadcast");
+        }else if(status==0) {
+            tv_message.setText("Are you sure you want to play the broadcast");
         }else {
             tv_message.setText("Are you sure you want to play the broadcast");
         }
@@ -667,13 +720,13 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartCampignApi(broadcast,status,dialog);
+                StartBroadCastApi(broadcast,status,dialog);
             }
         });
         dialog.show();
     }
 
-    public void StartCampignApi(BroadcastActivityListModel.Broadcast broadcast, int status, AlertDialog dialog) {
+    public void StartBroadCastApi(BroadcastActivityListModel.Broadcast broadcast, int status, AlertDialog dialog) {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -689,6 +742,8 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         paramObject.addProperty("user_id", user_id);
         if(status==1){
             paramObject.addProperty("status", "I");
+        }else if(status==0){
+            paramObject.addProperty("status", "A");
         }else {
             paramObject.addProperty("status", "A");
         }
@@ -701,7 +756,6 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                         onResume();
                         dialog.dismiss();
                     }
-
                     @Override
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
