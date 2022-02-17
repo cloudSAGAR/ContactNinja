@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/group_layout"
+        android:id="@+id/layout_item"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

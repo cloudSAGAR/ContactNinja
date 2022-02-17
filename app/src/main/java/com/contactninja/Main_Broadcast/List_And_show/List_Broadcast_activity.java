@@ -351,8 +351,8 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("q", ev_search.getText().toString());
-        paramObject.addProperty("filter_by", Filter);
-        paramObject.addProperty("user_datetime", Global.getCurrentTimeandDate());
+        paramObject.addProperty("orderBy", "created_at");
+        paramObject.addProperty("order", "DESC");
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
@@ -540,7 +540,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
             }
 
             setImage(item,holder);
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            holder.layout_contec.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     switch (item.getStatus()) {
@@ -555,7 +555,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                             }
                             break;
                     }
-                    return false;
+                    return true;
                 }
             });
 
@@ -626,9 +626,28 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
             holder.layout_contec.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    SessionManager.setBroadcate_List_Detail(getApplicationContext(),item);
-                    Intent getintent=new Intent(getApplicationContext(),Broadcaste_Activity.class);
-                    startActivity(getintent);
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    switch (item.getStatus()) {
+                        case "A":
+                            SessionManager.setBroadcate_List_Detail(getApplicationContext(),item);
+                            Intent getintent1=new Intent(getApplicationContext(),Broadcaste_Activity.class);
+                            startActivity(getintent1);
+                            break;
+                        case "I":
+                            if (item.getFirstActivated() != null&&!item.getFirstActivated().equals("")) {
+                                SessionManager.setBroadcate_List_Detail(getApplicationContext(),item);
+                                Intent getintent=new Intent(getApplicationContext(),Broadcaste_Activity.class);
+                                startActivity(getintent);
+                            } else {
+                                showAlertDialogButtonClicked(item,3);
+                            }
+                            break;
+                    }
+
+
                 }
             });
 
@@ -721,6 +740,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
             @Override
             public void onClick(View v) {
                 StartBroadCastApi(broadcast,status,dialog);
+                dialog.dismiss();
             }
         });
         dialog.show();
@@ -754,12 +774,10 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
                         onResume();
-                        dialog.dismiss();
                     }
                     @Override
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
-                        dialog.dismiss();
                     }
                 });
     }

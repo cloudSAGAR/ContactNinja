@@ -897,13 +897,15 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
                             if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
 
-                                StartCampignApi();
+                                onBackPressed();
+                                //StartCampignApi();
 
                             }
 
                            else if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read_name")) {
 
-                                StartCampignApi();
+                                onBackPressed();
+                                //StartCampignApi();
 
                             }
                             else {

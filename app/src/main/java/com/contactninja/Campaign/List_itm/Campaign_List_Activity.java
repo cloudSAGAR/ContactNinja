@@ -361,12 +361,17 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     startActivity(intent);
                     //   finish();
                 } else {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     SessionManager.setCampign_flag("read");
-                    Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                    showAlertDialogButtonClicked(campaign.getId(),3);
+                   /* Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
                     intent.putExtra("sequence_id", campaign.getId());
                     startActivity(intent);
                     finish();
-
+*/
                 }
             }
         }
@@ -450,6 +455,24 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 holder.campaign_name.setText(campaign.getSeqName());
                 setImage(campaign, holder);
 
+                holder.layout_item.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        switch (campaign.getStatus()) {
+                            case "A":
+                                showAlertDialogButtonClicked(campaign.getId(),1);
+                                break;
+                            case "I":
+                                if (campaign.getStarted_on() != null&&!campaign.getStarted_on().equals("")) {
+                                    showAlertDialogButtonClicked(campaign.getId(),0);
+                                } else {
+                                    showAlertDialogButtonClicked(campaign.getId(),3);
+                                }
+                                break;
+                        }
+                        return true;
+                    }
+                });
 
                 holder.campaign_name.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -459,6 +482,17 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
                         campaingClick.OnClick(campaign);
+                    }
+                });
+                holder.iv_hold.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        showAlertDialogButtonClicked(campaign.getId(),3);
+
                     }
                 });
                 holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
@@ -516,6 +550,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         public  class viewData extends RecyclerView.ViewHolder {
             TextView campaign_name;
             ImageView iv_hold, iv_puse_icon, iv_play_icon;
+            LinearLayout layout_item;
 
             public viewData(@NonNull View itemView) {
                 super(itemView);
@@ -523,6 +558,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 iv_hold = itemView.findViewById(R.id.iv_hold);
                 iv_puse_icon = itemView.findViewById(R.id.iv_puse_icon);
                 iv_play_icon = itemView.findViewById(R.id.iv_play_icon);
+                layout_item = itemView.findViewById(R.id.layout_item);
             }
         }
 
