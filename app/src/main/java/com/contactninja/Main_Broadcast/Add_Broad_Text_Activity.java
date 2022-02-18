@@ -403,16 +403,13 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
                     text1.setSelect(false);
                     templateTextList.add(0, text1);
 
-                    HastagList.TemplateText text2 = new HastagList.TemplateText();
-                    text2.setFile(R.drawable.ic_video);
-                    text2.setSelect(false);
-                    templateTextList.add(1, text2);
+
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(2, templateText);
+                    templateTextList.add(1, templateText);
 
 
                     Listset(templateTextList);

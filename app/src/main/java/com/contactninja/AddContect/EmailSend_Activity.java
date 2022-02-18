@@ -1258,6 +1258,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                 if(!txt_time.getText().toString().equals("")){
                     Create_Zoom(tv_date,tv_time,txt_time);
                     bottomSheetDialog.cancel();
+
                 }else {
                     Global.Messageshow(mCtx,mMainLayout,mCtx.getString(R.string.select_meeting),false);
                 }

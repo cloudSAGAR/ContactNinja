@@ -289,16 +289,13 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                     text1.setSelect(false);
                     templateTextList.add(1, text1);
 
-                    HastagList.TemplateText text2 = new HastagList.TemplateText();
-                    text2.setFile(R.drawable.ic_video);
-                    text2.setSelect(false);
-                    templateTextList.add(2, text2);
+
 
 
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(3, templateText);
+                    templateTextList.add(2, templateText);
 
 
                     Listset(templateTextList);
