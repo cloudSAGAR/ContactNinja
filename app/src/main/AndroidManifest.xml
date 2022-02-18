@@ -48,10 +48,6 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Setting.Zoom_verification"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".Setting.ZoomActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -165,7 +161,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Setting.Email_verification"
+            android:name=".Setting.Verification_web"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

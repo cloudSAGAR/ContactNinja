@@ -277,6 +277,8 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@drawable/shape_10_white_gray_line"
+                android:linksClickable="true"
+                android:autoLink="web|email"
                 android:focusable="true"
                 android:gravity="left"
                 android:hint="@string/ComposeEmail"

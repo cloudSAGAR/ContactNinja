@@ -117,7 +117,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
                     userLinkedGmailList=userLinkedGmail.getUserLinkedGmail();
                     if (userLinkedGmailList.size() == 0) {
-                        startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                        startActivity(new Intent(getApplicationContext(), Verification_web.class));
                     }else {
                         sessionManager.setUserLinkedGmail(getApplicationContext(),userLinkedGmailList);
                     }
@@ -126,7 +126,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                     rv_email_list.setAdapter(emailAdepter);
 
                 }else {
-                    startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                    startActivity(new Intent(getApplicationContext(), Verification_web.class));
                 }
             }
 
@@ -167,7 +167,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
                     // Global.openEmailAuth(EmailListActivity.this);
-                    Intent intent= new Intent(getApplicationContext(),Email_verification.class);
+                    Intent intent= new Intent(getApplicationContext(), Verification_web.class);
                     intent.putExtra("create","create");
                     startActivity(intent);
                 break;

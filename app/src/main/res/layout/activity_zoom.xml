@@ -45,6 +45,7 @@
                 />
 
             <TextView
+                android:gravity="center"
                 android:maxEms="40"
                 android:id="@+id/tv_email"
                 android:layout_marginTop="@dimen/_50sdp"
@@ -60,9 +61,25 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:background="@color/home_list_sub_data"
                 android:layout_width="match_parent"
-                android:layout_height="1dp">
+                android:layout_height="1dp"/>
 
-            </View>
+            <TextView
+                android:layout_marginTop="@dimen/_30sdp"
+                android:id="@+id/btn_Disconnect"
+                style="@style/tv_Medium_16"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/shape_50_red"
+                android:gravity="center"
+                android:text="@string/dis_account"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp">
+
+            </TextView>
 
         </LinearLayout>
     </LinearLayout>

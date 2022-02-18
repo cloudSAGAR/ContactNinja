@@ -306,6 +306,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@color/add_contect_transpernt"
+                    android:linksClickable="true"
+                    android:autoLink="web|email"
                     android:focusable="true"
                     android:gravity="left"
                     android:hint="@string/ComposeEmail"

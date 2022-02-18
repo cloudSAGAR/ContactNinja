@@ -175,7 +175,7 @@ public class Global extends Application {
         Snackbar snackbar;
         View sbview;
 
-        snackbar = Snackbar.make(frameLayout, message, 10);
+        snackbar = Snackbar.make(frameLayout, message, Snackbar.LENGTH_LONG);
         sbview = snackbar.getView();
 
         TextView textView = sbview.findViewById(R.id.snackbar_text);
@@ -316,6 +316,8 @@ public class Global extends Application {
         }
         return countryCode;
     }
+
+
 
     /*
         public static String getcontectexits(SessionManager sessionManager){

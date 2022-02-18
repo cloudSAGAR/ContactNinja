@@ -240,18 +240,20 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     Type listType = new TypeToken<ZoomExists>() {
                     }.getType();
                     ZoomExists zoomExists=new Gson().fromJson(headerString, listType);
+                    Intent intent=new Intent(getApplicationContext(),ZoomActivity.class);
                     if(zoomExists.getUserExists()){
-                            Intent intent=new Intent(getApplicationContext(),ZoomActivity.class);
-                            intent.putExtra("Email",zoomExists.getZoomUserEmail());
-                            startActivity(intent);
+                        intent.putExtra("Email",zoomExists.getZoomUserEmail());
                     }else {
-                        startActivity(new Intent(getApplicationContext(), Zoom_verification.class));
+                        intent.putExtra("Email","");
                     }
+                    startActivity(intent);
                 }else {
-                    startActivity(new Intent(getApplicationContext(), Zoom_verification.class));
+                    Intent intent=new Intent(getApplicationContext(),ZoomActivity.class);
+                    intent.putExtra("Email","");
+                    startActivity(intent);
+
                 }
             }
-
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();

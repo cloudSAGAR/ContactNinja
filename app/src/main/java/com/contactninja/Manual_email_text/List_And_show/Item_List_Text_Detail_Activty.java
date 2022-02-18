@@ -27,6 +27,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -38,16 +39,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.Interface.CardClick;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
 import com.contactninja.Manual_email_text.Email_Tankyou;
 import com.contactninja.Manual_email_text.Manual_Shooz_Time_Date_Activity;
-import com.contactninja.Manual_email_text.Manual_Text_TaskActivity;
-import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
@@ -55,7 +52,9 @@ import com.contactninja.Model.ManualTaskDetailsModel;
 import com.contactninja.Model.TemplateList;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
+import com.contactninja.Model.ZoomExists;
 import com.contactninja.R;
+import com.contactninja.Setting.Verification_web;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -1212,7 +1211,14 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                     }
                     else if (position==1)
                     {
-                        broadcast_manu();
+                        try {
+                            if(Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, MainActivity.mMainLayout)) {
+                                /*Check if user has records in Zoom Oauth table*/
+                                Zoom_Api(mCtx);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
 
@@ -1364,7 +1370,47 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
     }
 
 
-    private void broadcast_manu() {
+
+    void Zoom_Api(Context mCtx) throws JSONException {
+
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Item_List_Text_Detail_Activty.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("user_tmz_id",signResponseModel.getUser().getUserTimezone().get(0).getValue());
+        obj.add("data", paramObject);
+        retrofitCalls.zoomIntegrationExists(sessionManager,obj, loadingDialog, token,Global.getVersionname(Item_List_Text_Detail_Activty.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<ZoomExists>() {
+                    }.getType();
+                    ZoomExists zoomExists=new Gson().fromJson(headerString, listType);
+                    if(zoomExists.getUserExists()){
+                        broadcast_manu_zoom(mCtx);
+                    }else {
+                        Intent intent=new Intent(getApplicationContext(), Verification_web.class);
+                        intent.putExtra("Activtiy","zoom");
+                        startActivity(intent);
+                    }
+                }
+            }
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
+    private void broadcast_manu_zoom(Context mCtx) {
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.zoom_layout, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.CoffeeDialog);
@@ -1372,7 +1418,9 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
         LinearLayout la_date=bottomSheetDialog.findViewById(R.id.la_date);
         TextView tv_date=bottomSheetDialog.findViewById(R.id.tv_date);
         LinearLayout la_time=bottomSheetDialog.findViewById(R.id.la_time);
+        LinearLayout layout_Duration=bottomSheetDialog.findViewById(R.id.layout_Duration);
         TextView tv_time=bottomSheetDialog.findViewById(R.id.tv_time);
+        TextView txt_time=bottomSheetDialog.findViewById(R.id.txt_time);
         TextView tc_time_zone=bottomSheetDialog.findViewById(R.id.tc_time_zone);
         TextView tv_done=bottomSheetDialog.findViewById(R.id.tv_done);
         Date c = Calendar.getInstance().getTime();
@@ -1390,6 +1438,13 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                 OpenBob(tv_date);
             }
         });
+        layout_Duration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*select Duration ti zoom */
+                Duration_bouttomSheet(mCtx,txt_time);
+            }
+        });
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         tc_time_zone.setText("Time Zone("+user_data.getUser().getUserTimezone().get(0).getText().toString()+")");
         la_time.setOnClickListener(new View.OnClickListener() {
@@ -1401,10 +1456,158 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
         tv_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                /*Create a Zoom Meeting*/
+                if(!txt_time.getText().toString().equals("")){
+                    Create_Zoom(tv_date,tv_time,txt_time);
+                }else {
+                    Global.Messageshow(mCtx,mMainLayout,mCtx.getString(R.string.select_meeting),false);
+                }
                 bottomSheetDialog.cancel();
+
+
             }
         });
         bottomSheetDialog.show();
+
+    }
+
+    private void Create_Zoom(TextView tv_date, TextView tv_time, TextView txt_time) {
+        String Starttime= tv_date.getText().toString()+'T'+tv_time.getText().toString()+":00";
+        String duration = txt_time.getText().toString();
+        String mystring = duration;
+        String arr[] = mystring.split(" ", 2);
+        String firstWord = arr[0];
+
+        try {
+            if(Global.isNetworkAvailable(Item_List_Text_Detail_Activty.this, MainActivity.mMainLayout)) {
+                /*Create a Zoom Meeting*/
+                Zoom_create(Starttime,firstWord);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    void Zoom_create(String starttime, String duration) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Item_List_Text_Detail_Activty.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("meeting_name","contact Ninja with");
+        paramObject.addProperty("start_time",starttime);
+        paramObject.addProperty("duration",duration);
+        paramObject.addProperty("description","");
+        paramObject.addProperty("timezone",signResponseModel.getUser().getUserTimezone().get(0).getTzname());
+        obj.add("data", paramObject);
+        retrofitCalls.ZoomCreate(sessionManager,obj, loadingDialog, token,Global.getVersionname(Item_List_Text_Detail_Activty.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success (Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<ZoomExists>() {
+                    }.getType();
+                    ZoomExists zoomExists=new Gson().fromJson(headerString, listType);
+
+                    String curenttext = edit_compose.getText().toString();
+                    String Newtext = curenttext + " /n "+ zoomExists.getZoom_meeting_link_with_password();
+                    edit_compose.setText(Newtext);
+                    edit_compose.setSelection(edit_compose.getText().length());
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+    private void Duration_bouttomSheet(Context mCtx, TextView txt_time ) {
+
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.duration_item_update, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        RadioButton red_5 = bottomSheetDialog.findViewById(R.id.red_5);
+        RadioButton red_15 = bottomSheetDialog.findViewById(R.id.red_15);
+        RadioButton red_30 = bottomSheetDialog.findViewById(R.id.red_30);
+        RadioButton red_45 = bottomSheetDialog.findViewById(R.id.red_45);
+        RadioButton red_60 = bottomSheetDialog.findViewById(R.id.red_60);
+
+        bottomSheetDialog.show();
+
+        if(txt_time.getText().toString().equals(mCtx.getResources().getString(R.string.m_5))){
+            red_5.setChecked(true);
+        }else   if(txt_time.getText().toString().equals(mCtx.getResources().getString(R.string.m_15))){
+            red_15.setChecked(true);
+        } else   if(txt_time.getText().toString().equals(mCtx.getResources().getString(R.string.m_30))){
+            red_30.setChecked(true);
+        } else   if(txt_time.getText().toString().equals(mCtx.getResources().getString(R.string.m_45))){
+            red_45.setChecked(true);
+        } else   if(txt_time.getText().toString().equals(mCtx.getResources().getString(R.string.m_60))){
+            red_60.setChecked(true);
+        }
+
+        red_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    txt_time.setText(mCtx.getResources().getString(R.string.m_5));
+                    txt_time.setVisibility(View.VISIBLE);
+                    bottomSheetDialog.dismiss();
+                }
+            }
+        });
+        red_15.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    txt_time.setText(mCtx.getResources().getString(R.string.m_15));
+                    txt_time.setVisibility(View.VISIBLE);
+                    bottomSheetDialog.dismiss();
+                }
+            }
+        });
+        red_30.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    txt_time.setText(mCtx.getResources().getString(R.string.m_30));
+                    txt_time.setVisibility(View.VISIBLE);
+                    bottomSheetDialog.dismiss();
+                }
+            }
+        });
+        red_45.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    txt_time.setText(mCtx.getResources().getString(R.string.m_45));
+                    txt_time.setVisibility(View.VISIBLE);
+                    bottomSheetDialog.dismiss();
+                }
+            }
+        });
+        red_60.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    txt_time.setText(mCtx.getResources().getString(R.string.m_60));
+                    txt_time.setVisibility(View.VISIBLE);
+                    bottomSheetDialog.dismiss();
+                }
+            }
+        });
 
     }
     private int mYear, mMonth, mDay, mHour, mMinute;

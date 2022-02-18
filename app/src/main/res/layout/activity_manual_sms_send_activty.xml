@@ -150,6 +150,8 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_weight="1"
             android:background="@drawable/shape_25_white_gray_line_1"
+            android:linksClickable="true"
+            android:autoLink="web|email"
             android:focusable="true"
             android:hint="Enter Your Message"
             android:padding="@dimen/_10sdp"

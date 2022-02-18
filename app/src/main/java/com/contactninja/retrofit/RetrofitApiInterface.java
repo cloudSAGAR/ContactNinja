@@ -131,8 +131,21 @@ public interface RetrofitApiInterface {
     Call<ApiResponse> zoomIntegrationExists(@Header("Accept") String api, @Header("Authorization") String auth,
                                 @Body JsonObject jsonObject,
                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
-   @POST("user/zoomAuthApp")
+    @POST("user/zoomAuthApp")
     Call<ApiResponse> zoomAuthApp(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("user/helpZoomOauth")
+    Call<ApiResponse> helpZoomOauth(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+   @POST("user/deauthoriseToken")
+    Call<ApiResponse> ZoomDisconnect(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+   @POST("zoom/create")
+    Call<ApiResponse> ZoomCreate(@Header("Accept") String api, @Header("Authorization") String auth,
                                 @Body JsonObject jsonObject,
                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 

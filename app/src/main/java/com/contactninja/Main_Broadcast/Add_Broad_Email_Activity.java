@@ -40,7 +40,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
-import com.contactninja.Setting.Email_verification;
+import com.contactninja.Setting.Verification_web;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -180,7 +180,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
         if (userLinkedGmailList.size() == 0) {
             if (FirstTime == 0) {
                 FirstTime = 1;
-                startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                startActivity(new Intent(getApplicationContext(), Verification_web.class));
             }
             iv_more.setVisibility(View.GONE);
         } else if (userLinkedGmailList.size() == 1) {

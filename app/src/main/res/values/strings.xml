@@ -505,6 +505,14 @@ Number</string>
 
     <string name="connect_zoom_account">Connect zoom account</string>
     <string name="zoom_account">Your zoom account</string>
+    <string name="dis_account">Disconnect my account</string>
+    <string name="meeting">Meeting Duration</string>
+    <string name="select_meeting">Select Meeting Duration</string>
+    <string name="m_5">5 mins</string>
+    <string name="m_15">15 mins</string>
+    <string name="m_30">30 mins</string>
+    <string name="m_45">45 mins</string>
+    <string name="m_60">60 mins</string>
 
 
 </resources>

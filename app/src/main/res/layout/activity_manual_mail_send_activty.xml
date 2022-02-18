@@ -203,6 +203,8 @@
             android:layout_gravity="center"
             android:background="@color/add_contect_transpernt"
             android:focusable="true"
+            android:linksClickable="true"
+            android:autoLink="web|email"
             android:gravity="left"
             android:imeOptions="actionDone"
             android:padding="15dp"
