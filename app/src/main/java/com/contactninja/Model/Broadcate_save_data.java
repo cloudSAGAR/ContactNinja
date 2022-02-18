@@ -1,6 +1,7 @@
 package com.contactninja.Model;
 
 public class Broadcate_save_data {
+    String id="";
     String date = "";
     String time = "";
     String Recurrence = "";
@@ -148,5 +149,11 @@ public class Broadcate_save_data {
         this.broadcastname = broadcastname;
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

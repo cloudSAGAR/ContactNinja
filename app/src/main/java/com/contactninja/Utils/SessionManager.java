@@ -12,6 +12,7 @@ import com.contactninja.Auth.LoginActivity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.BroadcastActivityListModel;
+import com.contactninja.Model.BroadcastActivityModel;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
@@ -80,6 +81,7 @@ public class SessionManager {
 
     public static final String Broadcast_flag="broadcast_flag";
     public static final String Broadcaste_Detail="Broadcaste_detail";
+    public static final String Broadcast_contect="Broadcast_contect";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -785,5 +787,30 @@ public class SessionManager {
         editor.apply();
     }
 
+
+
+
+
+    public static List<BroadcastActivityModel.BroadcastProspect> getBroadcast_Contect(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(Broadcast_contect, null);
+        Type type = new TypeToken<ArrayList<BroadcastActivityModel.BroadcastProspect>>() {
+        }.getType();
+        List<BroadcastActivityModel.BroadcastProspect> userLinkedGmailList = gson.fromJson(json, type);
+        if (userLinkedGmailList == null) {
+            userLinkedGmailList = new ArrayList<>();
+        }
+        return userLinkedGmailList;
+
+    }
+
+    public static void setBroadcast_Contect(Context context, List<BroadcastActivityModel.BroadcastProspect> userLinkedGmailList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userLinkedGmailList);
+        editor.putString(Broadcast_contect, json);
+        Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+        editor.apply();
+    }
 
 }
