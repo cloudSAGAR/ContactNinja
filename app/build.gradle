@@ -115,4 +115,7 @@ dependencies {
     implementation 'com.tbuonomo:dotsindicator:4.2'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.googlecode.libphonenumber:libphonenumber:7.2.2'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.6.31'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.6.31'
+    implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.2.+'
 }

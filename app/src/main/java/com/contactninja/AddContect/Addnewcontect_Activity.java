@@ -24,8 +24,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
@@ -59,6 +61,8 @@ import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
+import com.contactninja.aws.S3Uploader;
+import com.contactninja.aws.S3Utils;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -88,8 +92,11 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
+    S3Uploader s3uploaderObj;
     private long mLastClickTime = 0;
     Integer CAPTURE_IMAGE = 3;
+    String urlFromS3 = null;
+
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     int image_flag=1;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
@@ -160,7 +167,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_addnewcontect);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
-
+        s3uploaderObj = new S3Uploader(this);
 
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
@@ -1051,7 +1058,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                  Uri uri = Uri.fromFile(file);
                  String filePath1 = uri.getPath();
                  iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
-
+                 String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
+                 uploadImageTos3(uri);
            /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
                  ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -1083,7 +1091,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                  Uri uri = Uri.fromFile(file);
                  String filePath1 = uri.getPath();
                  iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
-
+                 uploadImageTos3(uri);
            /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
                  ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -1171,6 +1179,49 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             }
         }*/
     }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+    private void uploadImageTos3(Uri imageUri) {
+        final String path = getRealPathFromURI(imageUri);
+        if (path != null) {
+            s3uploaderObj.initUpload(path,"contact_image");
+            s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
+                @Override
+                public void onUploadSuccess(String response) {
+                    Log.e("Reppnse is",new Gson().toJson(response));
+                    if (response.equalsIgnoreCase("Success")) {
+                        user_image_Url = S3Utils.generates3ShareUrl(getApplicationContext(), path);
+                        File_extension = "JPEG";
+                        if(!TextUtils.isEmpty(urlFromS3)) {
+                            Toast.makeText(Addnewcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onUploadError(String response) {
+
+                    Log.e("Error", "Error Uploading");
+
+                }
+            });
+        }else{
+            Toast.makeText(this, "Null Path", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
                 .setGuidelines(CropImageView.Guidelines.ON)
