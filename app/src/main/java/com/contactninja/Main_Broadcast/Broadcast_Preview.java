@@ -487,6 +487,11 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         }
 
         paramObject.put("recurring_detail", recurring_detail);
+        if (!broadcate_save_data.getId().equals(""))
+        {
+            paramObject.put("id",broadcate_save_data.getId());
+        }
+
         obj.put("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();

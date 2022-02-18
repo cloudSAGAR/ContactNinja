@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".AddContect.EmailSend_Activity"
     tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
-
-
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -267,11 +264,10 @@
                 android:textSize="@dimen/_14sdp"/>
 
             <EditText
-
                 android:id="@+id/edit_compose"
                 style="@style/tv_regular_13"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"

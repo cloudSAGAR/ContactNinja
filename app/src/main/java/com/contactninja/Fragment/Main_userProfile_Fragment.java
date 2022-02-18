@@ -415,6 +415,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             iv_user.setEnabled(true);
             tv_nameLetter.setEnabled(true);
             iv_edit.setVisibility(View.VISIBLE);
+            edt_FirstName.setEnabled(true);
+            edt_lastname.setEnabled(true);
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             edt_FirstName.setText(Contect_data.getFirstname());
             edt_lastname.setText(Contect_data.getLastname());
@@ -465,6 +467,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             pulse_icon.setEnabled(false);
             tv_nameLetter.setEnabled(false);
             save_button.setVisibility(View.GONE);
+            edt_FirstName.setEnabled(false);
+            edt_lastname.setEnabled(false);
 
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
@@ -537,6 +541,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
                         }
                         else {
+                            edt_FirstName.setEnabled(false);
+                            edt_lastname.setEnabled(false);
                             view_single.setVisibility(View.VISIBLE);
                             fragment = new User_InformationFragment();
 

@@ -192,7 +192,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setCampaign_type_name(broadcasteda.getManageBy());
+            /*    SessionManager.setCampaign_type_name(broadcasteda.getManageBy());
                 SessionManager.setCampaign_type(broadcasteda.getType());
                 SessionManager.setBroadcast_flag("edit");
                 broadcate_save_data.setBroadcastname(broadcasteda.getBroadcastName());
@@ -235,19 +235,24 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     contact.setLastname(broadcastProspects.get(i).getLastname());
                     List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
                     ContectListData.Contact.ContactDetail contactDetail=new ContectListData.Contact.ContactDetail();
+                    contact.setFlag("false");
                     contactDetail.setContactId(broadcastProspects.get(0).getContactId());
                     contactDetail.setEmailNumber(broadcastProspects.get(0).getContactNumber());
+                    contactDetail.setId(broadcastProspects.get(0).getContactId());
+                    contactDetail.setType("NUMBER");
                     contactDetails.add(contactDetail);
                     contact.setContactDetails(contactDetails);
                     Contect_List.add(contact);
 
                 }
+                broadcate_save_data.setFrom_ac_id(broadcasteda.getSent_tbl_id());
+                broadcate_save_data.setFrom_ac(broadcasteda.getMail_module());
                 broadcate_save_data.setId(String.valueOf(broadcasteda.getId()));
                 SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
                 SessionManager.setGroupList(getApplicationContext(),Contect_List);
                 Intent broad_caste_preview=new Intent(getApplicationContext(), Broadcast_Preview.class);
                 startActivity(broad_caste_preview);
-
+                finish();*/
                 bottomSheetDialog.dismiss();
             }
         });
