@@ -4,12 +4,11 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -31,14 +30,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Model.ContectListData;
@@ -63,12 +54,13 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
@@ -77,15 +69,24 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Final_Group extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
-    private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static UserListDataAdapter userListDataAdapter;
     public static List<ContectListData.Contact> inviteListData = new ArrayList<>();
+    Uri mCapturedImageURI;
+    int image_flag = 1;
+    Integer CAPTURE_IMAGE = 3;
     GroupListData groupListData;
     TextView save_button;
     ImageView iv_Setting, iv_back;
@@ -105,7 +106,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     RetrofitCalls retrofitCalls;
     String old_image = "", group_id = "";
     TextView topic_remainingCharacter;
-
+    private long mLastClickTime = 0;
     private BroadcastReceiver mNetworkReceiver;
 
     // function to check permission
@@ -243,9 +244,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                                         .toUpperCase()// Grab the first letter and capitalize it
                         );
                         return fastScrollItemIndicator;
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
 
                         return null;
 
@@ -254,7 +253,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 }
         );
 
-        Collections.sort(inviteListData, new Comparator<ContectListData.Contact>(){
+        Collections.sort(inviteListData, new Comparator<ContectListData.Contact>() {
             public int compare(ContectListData.Contact obj1, ContectListData.Contact obj2) {
                 return obj1.getFirstname().compareToIgnoreCase(obj1.getFirstname());
             }
@@ -296,7 +295,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                Log.e("Test Clcik ",String.valueOf(charSequence));
+                Log.e("Test Clcik ", String.valueOf(charSequence));
                 if (charSequence.toString().length() <= 100) {
                     int num = 100 - charSequence.toString().length();
                     topic_remainingCharacter.setText(num + " " + getResources().getString(R.string.camp_remaingn));
@@ -314,7 +313,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     // Handled permission Result
 
     private void IntentUI() {
-        topic_remainingCharacter=findViewById(R.id.topic_remainingCharacter);
+        topic_remainingCharacter = findViewById(R.id.topic_remainingCharacter);
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_back = findViewById(R.id.iv_back);
@@ -473,7 +472,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     } else {
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        Log.e("String is",response.body().getMessage());
+                        Log.e("String is", response.body().getMessage());
                         Type listType = new TypeToken<UservalidateModel>() {
                         }.getType();
                         UservalidateModel user_model = new Gson().fromJson(headerString, listType);
@@ -496,7 +495,77 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_CANCELED) {
+
+        if (requestCode == 0) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    File_name = "Image";
+                    File file = new File(result.getUri().getPath());
+                    Uri uri = Uri.fromFile(file);
+                    String filePath1 = uri.getPath();
+                    iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
+                    iv_user.setVisibility(View.VISIBLE);
+                    iv_dummy.setVisibility(View.GONE);
+
+           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                 user_image_Url = "data:image/JPEG;base64," + imageString;
+                 File_extension = "JPEG";
+                 Log.e("url is", user_image_Url);*/
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            }
+        } else if (requestCode == CAPTURE_IMAGE) {
+            ImageCropFunctionCustom(mCapturedImageURI);
+        }
+        else if (requestCode == 203) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    File file = new File(result.getUri().getPath());
+                    Uri uri = Uri.fromFile(file);
+                    String filePath1 = uri.getPath();
+                    iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
+                    iv_user.setVisibility(View.VISIBLE);
+                    iv_dummy.setVisibility(View.GONE);
+
+           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                 user_image_Url = "data:image/JPEG;base64," + imageString;
+                 File_extension = "JPEG";
+                 Log.e("url is", user_image_Url);*/
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            }
+        }
+        else {
+            if (image_flag == 0) {
+                image_flag = 1;
+                CropImage.activity(data.getData())
+                        .start(this);
+            }
+
+        }
+
+
+       /* if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
@@ -562,7 +631,14 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     }
                     break;
             }
-        }
+        }*/
+    }
+
+    public void ImageCropFunctionCustom(Uri uri) {
+        Intent intent = CropImage.activity(uri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .getIntent(this);
+        startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
     private void captureimageDialog(boolean remove) {
@@ -597,8 +673,21 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+               /* Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePicture, 0);
+*/
+                image_flag = 0;
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String fileName = "temp.jpg";
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+                mCapturedImageURI = getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values);
+                takePictureIntent
+                        .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+
 
                 bottomSheetDialog.dismiss();
             }
@@ -611,8 +700,21 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+               /* Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
+               */
+
+                Intent takePictureIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                String fileName = "temp.jpg";
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+                mCapturedImageURI = getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values);
+                takePictureIntent
+                        .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                startActivityForResult(takePictureIntent, 1);
+
                 bottomSheetDialog.dismiss();
 
             }

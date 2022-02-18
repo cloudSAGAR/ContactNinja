@@ -63,6 +63,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +93,9 @@ import retrofit2.Response;
 
 public class Main_userProfile_Fragment extends Fragment implements View.OnClickListener {
     private long mLastClickTime = 0;
+    int image_flag = 1;
+    Uri mCapturedImageURI;
+    Integer CAPTURE_IMAGE = 3;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -1039,8 +1044,21 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+               /* Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePicture, 0);
+*/
+                image_flag = 0;
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String fileName = "temp.jpg";
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+                mCapturedImageURI = getActivity().getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values);
+                takePictureIntent
+                        .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+
 
                 bottomSheetDialog.dismiss();
             }
@@ -1053,8 +1071,21 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+              /*  Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
+              */
+
+                Intent takePictureIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                String fileName = "temp.jpg";
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+                mCapturedImageURI = getActivity().getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values);
+                takePictureIntent
+                        .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                startActivityForResult(takePictureIntent, 1);
+
                 bottomSheetDialog.dismiss();
 
             }
@@ -1069,7 +1100,74 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != Activity.RESULT_CANCELED) {
+        if (requestCode == 0) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    Glide.with(getActivity()).load(resultUri).into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    File_name = "Image";
+                    File file = new File(result.getUri().getPath());
+                    Uri uri = Uri.fromFile(file);
+                    String filePath1 = uri.getPath();
+                    iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+
+
+           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                 user_image_Url = "data:image/JPEG;base64," + imageString;
+                 File_extension = "JPEG";
+                 Log.e("url is", user_image_Url);*/
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            }
+        } else if (requestCode == CAPTURE_IMAGE) {
+            ImageCropFunctionCustom(mCapturedImageURI);
+        }
+        else if (requestCode == 203) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    Glide.with(getActivity()).load(resultUri).into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    File file = new File(result.getUri().getPath());
+                    Uri uri = Uri.fromFile(file);
+                    String filePath1 = uri.getPath();
+                    iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                 user_image_Url = "data:image/JPEG;base64," + imageString;
+                 File_extension = "JPEG";
+                 Log.e("url is", user_image_Url);*/
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            }
+        }
+        else {
+            if (image_flag == 0) {
+                image_flag = 1;
+                CropImage.activity(data.getData())
+                        .start(getActivity());
+            }
+
+        }
+       /* if (resultCode != Activity.RESULT_CANCELED) {
             switch (requestCode) {
                 case 0:
                     if (resultCode == Activity.RESULT_OK && data != null) {
@@ -1126,8 +1224,15 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     }
                     break;
             }
-        }
+        }*/
     }
+    public void ImageCropFunctionCustom(Uri uri) {
+        Intent intent = CropImage.activity(uri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .getIntent(getActivity());
+        startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
+
 
     private long getRawContactIdByName(String givenName, String familyName) {
         ContentResolver contentResolver = getActivity().getContentResolver();

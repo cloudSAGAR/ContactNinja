@@ -10,12 +10,14 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -68,6 +70,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,6 +78,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -85,6 +89,8 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
     private long mLastClickTime = 0;
+    Integer CAPTURE_IMAGE = 3;
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     int image_flag=1;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
@@ -93,6 +99,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     ImageView iv_back, iv_Setting, pulse_icon;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
+    Uri mCapturedImageURI;
     String fragment_name = "", user_image_Url = "", File_name = "", File_extension = "";
     EditText edt_FirstName, edt_lastname;
     SessionManager sessionManager;
@@ -972,8 +979,21 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 }
                 image_flag=0;
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, 0);
+               /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 0);*/
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    String fileName = "temp.jpg";
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE, fileName);
+                    mCapturedImageURI = getContentResolver()
+                            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                    values);
+                    takePictureIntent
+                            .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                    startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+
+
+
                 bottomSheetDialog.dismiss();
             }
         });
@@ -986,8 +1006,21 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 }
                 image_flag=0;
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, 1);
+/*                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto, 1);*/
+
+
+                Intent takePictureIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                String fileName = "temp.jpg";
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+                mCapturedImageURI = getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values);
+                takePictureIntent
+                        .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                startActivityForResult(takePictureIntent, 1);
+
                 bottomSheetDialog.dismiss();
 
             }
@@ -1001,7 +1034,81 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_CANCELED) {
+     //   Log.e("requestCode", String.valueOf(requestCode));
+      //  Log.e("resultCode",String.valueOf(resultCode));
+
+     if (requestCode==0)
+     {
+         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+             if (resultCode == RESULT_OK) {
+                 Uri resultUri = result.getUri();
+                 Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                 iv_user.setVisibility(View.VISIBLE);
+                 layout_pulse.setVisibility(View.GONE);
+                 File_name = "Image";
+                 File file=new File(result.getUri().getPath());
+                 Uri uri = Uri.fromFile(file);
+                 String filePath1 = uri.getPath();
+                 iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
+
+           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                 user_image_Url = "data:image/JPEG;base64," + imageString;
+                 File_extension = "JPEG";
+                 Log.e("url is", user_image_Url);*/
+
+             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                 Exception error = result.getError();
+             }
+         }
+     }
+     else if (requestCode == CAPTURE_IMAGE) {
+         ImageCropFunctionCustom(mCapturedImageURI);
+     }
+     else if (requestCode==203)
+     {
+         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+         {
+             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+             if (resultCode == RESULT_OK) {
+                 Uri resultUri = result.getUri();
+                 Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                 iv_user.setVisibility(View.VISIBLE);
+                 layout_pulse.setVisibility(View.GONE);
+                 File file=new File(result.getUri().getPath());
+                 Uri uri = Uri.fromFile(file);
+                 String filePath1 = uri.getPath();
+                 iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
+
+           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                 user_image_Url = "data:image/JPEG;base64," + imageString;
+                 File_extension = "JPEG";
+                 Log.e("url is", user_image_Url);*/
+
+             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                 Exception error = result.getError();
+             }
+         }
+     }
+     else {
+         if (image_flag==0)
+         {
+             image_flag=1;
+             CropImage.activity(data.getData())
+                     .start(this);
+         }
+
+     }
+
+     /*   if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
@@ -1062,7 +1169,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     }
                     break;
             }
-        }
+        }*/
+    }
+    public void ImageCropFunctionCustom(Uri uri) {
+        Intent intent = CropImage.activity(uri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .getIntent(this);
+        startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
     private long getRawContactIdByName(String givenName, String familyName) {
