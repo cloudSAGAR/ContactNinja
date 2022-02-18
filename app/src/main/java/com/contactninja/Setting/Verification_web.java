@@ -40,6 +40,7 @@ import org.json.JSONException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import retrofit2.Response;
 
@@ -270,9 +271,18 @@ public class Verification_web extends AppCompatActivity implements ConnectivityR
                 String AccessURL = url.substring(url.lastIndexOf("/")- 2, url.length());
                 String[] bits = AccessURL.split("/");
                 String access = bits[bits.length-2];
-
                 String val2 = "";
-                // decode
+                if (access.equals("1")) {
+                    try {
+                        byte[] tmp2 = Base64.decode(hostURL, Base64.DEFAULT);
+                        val2 = new String(tmp2, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            /*    // decode
                 String substring = hostURL.substring(Math.max(hostURL.length() - 2, 0));
                 if (substring.equals("==")) {
                     try {
@@ -282,16 +292,11 @@ public class Verification_web extends AppCompatActivity implements ConnectivityR
                         e.printStackTrace();
                     }
                 }
-
+*/
                 if (Global.emailValidator(val2)) {
-
                     try {
                         if (Global.isNetworkAvailable(Verification_web.this, mMainLayout)) {
-                            if(access.equals("1")){
                                 GoogleAuth(val2);
-                            }else {
-                                showAlertDialogButtonClicked(val2);
-                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

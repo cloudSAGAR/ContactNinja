@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -82,7 +83,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
     EditText edit_template, edit_template_name;
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList = new ArrayList<>();
-    CoordinatorLayout mMainLayout;
+    RelativeLayout mMainLayout;
     String step_no = "1", time = "09:00", sequence_id = "", seq_task_id = "", from_ac = "", from_ac_id = "";
     int minite = 00, day = 1, defult_id;
     TemplateClick templateClick;

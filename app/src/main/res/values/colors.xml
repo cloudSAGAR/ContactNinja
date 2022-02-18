@@ -75,6 +75,7 @@
     <color name="unblock_item">#4A4A4A</color>
     <color name="tv_push_color">#FCAC4F</color>
     <color name="red_lite">#F77777</color>
+    <color name="okey_button">#5495EC</color>
 
 
 </resources>
