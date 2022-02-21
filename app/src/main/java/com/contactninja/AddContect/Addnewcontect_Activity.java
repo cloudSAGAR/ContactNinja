@@ -168,7 +168,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         s3uploaderObj = new S3Uploader(this);
-
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
         Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);

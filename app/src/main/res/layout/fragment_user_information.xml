@@ -1426,6 +1426,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/add_note"
                         android:textColor="@color/text_reg">
+                        android:textColor="@color/text_reg">
 
                     </TextView>
 

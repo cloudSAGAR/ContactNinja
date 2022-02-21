@@ -192,7 +192,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-            /*    SessionManager.setCampaign_type_name(broadcasteda.getManageBy());
+                SessionManager.setCampaign_type_name(broadcasteda.getManageBy());
                 SessionManager.setCampaign_type(broadcasteda.getType());
                 SessionManager.setBroadcast_flag("edit");
                 broadcate_save_data.setBroadcastname(broadcasteda.getBroadcastName());
@@ -252,7 +252,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                 SessionManager.setGroupList(getApplicationContext(),Contect_List);
                 Intent broad_caste_preview=new Intent(getApplicationContext(), Broadcast_Preview.class);
                 startActivity(broad_caste_preview);
-                finish();*/
+                finish();
                 bottomSheetDialog.dismiss();
             }
         });

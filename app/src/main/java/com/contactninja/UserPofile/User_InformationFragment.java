@@ -286,8 +286,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_zip.setEnabled(true);
             //  ev_bob.setEnabled(true);
             ev_note.setEnabled(true);
+            ev_breakout.setEnabled(true);
+            ev_linkedin.setEnabled(true);
+            ev_twitter.setEnabled(true);
+            ev_fb.setEnabled(true);
 
-
+            layout_bod.setEnabled(true);
             edt_mobile_no.setEnabled(false);
             edt_mobile_no.setText(user_data_model.getContactNumber());
             edt_email.setText(user_data_model.getEmail());
@@ -422,12 +426,13 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         } else if (flag.equals("read")) {
 
-            Log.e("Model Data", new Gson().toJson(user_data_model));
+           // Log.e("Model Data", new Gson().toJson(user_data_model));
             edt_mobile_no.setEnabled(false);
             edt_mobile_no.setText(user_data_model.getContactNumber());
             edt_email.setText(user_data_model.getEmail());
             edt_email.setEnabled(false);
             layout_country_piker.setVisibility(View.GONE);
+            layout_bod.setEnabled(false);
 
             company_layout.setEnabled(false);
             media_link.setVisibility(View.GONE);
@@ -444,6 +449,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_zip.setEnabled(false);
             ev_bob.setEnabled(false);
             ev_note.setEnabled(false);
+
+            ev_breakout.setEnabled(false);
+            ev_linkedin.setEnabled(false);
+            ev_twitter.setEnabled(false);
+            ev_fb.setEnabled(false);
+
             tv_add_social.setVisibility(View.GONE);
             edt_mobile_no.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
@@ -698,8 +709,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_email.setAdapter(emailAdapter);
                 //     Log.e("layout_Add_email",new Gson().toJson(emaildetails_list));
-                Log.e("Concet List size", String.valueOf(contactdetails.size()));
-                Log.e("Email  List is ", new Gson().toJson(SessionManager.getAdd_Contect_Detail(getActivity())));
+               // Log.e("Concet List size", String.valueOf(contactdetails.size()));
+               // Log.e("Email  List is ", new Gson().toJson(SessionManager.getAdd_Contect_Detail(getActivity())));
             });
         } else {
 
