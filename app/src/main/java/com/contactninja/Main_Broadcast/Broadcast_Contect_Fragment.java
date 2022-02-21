@@ -978,6 +978,9 @@ public class Broadcast_Contect_Fragment extends Fragment {
                     if (SessionManager.getBroadcast_flag(getActivity()).equals("edit")) {
                         Log.e("List is", new Gson().toJson(select_contectListData));
                         for (int i = 0; i < select_contectListData.size(); i++) {
+                           Log.e("Selcted Id is", String.valueOf(select_contectListData.get(i).getId()));
+                            Log.e("Contect Id  is", String.valueOf(contacts.get(position).getId()));
+
                             if (select_contectListData.get(i).getId().equals(contacts.get(position).getId())) {
 
 

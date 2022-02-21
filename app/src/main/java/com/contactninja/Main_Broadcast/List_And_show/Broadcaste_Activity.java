@@ -238,7 +238,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     contact.setFlag("false");
                     contactDetail.setContactId(broadcastProspects.get(0).getContactId());
                     contactDetail.setEmailNumber(broadcastProspects.get(0).getContactNumber());
-                    contactDetail.setId(broadcastProspects.get(0).getContactId());
+                    contactDetail.setId(broadcastProspects.get(0).getId());
                     contactDetail.setType("NUMBER");
                     contactDetails.add(contactDetail);
                     contact.setContactDetails(contactDetails);

@@ -339,6 +339,11 @@ public class BroadcastActivityModel {
         @SerializedName("contact_id")
         @Expose
         private Integer contactId;
+
+        @SerializedName("id")
+        @Expose
+        private Integer id;
+
         @SerializedName("email")
         @Expose
         private Object email;
@@ -403,6 +408,13 @@ public class BroadcastActivityModel {
             this.lastname = lastname;
         }
 
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
     }
 
 

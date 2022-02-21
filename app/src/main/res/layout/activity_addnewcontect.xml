@@ -87,7 +87,6 @@
             android:orientation="vertical">
 
             <EditText
-                android:enabled="false"
                 android:id="@+id/edt_FirstName"
                 style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
