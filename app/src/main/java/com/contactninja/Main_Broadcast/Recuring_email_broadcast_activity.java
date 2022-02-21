@@ -184,21 +184,29 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                         iv_selected.setVisibility(View.VISIBLE);
                         iv_every_selcted.setVisibility(View.GONE);
                         iv_every_unselcted.setVisibility(View.VISIBLE);
-
-
                         tv_month.setText(broadcate_save_data.getDay_of_month());
-
-
                     } else {
-
-
                         second_id = broadcate_save_data.getEvery_second();
-                        String week_of=Week_Of[Integer.parseInt(second_id)];
-                        tv_second.setText(week_of);
+                        if (second_id.equals(""))
+                        {
+
+                        }
+                        else {
+                            String week_of=Week_Of[Integer.parseInt(second_id)];
+                            tv_second.setText(week_of);
+                        }
 
                         day_section_id = broadcate_save_data.getEvery_day();
-                        String week_day=Days_Of_Week[Integer.parseInt(day_section_id)];
-                        tv_day_selction.setText(week_day);
+
+                        if (day_section_id.equals(""))
+                        {
+
+                        }
+                        else {
+                            String week_day=Days_Of_Week[Integer.parseInt(day_section_id)];
+                            tv_day_selction.setText(week_day);
+                        }
+
 
 
                         iv_every_selcted.setVisibility(View.VISIBLE);
@@ -282,7 +290,8 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 broadcste_coman_model.setPhoneSelect(true);
                 broadcste_coman_model.setNum(String.valueOf(count));
                 count++;
-            }else {
+            }
+            else {
                 broadcste_coman_model.setPhoneSelect(false);
                 broadcste_coman_model.setNum(String.valueOf(count));
                 count++;
