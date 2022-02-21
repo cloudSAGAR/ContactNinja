@@ -182,7 +182,16 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         TextView selected_campaign = bottomSheetDialog.findViewById(R.id.selected_campaign);
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
         TextView selected_task = bottomSheetDialog.findViewById(R.id.selected_task);
-        selected_broadcast.setText("Pause Broadcast ");
+       if (!broadcasteda.getStatus().equals("A"))
+       {
+           selected_broadcast.setText("Pause Broadcast");
+           selected_broadcast.setVisibility(View.VISIBLE);
+
+       }
+       else {
+           selected_broadcast.setVisibility(View.GONE);
+       }
+
         selected_task.setText("Edit Broadcast");
         selected_task.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -349,8 +358,6 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     if (response.body().getHttp_status() == 200) {
-
-
                         Type listType = new TypeToken<BroadcastActivityModel>() {
                         }.getType();
                         BroadcastActivityModel emailActivityListModel = new Gson().fromJson(headerString, listType);

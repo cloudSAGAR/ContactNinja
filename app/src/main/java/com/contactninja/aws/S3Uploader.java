@@ -28,7 +28,7 @@ public class S3Uploader {
 
     public void initUpload(String filePath,String folder) {
 
-/*        File uploadToS3 = new File(filePath);
+       File uploadToS3 = new File(filePath);
         String[] nameList = filePath.split("/");
         String defaultFolder = folder;
         String uploadFileName = nameList[nameList.length - 1];
@@ -38,8 +38,8 @@ public class S3Uploader {
         TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/"+ uploadFileName,
                 uploadToS3, metadataCopy,  CannedAccessControlList.PublicRead
         );
-        transferObserver.setTransferListener(new UploadListener());*/
-        File file = new File(filePath);
+        transferObserver.setTransferListener(new UploadListener());
+       /* File file = new File(filePath);
         ObjectMetadata myObjectMetadata = new ObjectMetadata();
         myObjectMetadata.setContentType("image/png");
         String mediaUrl = file.getName();
@@ -47,7 +47,7 @@ public class S3Uploader {
 
         TransferObserver observer = transferUtility.upload(AWSKeys.BUCKET_NAME, mediaUrl,
                 file, CannedAccessControlList.PublicRead);
-        observer.setTransferListener(new UploadListener());
+        observer.setTransferListener(new UploadListener());*/
     }
 
     private class UploadListener implements TransferListener {

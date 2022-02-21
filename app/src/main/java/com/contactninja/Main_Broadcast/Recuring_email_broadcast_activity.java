@@ -274,19 +274,21 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
     }
 
     private void Select_day_week_Month() {
-        int count =1;
+        int count =0;
         for (int i = 0; i < Days_Of_Week.length; i++) {
             Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
             broadcste_coman_model.setData(Days_Of_Week[i]);
             if(Days_Of_Week[i].equals(Days_Of_Week[0])){
                 broadcste_coman_model.setPhoneSelect(true);
-                broadcste_coman_model.setNum(String.valueOf(7));
+                broadcste_coman_model.setNum(String.valueOf(count));
+                count++;
             }else {
                 broadcste_coman_model.setPhoneSelect(false);
                 broadcste_coman_model.setNum(String.valueOf(count));
                 count++;
             }
             list_DayOfWeek_Month.add(broadcste_coman_model);
+            Log.e("Day is",new Gson().toJson(list_DayOfWeek_Month));
         }
     }
 
@@ -321,12 +323,13 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
     private void Select_day_week() {
 
-        int count =1;
+        int count =0;
         for (int i = 0; i < Days_Of_Week.length; i++) {
             Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
             broadcste_coman_model.setData(Days_Of_Week[i]);
             if(Days_Of_Week[i].equals(Days_Of_Week[0])){
-                broadcste_coman_model.setNum(String.valueOf(7));
+                broadcste_coman_model.setNum(String.valueOf(count));
+                count++;
             }else {
                 broadcste_coman_model.setNum(String.valueOf(count));
                 count++;

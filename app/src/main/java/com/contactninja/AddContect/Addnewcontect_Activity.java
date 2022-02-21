@@ -167,6 +167,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_addnewcontect);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
+
+
         s3uploaderObj = new S3Uploader(this);
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
@@ -987,7 +989,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 mLastClickTime = SystemClock.elapsedRealtime();
                /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, 0);*/
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     String fileName = "temp.jpg";
                     ContentValues values = new ContentValues();
                     values.put(MediaStore.Images.Media.TITLE, fileName);

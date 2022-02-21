@@ -161,6 +161,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_zip.setEnabled(true);
             ev_bob.setEnabled(true);
             ev_note.setEnabled(true);
+            ev_twitter.setEnabled(true);
+            ev_fb.setEnabled(true);
+            ev_breakout.setEnabled(true);
+            ev_linkedin.setEnabled(true);
+            layout_bod.setEnabled(true);
             // Log.e("Null", "No Call");
             edit = true;
             iv_down.setVisibility(View.VISIBLE);
@@ -269,7 +274,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_zip.setEnabled(false);
             ev_bob.setEnabled(false);
             ev_note.setEnabled(false);
+            ev_twitter.setEnabled(false);
+            ev_fb.setEnabled(false);
+            ev_breakout.setEnabled(false);
+            ev_linkedin.setEnabled(false);
             tv_add_social.setVisibility(View.GONE);
+            layout_bod.setEnabled(false);
 
 
             tv_add_social.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
