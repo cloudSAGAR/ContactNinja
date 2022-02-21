@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -758,6 +759,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 Global.getVersionname(List_Broadcast_activity.this), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
+                        Log.e("response is",new Gson().toJson(response));
                         loadingDialog.cancelLoading();
                         onResume();
                     }
