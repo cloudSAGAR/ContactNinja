@@ -9,10 +9,10 @@ public class ZoomExists {
 
     @SerializedName("user_exists")
     @Expose
-    private Boolean userExists;
+    private Boolean userExists = false;
     @SerializedName("revokedTokens")
     @Expose
-    private Boolean revokedTokens;
+    private Boolean revokedTokens = false;
     @SerializedName("user_timezone_name")
     @Expose
     private String userTimezoneName;

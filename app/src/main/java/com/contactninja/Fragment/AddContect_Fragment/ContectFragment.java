@@ -315,6 +315,10 @@ public class ContectFragment extends Fragment {
         );
 
 
+
+
+
+
         return content_view;
 
     }

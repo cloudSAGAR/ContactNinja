@@ -187,22 +187,16 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                         tv_month.setText(broadcate_save_data.getDay_of_month());
                     } else {
                         second_id = broadcate_save_data.getEvery_second();
-                        if (second_id.equals(""))
+                        if (!second_id.equals(""))
                         {
-
-                        }
-                        else {
                             String week_of=Week_Of[Integer.parseInt(second_id)];
                             tv_second.setText(week_of);
                         }
 
                         day_section_id = broadcate_save_data.getEvery_day();
 
-                        if (day_section_id.equals(""))
+                        if (!day_section_id.equals(""))
                         {
-
-                        }
-                        else {
                             String week_day=Days_Of_Week[Integer.parseInt(day_section_id)];
                             tv_day_selction.setText(week_day);
                         }
@@ -288,14 +282,12 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
             broadcste_coman_model.setData(Days_Of_Week[i]);
             if(Days_Of_Week[i].equals(Days_Of_Week[0])){
                 broadcste_coman_model.setPhoneSelect(true);
-                broadcste_coman_model.setNum(String.valueOf(count));
-                count++;
             }
             else {
                 broadcste_coman_model.setPhoneSelect(false);
-                broadcste_coman_model.setNum(String.valueOf(count));
-                count++;
             }
+            broadcste_coman_model.setNum(String.valueOf(count));
+            count++;
             list_DayOfWeek_Month.add(broadcste_coman_model);
             Log.e("Day is",new Gson().toJson(list_DayOfWeek_Month));
         }
@@ -336,13 +328,8 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         for (int i = 0; i < Days_Of_Week.length; i++) {
             Broadcste_Coman_Model broadcste_coman_model = new Broadcste_Coman_Model();
             broadcste_coman_model.setData(Days_Of_Week[i]);
-            if(Days_Of_Week[i].equals(Days_Of_Week[0])){
-                broadcste_coman_model.setNum(String.valueOf(count));
-                count++;
-            }else {
-                broadcste_coman_model.setNum(String.valueOf(count));
-                count++;
-            }
+            broadcste_coman_model.setNum(String.valueOf(count));
+            count++;
             list_DayOfWeek.add(broadcste_coman_model);
         }
 

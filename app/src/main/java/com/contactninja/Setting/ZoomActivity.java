@@ -72,6 +72,9 @@ public class ZoomActivity extends AppCompatActivity implements ConnectivityRecei
         }else {
             tv_email.setText(Email);
         }
+        if(tv_email.getText().toString().equals("")){
+            finish();
+        }
 
     }
 

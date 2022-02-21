@@ -22,6 +22,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
@@ -47,6 +48,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.bumptech.glide.Glide;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
@@ -56,11 +67,13 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Utils.App;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
+import com.contactninja.aws.AWSKeys;
 import com.contactninja.aws.S3Uploader;
 import com.contactninja.aws.S3Utils;
 import com.contactninja.retrofit.ApiResponse;
@@ -123,6 +136,10 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
     private BroadcastReceiver mNetworkReceiver;
     ImageView iv_toolbar_manu_vertical, iv_block;
 
+
+  public static TransferUtility transferUtility;
+  AmazonS3Client s3Client;
+
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
         Intent intent = new Intent(context, Addnewcontect_Activity.class);
@@ -168,7 +185,6 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
 
-
         s3uploaderObj = new S3Uploader(this);
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
@@ -177,6 +193,20 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         save_button.setText("Save Contact");
         option_type = "save";
         String flag = sessionManager.getContect_flag(this);
+
+
+
+        // Create an S3 client
+     /*   CognitoCachingCredentialsProvider CognitoCredentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "us-east-2:a47e1f07-8030-4bce-b50b-075713507665", // Identity pool ID:>
+                Regions.US_EAST_2 // Region
+        );
+
+        s3Client = new AmazonS3Client(CognitoCredentialsProvider);
+        s3Client.setRegion(Region.getRegion(Regions.US_EAST_2));
+        transferUtility = new TransferUtility(s3Client, getApplicationContext());*/
+
         if (flag.equals("edit")) {
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
             edt_FirstName.setText(Contect_data.getFirstname());
@@ -1194,6 +1224,54 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         }
         return result;
     }
+   /* public  void uploadImageTos3(String picturePath) {
+        File uploadToS3 = new File(picturePath);
+        String[] nameList = picturePath.split("/");
+        String defaultFolder = "contact_image";
+      //  String userID = Utils.getStringPref(Addnewcontect_Activity.this, Utils.userId);
+        String uploadFileName = nameList[nameList.length - 1];
+        String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/" + uploadFileName;
+        ObjectMetadata metadataCopy = new ObjectMetadata();
+        metadataCopy.setContentType("image/png");
+        TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/" + uploadFileName,
+                uploadToS3, metadataCopy, CannedAccessControlList.PublicRead
+        );
+        audiotransferObserverListener(transferObserver, audioURL, picturePath);
+    }
+    public void audiotransferObserverListener(TransferObserver transferObserver, String audioURL, String savecoverpathfile) {
+        transferObserver.setTransferListener(new TransferListener() {
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                Log.i("onStateChanged: ", "State Change" + state);
+                if (state == TransferState.COMPLETED) {
+
+                    Toast.makeText(Addnewcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                int percentage = 0;
+                try {
+                    percentage = (int) (bytesCurrent / bytesTotal * 100);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.i("onProgressChanged: ", "Progress in %" + percentage);
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                Log.i("error", "error");
+            }
+
+        });
+
+    }*/
+
     private void uploadImageTos3(Uri imageUri) {
         final String path = getRealPathFromURI(imageUri);
         if (path != null) {
