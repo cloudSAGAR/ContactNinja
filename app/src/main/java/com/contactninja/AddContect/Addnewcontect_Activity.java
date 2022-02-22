@@ -602,21 +602,36 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     private long getRawContactId() {
         // Inser an empty contact.
-        ContentValues contentValues = new ContentValues();
-        Uri rawContactUri = getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, contentValues);
-        // Get the newly created contact raw id.
-        long ret = ContentUris.parseId(rawContactUri);
-        return ret;
+        try {
+            ContentValues contentValues = new ContentValues();
+            Uri rawContactUri = getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, contentValues);
+            // Get the newly created contact raw id.
+            long ret = ContentUris.parseId(rawContactUri);
+            return ret;
+        }
+        catch (Exception e)
+        {
+            return  0;
+        }
+
     }
 
     private void insertContactDisplayName(Uri addContactsUri, long rawContactId, String displayName) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
-        // Each contact must has an mime type to avoid java.lang.IllegalArgumentException: mimetype is required error.
-        contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
-        // Put contact display name value.
-        contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, displayName);
-        getContentResolver().insert(addContactsUri, contentValues);
+
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+            // Each contact must has an mime type to avoid java.lang.IllegalArgumentException: mimetype is required error.
+            contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
+            // Put contact display name value.
+            contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, displayName);
+            getContentResolver().insert(addContactsUri, contentValues);
+
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
     private void insertContactPhoneNumber(Uri addContactsUri, long rawContactId, String phoneNumber, String phoneTypeStr) {
@@ -747,7 +762,14 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
                     long rowContactId = getRawContactId();
                     insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
-                    insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
+                    try {
+                        insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
+
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
                     save_button.setText("Edit Contact");
                     finish();
                 } else {
@@ -907,7 +929,14 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
                     long rowContactId = getRawContactId();
                     insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
-                    insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
+                   try {
+                       insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
+                   }
+                   catch (Exception e)
+
+                   {
+
+                   }
                     save_button.setText("Edit Contact");
                     finish();
                 } else {

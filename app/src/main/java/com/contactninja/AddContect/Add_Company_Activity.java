@@ -252,10 +252,15 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
             edit_address.setEnabled(false);
             add_name.setText(WorkData.getName());
             add_detail.setText(WorkData.getDescription());
+            ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Add_Company_Activity.this,
+                    WorkData.getContact_number())));
+            ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Add_Company_Activity.this,WorkData.getContact_number()));
+            ccp_id.resetToDefaultCountry();
             edit_Mobile.setText(WorkData.getContact_number());
             edit_email.setText(WorkData.getEmail());
             edit_company_url.setText("");
             edit_address.setText(WorkData.getAddress());
+            ccp_id.registerCarrierNumberEditText(edit_address);
 
         }else if (flag.equals("edit")) {
             try {
@@ -311,7 +316,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 edit_company_url.setText("");
                 edit_address.setText(WorkData.getAddress());
 
-
+                ccp_id.registerCarrierNumberEditText(edit_Mobile);
             }catch (Exception e){
                 e.printStackTrace();
             }

@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.AddContect.Add_Company_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
@@ -2427,7 +2428,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     showAlertDialogMeassge(item.getEmail_number(), item.getId());
                 }
             });
+            holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
+                    contactdetails.get(position).getEmail_number())));
+            holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
+            holder.ccp_id.resetToDefaultCountry();
+            holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
+
         }
+
+
 
 
         @Override

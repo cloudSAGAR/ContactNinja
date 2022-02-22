@@ -2167,6 +2167,11 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             holder.layout_icon_call.setVisibility(View.GONE);
             holder.layout_icon_message.setVisibility(View.GONE);
 
+            holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
+                    contactdetails.get(position).getEmail_number())));
+            holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
+            holder.ccp_id.resetToDefaultCountry();
+            holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
 
         }
 
