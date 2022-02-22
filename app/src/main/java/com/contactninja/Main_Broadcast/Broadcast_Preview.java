@@ -466,7 +466,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             JSONObject occurs_on_obj = new JSONObject();
             JSONArray coccurs_on_array = new JSONArray();
             coccurs_on_array.put(broadcate_save_data.getOccurs_weekly());
-            occurs_on_obj.put("occurs_on", coccurs_on_array);
+            occurs_on_obj.put("day_of_week", coccurs_on_array);
             recurring_detail.put(occurs_on_obj);
 
         } else if (broadcate_save_data.getRecurrence().equals("Monthly")) {

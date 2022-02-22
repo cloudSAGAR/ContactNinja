@@ -220,13 +220,9 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
 
                            Log.e("Detaili is",new Gson().toJson(broadcasteda.getRecurringDetail()));
                             List<BroadcastActivityModel._0.OccursOn> r_data = broadcasteda.getRecurringDetail().get(1).getOccursOn();
-
-
-
-
-                                    broadcate_save_data.setDay_of_month(r_data.get(0).getDayOfMonth());
+                            broadcate_save_data.setDay_of_month(r_data.get(0).getDayOfMonth());
                                   //  broadcate_save_data.setOccurs_weekly(r_data.get(i).getEveryWeekNo());
-                                    broadcate_save_data.setEvery_second(r_data.get(1).getEveryWeekNo());
+                             broadcate_save_data.setEvery_second(r_data.get(1).getEveryWeekNo());
 
                                     broadcate_save_data.setEvery_day(r_data.get(2).getEveryDayofweek());
 
@@ -237,8 +233,8 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
 
                     } else if (broadcasteda.getRecurringType().equals("W")) {
                         broadcate_save_data.setRecurrence("Weekly");
-                        broadcate_save_data.setOccurs_weekly(broadcasteda.getRecurringDetail().get(0).getDay_of_week().toString());
-
+                        broadcate_save_data.setOccurs_weekly(broadcasteda.getRecurringDetail().get(1).getDay_of_week().toString());
+                        Log.e("Data",broadcasteda.getRecurringDetail().get(1).getDay_of_week().toString());
                     } else if (broadcasteda.getRecurringType().equals("D")) {
                         broadcate_save_data.setRecurrence("Daily");
 
