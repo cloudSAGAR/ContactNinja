@@ -299,7 +299,7 @@ public class BroadcastActivityModel {
 
             @SerializedName("day_of_week")
             @Expose
-            private List<String> day_of_week = null;
+            private List<Integer> day_of_week = null;
 
             @SerializedName("day_of_month")
             @Expose
@@ -311,11 +311,11 @@ public class BroadcastActivityModel {
             @Expose
             private String everyDayofweek;
 
-            public List<String> getDay_of_week() {
+            public List<Integer> getDay_of_week() {
                 return day_of_week;
             }
 
-            public void setDay_of_week(List<String> day_of_week) {
+            public void setDay_of_week(List<Integer> day_of_week) {
                 this.day_of_week = day_of_week;
             }
 

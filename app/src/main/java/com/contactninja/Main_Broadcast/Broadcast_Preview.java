@@ -468,10 +468,15 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             JSONArray coccurs_on_data_array = new JSONArray();
             JSONObject day_of_month_data = new JSONObject();
             JSONArray coccurs_on_array = new JSONArray();
+            String[] splitdata=broadcate_save_data.getOccurs_weekly().toString().split(",");
+            for (int i=0;i<splitdata.length;i++)
+            {
+                coccurs_on_array.put(Integer.parseInt(splitdata[i]));
+            }
 
 
-            Log.e("Data is",""+Integer.parseInt(broadcate_save_data.getOccurs_weekly().toString()));
-            coccurs_on_array.put(broadcate_save_data.getOccurs_weekly().toString());
+          //  Log.e("Data is",""+Integer.parseInt(broadcate_save_data.getOccurs_weekly().toString()));
+          //  coccurs_on_array.put(broadcate_save_data.getOccurs_weekly().toString());
 
             day_of_month_data.put("day_of_week",coccurs_on_array);
             coccurs_on_data_array.put(day_of_month_data);

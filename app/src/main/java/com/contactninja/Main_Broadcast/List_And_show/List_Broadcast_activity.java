@@ -534,13 +534,19 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         public void onBindViewHolder(@NonNull ListItemAdepter.viewData holder, int position) {
             BroadcastActivityListModel.Broadcast item = broadcastActivityListModels.get(position);
 
-            if (item.getType().equals("SMS")) {
-                holder.image_icon.setImageResource(R.drawable.ic_message_tab);
-            } else {
-                holder.image_icon.setImageResource(R.drawable.ic_email);
-            }
+            try {
+                if (item.getType().equals("SMS")) {
+                    holder.image_icon.setImageResource(R.drawable.ic_message_tab);
+                } else {
+                    holder.image_icon.setImageResource(R.drawable.ic_email);
+                }
 
-            setImage(item,holder);
+
+
+
+                setImage(item,holder);
+
+
             holder.layout_contec.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -567,12 +573,12 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
 
             } else if (item.getStatus().equals("P")) {
                 holder.iv_puse_icon.setVisibility(View.VISIBLE);
-                holder.tv_status.setText("Active");
+                holder.tv_status.setText("Paused");
                 holder.tv_status.setTextColor(getResources().getColor(R.color.text_green));
 
             } else if (item.getStatus().equals("A")) {
                 holder.iv_play_icon.setVisibility(View.VISIBLE);
-                holder.tv_status.setText("Paused");
+                holder.tv_status.setText("Active");
                 holder.tv_status.setTextColor(getResources().getColor(R.color.tv_push_color));
 
             }
@@ -638,6 +644,12 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 }
             });
 
+
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         @Override
@@ -760,7 +772,23 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                     @Override
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
-                        onResume();
+                        ev_search.setText("");
+                        Filter = "";
+                        iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                        currentPage = PAGE_START;
+                        isLastPage = false;
+                        broadcastActivityListModels.clear();
+                        emailAdepter.clear();
+                        try {
+                            if (Global.isNetworkAvailable(List_Broadcast_activity.this, MainActivity.mMainLayout)) {
+                                if (!swipeToRefresh.isRefreshing()) {
+                                    loadingDialog.showLoadingDialog();
+                                }
+                                Mail_list();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                     @Override
                     public void error(Response<ApiResponse> response) {

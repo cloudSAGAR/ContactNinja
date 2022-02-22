@@ -12,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.contactninja.MainActivity;
 import com.contactninja.Main_Broadcast.Broadcast_Preview;
 import com.contactninja.Main_Broadcast.Broadcaste_viewContect;
+import com.contactninja.Model.BroadcastActivityListModel;
 import com.contactninja.Model.BroadcastActivityModel;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.ContectListData;
@@ -38,8 +40,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Response;
+
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
 public class Broadcaste_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back, iv_Setting, image_icon, image_step, iv_toolbar_manu_vertical;
@@ -182,16 +187,20 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         TextView selected_campaign = bottomSheetDialog.findViewById(R.id.selected_campaign);
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
         TextView selected_task = bottomSheetDialog.findViewById(R.id.selected_task);
-       if (!broadcasteda.getStatus().equals("A"))
+       if (broadcasteda.getStatus().equals("A"))
        {
            selected_broadcast.setText("Pause Broadcast");
            selected_broadcast.setVisibility(View.VISIBLE);
-
+           //StartBroadCastApi(broadcasteda,1);
        }
-       else {
-           selected_broadcast.setVisibility(View.GONE);
+       else if (broadcasteda.getStatus().equals("I")){
+           selected_broadcast.setText("Active Broadcast");
+           selected_broadcast.setVisibility(View.VISIBLE);
        }
-
+       else if (broadcasteda.getStatus().equals("P")){
+           selected_broadcast.setText("Active Broadcast");
+           selected_broadcast.setVisibility(View.VISIBLE);
+       }
         selected_task.setText("Edit Broadcast");
         selected_task.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,7 +242,22 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
 
                     } else if (broadcasteda.getRecurringType().equals("W")) {
                         broadcate_save_data.setRecurrence("Weekly");
-                        broadcate_save_data.setOccurs_weekly(broadcasteda.getRecurringDetail().get(1).getOccursOn().get(0).getDay_of_week().toString());
+                        String data="";
+                        for (int i=0;i<broadcasteda.getRecurringDetail().get(1).getOccursOn().get(0).getDay_of_week().size();i++)
+                        {
+                            if (data.equals(""))
+                            {
+
+                                data=broadcasteda.getRecurringDetail().get(1).getOccursOn().get(0).getDay_of_week().get(i).toString();
+
+                                }
+                            else {
+                                data=data+","+broadcasteda.getRecurringDetail().get(1).getOccursOn().get(0).getDay_of_week().get(i).toString();
+
+                            }
+
+                        }
+                        broadcate_save_data.setOccurs_weekly(data);
 
                     } else if (broadcasteda.getRecurringType().equals("D")) {
                         broadcate_save_data.setRecurrence("Daily");
@@ -287,7 +311,26 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+                if (broadcasteda.getStatus().equals("A"))
+                {
+                    StartBroadCastApi(broadcasteda,1);
+                }
+                else if (broadcasteda.getStatus().equals("I")){
+                    if (broadcasteda.getFirstActivated() != null&&!broadcasteda.getFirstActivated().equals("")) {
+                        StartBroadCastApi(broadcasteda,0);
+                    } else {
+                        StartBroadCastApi(broadcasteda,3);
+                    }
 
+                }
+                else if (broadcasteda.getStatus().equals("P")){
+                    if (broadcasteda.getFirstActivated() != null&&!broadcasteda.getFirstActivated().equals("")) {
+                        StartBroadCastApi(broadcasteda,0);
+                    } else {
+                        StartBroadCastApi(broadcasteda,3);
+                    }
+
+                }
                 bottomSheetDialog.dismiss();
             }
         });
@@ -386,6 +429,52 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                 loadingDialog.cancelLoading();
             }
         });
+    }
+
+
+
+    public void StartBroadCastApi(BroadcastActivityModel._0 broadcast, int status) {
+      //  loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("id", broadcast.getId());
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        if(status==1){
+            paramObject.addProperty("status", "I");
+        }else if(status==0){
+            paramObject.addProperty("status", "A");
+        }else {
+            paramObject.addProperty("status", "A");
+        }
+        obj.add("data", paramObject);
+        retrofitCalls.Broadcast_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Broadcaste_Activity.this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+        //                loadingDialog.cancelLoading();
+                        if (response.body().getHttp_status()==200)
+                        {
+                            try {
+                                Mail_list();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
     }
 
 }
