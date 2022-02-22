@@ -2116,7 +2116,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         }
                     }
                 });
-
+                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
+                        contactdetails.get(position).getEmail_number())));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
+                holder.ccp_id.resetToDefaultCountry();
+                holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
 
             } else if (flag.equals("read")) {
              //   EnableRuntimePermission();
@@ -2268,7 +2272,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-            } else {
+            }
+            else {
 
                 holder.swipe_layout.setLeftSwipeEnabled(true);
                 holder.swipe_layout.setRightSwipeEnabled(true);
@@ -2400,6 +2405,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         }
                     }
                 });
+                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
+                        contactdetails.get(position).getEmail_number())));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
+                holder.ccp_id.resetToDefaultCountry();
+                holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
             }
 
             holder.layout_icon_call.setOnClickListener(new View.OnClickListener() {
@@ -2428,11 +2438,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     showAlertDialogMeassge(item.getEmail_number(), item.getId());
                 }
             });
-            holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
-                    contactdetails.get(position).getEmail_number())));
-            holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
-            holder.ccp_id.resetToDefaultCountry();
-            holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
+
 
         }
 
