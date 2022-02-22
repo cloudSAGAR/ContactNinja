@@ -463,11 +463,25 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         recurring_detail.put(repeat_every_obj);
 
         if (broadcate_save_data.getRecurrence().equals("Weekly")) {
-            JSONObject occurs_on_obj = new JSONObject();
+
+            JSONObject occurs_on_data = new JSONObject();
+            JSONArray coccurs_on_data_array = new JSONArray();
+            JSONObject day_of_month_data = new JSONObject();
+            JSONArray coccurs_on_array = new JSONArray();
+
+
+            Log.e("Data is",""+Integer.parseInt(broadcate_save_data.getOccurs_weekly().toString()));
+            coccurs_on_array.put(broadcate_save_data.getOccurs_weekly().toString());
+
+            day_of_month_data.put("day_of_week",coccurs_on_array);
+            coccurs_on_data_array.put(day_of_month_data);
+            occurs_on_data.put("occurs_on", coccurs_on_data_array);
+            recurring_detail.put(occurs_on_data);
+           /* JSONObject occurs_on_obj = new JSONObject();
             JSONArray coccurs_on_array = new JSONArray();
             coccurs_on_array.put(broadcate_save_data.getOccurs_weekly());
             occurs_on_obj.put("day_of_week", coccurs_on_array);
-            recurring_detail.put(occurs_on_obj);
+            recurring_detail.put(occurs_on_obj);*/
 
         } else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
             JSONObject occurs_on_data = new JSONObject();

@@ -268,9 +268,7 @@ public class BroadcastActivityModel {
         public class RecurringDetail {
 
 
-            @SerializedName("day_of_week")
-            @Expose
-            private List<String> day_of_week = null;
+
             @SerializedName("repeat_every")
             @Expose
             private String repeatEvery;
@@ -294,16 +292,14 @@ public class BroadcastActivityModel {
                 this.occursOn = occursOn;
             }
 
-            public List<String> getDay_of_week() {
-                return day_of_week;
-            }
 
-            public void setDay_of_week(List<String> day_of_week) {
-                this.day_of_week = day_of_week;
-            }
         }
 
         public class OccursOn {
+
+            @SerializedName("day_of_week")
+            @Expose
+            private List<String> day_of_week = null;
 
             @SerializedName("day_of_month")
             @Expose
@@ -314,6 +310,14 @@ public class BroadcastActivityModel {
             @SerializedName("every_dayofweek")
             @Expose
             private String everyDayofweek;
+
+            public List<String> getDay_of_week() {
+                return day_of_week;
+            }
+
+            public void setDay_of_week(List<String> day_of_week) {
+                this.day_of_week = day_of_week;
+            }
 
             public String getDayOfMonth() {
                 return dayOfMonth;
