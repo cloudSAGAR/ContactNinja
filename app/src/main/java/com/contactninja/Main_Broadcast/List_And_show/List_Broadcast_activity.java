@@ -755,11 +755,10 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
             paramObject.addProperty("status", "A");
         }
         obj.add("data", paramObject);
-        retrofitCalls.Broadcast_Activiy_list(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+        retrofitCalls.Broadcast_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
                 Global.getVersionname(List_Broadcast_activity.this), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
-                        Log.e("response is",new Gson().toJson(response));
                         loadingDialog.cancelLoading();
                         onResume();
                     }

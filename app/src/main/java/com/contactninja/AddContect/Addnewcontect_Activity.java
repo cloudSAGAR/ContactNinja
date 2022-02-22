@@ -197,15 +197,15 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
 
         // Create an S3 client
-     /*   CognitoCachingCredentialsProvider CognitoCredentialsProvider = new CognitoCachingCredentialsProvider(
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                 getApplicationContext(),
-                "us-east-2:a47e1f07-8030-4bce-b50b-075713507665", // Identity pool ID:>
+                "us-east-2:a47e1f07-8030-4bce-b50b-075713507665", // Identity pool ID
                 Regions.US_EAST_2 // Region
         );
 
-        s3Client = new AmazonS3Client(CognitoCredentialsProvider);
+        s3Client = new AmazonS3Client(credentialsProvider);
         s3Client.setRegion(Region.getRegion(Regions.US_EAST_2));
-        transferUtility = new TransferUtility(s3Client, getApplicationContext());*/
+        transferUtility = new TransferUtility(s3Client, getApplicationContext());
 
         if (flag.equals("edit")) {
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
@@ -1224,7 +1224,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         }
         return result;
     }
-   /* public  void uploadImageTos3(String picturePath) {
+   public  void uploadImageTos3(String picturePath) {
         File uploadToS3 = new File(picturePath);
         String[] nameList = picturePath.split("/");
         String defaultFolder = "contact_image";
@@ -1270,9 +1270,9 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
         });
 
-    }*/
+    }
 
-    private void uploadImageTos3(String imageUri) {
+/*    private void uploadImageTos3(String imageUri) {
      //   final String path = getRealPathFromURI(imageUri);
         if (imageUri != null) {
             //String[] nameList = imageUri.split("/");
@@ -1302,7 +1302,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         }else{
             Toast.makeText(this, "Null Path", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
