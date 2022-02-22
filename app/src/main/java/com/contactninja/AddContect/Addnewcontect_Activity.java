@@ -1090,7 +1090,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                  String filePath1 = uri.getPath();
                  iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
                  String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
-                 uploadImageTos3(uri);
+                 uploadImageTos3(filePath1);
            /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
                  ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -1122,7 +1122,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                  Uri uri = Uri.fromFile(file);
                  String filePath1 = uri.getPath();
                  iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
-                 uploadImageTos3(uri);
+                 uploadImageTos3(filePath1);
            /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
                  ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -1272,16 +1272,19 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     }*/
 
-    private void uploadImageTos3(Uri imageUri) {
-        final String path = getRealPathFromURI(imageUri);
-        if (path != null) {
-            s3uploaderObj.initUpload(path,"contact_image");
+    private void uploadImageTos3(String imageUri) {
+     //   final String path = getRealPathFromURI(imageUri);
+        if (imageUri != null) {
+            //String[] nameList = imageUri.split("/");
+           // String uploadFileName = nameList[nameList.length - 1];
+
+            s3uploaderObj.initUpload(imageUri,"contact_image");
             s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
                 @Override
                 public void onUploadSuccess(String response) {
                     Log.e("Reppnse is",new Gson().toJson(response));
                     if (response.equalsIgnoreCase("Success")) {
-                        user_image_Url = S3Utils.generates3ShareUrl(getApplicationContext(), path);
+                        user_image_Url = S3Utils.generates3ShareUrl(getApplicationContext(), imageUri,"contact_image");
                         File_extension = "JPEG";
                         if(!TextUtils.isEmpty(urlFromS3)) {
                             Toast.makeText(Addnewcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
