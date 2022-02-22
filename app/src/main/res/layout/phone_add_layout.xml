@@ -249,9 +249,9 @@
                     android:layout_gravity="center|left"
                     android:gravity="center|left"
                     app:ccpDialog_showTitle="false"
-                    app:ccpDialog_textColor="@color/black"
+                    app:ccpDialog_textColor="@color/text_reg"
                     app:ccp_autoDetectCountry="true"
-                    app:ccp_contentColor="@color/otp_header_text_color"
+                    app:ccp_contentColor="@color/text_reg"
                     app:ccp_showNameCode="false"
                      />
 

@@ -423,6 +423,7 @@ Number</string>
     <string name="delete_company">Delete company</string>
 
     <string name="no_Task">👍 You\'re all good ! \n You don\'t have any tasks here</string>
+    <string name="no_campaing">👍 You\'re all good ! \n You don\'t have any campaign here</string>
     <string name="no_block_company">You haven\'t \nblack listed any company</string>
     <string name="manual_Today">Today</string>
     <string name="manual_Upcoming">Upcoming</string>
@@ -430,6 +431,7 @@ Number</string>
     <string name="manual_Completed">Completed</string>
     <string name="manual_Skipped">Skipped</string>
     <string name="manual_Paused">Paused</string>
+    <string name="manual_mark">Mark as complete</string>
     <string name="manual_Snooze">Snooze</string>
     <string name="manual_Delete">Delete</string>
     <string name="manual_All_tasks">All tasks</string>
@@ -441,6 +443,8 @@ Number</string>
     <string name="manual_aleart_delete_des">Are you sure that you would like to task remove?</string>
     <string name="manual_aleart_paused">Paused Task ?</string>
     <string name="manual_aleart_paused_des">Are you sure that you would like to task paused?</string>
+    <string name="manual_aleart_finished">Finished Task ?</string>
+    <string name="manual_aleart_finished_des">Are you sure that you would like to task finished?</string>
     <string name="manual_aleart_snooze">Snooze Task ?</string>
     <string name="manual_aleart_snooze_des">Are you sure that you would like to task snooze?</string>
 
@@ -453,6 +457,7 @@ Number</string>
         <item>paused</item>
     </string-array>
     <string-array name="manual_Select">
+        <item>MARK</item>
         <item>PAUSED</item>
         <item>SNOOZE</item>
         <item>DELETE</item>

@@ -314,62 +314,50 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.solo_item_update, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Item_List_Text_Detail_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
-        CheckBox ch_Paused = bottomSheetDialog.findViewById(R.id.ch_Paused);
-        CheckBox ch_snooze = bottomSheetDialog.findViewById(R.id.ch_snooze);
-        CheckBox ch_delete = bottomSheetDialog.findViewById(R.id.ch_delete);
+        LinearLayout layout_Mark = bottomSheetDialog.findViewById(R.id.layout_Mark);
+        LinearLayout layout_Paused = bottomSheetDialog.findViewById(R.id.layout_Paused);
+        LinearLayout layout_snooze = bottomSheetDialog.findViewById(R.id.layout_snooze);
+        LinearLayout layout_delete = bottomSheetDialog.findViewById(R.id.layout_delete);
 
 
-        switch (manualDetails.getStatus()) {
-            case "PAUSED":
-                ch_Paused.setChecked(true);
-                break;
-            case "SNOOZE":
-                ch_snooze.setChecked(true);
-                break;
-            case "DELETE":
-                ch_delete.setChecked(true);
-                break;
-        }
+
         // select sting static
         String[] selet_item = getResources().getStringArray(R.array.manual_Select);
-
-        ch_Paused.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        layout_Mark.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    bottomSheetDialog.dismiss();
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
 
-                    showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
-                            getResources().getString(R.string.manual_aleart_paused_des), selet_item[0]);
-
-                }
-
+                showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_finished),
+                        getResources().getString(R.string.manual_aleart_finished_des), selet_item[0]);
             }
         });
-        ch_snooze.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        layout_Paused.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    bottomSheetDialog.dismiss();
-                    showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_snooze),
-                            getResources().getString(R.string.manual_aleart_snooze_des), selet_item[1]);
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
 
-                }
-
-            }
-        });
-        ch_delete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    bottomSheetDialog.dismiss();
-                    showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_delete),
-                            getResources().getString(R.string.manual_aleart_delete_des), selet_item[2]);
-                }
-
+                showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
+                        getResources().getString(R.string.manual_aleart_paused_des), selet_item[1]);
             }
         });
 
+        layout_snooze.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_snooze),
+                        getResources().getString(R.string.manual_aleart_snooze_des), selet_item[2]);
+            }
+        });
+        layout_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_delete),
+                        getResources().getString(R.string.manual_aleart_delete_des), selet_item[3]);
+            }
+        });
 
         bottomSheetDialog.show();
     }
@@ -412,11 +400,15 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                             intent.putExtra("id", manualDetails.getId());
                             intent.putExtra("prospect_id", manualDetails.getProspectId());
                             intent.putExtra("seq_task_id", manualDetails.getSeqTaskId());
+                            intent.putExtra("record_id",id);
                             intent.putExtra("Type", "SMS");
                             startActivity(intent);
                             finish();
                             break;
                         case "DELETE":
+                            SMSAPI(type);
+                            break;
+                        case "MARK":
                             SMSAPI(type);
                             break;
                     }
@@ -446,6 +438,9 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
 
             case "DELETE":
                 paramObject.put("status", "DELETED");
+                break;
+            case "MARK":
+                paramObject.put("status", "FINISHED");
                 break;
         }
         obj.put("data", paramObject);

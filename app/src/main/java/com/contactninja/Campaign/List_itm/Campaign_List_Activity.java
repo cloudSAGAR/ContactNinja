@@ -71,6 +71,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     EditText ev_search;
     SwipeRefreshLayout swipeToRefresh;
     RecyclerView rv_campaign_list;
+    LinearLayout lay_no_list;
 
 
     CampaingAdepter campaingAdepter;
@@ -135,6 +136,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Global.hideKeyboard(Campaign_List_Activity.this);
                      onResume();
                     return true;
                 }
@@ -147,6 +149,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         mMainLayout = findViewById(R.id.mMainLayout);
         mMainLayout1 = findViewById(R.id.mMainLayout1);
         rv_campaign_list = findViewById(R.id.campaign_list);
+        lay_no_list = findViewById(R.id.lay_no_list);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         demo_layout = findViewById(R.id.demo_layout);
@@ -272,8 +275,28 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             Campaign_List campaign = new Gson().fromJson(headerString, listType);
                             campaignList = campaign.getCampaignList();
 
-                            demo_layout.setVisibility(View.GONE);
-                            mMainLayout1.setVisibility(View.VISIBLE);
+                            if (!ev_search.getText().toString().equals("")) {
+                                if (campaignList.size() == 0) {
+                                    swipeToRefresh.setVisibility(View.GONE);
+                                    lay_no_list.setVisibility(View.VISIBLE);
+                                } else {
+                                    lay_no_list.setVisibility(View.GONE);
+                                    swipeToRefresh.setVisibility(View.VISIBLE);
+                                }
+                            }else {
+                                if (campaignList.size() == 0) {
+                                    lay_no_list.setVisibility(View.GONE);
+                                    mMainLayout1.setVisibility(View.GONE);
+                                    demo_layout.setVisibility(View.VISIBLE);
+                                } else {
+
+                                    lay_no_list.setVisibility(View.GONE);
+                                    demo_layout.setVisibility(View.GONE);
+                                    swipeToRefresh.setVisibility(View.VISIBLE);
+                                    mMainLayout1.setVisibility(View.VISIBLE);
+                                }
+                            }
+
 
 
                             if (currentPage != PAGE_START) campaingAdepter.removeLoading();
@@ -288,9 +311,13 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             isLoading = false;
 
                         } else {
-                            // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
-                            demo_layout.setVisibility(View.VISIBLE);
-                            mMainLayout1.setVisibility(View.GONE);
+                            if (!ev_search.getText().toString().equals("")) {
+                                    swipeToRefresh.setVisibility(View.GONE);
+                                    lay_no_list.setVisibility(View.VISIBLE);
+                            }else {
+                                    mMainLayout1.setVisibility(View.GONE);
+                                    demo_layout.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
 
@@ -469,7 +496,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     }
                 });
 
-                holder.campaign_name.setOnClickListener(new View.OnClickListener() {
+                holder.layout_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {

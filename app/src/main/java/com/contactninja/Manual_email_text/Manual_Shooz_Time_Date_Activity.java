@@ -64,7 +64,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     private int mYear, mMonth, mDay, mHour, mMinute;
     String id,text,p_number,Type;
     private long mLastClickTime=0;
-    int prospect_id=0,seq_task_id=0;
+    int prospect_id=0,seq_task_id=0,record_id=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
             Type=bundle.getString("Type");
             prospect_id=bundle.getInt("prospect_id");
             seq_task_id=bundle.getInt("seq_task_id");
+            record_id=bundle.getInt("record_id");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -98,8 +99,10 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         String formattedDate = df.format(c);
         tv_date.setText(formattedDate);
 
+        Calendar mcurrentTime = Calendar.getInstance();
+        mcurrentTime.add(Calendar.MINUTE, 2);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String currentDateandTime = sdf.format(new Date());
+        String currentDateandTime = sdf.format(mcurrentTime.getTime());
         tv_time.setText(currentDateandTime);
     }
     @Override
@@ -136,11 +139,14 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = null;
         if(Type.equals("EMAIL")){
-            startActivity(new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class));
+            intent = new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class);
         }else {
-            startActivity(new Intent(getApplicationContext(), Item_List_Text_Detail_Activty.class));
+            intent = new Intent(getApplicationContext(), Item_List_Text_Detail_Activty.class);
         }
+        intent.putExtra("record_id",record_id);
+        startActivity(intent);
         finish();
     }
 
@@ -266,6 +272,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     public void onTimer()
     {
         Calendar mcurrentTime = Calendar.getInstance();
+        mcurrentTime.set(Calendar.MINUTE, 2);
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;

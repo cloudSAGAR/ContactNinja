@@ -369,6 +369,8 @@ public class Company_Fragment extends Fragment {
         paramObject.addProperty("q", ev_search.getText().toString());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
+        paramObject.addProperty("orderBy", "name");
+        paramObject.addProperty("order", "ASC");
         if (Filter.equals("BLOCK")) {
             paramObject.addProperty("is_blocked", 1);
         }

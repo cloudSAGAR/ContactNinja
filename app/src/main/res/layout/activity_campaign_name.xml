@@ -105,6 +105,7 @@ in a day"
                 android:inputType="number"
                 android:focusable="true"
                 android:hint="100/Day"
+                android:text="100"
                 android:padding="@dimen/_10sdp"
                  />
             <TextView

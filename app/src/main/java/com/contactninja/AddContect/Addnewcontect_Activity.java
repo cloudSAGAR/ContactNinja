@@ -1253,55 +1253,57 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         }
         return result;
     }
-   public  void uploadImageTos3(String picturePath) {
-        File uploadToS3 = new File(picturePath);
-        String[] nameList = picturePath.split("/");
-        String defaultFolder = "contact_image";
-      //  String userID = Utils.getStringPref(Addnewcontect_Activity.this, Utils.userId);
-        String uploadFileName = nameList[nameList.length - 1];
-        String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/" + uploadFileName;
-        ObjectMetadata metadataCopy = new ObjectMetadata();
-        metadataCopy.setContentType("image/png");
-        TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/" + uploadFileName,
-                uploadToS3, metadataCopy, CannedAccessControlList.PublicRead
-        );
-        audiotransferObserverListener(transferObserver, audioURL, picturePath);
-    }
-    public void audiotransferObserverListener(TransferObserver transferObserver, String audioURL, String savecoverpathfile) {
-        transferObserver.setTransferListener(new TransferListener() {
+    /*  public  void uploadImageTos3(String picturePath) {
+         File uploadToS3 = new File(picturePath);
+         String[] nameList = picturePath.split("/");
+         String defaultFolder = "contact_image";
+       //  String userID = Utils.getStringPref(Addnewcontect_Activity.this, Utils.userId);
+         String uploadFileName = nameList[nameList.length - 1];
+         String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/" + uploadFileName;
+         ObjectMetadata metadataCopy = new ObjectMetadata();
+         metadataCopy.setContentType("image/png");
+         TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/" + uploadFileName,
+                 uploadToS3, metadataCopy, CannedAccessControlList.PublicRead
+         );
+         audiotransferObserverListener(transferObserver, audioURL, picturePath);
+     }
+   public void audiotransferObserverListener(TransferObserver transferObserver, String audioURL, String savecoverpathfile) {
+         transferObserver.setTransferListener(new TransferListener() {
 
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                Log.i("onStateChanged: ", "State Change" + state);
-                if (state == TransferState.COMPLETED) {
+             @Override
+             public void onStateChanged(int id, TransferState state) {
+                 Toast.makeText(Addnewcontect_Activity.this, "State Change" +state, Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(Addnewcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
+                 Log.i("onStateChanged: ", "State Change" + state);
+                 if (state == TransferState.COMPLETED) {
 
-                }
+                     Toast.makeText(Addnewcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
 
-            }
+                 }
 
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                int percentage = 0;
-                try {
-                    percentage = (int) (bytesCurrent / bytesTotal * 100);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Log.i("onProgressChanged: ", "Progress in %" + percentage);
-            }
+             }
 
-            @Override
-            public void onError(int id, Exception ex) {
-                Log.i("error", "error");
-            }
+             @Override
+             public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                 int percentage = 0;
+                 try {
+                     percentage = (int) (bytesCurrent / bytesTotal * 100);
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                 }
+                 Log.i("onProgressChanged: ", "Progress in %" + percentage);
+             }
 
-        });
+             @Override
+             public void onError(int id, Exception ex) {
+                 Log.i("error", "error");
+             }
 
-    }
+         });
 
-/*    private void uploadImageTos3(String imageUri) {
+     }
+ */
+    private void uploadImageTos3(String imageUri) {
      //   final String path = getRealPathFromURI(imageUri);
         if (imageUri != null) {
             //String[] nameList = imageUri.split("/");
@@ -1312,6 +1314,8 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 @Override
                 public void onUploadSuccess(String response) {
                     Log.e("Reppnse is",new Gson().toJson(response));
+                    Toast.makeText(Addnewcontect_Activity.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
+
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url = S3Utils.generates3ShareUrl(getApplicationContext(), imageUri,"contact_image");
                         File_extension = "JPEG";
@@ -1331,7 +1335,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         }else{
             Toast.makeText(this, "Null Path", Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
 
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
