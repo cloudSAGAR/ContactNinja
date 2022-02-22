@@ -413,7 +413,7 @@ public class Campaign_Contect_Fragment extends Fragment {
             }
             else {
                 try {
-                    if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                         ContectEvent();
                     }
 

@@ -704,29 +704,96 @@ public class Broadcast_Contect_Fragment extends Fragment {
             // Log.e("First Name",select_contectListData.get(position).getFirstname());
             holder.userName.setText(select_contectListData.get(position).getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
-            if (Global.IsNotNull(select_contectListData.get(position).getFirstname()) || !select_contectListData.get(position).getFirstname().equals("")) {
-                String first_latter = select_contectListData.get(position).getFirstname().substring(0, 1).toUpperCase();
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
 
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                } else {
+            try {
+                if (Global.IsNotNull(select_contectListData.get(position).getFirstname()) || !select_contectListData.get(position).getFirstname().equals("")) {
+                    String first_latter = select_contectListData.get(position).getFirstname().substring(0, 1).toUpperCase();
+                    if (second_latter.equals("")) {
+                        current_latter = first_latter;
+                        second_latter = first_latter;
 
-                    current_latter = first_latter;
-                    second_latter = first_latter;
+                    } else if (second_latter.equals(first_latter)) {
+                        current_latter = second_latter;
+                    } else {
+
+                        current_latter = first_latter;
+                        second_latter = first_latter;
+                    }
+
                 }
 
+
+                String file = "" + select_contectListData.get(position).getContactImage();
+                if (file.equals("null")) {
+                    holder.no_image.setVisibility(View.VISIBLE);
+                    holder.profile_image.setVisibility(View.GONE);
+                    String name = select_contectListData.get(position).getFirstname();
+                    holder.profile_image.setVisibility(View.GONE);
+                    String add_text = "";
+                    String[] split_data = name.split(" ");
+                    try {
+                        for (int i = 0; i < split_data.length; i++) {
+                            if (i == 0) {
+                                add_text = split_data[i].substring(0, 1);
+                            } else {
+                                add_text = add_text + split_data[i].charAt(0);
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                    holder.no_image.setText(add_text);
+                    holder.no_image.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    Glide.with(mCtx).
+                            load(select_contectListData.get(position).getContactImage())
+                            .placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle)
+                            .into(holder.profile_image);
+
+
+                }
+                if (SessionManager.getContect_flag(getActivity()).equals("read")) {
+
+                } else {
+                    holder.top_layout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
+                            for (int i = 0; i < contectListData.size(); i++) {
+                                if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId())) {
+                                    groupContectAdapter.notifyItemChanged(i);
+                                    contectListData.get(i).setFlag("true");
+
+                                }
+                            }
+                            userDetails.remove(position);
+                            topUserListDataAdapter.notifyDataSetChanged();
+                            /*
+                             * set select contact count */
+                            select_Contact(userDetails.size());
+                            SessionManager.setGroupList(getActivity(), new ArrayList<>());
+                            SessionManager.setGroupList(getActivity(), select_contectListData);
+
+
+                        }
+                    });
+
+                }
             }
+            catch (Exception e)
+            {
 
-
-            String file = "" + select_contectListData.get(position).getContactImage();
-            if (file.equals("null")) {
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
-                String name = select_contectListData.get(position).getFirstname();
-                holder.profile_image.setVisibility(View.GONE);
+                holder.userName.setText(select_contectListData.get(position).getContactDetails().get(0).getEmailNumber());
+                String name = inviteUserDetails.getContactDetails().get(0).getEmailNumber();
                 String add_text = "";
                 String[] split_data = name.split(" ");
                 try {
@@ -738,52 +805,13 @@ public class Broadcast_Contect_Fragment extends Fragment {
                             break;
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
 
 
                 holder.no_image.setText(add_text);
                 holder.no_image.setVisibility(View.VISIBLE);
-
-            } else {
-                Glide.with(mCtx).
-                        load(select_contectListData.get(position).getContactImage())
-                        .placeholder(R.drawable.shape_primary_circle)
-                        .error(R.drawable.shape_primary_circle)
-                        .into(holder.profile_image);
-
-
-            }
-            if (SessionManager.getContect_flag(getActivity()).equals("read")) {
-
-            } else {
-                holder.top_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        for (int i = 0; i < contectListData.size(); i++) {
-                            if (contectListData.get(i).getId().equals(select_contectListData.get(position).getId())) {
-                                groupContectAdapter.notifyItemChanged(i);
-                                contectListData.get(i).setFlag("true");
-
-                            }
-                        }
-                        userDetails.remove(position);
-                        topUserListDataAdapter.notifyDataSetChanged();
-                        /*
-                         * set select contact count */
-                        select_Contact(userDetails.size());
-                        SessionManager.setGroupList(getActivity(), new ArrayList<>());
-                        SessionManager.setGroupList(getActivity(), select_contectListData);
-
-
-                    }
-                });
-
             }
 
            /* if (userDetails.get(position).getFlag().equals("true")) {

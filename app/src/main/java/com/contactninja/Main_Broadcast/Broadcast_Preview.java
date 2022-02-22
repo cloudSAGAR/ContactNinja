@@ -660,45 +660,80 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             holder.userName.setText(inviteUserDetails.getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            if (Global.IsNotNull(inviteUserDetails.getFirstname()) || !inviteUserDetails.getFirstname().equals("")) {
-                String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
-
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                } else {
-
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                }
-            }
-
-
-            holder.no_image.setVisibility(View.VISIBLE);
-            holder.profile_image.setVisibility(View.GONE);
-            String name = inviteUserDetails.getFirstname();
-            holder.profile_image.setVisibility(View.GONE);
-            String add_text = "";
-            String[] split_data = name.split(" ");
             try {
-                for (int i = 0; i < split_data.length; i++) {
-                    if (i == 0) {
-                        add_text = split_data[i].substring(0, 1);
+                if (Global.IsNotNull(inviteUserDetails.getFirstname().toString()) || !inviteUserDetails.getFirstname().toString().equals("")) {
+                    String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+
+                    if (second_latter.equals("")) {
+                        current_latter = first_latter;
+                        second_latter = first_latter;
+
+                    } else if (second_latter.equals(first_latter)) {
+                        current_latter = second_latter;
                     } else {
-                        add_text = add_text + split_data[i].charAt(0);
-                        break;
+
+                        current_latter = first_latter;
+                        second_latter = first_latter;
                     }
+
+
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                holder.no_image.setVisibility(View.VISIBLE);
+                holder.profile_image.setVisibility(View.GONE);
+                String name = inviteUserDetails.getFirstname();
+                holder.profile_image.setVisibility(View.GONE);
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                holder.no_image.setText(add_text);
+                holder.no_image.setVisibility(View.VISIBLE);
+
+            }
+            catch (Exception e)
+            {
+                holder.no_image.setVisibility(View.VISIBLE);
+                holder.profile_image.setVisibility(View.GONE);
+                String name = inviteUserDetails.getContactDetails().get(0).getEmailNumber();
+                holder.userName.setText(name);
+                holder.profile_image.setVisibility(View.GONE);
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
+                        }
+                    }
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+
+
+                holder.no_image.setText(add_text);
+                holder.no_image.setVisibility(View.VISIBLE);
             }
 
 
-            holder.no_image.setText(add_text);
-            holder.no_image.setVisibility(View.VISIBLE);
+
+
+
+
 
         }
 
