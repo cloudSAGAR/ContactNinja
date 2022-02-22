@@ -131,6 +131,15 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             add_icon.setVisibility(View.GONE);
             iv_camp_edit.setVisibility(View.GONE);
         }
+
+        if (broadcate_save_data.getId().equals(""))
+        {
+                tv_start_broadcast.setText("Create Broadcast");
+        }
+        else {
+
+            tv_start_broadcast.setText("Update Broadcast");
+        }
     }
 
 
@@ -426,14 +435,19 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             JSONObject paramObject1 = new JSONObject();
             for (int j = 0; j < s.get(i).getContactDetails().size(); j++) {
 
-                paramObject1.put("prospect_id", s.get(i).getContactDetails().get(j).getContactId());
-                if (s.get(i).getContactDetails().get(j).getType().equals("EMAIL")) {
-                    paramObject1.put("email", s.get(i).getContactDetails().get(j).getEmailNumber());
-                } else {
-                    paramObject1.put("mobile", s.get(i).getContactDetails().get(j).getEmailNumber());
+                if (!s.get(i).getContactDetails().get(j).getEmailNumber().equals("")||!s.get(i).getContactDetails().get(j).getEmailNumber().equals("null"))
+                {
+                    paramObject1.put("prospect_id", s.get(i).getContactDetails().get(j).getContactId());
+                    if (s.get(i).getContactDetails().get(j).getType().equals("EMAIL")) {
+                        paramObject1.put("email", s.get(i).getContactDetails().get(j).getEmailNumber());
+                    } else {
+                        paramObject1.put("mobile", s.get(i).getContactDetails().get(j).getEmailNumber());
+                    }
+                    jsonArray.put(paramObject1);
                 }
 
-                jsonArray.put(paramObject1);
+
+
             }
         }
         List<Grouplist.Group> group_list = SessionManager.getgroup_broadcste(getApplicationContext());

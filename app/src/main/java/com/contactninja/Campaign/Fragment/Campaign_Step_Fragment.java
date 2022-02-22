@@ -164,6 +164,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     }
                     movieViewHolder.edit_minutes.setText(movieList.get(position).getMinute().toString());
                     movieViewHolder.edit_day.setText(movieList_data.getDay().toString());
+                    movieViewHolder.iv_manu.setVisibility(View.GONE);
                     movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

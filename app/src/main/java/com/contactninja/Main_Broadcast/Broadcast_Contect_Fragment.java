@@ -511,17 +511,28 @@ public class Broadcast_Contect_Fragment extends Fragment {
                 } else {
 
 
-                    for (int i = 0; i < detailList_phone.size(); i++) {
-                        if (detailList_phone.get(i).isPhoneSelect()) {
-                            userLinkedGmailList.add(detailList_phone.get(i));
+                    if (detailList_phone.size()==1&&detailList1_email.size()==1 )
+
+                    {
+                        for (int i = 0; i < detailList_phone.size(); i++) {
+                            if (detailList_phone.get(i).isPhoneSelect()) {
+                                userLinkedGmailList.add(detailList_phone.get(i));
+                            }
+                        }
+                    }
+                    else {
+                        for (int i = 0; i < detailList_phone.size(); i++) {
+                            if (detailList_phone.get(i).isPhoneSelect()) {
+                                userLinkedGmailList.add(detailList_phone.get(i));
+                            }
+                        }
+                        for (int j = 0; j < detailList1_email.size(); j++) {
+                            if (detailList1_email.get(j).isPhoneSelect()) {
+                                userLinkedGmailList.add(detailList1_email.get(j));
+                            }
                         }
                     }
 
-                    for (int j = 0; j < detailList1_email.size(); j++) {
-                        if (detailList1_email.get(j).isPhoneSelect()) {
-                            userLinkedGmailList.add(detailList1_email.get(j));
-                        }
-                    }
                     contactDetails.addAll(userLinkedGmailList);
                     Log.e("contactDetails", new Gson().toJson(userLinkedGmailList));
                     contacts.get(position).setContactDetails(contactDetails);
