@@ -234,7 +234,6 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     } else if (broadcasteda.getRecurringType().equals("W")) {
                         broadcate_save_data.setRecurrence("Weekly");
                         broadcate_save_data.setOccurs_weekly(broadcasteda.getRecurringDetail().get(1).getDay_of_week().toString());
-                        Log.e("Data",broadcasteda.getRecurringDetail().get(1).getDay_of_week().toString());
                     } else if (broadcasteda.getRecurringType().equals("D")) {
                         broadcate_save_data.setRecurrence("Daily");
 

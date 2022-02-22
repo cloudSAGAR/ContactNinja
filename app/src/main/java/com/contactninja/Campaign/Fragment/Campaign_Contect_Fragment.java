@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
@@ -229,6 +230,13 @@ public class Campaign_Contect_Fragment extends Fragment {
                  * set select contact count */
                 select_Contact(0);
             }
+            else {
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
             add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -345,6 +353,13 @@ public class Campaign_Contect_Fragment extends Fragment {
                  * set select contact count */
                 select_Contact(0);
             }
+            else {
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
             add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -395,6 +410,16 @@ public class Campaign_Contect_Fragment extends Fragment {
                 /*
                  * set select contact count */
                 select_Contact(0);
+            }
+            else {
+                try {
+                    if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
+                        ContectEvent();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             add_contect_list.setItemViewCacheSize(50000);
             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
@@ -502,6 +527,13 @@ public class Campaign_Contect_Fragment extends Fragment {
                  * set select contact count */
                 select_Contact(0);
 
+            }
+            else {
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             call_updatedata();
 
@@ -621,6 +653,11 @@ public class Campaign_Contect_Fragment extends Fragment {
                     ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                     contectListData.addAll(contectListData1.getContacts());
                     groupContectAdapter.addAll(contectListData);
+                    contectListData.addAll(contectListData1.getContacts());
+                    List<ContectListData> contectListData_store = new ArrayList<>();
+                    contectListData_store.add(contectListData1);
+                    SessionManager.setContectList(getActivity(), contectListData_store);
+
                     if (contectListData1.getContacts().size() == limit) {
                         if (currentPage <= TOTAL_PAGES) {
                             groupContectAdapter.addLoadingFooter();

@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -186,7 +187,16 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
 
             }
         });
+
+        EmailList();
+
+
+        call_updatedata();
+    }
+
+    private void EmailList() {
         if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
+            contectListData.clear();
             List<ContectListData.Contact> list_data = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
             //Log.e("List Data is", new Gson().toJson(list_data));
             for (int i = 0; i < list_data.size(); i++) {
@@ -199,7 +209,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                         //contactDetails.add(contect_detail.get(j));
                         //list_data.get(i).setContactDetails(contactDetails);
                         contectListData.add(list_data.get(i));
-                       // Log.e("Contect Detail is",new Gson().toJson(contectListData));
+                        // Log.e("Contect Detail is",new Gson().toJson(contectListData));
                         break;
                     }
                 }
@@ -214,9 +224,16 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
             groupContectAdapter.notifyDataSetChanged();
             num_count.setText(contectListData.size() + " Contacts");
         }
+        else {
 
-
-        call_updatedata();
+            try {
+                if (Global.isNetworkAvailable(Manual_Email_Contect_Activity.this, mMainLayout)) {
+                    ContectEvent();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -338,7 +355,12 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     }.getType();
                     ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                     contectListData.addAll(contectListData1.getContacts());
-                    groupContectAdapter.addAll(contectListData);
+                   // groupContectAdapter.addAll(contectListData);
+                    List<ContectListData> contectListData_store = new ArrayList<>();
+                    contectListData_store.add(contectListData1);
+                    SessionManager.setContectList(getApplicationContext(), contectListData_store);
+
+                    EmailList();
                     if (contectListData1.getContacts().size() == limit) {
                         if (currentPage <= TOTAL_PAGES) {
                             groupContectAdapter.addLoadingFooter();

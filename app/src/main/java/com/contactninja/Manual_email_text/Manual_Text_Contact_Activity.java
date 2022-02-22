@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -184,7 +185,17 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
 
             }
         });
+
+        ContectList();
+
+
+
+        call_updatedata();
+    }
+
+    private void ContectList() {
         if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
+            contectListData.clear();
             List<ContectListData.Contact> list_data = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
             Log.e("List Data is", new Gson().toJson(list_data));
             for (int i = 0; i < list_data.size(); i++) {
@@ -204,9 +215,15 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
             groupContectAdapter.notifyDataSetChanged();
             num_count.setText(contectListData.size() + " Contacts");
         }
-
-
-        call_updatedata();
+        else {
+            try {
+                if (Global.isNetworkAvailable(Manual_Text_Contact_Activity.this, mMainLayout)) {
+                    ContectEvent();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -328,7 +345,12 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     }.getType();
                     ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                     contectListData.addAll(contectListData1.getContacts());
-                    groupContectAdapter.addAll(contectListData);
+                   // groupContectAdapter.addAll(contectListData);
+                    contectListData.addAll(contectListData1.getContacts());
+                    List<ContectListData> contectListData_store = new ArrayList<>();
+                    contectListData_store.add(contectListData1);
+                    SessionManager.setContectList(getApplicationContext(), contectListData_store);
+                    ContectList();
                     if (contectListData1.getContacts().size() == limit) {
                         if (currentPage <= TOTAL_PAGES) {
                             groupContectAdapter.addLoadingFooter();
