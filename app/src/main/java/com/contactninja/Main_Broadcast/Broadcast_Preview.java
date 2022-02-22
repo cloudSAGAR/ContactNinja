@@ -112,11 +112,11 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
         if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
 
-            tv_item_num.setImageDrawable(getResources().getDrawable(R.drawable.ic_message_select));
+            tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_message_select));
             layout_email_subject.setVisibility(View.GONE);
         } else {
             layout_email_subject.setVisibility(View.VISIBLE);
-            tv_item_num.setImageDrawable(getResources().getDrawable(R.drawable.ic_email_mini));
+            tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_email_mini));
 
         }
         tv_date.setText(broadcate_save_data.getDate() + " @ " + broadcate_save_data.getTime());
