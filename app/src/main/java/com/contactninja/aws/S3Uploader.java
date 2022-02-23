@@ -29,7 +29,7 @@ public class S3Uploader {
 
     public void initUpload(String filePath,String folder) {
 
-       File uploadToS3 = new File(filePath);
+        File uploadToS3 = new File(filePath);
         String[] nameList = filePath.split("/");
         String defaultFolder = folder;
         String uploadFileName = nameList[nameList.length - 1];

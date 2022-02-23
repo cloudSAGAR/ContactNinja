@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -82,6 +83,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
+    ImageView iv_cancle_search_icon;
     SwipeRefreshLayout swipeToRefresh;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -158,6 +160,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
                    Global.hideKeyboard(getActivity());
                     onResume();
                     return true;
@@ -171,6 +174,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private void IntentUI(View view) {
 
         /*   main_layout = view.findViewById(R.id.main_layout);*/
+        iv_cancle_search_icon=view.findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         ev_search = view.findViewById(R.id.ev_search);
         group_recyclerView = view.findViewById(R.id.group_list);
@@ -209,6 +214,20 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
                 /*  getActivity().finish();*/
                 break;
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                try {
+                    grouplists.clear();
+                    paginationAdapter.clear();
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        GroupEvent();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
             case R.id.group_name:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;

@@ -105,7 +105,7 @@ public class Campaign_Contect_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_broadcste__contect_, container, false);
+        View view = inflater.inflate(R.layout.fragment_campaign_contect, container, false);
         IntentUI(view);
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());

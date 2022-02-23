@@ -74,7 +74,9 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     public static TopUserListDataAdapter topUserListDataAdapter;
     TextView tv_create;
     LinearLayout mMainLayout,layout_select_list;
-    ImageView add_new_contect_icon1,add_new_contect_icon,search_icon;
+    ImageView add_new_contect_icon1,
+            add_new_contect_icon,
+            search_icon,iv_cancle_search_icon;
     TextView add_new_contect;
     private long mLastClickTime=0;
     EditText ev_search;
@@ -150,7 +152,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
                     try {
                         grouplists.clear();
                         paginationAdapter.Remove_list();
@@ -177,6 +179,8 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         }
     }
     private void IntentUI(View view) {
+        iv_cancle_search_icon=view.findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
         ev_search=view.findViewById(R.id.ev_search);
         search_icon=view.findViewById(R.id.search_icon);
         search_icon.setOnClickListener(this);
@@ -209,6 +213,20 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 ev_search.requestFocus();
+                break;
+
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                try {
+                    grouplists.clear();
+                    paginationAdapter.Remove_list();
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        GroupEvent();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case R.id.add_new_contect_layout:
