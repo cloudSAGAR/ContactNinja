@@ -107,11 +107,11 @@ public class ContectFragment extends Fragment {
     String strtext = "";
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
-    TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon, iv_filter_icon;
+    TextView add_new_contect, num_count,txt_nolist;
+    ImageView add_new_contect_icon, iv_filter_icon,iv_cancle_search_icon;
     View view1;
     FragmentActivity fragmentActivity;
-    LinearLayout add_new_contect_layout;
+    LinearLayout add_new_contect_layout,layout_list_data,lay_no_list;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -196,7 +196,12 @@ public class ContectFragment extends Fragment {
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                layout_list_data.setVisibility(View.VISIBLE);
+                lay_no_list.setVisibility(View.GONE);
                 ev_search.setText("");
+                iv_filter_icon.setVisibility(View.VISIBLE);
+                iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                iv_cancle_search_icon.setVisibility(View.GONE);
                 try {
                     try {
                         //  GetContactsIntoArrayList();
@@ -209,8 +214,6 @@ public class ContectFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 
@@ -275,11 +278,21 @@ public class ContectFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     Global.hideKeyboard(getActivity());
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                    iv_filter_icon.setVisibility(View.GONE);
                     List<ContectListData.Contact> temp = new ArrayList();
                     for (ContectListData.Contact d : contectListData) {
                         if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
                             temp.add(d);
                         }
+                    }
+                    if(temp.size()==0){
+                        txt_nolist.setText(mCtx.getResources().getString(R.string.no_contact));
+                        lay_no_list.setVisibility(View.VISIBLE);
+                        layout_list_data.setVisibility(View.GONE);
+                    }else {
+                        layout_list_data.setVisibility(View.VISIBLE);
+                        lay_no_list.setVisibility(View.GONE);
                     }
                     paginationAdapter.updateList(temp);
                     return true;
@@ -741,6 +754,9 @@ public class ContectFragment extends Fragment {
 
     private void IntentUI(View content_view) {
         iv_filter_icon = content_view.findViewById(R.id.iv_filter_icon);
+        txt_nolist = content_view.findViewById(R.id.txt_nolist);
+        layout_list_data = content_view.findViewById(R.id.layout_list_data);
+        lay_no_list = content_view.findViewById(R.id.lay_no_list);
         mMainLayout = content_view.findViewById(R.id.mMainLayout);
         rvinviteuserdetails = content_view.findViewById(R.id.contact_list);
         fastscroller = content_view.findViewById(R.id.fastscroller);
@@ -751,6 +767,7 @@ public class ContectFragment extends Fragment {
         add_new_contect_layout = content_view.findViewById(R.id.add_new_contect_layout);
         swipeToRefresh = content_view.findViewById(R.id.swipeToRefresh);
         ev_search = content_view.findViewById(R.id.ev_search);
+        iv_cancle_search_icon = content_view.findViewById(R.id.iv_cancle_search_icon);
         tv_upload = content_view.findViewById(R.id.tv_upload);
         iv_filter_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -761,6 +778,24 @@ public class ContectFragment extends Fragment {
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                 showBottomSheetDialog_Filtter();
+            }
+        });
+        iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                iv_filter_icon.setVisibility(View.VISIBLE);
+                List<ContectListData.Contact> temp = new ArrayList();
+                for (ContectListData.Contact d : contectListData) {
+                    if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                        temp.add(d);
+                    }
+                }
+                paginationAdapter.updateList(temp);
+
+                layout_list_data.setVisibility(View.VISIBLE);
+                lay_no_list.setVisibility(View.GONE);
             }
         });
     }
@@ -1794,6 +1829,15 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     paginationAdapter.addAll(contectListData);
                     num_count.setText(contectListData.size() + " Contacts");
                     Filter = "BLOCK";
+
+                    if(block__list_data.size()==0){
+                        txt_nolist.setText(mCtx.getResources().getString(R.string.no_block_contact));
+                        lay_no_list.setVisibility(View.VISIBLE);
+                        layout_list_data.setVisibility(View.GONE);
+                    }else {
+                        layout_list_data.setVisibility(View.VISIBLE);
+                        lay_no_list.setVisibility(View.GONE);
+                    }
                 }
 
             }
@@ -1804,13 +1848,15 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     bottomSheetDialog.dismiss();
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     contectListData.clear();
                     paginationAdapter.removeloist();
                     contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
                     paginationAdapter.addAll(contectListData);
                     num_count.setText(contectListData.size() + " Contacts");
                     Filter = "All";
+                    layout_list_data.setVisibility(View.VISIBLE);
+                    lay_no_list.setVisibility(View.GONE);
                 }
 
             }

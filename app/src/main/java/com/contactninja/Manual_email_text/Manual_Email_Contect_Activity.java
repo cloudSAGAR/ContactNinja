@@ -15,9 +15,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -79,9 +81,9 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
     Cursor cursor;
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
-    EditText contect_search;
+    EditText ev_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon;
+    ImageView add_new_contect_icon,iv_cancle_search_icon;
     LinearLayout add_new_contect_layout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
@@ -159,34 +161,27 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     }
                 }
         );
-
-
-        contect_search.addTextChangedListener(new TextWatcher() {
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : contectListData) {
-                    if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
-                        temp.add(d);
-                        // Log.e("Same Data ",d.getUserName());
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                    Global.hideKeyboard(Manual_Email_Contect_Activity.this);
+                    List<ContectListData.Contact> temp = new ArrayList();
+                    for (ContectListData.Contact d : contectListData) {
+                        if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                            temp.add(d);
+                            // Log.e("Same Data ",d.getUserName());
+                        }
                     }
+                    groupContectAdapter.updateList(temp);
+                    return true;
                 }
-                groupContectAdapter.updateList(temp);
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                return false;
             }
         });
+
+
 
         EmailList();
 
@@ -264,7 +259,9 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
         contect_list_unselect.setLayoutManager(layoutManager1);
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
-        contect_search = findViewById(R.id.contect_search);
+        ev_search = findViewById(R.id.ev_search);
+        iv_cancle_search_icon = findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
         add_new_contect = findViewById(R.id.add_new_contect);
         num_count = findViewById(R.id.num_count);
         add_new_contect_icon = findViewById(R.id.add_new_contect_icon);
@@ -310,8 +307,16 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.save_button:
-
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                List<ContectListData.Contact> temp = new ArrayList();
+                for (ContectListData.Contact d : contectListData) {
+                    if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                        temp.add(d);
+                    }
+                }
+                groupContectAdapter.updateList(temp);
                 break;
 
         }

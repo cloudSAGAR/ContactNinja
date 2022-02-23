@@ -426,6 +426,10 @@ Number</string>
     <string name="no_campaing">👍 You\'re all good ! \n You don\'t have any campaign here</string>
     <string name="no_broadcast">👍 You\'re all good ! \n You don\'t have any broadcast here</string>
     <string name="no_block_company">You haven\'t \nblack listed any company</string>
+    <string name="no_block_contact">You haven\'t \nblack listed any contact</string>
+    <string name="no_contact">👍 You\'re all good ! \n You don\'t have any contact here</string>
+    <string name="no_group">👍 You\'re all good ! \n You don\'t have any group here</string>
+    <string name="no_company">👍 You\'re all good ! \n You don\'t have any company here</string>
     <string name="manual_Today">Today</string>
     <string name="manual_Upcoming">Upcoming</string>
     <string name="manual_Due">Due</string>

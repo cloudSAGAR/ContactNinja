@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +66,7 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Main_Task_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class Main_Task_Fragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -111,11 +109,10 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     }
 
 
-
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    ImageView  iv_filter_icon;
+    ImageView iv_filter_icon, iv_cancle_search_icon;
     TextView add_new_contect;
 
     LinearLayout mMainLayout;
@@ -123,7 +120,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     LinearLayout layout_toolbar_logo;
     RelativeLayout lay_mainlayout;
     TextView tv_create;
-    RecyclerView rv_email_list;
+    RecyclerView rv_Task_list;
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
     ListItemAdepter emailAdepter;
@@ -154,23 +151,23 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     Global.hideKeyboard(getActivity());
-                    filter(ev_search.getText().toString());
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                    iv_filter_icon.setVisibility(View.GONE);
+                    Filter="";
+                    onResume();
                     return true;
                 }
                 return false;
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rv_email_list.setLayoutManager(layoutManager);
+        rv_Task_list.setLayoutManager(layoutManager);
         emailAdepter = new ListItemAdepter(getActivity(), new ArrayList<>());
-        rv_email_list.setAdapter(emailAdepter);
-        rv_email_list.addOnScrollListener(new PaginationListener(layoutManager) {
+        rv_Task_list.setAdapter(emailAdepter);
+        rv_Task_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
-                iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                Filter = "";
                 isLoading = true;
                 currentPage++;
                 try {
@@ -229,29 +226,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
         return view;
     }
-    private void filter(String text) {
-        // creating a new array list to filter our data.
-        ArrayList<ManualTaskModel> filteredlist = new ArrayList<>();
-
-        // running a for loop to compare elements.
-        for (ManualTaskModel item : manualTaskModelList) {
-            // checking if the entered string matched with any item of our recycler view.
-            if (item.getContactMasterFirstname().toLowerCase().contains(text.toLowerCase())) {
-                filteredlist.add(item);
-            }
-        }
-        if (filteredlist.isEmpty()) {
-
-        } else {
-            emailAdepter.filterList(filteredlist);
-        }
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-        Filter = "";
-        iv_filter_icon.setImageResource(R.drawable.ic_filter);
+        //   Filter = "";
+        //   iv_filter_icon.setImageResource(R.drawable.ic_filter);
         currentPage = PAGE_START;
         isLastPage = false;
         manualTaskModelList.clear();
@@ -282,17 +262,20 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         mMainLayout = view.findViewById(R.id.mMainLayout);
         tv_create = view.findViewById(R.id.tv_create);
         tv_create.setText(getString(R.string.txt_task));
-        rv_email_list = view.findViewById(R.id.email_list);
+        rv_Task_list = view.findViewById(R.id.rv_Task_list);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
 
         swipeToRefresh = view.findViewById(R.id.swipeToRefresh);
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
         swipeToRefresh.setOnRefreshListener(this);
         ev_search = view.findViewById(R.id.ev_search);
+        iv_cancle_search_icon = view.findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
 
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
     }
+
     @Override
     public void onClick(View view) {
 
@@ -303,6 +286,13 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 filter_manu();
+                break;
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                Filter="";
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                iv_filter_icon.setVisibility(View.VISIBLE);
+                onResume();
                 break;
         }
     }
@@ -443,6 +433,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
         bottomSheetDialog.show();
     }
+
     void Mail_list() throws JSONException {
         /*
         Create By :- Paras
@@ -481,11 +472,11 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                         manualTaskModelList = emailActivityListModel.getManualTask();
                         if (!ev_search.getText().toString().equals("") || !Filter.equals("")) {
                             if (manualTaskModelList.size() == 0) {
-                                swipeToRefresh.setVisibility(View.GONE);
+                                rv_Task_list.setVisibility(View.GONE);
                                 lay_no_list.setVisibility(View.VISIBLE);
                             } else {
                                 lay_no_list.setVisibility(View.GONE);
-                                swipeToRefresh.setVisibility(View.VISIBLE);
+                                rv_Task_list.setVisibility(View.VISIBLE);
                             }
 
                         } else {
@@ -498,7 +489,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
                                 lay_no_list.setVisibility(View.GONE);
                                 demo_layout.setVisibility(View.GONE);
-                                swipeToRefresh.setVisibility(View.VISIBLE);
+                                rv_Task_list.setVisibility(View.VISIBLE);
                                 lay_mainlayout.setVisibility(View.VISIBLE);
                             }
                         }
@@ -515,11 +506,8 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                         isLoading = false;
 
                     } else {
-                        // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
                         demo_layout.setVisibility(View.VISIBLE);
                     }
-
-
                 } else {
                     demo_layout.setVisibility(View.VISIBLE);
                 }
@@ -535,8 +523,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     }
 
     public void onRefresh() {
+        ev_search.setText("");
+        iv_cancle_search_icon.setVisibility(View.GONE);
+        iv_filter_icon.setVisibility(View.VISIBLE);
         iv_filter_icon.setImageResource(R.drawable.ic_filter);
         Filter = "";
+
         refresf_api();
     }
 
@@ -573,7 +565,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     tv_status.setText(Global.setFirstLetter(item.getStatus()));
                     tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
-                String formateChnage=Global.formateChange(FullDate);
+                String formateChnage = Global.formateChange(FullDate);
                 tv_time.setText(formateChnage.replace(" ", "\n"));
 
             } else if (date1.before(date2)) {
@@ -585,7 +577,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
 
-                String formateChnage=Global.formateChange(FullDate);
+                String formateChnage = Global.formateChange(FullDate);
                 tv_time.setText(formateChnage.replace(" ", "\n"));
 
             } else if (date1.equals(date2)) {

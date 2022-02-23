@@ -130,10 +130,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_text.List_And_show.unused_List_Manual_Activty"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Notification.Notification_task_acceptActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

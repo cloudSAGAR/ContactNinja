@@ -77,8 +77,8 @@ public class Company_Fragment extends Fragment {
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
     SearchView contect_search;
-    TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon, iv_filter_icon;
+    TextView add_new_contect, num_count,txt_nolist;
+    ImageView add_new_contect_icon, iv_filter_icon,iv_cancle_search_icon;
     View view1;
     FragmentActivity fragmentActivity;
     LinearLayout add_new_contect_layout;
@@ -136,6 +136,8 @@ public class Company_Fragment extends Fragment {
             public void onRefresh() {
                 if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    iv_cancle_search_icon.setVisibility(View.GONE);
+                    iv_filter_icon.setVisibility(View.VISIBLE);
                     ev_search.setText("");
                     currentPage = PAGE_START;
                     isLastPage = false;
@@ -234,6 +236,9 @@ public class Company_Fragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Global.hideKeyboard(getActivity());
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                    iv_filter_icon.setVisibility(View.GONE);
                     onResume();
                     return true;
                 }
@@ -271,6 +276,8 @@ public class Company_Fragment extends Fragment {
 
 
     private void IntentUI(View content_view) {
+        iv_cancle_search_icon = content_view.findViewById(R.id.iv_cancle_search_icon);
+        txt_nolist = content_view.findViewById(R.id.txt_nolist);
         layout_list = content_view.findViewById(R.id.layout_list);
         lay_no_list = content_view.findViewById(R.id.lay_no_list);
         linearLayout3 = content_view.findViewById(R.id.linearLayout3);
@@ -300,6 +307,16 @@ public class Company_Fragment extends Fragment {
                 showBottomSheetDialog_Filtter();
             }
         });
+        iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                iv_filter_icon.setVisibility(View.VISIBLE);
+                onResume();
+            }
+        });
+
     }
 
 
@@ -427,6 +444,7 @@ public class Company_Fragment extends Fragment {
 
                     if (Filter.equals("BLOCK")) {
                         if (companyList.size() == 0) {
+                            txt_nolist.setText(getResources().getString(R.string.no_block_company));
                             lay_no_list.setVisibility(View.VISIBLE);
                             layout_list.setVisibility(View.GONE);
                         } else {
@@ -434,8 +452,14 @@ public class Company_Fragment extends Fragment {
                             layout_list.setVisibility(View.VISIBLE);
                         }
                     }else {
-                        lay_no_list.setVisibility(View.GONE);
-                        layout_list.setVisibility(View.VISIBLE);
+                        if (companyList.size() == 0) {
+                            txt_nolist.setText(getResources().getString(R.string.no_company));
+                            lay_no_list.setVisibility(View.VISIBLE);
+                            layout_list.setVisibility(View.GONE);
+                        }else {
+                            lay_no_list.setVisibility(View.GONE);
+                            layout_list.setVisibility(View.VISIBLE);
+                        }
                     }
                     num_count.setText(String.valueOf(0 + " Company"));
                 }
