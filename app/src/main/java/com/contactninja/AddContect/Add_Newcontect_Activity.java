@@ -65,6 +65,7 @@ import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.aws.AWSKeys;
+import com.contactninja.aws.AmazonUtil;
 import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -125,9 +126,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
     ImageView iv_toolbar_manu_vertical, iv_block;
 
 
-  public static TransferUtility transferUtility;
-  AmazonS3Client s3Client;
-
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
         Intent intent = new Intent(context, Add_Newcontect_Activity.class);
@@ -184,16 +182,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
 
 
-        // Create an S3 client
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),
-                "us-east-2:a47e1f07-8030-4bce-b50b-075713507665", // Identity pool ID
-                Regions.US_EAST_2 // Region
-        );
-
-        s3Client = new AmazonS3Client(credentialsProvider);
-        s3Client.setRegion(Region.getRegion(Regions.US_EAST_2));
-        transferUtility = new TransferUtility(s3Client, getApplicationContext());
 
         if (flag.equals("edit")) {
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
@@ -1179,7 +1167,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                  File file=new File(result.getUri().getPath());
                  Uri uri = Uri.fromFile(file);
                  String filePath1 = uri.getPath();
-                 iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
+               //  iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
                  uploadImageTos3(filePath1);
 
 
@@ -1214,56 +1202,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         }
         return result;
     }
-    /*  public  void uploadImageTos3(String picturePath) {
-         File uploadToS3 = new File(picturePath);
-         String[] nameList = picturePath.split("/");
-         String defaultFolder = "contact_image";
-       //  String userID = Utils.getStringPref(Addnewcontect_Activity.this, Utils.userId);
-         String uploadFileName = nameList[nameList.length - 1];
-         String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/" + uploadFileName;
-         ObjectMetadata metadataCopy = new ObjectMetadata();
-         metadataCopy.setContentType("image/png");
-         TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/" + uploadFileName,
-                 uploadToS3, metadataCopy, CannedAccessControlList.PublicRead
-         );
-         audiotransferObserverListener(transferObserver, audioURL, picturePath);
-     }
-   public void audiotransferObserverListener(TransferObserver transferObserver, String audioURL, String savecoverpathfile) {
-         transferObserver.setTransferListener(new TransferListener() {
 
-             @Override
-             public void onStateChanged(int id, TransferState state) {
-                 Toast.makeText(Addnewcontect_Activity.this, "State Change" +state, Toast.LENGTH_SHORT).show();
-
-                 Log.i("onStateChanged: ", "State Change" + state);
-                 if (state == TransferState.COMPLETED) {
-
-                     Toast.makeText(Addnewcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
-
-                 }
-
-             }
-
-             @Override
-             public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                 int percentage = 0;
-                 try {
-                     percentage = (int) (bytesCurrent / bytesTotal * 100);
-                 } catch (Exception e) {
-                     e.printStackTrace();
-                 }
-                 Log.i("onProgressChanged: ", "Progress in %" + percentage);
-             }
-
-             @Override
-             public void onError(int id, Exception ex) {
-                 Log.i("error", "error");
-             }
-
-         });
-
-     }
- */
     private void uploadImageTos3(String imageUri) {
         if (imageUri != null) {
             olld_image=user_image_Url;
@@ -1276,13 +1215,13 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url=contect_url;
-                        if(!TextUtils.isEmpty(urlFromS3)) {
-                            Toast.makeText(Add_Newcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
-                           // s3Client.deleteObject(AWSKeys.BUCKET_NAME,olld_image.replace("https://contactninjadev.s3.us-east-2.amazonaws.com/","") );
+                        /*if(Global.IsNotNull(olld_image)){
+                            AmazonUtil.deleteS3Client(getApplicationContext(),olld_image);
+                        }*/
                             iv_user.setVisibility(View.VISIBLE);
                             layout_pulse.setVisibility(View.GONE);
                             Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
-                        }
+
                     }
                 }
 

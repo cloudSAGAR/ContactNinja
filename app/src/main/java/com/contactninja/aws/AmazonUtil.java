@@ -8,6 +8,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class AmazonUtil {
 
     // We only need one instance of the clients and credentials provider
-    private static AmazonS3Client sS3Client;
+    public static AmazonS3Client sS3Client;
     private static CognitoCachingCredentialsProvider sCredProvider;
     private static TransferUtility sTransferUtility;
 
@@ -55,7 +56,14 @@ public class AmazonUtil {
         }
         return sS3Client;
     }
-
+    public static boolean deleteS3Client(Context context,String olld_image) {
+        boolean isfinish=false;
+        if (sS3Client != null) {
+            AmazonUtil.sS3Client.deleteObject(new DeleteObjectRequest(AWSKeys.BUCKET_NAME,olld_image.replace("https://d8jbwc2cfepgp.cloudfront.net/","") ));
+            isfinish=true;
+        }
+        return isfinish;
+    }
     /**
      * Gets an instance of the TransferUtility which is constructed using the
      * given Context

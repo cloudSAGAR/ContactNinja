@@ -318,9 +318,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     num_count.setText(String.valueOf(0 + " Group"));
                     if(ev_search.getText().toString().equals("")){
                         lay_no_list.setVisibility(View.GONE);
-                        rv_group_list.setVisibility(View.VISIBLE);
-                        demo_layout.setVisibility(View.GONE);
-                        mMainLayout1.setVisibility(View.VISIBLE);
+                        rv_group_list.setVisibility(View.GONE);
+                        demo_layout.setVisibility(View.VISIBLE);
+                        mMainLayout1.setVisibility(View.GONE);
                     }else {
                         if(grouplists.size()==0){
                             lay_no_list.setVisibility(View.VISIBLE);

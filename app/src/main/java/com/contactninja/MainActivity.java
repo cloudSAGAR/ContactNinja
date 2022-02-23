@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "Email" + "," + "Phone" + "," +
                 "Fax");
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < response.size(); i++) {
 
             if(Global.IsNotNull(response.get(i).name)) {
                 String email = "";
