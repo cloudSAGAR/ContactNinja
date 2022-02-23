@@ -778,8 +778,8 @@ public class Company_Fragment extends Fragment {
                 if (second_latter.equals("")) {
                     current_latter = first_latter;
                     second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
+                    holder.first_latter.setVisibility(View.GONE);
+                    holder.top_layout.setVisibility(View.GONE);
 
                 } else if (second_latter.equals(first_latter)) {
                     current_latter = second_latter;
@@ -791,8 +791,8 @@ public class Company_Fragment extends Fragment {
 
                     current_latter = first_latter;
                     second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
+                    holder.first_latter.setVisibility(View.GONE);
+                    holder.top_layout.setVisibility(View.GONE);
 
 
                 }
