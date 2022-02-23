@@ -39,6 +39,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Newcontect_Activity;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -1084,11 +1085,15 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                image_flag=0;
                 mLastClickTime = SystemClock.elapsedRealtime();
-              /*  Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, 1);
-              */
-                image_flag = 0;
+/*                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto, 1);*/
+
+
                 Intent takePictureIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 String fileName = "temp.jpg";
                 ContentValues values = new ContentValues();
@@ -1126,9 +1131,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     String filePath1 = uri.getPath();
                     iv_user.setVisibility(View.VISIBLE);
                     layout_pulse.setVisibility(View.GONE);
-                    String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
+                    String profilePath = Global.getPathFromUri(getActivity(), uri);
 
-                    uploadImageTos3(filePath1);
+                    uploadImageTos3(profilePath);
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
@@ -1136,7 +1141,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         } else if (requestCode == CAPTURE_IMAGE) {
             ImageCropFunctionCustom(mCapturedImageURI);
-        } else if (requestCode == 203) {
+        }
+        else if (requestCode == 203) {
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == Activity.RESULT_OK) {
@@ -1144,8 +1150,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     String filePath1 = uri.getPath();
+                    String profilePath = Global.getPathFromUri(getActivity(), uri);
                     uploadImageTos3(filePath1);
-
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
@@ -1154,7 +1160,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             if (image_flag == 0) {
                 image_flag = 1;
                 CropImage.activity(data.getData())
-                        .start(getActivity());
+                        .start(((MainActivity) getContext()));
             }
 
         }
