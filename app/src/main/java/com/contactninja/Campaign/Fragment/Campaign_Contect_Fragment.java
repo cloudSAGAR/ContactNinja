@@ -11,9 +11,11 @@ import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -76,7 +78,7 @@ public class Campaign_Contect_Fragment extends Fragment {
     FastScrollerThumbView fastscroller_thumb;
     EditText ev_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon, add_new_contect_icon1;
+    ImageView add_new_contect_icon, add_new_contect_icon1,iv_cancle_search_icon;
     LinearLayout add_new_contect_layout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
@@ -194,35 +196,26 @@ public class Campaign_Contect_Fragment extends Fragment {
             contect_list_unselect.setItemViewCacheSize(50000);
             groupContectAdapter = new GroupContectAdapter(getActivity());
             contect_list_unselect.setAdapter(groupContectAdapter);
-            ev_search.addTextChangedListener(new TextWatcher() {
+            ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    List<ContectListData.Contact> temp = new ArrayList();
-                    for (ContectListData.Contact d : contectListData) {
-                        if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
-                            temp.add(d);
-                            // Log.e("Same Data ",d.getUserName());
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        Global.hideKeyboard(getActivity());
+                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                        List<ContectListData.Contact> temp = new ArrayList();
+                        for (ContectListData.Contact d : contectListData) {
+                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                                temp.add(d);
+                            }
                         }
+                        groupContectAdapter.updateList(temp);
+
+                        return true;
                     }
-                    /*groupContectAdapter = new GroupContectAdapter(getActivity());
-                    contect_list_unselect.setAdapter(groupContectAdapter);*/
-                    groupContectAdapter.updateList(temp);
-                    //groupContectAdapter.notifyDataSetChanged();
-
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
+                    return false;
                 }
             });
+
             if (SessionManager.getContectList(getActivity()).size() != 0) {
                 contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
                 groupContectAdapter.addAll(contectListData);
@@ -317,33 +310,23 @@ public class Campaign_Contect_Fragment extends Fragment {
             contect_list_unselect.setItemViewCacheSize(50000);
             groupContectAdapter = new GroupContectAdapter(getActivity());
             contect_list_unselect.setAdapter(groupContectAdapter);
-            ev_search.addTextChangedListener(new TextWatcher() {
+            ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    List<ContectListData.Contact> temp = new ArrayList();
-                    for (ContectListData.Contact d : contectListData) {
-                        if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
-                            temp.add(d);
-                            // Log.e("Same Data ",d.getUserName());
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        Global.hideKeyboard(getActivity());
+                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                        List<ContectListData.Contact> temp = new ArrayList();
+                        for (ContectListData.Contact d : contectListData) {
+                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                                temp.add(d);
+                            }
                         }
+                        groupContectAdapter.updateList(temp);
+
+                        return true;
                     }
-                    /*groupContectAdapter = new GroupContectAdapter(getActivity());
-                    contect_list_unselect.setAdapter(groupContectAdapter);*/
-                    groupContectAdapter.updateList(temp);
-                    //groupContectAdapter.notifyDataSetChanged();
-
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
+                    return false;
                 }
             });
             if (SessionManager.getContectList(getActivity()).size() != 0) {
@@ -457,33 +440,23 @@ public class Campaign_Contect_Fragment extends Fragment {
             });
 
 
-            ev_search.addTextChangedListener(new TextWatcher() {
+            ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    List<ContectListData.Contact> temp = new ArrayList();
-                    for (ContectListData.Contact d : contectListData) {
-                        if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
-                            temp.add(d);
-                            // Log.e("Same Data ",d.getUserName());
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        Global.hideKeyboard(getActivity());
+                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                        List<ContectListData.Contact> temp = new ArrayList();
+                        for (ContectListData.Contact d : contectListData) {
+                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                                temp.add(d);
+                            }
                         }
+                        groupContectAdapter.updateList(temp);
+
+                        return true;
                     }
-                    /*groupContectAdapter = new GroupContectAdapter(getActivity());
-                    contect_list_unselect.setAdapter(groupContectAdapter);*/
-                    groupContectAdapter.updateList(temp);
-                    //groupContectAdapter.notifyDataSetChanged();
-
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
+                    return false;
                 }
             });
 
@@ -615,6 +588,21 @@ public class Campaign_Contect_Fragment extends Fragment {
         add_new_contect_icon = view.findViewById(R.id.add_new_contect_icon);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         mMainLayout = view.findViewById(R.id.mMainLayout);
+        iv_cancle_search_icon = view.findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                List<ContectListData.Contact> temp = new ArrayList();
+                for (ContectListData.Contact d : contectListData) {
+                    if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                        temp.add(d);
+                    }
+                }
+                groupContectAdapter.updateList(temp);
+            }
+        });
     }
 
     private void ContectEvent() throws JSONException {
