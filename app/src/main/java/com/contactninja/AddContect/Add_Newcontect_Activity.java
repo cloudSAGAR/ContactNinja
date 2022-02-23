@@ -27,6 +27,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -57,6 +58,7 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.UserPofile.User_InformationFragment;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -306,24 +308,77 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         fragment_name = "Info";
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
         Fragment fragment = new InformationFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
         fragmentTransaction.commitAllowingStateLoss();
+        if (flag.equals("edit"))
+        {
+
+            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        return true;
+                    }
+                });
+            }
+
+        }
+        else if (flag.equals("save"))
+        {
+
+            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        return true;
+                    }
+                });
+            }
+
+        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
+                        if (flag.equals("edit"))
+                        {
+                            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+                            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                                tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                                        return true;
+                                    }
+                                });
+                            }
+                        }
+                        else if (flag.equals("save"))
+                        {
+                            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+                            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                                tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                                        return true;
+                                    }
+                                });
+                            }
+                        }
                         fragment = new InformationFragment();
-                        break;
-                 /*   case 1:
-                        fragment = new BzcardFragment();
-                        break;*/
+                      break;
                     case 1:
                         fragment = new ExposuresFragment();
+
                         break;
 
                 }
