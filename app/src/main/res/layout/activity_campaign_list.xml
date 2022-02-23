@@ -38,6 +38,7 @@
 
             </ImageView>
             <EditText
+                android:layout_weight="1"
                 style="@style/tv_Medium_14"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_gravity="center|left"
@@ -51,6 +52,14 @@
                 android:imeOptions="actionSearch"
                 android:background="@color/add_contect_transpernt"
                 />
+            <ImageView
+                android:id="@+id/iv_cancle_search_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_clear"
+                android:visibility="gone" />
 
         </LinearLayout>
         <LinearLayout
@@ -138,46 +147,53 @@
             android:layout_height="match_parent">
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:visibility="gone"
                 android:id="@+id/campaign_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/campaign_list"
+                    android:id="@+id/rv_campaign_list"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/lay_no_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/lay_bouttom"
-                android:layout_below="@+id/line"
-                android:layout_gravity="center"
-                android:layout_marginTop="-2dp"
-                android:layout_marginBottom="3dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_small_logo" />
-
-                <TextView
-                    style="@style/tv_Medium_14"
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/lay_no_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/lay_bouttom"
+                    android:layout_below="@+id/line"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-2dp"
+                    android:layout_marginBottom="3dp"
                     android:gravity="center"
-                    android:text="@string/no_campaing"
-                    android:textColor="@color/text_reg" />
-            </LinearLayout>
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_small_logo" />
+
+                    <TextView
+                        style="@style/tv_Medium_14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/no_campaing"
+                        android:textColor="@color/text_reg" />
+                </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
         </LinearLayout>
 

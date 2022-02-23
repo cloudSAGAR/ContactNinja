@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -47,9 +48,9 @@ import com.reddit.indicatorfastscroll.FastScrollerView;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Broadcaste_viewContect extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
-    ImageView iv_back;
+    ImageView iv_back,iv_cancle_search_icon;
     TextView save_button;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -86,6 +87,8 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Global.hideKeyboard(Broadcaste_viewContect.this);
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
                     List<BroadcastActivityModel.BroadcastProspect> temp = new ArrayList();
                     for (BroadcastActivityModel.BroadcastProspect d : broadcastProspects) {
                         if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
@@ -176,6 +179,7 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
         ev_search =findViewById(R.id.ev_search);
+        iv_cancle_search_icon =findViewById(R.id.iv_cancle_search_icon);
         mMainLayout =findViewById(R.id.mMainLayout);
 
         add_contect_list=findViewById(R.id.add_contect_list);
@@ -188,6 +192,20 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                List<BroadcastActivityModel.BroadcastProspect> temp = new ArrayList();
+                for (BroadcastActivityModel.BroadcastProspect d : broadcastProspects) {
+                    if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                        temp.add(d);
+                    }
+                }
+                groupContectAdapter.updateList(temp);
             }
         });
     }

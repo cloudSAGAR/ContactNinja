@@ -76,7 +76,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
     FastScrollerThumbView fastscroller_thumb;
     EditText ev_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon, add_new_contect_icon1;
+    ImageView add_new_contect_icon, add_new_contect_icon1,iv_cancle_search_icon;
     LinearLayout add_new_contect_layout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
@@ -226,6 +226,8 @@ public class Broadcast_Contect_Fragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Global.hideKeyboard(getActivity());
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
                     List<ContectListData.Contact> temp = new ArrayList();
                     for (ContectListData.Contact d : contectListData) {
                         if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
@@ -322,11 +324,27 @@ public class Broadcast_Contect_Fragment extends Fragment {
         fastscroller = view.findViewById(R.id.fastscroller);
         fastscroller_thumb = view.findViewById(R.id.fastscroller_thumb);
         ev_search = view.findViewById(R.id.ev_search);
+        iv_cancle_search_icon = view.findViewById(R.id.iv_cancle_search_icon);
         add_new_contect = view.findViewById(R.id.add_new_contect);
         num_count = view.findViewById(R.id.num_count);
         add_new_contect_icon = view.findViewById(R.id.add_new_contect_icon);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         mMainLayout = view.findViewById(R.id.mMainLayout);
+
+        iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                List<ContectListData.Contact> temp = new ArrayList();
+                for (ContectListData.Contact d : contectListData) {
+                    if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                        temp.add(d);
+                    }
+                }
+                groupContectAdapter.updateList(temp);
+            }
+        });
     }
 
     private void ContectEvent() throws JSONException {
