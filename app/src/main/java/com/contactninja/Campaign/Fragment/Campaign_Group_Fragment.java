@@ -55,9 +55,9 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Campaign_Group_Fragment extends Fragment implements View.OnClickListener {
     String  group_flag="false";
-    LinearLayout main_layout, add_new_contect_layout, group_name;
+    LinearLayout  add_new_contect_layout, group_name,lay_no_list;
     SessionManager sessionManager;
-    RecyclerView group_recyclerView;
+    RecyclerView rv_group_list;
     LinearLayoutManager layoutManager,layoutManager1;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -72,7 +72,6 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     // private GroupAdapter groupAdapter;
     RecyclerView add_contect_list;
     public static TopUserListDataAdapter topUserListDataAdapter;
-    TextView tv_create;
     LinearLayout mMainLayout,layout_select_list;
     ImageView add_new_contect_icon1,
             add_new_contect_icon,
@@ -107,9 +106,9 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
         paginationAdapter = new PaginationAdapter(getActivity());
-        group_recyclerView.setAdapter(paginationAdapter);
-        group_recyclerView.setHasFixedSize(true);
-        group_recyclerView.setItemViewCacheSize(50000);
+        rv_group_list.setAdapter(paginationAdapter);
+        rv_group_list.setHasFixedSize(true);
+        rv_group_list.setItemViewCacheSize(50000);
         add_contect_list.setHasFixedSize(true);
         add_contect_list.setItemViewCacheSize(50000);
 
@@ -117,10 +116,9 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
-        main_layout.setOnClickListener(this);
 
 
-        group_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rv_group_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -186,21 +184,20 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         search_icon.setOnClickListener(this);
         mMainLayout = view.findViewById(R.id.mMainLayout);
         layout_select_list = view.findViewById(R.id.layout_select_list);
-        main_layout = view.findViewById(R.id.demo_layout);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
-        group_recyclerView = view.findViewById(R.id.group_list);
+        rv_group_list = view.findViewById(R.id.rv_group_list);
         layoutManager = new LinearLayoutManager(getActivity());
-        group_recyclerView.setLayoutManager(layoutManager);
+        rv_group_list.setLayoutManager(layoutManager);
         group_name = view.findViewById(R.id.group_name);
         num_count = view.findViewById(R.id.num_count);
         grouplists = new ArrayList<>();
         add_contect_list=view.findViewById(R.id.add_contect_list);
         layoutManager1=new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
         add_contect_list.setLayoutManager(layoutManager1);
-        tv_create=view.findViewById(R.id.tv_create);
         add_new_contect_icon1=view.findViewById(R.id.add_new_contect_icon1);
         add_new_contect_icon=view.findViewById(R.id.add_new_contect_icon);
         add_new_contect=view.findViewById(R.id.add_new_contect);
+        lay_no_list=view.findViewById(R.id.lay_no_list);
     }
 
 
@@ -333,20 +330,20 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
 
                     totale_group = group_model.getTotal();
-                    main_layout.setVisibility(View.GONE);
 
-
+                    lay_no_list.setVisibility(View.GONE);
+                    rv_group_list.setVisibility(View.VISIBLE);
                 } else {
-                    tv_create.setText(getString(R.string.error_opps));
-                    main_layout.setVisibility(View.VISIBLE);
+
+                    lay_no_list.setVisibility(View.VISIBLE);
+                    rv_group_list.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                tv_create.setText(getString(R.string.error_opps));
-                main_layout.setVisibility(View.VISIBLE);
             }
         });
 
@@ -641,14 +638,14 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             {
 
                 paginationAdapter = new PaginationAdapter(getContext());
-                group_recyclerView.setAdapter(paginationAdapter);
+                rv_group_list.setAdapter(paginationAdapter);
                 //group_flag="false";
                 //movieList1.get(i).set
                 group_flag="true";
                 movieList1.get(i).setFlag("true");
                 paginationAdapter.addAll(movieList1);
                 paginationAdapter.notifyItemChanged(i);
-                group_recyclerView.setItemViewCacheSize(50000);
+                rv_group_list.setItemViewCacheSize(50000);
                 select_contectListData.add(movieList1.get(i));
                 topUserListDataAdapter.notifyDataSetChanged();
 

@@ -9,9 +9,9 @@
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Fragment.AddContect_Fragment.GroupFragment">
 
-    <include
+   <!-- <include
         android:visibility="gone"
-        layout="@layout/common_dialog"/>
+        layout="@layout/common_dialog"/>-->
     <LinearLayout
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -194,12 +194,40 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/group_list"
+            android:id="@+id/rv_group_list"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/lay_no_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/lay_bouttom"
+            android:layout_below="@+id/line"
+            android:layout_gravity="center"
+            android:layout_marginTop="-2dp"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_small_logo" />
+
+            <TextView
+                style="@style/tv_Medium_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_group"
+                android:textColor="@color/text_reg" />
+        </LinearLayout>
         <ProgressBar
             android:visibility="gone"
             android:id="@+id/idPBLoading"
