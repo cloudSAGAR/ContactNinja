@@ -49,6 +49,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.bumptech.glide.Glide;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
@@ -58,14 +59,13 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
-import com.contactninja.UserPofile.User_InformationFragment;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
+import com.contactninja.aws.AWSKeys;
 import com.contactninja.aws.S3Uploader;
-import com.contactninja.aws.S3Utils;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -235,13 +235,14 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             } else {
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
+                Log.e("Image is",Contect_data.getContactImage());
                 Glide.with(getApplicationContext()).
                         load(Contect_data.getContactImage())
                         .placeholder(R.drawable.shape_primary_back)
                         .error(R.drawable.shape_primary_back).
                         into(iv_user);
             }
-            olld_image = Contect_data.getContactImage();
+            user_image_Url = Contect_data.getContactImage();
             save_button.setText("Save Contact");
 
 
@@ -285,13 +286,14 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             } else {
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
+                Log.e("Image is",Contect_data.getContactImage());
                 Glide.with(getApplicationContext()).
                         load(Contect_data.getContactImage())
                         .placeholder(R.drawable.shape_primary_back)
                         .error(R.drawable.shape_primary_back).
                         into(iv_user);
             }
-            olld_image = Contect_data.getContactImage();
+            user_image_Url = Contect_data.getContactImage();
 
             save_button.setText("Edit Contact");
         } else {
@@ -737,11 +739,11 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         paramObject.put("address", address);
         paramObject.put("breakout_link", addcontectModel.getBreakoutu());
         paramObject.put("city", city);
-        if (olld_image != null) {
+       /* if (olld_image != null) {
             paramObject.put("oldImage", olld_image);
         } else {
             paramObject.put("oldImage", "");
-        }
+        }*/
 
         paramObject.put("company_url", "");
         paramObject.put("dob", addcontectModel.getBirthday());
@@ -763,9 +765,10 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         paramObject.put("zoom_id", zoom_id);
 
         paramObject.put("imei", Global.imei);
-        paramObject.put("contact_image", user_image_Url);
-        paramObject.put("image_extension", File_extension);
-        paramObject.put("contact_image_name", File_name);
+        paramObject.put("contact_image",user_image_Url);
+      ///  paramObject.put("contact_image", user_image_Url);
+        //paramObject.put("image_extension", File_extension);
+       // paramObject.put("contact_image_name", File_name);
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
@@ -910,7 +913,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("zipcode", zip_code);
         paramObject.put("zoom_id", zoom_id);
-        if (!user_image_Url.equals("")) {
+       /* if (!user_image_Url.equals("")) {
             paramObject.put("contact_image", user_image_Url);
             paramObject.put("contact_image_name", File_name);
             paramObject.put("image_extension", File_extension);
@@ -924,11 +927,9 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             paramObject.put("contact_image", "");
             //   paramObject.put("contact_image", "");
             //   paramObject.put("contact_image_name", "");
-        }
-
+        }*/
+        paramObject.put("contact_image",user_image_Url);
         paramObject.put("notes", addcontectModel.getNote());
-
-
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
@@ -1151,24 +1152,14 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
              CropImage.ActivityResult result = CropImage.getActivityResult(data);
              if (resultCode == RESULT_OK) {
                  Uri resultUri = result.getUri();
-                 Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
-                 iv_user.setVisibility(View.VISIBLE);
-                 layout_pulse.setVisibility(View.GONE);
+
                  File_name = "Image";
                  File file=new File(result.getUri().getPath());
                  Uri uri = Uri.fromFile(file);
                  String filePath1 = uri.getPath();
-                 iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
                  String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                  uploadImageTos3(filePath1);
-           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
-                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                 user_image_Url = "data:image/JPEG;base64," + imageString;
-                 File_extension = "JPEG";
-                 Log.e("url is", user_image_Url);*/
+
 
              } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                  Exception error = result.getError();
@@ -1185,22 +1176,12 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
              CropImage.ActivityResult result = CropImage.getActivityResult(data);
              if (resultCode == RESULT_OK) {
                  Uri resultUri = result.getUri();
-                 Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
-                 iv_user.setVisibility(View.VISIBLE);
-                 layout_pulse.setVisibility(View.GONE);
                  File file=new File(result.getUri().getPath());
                  Uri uri = Uri.fromFile(file);
                  String filePath1 = uri.getPath();
                  iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
                  uploadImageTos3(filePath1);
-           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
-                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                 user_image_Url = "data:image/JPEG;base64," + imageString;
-                 File_extension = "JPEG";
-                 Log.e("url is", user_image_Url);*/
+
 
              } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                  Exception error = result.getError();
@@ -1217,68 +1198,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
      }
 
-     /*   if (resultCode != RESULT_CANCELED) {
-            switch (requestCode) {
-                case 0:
-                    if (resultCode == RESULT_OK && data != null) {
 
-                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-
-
-                        iv_user.setImageBitmap(bitmap);
-                        iv_user.setVisibility(View.VISIBLE);
-                        layout_pulse.setVisibility(View.GONE);
-
-                        File_name = "Image";
-
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                        String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                        user_image_Url = "data:image/JPEG;base64," + imageString;
-                        File_extension = "JPEG";
-                        Log.e("url is", user_image_Url);
-
-                    }
-                    break;
-                case 1:
-                    if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-                                user_image_Url = encodeFileToBase64Binary(picturePath);
-
-                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                cursor.close();
-                                iv_user.setVisibility(View.VISIBLE);
-                                layout_pulse.setVisibility(View.GONE);
-
-                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-
-                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                                String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url = "data:image/JPEG;base64," + imageString;
-                                Log.e("url is", user_image_Url);
-                                File_extension = "JPEG";
-
-
-                                iv_user.setVisibility(View.VISIBLE);
-
-                                File file = new File(selectedImage.getPath());
-                                File_name = file.getName();
-                            }
-                        }
-                    }
-                    break;
-            }
-        }*/
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -1345,12 +1265,9 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
      }
  */
     private void uploadImageTos3(String imageUri) {
-     //   final String path = getRealPathFromURI(imageUri);
         if (imageUri != null) {
-            //String[] nameList = imageUri.split("/");
-           // String uploadFileName = nameList[nameList.length - 1];
-
-            s3uploaderObj.initUpload(imageUri,"contact_image");
+            olld_image=user_image_Url;
+            String contect_url=s3uploaderObj.initUpload(imageUri,"contact_image");
             s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
                 @Override
                 public void onUploadSuccess(String response) {
@@ -1358,10 +1275,13 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                     Toast.makeText(Add_Newcontect_Activity.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
 
                     if (response.equalsIgnoreCase("Success")) {
-                        user_image_Url = S3Utils.generates3ShareUrl(getApplicationContext(), imageUri,"contact_image");
-                        File_extension = "JPEG";
+                        user_image_Url=contect_url;
                         if(!TextUtils.isEmpty(urlFromS3)) {
                             Toast.makeText(Add_Newcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
+                           // s3Client.deleteObject(AWSKeys.BUCKET_NAME,olld_image.replace("https://contactninjadev.s3.us-east-2.amazonaws.com/","") );
+                            iv_user.setVisibility(View.VISIBLE);
+                            layout_pulse.setVisibility(View.GONE);
+                            Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
                         }
                     }
                 }

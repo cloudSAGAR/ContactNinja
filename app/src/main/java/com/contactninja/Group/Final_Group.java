@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
@@ -30,8 +31,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.bumptech.glide.Glide;
+import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.Grouplist;
@@ -42,6 +51,8 @@ import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.aws.AWSKeys;
+import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -166,6 +177,9 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    public static TransferUtility transferUtility;
+    AmazonS3Client s3Client;
+    S3Uploader s3uploaderObj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +188,18 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         Global.checkConnectivity(Final_Group.this, mMainLayout);
+        s3uploaderObj = new S3Uploader(this);
+        // Create an S3 client
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "us-east-2:a47e1f07-8030-4bce-b50b-075713507665", // Identity pool ID
+                Regions.US_EAST_2 // Region
+        );
+
+        s3Client = new AmazonS3Client(credentialsProvider);
+        s3Client.setRegion(Region.getRegion(Regions.US_EAST_2));
+        transferUtility = new TransferUtility(s3Client, getApplicationContext());
+
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         if (SessionManager.getGroupData(this) != null) {
@@ -193,7 +219,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             }
 
 
-            old_image = group_data.getGroupImage();
+            user_image_Url = group_data.getGroupImage();
 
             group_id = String.valueOf(group_data.getId());
             Log.e("Group id is", group_id);
@@ -443,13 +469,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
           /*  if(old_image!=null){
                 paramObject.put("oldImage", old_image);
             }*/
-            if (old_image != null) {
-                paramObject.put("oldImage", old_image);
-            } else {
-                paramObject.put("oldImage", "");
-            }
-            paramObject.put("image_extension", File_extension);
-            paramObject.put("group_image_name", File_name);
+
             paramObject.put("group_image", user_image_Url);
             paramObject.put("organization_id", 1);
             paramObject.put("team_id", 1);
@@ -501,16 +521,12 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
                     Uri resultUri = result.getUri();
-                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
-                    iv_user.setVisibility(View.VISIBLE);
                     File_name = "Image";
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     String filePath1 = uri.getPath();
-                    iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
-                    iv_user.setVisibility(View.VISIBLE);
-                    iv_dummy.setVisibility(View.GONE);
 
+                    uploadImageTos3(filePath1);
            /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
                  ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -532,15 +548,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
                     Uri resultUri = result.getUri();
-                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
-                    iv_user.setVisibility(View.VISIBLE);
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     String filePath1 = uri.getPath();
-                    iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
-                    iv_user.setVisibility(View.VISIBLE);
-                    iv_dummy.setVisibility(View.GONE);
-
+                    String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
+                    uploadImageTos3(filePath1);
            /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
                  ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -633,6 +645,38 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             }
         }*/
     }
+    private void uploadImageTos3(String imageUri) {
+        //   final String path = getRealPathFromURI(imageUri);
+        if (imageUri != null) {
+            //String[] nameList = imageUri.split("/");
+            // String uploadFileName = nameList[nameList.length - 1];
+            old_image=user_image_Url;
+            String contect_group=s3uploaderObj.initUpload(imageUri,"contact_group");
+            s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
+                @Override
+                public void onUploadSuccess(String response) {
+                    Log.e("Reppnse is",new Gson().toJson(response));
+                    Toast.makeText(Final_Group.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
+
+                    if (response.equalsIgnoreCase("Success")) {
+                        user_image_Url=contect_group;
+                        Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
+                        iv_user.setVisibility(View.VISIBLE);
+                        iv_dummy.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onUploadError(String response) {
+
+                    Log.e("Error", "Error Uploading");
+
+                }
+            });
+        }else{
+            Toast.makeText(this, "Null Path", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
@@ -703,7 +747,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                /* Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
                */
-
+                image_flag = 0;
                 Intent takePictureIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 String fileName = "temp.jpg";
                 ContentValues values = new ContentValues();

@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -33,6 +32,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Model.AddcontectModel;
@@ -50,6 +54,7 @@ import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -88,14 +93,14 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class Main_userProfile_Fragment extends Fragment implements View.OnClickListener {
-    private long mLastClickTime = 0;
-    int image_flag = 1;
-    Uri mCapturedImageURI;
-    Integer CAPTURE_IMAGE = 3;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
+    public static TransferUtility transferUtility;
+    int image_flag = 1;
+    Uri mCapturedImageURI;
+    Integer CAPTURE_IMAGE = 3;
     CoordinatorLayout user_image;
     ImageView iv_Setting, pulse_icon, iv_back, iv_edit;
     TextView save_button, tv_nameLetter;
@@ -115,8 +120,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     String option_type = "";
     LinearLayout layout_toolbar_logo;
     TextView edit_profile;
-    private BroadcastReceiver mNetworkReceiver;
     View view_single;
+    AmazonS3Client s3Client;
+    S3Uploader s3uploaderObj;
+    private long mLastClickTime = 0;
+    private BroadcastReceiver mNetworkReceiver;
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
@@ -168,6 +176,18 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         sessionManager = new SessionManager(getActivity());
+        s3uploaderObj = new S3Uploader(getActivity());
+        // Create an S3 client
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getActivity(),
+                "us-east-2:a47e1f07-8030-4bce-b50b-075713507665", // Identity pool ID
+                Regions.US_EAST_2 // Region
+        );
+
+        s3Client = new AmazonS3Client(credentialsProvider);
+        s3Client.setRegion(Region.getRegion(Regions.US_EAST_2));
+        transferUtility = new TransferUtility(s3Client, getActivity());
+
         option_type = "save";
         setTab();
 
@@ -452,7 +472,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         .error(R.drawable.shape_primary_back).
                         into(iv_user);
             }
-            olld_image = Contect_data.getContactImage();
+            user_image_Url = Contect_data.getContactImage();
 
             save_button.setText("Save");
 
@@ -503,10 +523,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         .error(R.drawable.shape_primary_back).
                         into(iv_user);
             }
-            olld_image = Contect_data.getContactImage();
+            user_image_Url = Contect_data.getContactImage();
 
-        }
-        else {
+        } else {
             pulse_icon.setEnabled(false);
             tv_nameLetter.setEnabled(false);
             Log.e("Null", "No Call");
@@ -530,13 +549,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
-                        if (flag.equals("edit"))
-                        {
+                        if (flag.equals("edit")) {
                             view_single.setVisibility(View.VISIBLE);
                             fragment = new User_InformationFragment();
 
-                        }
-                        else {
+                        } else {
                             edt_FirstName.setEnabled(false);
                             edt_lastname.setEnabled(false);
                             view_single.setVisibility(View.VISIBLE);
@@ -545,8 +562,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         }
                         break;
                     case 1:
-                        if (flag.equals("edit"))
-                        {
+                        if (flag.equals("edit")) {
                             view_single.setVisibility(View.GONE);
                             layout_toolbar_logo.setVisibility(View.VISIBLE);
                             iv_back.setVisibility(View.GONE);
@@ -560,14 +576,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             edt_FirstName.setEnabled(false);
                             setdata();
                             fragment = new User_BzcardFragment();
-                        }
-                        else {
+                        } else {
                             fragment = new User_BzcardFragment();
                         }
                         break;
                     case 2:
-                        if (flag.equals("edit"))
-                        {
+                        if (flag.equals("edit")) {
                             view_single.setVisibility(View.VISIBLE);
                             layout_toolbar_logo.setVisibility(View.VISIBLE);
                             iv_back.setVisibility(View.GONE);
@@ -581,8 +595,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             setdata();
                             edt_FirstName.setEnabled(false);
                             fragment = new User_ExposuresFragment();
-                        }
-                        else {
+                        } else {
                             fragment = new User_ExposuresFragment();
                         }
                         break;
@@ -608,11 +621,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         });
 
 
-
     }
 
     private void intentView(View view) {
-        view_single=view.findViewById(R.id.view_single);
+        view_single = view.findViewById(R.id.view_single);
         iv_edit = view.findViewById(R.id.iv_edit);
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
@@ -716,7 +728,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         loadingDialog.showLoadingDialog();
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
-      //  ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+        //  ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
         AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
         zip_code = addcontectModel.getZip_code();
         zoom_id = addcontectModel.getZoom_id();
@@ -746,7 +758,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JSONObject param_data = new JSONObject();
         param_data.put("organization_id", 1);
         param_data.put("team_id", 1);
-        param_data.put("user_id",user_data.getUser().getId());
+        param_data.put("user_id", user_data.getUser().getId());
         param_data.put("role_id", rol_id);
         param_data.put("contact_number", contect_number);
         param_data.put("email", email_address);
@@ -787,7 +799,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("zipcode", addcontectModel.getZip_code());
         param_data.put("zoom_id", addcontectModel.getZoom_id());
 
-        if (!user_image_Url.equals("")) {
+        /*if (!user_image_Url.equals("")) {
             param_data.put("profile_pic", user_image_Url);
             param_data.put("pic_name", File_name);
             param_data.put("pic_extension", File_extension);
@@ -801,7 +813,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             param_data.put("profile_pic", olld_image);
             //   paramObject.put("contact_image", "");
             //   paramObject.put("contact_image_name", "");
-        }
+        }*/
+        param_data.put("user_img", user_image_Url);
 
         param_data.put("notes", addcontectModel.getNote());
 
@@ -827,30 +840,28 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
 
 
-
-                    }
-
+        }
 
 
         JSONArray jsonArray = new JSONArray();
         JSONObject paramObject1 = null;
 
-        Log.e("Size is ",String.valueOf(contactdetails1.size()));
-        contactdetails1=removeDuplicates((ArrayList<Contactdetail>) contactdetails1);
+        Log.e("Size is ", String.valueOf(contactdetails1.size()));
+        contactdetails1 = removeDuplicates((ArrayList<Contactdetail>) contactdetails1);
         for (int i = 0; i < contactdetails1.size(); i++) {
             paramObject1 = new JSONObject();
             if (contactdetails1.get(i).getEmail_number().equals("")) {
 
             } else {
-                        if (contactdetails1.get(i).getType().equals("NUMBER")) {
-                            phone = contactdetails1.get(i).getEmail_number();
-                        }
-                        phone_type = contactdetails1.get(i).getLabel();
-                        paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
-                        paramObject1.put("label", contactdetails1.get(i).getLabel());
-                        paramObject1.put("type", contactdetails1.get(i).getType());
+                if (contactdetails1.get(i).getType().equals("NUMBER")) {
+                    phone = contactdetails1.get(i).getEmail_number();
+                }
+                phone_type = contactdetails1.get(i).getLabel();
+                paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
+                paramObject1.put("label", contactdetails1.get(i).getLabel());
+                paramObject1.put("type", contactdetails1.get(i).getType());
 
-                    }
+            }
 
             jsonArray.put(paramObject1);
         }
@@ -928,12 +939,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     }
 
-    public ArrayList<Contactdetail>  removeDuplicates(ArrayList<Contactdetail> list){
+    public ArrayList<Contactdetail> removeDuplicates(ArrayList<Contactdetail> list) {
         Set<Contactdetail> set = new TreeSet(new Comparator<Contactdetail>() {
 
             @Override
             public int compare(Contactdetail o1, Contactdetail o2) {
-                if(o1.getEmail_number().equalsIgnoreCase(o2.getEmail_number())){
+                if (o1.getEmail_number().equalsIgnoreCase(o2.getEmail_number())) {
                     return 0;
                 }
                 return 1;
@@ -944,6 +955,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         final ArrayList newList = new ArrayList(set);
         return newList;
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
@@ -1076,7 +1088,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
               /*  Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
               */
-
+                image_flag = 0;
                 Intent takePictureIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 String fileName = "temp.jpg";
                 ContentValues values = new ContentValues();
@@ -1107,25 +1119,16 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == Activity.RESULT_OK) {
                     Uri resultUri = result.getUri();
-                    Glide.with(getActivity()).load(resultUri).into(iv_user);
-                    iv_user.setVisibility(View.VISIBLE);
+
                     File_name = "Image";
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     String filePath1 = uri.getPath();
-                    iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
                     iv_user.setVisibility(View.VISIBLE);
                     layout_pulse.setVisibility(View.GONE);
+                    String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
 
-
-           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
-                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                 user_image_Url = "data:image/JPEG;base64," + imageString;
-                 File_extension = "JPEG";
-                 Log.e("url is", user_image_Url);*/
+                    uploadImageTos3(filePath1);
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
@@ -1133,35 +1136,21 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         } else if (requestCode == CAPTURE_IMAGE) {
             ImageCropFunctionCustom(mCapturedImageURI);
-        }
-        else if (requestCode == 203) {
+        } else if (requestCode == 203) {
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == Activity.RESULT_OK) {
                     Uri resultUri = result.getUri();
-                    Glide.with(getActivity()).load(resultUri).into(iv_user);
-                    iv_user.setVisibility(View.VISIBLE);
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     String filePath1 = uri.getPath();
-                    iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
-                    iv_user.setVisibility(View.VISIBLE);
-                    layout_pulse.setVisibility(View.GONE);
-           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
-                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                 user_image_Url = "data:image/JPEG;base64," + imageString;
-                 File_extension = "JPEG";
-                 Log.e("url is", user_image_Url);*/
+                    uploadImageTos3(filePath1);
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
             }
-        }
-        else {
+        } else {
             if (image_flag == 0) {
                 image_flag = 1;
                 CropImage.activity(data.getData())
@@ -1228,6 +1217,40 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         }*/
     }
+
+    private void uploadImageTos3(String imageUri) {
+        //   final String path = getRealPathFromURI(imageUri);
+        if (imageUri != null) {
+            //String[] nameList = imageUri.split("/");
+            // String uploadFileName = nameList[nameList.length - 1];
+            olld_image = user_image_Url;
+            String contect_group = s3uploaderObj.initUpload(imageUri, "user_profile");
+            s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
+                @Override
+                public void onUploadSuccess(String response) {
+                    Log.e("Reppnse is", new Gson().toJson(response));
+                    Toast.makeText(getActivity(), new Gson().toJson(response), Toast.LENGTH_SHORT).show();
+
+                    if (response.equalsIgnoreCase("Success")) {
+                        user_image_Url = contect_group;
+                        Glide.with(getActivity()).load(user_image_Url).into(iv_user);
+                        iv_user.setVisibility(View.VISIBLE);
+                        layout_pulse.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onUploadError(String response) {
+
+                    Log.e("Error", "Error Uploading");
+
+                }
+            });
+        } else {
+
+        }
+    }
+
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
                 .setGuidelines(CropImageView.Guidelines.ON)
@@ -1345,7 +1368,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         Log.e("Count is", String.valueOf(updateCount));
 
     }
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)

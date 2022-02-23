@@ -27,7 +27,7 @@ public class S3Uploader {
 
     }
 
-    public void initUpload(String filePath,String folder) {
+    public String initUpload(String filePath,String folder) {
 
         File uploadToS3 = new File(filePath);
         String[] nameList = filePath.split("/");
@@ -40,6 +40,7 @@ public class S3Uploader {
                 uploadToS3, metadataCopy,  CannedAccessControlList.PublicRead
         );
         transferObserver.setTransferListener(new UploadListener());
+        return  audioURL;
        /* File file = new File(filePath);
         ObjectMetadata myObjectMetadata = new ObjectMetadata();
         myObjectMetadata.setContentType("image/png");
