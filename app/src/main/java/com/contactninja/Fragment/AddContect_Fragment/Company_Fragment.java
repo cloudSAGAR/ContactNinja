@@ -112,9 +112,9 @@ public class Company_Fragment extends Fragment {
         companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
 
         rvinviteuserdetails.setLayoutManager(layoutManager);
-
         rvinviteuserdetails.setHasFixedSize(true);
         rvinviteuserdetails.setAdapter(companyAdapter);
+        rvinviteuserdetails.setItemViewCacheSize(50000);
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
 
@@ -151,7 +151,7 @@ public class Company_Fragment extends Fragment {
                 }
             }
         });
-
+        rvinviteuserdetails.setItemViewCacheSize(50000);
         rvinviteuserdetails.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
@@ -424,7 +424,9 @@ public class Company_Fragment extends Fragment {
                     });
                     if (currentPage != PAGE_START)
                         companyAdapter.removeLoading();
-                    companyAdapter.addItems(companyList);
+                        companyAdapter.addItems(companyList);
+                        rvinviteuserdetails.setItemViewCacheSize(50000);
+
                     // check weather is last page or not
                     if (data.getTotal() > companyAdapter.getItemCount()) {
                         companyAdapter.addLoading();
@@ -716,12 +718,16 @@ public class Company_Fragment extends Fragment {
 
         public void addItems(List<CompanyModel.Company> postItems) {
             companyList.addAll(postItems);
+            rvinviteuserdetails.setItemViewCacheSize(50000);
             notifyDataSetChanged();
+
+
         }
 
         public void addLoading() {
             isLoaderVisible = true;
             companyList.add(new CompanyModel.Company());
+            rvinviteuserdetails.setItemViewCacheSize(50000);
             notifyItemInserted(companyList.size() - 1);
         }
 

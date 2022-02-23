@@ -245,52 +245,60 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
         @Override
         public void onBindViewHolder(@NonNull TopUserListDataAdapter.InviteListDataclass holder, int position) {
             BroadcastActivityModel.BroadcastProspect inviteUserDetails = userDetails.get(position);
-            last_postion = position;
-            holder.userName.setText(inviteUserDetails.getFirstname());
-            holder.top_layout.setVisibility(View.VISIBLE);
 
-            if(Global.IsNotNull(inviteUserDetails.getFirstname())||!inviteUserDetails.getFirstname().equals("")){
-                String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+         try {
+             last_postion = position;
+             holder.userName.setText(inviteUserDetails.getFirstname());
+             holder.top_layout.setVisibility(View.VISIBLE);
 
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
+             if(Global.IsNotNull(inviteUserDetails.getFirstname())||!inviteUserDetails.getFirstname().equals("")){
+                 String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
 
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                } else {
+                 if (second_latter.equals("")) {
+                     current_latter = first_latter;
+                     second_latter = first_latter;
 
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                }
-            }
+                 } else if (second_latter.equals(first_latter)) {
+                     current_latter = second_latter;
+                 } else {
 
-
-
-
-
-            holder.no_image.setVisibility(View.VISIBLE);
-            holder.profile_image.setVisibility(View.GONE);
-            String name = inviteUserDetails.getFirstname();
-            holder.profile_image.setVisibility(View.GONE);
-            String add_text = "";
-            String[] split_data = name.split(" ");
-            try {
-                for (int i = 0; i < split_data.length; i++) {
-                    if (i == 0) {
-                        add_text = split_data[i].substring(0, 1);
-                    } else {
-                        add_text = add_text + split_data[i].charAt(0);
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                     current_latter = first_latter;
+                     second_latter = first_latter;
+                 }
+             }
 
 
-            holder.no_image.setText(add_text);
-            holder.no_image.setVisibility(View.VISIBLE);
+
+
+
+             holder.no_image.setVisibility(View.VISIBLE);
+             holder.profile_image.setVisibility(View.GONE);
+             String name = inviteUserDetails.getFirstname();
+             holder.profile_image.setVisibility(View.GONE);
+             String add_text = "";
+             String[] split_data = name.split(" ");
+             try {
+                 for (int i = 0; i < split_data.length; i++) {
+                     if (i == 0) {
+                         add_text = split_data[i].substring(0, 1);
+                     } else {
+                         add_text = add_text + split_data[i].charAt(0);
+                         break;
+                     }
+                 }
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+
+
+             holder.no_image.setText(add_text);
+             holder.no_image.setVisibility(View.VISIBLE);
+
+         }
+         catch (Exception e)
+         {
+
+         }
 
         }
 
@@ -370,38 +378,39 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
                 case ITEM:
                     GroupContectAdapter.MovieViewHolder holder1 = (GroupContectAdapter.MovieViewHolder) holder;
 
-                    holder1.remove_contect_icon.setVisibility(View.VISIBLE);
-                    holder1.add_new_contect_icon.setVisibility(View.GONE);
-                    holder1.userName.setText(Contact_data.getFirstname());
-                    holder1.userNumber.setVisibility(View.GONE);
+                    try {
+                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                        holder1.add_new_contect_icon.setVisibility(View.GONE);
+                        holder1.userName.setText(Contact_data.getFirstname());
+                        holder1.userNumber.setVisibility(View.GONE);
 
-                    holder1.first_latter.setVisibility(View.VISIBLE);
-                    holder1.top_layout.setVisibility(View.VISIBLE);
-
-
-                    String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
-                    holder1.first_latter.setText(first_latter);
-                    if (second_latter.equals("")) {
-                        current_latter = first_latter;
-                        second_latter = first_latter;
-                        holder1.first_latter.setVisibility(View.VISIBLE);
-                        holder1.top_layout.setVisibility(View.VISIBLE);
-
-                    } else if (second_latter.equals(first_latter)) {
-                        current_latter = second_latter;
-                        // inviteUserDetails.setF_latter("");
-                        holder1.first_latter.setVisibility(View.GONE);
-                        holder1.top_layout.setVisibility(View.GONE);
-
-                    } else {
-
-                        current_latter = first_latter;
-                        second_latter = first_latter;
                         holder1.first_latter.setVisibility(View.VISIBLE);
                         holder1.top_layout.setVisibility(View.VISIBLE);
 
 
-                    }
+                        String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
+                        holder1.first_latter.setText(first_latter);
+                        if (second_latter.equals("")) {
+                            current_latter = first_latter;
+                            second_latter = first_latter;
+                            holder1.first_latter.setVisibility(View.VISIBLE);
+                            holder1.top_layout.setVisibility(View.VISIBLE);
+
+                        } else if (second_latter.equals(first_latter)) {
+                            current_latter = second_latter;
+                            // inviteUserDetails.setF_latter("");
+                            holder1.first_latter.setVisibility(View.GONE);
+                            holder1.top_layout.setVisibility(View.GONE);
+
+                        } else {
+
+                            current_latter = first_latter;
+                            second_latter = first_latter;
+                            holder1.first_latter.setVisibility(View.VISIBLE);
+                            holder1.top_layout.setVisibility(View.VISIBLE);
+
+
+                        }
 
 
                         String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
@@ -425,6 +434,12 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
                         holder1.no_image.setVisibility(View.VISIBLE);
                         holder1.profile_image.setVisibility(View.GONE);
 
+                    }
+                    catch (Exception c)
+                    {
+
+                    }
+
                     //  holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                     break;
 
@@ -437,7 +452,9 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
 
         public void updateList(List<BroadcastActivityModel.BroadcastProspect> list) {
             contacts = list;
+
             notifyDataSetChanged();
+            add_contect_list.setItemViewCacheSize(50000);
         }
 
         @Override
@@ -474,6 +491,7 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
         public void add(BroadcastActivityModel.BroadcastProspect contact) {
             contacts.add(contact);
             notifyItemInserted(contacts.size() - 1);
+            add_contect_list.setItemViewCacheSize(50000);
             //  notifyDataSetChanged();
         }
 
