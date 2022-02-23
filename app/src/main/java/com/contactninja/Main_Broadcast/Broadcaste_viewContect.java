@@ -1,13 +1,18 @@
 package com.contactninja.Main_Broadcast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -28,6 +33,8 @@ import com.contactninja.Model.BroadcastActivityModel;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
+import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -41,7 +48,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Broadcaste_viewContect extends AppCompatActivity {
+public class Broadcaste_viewContect extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
     TextView save_button;
     SessionManager sessionManager;
@@ -55,7 +62,8 @@ public class Broadcaste_viewContect extends AppCompatActivity {
     FastScrollerThumbView fastscroller_thumb;
     EditText ev_search;
     GroupContectAdapter groupContectAdapter;
-
+    LinearLayout mMainLayout;
+    private BroadcastReceiver mNetworkReceiver;
 
 
     @Override
@@ -65,6 +73,7 @@ public class Broadcaste_viewContect extends AppCompatActivity {
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
+        mNetworkReceiver = new ConnectivityReceiver();
 
         IntentUI();
         broadcastProspects=SessionManager.getBroadcast_Contect(getApplicationContext());
@@ -129,7 +138,36 @@ public class Broadcaste_viewContect extends AppCompatActivity {
                 }
         );
     }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Global.checkConnectivity(Broadcaste_viewContect.this, mMainLayout);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
 
     private void IntentUI() {
         contect_list_unselect = findViewById(R.id.contect_list_unselect);
@@ -138,6 +176,7 @@ public class Broadcaste_viewContect extends AppCompatActivity {
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
         ev_search =findViewById(R.id.ev_search);
+        mMainLayout =findViewById(R.id.mMainLayout);
 
         add_contect_list=findViewById(R.id.add_contect_list);
         add_contect_list.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));

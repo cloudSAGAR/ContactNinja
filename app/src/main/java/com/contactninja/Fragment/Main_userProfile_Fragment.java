@@ -9,12 +9,9 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -37,7 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -70,7 +67,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -124,7 +120,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
-        Intent intent = new Intent(context, Addnewcontect_Activity.class);
+        Intent intent = new Intent(context, Add_Newcontect_Activity.class);
         SessionManager.setContect_flag("save");
         context.startActivity(intent);
     }
@@ -219,7 +215,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     String flag = SessionManager.getContect_flag(getActivity());
                     if (flag.equals("read")) {
                         SessionManager.setContect_flag("edit");
-                        Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
+                        Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
                         SessionManager.setContect_flag("edit");
                         startActivity(addnewcontect);
                         //finish();

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -41,14 +39,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Contect.Contact;
 import com.contactninja.Contect.ContactFetcher;
-import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Csv_InviteListData;
-import com.contactninja.Model.EmailModel;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
@@ -85,13 +81,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.michaelrocks.libphonenumber.android.NumberParseException;
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
-import io.michaelrocks.libphonenumber.android.Phonenumber;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -232,7 +223,7 @@ public class ContectFragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
+                Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
                 SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
             }
@@ -245,7 +236,7 @@ public class ContectFragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
+                Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
                 SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
             }
@@ -260,7 +251,7 @@ public class ContectFragment extends Fragment {
 
                 SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
                 SessionManager.setContect_flag("save");
-                Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
+                Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
                 startActivity(addnewcontect);
 
             }
@@ -1462,7 +1453,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                                 SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
                                 SessionManager.setOneCotect_deatil(context, Contact_data);
-                                Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
+                                Intent addnewcontect = new Intent(context, Add_Newcontect_Activity.class);
                                 SessionManager.setContect_flag("read");
                                 context.startActivity(addnewcontect);
                             }

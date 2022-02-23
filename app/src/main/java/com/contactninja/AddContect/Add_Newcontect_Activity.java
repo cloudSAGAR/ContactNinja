@@ -10,22 +10,17 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -49,15 +44,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.bumptech.glide.Glide;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
@@ -67,13 +57,11 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
-import com.contactninja.Utils.App;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
-import com.contactninja.aws.AWSKeys;
 import com.contactninja.aws.S3Uploader;
 import com.contactninja.aws.S3Utils;
 import com.contactninja.retrofit.ApiResponse;
@@ -93,9 +81,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -104,7 +90,7 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
-public class Addnewcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
+public class Add_Newcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
     S3Uploader s3uploaderObj;
     private long mLastClickTime = 0;
     Integer CAPTURE_IMAGE = 3;
@@ -142,7 +128,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
-        Intent intent = new Intent(context, Addnewcontect_Activity.class);
+        Intent intent = new Intent(context, Add_Newcontect_Activity.class);
         SessionManager.setContect_flag("save");
         context.startActivity(intent);
     }
@@ -188,7 +174,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         s3uploaderObj = new S3Uploader(this);
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
-        Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
+        Global.checkConnectivity(Add_Newcontect_Activity.this, mMainLayout);
         sessionManager = new SessionManager(this);
         save_button.setText("Save Contact");
         option_type = "save";
@@ -392,7 +378,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
                     } else {
                         try {
-                            if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
                                 AddContect_Update();
                             }
 
@@ -413,7 +399,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     } else {
 
                         try {
-                            if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
                                 AddContect_Api();
                             }
                         } catch (JSONException e) {
@@ -429,7 +415,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     String flag = sessionManager.getContect_flag(getApplicationContext());
                     if (flag.equals("read")) {
                         SessionManager.setContect_flag("edit");
-                        Intent addnewcontect = new Intent(getApplicationContext(), Addnewcontect_Activity.class);
+                        Intent addnewcontect = new Intent(getApplicationContext(), Add_Newcontect_Activity.class);
                         startActivity(addnewcontect);
                         finish();
                     } else {
@@ -438,7 +424,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
                         try {
-                            if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
                                 AddContect_Update();
                             }
                         } catch (JSONException e) {
@@ -531,12 +517,12 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
             }
         }
         if (RC == REQUEST_ID_MULTIPLE_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
+            if (ContextCompat.checkSelfPermission(Add_Newcontect_Activity.this,
                     Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getApplicationContext(),
                         "Requires Access to Camara.", Toast.LENGTH_SHORT)
                         .show();
-            } else if (ContextCompat.checkSelfPermission(Addnewcontect_Activity.this,
+            } else if (ContextCompat.checkSelfPermission(Add_Newcontect_Activity.this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getApplicationContext(),
                         "Requires Access to Your Storage.",
@@ -753,7 +739,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Main Data is ", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Addnewcontect_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Newcontect_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -920,7 +906,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Final Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Addnewcontect_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Newcontect_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -979,7 +965,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
+                if (checkAndRequestPermissions(Add_Newcontect_Activity.this)) {
                     captureimageDialog(false);
                 }
                 break;
@@ -989,7 +975,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (checkAndRequestPermissions(Addnewcontect_Activity.this)) {
+                if (checkAndRequestPermissions(Add_Newcontect_Activity.this)) {
                     if (olld_image != null && !olld_image.equals("") || user_image_Url != null && !user_image_Url.equals("")) {
                         captureimageDialog(true);
                     } else {
@@ -1014,7 +1000,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     private void captureimageDialog(boolean remove) {
         final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Addnewcontect_Activity.this, R.style.CoffeeDialog);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Add_Newcontect_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
 
         TextView cameraId = bottomSheetDialog.findViewById(R.id.cameraId);
@@ -1314,13 +1300,13 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 @Override
                 public void onUploadSuccess(String response) {
                     Log.e("Reppnse is",new Gson().toJson(response));
-                    Toast.makeText(Addnewcontect_Activity.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Add_Newcontect_Activity.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
 
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url = S3Utils.generates3ShareUrl(getApplicationContext(), imageUri,"contact_image");
                         File_extension = "JPEG";
                         if(!TextUtils.isEmpty(urlFromS3)) {
-                            Toast.makeText(Addnewcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Add_Newcontect_Activity.this, "Uploaded Successfully!!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -1463,7 +1449,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Addnewcontect_Activity.this, mMainLayout);
+        Global.checkConnectivity(Add_Newcontect_Activity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -1534,7 +1520,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
                         Contect_BLock(contact_item, 1, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
@@ -1554,7 +1540,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
                         Contect_BLock(contact_item, 0, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
@@ -1574,7 +1560,7 @@ public class Addnewcontect_Activity extends AppCompatActivity implements View.On
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Addnewcontect_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
                         Contect_Remove(contact_item, bottomSheetDialog);
                     }
                 } catch (JSONException e) {

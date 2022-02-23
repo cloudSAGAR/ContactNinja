@@ -211,7 +211,7 @@
 
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_company_a"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -281,7 +281,7 @@
                         android:enabled="false"
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_company_a"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -342,7 +342,7 @@
                         android:layout_marginTop="@dimen/_7sdp"
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_company_url_a"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -403,7 +403,7 @@
 
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_job_a"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -464,7 +464,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_zoom_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -524,7 +524,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_address_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -587,7 +587,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_city_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -649,7 +649,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_state"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -744,7 +744,7 @@
                         android:hint="@string/add_zip_a"
                         android:inputType="number"
                         android:maxLength="6"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -914,7 +914,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_bob_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -977,7 +977,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_note_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -1076,7 +1076,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_fb_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -1156,7 +1156,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_fb_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -1237,7 +1237,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_fb_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
@@ -1320,7 +1320,7 @@
                         android:background="@color/add_contect_transpernt"
                         android:hint="@string/add_fb_a"
                         android:inputType="text|textCapSentences"
-                        android:textColor="@color/home_list_sub_data"
+                        android:textColor="@color/text_reg"
                         android:textColorHint="@color/home_list_sub_data"
                         >
 
