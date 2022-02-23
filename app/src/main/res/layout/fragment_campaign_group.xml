@@ -19,41 +19,41 @@
         android:orientation="vertical"
         android:id="@+id/layout_select_list">
 
-    <LinearLayout
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_gravity="left|center"
-        android:gravity="center|left"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            style="@style/tv_regular_13"
-            android:padding="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_gravity="center|end"
-            android:gravity="end|center"
-            android:text="@string/group_to"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:textColor="@color/text_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </TextView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/add_contect_list"
+        <LinearLayout
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_gravity="left|center"
+            android:gravity="center|left"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <TextView
+                style="@style/tv_regular_13"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_gravity="center|end"
+                android:gravity="end|center"
+                android:text="@string/group_to"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:textColor="@color/text_welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            </TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/add_contect_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </LinearLayout>
-    <View
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/line_separator"
-        android:layout_width="match_parent"
-        android:layout_height="1dp">
+            </androidx.recyclerview.widget.RecyclerView>
 
-    </View>
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/line_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp">
+
+        </View>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -133,7 +133,7 @@
             android:singleLine="true"
             android:text="@string/add_new_group_all"
             android:textColor="@color/text_reg"
-          />
+            />
         <TextView
             android:padding="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"

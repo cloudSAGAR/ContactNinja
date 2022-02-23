@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -71,15 +74,16 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     public static TopUserListDataAdapter topUserListDataAdapter;
     TextView tv_create;
     LinearLayout mMainLayout,layout_select_list;
-    ImageView add_new_contect_icon1,add_new_contect_icon;
+    ImageView add_new_contect_icon1,add_new_contect_icon,search_icon;
     TextView add_new_contect;
     private long mLastClickTime=0;
+    EditText ev_search;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view=inflater.inflate(R.layout.fragment_broadcast__group_, container, false);
+        View view=inflater.inflate(R.layout.fragment_campaign_group, container, false);
         IntentUI(view);
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
@@ -142,6 +146,25 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             }
         });
 
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    try {
+                        grouplists.clear();
+                        paginationAdapter.Remove_list();
+                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            GroupEvent();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }
@@ -154,7 +177,9 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         }
     }
     private void IntentUI(View view) {
-
+        ev_search=view.findViewById(R.id.ev_search);
+        search_icon=view.findViewById(R.id.search_icon);
+        search_icon.setOnClickListener(this);
         mMainLayout = view.findViewById(R.id.mMainLayout);
         layout_select_list = view.findViewById(R.id.layout_select_list);
         main_layout = view.findViewById(R.id.demo_layout);
@@ -178,6 +203,14 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.search_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                ev_search.requestFocus();
+                break;
+
             case R.id.add_new_contect_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -250,7 +283,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", page);
         paramObject.put("perPage", limit);
-        paramObject.put("q", "");
+        paramObject.put("q", ev_search.getText().toString());
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -549,7 +582,12 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         public int getItemViewType(int position) {
             return (position == movieList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
         }
+        public void Remove_list()
+        {
 
+            movieList.clear();
+            notifyDataSetChanged();
+        }
         public void addLoadingFooter() {
             isLoadingAdded = true;
             add(new Grouplist.Group());

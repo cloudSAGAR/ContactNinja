@@ -6,10 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -70,10 +75,12 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     RecyclerView add_contect_list;
     public static TopUserListDataAdapter topUserListDataAdapter;
     TextView tv_create;
-    LinearLayout mMainLayout;
-    ImageView add_new_contect_icon1, add_new_contect_icon;
+    LinearLayout mMainLayout,layout_select_list;
+    ImageView add_new_contect_icon1, add_new_contect_icon,search_icon;
     TextView add_new_contect;
     private long mLastClickTime = 0;
+    EditText ev_search;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -138,10 +145,34 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             }
         });
         call_updatedata();
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    try {
+                        grouplists.clear();
+                        paginationAdapter.Remove_list();
+                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            GroupEvent();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
     public void call_updatedata() {
 
         if (SessionManager.getgroup_broadcste(getActivity()).size() != 0) {
@@ -155,9 +186,11 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     }
 
     private void IntentUI(View view) {
-
+        layout_select_list=view.findViewById(R.id.layout_select_list);
+        ev_search=view.findViewById(R.id.ev_search);
         mMainLayout = view.findViewById(R.id.mMainLayout);
         main_layout = view.findViewById(R.id.demo_layout);
+        search_icon=view.findViewById(R.id.search_icon);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         group_recyclerView = view.findViewById(R.id.group_list);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -172,12 +205,21 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         add_new_contect_icon1 = view.findViewById(R.id.add_new_contect_icon1);
         add_new_contect_icon = view.findViewById(R.id.add_new_contect_icon);
         add_new_contect = view.findViewById(R.id.add_new_contect);
+        search_icon.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.search_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                ev_search.requestFocus();
+                break;
+
             case R.id.add_new_contect_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -200,6 +242,11 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     group_flag = "false";
                     paginationAdapter.notifyDataSetChanged();
                     add_new_contect.setText(getString(R.string.add_new_group_all));
+                    if (select_contectListData.size() != 0) {
+                        layout_select_list.setVisibility(View.VISIBLE);
+                    } else {
+                        layout_select_list.setVisibility(View.GONE);
+                    }
                 }
 
                 break;
@@ -237,7 +284,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", page);
         paramObject.put("perPage", limit);
-        paramObject.put("q", "");
+        paramObject.put("q", ev_search.getText().toString());
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -464,7 +511,11 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                             select_Contact(select_contectListData.size());
                             sessionManager.setgroup_broadcste(getActivity(), new ArrayList<>());
                             sessionManager.setgroup_broadcste(getActivity(), select_contectListData);
-
+                            if (select_contectListData.size() != 0) {
+                                layout_select_list.setVisibility(View.VISIBLE);
+                            } else {
+                                layout_select_list.setVisibility(View.GONE);
+                            }
                         }
                     });
                     movieViewHolder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
@@ -488,7 +539,11 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                             select_Contact(select_contectListData.size());
                             sessionManager.setgroup_broadcste(getActivity(), new ArrayList<>());
                             sessionManager.setgroup_broadcste(getActivity(), select_contectListData);
-
+                            if (select_contectListData.size() != 0) {
+                                layout_select_list.setVisibility(View.VISIBLE);
+                            } else {
+                                layout_select_list.setVisibility(View.GONE);
+                            }
                         }
                     });
 
@@ -563,7 +618,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 group_recyclerView.setAdapter(paginationAdapter);
                 //group_flag="false";
                 //movieList1.get(i).set
-                group_flag = "true";
+                group_flag = "false";
                 movieList1.get(i).setFlag("true");
                 paginationAdapter.addAll(movieList1);
                 paginationAdapter.notifyItemChanged(i);
@@ -574,7 +629,11 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             }
             sessionManager.setgroup_broadcste(getActivity(), new ArrayList<>());
             sessionManager.setgroup_broadcste(getActivity(), select_contectListData);
-
+            if (select_contectListData.size() != 0) {
+                layout_select_list.setVisibility(View.VISIBLE);
+            } else {
+                layout_select_list.setVisibility(View.GONE);
+            }
         }
 
         public Grouplist.Group getItem(int position) {
@@ -582,6 +641,12 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         }
 
 
+        public void Remove_list()
+        {
+
+            movieList.clear();
+            notifyDataSetChanged();
+        }
         public class MovieViewHolder extends RecyclerView.ViewHolder {
             private final TextView group_name, no_image;
             private final CircleImageView group_image;
