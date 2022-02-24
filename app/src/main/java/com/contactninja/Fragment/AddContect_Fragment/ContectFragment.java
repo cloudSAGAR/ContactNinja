@@ -151,6 +151,13 @@ public class ContectFragment extends Fragment {
 
         View content_view = inflater.inflate(R.layout.fragment_contect, container, false);
         IntentUI(content_view);
+        setAllData();
+        return content_view;
+
+    }
+
+    public void setAllData()
+    {
         mCtx = getContext();
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
@@ -317,16 +324,7 @@ public class ContectFragment extends Fragment {
 
                 }
         );
-
-
-
-
-
-
-        return content_view;
-
     }
-
 
     //Update Contect Number Direct
     public static boolean updateNameAndNumber(final Context context, String number, String newName, String newNumber) {
