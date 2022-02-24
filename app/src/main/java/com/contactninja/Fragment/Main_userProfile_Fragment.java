@@ -37,6 +37,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.MainActivity;
@@ -55,6 +56,8 @@ import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.aws.AWSKeys;
+import com.contactninja.aws.AmazonUtil;
 import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -100,6 +103,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public static String CURRENT_TAG = TAG_HOME;
     public static TransferUtility transferUtility;
     int image_flag = 1;
+    String filePath1="";
     Uri mCapturedImageURI;
     Integer CAPTURE_IMAGE = 3;
     CoordinatorLayout user_image;
@@ -184,11 +188,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 "us-east-2:a47e1f07-8030-4bce-b50b-075713507665", // Identity pool ID
                 Regions.US_EAST_2 // Region
         );
-
-        s3Client = new AmazonS3Client(credentialsProvider);
-        s3Client.setRegion(Region.getRegion(Regions.US_EAST_2));
-        transferUtility = new TransferUtility(s3Client, getActivity());
-
         option_type = "save";
         setTab();
 
@@ -220,14 +219,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         Global.Messageshow(getActivity(), mMainLayout, getString(R.string.invalid_last_name), false);
 
                     } else {
-                        try {
-                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                AddContect_Update();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                       uploadImageTos3(filePath1);
                     }
 
                 } else {
@@ -245,13 +237,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         save_button.setText("Save");
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
-                        try {
-                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                AddContect_Update();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        uploadImageTos3(filePath1);
                     }
 
 
@@ -726,7 +712,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     }
 
     public void AddContect_Update() throws JSONException {
-        loadingDialog.showLoadingDialog();
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
         //  ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
@@ -1048,6 +1033,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 tv_nameLetter.setVisibility(View.GONE);
+                if(Global.IsNotNull(user_image_Url)){
+                    AmazonUtil.deleteS3Client(getActivity(),user_image_Url);
+                    user_image_Url="";
+                    Glide.with(getActivity()).load(user_image_Url).into(iv_user);
+                }
                 bottomSheetDialog.dismiss();
 
             }
@@ -1124,16 +1114,18 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == Activity.RESULT_OK) {
                     Uri resultUri = result.getUri();
-
+                    Glide.with(getActivity()).load(resultUri).into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
                     File_name = "Image";
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-                    String filePath1 = uri.getPath();
+                    filePath1 = uri.getPath();
                     iv_user.setVisibility(View.VISIBLE);
                     layout_pulse.setVisibility(View.GONE);
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
 
-                    uploadImageTos3(profilePath);
+                  //  uploadImageTos3(profilePath);
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
@@ -1147,11 +1139,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == Activity.RESULT_OK) {
                     Uri resultUri = result.getUri();
+                    Glide.with(getActivity()).load(resultUri).into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-                    String filePath1 = uri.getPath();
+                    filePath1 = uri.getPath();
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
-                    uploadImageTos3(filePath1);
+                    //uploadImageTos3(filePath1);
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
@@ -1160,7 +1155,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             if (image_flag == 0) {
                 image_flag = 1;
                 CropImage.activity(data.getData())
-                        .start(((MainActivity) getContext()));
+                        .start(getActivity());
             }
 
         }
@@ -1225,8 +1220,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     }
 
     private void uploadImageTos3(String imageUri) {
-        //   final String path = getRealPathFromURI(imageUri);
-        if (imageUri != null) {
+        loadingDialog.showLoadingDialog();
+        if (!imageUri.equals("")) {
             //String[] nameList = imageUri.split("/");
             // String uploadFileName = nameList[nameList.length - 1];
             olld_image = user_image_Url;
@@ -1239,21 +1234,40 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url = contect_group;
-                        Glide.with(getActivity()).load(user_image_Url).into(iv_user);
-                        iv_user.setVisibility(View.VISIBLE);
-                        layout_pulse.setVisibility(View.GONE);
+                        try {
+                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                                AddContect_Update();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
                 @Override
                 public void onUploadError(String response) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            AddContect_Update();
+                        }
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Log.e("Error", "Error Uploading");
 
                 }
             });
         } else {
+            try {
+                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                    AddContect_Update();
+                }
 
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

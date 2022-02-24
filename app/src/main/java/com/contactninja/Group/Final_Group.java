@@ -52,6 +52,7 @@ import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.aws.AWSKeys;
+import com.contactninja.aws.AmazonUtil;
 import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -96,6 +97,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     public static UserListDataAdapter userListDataAdapter;
     public static List<ContectListData.Contact> inviteListData = new ArrayList<>();
     Uri mCapturedImageURI;
+    String filePath1="";
     int image_flag = 1;
     Integer CAPTURE_IMAGE = 3;
     GroupListData groupListData;
@@ -376,12 +378,14 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                try {
-                    if (Global.isNetworkAvailable(Final_Group.this, mMainLayout)) {
-                        SaveEvent();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                group_name = add_new_contect.getText().toString().trim();
+                group_description = add_detail.getText().toString();
+                if (group_name.equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_txt), false);
+                } else if (group_description.equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_description), false);
+                } else {
+                    uploadImageTos3(filePath1);
                 }
                 break;
             case R.id.add_new_member:
@@ -426,14 +430,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     private void SaveEvent() throws JSONException {
 
 
-        group_name = add_new_contect.getText().toString().trim();
-        group_description = add_detail.getText().toString();
-        if (group_name.equals("")) {
-            Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_txt), false);
-        } else if (group_description.equals("")) {
-            Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_description), false);
-        } else {
-            loadingDialog.showLoadingDialog();
+         //   loadingDialog.showLoadingDialog();
 
             SignResponseModel user_data = sessionManager.getGetUserdata(this);
             JSONArray jsonArray = new JSONArray();
@@ -507,7 +504,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             });
 
 
-        }
+
 
 
     }
@@ -521,20 +518,16 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
                     Uri resultUri = result.getUri();
+                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    iv_dummy.setVisibility(View.GONE);
                     File_name = "Image";
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-                    String filePath1 = uri.getPath();
+                    filePath1 = uri.getPath();
 
-                    uploadImageTos3(filePath1);
-           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
-                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                 user_image_Url = "data:image/JPEG;base64," + imageString;
-                 File_extension = "JPEG";
-                 Log.e("url is", user_image_Url);*/
+                  //  uploadImageTos3(filePath1);
+
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
@@ -550,17 +543,12 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     Uri resultUri = result.getUri();
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-                    String filePath1 = uri.getPath();
+                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    iv_dummy.setVisibility(View.GONE);
+                    filePath1 = uri.getPath();
                     String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
-                    uploadImageTos3(filePath1);
-           /*      Bitmap bitmap = BitmapFactory.decodeFile(filePath1);
-                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                 byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                 String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                 user_image_Url = "data:image/JPEG;base64," + imageString;
-                 File_extension = "JPEG";
-                 Log.e("url is", user_image_Url);*/
+                    //uploadImageTos3(filePath1);
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
@@ -576,78 +564,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
         }
 
-
-       /* if (resultCode != RESULT_CANCELED) {
-            switch (requestCode) {
-                case 0:
-                    if (resultCode == RESULT_OK && data != null) {
-
-                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-
-
-                        iv_user.setImageBitmap(bitmap);
-                        iv_user.setVisibility(View.VISIBLE);
-                        iv_dummy.setVisibility(View.GONE);
-
-                        File_name = "Image";
-
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                        String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                        user_image_Url = "data:image/JPEG;base64," + imageString;
-                        File_extension = "JPEG";
-                        Log.e("url is", user_image_Url);
-
-                    }
-                    break;
-                case 1:
-                    if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        //    Log.e("Uri is ", String.valueOf(selectedImage));
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-
-                                //user_image_Url = encodeFileToBase64Binary(picturePath);
-                                // Log.e("Image Url is ",user_image_Url);
-
-                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                cursor.close();
-
-
-                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-
-                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                                String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url = "data:image/JPEG;base64," + imageString;
-                                //   Log.e("url is",user_image_Url);
-                                File_extension = "JPEG";
-
-
-                                iv_user.setVisibility(View.VISIBLE);
-                                iv_dummy.setVisibility(View.GONE);
-
-                                File file = new File(selectedImage.getPath());
-                                File_name = file.getName();
-
-
-                            }
-                        }
-                    }
-                    break;
-            }
-        }*/
     }
     private void uploadImageTos3(String imageUri) {
         //   final String path = getRealPathFromURI(imageUri);
-        if (imageUri != null) {
+        loadingDialog.showLoadingDialog();
+        if (!imageUri.equals("")) {
             //String[] nameList = imageUri.split("/");
             // String uploadFileName = nameList[nameList.length - 1];
             old_image=user_image_Url;
@@ -660,21 +581,38 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url=contect_group;
-                        Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
-                        iv_user.setVisibility(View.VISIBLE);
-                        iv_dummy.setVisibility(View.GONE);
+                        try {
+                            if (Global.isNetworkAvailable(Final_Group.this, mMainLayout)) {
+                                SaveEvent();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
                 @Override
                 public void onUploadError(String response) {
 
-                    Log.e("Error", "Error Uploading");
+                    try {
+                        if (Global.isNetworkAvailable(Final_Group.this, mMainLayout)) {
+                            SaveEvent();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             });
         }else{
-            Toast.makeText(this, "Null Path", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(this, "Null Path", Toast.LENGTH_SHORT).show();
+            try {
+                if (Global.isNetworkAvailable(Final_Group.this, mMainLayout)) {
+                    SaveEvent();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -706,6 +644,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 mLastClickTime = SystemClock.elapsedRealtime();
                 iv_user.setVisibility(View.GONE);
                 iv_dummy.setVisibility(View.VISIBLE);
+                if(Global.IsNotNull(user_image_Url)){
+                    AmazonUtil.deleteS3Client(getApplicationContext(),user_image_Url);
+                    user_image_Url="";
+                    Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
+                }
                 bottomSheetDialog.dismiss();
 
             }

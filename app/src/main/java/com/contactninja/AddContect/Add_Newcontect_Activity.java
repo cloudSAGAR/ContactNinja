@@ -124,6 +124,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
     String option_type = "";
     private BroadcastReceiver mNetworkReceiver;
     ImageView iv_toolbar_manu_vertical, iv_block;
+    String filePath1="";
 
 
     // ListPhoneContactsActivity use this method to start this activity.
@@ -422,14 +423,15 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                         Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.invalid_first_name), false);
 
                     } else {
-                        try {
+
                             if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
-                                AddContect_Update();
+                                //AddContect_Update();
+
+                                uploadImageTos3(filePath1,"update");
+
                             }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
                     }
 
                 } else if (save_button.getText().toString().equals("Save Contact")) {
@@ -443,13 +445,12 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                     } else {
 
-                        try {
+
                             if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
-                                AddContect_Api();
+                             uploadImageTos3(filePath1,"add");
+                                //AddContect_Api();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
 
                     }
 
@@ -468,13 +469,11 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                         save_button.setText("Save Contact");
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
-                        try {
                             if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
-                                AddContect_Update();
+                                //AddContect_Update();
+                                uploadImageTos3(filePath1,"update");
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
                     }
 
 
@@ -697,7 +696,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
     public void AddContect_Api() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+        //loadingDialog.showLoadingDialog();
 
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
@@ -838,7 +837,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
 
     public void AddContect_Update() throws JSONException {
-        loadingDialog.showLoadingDialog();
+        //loadingDialog.showLoadingDialog();
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
         ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
@@ -1064,7 +1063,13 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 tv_nameLetter.setVisibility(View.GONE);
+                if(Global.IsNotNull(user_image_Url)){
+                    AmazonUtil.deleteS3Client(getApplicationContext(),user_image_Url);
+                    user_image_Url="";
+                    Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
+                }
                 bottomSheetDialog.dismiss();
+
 
             }
         });
@@ -1141,12 +1146,17 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
              if (resultCode == RESULT_OK) {
                  Uri resultUri = result.getUri();
 
+
                  File_name = "Image";
                  File file=new File(result.getUri().getPath());
                  Uri uri = Uri.fromFile(file);
-                 String filePath1 = uri.getPath();
+                 filePath1 = uri.getPath();
                  String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
-                 uploadImageTos3(filePath1);
+                 iv_user.setVisibility(View.VISIBLE);
+                 layout_pulse.setVisibility(View.GONE);
+                 Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+
+                 //    uploadImageTos3(filePath1);
 
 
              } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -1166,9 +1176,11 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                  Uri resultUri = result.getUri();
                  File file=new File(result.getUri().getPath());
                  Uri uri = Uri.fromFile(file);
-                 String filePath1 = uri.getPath();
-               //  iv_user.setImageBitmap(BitmapFactory.decodeFile(filePath1));
-                 uploadImageTos3(filePath1);
+                 filePath1 = uri.getPath();
+                 iv_user.setVisibility(View.VISIBLE);
+                 layout_pulse.setVisibility(View.GONE);
+                 Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                // uploadImageTos3(filePath1);
 
 
              } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -1203,8 +1215,9 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         return result;
     }
 
-    private void uploadImageTos3(String imageUri) {
-        if (imageUri != null) {
+    private void uploadImageTos3(String imageUri, String flag) {
+        loadingDialog.showLoadingDialog();
+        if (!imageUri.toString().equals("")) {
             olld_image=user_image_Url;
             String contect_url=s3uploaderObj.initUpload(imageUri,"contact_image");
             s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
@@ -1215,24 +1228,92 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url=contect_url;
-                        /*if(Global.IsNotNull(olld_image)){
+                        if(Global.IsNotNull(olld_image)){
                             AmazonUtil.deleteS3Client(getApplicationContext(),olld_image);
-                        }*/
-                            iv_user.setVisibility(View.VISIBLE);
-                            layout_pulse.setVisibility(View.GONE);
-                            Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
+                        }
+                        if (flag.equals("add"))
+                        {
+                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+
+                                try {
+                                    AddContect_Api();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        else if (flag.equals("update"))
+                        {
+
+                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+
+                                try {
+                                    AddContect_Update();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
 
                     }
                 }
 
                 @Override
                 public void onUploadError(String response) {
+                    if (flag.equals("add"))
+                    {
+                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
 
+                            try {
+                                AddContect_Api();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    else if (flag.equals("update"))
+                    {
+
+                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+
+                            try {
+                                AddContect_Update();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
                     Log.e("Error", "Error Uploading");
 
                 }
             });
         }else{
+            if (flag.equals("add"))
+            {
+                if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+
+                    try {
+                        AddContect_Api();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if (flag.equals("update"))
+            {
+
+                if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+
+                    try {
+                        AddContect_Update();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
             Toast.makeText(this, "Null Path", Toast.LENGTH_SHORT).show();
         }
     }
