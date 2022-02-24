@@ -57,7 +57,7 @@
             android:textColor="@color/purple_200" />
 
         <TextView
-            android:id="@+id/tv_Use"
+            android:id="@+id/txt_Use"
             style="@style/tv_regular_13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,13 +76,13 @@
         android:id="@+id/txt_footer"
         style="@style/tv_regular_13"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_60sdp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:gravity="center"
         android:text="@string/bz_footer"
         android:textColor="@color/text_gray" />

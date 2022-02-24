@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainUserProfileId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Bzcard.CreateBzcard.Add_New_Bzcard_Activity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:stateListAnimator="@null"
+        app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/collapsing_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:expandedTitleMarginEnd="64dp"
+        app:expandedTitleMarginStart="48dp"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar"/>
+
+
+        <RelativeLayout
+            android:background="@color/text_green"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180sdp">
+
+        </RelativeLayout>
+
+    </LinearLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            style="@style/tv_bold_16"
+            app:tabIndicatorColor="@color/home_list_tab_bg"
+            app:tabSelectedTextColor="@color/text_reg"
+            android:layout_width="match_parent"
+            app:tabTextAppearance="@style/CustomTextAppearanceTab_bzcars"
+            app:tabIndicatorHeight="2dp"
+            app:tabTextColor="@color/text_gray"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+        </com.google.android.material.tabs.TabLayout>
+        <View
+            android:background="@color/home_list_back_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <FrameLayout
+        android:id="@+id/frameContainer_bzcars"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llFooter" />
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

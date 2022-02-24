@@ -1,17 +1,9 @@
 package com.contactninja.Bzcard;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.CompositePageTransformer;
-import androidx.viewpager2.widget.MarginPageTransformer;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -19,27 +11,31 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.contactninja.Model.Plandetail;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.contactninja.Bzcard.CreateBzcard.Add_New_Bzcard_Activity;
 import com.contactninja.R;
-import com.contactninja.Setting.CurrentPlanActivity;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 
-import java.util.List;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Select_Bzcard_Activity extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener, View.OnClickListener {
+public class Select_Bzcard_Activity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener, View.OnClickListener {
     ImageView iv_back;
     private BroadcastReceiver mNetworkReceiver;
     RelativeLayout mMainLayout;
     ViewPager2 viewPager2;
-    TextView txt_footer;
+    TextView txt_footer, txt_Use;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +46,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity  implements Connec
     }
 
     private void setImage() {
-        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(),txt_footer));
+        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext()));
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
@@ -62,6 +58,11 @@ public class Select_Bzcard_Activity extends AppCompatActivity  implements Connec
             public void transformPage(@NonNull View page, float position) {
                 float r = 1 - Math.abs(position);
                 page.setScaleY(0.85f + r * 0.15f);
+                if (viewPager2.getCurrentItem() == 1 || viewPager2.getCurrentItem() == 3 || viewPager2.getCurrentItem() == 5) {
+                    txt_footer.setText(getResources().getString(R.string.bz_footer));
+                } else {
+                    txt_footer.setText(getResources().getString(R.string.bz_footer2));
+                }
             }
         });
         viewPager2.setPageTransformer(compositePagerTransformer);
@@ -70,12 +71,15 @@ public class Select_Bzcard_Activity extends AppCompatActivity  implements Connec
     @SuppressLint("SetJavaScriptEnabled")
     private void initUI() {
         mMainLayout = findViewById(R.id.mMainLayout);
-        iv_back=findViewById(R.id.iv_back);
+        iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
         viewPager2 = findViewById(R.id.viewpager);
         txt_footer = findViewById(R.id.txt_footer);
+        txt_Use = findViewById(R.id.txt_Use);
+        txt_Use.setOnClickListener(this);
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Select_Bzcard_Activity.this, mMainLayout);
@@ -109,9 +113,12 @@ public class Select_Bzcard_Activity extends AppCompatActivity  implements Connec
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_back:
                 onBackPressed();
+                break;
+            case R.id.txt_Use:
+                startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
                 break;
         }
     }
@@ -121,12 +128,13 @@ public class Select_Bzcard_Activity extends AppCompatActivity  implements Connec
         super.onBackPressed();
         finish();
     }
+
     public static class ViewPageAdepter extends RecyclerView.Adapter<ViewPageAdepter.viewholder> {
 
         public Context mCtx;
         TextView txt_footer;
 
-        public ViewPageAdepter(Context applicationContext,TextView txt_footer) {
+        public ViewPageAdepter(Context applicationContext) {
             this.mCtx = applicationContext;
             this.txt_footer = txt_footer;
         }
@@ -141,12 +149,10 @@ public class Select_Bzcard_Activity extends AppCompatActivity  implements Connec
 
         @Override
         public void onBindViewHolder(@NonNull ViewPageAdepter.viewholder holder, int position) {
-            if(position==1||position==3||position==5){
+            if (position == 1 || position == 3 || position == 5) {
                 holder.iv_card.setImageDrawable(mCtx.getDrawable(R.drawable.card1));
-                txt_footer.setText(mCtx.getResources().getString(R.string.bz_footer));
-            }else {
+            } else {
                 holder.iv_card.setImageDrawable(mCtx.getDrawable(R.drawable.card2));
-                txt_footer.setText(mCtx.getResources().getString(R.string.bz_footer2));
             }
         }
 
@@ -160,7 +166,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity  implements Connec
 
             public viewholder(View view) {
                 super(view);
-                iv_card=view.findViewById(R.id.iv_card);
+                iv_card = view.findViewById(R.id.iv_card);
 
             }
         }
