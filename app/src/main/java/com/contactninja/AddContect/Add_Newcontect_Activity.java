@@ -1192,8 +1192,15 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
          if (image_flag==0)
          {
              image_flag=1;
-             CropImage.activity(data.getData())
-                     .start(this);
+             try {
+                 CropImage.activity(data.getData())
+                         .start(this);
+             }
+             catch (Exception e)
+             {
+
+             }
+
          }
 
      }

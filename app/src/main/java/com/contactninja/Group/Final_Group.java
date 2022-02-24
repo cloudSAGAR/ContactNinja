@@ -558,8 +558,15 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         else {
             if (image_flag == 0) {
                 image_flag = 1;
-                CropImage.activity(data.getData())
-                        .start(this);
+                try {
+                    CropImage.activity(data.getData())
+                            .start(this);
+                }
+                catch (Exception e)
+                {
+
+                }
+
             }
 
         }

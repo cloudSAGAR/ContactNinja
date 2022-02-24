@@ -1154,8 +1154,15 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         } else {
             if (image_flag == 0) {
                 image_flag = 1;
-                CropImage.activity(data.getData())
-                        .start(getActivity());
+                try {
+                    CropImage.activity(data.getData())
+                            .start(getActivity());
+                }
+                catch (Exception e)
+                {
+
+                }
+
             }
 
         }

@@ -41,6 +41,14 @@ public class Main_contact_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contect_main_, container, false);
         IntentUI(view);
 
+
+        TabSet();
+
+
+        return view;
+    }
+
+    private void TabSet() {
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.addTab(tabLayout.newTab().setText("Company"));
@@ -85,30 +93,7 @@ public class Main_contact_Fragment extends Fragment {
 
             }
         });
-      /*  adapter = new ViewpaggerAdapter(getActivity(), getChildFragmentManager(),
-                tabLayout.getTabCount(), strtext);
 
-        viewPager.setAdapter(adapter);*/
-
-       // viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-      /*  tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
-
-        //viewPager.addOnPageChangeListener(this);
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +117,6 @@ public class Main_contact_Fragment extends Fragment {
 
             }
         });
-        return view;
     }
 
     private void IntentUI(View view) {
