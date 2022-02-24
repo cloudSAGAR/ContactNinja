@@ -123,6 +123,7 @@
             android:background="@color/line_separator" />
 
         <LinearLayout
+            android:layout_marginBottom="@dimen/_30sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -148,6 +149,7 @@
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/contact_list"
                             android:layout_width="match_parent"

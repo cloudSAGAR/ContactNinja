@@ -104,6 +104,20 @@ public class Company_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         View content_view = inflater.inflate(R.layout.fragment_company_, container, false);
         IntentUI(content_view);
+        on_dataset();
+
+      /*  if (companyAdapter.getItemCount() == 0) {
+            linearLayout3.setVisibility(View.GONE);
+            demo_layout.setVisibility(View.VISIBLE);
+            layout_common.setVisibility(View.VISIBLE);
+
+        }*/
+
+        return content_view;
+    }
+
+    public void on_dataset()
+    {
         mCtx = getContext();
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
@@ -263,17 +277,7 @@ public class Company_Fragment extends Fragment {
 
                 }
         );
-
-      /*  if (companyAdapter.getItemCount() == 0) {
-            linearLayout3.setVisibility(View.GONE);
-            demo_layout.setVisibility(View.VISIBLE);
-            layout_common.setVisibility(View.VISIBLE);
-
-        }*/
-
-        return content_view;
     }
-
 
     private void IntentUI(View content_view) {
         iv_cancle_search_icon = content_view.findViewById(R.id.iv_cancle_search_icon);

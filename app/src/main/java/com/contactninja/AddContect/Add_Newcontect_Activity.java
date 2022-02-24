@@ -90,6 +90,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
@@ -119,7 +120,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     FrameLayout frameContainer;
-    RoundedImageView iv_user;
+    CircleImageView iv_user;
     LinearLayout layout_pulse;
     String option_type = "";
     private BroadcastReceiver mNetworkReceiver;

@@ -53,14 +53,13 @@
 
         </LinearLayout>
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_user"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="right"
             android:layout_marginStart="@dimen/_15sdp"
             android:padding="1dp"
-            android:scaleType="fitXY"
             android:visibility="gone"
             app:riv_border_color="@color/purple_200"
             app:riv_border_width="0dp"

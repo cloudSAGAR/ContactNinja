@@ -203,11 +203,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         });
 
 
-        try {
-            Timezoneget();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
 
         return view;
     }
@@ -1551,6 +1547,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
 
                 CompanyList();
+                Timezoneget();
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
