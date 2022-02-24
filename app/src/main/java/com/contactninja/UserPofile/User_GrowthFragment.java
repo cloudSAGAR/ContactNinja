@@ -17,17 +17,17 @@ import com.contactninja.R;
 import com.contactninja.Utils.SessionManager;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
-public class User_ExposuresFragment extends Fragment implements View.OnClickListener {
+public class User_GrowthFragment extends Fragment implements View.OnClickListener {
     TextView button_Affiliate_Report;
     private long mLastClickTime = 0;
-    public User_ExposuresFragment() {
+    public User_GrowthFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_user_exposures, container, false);
+        View view=inflater.inflate(R.layout.fragment_user_growth, container, false);
         IntentUI(view);
         setdata();
         return view;

@@ -524,5 +524,10 @@ Number</string>
     <string name="m_45">45 mins</string>
     <string name="m_60">60 mins</string>
 
+    <string name="select_bzcard">Select Bzcard</string>
+    <string name="preview">Preview</string>
+    <string name="use_template">Use This Template</string>
+    <string name="bz_footer">*Represents dummy data, upload photos, videos, and text content to make it your own!</string>
+    <string name="bz_footer2">Share your mission with the world when you bring your business contact info to life on a virtual BZcard.</string>
 
 </resources>

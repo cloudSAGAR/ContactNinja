@@ -40,6 +40,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Newcontect_Activity;
+import com.contactninja.Bzcard.Select_Bzcard_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
@@ -50,7 +51,7 @@ import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Setting.SettingActivity;
 import com.contactninja.UserPofile.User_BzcardFragment;
-import com.contactninja.UserPofile.User_ExposuresFragment;
+import com.contactninja.UserPofile.User_GrowthFragment;
 import com.contactninja.UserPofile.User_InformationFragment;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -107,7 +108,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     Uri mCapturedImageURI;
     Integer CAPTURE_IMAGE = 3;
     CoordinatorLayout user_image;
-    ImageView iv_Setting, pulse_icon, iv_back, iv_edit;
+    ImageView iv_Setting, pulse_icon, iv_back, iv_edit,iv_Bzcard;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
     String fragment_name, user_image_Url = "", File_name = "", File_extension = "";
@@ -370,7 +371,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         //Set Viewpagger
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
-        tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
+        tabLayout.addTab(tabLayout.newTab().setText("Growth"));
         fragment_name = "Info";
 
 
@@ -581,9 +582,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             edit_profile.setVisibility(View.VISIBLE);
                             setdata();
                             edt_FirstName.setEnabled(false);
-                            fragment = new User_ExposuresFragment();
+                            fragment = new User_GrowthFragment();
                         } else {
-                            fragment = new User_ExposuresFragment();
+                            fragment = new User_GrowthFragment();
                         }
                         break;
 
@@ -616,6 +617,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
         iv_Setting.setOnClickListener(this);
+        iv_Bzcard = view.findViewById(R.id.iv_Bzcard);
+        iv_Bzcard.setOnClickListener(this);
+        iv_Bzcard.setVisibility(View.VISIBLE);
         iv_back = view.findViewById(R.id.iv_back);
         tabLayout = view.findViewById(R.id.tabLayout);
         frameContainer = view.findViewById(R.id.frameContainer);
@@ -819,13 +823,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         phone = contactdetails.get(i).getEmail_number();
                     }
                     phone_type = contactdetails.get(i).getLabel();
-
                     contactdetails1.add(contactdetails.get(i));
                 }
-
             }
-
-
         }
 
 
@@ -946,6 +946,13 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_Bzcard:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                startActivity(new Intent(getActivity(), Select_Bzcard_Activity.class));
+                break;
             case R.id.pulse_icon:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;

@@ -48,10 +48,13 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Bzcard.Select_Bzcard_Activity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".Main_Broadcast.Broadcaste_viewContect"
             android:exported="false"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.ZoomActivity"
             android:exported="false"

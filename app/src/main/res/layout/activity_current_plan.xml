@@ -13,19 +13,18 @@
         layout="@layout/toolbar" />
 
     <TextView
-        android:layout_centerHorizontal="true"
         android:id="@+id/add_Template"
         style="@style/tv_Medium_14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/_12sdp"
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/Select_plan_type"
-        android:textColor="@color/text_reg"
-         />
+        android:textColor="@color/text_reg" />
 
     <LinearLayout
         android:layout_above="@+id/tv_save"
