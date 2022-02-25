@@ -233,11 +233,12 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                                     if (r_data.size()==1)
                                     {
                                         broadcate_save_data.setDay_of_month(r_data.get(0).getDayOfMonth());
-
+                                        broadcate_save_data.setOccurs_monthly("Day");
                                     }
                                     else {
                                         broadcate_save_data.setEvery_second(r_data.get(0).getEveryWeekNo());
                                         broadcate_save_data.setEvery_day(r_data.get(1).getEveryDayofweek());
+                                        broadcate_save_data.setOccurs_monthly("Every");
 
                                     }
                                   //  broadcate_save_data.setOccurs_weekly(r_data.get(i).getEveryWeekNo());
