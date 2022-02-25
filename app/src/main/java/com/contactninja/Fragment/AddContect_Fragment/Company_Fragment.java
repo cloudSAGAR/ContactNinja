@@ -128,7 +128,7 @@ public class Company_Fragment extends Fragment {
         rvinviteuserdetails.setLayoutManager(layoutManager);
         rvinviteuserdetails.setHasFixedSize(true);
         rvinviteuserdetails.setAdapter(companyAdapter);
-        rvinviteuserdetails.setItemViewCacheSize(50000);
+        rvinviteuserdetails.setItemViewCacheSize(5000);
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
 
@@ -165,7 +165,7 @@ public class Company_Fragment extends Fragment {
                 }
             }
         });
-        rvinviteuserdetails.setItemViewCacheSize(50000);
+
         rvinviteuserdetails.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
@@ -429,7 +429,6 @@ public class Company_Fragment extends Fragment {
                     if (currentPage != PAGE_START)
                         companyAdapter.removeLoading();
                         companyAdapter.addItems(companyList);
-                        rvinviteuserdetails.setItemViewCacheSize(50000);
 
                     // check weather is last page or not
                     if (data.getTotal() > companyAdapter.getItemCount()) {
@@ -722,7 +721,6 @@ public class Company_Fragment extends Fragment {
 
         public void addItems(List<CompanyModel.Company> postItems) {
             companyList.addAll(postItems);
-            rvinviteuserdetails.setItemViewCacheSize(50000);
             notifyDataSetChanged();
 
 
@@ -731,7 +729,6 @@ public class Company_Fragment extends Fragment {
         public void addLoading() {
             isLoaderVisible = true;
             companyList.add(new CompanyModel.Company());
-            rvinviteuserdetails.setItemViewCacheSize(50000);
             notifyItemInserted(companyList.size() - 1);
         }
 
@@ -782,8 +779,8 @@ public class Company_Fragment extends Fragment {
                 if (second_latter.equals("")) {
                     current_latter = first_latter;
                     second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.GONE);
-                    holder.top_layout.setVisibility(View.GONE);
+                    holder.first_latter.setVisibility(View.VISIBLE);
+                    holder.top_layout.setVisibility(View.VISIBLE);
 
                 } else if (second_latter.equals(first_latter)) {
                     current_latter = second_latter;
@@ -795,8 +792,8 @@ public class Company_Fragment extends Fragment {
 
                     current_latter = first_latter;
                     second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.GONE);
-                    holder.top_layout.setVisibility(View.GONE);
+                    holder.first_latter.setVisibility(View.VISIBLE);
+                    holder.top_layout.setVisibility(View.VISIBLE);
 
 
                 }
