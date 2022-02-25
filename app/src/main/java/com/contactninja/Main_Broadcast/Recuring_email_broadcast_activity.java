@@ -189,8 +189,15 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                         second_id = broadcate_save_data.getEvery_second();
                         if (!second_id.equals(""))
                         {
-                            String week_of=Week_Of[Integer.parseInt(second_id)];
-                            tv_second.setText(week_of);
+                            try {
+                                String week_of=Week_Of[Integer.parseInt(second_id)];
+                                tv_second.setText(week_of);
+                            }
+                            catch (Exception e)
+                            {
+                                //tv_month.setText(second_id);
+                            }
+
                         }
 
                         day_section_id = broadcate_save_data.getEvery_day();
@@ -206,7 +213,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                         iv_every_selcted.setVisibility(View.VISIBLE);
                         iv_selected.setVisibility(View.GONE);
                         iv_unselected.setVisibility(View.VISIBLE);
-
+                        tv_month.setText(broadcate_save_data.getDay_of_month());
                     }
                //     iv_every_unselcted.setVisibility(View.VISIBLE);
 

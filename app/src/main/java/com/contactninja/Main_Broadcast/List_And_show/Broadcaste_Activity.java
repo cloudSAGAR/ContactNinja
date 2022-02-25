@@ -227,13 +227,20 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     if (broadcasteda.getRecurringType().equals("M")) {
                         broadcate_save_data.setRecurrence("Monthly");
 
-                           Log.e("Detaili is",new Gson().toJson(broadcasteda.getRecurringDetail()));
-                            List<BroadcastActivityModel._0.OccursOn> r_data = broadcasteda.getRecurringDetail().get(1).getOccursOn();
-                            broadcate_save_data.setDay_of_month(r_data.get(0).getDayOfMonth());
-                                  //  broadcate_save_data.setOccurs_weekly(r_data.get(i).getEveryWeekNo());
-                             broadcate_save_data.setEvery_second(r_data.get(1).getEveryWeekNo());
+                                   Log.e("Detaili is",new Gson().toJson(broadcasteda.getRecurringDetail()));
 
-                                    broadcate_save_data.setEvery_day(r_data.get(2).getEveryDayofweek());
+                                    List<BroadcastActivityModel._0.OccursOn> r_data = broadcasteda.getRecurringDetail().get(1).getOccursOn();
+                                    if (r_data.size()==1)
+                                    {
+                                        broadcate_save_data.setDay_of_month(r_data.get(0).getDayOfMonth());
+
+                                    }
+                                    else {
+                                        broadcate_save_data.setEvery_second(r_data.get(0).getEveryWeekNo());
+                                        broadcate_save_data.setEvery_day(r_data.get(1).getEveryDayofweek());
+
+                                    }
+                                  //  broadcate_save_data.setOccurs_weekly(r_data.get(i).getEveryWeekNo());
 
 
 

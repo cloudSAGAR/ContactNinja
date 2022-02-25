@@ -505,16 +505,24 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         } else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
             JSONObject occurs_on_data = new JSONObject();
             JSONArray coccurs_on_data_array = new JSONArray();
-            JSONObject day_of_month_data = new JSONObject();
-            day_of_month_data.put("day_of_month", broadcate_save_data.getDay_of_month());
-            coccurs_on_data_array.put(day_of_month_data);
-            JSONObject every_week_no_data = new JSONObject();
-            every_week_no_data.put("every_week_no", broadcate_save_data.getEvery_day());
-            coccurs_on_data_array.put(every_week_no_data);
 
-            JSONObject every_dayofweek_data = new JSONObject();
-            every_dayofweek_data.put("every_dayofweek", broadcate_save_data.getEvery_second());
-            coccurs_on_data_array.put(every_dayofweek_data);
+            if (broadcate_save_data.getOccurs_monthly().equals("Day"))
+            {
+                JSONObject day_of_month_data = new JSONObject();
+                day_of_month_data.put("day_of_month", broadcate_save_data.getDay_of_month());
+                coccurs_on_data_array.put(day_of_month_data);
+            }
+            else {
+                JSONObject every_week_no_data = new JSONObject();
+                every_week_no_data.put("every_week_no", broadcate_save_data.getEvery_day());
+                coccurs_on_data_array.put(every_week_no_data);
+
+                JSONObject every_dayofweek_data = new JSONObject();
+                every_dayofweek_data.put("every_dayofweek", broadcate_save_data.getEvery_second());
+                coccurs_on_data_array.put(every_dayofweek_data);
+            }
+
+
             occurs_on_data.put("occurs_on", coccurs_on_data_array);
             recurring_detail.put(occurs_on_data);
         }
