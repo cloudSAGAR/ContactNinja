@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
 
+       // startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
         SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
         IntentUI();
         Calendar cal = Calendar.getInstance();
@@ -320,26 +321,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
 
-                data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]","") +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + '"' + email + ',' + '"' +
-                        ',' + '"' + number + ',' + '"' +
-                        ',' + ' '
-                );
+                if (number.equals(""))
+                {
+
+                }
+                else if (number.equals("null"))
+                {
+
+                }
+                else {
+                    data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + '"' + email + ',' + '"' +
+                            ',' + '"' + number + ',' + '"' +
+                            ',' + ' '
+                    );
+                }
 
             }
         }

@@ -15,6 +15,7 @@ import com.contactninja.Model.BroadcastActivityListModel;
 import com.contactninja.Model.BroadcastActivityModel;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcate_save_data;
+import com.contactninja.Model.Bzcard_Model;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.CompanyModel;
@@ -82,6 +83,7 @@ public class SessionManager {
     public static final String Broadcast_flag="broadcast_flag";
     public static final String Broadcaste_Detail="Broadcaste_detail";
     public static final String Broadcast_contect="Broadcast_contect";
+    public static final String Bzcard="Bzcard";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -664,6 +666,27 @@ public class SessionManager {
         String json = gson.toJson(add_model);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Broadcaste_Detail, json);
+        editor.apply();
+    }
+
+
+    public static Bzcard_Model getBzcard(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Bzcard, "");
+        Type type = new TypeToken<Bzcard_Model>() {
+        }.getType();
+        Bzcard_Model signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new Bzcard_Model();
+        }
+        return signModel;
+    }
+
+    public static void setBzcard(Context context, Bzcard_Model bzcard_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(bzcard_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Bzcard, json);
         editor.apply();
     }
 

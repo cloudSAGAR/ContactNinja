@@ -1161,76 +1161,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         } else {
             if (image_flag == 0) {
                 image_flag = 1;
-                try {
-                    CropImage.activity(data.getData())
-                            .start(getActivity());
-                }
-                catch (Exception e)
-                {
-
-                }
-
+                ImageCropFunctionCustom(data.getData());
             }
 
         }
-       /* if (resultCode != Activity.RESULT_CANCELED) {
-            switch (requestCode) {
-                case 0:
-                    if (resultCode == Activity.RESULT_OK && data != null) {
-                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                        iv_user.setImageBitmap(bitmap);
-                        iv_user.setVisibility(View.VISIBLE);
-                        layout_pulse.setVisibility(View.GONE);
-
-                        File_name = "Image";
-
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                        String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                        user_image_Url = "data:image/JPEG;base64," + imageString;
-                        File_extension = "JPEG";
-                        Log.e("url is", user_image_Url);
-                    }
-                    break;
-                case 1:
-                    if (resultCode == Activity.RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-                                user_image_Url = encodeFileToBase64Binary(picturePath);
-
-                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                cursor.close();
-                                iv_user.setVisibility(View.VISIBLE);
-                                layout_pulse.setVisibility(View.GONE);
-
-                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-
-                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                                String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url = "data:image/JPEG;base64," + imageString;
-                                Log.e("url is", user_image_Url);
-                                File_extension = "JPEG";
-
-
-                                iv_user.setVisibility(View.VISIBLE);
-
-                                File file = new File(selectedImage.getPath());
-                                File_name = file.getName();
-                            }
-                        }
-                    }
-                    break;
-            }
-        }*/
     }
 
     private void uploadImageTos3(String imageUri) {

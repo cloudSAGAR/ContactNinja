@@ -4,63 +4,308 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.RetrofitCalls;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Social_media_Bzcard_Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Social_media_Bzcard_Fragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public Social_media_Bzcard_Fragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Social_media_Bzcard_Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Social_media_Bzcard_Fragment newInstance(String param1, String param2) {
-        Social_media_Bzcard_Fragment fragment = new Social_media_Bzcard_Fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    LoadingDialog loadingDialog;
+    RetrofitCalls retrofitCalls;
+    SessionManager sessionManager;
+    Bzcard_Model bzcard_model;
+    EditText ev_fb,ev_twitter,ev_breakout,ev_youtube,
+            ev_instagram,ev_linkedin,ev_pintrest,ev_venmo,
+            ev_skypay,ev_tiktok,ev_snap_chat,ev_other_filed,
+            ev_other_filed1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_social_media__bzcard_, container, false);
+        View view=inflater.inflate(R.layout.fragment_social_media__bzcard_, container, false);
+        IntentUI(view);
+        bzcard_model=SessionManager.getBzcard(getActivity());
+        sessionManager = new SessionManager(getActivity());
+        loadingDialog = new LoadingDialog(getActivity());
+        retrofitCalls = new RetrofitCalls(getActivity());
+        setData();
+        addtextchnageListner();
+        return view;
+    }
+
+    private void addtextchnageListner() {
+        ev_fb.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setFb(ev_fb.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_twitter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                bzcard_model.setTwitter(ev_twitter.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_youtube.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setYoutube(ev_youtube.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_breakout.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setBreakout(ev_breakout.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_instagram.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                bzcard_model.setInstagram(ev_instagram.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_linkedin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setLinkedin(ev_linkedin.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_pintrest.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setPintrest(ev_pintrest.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_venmo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setVenmo(ev_venmo.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_skypay.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setSkypay(ev_skypay.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_tiktok.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setTiktok(ev_tiktok.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_snap_chat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setSnapchat(ev_snap_chat.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_other_filed.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setOther_filed(ev_other_filed.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_other_filed1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setOther_filed1(ev_other_filed1.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+    }
+
+    public void setData()
+    {
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        ev_fb.setText(user_data.getUser().getUserprofile().getFacebook_link());
+        bzcard_model.setFb(user_data.getUser().getUserprofile().getFacebook_link());
+        ev_breakout.setText(user_data.getUser().getUserprofile().getBreakout_link());
+        bzcard_model.setBreakout(user_data.getUser().getUserprofile().getBreakout_link());
+        ev_linkedin.setText(user_data.getUser().getUserprofile().getLinkedin_link());
+        bzcard_model.setLinkedin(user_data.getUser().getUserprofile().getLinkedin_link());
+        ev_twitter.setText(user_data.getUser().getUserprofile().getTwitter_link());
+        bzcard_model.setTwitter(user_data.getUser().getUserprofile().getTwitter_link());
+        SessionManager.setBzcard(getActivity(),bzcard_model);
+    }
+
+    private void IntentUI(View view) {
+        ev_fb=view.findViewById(R.id.ev_fb);
+        ev_twitter=view.findViewById(R.id.ev_twitter);
+        ev_youtube=view.findViewById(R.id.ev_youtube);
+        ev_breakout=view.findViewById(R.id.ev_breakout);
+        ev_instagram=view.findViewById(R.id.ev_instagram);
+        ev_linkedin=view.findViewById(R.id.ev_linkedin);
+        ev_pintrest=view.findViewById(R.id.ev_pintrest);
+        ev_venmo=view.findViewById(R.id.ev_venmo);
+        ev_skypay=view.findViewById(R.id.ev_skypay);
+        ev_tiktok=view.findViewById(R.id.ev_tiktok);
+        ev_snap_chat=view.findViewById(R.id.ev_snap_chat);
+        ev_other_filed=view.findViewById(R.id.ev_other_filed);
+        ev_other_filed1=view.findViewById(R.id.ev_other_filed1);
     }
 }

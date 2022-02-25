@@ -113,10 +113,50 @@ Number</string>
     <string name="add_company_a">Add company</string>
     <string name="add_company_url">Company URL</string>
     <string name="add_company_url_a">Add company url</string>
+    
+    
+    //Bz Card String
+    <string name="tv_first">First name</string>
+    <string name="ev_first">Add first name</string>
+
+
+    <string name="tv_last_name">Last Name</string>
+    <string name="ev_last_name">Add last name</string>
+
+    <string name="tv_bzemail">Email</string>
+    <string name="ev_email">Add last name</string>
+
+    <string name="tv_company">Add your company logo</string>
+    <string name="ev_company_size">image size 300 by 300</string>
+    <string name="tv_recompany">Re-upload logo</string>
+
+    <string name="tv_company_url">Company URL</string>
+    <string name="ev_company_url">Add company url</string>
 
 
     <string name="add_job">Job title</string>
     <string name="add_job_a">Add job title</string>
+
+
+    <string name="add_fab">Facebook</string>
+    <string name="add_url">URL</string>
+    <string name="add_twittera">Twitter</string>
+    <string name="add_youtube">Youtube</string>
+    <string name="add_breakout">Breakout</string>
+    <string name="add_instagram">Instagram</string>
+    <string name="add_linkedin1">Linkedin</string>
+    <string name="add_pintrest">Pintrest</string>
+    <string name="add_venmo">Venmo</string>
+    <string name="add_skypay">Skypay</string>
+    <string name="add_tiktok">Tiktok</string>
+    <string name="add_snapchat">Snapchat</string>
+    <string name="add_other_filed">other filed</string>
+
+
+
+
+
+
 
 
     <string name="add_city">City</string>

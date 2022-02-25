@@ -24,9 +24,11 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.contactninja.Bzcard.CreateBzcard.Add_New_Bzcard_Activity;
+import com.contactninja.Model.Bzcard_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.SessionManager;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Select_Bzcard_Activity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener, View.OnClickListener {
@@ -118,6 +120,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 onBackPressed();
                 break;
             case R.id.txt_Use:
+                SessionManager.setBzcard(getApplicationContext(),new Bzcard_Model());
                 startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
                 break;
         }

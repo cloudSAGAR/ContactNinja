@@ -1,14 +1,983 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Bzcard.CreateBzcard.Fragment.Social_media_Bzcard_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Social_media_Bzcard_Fragment" />
 
-</FrameLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+                      <ImageView
+                          android:src="@drawable/ic_fb"
+                          android:layout_marginEnd="@dimen/_7sdp"
+                          android:layout_width="@dimen/_20sdp"
+                          android:layout_height="@dimen/_20sdp">
+
+                      </ImageView>
+                       <TextView
+                           style="@style/tv_regular_13"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:text="@string/add_fab"
+                           android:layout_gravity="center|left"
+                           android:gravity="left|center"
+                           android:textColor="@color/text_reg">
+
+                       </TextView>
+                   </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_fb"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_twitter"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_twittera"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_twitter"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_youtubee"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_youtube"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_youtube"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_breakout"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_breakout"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_breakout"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_instragram"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_instagram"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_instagram"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_linkdin"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_linkedin1"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_linkedin"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_pik"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_pintrest"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_pintrest"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_venmo"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_venmo"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_venmo"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_sky"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_skypay"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_skypay"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_tiktok"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_tiktok"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_tiktok"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_snap"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_snapchat"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_snap_chat"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_other_link"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_other_filed"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_other_filed"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_other_link"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp">
+
+                        </ImageView>
+                        <TextView
+                            style="@style/tv_regular_13"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_other_filed"
+                            android:layout_gravity="center|left"
+                            android:gravity="left|center"
+                            android:textColor="@color/text_reg">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:id="@+id/ev_other_filed1"
+                        style="@style/tv_regular_13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_url"
+                        android:inputType="text"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textColorHint="@color/home_list_sub_data">
+
+                    </EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/home_list_add_contect_view" />
+
+        </LinearLayout>
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

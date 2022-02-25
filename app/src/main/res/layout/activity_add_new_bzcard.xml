@@ -32,10 +32,78 @@
 
 
         <RelativeLayout
-            android:background="@color/text_green"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_180sdp">
+            <LinearLayout
+                android:id="@+id/layout_cover"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/iv_dummy_cover_img"
+                    android:src="@drawable/ic_cover_back"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                </ImageView>
+                <ImageView
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    android:id="@+id/iv_cover_img"
+                    android:src="@drawable/ic_cover_back"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </ImageView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="-70dp"
+               android:layout_below="@+id/layout_cover"
+                android:id="@+id/layout_pulse"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_55sdp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                tools:ignore="Orientation">
+
+                <ImageView
+                    android:background="@drawable/shape_oval_border_10_blue"
+                    android:id="@+id/pulse_icon"
+                    android:layout_width="@dimen/_55sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:padding="@dimen/_15sdp"
+                    android:src="@drawable/ic_plus"
+                    android:tint="@color/purple_200"
+                    tools:ignore="DuplicateIds,UseAppTint" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_user"
+                    android:layout_width="@dimen/_55sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_gravity="right"
+                    android:padding="1dp"
+                    android:visibility="gone"
+                    app:riv_border_color="@color/purple_200"
+                    app:riv_border_width="0dp"
+                    app:riv_corner_radius="@dimen/_50sdp"
+                    app:riv_oval="false" />
+
+                <ImageView
+                    android:id="@+id/iv_edit"
+                    android:layout_marginStart="-25dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_edit_profile"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp">
+
+                </ImageView>
+
+
+            </LinearLayout>
         </RelativeLayout>
 
     </LinearLayout>
