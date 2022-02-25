@@ -49,7 +49,7 @@
             <TextView
                 android:visibility="gone"
                 android:id="@+id/no_image"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_gravity="center"
@@ -116,7 +116,7 @@
 
             <TextView
                 android:id="@+id/tv_task_time"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -128,7 +128,7 @@
 
             <TextView
                 android:id="@+id/tv_task_description"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -150,7 +150,7 @@
 
             <TextView
                 android:id="@+id/tv_time"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

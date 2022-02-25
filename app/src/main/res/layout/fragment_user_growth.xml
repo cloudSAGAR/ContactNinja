@@ -20,7 +20,7 @@
         android:gravity="center"
         android:text="View Detailed Affiliate Report"
         android:layout_width="match_parent"
-        style="@style/tv_regular_13"
+        style="@style/tv_regular_12"
         android:textColor="@color/purple_200"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_40sdp"

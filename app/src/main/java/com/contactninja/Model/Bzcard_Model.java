@@ -1,5 +1,12 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@SuppressLint("UnknownNullness")
 public class Bzcard_Model {
     String cover_image="";
     String profile_image="";
@@ -29,11 +36,16 @@ public class Bzcard_Model {
     String snapchat="";
     String other_filed="";
     String other_filed1="";
+    List<BZ_media_information> bzMediaInformationList=new ArrayList<>();
 
 
+    public List<BZ_media_information> getBzMediaInformationList() {
+        return bzMediaInformationList;
+    }
 
-
-
+    public void setBzMediaInformationList(List<BZ_media_information> bzMediaInformationList) {
+        this.bzMediaInformationList = bzMediaInformationList;
+    }
 
     public String getCover_image() {
         return cover_image;
@@ -249,5 +261,63 @@ public class Bzcard_Model {
 
     public void setOther_filed1(String other_filed1) {
         this.other_filed1 = other_filed1;
+    }
+
+
+    public static class BZ_media_information implements Serializable {
+        Integer id=0;
+        String media_type="";
+        String media_url="";
+        String media_title="";
+        String media_description="";
+        Integer is_featured=0;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getMedia_type() {
+            return media_type;
+        }
+
+        public void setMedia_type(String media_type) {
+            this.media_type = media_type;
+        }
+
+        public String getMedia_url() {
+            return media_url;
+        }
+
+        public void setMedia_url(String media_url) {
+            this.media_url = media_url;
+        }
+
+        public String getMedia_title() {
+            return media_title;
+        }
+
+        public void setMedia_title(String media_title) {
+            this.media_title = media_title;
+        }
+
+        public String getMedia_description() {
+            return media_description;
+        }
+
+        public void setMedia_description(String media_description) {
+            this.media_description = media_description;
+        }
+
+        public Integer getIs_featured() {
+            return is_featured;
+        }
+
+        public void setIs_featured(Integer is_featured) {
+            this.is_featured = is_featured;
+        }
     }
 }

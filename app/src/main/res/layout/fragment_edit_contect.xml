@@ -39,7 +39,7 @@
                       android:layout_height="wrap_content">
                       <TextView
                           android:id="@+id/tv_phone"
-                          style="@style/tv_regular_13"
+                          style="@style/tv_regular_12"
                           android:text="@string/add_phone"
                           android:textColor="@color/text_reg"
                           android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                     <EditText
                         android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/tv_mobile_no"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:maxLength="10"
                         android:inputType="number"
                         android:hint="@string/add_number"
@@ -82,7 +82,7 @@
 
                     <TextView
                         android:layout_weight="1"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_home"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_gravity="center"
@@ -181,7 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_mobile_a"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -239,7 +239,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/tv_email"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_email"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -249,7 +249,7 @@
                     <EditText
                         android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_email"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:hint="@string/add_email_a"
                         android:background="@color/add_contect_transpernt"
                         android:textColor="@color/home_list_sub_data"
@@ -287,7 +287,7 @@
 
                     <TextView
                         android:layout_weight="1"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_home"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_gravity="center"
@@ -344,7 +344,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_email_address"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -401,7 +401,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_address"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -411,7 +411,7 @@
                     <EditText
                         android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_address"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:hint="@string/add_address_a"
                         android:background="@color/add_contect_transpernt"
                         android:textColor="@color/home_list_sub_data"
@@ -454,7 +454,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_city"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -464,7 +464,7 @@
                     <EditText
                         android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_city"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:hint="@string/add_city_a"
                         android:background="@color/add_contect_transpernt"
                         android:textColor="@color/home_list_sub_data"
@@ -508,7 +508,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_state"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -527,7 +527,7 @@
 
                     <TextView
                         android:layout_weight="1"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_state_a"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_gravity="center"
@@ -580,7 +580,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_zip"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -590,7 +590,7 @@
                     <EditText
                         android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_zip"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:maxLength="6"
                         android:inputType="number"
                         android:hint="@string/add_zip_a"
@@ -637,7 +637,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_zoom"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -647,7 +647,7 @@
                     <EditText
                         android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_zoom"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:maxLength="6"
                         android:inputType="number"
                         android:hint="@string/add_zoom_a"
@@ -696,7 +696,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:text="@string/add_note"
                         android:textColor="@color/text_reg"
                         android:layout_width="match_parent"
@@ -706,7 +706,7 @@
                     <EditText
                         android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_note"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:maxLength="6"
                         android:inputType="number"
                         android:hint="@string/add_note_a"

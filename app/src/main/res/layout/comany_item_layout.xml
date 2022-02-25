@@ -82,7 +82,7 @@
                     <TextView
                         android:layout_marginStart="@dimen/_10sdp"
                         android:id="@+id/no_image"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_gravity="center"
@@ -115,7 +115,7 @@
                         <TextView
 
                             android:id="@+id/username"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"

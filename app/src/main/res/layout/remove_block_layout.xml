@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:gravity="center"
             android:textColor="@color/text_reg"
             />
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:gravity="center"
             android:textColor="@color/text_reg"
             />
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:gravity="center"
 
             android:textColor="@color/text_reg"

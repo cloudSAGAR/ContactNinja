@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:gravity="center"
             android:text="How do you want to set your picture?"
             android:textColor="@color/text_reg"

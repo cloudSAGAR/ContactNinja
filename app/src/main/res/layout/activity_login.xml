@@ -98,7 +98,7 @@
 
                             <EditText
                                 android:id="@+id/edit_Mobile"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -141,7 +141,7 @@
 
                             <EditText
                                 android:id="@+id/edit_email"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -172,7 +172,7 @@
 
                             <TextView
                                 android:id="@+id/iv_invalid"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="@dimen/_150sdp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
@@ -213,7 +213,7 @@
                             <EditText
                                 android:layout_weight="1"
                                 android:id="@+id/edit_password"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -255,7 +255,7 @@
 
                             <TextView
                                 android:id="@+id/iv_password_invalid"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="@dimen/_150sdp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
@@ -286,7 +286,7 @@
                 </LinearLayout>
 
                 <TextView
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"

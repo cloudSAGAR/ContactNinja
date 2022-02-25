@@ -72,7 +72,7 @@
 
                         <EditText
                             android:id="@+id/edit_First"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -102,7 +102,7 @@
 
                         <EditText
                             android:id="@+id/edit_Last"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -163,7 +163,7 @@
 
                         <EditText
                             android:id="@+id/edit_Mobile"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -192,7 +192,7 @@
 
                         <EditText
                             android:id="@+id/edit_email"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -219,7 +219,7 @@
 
                         <TextView
                             android:id="@+id/iv_invalid"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="@dimen/_150sdp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -241,7 +241,7 @@
                             android:textColor="@color/purple_200" />
 
                         <CheckBox
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:id="@+id/select_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -267,7 +267,7 @@
 
                             <EditText
                                 android:id="@+id/edit_code"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"

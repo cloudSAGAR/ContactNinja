@@ -37,7 +37,7 @@
 
             <CheckBox
                 android:id="@+id/ch_today"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:padding="@dimen/_5sdp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
 
             <CheckBox
                 android:id="@+id/ch_upcoming"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -97,7 +97,7 @@
 
             <CheckBox
                 android:id="@+id/ch_due"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -127,7 +127,7 @@
 
             <CheckBox
                 android:id="@+id/ch_complate"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -157,7 +157,7 @@
 
             <CheckBox
                 android:id="@+id/ch_skipped"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -186,7 +186,7 @@
 
             <CheckBox
                 android:id="@+id/ch_Paused"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -215,7 +215,7 @@
 
             <CheckBox
                 android:id="@+id/ch_all_task"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

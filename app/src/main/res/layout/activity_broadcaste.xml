@@ -355,7 +355,7 @@
 
                     <TextView
                         android:id="@+id/tv_title"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -426,7 +426,7 @@
                 <TextView
                     android:id="@+id/tv_date"
                     android:enabled="false"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -465,7 +465,7 @@
                 <TextView
                     android:id="@+id/tv_repete_type"
                     android:enabled="false"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -517,7 +517,7 @@
                     <EditText
                         android:enabled="false"
                         android:id="@+id/ev_subject"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -546,7 +546,7 @@
 
             <TextView
                 android:id="@+id/tv_detail"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

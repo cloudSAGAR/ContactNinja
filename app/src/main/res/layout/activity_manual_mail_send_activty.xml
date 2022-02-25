@@ -32,7 +32,7 @@
 
             <EditText
                 android:id="@+id/ev_titale"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -79,7 +79,7 @@
                 android:enabled="false"
                 android:layout_weight="1"
                 android:id="@+id/ev_from"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -129,7 +129,7 @@
 
             <EditText
                 android:id="@+id/ev_to"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -171,7 +171,7 @@
 
             <EditText
                 android:id="@+id/ev_subject"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -197,7 +197,7 @@
         </View>
         <EditText
             android:id="@+id/edit_compose"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"

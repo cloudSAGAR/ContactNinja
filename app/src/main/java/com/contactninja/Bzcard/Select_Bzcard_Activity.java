@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,14 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     ViewPager2 viewPager2;
     TextView txt_footer, txt_Use;
 
+    private int[] bzstore_image = {
+            R.drawable.bzstore1,
+            R.drawable.bzstore2,
+            R.drawable.bzstore3,
+            R.drawable.bzstore4,
+            R.drawable.bzstore5,
+            R.drawable.bzstore6,
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +57,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     }
 
     private void setImage() {
-        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext()));
+        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(),bzstore_image));
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
@@ -120,6 +129,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 onBackPressed();
                 break;
             case R.id.txt_Use:
+
                 SessionManager.setBzcard(getApplicationContext(),new Bzcard_Model());
                 startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
                 break;
@@ -135,11 +145,10 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     public static class ViewPageAdepter extends RecyclerView.Adapter<ViewPageAdepter.viewholder> {
 
         public Context mCtx;
-        TextView txt_footer;
-
-        public ViewPageAdepter(Context applicationContext) {
+        int[] bzstore_image;
+        public ViewPageAdepter(Context applicationContext, int[] bzstore_image) {
             this.mCtx = applicationContext;
-            this.txt_footer = txt_footer;
+            this.bzstore_image = bzstore_image;
         }
 
         @NonNull
@@ -152,16 +161,14 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
 
         @Override
         public void onBindViewHolder(@NonNull ViewPageAdepter.viewholder holder, int position) {
-            if (position == 1 || position == 3 || position == 5) {
-                holder.iv_card.setImageDrawable(mCtx.getDrawable(R.drawable.card1));
-            } else {
-                holder.iv_card.setImageDrawable(mCtx.getDrawable(R.drawable.card2));
-            }
+            
+                holder.iv_card.setImageDrawable(mCtx.getDrawable(bzstore_image[position]));
+
         }
 
         @Override
         public int getItemCount() {
-            return 6;
+            return bzstore_image.length;
         }
 
         public static class viewholder extends RecyclerView.ViewHolder {

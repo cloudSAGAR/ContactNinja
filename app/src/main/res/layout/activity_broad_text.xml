@@ -38,7 +38,7 @@
                 <TextView
                     android:visibility="gone"
                     android:id="@+id/tv_step"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -71,7 +71,7 @@
 
                     <EditText
                         android:id="@+id/ev_from"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -108,7 +108,7 @@
                 <EditText
 
                     android:id="@+id/edit_template"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_150sdp"
                     android:layout_below="@+id/line_view"
@@ -141,7 +141,7 @@
 
         <TextView
             android:id="@+id/tv_use_tamplet"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

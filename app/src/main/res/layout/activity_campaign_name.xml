@@ -21,7 +21,7 @@
 
 
             <TextView
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -39,7 +39,7 @@
             <EditText
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp" android:id="@+id/edt_titale"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -52,7 +52,7 @@
                 tools:ignore="Autofill,HardcodedText" />
             <TextView
                 android:id="@+id/tv_error_title"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -78,7 +78,7 @@
 
 
             <TextView
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -93,7 +93,7 @@ in a day"
 
             <EditText
                 android:id="@+id/edt_day"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center"
@@ -110,7 +110,7 @@ in a day"
                  />
             <TextView
                 android:id="@+id/tv_error_day"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -123,7 +123,7 @@ in a day"
 
 
             <TextView
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -146,7 +146,7 @@ in a day"
 
                 <TextView
                     android:id="@+id/txt_timezon"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"

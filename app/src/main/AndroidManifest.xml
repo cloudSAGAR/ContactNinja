@@ -48,9 +48,31 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Bzcard.CreateBzcard.Add_New_Bzcard_Activity"
+            android:name=".Bzcard.Media.Video.Video_List_Activity"
             android:exported="false"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Bzcard.Media.Video.Add_Video_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Video.Video_LinkAdd_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Select_Media_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".Bzcard.CreateBzcard.Add_New_Bzcard_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Bzcard.Select_Bzcard_Activity"
             android:exported="false"
@@ -333,7 +355,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"
-            tools:ignore="LockedOrientationActivity">
+            tools:ignore="LockedOrientationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

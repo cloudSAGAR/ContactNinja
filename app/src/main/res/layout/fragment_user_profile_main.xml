@@ -49,7 +49,7 @@
 
             <TextView
                 android:textSize="@dimen/_20sdp"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:visibility="gone"
                 android:textColor="@color/text_White"
                 android:gravity="center"
@@ -120,7 +120,7 @@
                 android:background="@color/add_contect_transpernt"
                 android:id="@+id/edt_lastname"
                 android:layout_marginTop="@dimen/_5sdp"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:textColor="@color/otp_header_text_color"
                 android:hint="Last Name"
                 android:inputType="text|textCapSentences"

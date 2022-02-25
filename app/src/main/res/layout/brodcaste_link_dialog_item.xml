@@ -106,7 +106,7 @@
                     <EditText
                         android:layout_weight="1"
                         android:id="@+id/edit_message"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

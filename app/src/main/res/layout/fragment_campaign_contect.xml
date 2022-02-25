@@ -24,7 +24,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:padding="@dimen/_5sdp"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_gravity="center|end"
                 android:gravity="end|center"

@@ -21,7 +21,7 @@
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_12sdp"
                 android:id="@+id/tv_item"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:text="Please select label"
                 android:layout_gravity="center"
                 android:gravity="center"

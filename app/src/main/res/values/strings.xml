@@ -113,8 +113,8 @@ Number</string>
     <string name="add_company_a">Add company</string>
     <string name="add_company_url">Company URL</string>
     <string name="add_company_url_a">Add company url</string>
-    
-    
+
+
     //Bz Card String
     <string name="tv_first">First name</string>
     <string name="ev_first">Add first name</string>
@@ -151,12 +151,6 @@ Number</string>
     <string name="add_tiktok">Tiktok</string>
     <string name="add_snapchat">Snapchat</string>
     <string name="add_other_filed">other filed</string>
-
-
-
-
-
-
 
 
     <string name="add_city">City</string>
@@ -539,8 +533,8 @@ Number</string>
 
 
     <string name="add_brodcaste">Create new broadcast</string>
-    <string name="broadcast_email">Recuring email broadcast</string>
-    <string name="broadcast_text">Recuring text broadcast</string>
+    <string name="broadcast_email">Recurring email broadcast</string>
+    <string name="broadcast_text">Recurring text broadcast</string>
     <string name="broadcast_info_text">ContactNinja allows you to schedule texts or emails with multiple \n  occurrences. You can schedule these in daily, \n weekly, and monthly increments.</string>
     <string name="create_company">Create new Company</string>
     <string name="repet_every">Repeat every</string>
@@ -569,5 +563,52 @@ Number</string>
     <string name="use_template">Use This Template</string>
     <string name="bz_footer">*Represents dummy data, upload photos, videos, and text content to make it your own!</string>
     <string name="bz_footer2">Share your mission with the world when you bring your business contact info to life on a virtual BZcard.</string>
-
+    <string name="Bzcard_theme_colour">Bzcard theme colour</string>
+    <string name="Bzcard_text_1">in order to see preview please press preview on top right corner</string>
+    <string name="Cutom_Button">Cutom Button</string>
+    <string name="other_Cutom_Button">Add onther custom button </string>
+    <string name="title_button">Title of your button</string>
+    <string name="yourtitle_hint">Add your title</string>
+    <string name="Add_url">Add url</string>
+    <string name="Add_bio">Add a short bio</string>
+    <string name="Bio">Bio</string>
+    <string name="Add_description">Add description</string>
+    <string name="Add_call">Add call to action</string>
+    <string name="Schedule_a_meeting">Schedule a meeting</string>
+    <string name="Know_more">Know more</string>
+    <string name="Visit_now">Visit now</string>
+    <string name="Inquire_now">Inquire now</string>
+    <string name="Learn_more">Learn more</string>
+    <string name="Add_url1">*Add url</string>
+    <string name="Custom_HTML">Custom HTML</string>
+    <string name="media_title">Add media blocks to your BizCard</string>
+    <string name="media_title1">you can add images, pdf or embed a youtube video to b</string>
+    <string name="media_title3">What would you like to add?</string>
+    <string name="choose">Choose file type:</string>
+    <string name="Video">Video</string>
+    <string name="Image">Image</string>
+    <string name="PDF">PDF</string>
+    <string name="invalid_url">Invalid URL</string>
+    <string name="Link_your_video">Link your video</string>
+    <string name="Link_Media">Link Media</string>
+    <string name="url_hint">www.youtube.com / contactnnja</string>
+    <string name="title_video">Title Your Media</string>
+    <string name="Replace_Video">Replace Video</string>
+    <string name="Cancel_Media">Cancel Media</string>
+    <string name="video_title_error">Add video title</string>
+    <string name="video_description_error">Add video description</string>
+    <string name="max_media">Can add only up to 10 media blocks.</string>
+    <string name="add_featured">Add to featured media</string>
+    <string name="Remove_featured">Remove featured media</string>
+    <string-array name="Select_color">
+        <item>5495EC</item>
+        <item>F97C74</item>
+        <item>3A59AE</item>
+        <item>EAC19B</item>
+        <item>0DC0C0</item>
+        <item>6ECF41</item>
+        <item>864879</item>
+        <item>CF8A39</item>
+        <item>4A4A4A</item>
+    </string-array>
 </resources>

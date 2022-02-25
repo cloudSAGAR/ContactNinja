@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class WebActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     WebView wv_url;
     String webURL = "";

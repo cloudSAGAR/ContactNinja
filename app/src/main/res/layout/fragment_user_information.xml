@@ -35,7 +35,7 @@
 
 
                 <TextView
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -117,7 +117,7 @@
                                     <TextView
 
                                         android:id="@+id/tv_phone"
-                                        style="@style/tv_regular_13"
+                                        style="@style/tv_regular_12"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/add_phone"
@@ -151,7 +151,7 @@
 
                                 <TextView
                                     android:id="@+id/phone_txt"
-                                    style="@style/tv_regular_13"
+                                    style="@style/tv_regular_12"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -266,7 +266,7 @@
                                 android:gravity="center|top">
 
                                 <TextView
-                                    style="@style/tv_regular_13"
+                                    style="@style/tv_regular_12"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -320,7 +320,7 @@
 
                     <EditText
                         android:id="@+id/edt_mobile_no"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
@@ -381,7 +381,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_mobile_a"
@@ -461,7 +461,7 @@
 
                             <TextView
                                 android:id="@+id/tv_email"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/add_email"
@@ -483,7 +483,7 @@
 
                             <TextView
                                 android:id="@+id/email_txt"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -534,7 +534,7 @@
                 <EditText
 
                     android:id="@+id/edt_email"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
@@ -548,7 +548,7 @@
 
                 <TextView
                     android:id="@+id/iv_invalid"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
@@ -603,7 +603,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_email_address"
@@ -668,7 +668,7 @@
 
                     <TextView
                         android:id="@+id/tv_otger_company"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/ic_down"
@@ -679,7 +679,7 @@
 
                     <EditText
                         android:id="@+id/ev_othre_company"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -734,7 +734,7 @@
 
                         <TextView
                             android:id="@+id/tv_company"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -752,7 +752,7 @@
                     <EditText
 
                         android:id="@+id/ev_company"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -803,7 +803,7 @@
 
                     <TextView
                         android:id="@+id/tv_company_url"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_company_url"
@@ -813,7 +813,7 @@
 
                     <EditText
                         android:id="@+id/ev_company_url"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -862,7 +862,7 @@
 
                     <TextView
                         android:id="@+id/tv_job"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_job"
@@ -872,7 +872,7 @@
 
                     <EditText
                         android:id="@+id/ev_job"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -921,7 +921,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_zoom"
@@ -931,7 +931,7 @@
 
                     <EditText
                         android:id="@+id/ev_zoom"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -979,7 +979,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_address"
@@ -989,7 +989,7 @@
 
                     <EditText
                         android:id="@+id/ev_address"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1040,7 +1040,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_city"
@@ -1050,7 +1050,7 @@
 
                     <EditText
                         android:id="@+id/ev_city"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1101,7 +1101,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_state"
@@ -1111,7 +1111,7 @@
 
                     <EditText
                         android:id="@+id/ev_state"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1135,7 +1135,7 @@
                     android:visibility="gone">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -1192,7 +1192,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_zip"
@@ -1202,7 +1202,7 @@
 
                     <EditText
                         android:id="@+id/ev_zip"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1265,7 +1265,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center|left"
@@ -1293,7 +1293,7 @@
 
                         <TextView
                             android:id="@+id/zone_txt"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -1358,7 +1358,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_bod"
@@ -1368,7 +1368,7 @@
 
                     <EditText
                         android:id="@+id/ev_bob"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1421,7 +1421,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_note"
@@ -1432,7 +1432,7 @@
 
                     <EditText
                         android:id="@+id/ev_note"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -1520,7 +1520,7 @@
 
 
                             <TextView
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_10sdp"
@@ -1532,7 +1532,7 @@
 
                         <EditText
                             android:id="@+id/ev_fb"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -1600,7 +1600,7 @@
 
 
                             <TextView
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_10sdp"
@@ -1612,7 +1612,7 @@
 
                         <EditText
                             android:id="@+id/ev_twitter"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -1680,7 +1680,7 @@
 
 
                             <TextView
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_10sdp"
@@ -1692,7 +1692,7 @@
 
                         <EditText
                             android:id="@+id/ev_linkedin"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -1761,7 +1761,7 @@
 
 
                             <TextView
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_10sdp"
@@ -1773,7 +1773,7 @@
 
                         <EditText
                             android:id="@+id/ev_breakout"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -1802,7 +1802,7 @@
 
         <TextView
             android:id="@+id/tv_more_field"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -1817,7 +1817,7 @@
 
         <TextView
             android:id="@+id/tv_add_social"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"

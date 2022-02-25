@@ -43,7 +43,7 @@
 
         <TextView
             android:id="@+id/tv_Preview"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -58,7 +58,7 @@
 
         <TextView
             android:id="@+id/txt_Use"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -74,7 +74,7 @@
 
     <TextView
         android:id="@+id/txt_footer"
-        style="@style/tv_regular_13"
+        style="@style/tv_regular_12"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_60sdp"
         android:layout_alignParentBottom="true"

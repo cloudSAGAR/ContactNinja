@@ -86,7 +86,7 @@
 
                     <TextView
                         android:padding="@dimen/_5sdp"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -100,7 +100,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -118,7 +118,7 @@
 
                             <EditText
                                 android:id="@+id/edit_day"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="86dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -140,7 +140,7 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -180,7 +180,7 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -190,7 +190,7 @@
                     </LinearLayout>
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -268,7 +268,7 @@
 
                     <TextView
                         android:padding="@dimen/_5sdp"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -282,7 +282,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -322,7 +322,7 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -362,7 +362,7 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -372,7 +372,7 @@
                     </LinearLayout>
 
                     <TextView
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"

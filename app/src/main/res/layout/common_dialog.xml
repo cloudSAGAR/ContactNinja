@@ -31,7 +31,7 @@ android:visibility="gone"
         <TextView
 
             android:id="@+id/tv_create"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
@@ -65,7 +65,7 @@ android:visibility="gone"
 
     <TextView
         android:id="@+id/sub_txt"
-        style="@style/tv_regular_13"
+        style="@style/tv_regular_12"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

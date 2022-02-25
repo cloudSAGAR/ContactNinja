@@ -91,7 +91,7 @@
 
                         <EditText
                             android:id="@+id/edit_Mobile"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -121,7 +121,7 @@
 
                         <EditText
                             android:id="@+id/edit_email"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -156,7 +156,7 @@
                 </LinearLayout>
 
                 <TextView
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:id="@+id/btn_getStarted"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"

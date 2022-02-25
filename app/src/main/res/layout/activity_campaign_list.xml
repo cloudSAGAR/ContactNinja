@@ -128,7 +128,7 @@
                 android:layout_height="@dimen/_35sdp"/>
 
             <TextView
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

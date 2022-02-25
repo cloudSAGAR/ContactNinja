@@ -83,7 +83,7 @@
             android:padding="@dimen/_5sdp"
 
             android:id="@+id/tv_last_time"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
@@ -139,7 +139,7 @@
                 <TextView
                     android:padding="@dimen/_5sdp"
 
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -154,7 +154,7 @@
                     android:padding="@dimen/_5sdp"
 
                     android:id="@+id/tv_name"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -169,7 +169,7 @@
             <TextView
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/tv_time"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
@@ -202,7 +202,7 @@
                 <TextView
 
                     android:padding="@dimen/_5sdp"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -215,7 +215,7 @@
                 <TextView
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/tv_refress"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -240,7 +240,7 @@
                 <TextView
 
                     android:padding="@dimen/_5sdp"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -254,7 +254,7 @@
 
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/tv_end_date"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
@@ -288,7 +288,7 @@
             </de.hdodenhof.circleimageview.CircleImageView>
 
             <TextView
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:text="+3"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -318,7 +318,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_title"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -332,7 +332,7 @@
         <TextView
             android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/tv_title_tct"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"

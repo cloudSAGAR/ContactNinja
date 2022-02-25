@@ -77,5 +77,15 @@
     <color name="red_lite">#F77777</color>
     <color name="okey_button">#5495EC</color>
 
+    <color name="bz_5495EC">#5495EC</color>
+    <color name="bz_F97C74">#F97C74</color>
+    <color name="bz_3A59AE">#3A59AE</color>
+    <color name="bz_EAC19B">#EAC19B</color>
+    <color name="bz_0DC0C0">#0DC0C0</color>
+    <color name="bz_6ECF41">#6ECF41</color>
+    <color name="bz_864879">#864879</color>
+    <color name="bz_CF8A39">#CF8A39</color>
+    <color name="bz_4A4A4A">#4A4A4A</color>
+
 
 </resources>

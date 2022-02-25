@@ -428,6 +428,49 @@ public class Global extends Application {
         }
         return null;
     }
+    public static boolean isValidURL(String url)
+    {
+        // Regex to check valid URL
+        String regex = "((http|https)://)(www.)?"
+                + "[a-zA-Z0-9@:%._\\+~#?&//=]"
+                + "{2,256}\\.[a-z]"
+                + "{2,6}\\b([-a-zA-Z0-9@:%"
+                + "._\\+~#?&//=]*)";
 
+        // Compile the ReGex
+        Pattern p = Pattern.compile(regex);
+
+        // If the string is empty
+        // return false
+        if (url == null) {
+            return false;
+        }
+
+        // Find match between given string
+        // and regular expression
+        // using Pattern.matcher()
+        Matcher m = p.matcher(url);
+
+        // Return if the string
+        // matched the ReGex
+        return m.matches();
+    }
+    public static String getYoutubeThumbnailUrlFromVideoUrl(String videoUrl) {
+        return "http://img.youtube.com/vi/" + getYoutubeVideoIdFromUrl(videoUrl) + "/0.jpg";
+    }
+
+    public static String getYoutubeVideoIdFromUrl(String inUrl) {
+        inUrl = inUrl.replace("&feature=youtu.be", "");
+        if (inUrl.toLowerCase().contains("youtu.be")) {
+            return inUrl.substring(inUrl.lastIndexOf("/") + 1);
+        }
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(inUrl);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
+    }
 }
 

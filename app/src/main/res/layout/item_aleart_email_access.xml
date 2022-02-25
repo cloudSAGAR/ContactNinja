@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/tv_aleartMessage"
             android:layout_marginTop="@dimen/_10sdp"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             <TextView
                 android:visibility="gone"
                 android:id="@+id/tv_cancel"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
@@ -52,7 +52,7 @@
             <TextView
                 android:padding="@dimen/_10sdp"
                 android:id="@+id/tv_add"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"

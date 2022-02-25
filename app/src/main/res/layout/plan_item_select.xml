@@ -26,7 +26,7 @@
             <TextView
                 android:padding="@dimen/_4sdp"
                 android:id="@+id/tv_title"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:textColor="@color/text_White"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -34,7 +34,7 @@
                 android:textStyle="bold"
                 android:padding="@dimen/_4sdp"
                 android:id="@+id/tv_prise"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:textColor="@color/text_White"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -43,7 +43,7 @@
     <TextView
         android:padding="@dimen/_5sdp"
         android:id="@+id/tv_text"
-        style="@style/tv_regular_13"
+        style="@style/tv_regular_12"
         android:textColor="@color/text_White"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

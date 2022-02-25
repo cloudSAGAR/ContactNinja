@@ -62,7 +62,7 @@
                                 <TextView
 
                                     android:id="@+id/tv_phone"
-                                    style="@style/tv_regular_13"
+                                    style="@style/tv_regular_12"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/add_phone"
@@ -210,7 +210,7 @@
                             android:gravity="center|top">
 
                             <TextView
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -266,7 +266,7 @@
 
                 <EditText
                     android:id="@+id/edt_mobile_no"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
