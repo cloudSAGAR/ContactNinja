@@ -38,7 +38,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     RelativeLayout mMainLayout;
     ViewPager2 viewPager2;
     TextView txt_footer, txt_Use;
-
+    SessionManager sessionManager;
     private int[] bzstore_image = {
             R.drawable.bzstore1,
             R.drawable.bzstore2,
@@ -52,6 +52,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_bzcard);
         mNetworkReceiver = new ConnectivityReceiver();
+        sessionManager=new SessionManager(this);
         initUI();
         setImage();
     }

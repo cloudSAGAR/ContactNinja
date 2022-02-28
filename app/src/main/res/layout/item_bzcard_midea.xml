@@ -6,11 +6,13 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:layout_marginBottom="@dimen/_10sdp"
         android:id="@+id/layout_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/_10sdp">
+       >
+
 
 
             <LinearLayout
@@ -25,6 +27,7 @@
                     android:orientation="horizontal">
 
                     <RelativeLayout
+                        android:id="@+id/layout_video_image"
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_80sdp">
 
@@ -45,13 +48,31 @@
                             android:visibility="gone" />
 
                     </RelativeLayout>
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:id="@+id/layout_pdf"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_80sdp"
+                        android:background="@drawable/shape_10_blue">
+
+
+                        <ImageView
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-2dp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:src="@drawable/ic_group_6783"
+                           />
+
+                    </RelativeLayout>
 
 
                     <LinearLayout
-                        android:layout_marginStart="@dimen/_5sdp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:orientation="vertical">
 
                         <TextView
@@ -72,13 +93,10 @@
                             android:textColor="@color/text_gray" />
 
                     </LinearLayout>
+
+
                 </LinearLayout>
             </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_separator" />
 
 </LinearLayout>

@@ -48,9 +48,25 @@
         android:theme="@style/Theme.ContactNinja"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Bzcard.Media.PDF.PDF_List_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.PDF.Add_pdf_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Image.Image_List_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Image.Add_image_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Bzcard.Media.Video.Video_List_Activity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Bzcard.Media.Video.Add_Video_Activity"
             android:exported="false"
@@ -61,21 +77,17 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Bzcard.Media.Select_Media_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Bzcard.CreateBzcard.Add_New_Bzcard_Activity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".Bzcard.Select_Bzcard_Activity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Main_Broadcast.Broadcaste_viewContect"
@@ -341,6 +353,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true"
@@ -359,12 +372,14 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"
-            tools:ignore="LockedOrientationActivity" >
+            tools:ignore="LockedOrientationActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <!--
   <activity

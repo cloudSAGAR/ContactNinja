@@ -582,7 +582,9 @@ Number</string>
     <string name="Add_url1">*Add url</string>
     <string name="Custom_HTML">Custom HTML</string>
     <string name="media_title">Add media blocks to your BizCard</string>
-    <string name="media_title1">you can add images, pdf or embed a youtube video to b</string>
+    <string name="media_title1">ContactNinja supports adding of your YouTube videos.</string>
+    <string name="media_title2">ContactNinja supports adding of your Images.</string>
+    <string name="media_title4">ContactNinja supports adding of your downloadable pdf.</string>
     <string name="media_title3">What would you like to add?</string>
     <string name="choose">Choose file type:</string>
     <string name="Video">Video</string>
@@ -593,10 +595,14 @@ Number</string>
     <string name="Link_Media">Link Media</string>
     <string name="url_hint">www.youtube.com / contactnnja</string>
     <string name="title_video">Title Your Media</string>
-    <string name="Replace_Video">Replace Video</string>
-    <string name="Cancel_Media">Cancel Media</string>
+    <string name="Replace_Video">Replace video</string>
+    <string name="Replace_image">Replace image</string>
+    <string name="Cancel_Media">Cancel media</string>
     <string name="video_title_error">Add video title</string>
+    <string name="image_title_error">Add image title</string>
     <string name="video_description_error">Add video description</string>
+    <string name="image_description_error">Add image description</string>
+    <string name="select_image">Please select image</string>
     <string name="max_media">Can add only up to 10 media blocks.</string>
     <string name="add_featured">Add to featured media</string>
     <string name="Remove_featured">Remove featured media</string>

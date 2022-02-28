@@ -3,6 +3,7 @@ package com.contactninja.Bzcard.CreateBzcard.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,10 +23,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.contactninja.Bzcard.Media.Image.Add_image_Activity;
+import com.contactninja.Bzcard.Media.PDF.Add_pdf_Activity;
 import com.contactninja.Bzcard.Media.Select_Media_Activity;
+import com.contactninja.Bzcard.Media.SwipeHelper;
+import com.contactninja.Bzcard.Media.Video.Add_Video_Activity;
+import com.contactninja.Interface.Bz_MediaClick;
 import com.contactninja.Model.Bz_color_Model;
+import com.contactninja.Model.Bzcard_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.SessionManager;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +46,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClickListener {
+public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClickListener, Bz_MediaClick {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,28 +89,105 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     }
 
 
-    RecyclerView rv_color_list;
+    RecyclerView rv_color_list,rv_media_list;
     ColorAdepter colorAdepter;
     List<Bz_color_Model> color_modelList = new ArrayList<>();
     ImageView iv_Cutom_Button, iv_Cutom_Button_other, iv_Add_call, iv_Schedule_a_meeting_radio, iv_Know_more,
             iv_Visit_now, iv_Inquire_now, iv_Learn_more, iv_Custom_HTML, iv_media_title;
     LinearLayout layout_Cutom_Button, layout_Add_call, layout_Schedule_a_meeting, layout_Know_more, layout_Visit_now,
             layout_Inquire_now, layout_Learn_more, layout_Custom_HTML, layout_media, layout_Schedule_a_meeting_edit,
-            layout_Know_more_edit, layout_Visit_now_edit, layout_Inquire_now_edit, layout_Learn_more_edit;
-    EditText edt_title, edt_add_url, edt_Bio, edt_Add_description, edt_Schedule_a_meeting_url1, edt_Know_more_url, edt_Visit_now_url,
+            layout_Know_more_edit, layout_Visit_now_edit, layout_Inquire_now_edit, layout_Learn_more_edit,
+            layout_media_list,layout_item_add_new;
+    EditText edt_title_1, edt_add_url_1,edt_title_2, edt_add_url_2, edt_Bio, edt_Add_description, edt_Schedule_a_meeting_url1, edt_Know_more_url, edt_Visit_now_url,
             edt_Inquire_now_url, edt_Learn_more_url, edt_add_Custom_HTML;
     TextView txt_invalid_Schedule_a_meeting, txt_invalid_txt_Know_more, txt_invalid_Visit_now, txt_invalid_Inquire_now, txt_invalid_Learn_more;
+
+
+    List<Bzcard_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    public static Bzcard_Model model;
+    MedialistAdepter medialistAdepter;
+    boolean media_show=true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_media__block__bzcard_, container, false);
+         model= SessionManager.getBzcard(getActivity());
+         bzMediaInformationList=model.getBzMediaInformationList();
 
         IntentView(view);
         setColor();
+        if(bzMediaInformationList.size()!=0){
+            setCreatedVideoandImage();
+        }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    private void setCreatedVideoandImage() {
+        iv_media_title.setBackgroundResource(R.drawable.ic_select_on);
+        layout_media_list.setVisibility(View.VISIBLE);
+        if(bzMediaInformationList.size()!=0&&bzMediaInformationList.size()>10){
+            layout_item_add_new.setVisibility(View.VISIBLE);
+        }else {
+            layout_item_add_new.setVisibility(View.GONE);
+        }
+
+        SwipeHelper swipeHelper = new SwipeHelper(getActivity()) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Edit",
+                        0,
+                        Color.parseColor("#5495EC"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                final Bzcard_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
+                                Intent intent=null;
+                                switch (item.getMedia_type()) {
+                                    case "video":
+                                        intent = new Intent(getActivity(), Add_Video_Activity.class);
+                                        break;
+                                    case "image":
+                                        intent = new Intent(getActivity(), Add_image_Activity.class);
+                                        break;
+                                    case "pdf":
+                                        intent = new Intent(getActivity(), Add_pdf_Activity.class);
+                                        break;
+                                }
+                                intent.putExtra("MyClass", item);
+                                startActivity(intent);
+                            }
+                        }
+                ));
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(final int pos) {
+                                final Bzcard_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
+                                medialistAdepter.removeItem(pos,item);
+
+                                Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ));
+
+            }
+        };
+        swipeHelper.attachToRecyclerView(rv_media_list);
+
     }
 
     private void IntentView(View view) {
@@ -127,9 +216,15 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         layout_Learn_more_edit = view.findViewById(R.id.layout_Learn_more_edit);
         layout_Custom_HTML = view.findViewById(R.id.layout_Custom_HTML);
         layout_media = view.findViewById(R.id.layout_media);
+        layout_media_list = view.findViewById(R.id.layout_media_list);
+        layout_item_add_new = view.findViewById(R.id.layout_item_add_new);
+        rv_media_list = view.findViewById(R.id.rv_media_list);
 
-        edt_title = view.findViewById(R.id.edt_title);
-        edt_add_url = view.findViewById(R.id.edt_add_url);
+        edt_title_1 = view.findViewById(R.id.edt_title_1);
+        edt_add_url_1 = view.findViewById(R.id.edt_add_url_1);
+        edt_title_2 = view.findViewById(R.id.edt_title_2);
+        edt_add_url_2 = view.findViewById(R.id.edt_add_url_2);
+
         edt_Bio = view.findViewById(R.id.edt_Bio);
         edt_Add_description = view.findViewById(R.id.edt_Add_description);
         edt_Schedule_a_meeting_url1 = view.findViewById(R.id.edt_Schedule_a_meeting_url1);
@@ -150,6 +245,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         layout_Inquire_now.setOnClickListener(this);
         layout_Learn_more.setOnClickListener(this);
         layout_media.setOnClickListener(this);
+        layout_item_add_new.setOnClickListener(this);
 
         iv_Cutom_Button.setBackgroundResource(R.drawable.ic_select_off);
         iv_Cutom_Button_other.setBackgroundResource(R.drawable.ic_select_off);
@@ -205,6 +301,43 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                     layout_Custom_HTML.setVisibility(View.VISIBLE);
                     iv_Custom_HTML.setBackgroundResource(R.drawable.ic_select_on);
                 }
+            }
+        });
+
+        edt_Bio.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                model.setBio_head(edt_Bio.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),model);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        edt_Add_description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                model.setBio_description(edt_Add_description.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),model);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -314,6 +447,11 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             }
         });
 
+
+        rv_media_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        medialistAdepter=new MedialistAdepter(getActivity(),bzMediaInformationList,this);
+        rv_media_list.setAdapter(medialistAdepter);
+
     }
 
     private void setColor() {
@@ -400,9 +538,47 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                 layout_Learn_more_edit.setVisibility(View.VISIBLE);
                 break;
             case R.id.layout_media:
-                startActivity(new Intent(getActivity(), Select_Media_Activity.class));
+                if(bzMediaInformationList.size()==0){
+                    startActivity(new Intent(getActivity(), Select_Media_Activity.class));
+                    layout_media_list.setVisibility(View.GONE);
+                    iv_media_title.setBackgroundResource(R.drawable.ic_select_off);
+                }else {
+                    setCreatedVideoandImage();
+                    if(media_show){
+                        media_show=false;
+                        layout_media_list.setVisibility(View.GONE);
+                        iv_media_title.setBackgroundResource(R.drawable.ic_select_off);
+                    }else {
+                        media_show=true;
+                        layout_media_list.setVisibility(View.VISIBLE);
+                        iv_media_title.setBackgroundResource(R.drawable.ic_select_on);
+                    }
+                }
+                break;
+                case R.id.layout_item_add_new:
+                    startActivity(new Intent(getActivity(), Select_Media_Activity.class));
                 break;
         }
+    }
+
+    @Override
+    public void OnVideoClick(Bzcard_Model.BZ_media_information information) {
+        Intent intent = null;
+        switch (information.getMedia_type()) {
+            case "video":
+                intent = new Intent(getActivity(), Add_Video_Activity.class);
+                break;
+            case "image":
+
+                intent = new Intent(getActivity(), Add_image_Activity.class);
+                break;
+            case "pdf":
+
+                intent = new Intent(getActivity(), Add_pdf_Activity.class);
+                break;
+        }
+        intent.putExtra("MyClass", information);
+        startActivity(intent);
     }
 
 
@@ -443,6 +619,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         }
                     }
                     item.setIs_Select(true);
+                    model.setTheme("#"+item.getColorName());
+                    SessionManager.setBzcard(mCtx,model);
                     notifyDataSetChanged();
                 }
             });
@@ -500,4 +678,111 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         }
     }
 
+    public static class MedialistAdepter extends RecyclerView.Adapter<MedialistAdepter.viewholder> {
+
+        public Context mCtx;
+        List<Bzcard_Model.BZ_media_information> bzMediaInformationList;
+        Bz_MediaClick videoClick;
+        public MedialistAdepter(Context applicationContext, List<Bzcard_Model.BZ_media_information> bzMediaInformationList,
+                                Bz_MediaClick videoClick) {
+            this.mCtx = applicationContext;
+            this.bzMediaInformationList = bzMediaInformationList;
+            this.videoClick = videoClick;
+        }
+
+        @NonNull
+        @Override
+        public MedialistAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.item_bzcard_midea, parent, false);
+            return new MedialistAdepter.viewholder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MedialistAdepter.viewholder holder, int position) {
+            Bzcard_Model.BZ_media_information information=bzMediaInformationList.get(position);
+
+            if(information.getIs_featured()==1){
+                holder.iv_Featured.setVisibility(View.VISIBLE);
+            }else {
+                holder.iv_Featured.setVisibility(View.GONE);
+            }
+            switch (information.getMedia_type()) {
+                case "video":
+                    Glide.with(mCtx)
+                            .load(Global.getYoutubeThumbnailUrlFromVideoUrl(information.getMedia_url()))
+                            .into(holder.iv_video);
+
+                    holder.layout_pdf.setVisibility(View.GONE);
+                    holder.layout_video_image.setVisibility(View.VISIBLE);
+                    break;
+                case "pdf":
+                    holder.layout_pdf.setVisibility(View.VISIBLE);
+                    holder.layout_video_image.setVisibility(View.GONE);
+                    break;
+                case "image":
+
+                    holder.layout_pdf.setVisibility(View.GONE);
+                    holder.layout_video_image.setVisibility(View.VISIBLE);
+                    Glide.with(mCtx)
+                            .load(information.getMedia_url())
+                            .into(holder.iv_video);
+                    break;
+            }
+            holder.txt_title.setText(information.getMedia_title());
+            holder.txt_dicription.setText(information.getMedia_description());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    videoClick.OnVideoClick(information);
+                }
+            });
+
+        }
+        public void removeItem(int position, Bzcard_Model.BZ_media_information item) {
+            for (int i = 0; i < bzMediaInformationList.size(); i++) {
+                if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
+                    bzMediaInformationList.remove(i);
+                    model.setBzMediaInformationList(bzMediaInformationList);
+                    SessionManager.setBzcard(mCtx, model);
+                    break;
+                }
+            }
+            notifyItemRemoved(position);
+        }
+
+        public void restoreItem(Bzcard_Model.BZ_media_information item, int position) {
+            bzMediaInformationList.add(position, item);
+            notifyItemInserted(position);
+        }
+
+        public List<Bzcard_Model.BZ_media_information> getData() {
+            return bzMediaInformationList;
+        }
+
+        @Override
+        public int getItemCount() {
+            return bzMediaInformationList.size();
+        }
+
+        public static class viewholder extends RecyclerView.ViewHolder {
+            RoundedImageView iv_video;
+            TextView txt_title,txt_dicription;
+            LinearLayout layout_swap,layout_item;
+            ImageView iv_Featured;
+            RelativeLayout layout_pdf,layout_video_image;
+
+            public viewholder(View view) {
+                super(view);
+                iv_video = view.findViewById(R.id.iv_video);
+                txt_title = view.findViewById(R.id.txt_title);
+                txt_dicription = view.findViewById(R.id.txt_dicription);
+                layout_swap = view.findViewById(R.id.layout_swap);
+                iv_Featured = view.findViewById(R.id.iv_Featured);
+                layout_item = view.findViewById(R.id.layout_item);
+                layout_pdf = view.findViewById(R.id.layout_pdf);
+                layout_video_image = view.findViewById(R.id.layout_video_image);
+            }
+        }
+    }
 }

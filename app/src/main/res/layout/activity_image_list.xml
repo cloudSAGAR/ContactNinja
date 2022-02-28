@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mMainLayout"
     android:orientation="vertical"
-    tools:context=".Bzcard.Media.Video.Video_List_Activity">
+    tools:context=".Bzcard.Media.Image.Image_List_Activity">
 
     <include layout="@layout/toolbar" />
 
@@ -22,7 +23,7 @@
             android:background="@color/line_separator" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_videoList"
+            android:id="@+id/rv_imageList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -56,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:text="@string/media_title1"
+                    android:text="@string/media_title2"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
 
@@ -68,5 +69,4 @@
                 android:layout_marginEnd="@dimen/_5sdp" />
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

@@ -2,22 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mMainLayout"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Bzcard.Media.Video.Add_Video_Activity">
+    tools:context=".Bzcard.Media.Image.Add_image_Activity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
+    <include layout="@layout/toolbar" />
 
-    <include layout="@layout/toolbar"/>
     <LinearLayout
         android:id="@+id/layout_title"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:orientation="vertical">
 
         <TextView
@@ -28,13 +28,13 @@
             android:textColor="@color/text_reg" />
 
         <EditText
-            android:id="@+id/edt_video_title"
+            android:id="@+id/edt_image_title"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="-5dp"
             android:background="@color/add_contect_transpernt"
-            android:hint="Video Title"
+            android:hint="Image Title"
             android:padding="@dimen/_5sdp"
             android:textColor="@color/text_reg"
             android:textColorHint="@color/home_list_sub_data" />
@@ -73,24 +73,25 @@
             android:textColor="@color/text_gray" />
 
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/layout_image"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="@drawable/shape_10_white"
-        android:layout_below="@+id/layout_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_title"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/shape_10_white">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp">
 
             <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/iv_video"
+                android:id="@+id/iv_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 app:riv_corner_radius="@dimen/_10sdp" />
-
             <ImageView
                 android:id="@+id/iv_Featured"
                 android:layout_width="wrap_content"
@@ -100,20 +101,48 @@
                 android:src="@drawable/ic_featured"
                 android:visibility="gone" />
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_Image_add"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_video_play"
-            android:id="@+id/iv_video_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_10_gray_ddd8d8"
+                    android:gravity="center"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/ic_empty_plash" />
+
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textColor="@color/text_gray"
+                        style="@style/tv_regular_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Upload an image" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
     </RelativeLayout>
+
     <LinearLayout
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_below="@+id/layout_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_image"
+        android:layout_marginStart="@dimen/_10sdp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -127,23 +156,23 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_replace_video" />
+                android:src="@drawable/ic_replace_image" />
 
             <TextView
                 style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/Replace_Video"
+                android:text="@string/Replace_image"
                 android:textColor="@color/text_reg" />
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/layout_featured"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_Featured_star_off"
@@ -152,6 +181,7 @@
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/ic_star_off" />
+
             <ImageView
                 android:id="@+id/iv_Featured_star_on"
                 android:layout_width="@dimen/_30sdp"
@@ -169,30 +199,31 @@
                 android:text="@string/add_featured"
                 android:textColor="@color/text_reg" />
         </LinearLayout>
+
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/layout_Cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
+
             <ImageView
-                android:padding="@dimen/_5sdp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_cancel_media"
                 android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"/>
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_cancel_media" />
+
             <TextView
-                android:layout_gravity="center"
                 style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/Cancel_Media"
                 android:textColor="@color/text_reg" />
         </LinearLayout>
 
     </LinearLayout>
-
-
 
 
 </RelativeLayout>

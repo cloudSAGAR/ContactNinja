@@ -23,6 +23,13 @@ public class Bzcard_Model {
     String zipcode="";
     String country_code="";
 
+    String theme ="";
+    String button1_name="";
+    String button1_url="";
+    String bio_head="";
+    String bio_description="";
+    String html="";
+
     String fb="";
     String twitter="";
     String youtube="";
@@ -263,11 +270,59 @@ public class Bzcard_Model {
         this.other_filed1 = other_filed1;
     }
 
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public String getButton1_name() {
+        return button1_name;
+    }
+
+    public void setButton1_name(String button1_name) {
+        this.button1_name = button1_name;
+    }
+
+    public String getButton1_url() {
+        return button1_url;
+    }
+
+    public void setButton1_url(String button1_url) {
+        this.button1_url = button1_url;
+    }
+
+    public String getBio_head() {
+        return bio_head;
+    }
+
+    public void setBio_head(String bio_head) {
+        this.bio_head = bio_head;
+    }
+
+    public String getBio_description() {
+        return bio_description;
+    }
+
+    public void setBio_description(String bio_description) {
+        this.bio_description = bio_description;
+    }
+
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
 
     public static class BZ_media_information implements Serializable {
         Integer id=0;
         String media_type="";
         String media_url="";
+        String FileName="";
         String media_title="";
         String media_description="";
         Integer is_featured=0;
@@ -318,6 +373,14 @@ public class Bzcard_Model {
 
         public void setIs_featured(Integer is_featured) {
             this.is_featured = is_featured;
+        }
+
+        public String getFileName() {
+            return FileName;
+        }
+
+        public void setFileName(String fileName) {
+            FileName = fileName;
         }
     }
 }

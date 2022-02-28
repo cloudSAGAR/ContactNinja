@@ -100,6 +100,7 @@
                     android:textColor="@color/text_reg" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/layout_Image"
                 android:layout_weight="1"
                 android:padding="@dimen/_5sdp"
                 android:layout_width="wrap_content"
@@ -109,7 +110,7 @@
 
                 <LinearLayout
                     android:gravity="center"
-                    android:id="@+id/layout_Image"
+                    android:id="@+id/layout_Image_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
@@ -146,7 +147,7 @@
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/layout_Image"
+                    android:layout_below="@+id/layout_Image_1"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
@@ -154,6 +155,7 @@
                     android:textColor="@color/text_reg" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/layout_pdf"
                 android:padding="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -163,7 +165,7 @@
 
                 <LinearLayout
                     android:gravity="center"
-                    android:id="@+id/layout_pdf"
+                    android:id="@+id/layout_pdf_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
@@ -200,7 +202,7 @@
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/layout_pdf"
+                    android:layout_below="@+id/layout_pdf_1"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"

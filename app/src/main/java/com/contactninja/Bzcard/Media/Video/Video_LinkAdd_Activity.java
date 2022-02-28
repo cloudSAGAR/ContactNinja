@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.contactninja.Model.Bzcard_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -32,6 +33,7 @@ public class Video_LinkAdd_Activity extends AppCompatActivity implements Connect
     EditText edt_link_youtube;
     TextView btn_Link,txt_invalid_link;
     private long mLastClickTime=0;
+    Bzcard_Model.BZ_media_information information;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,14 @@ public class Video_LinkAdd_Activity extends AppCompatActivity implements Connect
         mNetworkReceiver = new ConnectivityReceiver();
         initUI();
 
+        try {
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            information = (Bzcard_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @SuppressLint("SetJavaScriptEnabled")
     private void initUI() {
@@ -126,7 +135,7 @@ public class Video_LinkAdd_Activity extends AppCompatActivity implements Connect
                     if(Vlidaction()){
                         Intent intent=new Intent(getApplicationContext(),Add_Video_Activity.class);
                         intent.putExtra("record",link);
-
+                        intent.putExtra("MyClass", information);
                         startActivity(intent);
                     }
 
@@ -135,6 +144,14 @@ public class Video_LinkAdd_Activity extends AppCompatActivity implements Connect
     }
 
     private boolean Vlidaction() {
+        String pattern = "https?:\\/\\/(?:[0-9A-Z-]+\\.)?(?:youtu\\.be\\/|youtube\\.com\\S*[^\\w\\-\\s])([\\w\\-]{11})(?=[^\\w\\-]|$)(?![?=&+%\\w]*(?:['\"][^<>]*>|<\\/a>))[?=&+%\\w]*";
+        if (!edt_link_youtube.getText().toString().isEmpty() && edt_link_youtube.getText().toString().matches(pattern)) {
+            txt_invalid_link.setVisibility(View.GONE);
+            return true;
+        }
+        else {
+            txt_invalid_link.setVisibility(View.VISIBLE);
+        }
         if (Global.isValidURL(edt_link_youtube.getText().toString()) == true) {
             txt_invalid_link.setVisibility(View.GONE);
             return true;

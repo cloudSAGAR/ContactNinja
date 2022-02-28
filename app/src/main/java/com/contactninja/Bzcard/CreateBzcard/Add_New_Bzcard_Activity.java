@@ -69,6 +69,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
     private long mLastClickTime = 0;
     CircleImageView iv_user;
     Bzcard_Model bzcard_model;
+    SessionManager sessionManager;
     // function to check permission
     public static boolean checkAndRequestPermissions(final Activity context) {
         int WExtstorePermission = ContextCompat.checkSelfPermission(context,
@@ -97,6 +98,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_bzcard);
         mNetworkReceiver = new ConnectivityReceiver();
+        sessionManager=new SessionManager(this);
         initUI();
         setTab();
         bzcard_model=new Bzcard_Model();

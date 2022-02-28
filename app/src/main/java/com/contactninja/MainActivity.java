@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String offset = localTime.substring(0, 1);
 
         UpdateManageCheck();
-        EnableRuntimePermission();
+        //EnableRuntimePermission();
         navItemIndex = 0;
         displayView();
         ImageSetLight(getResources().getString(R.string.select_Home));
