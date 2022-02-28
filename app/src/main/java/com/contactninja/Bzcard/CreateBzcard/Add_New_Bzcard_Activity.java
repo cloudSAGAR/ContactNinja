@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import com.contactninja.Bzcard.CreateBzcard.Fragment.Information_Bzcard_Fragment
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Media_Block_Bzcard_Fragment;
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Social_media_Bzcard_Fragment;
 import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -98,6 +100,21 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         initUI();
         setTab();
         bzcard_model=new Bzcard_Model();
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+        Log.e("User Data Is ",user_data.getUser().getUserprofile().getProfilePic());
+        if (!user_data.getUser().getUserprofile().getProfilePic().equals(""))
+        {
+            Glide.with(getApplicationContext()).
+                    load(user_data.getUser().getUserprofile().getProfilePic()).
+                    into(iv_user);
+            iv_user.setVisibility(View.VISIBLE);
+            pulse_icon.setVisibility(View.GONE);
+        }
+        else {
+            iv_user.setVisibility(View.VISIBLE);
+            pulse_icon.setVisibility(View.VISIBLE);
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -119,6 +136,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         pulse_icon.setOnClickListener(this);
         iv_edit.setOnClickListener(this);
         iv_user.setOnClickListener(this);
+
     }
 
     private void setTab() {
@@ -369,7 +387,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                         Glide.with(getApplicationContext()).
                                 load(resultUri).
-                                apply(RequestOptions.bitmapTransform(new RoundedCorners(30))).
+                                apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).
                                 into(iv_cover_img);
                         iv_cover_img.setVisibility(View.VISIBLE);
                         iv_dummy_cover_img.setVisibility(View.GONE);
@@ -413,7 +431,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                         Glide.with(getApplicationContext()).
                                 load(resultUri).
-                                apply(RequestOptions.bitmapTransform(new RoundedCorners(30))).
+                                apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).
                                 into(iv_cover_img);
                         iv_cover_img.setVisibility(View.VISIBLE);
                         iv_dummy_cover_img.setVisibility(View.GONE);

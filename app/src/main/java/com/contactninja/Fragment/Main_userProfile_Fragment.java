@@ -175,6 +175,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_profile_main, container, false);
         intentView(view);
+        Log.e("On Click Method ","2");
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
 
         mNetworkReceiver = new ConnectivityReceiver();
@@ -191,7 +192,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         );
         option_type = "save";
         setTab();
+        return view;
+    }
 
+    @Override
+    public void onStart() {
         setdata();
         MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
         myAsyncTasks.execute();
@@ -220,7 +225,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         Global.Messageshow(getActivity(), mMainLayout, getString(R.string.invalid_last_name), false);
 
                     } else {
-                       uploadImageTos3(filePath1);
+                        uploadImageTos3(filePath1);
                     }
 
                 } else {
@@ -281,7 +286,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
             }
         });
-        return view;
+
+        super.onStart();
     }
 
     @Override

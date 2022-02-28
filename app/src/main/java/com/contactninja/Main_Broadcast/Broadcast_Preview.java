@@ -103,7 +103,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         tv_name.setText(broadcate_save_data.getBroadcastname());
         Contect_List = SessionManager.getGroupList(getApplicationContext());
-        contect_count.setText(Contect_List.size() + "prospects");
+        contect_count.setText(Contect_List.size() + " Prospects");
         topUserListDataAdapter = new TopUserListDataAdapter(this, getApplicationContext(), Contect_List);
         user_contect.setAdapter(topUserListDataAdapter);
         tv_title.setText(SessionManager.getCampaign_type_name(getApplicationContext()) + " " + SessionManager.getCampaign_type(getApplicationContext()));
@@ -114,7 +114,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
             tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_message_select));
             layout_email_subject.setVisibility(View.GONE);
-        } else {
+        } else  if (SessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
             layout_email_subject.setVisibility(View.VISIBLE);
             tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_email_mini));
 

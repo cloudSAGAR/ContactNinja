@@ -34,7 +34,7 @@ public class Userprofile {
     private List<Integer> affiliateJson = null;
     @SerializedName("profile_pic")
     @Expose
-    private Object profilePic;
+    private String  profilePic;
 
     @SerializedName("status")
     @Expose
@@ -166,11 +166,11 @@ public class Userprofile {
         this.contactDetails = contactDetails;
     }
 
-    public Object getProfilePic() {
+    public String getProfilePic() {
         return profilePic;
     }
 
-    public void setProfilePic(Object profilePic) {
+    public void setProfilePic(String  profilePic) {
         this.profilePic = profilePic;
     }
 

@@ -3010,6 +3010,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         mLastClickTime = SystemClock.elapsedRealtime();
                         bottomSheetDialog_company.cancel();
                         ev_company.setText(holder.tv_item.getText().toString());
+                        ev_company_url.setText(WorkData.getCompany_url());
                         //addcontectModel.setCompany(String.valueOf(WorkData.getName()));
                         addcontectModel.setCompany_id(String.valueOf(WorkData.getId()));
                         SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);

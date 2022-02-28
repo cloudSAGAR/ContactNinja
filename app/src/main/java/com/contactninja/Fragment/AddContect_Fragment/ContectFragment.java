@@ -156,6 +156,11 @@ public class ContectFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     public void setAllData()
     {
         mCtx = getContext();
@@ -606,8 +611,8 @@ public class ContectFragment extends Fragment {
                     }
                 } else {
 
-                            limit = listContacts.size();
-                            splitdata(listContacts);
+                    limit = listContacts.size();
+                    splitdata(listContacts);
 
                 }
 
@@ -872,8 +877,8 @@ public class ContectFragment extends Fragment {
 
                         }
                     } catch(Exception e){
-                            e.printStackTrace();
-                        }
+                        e.printStackTrace();
+                    }
 
                 }
                 loadingDialog.cancelLoading();

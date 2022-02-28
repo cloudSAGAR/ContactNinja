@@ -57,7 +57,7 @@
                             android:background="@color/add_contect_transpernt"
                             android:hint="@string/ev_first"
                             android:inputType="text|textCapSentences"
-                            android:textColor="@color/home_list_sub_data"
+                            android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
@@ -117,8 +117,7 @@
                             android:background="@color/add_contect_transpernt"
                             android:hint="@string/ev_last_name"
                             android:inputType="text|textCapSentences"
-                            android:textColor="@color/home_list_sub_data"
-                            android:textColorHint="@color/home_list_sub_data">
+                            android:textColor="@color/text_reg"                            android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
 
@@ -467,7 +466,7 @@
                             android:background="@color/add_contect_transpernt"
                             android:hint="@string/ev_email"
                             android:inputType="text|textCapSentences"
-                            android:textColor="@color/home_list_sub_data"
+                            android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
@@ -556,7 +555,7 @@
                             android:background="@color/add_contect_transpernt"
                             android:enabled="false"
                             android:hint="@string/add_company_a"
-                            android:textColor="@color/home_list_sub_data"
+                            android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
@@ -615,7 +614,7 @@
                             android:background="@color/add_contect_transpernt"
                             android:hint="@string/ev_company_size"
                             android:inputType="text|textCapSentences"
-                            android:textColor="@color/home_list_sub_data"
+                            android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
@@ -634,10 +633,10 @@
                     </LinearLayout>
                     <ImageView
                         android:id="@+id/iv_company_dummy"
-                        android:src="@drawable/ic_comany_icon"
+                        android:src="@drawable/ic_select_off"
                         android:layout_gravity="center"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp">
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp">
 
                     </ImageView>
                     <ImageView
@@ -698,13 +697,14 @@
                         <EditText
                             android:id="@+id/ev_company_url"
                             style="@style/tv_regular_13"
+                            android:enabled="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
                             android:background="@color/add_contect_transpernt"
                             android:hint="@string/ev_company_url"
                             android:inputType="text|textCapSentences"
-                            android:textColor="@color/home_list_sub_data"
+                            android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
@@ -764,7 +764,7 @@
                             android:background="@color/add_contect_transpernt"
                             android:hint="@string/add_job_a"
                             android:inputType="text|textCapSentences"
-                            android:textColor="@color/home_list_sub_data"
+                            android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
@@ -824,7 +824,7 @@
                             android:background="@color/add_contect_transpernt"
                             android:hint="@string/add_address_a"
                             android:inputType="text|textCapSentences"
-                            android:textColor="@color/home_list_sub_data"
+                            android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>
@@ -885,7 +885,7 @@
                             android:background="@color/add_contect_transpernt"
                             android:hint="@string/add_zip_a"
                             android:inputType="text|textCapSentences"
-                            android:textColor="@color/home_list_sub_data"
+                            android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
                         </EditText>

@@ -139,14 +139,18 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         View view = inflater.inflate(R.layout.fragment_user_information, container, false);
         IntentUI(view);
+        Log.e("On Click Method ","3");
         addcontectModel = new AddcontectModel();
-
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
 
+        return view;
+    }
 
+    @Override
+    public void onStart() {
         setdata();
 
         layout_bod.setOnClickListener(new View.OnClickListener() {
@@ -201,11 +205,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 showBottomSheetDialog_For_Company();
             }
         });
-
-
-
-
-        return view;
+        super.onStart();
     }
 
     private void setdata() {
@@ -319,6 +319,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_address.setText(Contect_data.getAddress());
             ev_zoom.setText(Contect_data.getZoom_id());
             ev_company.setText(Contect_data.getCompany_name());
+
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
@@ -2708,6 +2709,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         mLastClickTime = SystemClock.elapsedRealtime();
                         bottomSheetDialog_company.cancel();
                         ev_company.setText(holder.tv_item.getText().toString());
+                        ev_company_url.setText(WorkData.getCompany_url());
                         //addcontectModel.setCompany(String.valueOf(WorkData.getName()));
                         addcontectModel.setCompany_id(String.valueOf(WorkData.getId()));
                         SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);

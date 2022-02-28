@@ -517,7 +517,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
                     Glide.with(getActivity()).
                             load(resultUri).
-                            apply(RequestOptions.bitmapTransform(new RoundedCorners(30))).
+                            apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
                             into(iv_company_icon);
                     iv_company_icon.setVisibility(View.VISIBLE);
                     iv_company_dummy.setVisibility(View.GONE);
@@ -541,7 +541,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                     SessionManager.setBzcard(getActivity(),bzcard_model);
                     Glide.with(getActivity()).
                             load(resultUri).
-                            apply(RequestOptions.bitmapTransform(new RoundedCorners(30))).
+                            apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
                             into(iv_company_icon);
                     iv_company_icon.setVisibility(View.VISIBLE);
                     iv_company_dummy.setVisibility(View.GONE);
@@ -812,8 +812,11 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                         mLastClickTime = SystemClock.elapsedRealtime();
                         bottomSheetDialog_company.cancel();
                         ev_company.setText(holder.tv_item.getText().toString());
+                        ev_company_url.setText("");
+                        ev_company_url.setText(WorkData.getCompany_url());
                         bzcard_model.setCompany_id(String.valueOf(WorkData.getId()));
                         bzcard_model.setCompany_name(holder.tv_item.getText().toString());
+                        bzcard_model.setCompany_url(WorkData.getCompany_url());
                         SessionManager.setBzcard(getActivity(),bzcard_model);
 
                     }
