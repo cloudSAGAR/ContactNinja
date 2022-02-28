@@ -93,6 +93,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
@@ -121,7 +122,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     FrameLayout frameContainer;
-    RoundedImageView iv_user;
+    CircleImageView iv_user;
     LinearLayout layout_pulse;
     String option_type = "";
     LinearLayout layout_toolbar_logo;
@@ -192,12 +193,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         );
         option_type = "save";
         setTab();
-        return view;
-    }
 
-    @Override
-    public void onStart() {
-        setdata();
         MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
         myAsyncTasks.execute();
 
@@ -287,16 +283,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         });
 
-        super.onStart();
+        return view;
     }
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
-
-    }
-
     private void Userinfo() throws JSONException {
         //  loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
@@ -636,7 +624,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         mMainLayout = view.findViewById(R.id.frameContainer1);
         layout_pulse = view.findViewById(R.id.layout_pulse);
         tv_nameLetter = view.findViewById(R.id.tv_nameLetter);
-
         iv_user = view.findViewById(R.id.iv_user);
         pulse_icon.setOnClickListener(this);
         iv_user.setOnClickListener(this);
@@ -1126,21 +1113,20 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == Activity.RESULT_OK) {
-                    Uri resultUri = result.getUri();
-                    Glide.with(getActivity()).load(resultUri).into(iv_user);
                     iv_user.setVisibility(View.VISIBLE);
                     layout_pulse.setVisibility(View.GONE);
+                    tv_nameLetter.setVisibility(View.GONE);
+                    Uri resultUri = result.getUri();
                     File_name = "Image";
-                    File file = new File(result.getUri().getPath());
+                    File file=new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     filePath1 = uri.getPath();
-                    iv_user.setVisibility(View.VISIBLE);
-                    layout_pulse.setVisibility(View.GONE);
-                    String profilePath = Global.getPathFromUri(getActivity(), uri);
+                    Glide.with(getActivity()).load(resultUri).into(iv_user);
 
-                  //  uploadImageTos3(profilePath);
+                    //  uploadImageTos3(profilePath);
 
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                }
+                else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
             }
@@ -1149,19 +1135,21 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         }
         else if (requestCode == 203) {
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                CropImage.ActivityResult result1 = CropImage.getActivityResult(data);
                 if (resultCode == Activity.RESULT_OK) {
-                    Uri resultUri = result.getUri();
-                    Glide.with(getActivity()).load(resultUri).into(iv_user);
                     iv_user.setVisibility(View.VISIBLE);
                     layout_pulse.setVisibility(View.GONE);
-                    File file = new File(result.getUri().getPath());
+                    tv_nameLetter.setVisibility(View.GONE);
+                    Uri resultUri = result1.getUri();
+                    File_name = "Image";
+                    File file=new File(result1.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     filePath1 = uri.getPath();
-                    String profilePath = Global.getPathFromUri(getActivity(), uri);
+                    Glide.with(getActivity()).load(resultUri).into(iv_user);
                     //uploadImageTos3(filePath1);
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Exception error = result.getError();
+                }
+                else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result1.getError();
                 }
             }
         } else {

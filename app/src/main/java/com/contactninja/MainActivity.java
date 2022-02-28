@@ -203,11 +203,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void EnableRuntimePermission() {
-
         PermissionListener permissionlistener = new PermissionListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
