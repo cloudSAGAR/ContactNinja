@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.contactninja"
-    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
+    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife" >
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -46,7 +46,11 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactNinja"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
+        <activity
+            android:name=".Bzcard.CreateBzcard.Title_bzcardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Bzcard.Media.PDF.PDF_List_Activity"
             android:exported="false"
@@ -82,9 +86,7 @@
         <activity
             android:name=".Bzcard.CreateBzcard.Add_New_Bzcard_Activity"
             android:exported="false"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Bzcard.Select_Bzcard_Activity"
             android:exported="true"
@@ -372,14 +374,12 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"
-            tools:ignore="LockedOrientationActivity">
-
+            tools:ignore="LockedOrientationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <!--
   <activity
@@ -387,7 +387,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         -->
-        <receiver android:name=".Utils.OTP_Receiver">
+        <receiver android:name=".Utils.OTP_Receiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -395,7 +395,7 @@
         <receiver
             android:name=".Utils.ConnectivityReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action
                     android:name="android.net.conn.CONNECTIVITY_CHANGE"
@@ -412,7 +412,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.contactninja"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />

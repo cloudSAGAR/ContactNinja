@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("UnknownNullness")
-public class Bzcard_Model {
+public class Bzcard_Fields_Model {
+    int card_id =0;
     String cover_image="";
     String profile_image="";
     String first_name="";
@@ -26,6 +27,8 @@ public class Bzcard_Model {
     String theme ="";
     String button1_name="";
     String button1_url="";
+    String button2_name="";
+    String button2_url="";
     String bio_head="";
     String bio_description="";
     String html="";
@@ -34,7 +37,7 @@ public class Bzcard_Model {
     String twitter="";
     String youtube="";
     String breakout="";
-    String  instagram="";
+    String instagram="";
     String linkedin="";
     String pintrest="";
     String venmo="";
@@ -48,6 +51,14 @@ public class Bzcard_Model {
     String company_logo_url="";
     List<BZ_media_information> bzMediaInformationList=new ArrayList<>();
 
+
+    public int getCard_id() {
+        return card_id;
+    }
+
+    public void setCard_id(int card_id) {
+        this.card_id = card_id;
+    }
 
     public List<BZ_media_information> getBzMediaInformationList() {
         return bzMediaInformationList;
@@ -345,6 +356,22 @@ public class Bzcard_Model {
         this.html = html;
     }
 
+    public String getButton2_name() {
+        return button2_name;
+    }
+
+    public void setButton2_name(String button2_name) {
+        this.button2_name = button2_name;
+    }
+
+    public String getButton2_url() {
+        return button2_url;
+    }
+
+    public void setButton2_url(String button2_url) {
+        this.button2_url = button2_url;
+    }
+
     public static class BZ_media_information implements Serializable {
         Integer id=0;
         String media_type="";
@@ -408,6 +435,26 @@ public class Bzcard_Model {
 
         public void setFileName(String fileName) {
             FileName = fileName;
+        }
+    }
+    public static class Bz_color_Model {
+        String ColorName="";
+        boolean is_Select=false;
+
+        public String getColorName() {
+            return ColorName;
+        }
+
+        public void setColorName(String colorName) {
+            ColorName = colorName;
+        }
+
+        public boolean isIs_Select() {
+            return is_Select;
+        }
+
+        public void setIs_Select(boolean is_Select) {
+            this.is_Select = is_Select;
         }
     }
 }

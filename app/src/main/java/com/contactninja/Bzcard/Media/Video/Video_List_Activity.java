@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.Interface.Bz_MediaClick;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -44,9 +44,9 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
     ImageView iv_back, iv_media_title;
     RecyclerView rv_videoList;
     VideolistAdepter videolistAdepter;
-    static Bzcard_Model model;
-    static List<Bzcard_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    List<Bzcard_Model.BZ_media_information> bzMedia_video_List = new ArrayList<>();
+    static Bzcard_Fields_Model model;
+    static List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    List<Bzcard_Fields_Model.BZ_media_information> bzMedia_video_List = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                final Bzcard_Model.BZ_media_information item = videolistAdepter.getData().get(pos);
+                                final Bzcard_Fields_Model.BZ_media_information item = videolistAdepter.getData().get(pos);
                                 Intent intent = new Intent(getApplicationContext(), Add_Video_Activity.class);
                                 intent.putExtra("MyClass", item);
                                 startActivity(intent);
@@ -97,7 +97,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                final Bzcard_Model.BZ_media_information item = videolistAdepter.getData().get(pos);
+                                final Bzcard_Fields_Model.BZ_media_information item = videolistAdepter.getData().get(pos);
                                 videolistAdepter.removeItem(pos, item);
 
                                 Toast.makeText(Video_List_Activity.this, "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -178,7 +178,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
     }
 
     @Override
-    public void OnVideoClick(Bzcard_Model.BZ_media_information information) {
+    public void OnVideoClick(Bzcard_Fields_Model.BZ_media_information information) {
         Intent intent = new Intent(getApplicationContext(), Add_Video_Activity.class);
         intent.putExtra("MyClass", information);
         startActivity(intent);
@@ -188,10 +188,10 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
     public static class VideolistAdepter extends RecyclerView.Adapter<VideolistAdepter.viewholder> {
 
         public Context mCtx;
-        List<Bzcard_Model.BZ_media_information> bzMedia_video_List;
+        List<Bzcard_Fields_Model.BZ_media_information> bzMedia_video_List;
         Bz_MediaClick videoClick;
 
-        public VideolistAdepter(Context applicationContext, List<Bzcard_Model.BZ_media_information> bzMedia_video_List,
+        public VideolistAdepter(Context applicationContext, List<Bzcard_Fields_Model.BZ_media_information> bzMedia_video_List,
                                 Bz_MediaClick videoClick) {
             this.mCtx = applicationContext;
             this.bzMedia_video_List = bzMedia_video_List;
@@ -208,7 +208,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
 
         @Override
         public void onBindViewHolder(@NonNull VideolistAdepter.viewholder holder, int position) {
-            Bzcard_Model.BZ_media_information information = bzMedia_video_List.get(position);
+            Bzcard_Fields_Model.BZ_media_information information = bzMedia_video_List.get(position);
 
             if (information.getIs_featured() == 1) {
                 holder.iv_Featured.setVisibility(View.VISIBLE);
@@ -229,7 +229,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
             });
         }
 
-        public void removeItem(int position, Bzcard_Model.BZ_media_information item) {
+        public void removeItem(int position, Bzcard_Fields_Model.BZ_media_information item) {
             bzMedia_video_List.remove(position);
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
@@ -242,7 +242,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
             notifyItemRemoved(position);
         }
 
-        public List<Bzcard_Model.BZ_media_information> getData() {
+        public List<Bzcard_Fields_Model.BZ_media_information> getData() {
             return bzMedia_video_List;
         }
 

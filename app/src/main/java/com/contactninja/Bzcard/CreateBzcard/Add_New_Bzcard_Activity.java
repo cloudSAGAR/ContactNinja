@@ -21,32 +21,26 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Information_Bzcard_Fragment;
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Media_Block_Bzcard_Fragment;
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Social_media_Bzcard_Fragment;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.aws.AmazonUtil;
 import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
-import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,7 +71,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
     private BroadcastReceiver mNetworkReceiver;
     private long mLastClickTime = 0;
     CircleImageView iv_user;
-    Bzcard_Model bzcard_model;
+    Bzcard_Fields_Model bzcard_model;
     SessionManager sessionManager;
     TextView tv_done;
     String urlFromS3 = null;
@@ -121,7 +115,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
         retrofitCalls=new RetrofitCalls(this);
-        bzcard_model=new Bzcard_Model();
+        bzcard_model=new Bzcard_Fields_Model();
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         Log.e("User Data Is ",user_data.getUser().getUserprofile().getProfilePic());
@@ -301,7 +295,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 break;
 
             case R.id.save_button:
-                Log.e("Data Is ",new Gson().toJson(SessionManager.getBzcard(getApplicationContext())));
+                startActivity(new Intent(getApplicationContext(),Title_bzcardActivity.class));
                 break;
             case R.id.iv_user:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -504,7 +498,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                     CropImage.activity(data.getData())
                             .start(this);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
             }

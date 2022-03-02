@@ -30,8 +30,7 @@ import com.contactninja.Bzcard.Media.Select_Media_Activity;
 import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.Bzcard.Media.Video.Add_Video_Activity;
 import com.contactninja.Interface.Bz_MediaClick;
-import com.contactninja.Model.Bz_color_Model;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
@@ -91,20 +90,20 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
     RecyclerView rv_color_list,rv_media_list;
     ColorAdepter colorAdepter;
-    List<Bz_color_Model> color_modelList = new ArrayList<>();
+    List<Bzcard_Fields_Model.Bz_color_Model> color_modelList = new ArrayList<>();
     ImageView iv_Cutom_Button, iv_Cutom_Button_other, iv_Add_call, iv_Schedule_a_meeting_radio, iv_Know_more,
             iv_Visit_now, iv_Inquire_now, iv_Learn_more, iv_Custom_HTML, iv_media_title;
     LinearLayout layout_Cutom_Button, layout_Add_call, layout_Schedule_a_meeting, layout_Know_more, layout_Visit_now,
             layout_Inquire_now, layout_Learn_more, layout_Custom_HTML, layout_media, layout_Schedule_a_meeting_edit,
             layout_Know_more_edit, layout_Visit_now_edit, layout_Inquire_now_edit, layout_Learn_more_edit,
-            layout_media_list,layout_item_add_new;
+            layout_media_list,layout_item_add_new,layout_Cutom_Button_other;
     EditText edt_title_1, edt_add_url_1,edt_title_2, edt_add_url_2, edt_Bio, edt_Add_description, edt_Schedule_a_meeting_url1, edt_Know_more_url, edt_Visit_now_url,
             edt_Inquire_now_url, edt_Learn_more_url, edt_add_Custom_HTML;
     TextView txt_invalid_Schedule_a_meeting, txt_invalid_txt_Know_more, txt_invalid_Visit_now, txt_invalid_Inquire_now, txt_invalid_Learn_more;
 
 
-    List<Bzcard_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    public static Bzcard_Model model;
+    List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    public static Bzcard_Fields_Model main_model;
     MedialistAdepter medialistAdepter;
     boolean media_show=true;
 
@@ -113,8 +112,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_media__block__bzcard_, container, false);
-         model= SessionManager.getBzcard(getActivity());
-         bzMediaInformationList=model.getBzMediaInformationList();
+         main_model = SessionManager.getBzcard(getActivity());
+         bzMediaInformationList= main_model.getBzMediaInformationList();
 
         IntentView(view);
         setColor();
@@ -128,13 +127,16 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-
+        setColor();
+        if(bzMediaInformationList.size()!=0){
+            setCreatedVideoandImage();
+        }
     }
 
     private void setCreatedVideoandImage() {
         iv_media_title.setBackgroundResource(R.drawable.ic_select_on);
         layout_media_list.setVisibility(View.VISIBLE);
-        if(bzMediaInformationList.size()!=0&&bzMediaInformationList.size()>10){
+        if(bzMediaInformationList.size() != 0||bzMediaInformationList.size()<10){
             layout_item_add_new.setVisibility(View.VISIBLE);
         }else {
             layout_item_add_new.setVisibility(View.GONE);
@@ -151,7 +153,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                final Bzcard_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
+                                final Bzcard_Fields_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
                                 Intent intent=null;
                                 switch (item.getMedia_type()) {
                                     case "video":
@@ -176,7 +178,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                final Bzcard_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
+                                final Bzcard_Fields_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
                                 medialistAdepter.removeItem(pos,item);
 
                                 Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -219,6 +221,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         layout_media_list = view.findViewById(R.id.layout_media_list);
         layout_item_add_new = view.findViewById(R.id.layout_item_add_new);
         rv_media_list = view.findViewById(R.id.rv_media_list);
+        layout_Cutom_Button_other = view.findViewById(R.id.layout_Cutom_Button_other);
 
         edt_title_1 = view.findViewById(R.id.edt_title_1);
         edt_add_url_1 = view.findViewById(R.id.edt_add_url_1);
@@ -273,6 +276,21 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                 }
             }
         });
+        iv_Cutom_Button_other.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView iv = (ImageView) v;
+                if (iv.isSelected()) {
+                    v.setSelected(false);
+                    iv_Cutom_Button_other.setBackgroundResource(R.drawable.ic_select_off);
+                    layout_Cutom_Button_other.setVisibility(View.GONE);
+                } else {
+                    v.setSelected(true);
+                    layout_Cutom_Button_other.setVisibility(View.VISIBLE);
+                    iv_Cutom_Button_other.setBackgroundResource(R.drawable.ic_select_on);
+                }
+            }
+        });
         iv_Add_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,6 +322,79 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             }
         });
 
+        edt_title_1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                main_model.setButton1_name(edt_title_1.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), main_model);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        edt_add_url_1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                main_model.setButton1_url(edt_add_url_1.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), main_model);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        edt_title_2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                main_model.setButton2_name(edt_title_2.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), main_model);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        edt_add_url_2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                main_model.setButton2_url(edt_add_url_2.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), main_model);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         edt_Bio.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -313,8 +404,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                model.setBio_head(edt_Bio.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(),model);
+                main_model.setBio_head(edt_Bio.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), main_model);
             }
 
             @Override
@@ -331,8 +422,26 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                model.setBio_description(edt_Add_description.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(),model);
+                main_model.setBio_description(edt_Add_description.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), main_model);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        edt_add_Custom_HTML.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                main_model.setHtml(edt_add_Custom_HTML.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), main_model);
             }
 
             @Override
@@ -457,7 +566,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     private void setColor() {
         String[] color_list = getContext().getResources().getStringArray(R.array.Select_color);
         for (int i = 0; i < color_list.length; i++) {
-            Bz_color_Model bzColorModel = new Bz_color_Model();
+            Bzcard_Fields_Model.Bz_color_Model bzColorModel = new Bzcard_Fields_Model.Bz_color_Model();
             bzColorModel.setColorName(color_list[i]);
             if (i == 0) {
                 bzColorModel.setIs_Select(true);
@@ -562,7 +671,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     }
 
     @Override
-    public void OnVideoClick(Bzcard_Model.BZ_media_information information) {
+    public void OnVideoClick(Bzcard_Fields_Model.BZ_media_information information) {
         Intent intent = null;
         switch (information.getMedia_type()) {
             case "video":
@@ -585,9 +694,9 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     public static class ColorAdepter extends RecyclerView.Adapter<ColorAdepter.viewholder> {
 
         public Context mCtx;
-        List<Bz_color_Model> color_modelList;
+        List<Bzcard_Fields_Model.Bz_color_Model> color_modelList;
 
-        public ColorAdepter(Context applicationContext, List<Bz_color_Model> color_modelList) {
+        public ColorAdepter(Context applicationContext, List<Bzcard_Fields_Model.Bz_color_Model> color_modelList) {
             this.mCtx = applicationContext;
             this.color_modelList = color_modelList;
         }
@@ -602,7 +711,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
         @Override
         public void onBindViewHolder(@NonNull ColorAdepter.viewholder holder, int position) {
-            Bz_color_Model item = color_modelList.get(position);
+            Bzcard_Fields_Model.Bz_color_Model item = color_modelList.get(position);
             setBackground(holder.cv_main, item.getColorName(), mCtx);
             if (item.isIs_Select()) {
                 holder.iv_select.setVisibility(View.VISIBLE);
@@ -619,8 +728,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         }
                     }
                     item.setIs_Select(true);
-                    model.setTheme("#"+item.getColorName());
-                    SessionManager.setBzcard(mCtx,model);
+                    main_model.setTheme("#"+item.getColorName());
+                    SessionManager.setBzcard(mCtx, main_model);
                     notifyDataSetChanged();
                 }
             });
@@ -681,9 +790,9 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     public static class MedialistAdepter extends RecyclerView.Adapter<MedialistAdepter.viewholder> {
 
         public Context mCtx;
-        List<Bzcard_Model.BZ_media_information> bzMediaInformationList;
+        List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList;
         Bz_MediaClick videoClick;
-        public MedialistAdepter(Context applicationContext, List<Bzcard_Model.BZ_media_information> bzMediaInformationList,
+        public MedialistAdepter(Context applicationContext, List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList,
                                 Bz_MediaClick videoClick) {
             this.mCtx = applicationContext;
             this.bzMediaInformationList = bzMediaInformationList;
@@ -700,7 +809,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
         @Override
         public void onBindViewHolder(@NonNull MedialistAdepter.viewholder holder, int position) {
-            Bzcard_Model.BZ_media_information information=bzMediaInformationList.get(position);
+            Bzcard_Fields_Model.BZ_media_information information=bzMediaInformationList.get(position);
 
             if(information.getIs_featured()==1){
                 holder.iv_Featured.setVisibility(View.VISIBLE);
@@ -739,24 +848,24 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             });
 
         }
-        public void removeItem(int position, Bzcard_Model.BZ_media_information item) {
+        public void removeItem(int position, Bzcard_Fields_Model.BZ_media_information item) {
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
                     bzMediaInformationList.remove(i);
-                    model.setBzMediaInformationList(bzMediaInformationList);
-                    SessionManager.setBzcard(mCtx, model);
+                    main_model.setBzMediaInformationList(bzMediaInformationList);
+                    SessionManager.setBzcard(mCtx, main_model);
                     break;
                 }
             }
             notifyItemRemoved(position);
         }
 
-        public void restoreItem(Bzcard_Model.BZ_media_information item, int position) {
+        public void restoreItem(Bzcard_Fields_Model.BZ_media_information item, int position) {
             bzMediaInformationList.add(position, item);
             notifyItemInserted(position);
         }
 
-        public List<Bzcard_Model.BZ_media_information> getData() {
+        public List<Bzcard_Fields_Model.BZ_media_information> getData() {
             return bzMediaInformationList;
         }
 

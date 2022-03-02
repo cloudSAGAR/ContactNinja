@@ -15,10 +15,9 @@ import com.contactninja.Model.BroadcastActivityListModel;
 import com.contactninja.Model.BroadcastActivityModel;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcate_save_data;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
-import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.ManualTaskModel;
@@ -670,19 +669,19 @@ public class SessionManager {
     }
 
 
-    public static Bzcard_Model getBzcard(Context context) {
+    public static Bzcard_Fields_Model getBzcard(Context context) {
         Gson gson = new Gson();
         String json = pref.getString(Bzcard, "");
-        Type type = new TypeToken<Bzcard_Model>() {
+        Type type = new TypeToken<Bzcard_Fields_Model>() {
         }.getType();
-        Bzcard_Model signModel = gson.fromJson(json, type);
+        Bzcard_Fields_Model signModel = gson.fromJson(json, type);
         if (signModel == null) {
-            signModel = new Bzcard_Model();
+            signModel = new Bzcard_Fields_Model();
         }
         return signModel;
     }
 
-    public static void setBzcard(Context context, Bzcard_Model bzcard_model) {
+    public static void setBzcard(Context context, Bzcard_Fields_Model bzcard_model) {
         Gson gson = new Gson();
         String json = gson.toJson(bzcard_model);
         SharedPreferences.Editor editor = pref.edit();

@@ -324,4 +324,8 @@ public interface RetrofitApiInterface {
                                              @Body JsonObject jsonObject,
                                              @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
+    @POST("bizcard/list")
+    Call<ApiResponse> BZcard_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 }

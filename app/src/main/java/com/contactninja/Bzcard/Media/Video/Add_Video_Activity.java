@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.Media.Select_Media_Activity;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -42,10 +42,10 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
     private long mLastClickTime = 0;
     EditText edt_video_title, edt_Add_description;
     SessionManager sessionManager;
-    Bzcard_Model.BZ_media_information information;
+    Bzcard_Fields_Model.BZ_media_information information;
     Integer is_featured = 0;
-    List<Bzcard_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    Bzcard_Model model;
+    List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    Bzcard_Fields_Model model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
             Link = bundle.getString("record");
-            information = (Bzcard_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
+            information = (Bzcard_Fields_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -227,7 +227,7 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
                     if (Global.IsNotNull(information)) {
                         for (int i = 0; i < bzMediaInformationList.size(); i++) {
                             if (bzMediaInformationList.get(i).getId().equals(information.getId())) {
-                                Bzcard_Model.BZ_media_information information = new Bzcard_Model.BZ_media_information();
+                                Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                                 information.setId(bzMediaInformationList.get(i).getId());
                                 information.setMedia_type(bzMediaInformationList.get(i).getMedia_type());
                                 information.setMedia_url(Link);
@@ -242,7 +242,7 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
                             }
                         }
                     } else {
-                        Bzcard_Model.BZ_media_information information = new Bzcard_Model.BZ_media_information();
+                        Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                         information.setId(bzMediaInformationList.size());
                         information.setMedia_type("video");
                         information.setMedia_url(Link);

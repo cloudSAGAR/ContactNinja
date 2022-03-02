@@ -74,11 +74,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/layout_Cutom_Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-               >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -157,55 +157,64 @@
 
                 </LinearLayout>
                 <LinearLayout
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:visibility="gone"
+                    android:id="@+id/layout_Cutom_Button_other"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/edt_title_2"
-                        style="@style/tv_regular_12"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-5dp"
-                        android:background="@color/add_contect_transpernt"
-                        android:hint="@string/yourtitle_hint"
-                        android:padding="@dimen/_5sdp"
-                        android:textColor="@color/text_reg"
-                        android:textColorHint="@color/home_list_sub_data" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@color/line_separator" />
-                </LinearLayout>
+                        <EditText
+                            android:id="@+id/edt_title_2"
+                            style="@style/tv_regular_12"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-5dp"
+                            android:background="@color/add_contect_transpernt"
+                            android:hint="@string/yourtitle_hint"
+                            android:padding="@dimen/_5sdp"
+                            android:textColor="@color/text_reg"
+                            android:textColorHint="@color/home_list_sub_data" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@color/line_separator" />
+                    </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/edt_add_url_2"
-                        style="@style/tv_regular_12"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-5dp"
-                        android:background="@color/add_contect_transpernt"
-                        android:hint="@string/Add_url"
-                        android:padding="@dimen/_5sdp"
-                        android:textColor="@color/text_reg"
-                        android:textColorHint="@color/home_list_sub_data" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@color/line_separator" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/edt_add_url_2"
+                            style="@style/tv_regular_12"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-5dp"
+                            android:background="@color/add_contect_transpernt"
+                            android:hint="@string/Add_url"
+                            android:padding="@dimen/_5sdp"
+                            android:textColor="@color/text_reg"
+                            android:textColorHint="@color/home_list_sub_data" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@color/line_separator" />
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
 
 

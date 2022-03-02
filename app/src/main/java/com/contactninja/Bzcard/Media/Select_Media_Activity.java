@@ -23,7 +23,7 @@ import com.contactninja.Bzcard.Media.PDF.Add_pdf_Activity;
 import com.contactninja.Bzcard.Media.PDF.PDF_List_Activity;
 import com.contactninja.Bzcard.Media.Video.Video_LinkAdd_Activity;
 import com.contactninja.Bzcard.Media.Video.Video_List_Activity;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -43,7 +43,7 @@ public class Select_Media_Activity extends AppCompatActivity implements Connecti
     SessionManager sessionManager;
     LinearLayout layout_count_video,layout_count_image,layout_count_pdf;
     TextView txt_count_video,txt_count_image,txt_count_pdf;
-    List<Bzcard_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
+    List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
     int Video_count =0, Image_count =0, pdf_count =0;
 
     @Override
@@ -52,7 +52,7 @@ public class Select_Media_Activity extends AppCompatActivity implements Connecti
         setContentView(R.layout.activity_select_media);
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager=new SessionManager(this);
-        Bzcard_Model model= SessionManager.getBzcard(Select_Media_Activity.this);
+        Bzcard_Fields_Model model= SessionManager.getBzcard(Select_Media_Activity.this);
         bzMediaInformationList=model.getBzMediaInformationList();
 
         initUI();
@@ -171,7 +171,7 @@ public class Select_Media_Activity extends AppCompatActivity implements Connecti
                 if(Video_count==0){
                     startActivity(new Intent(getApplicationContext(), Video_LinkAdd_Activity.class));
                 }else {
-                    if(bzMediaInformationList.size()>10){
+                    if(bzMediaInformationList.size()<10){
                         startActivity(new Intent(getApplicationContext(), Video_List_Activity.class));
                     }else {
                         Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.max_media),false);
@@ -187,7 +187,7 @@ public class Select_Media_Activity extends AppCompatActivity implements Connecti
                 if(Image_count==0){
                     startActivity(new Intent(getApplicationContext(), Add_image_Activity.class));
                 }else {
-                    if(bzMediaInformationList.size()>10){
+                    if(bzMediaInformationList.size()<10){
                         startActivity(new Intent(getApplicationContext(), Image_List_Activity.class));
                     }else {
                         Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.max_media),false);
@@ -203,7 +203,7 @@ public class Select_Media_Activity extends AppCompatActivity implements Connecti
                 if(pdf_count==0){
                     startActivity(new Intent(getApplicationContext(), Add_pdf_Activity.class));
                 }else {
-                    if(bzMediaInformationList.size()>10){
+                    if(bzMediaInformationList.size()<10){
                         startActivity(new Intent(getApplicationContext(), PDF_List_Activity.class));
                     }else {
                         Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.max_media),false);

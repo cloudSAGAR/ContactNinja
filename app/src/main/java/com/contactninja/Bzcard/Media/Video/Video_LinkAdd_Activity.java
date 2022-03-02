@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -33,7 +33,7 @@ public class Video_LinkAdd_Activity extends AppCompatActivity implements Connect
     EditText edt_link_youtube;
     TextView btn_Link,txt_invalid_link;
     private long mLastClickTime=0;
-    Bzcard_Model.BZ_media_information information;
+    Bzcard_Fields_Model.BZ_media_information information;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class Video_LinkAdd_Activity extends AppCompatActivity implements Connect
         try {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            information = (Bzcard_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
+            information = (Bzcard_Fields_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
 
         } catch (Exception e) {
             e.printStackTrace();

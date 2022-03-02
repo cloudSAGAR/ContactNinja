@@ -28,7 +28,7 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.Media.Select_Media_Activity;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -49,17 +49,16 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
     ImageView iv_back, iv_Featured_star_on, iv_Featured_star_off, iv_Featured;
     TextView save_button, txt_Featured;
     SessionManager sessionManager;
-    List<Bzcard_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    Bzcard_Model model;
-    Bzcard_Model.BZ_media_information information;
+    List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    Bzcard_Fields_Model model;
+    Bzcard_Fields_Model.BZ_media_information information;
     EditText edt_image_title, edt_Add_description;
     RoundedImageView iv_image;
     Integer is_featured = 0;
     LinearLayout layout_replace, layout_Cancel, layout_featured;
     private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
-    String olld_image = "", File_name = "";
-    Uri SelectImagePath;
+    String olld_image = "", File_name = "",SelectImagePath="";
     Uri mCapturedImageURI;
     Integer CAPTURE_IMAGE = 3;
     int image_flag = 1;
@@ -77,7 +76,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
         try {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            information = (Bzcard_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
+            information = (Bzcard_Fields_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,7 +96,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
         Glide.with(getApplicationContext())
                 .load(information.getMedia_url())
                 .into(iv_image);
-        SelectImagePath= Uri.parse(information.getMedia_url());
+        SelectImagePath=information.getMedia_url();
         olld_image=information.getMedia_url();
         is_featured = information.getIs_featured();
         layout_featured.setVisibility(View.VISIBLE);
@@ -231,10 +230,10 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                     if (Global.IsNotNull(information)) {
                         for (int i = 0; i < bzMediaInformationList.size(); i++) {
                             if (bzMediaInformationList.get(i).getId().equals(information.getId())) {
-                                Bzcard_Model.BZ_media_information information = new Bzcard_Model.BZ_media_information();
+                                Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                                 information.setId(bzMediaInformationList.get(i).getId());
                                 information.setMedia_type(bzMediaInformationList.get(i).getMedia_type());
-                                information.setMedia_url(String.valueOf(SelectImagePath));
+                                information.setMedia_url(SelectImagePath);
                                 information.setMedia_title(edt_image_title.getText().toString().trim());
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
                                 information.setIs_featured(is_featured);
@@ -246,10 +245,10 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                             }
                         }
                     } else {
-                        Bzcard_Model.BZ_media_information information = new Bzcard_Model.BZ_media_information();
+                        Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                         information.setId(bzMediaInformationList.size());
                         information.setMedia_type("image");
-                        information.setMedia_url(String.valueOf(SelectImagePath));
+                        information.setMedia_url(SelectImagePath);
                         information.setMedia_title(edt_image_title.getText().toString().trim());
                         information.setMedia_description(edt_Add_description.getText().toString().trim());
                         if (bzMediaInformationList.size() == 0) {
@@ -397,7 +396,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                     File_name = "Image";
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-                    SelectImagePath = resultUri;
+                    SelectImagePath = resultUri.getPath();
                     String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                     iv_image.setVisibility(View.VISIBLE);
                     layout_Image_add.setVisibility(View.GONE);
@@ -417,7 +416,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                     Uri resultUri = result.getUri();
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-                    SelectImagePath = resultUri;
+                    SelectImagePath = resultUri.getPath();
                     iv_image.setVisibility(View.VISIBLE);
                     layout_Image_add.setVisibility(View.GONE);
                     Glide.with(getApplicationContext()).load(resultUri).into(iv_image);

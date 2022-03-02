@@ -22,7 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.contactninja.Bzcard.Media.Select_Media_Activity;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -39,9 +39,9 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
     ImageView iv_back;
     TextView save_button, txt_selected_file_name;
     SessionManager sessionManager;
-    List<Bzcard_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    Bzcard_Model model;
-    Bzcard_Model.BZ_media_information information;
+    List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    Bzcard_Fields_Model model;
+    Bzcard_Fields_Model.BZ_media_information information;
     EditText edt_pdf_title, edt_Add_description;
     LinearLayout layout_replace, layout_Cancel;
     private long mLastClickTime = 0;
@@ -60,7 +60,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
         try {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            information = (Bzcard_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
+            information = (Bzcard_Fields_Model.BZ_media_information) getIntent().getSerializableExtra("MyClass");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,10 +171,10 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                     if (Global.IsNotNull(information)) {
                         for (int i = 0; i < bzMediaInformationList.size(); i++) {
                             if (bzMediaInformationList.get(i).getId().equals(information.getId())) {
-                                Bzcard_Model.BZ_media_information information = new Bzcard_Model.BZ_media_information();
+                                Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                                 information.setId(bzMediaInformationList.get(i).getId());
                                 information.setMedia_type(bzMediaInformationList.get(i).getMedia_type());
-                                information.setMedia_url(String.valueOf(SelectFilePath));
+                                information.setMedia_url(SelectFilePath);
                                 information.setFileName(SelectFileName);
                                 information.setMedia_title(edt_pdf_title.getText().toString().trim());
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
@@ -187,10 +187,10 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                             }
                         }
                     } else {
-                        Bzcard_Model.BZ_media_information information = new Bzcard_Model.BZ_media_information();
+                        Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                         information.setId(bzMediaInformationList.size());
                         information.setMedia_type("pdf");
-                        information.setMedia_url(String.valueOf(SelectFilePath));
+                        information.setMedia_url(SelectFilePath);
                         information.setFileName(SelectFileName);
                         information.setMedia_title(edt_pdf_title.getText().toString().trim());
                         information.setMedia_description(edt_Add_description.getText().toString().trim());
@@ -242,7 +242,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
 
     public void importFile(Uri uri) {
         SelectFileName = getFileName(uri);
-        SelectFilePath = String.valueOf(uri);
+        SelectFilePath = uri.getPath();
         txt_selected_file_name.setText(SelectFileName);
         layout_pdf_add.setVisibility(View.GONE);
         // Done!

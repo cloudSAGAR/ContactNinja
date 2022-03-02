@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.Interface.Bz_MediaClick;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -44,9 +44,9 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
     ImageView iv_back,iv_media_title;
     RecyclerView rv_imageList;
     ImagelistAdepter imagelistAdepter;
-    static Bzcard_Model model;
-    static List<Bzcard_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
-    List<Bzcard_Model.BZ_media_information> bzMedia_image_List =new ArrayList<>();
+    static Bzcard_Fields_Model model;
+    static List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
+    List<Bzcard_Fields_Model.BZ_media_information> bzMedia_image_List =new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                final Bzcard_Model.BZ_media_information item = imagelistAdepter.getData().get(pos);
+                                final Bzcard_Fields_Model.BZ_media_information item = imagelistAdepter.getData().get(pos);
                                 Intent intent=new Intent(getApplicationContext(), Add_image_Activity.class);
                                 intent.putExtra("MyClass", item);
                                 startActivity(intent);
@@ -96,7 +96,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                final Bzcard_Model.BZ_media_information item = imagelistAdepter.getData().get(pos);
+                                final Bzcard_Fields_Model.BZ_media_information item = imagelistAdepter.getData().get(pos);
                                 imagelistAdepter.removeItem(pos,item);
 
                                 Toast.makeText(Image_List_Activity.this, "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -176,7 +176,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
     }
 
     @Override
-    public void OnVideoClick(Bzcard_Model.BZ_media_information information) {
+    public void OnVideoClick(Bzcard_Fields_Model.BZ_media_information information) {
         Intent intent=new Intent(getApplicationContext(), Add_image_Activity.class);
         intent.putExtra("MyClass", information);
         startActivity(intent);
@@ -186,9 +186,9 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
     public static class ImagelistAdepter extends RecyclerView.Adapter<ImagelistAdepter.viewholder> {
 
         public Context mCtx;
-        List<Bzcard_Model.BZ_media_information> bzMedia_image_List;
+        List<Bzcard_Fields_Model.BZ_media_information> bzMedia_image_List;
         Bz_MediaClick videoClick;
-        public ImagelistAdepter(Context applicationContext, List<Bzcard_Model.BZ_media_information> bzMedia_image_List,
+        public ImagelistAdepter(Context applicationContext, List<Bzcard_Fields_Model.BZ_media_information> bzMedia_image_List,
                                 Bz_MediaClick videoClick) {
             this.mCtx = applicationContext;
             this.bzMedia_image_List = bzMedia_image_List;
@@ -205,7 +205,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
 
         @Override
         public void onBindViewHolder(@NonNull ImagelistAdepter.viewholder holder, int position) {
-            Bzcard_Model.BZ_media_information information=bzMedia_image_List.get(position);
+            Bzcard_Fields_Model.BZ_media_information information=bzMedia_image_List.get(position);
 
             if(information.getIs_featured()==1){
                 holder.iv_Featured.setVisibility(View.VISIBLE);
@@ -226,7 +226,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
                 }
             });
         }
-        public void removeItem(int position, Bzcard_Model.BZ_media_information item) {
+        public void removeItem(int position, Bzcard_Fields_Model.BZ_media_information item) {
             bzMedia_image_List.remove(position);
 
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
@@ -240,7 +240,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
             notifyItemRemoved(position);
         }
 
-        public List<Bzcard_Model.BZ_media_information> getData() {
+        public List<Bzcard_Fields_Model.BZ_media_information> getData() {
             return bzMedia_image_List;
         }
 

@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.Interface.Bz_MediaClick;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -42,9 +42,9 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
     ImageView iv_back,iv_media_title;
     RecyclerView rv_imageList;
     pdflistAdepter pdflistAdepter;
-    static Bzcard_Model model;
-    static List<Bzcard_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
-    List<Bzcard_Model.BZ_media_information> bzMedia_pdf_List =new ArrayList<>();
+    static Bzcard_Fields_Model model;
+    static List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
+    List<Bzcard_Fields_Model.BZ_media_information> bzMedia_pdf_List =new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                final Bzcard_Model.BZ_media_information item = pdflistAdepter.getData().get(pos);
+                                final Bzcard_Fields_Model.BZ_media_information item = pdflistAdepter.getData().get(pos);
                                 Intent intent=new Intent(getApplicationContext(), Add_pdf_Activity.class);
                                 intent.putExtra("MyClass", item);
                                 startActivity(intent);                            }
@@ -92,7 +92,7 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                final Bzcard_Model.BZ_media_information item = pdflistAdepter.getData().get(pos);
+                                final Bzcard_Fields_Model.BZ_media_information item = pdflistAdepter.getData().get(pos);
                                 pdflistAdepter.removeItem(pos,item);
 
                                 Toast.makeText(PDF_List_Activity.this, "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -172,7 +172,7 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
     }
 
     @Override
-    public void OnVideoClick(Bzcard_Model.BZ_media_information information) {
+    public void OnVideoClick(Bzcard_Fields_Model.BZ_media_information information) {
         Intent intent=new Intent(getApplicationContext(), Add_pdf_Activity.class);
         intent.putExtra("MyClass", information);
         startActivity(intent);
@@ -182,9 +182,9 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
     public static class pdflistAdepter extends RecyclerView.Adapter<pdflistAdepter.viewholder> {
 
         public Context mCtx;
-        List<Bzcard_Model.BZ_media_information> bzMedia_pdf_List;
+        List<Bzcard_Fields_Model.BZ_media_information> bzMedia_pdf_List;
         Bz_MediaClick videoClick;
-        public pdflistAdepter(Context applicationContext, List<Bzcard_Model.BZ_media_information> bzMedia_pdf_List,
+        public pdflistAdepter(Context applicationContext, List<Bzcard_Fields_Model.BZ_media_information> bzMedia_pdf_List,
                               Bz_MediaClick videoClick) {
             this.mCtx = applicationContext;
             this.bzMedia_pdf_List = bzMedia_pdf_List;
@@ -201,7 +201,7 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
 
         @Override
         public void onBindViewHolder(@NonNull pdflistAdepter.viewholder holder, int position) {
-            Bzcard_Model.BZ_media_information information=bzMedia_pdf_List.get(position);
+            Bzcard_Fields_Model.BZ_media_information information=bzMedia_pdf_List.get(position);
 
 
 
@@ -215,7 +215,7 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
                 }
             });
         }
-        public void removeItem(int position, Bzcard_Model.BZ_media_information item) {
+        public void removeItem(int position, Bzcard_Fields_Model.BZ_media_information item) {
             bzMedia_pdf_List.remove(position);
 
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
@@ -229,7 +229,7 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
             notifyItemRemoved(position);
         }
 
-        public List<Bzcard_Model.BZ_media_information> getData() {
+        public List<Bzcard_Fields_Model.BZ_media_information> getData() {
             return bzMedia_pdf_List;
         }
 

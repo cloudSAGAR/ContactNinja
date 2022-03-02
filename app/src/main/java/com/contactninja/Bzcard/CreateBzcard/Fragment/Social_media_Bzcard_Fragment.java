@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.LoadingDialog;
@@ -22,7 +22,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
     LoadingDialog loadingDialog;
     RetrofitCalls retrofitCalls;
     SessionManager sessionManager;
-    Bzcard_Model bzcard_model;
+    Bzcard_Fields_Model bzcard_model;
     EditText ev_fb,ev_twitter,ev_breakout,ev_youtube,
             ev_instagram,ev_linkedin,ev_pintrest,ev_venmo,
             ev_skypay,ev_tiktok,ev_snap_chat,ev_other_filed,

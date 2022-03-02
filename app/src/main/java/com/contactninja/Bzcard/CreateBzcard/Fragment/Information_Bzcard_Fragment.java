@@ -26,7 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.contactninja.MainActivity;
-import com.contactninja.Model.Bzcard_Model;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -91,7 +91,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    Bzcard_Model bzcard_model;
+    Bzcard_Fields_Model bzcard_model;
     String urlFromS3 = null;
     S3Uploader s3uploaderObj;
 
