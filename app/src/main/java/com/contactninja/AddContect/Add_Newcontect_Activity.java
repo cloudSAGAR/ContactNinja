@@ -1146,8 +1146,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
              CropImage.ActivityResult result = CropImage.getActivityResult(data);
              if (resultCode == RESULT_OK) {
                  Uri resultUri = result.getUri();
-
-
                  File_name = "Image";
                  File file=new File(result.getUri().getPath());
                  Uri uri = Uri.fromFile(file);
@@ -1194,6 +1192,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
          {
              image_flag=1;
              try {
+                 Log.e("Data is", String.valueOf(data.getData()));
                  CropImage.activity(data.getData())
                          .start(this);
              }

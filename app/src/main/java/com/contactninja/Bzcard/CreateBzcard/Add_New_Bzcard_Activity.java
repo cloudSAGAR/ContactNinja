@@ -21,10 +21,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Information_Bzcard_Fragment;
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Media_Block_Bzcard_Fragment;
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Social_media_Bzcard_Fragment;
@@ -33,11 +35,18 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.aws.AmazonUtil;
+import com.contactninja.aws.S3Uploader;
+import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,6 +79,12 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
     CircleImageView iv_user;
     Bzcard_Model bzcard_model;
     SessionManager sessionManager;
+    TextView tv_done;
+    String urlFromS3 = null;
+    S3Uploader s3uploaderObj;
+    LoadingDialog loadingDialog;
+    RetrofitCalls retrofitCalls;
+    String user_image_Url="",olld_image="";
     // function to check permission
     public static boolean checkAndRequestPermissions(final Activity context) {
         int WExtstorePermission = ContextCompat.checkSelfPermission(context,
@@ -101,6 +116,10 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         sessionManager=new SessionManager(this);
         initUI();
         setTab();
+        s3uploaderObj = new S3Uploader(this);
+        sessionManager = new SessionManager(this);
+        loadingDialog = new LoadingDialog(this);
+        retrofitCalls=new RetrofitCalls(this);
         bzcard_model=new Bzcard_Model();
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
@@ -121,6 +140,9 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initUI() {
+        tv_done=findViewById(R.id.save_button);
+        tv_done.setVisibility(View.VISIBLE);
+        tv_done.setText("Done");
         mMainLayout = findViewById(R.id.mMainLayout);
         tabLayout = findViewById(R.id.tabLayout);
         frameContainer = findViewById(R.id.frameContainer_bzcars);
@@ -138,6 +160,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         pulse_icon.setOnClickListener(this);
         iv_edit.setOnClickListener(this);
         iv_user.setOnClickListener(this);
+        tv_done.setOnClickListener(this);
 
     }
 
@@ -276,6 +299,9 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 }
                 break;
 
+            case R.id.save_button:
+                Log.e("Data Is ",new Gson().toJson(SessionManager.getBzcard(getApplicationContext())));
+                break;
             case R.id.iv_user:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -395,6 +421,8 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_dummy_cover_img.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setCover_image(cover_filePath);
+                        String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
+                        bzcard_model.setCover_url(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
                     }
@@ -410,7 +438,10 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setProfile_image(profile_filePath);
+                        String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
+                        bzcard_model.setProfile_url(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+
                     }
 
 
@@ -439,7 +470,10 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_dummy_cover_img.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setCover_image(cover_filePath);
+                        String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
+                        bzcard_model.setCover_url(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+
                     }
                     else if (cover_profile_image.equals("profile")) {
 
@@ -452,8 +486,9 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_user.setVisibility(View.VISIBLE);
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
-
                         bzcard_model.setProfile_image(profile_filePath);
+                        String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
+                        bzcard_model.setProfile_image(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
                     }

@@ -43,6 +43,9 @@ public class Bzcard_Model {
     String snapchat="";
     String other_filed="";
     String other_filed1="";
+    String cover_url="";
+    String profile_url="";
+    String company_logo_url="";
     List<BZ_media_information> bzMediaInformationList=new ArrayList<>();
 
 
@@ -50,8 +53,32 @@ public class Bzcard_Model {
         return bzMediaInformationList;
     }
 
+    public String getCompany_logo_url() {
+        return company_logo_url;
+    }
+
+    public void setCompany_logo_url(String company_logo_url) {
+        this.company_logo_url = company_logo_url;
+    }
+
     public void setBzMediaInformationList(List<BZ_media_information> bzMediaInformationList) {
         this.bzMediaInformationList = bzMediaInformationList;
+    }
+
+    public String getCover_url() {
+        return cover_url;
+    }
+
+    public void setCover_url(String cover_url) {
+        this.cover_url = cover_url;
+    }
+
+    public String getProfile_url() {
+        return profile_url;
+    }
+
+    public void setProfile_url(String profile_url) {
+        this.profile_url = profile_url;
     }
 
     public String getCover_image() {

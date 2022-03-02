@@ -35,6 +35,7 @@ import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -91,6 +92,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
     private boolean isLastPage = false;
     private boolean isLoading = false;
     Bzcard_Model bzcard_model;
+    String urlFromS3 = null;
+    S3Uploader s3uploaderObj;
 
     public static boolean checkAndRequestPermissions(final Activity context) {
         int WExtstorePermission = ContextCompat.checkSelfPermission(context,
@@ -119,6 +122,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_information_bzcard_, container, false);
         IntentUI(view);
+        s3uploaderObj = new S3Uploader(getActivity());
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
@@ -513,6 +517,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
                     logo_filePath = uri.getPath();
                     bzcard_model.setCompany_logo(logo_filePath);
+                    String contect_url=s3uploaderObj.Upload_Url(logo_filePath,"bzcard_company_logo");
+                    bzcard_model.setCompany_logo_url(contect_url);
                     SessionManager.setBzcard(getActivity(),bzcard_model);
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
                     Glide.with(getActivity()).
@@ -537,6 +543,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                     Uri uri = Uri.fromFile(file);
                     logo_filePath = uri.getPath();
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
+                    String contect_url=s3uploaderObj.Upload_Url(logo_filePath,"bzcard_company_logo");
+                    bzcard_model.setCompany_logo_url(contect_url);
                     bzcard_model.setCompany_logo(logo_filePath);
                     SessionManager.setBzcard(getActivity(),bzcard_model);
                     Glide.with(getActivity()).

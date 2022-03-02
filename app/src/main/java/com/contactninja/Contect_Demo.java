@@ -1,137 +1,68 @@
 package com.contactninja;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.SystemClock;
-import android.provider.ContactsContract;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.contactninja.Model.Contactdetail;
+import com.contactninja.Model.ContectListData;
+import com.contactninja.Utils.PaginationListener;
+import com.contactninja.Utils.SessionManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-
-import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Add_Company_Activity;
-import com.contactninja.AddContect.Add_Newcontect_Activity;
-import com.contactninja.Fragment.AddContect_Fragment.Company_Fragment;
-import com.contactninja.Fragment.AddContect_Fragment.ContectFragment;
-import com.contactninja.Model.AddcontectModel;
-import com.contactninja.Model.CompanyModel;
-import com.contactninja.Model.Contactdetail;
-import com.contactninja.Model.ContectListData;
-import com.contactninja.Model.Csv_InviteListData;
-import com.contactninja.Model.Grouplist;
-import com.contactninja.Model.InviteListData;
-import com.contactninja.Model.UserData.SignResponseModel;
-import com.contactninja.Utils.ConnectivityReceiver;
-import com.contactninja.Utils.Global;
-import com.contactninja.Utils.LoadingDialog;
-import com.contactninja.Utils.PaginationListener;
-import com.contactninja.Utils.SessionManager;
-import com.contactninja.retrofit.ApiResponse;
-import com.contactninja.retrofit.RetrofitApiClient;
-import com.contactninja.retrofit.RetrofitApiInterface;
-import com.contactninja.retrofit.RetrofitCallback;
-import com.contactninja.retrofit.RetrofitCalls;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
-import com.reddit.indicatorfastscroll.FastScrollerThumbView;
-import com.reddit.indicatorfastscroll.FastScrollerView;
-
-import org.json.JSONException;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.OptionalInt;
-import java.util.TimeZone;
-import java.util.stream.IntStream;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.michaelrocks.libphonenumber.android.NumberParseException;
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
-import io.michaelrocks.libphonenumber.android.Phonenumber;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
-public class Contect_Demo extends AppCompatActivity  {
+public class Contect_Demo extends AppCompatActivity {
 
     RecyclerView contact_list;
     CompanyAdapter paginationAdapter;
-    private List<ContectListData.Contact> contectListData=new ArrayList<>();
     int currentPage = 1;
     boolean isLoading = false;
     boolean isLastPage = false;
-    int Total=0;
+    int Total = 0;
     LinearLayoutManager layoutManager;
-    int count=50;
+    int count = 49;
+    private List<ContectListData.Contact> contectListData = new ArrayList<>();
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contect_demo);
-        Total=SessionManager.getContectList(getApplicationContext()).get(0).getContacts().size();
+        Total = SessionManager.getContectList(getApplicationContext()).get(0).getContacts().size();
         Log.e("Size is a", String.valueOf(SessionManager.getContectList(getApplicationContext()).get(0).getContacts().size()));
-        contact_list=findViewById(R.id.contact_list);
-        layoutManager=new LinearLayoutManager(this);
+        contact_list = findViewById(R.id.contact_list);
+        layoutManager = new LinearLayoutManager(this);
         contact_list.setLayoutManager(layoutManager);
-        paginationAdapter = new CompanyAdapter(getApplicationContext());
+        paginationAdapter = new CompanyAdapter(getApplicationContext(),contectListData);
         contact_list.setAdapter(paginationAdapter);
         contact_list.setItemViewCacheSize(15000);
 
 
         if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
-            List<ContectListData.Contact> s=SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
-            List<ContectListData.Contact> mainlist=s.subList(0,count);
+            List<ContectListData.Contact> s = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
+            List<ContectListData.Contact> mainlist = s.subList(0, count);
 
             if (currentPage != PAGE_START)
                 paginationAdapter.removeLoading();
@@ -150,34 +81,22 @@ public class Contect_Demo extends AppCompatActivity  {
         contact_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
-                try {
 
+                    count = count + 50;
+                    isLoading = true;
+                    currentPage++;
+                    List<ContectListData.Contact> s = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
+                    contectListData = s.subList(count - 49, count);
+                    if (currentPage != PAGE_START)
+                        paginationAdapter.removeLoading();
+                        paginationAdapter.addItems(contectListData);
+                    if (Total > paginationAdapter.getItemCount()) {
+                        paginationAdapter.addLoading();
+                    } else {
+                        isLastPage = true;
+                    }
+                    isLoading = false;
 
-                count=count+50;
-
-                isLoading = true;
-                currentPage++;
-                List<ContectListData.Contact> mainlist = null;
-                List<ContectListData.Contact> s=SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
-
-                 mainlist=s.subList(count-49,count);
-
-
-                if (currentPage != PAGE_START)
-                    paginationAdapter.removeLoading();
-                    paginationAdapter.addItems(mainlist);
-                // check weather is last page or not
-                if (Total> paginationAdapter.getItemCount()) {
-                    paginationAdapter.addLoading();
-                } else {
-                    isLastPage = true;
-                }
-                isLoading = false;
-                }
-                catch (Exception e)
-                {
-
-                }
 
             }
 
@@ -203,10 +122,11 @@ public class Contect_Demo extends AppCompatActivity  {
         Contactdetail item;
         String second_latter = "", current_latter = "";
         private boolean isLoaderVisible = false;
-        private List<ContectListData.Contact> contacts=new ArrayList<>();
+        private List<ContectListData.Contact> contacts = new ArrayList<>();
 
-        public CompanyAdapter(Context context) {
+        public CompanyAdapter(Context context,List<ContectListData.Contact> contacts) {
             this.mCtx = context;
+            this.contacts=contacts;
         }
 
         @NonNull
@@ -242,9 +162,10 @@ public class Contect_Demo extends AppCompatActivity  {
         }
 
         public void addLoading() {
-            isLoaderVisible = true;
-            contacts.add(new ContectListData.Contact());
-            notifyItemInserted(contacts.size() - 1);
+                isLoaderVisible = true;
+                contacts.add(new ContectListData.Contact());
+                notifyItemInserted(contacts.size() - 1);
+
         }
 
         public void removeLoading() {
@@ -365,14 +286,15 @@ public class Contect_Demo extends AppCompatActivity  {
                         Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
                         SessionManager.setContect_flag("read");
                         getActivity().startActivity(addnewcontect);
-                   */ }
+                   */
+                    }
                 });
 
                 holder1.main_layout.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
 
-                    //    broadcast_manu(Contact_data);
+                        //    broadcast_manu(Contact_data);
                         return false;
                     }
                 });
