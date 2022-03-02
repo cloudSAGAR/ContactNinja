@@ -103,6 +103,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
             ActivityCompat.requestPermissions(context, listPermissionsNeeded
                             .toArray(new String[listPermissionsNeeded.size()]),
                     REQUEST_ID_MULTIPLE_PERMISSIONS);
+
             return false;
         }
         return true;

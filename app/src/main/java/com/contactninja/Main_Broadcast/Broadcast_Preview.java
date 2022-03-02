@@ -430,7 +430,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
         JSONArray jsonArray = new JSONArray();
         List<ContectListData.Contact> s = SessionManager.getGroupList(getApplicationContext());
-        Log.e("Coontect Detail is", new Gson().toJson(s));
+      //  Log.e("Coontect Detail is", new Gson().toJson(s));
         for (int i = 0; i < s.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
             for (int j = 0; j < s.get(i).getContactDetails().size(); j++) {
@@ -470,11 +470,8 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         paramObject.put("content_body", broadcate_save_data.getContent_body());
         paramObject.put("from_ac", broadcate_save_data.getFrom_ac());
         paramObject.put("from_ac_id", broadcate_save_data.getFrom_ac_id());
-
-        JSONArray recurring_detail = new JSONArray();
         JSONObject repeat_every_obj = new JSONObject();
         repeat_every_obj.put("repeat_every", broadcate_save_data.getRepeat_every());
-        recurring_detail.put(repeat_every_obj);
 
         if (broadcate_save_data.getRecurrence().equals("Weekly")) {
 
@@ -488,46 +485,27 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 coccurs_on_array.put(Integer.parseInt(splitdata[i]));
             }
 
-
-          //  Log.e("Data is",""+Integer.parseInt(broadcate_save_data.getOccurs_weekly().toString()));
-          //  coccurs_on_array.put(broadcate_save_data.getOccurs_weekly().toString());
-
             day_of_month_data.put("day_of_week",coccurs_on_array);
-            coccurs_on_data_array.put(day_of_month_data);
-            occurs_on_data.put("occurs_on", coccurs_on_data_array);
-            recurring_detail.put(occurs_on_data);
-           /* JSONObject occurs_on_obj = new JSONObject();
-            JSONArray coccurs_on_array = new JSONArray();
-            coccurs_on_array.put(broadcate_save_data.getOccurs_weekly());
-            occurs_on_obj.put("day_of_week", coccurs_on_array);
-            recurring_detail.put(occurs_on_obj);*/
-
-        } else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
+            repeat_every_obj.put("occurs_on",day_of_month_data);
+        }
+        else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
             JSONObject occurs_on_data = new JSONObject();
-            JSONArray coccurs_on_data_array = new JSONArray();
-
             if (broadcate_save_data.getOccurs_monthly().equals("Day"))
             {
-                JSONObject day_of_month_data = new JSONObject();
-                day_of_month_data.put("day_of_month", broadcate_save_data.getDay_of_month());
-                coccurs_on_data_array.put(day_of_month_data);
+                  occurs_on_data.put("day_of_month", broadcate_save_data.getDay_of_month());
             }
             else {
-                JSONObject every_week_no_data = new JSONObject();
-                every_week_no_data.put("every_week_no", broadcate_save_data.getEvery_day());
-                coccurs_on_data_array.put(every_week_no_data);
+                occurs_on_data.put("every_week_no", broadcate_save_data.getEvery_day());
+                occurs_on_data.put("every_dayofweek", broadcate_save_data.getEvery_second());
 
-                JSONObject every_dayofweek_data = new JSONObject();
-                every_dayofweek_data.put("every_dayofweek", broadcate_save_data.getEvery_second());
-                coccurs_on_data_array.put(every_dayofweek_data);
             }
 
 
-            occurs_on_data.put("occurs_on", coccurs_on_data_array);
-            recurring_detail.put(occurs_on_data);
+            repeat_every_obj.put("occurs_on", occurs_on_data);
+
         }
 
-        paramObject.put("recurring_detail", recurring_detail);
+        paramObject.put("recurring_detail", repeat_every_obj);
         if (!broadcate_save_data.getId().equals(""))
         {
             paramObject.put("id",broadcate_save_data.getId());

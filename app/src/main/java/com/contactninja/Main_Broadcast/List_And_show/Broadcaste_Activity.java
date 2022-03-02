@@ -227,20 +227,30 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     if (broadcasteda.getRecurringType().equals("M")) {
                         broadcate_save_data.setRecurrence("Monthly");
 
-                                   Log.e("Detaili is",new Gson().toJson(broadcasteda.getRecurringDetail()));
+                                      BroadcastActivityModel._0.OccursOn r_data = broadcasteda.getRecurringDetail().getOccursOn();
+                                      try {
+                                          if (!r_data.getDay_of_month().equals(null))
+                                          {
+                                              broadcate_save_data.setDay_of_month(r_data.getDay_of_month());
+                                              broadcate_save_data.setOccurs_monthly("Day");
+                                          }
+                                          else {
+                                              broadcate_save_data.setEvery_second(r_data.getEveryWeekNo());
+                                              broadcate_save_data.setEvery_day(r_data.getEveryDayofweek());
+                                              broadcate_save_data.setOccurs_monthly("Every");
 
-                                    List<BroadcastActivityModel._0.OccursOn> r_data = broadcasteda.getRecurringDetail().get(1).getOccursOn();
-                                    if (r_data.size()==1)
-                                    {
-                                        broadcate_save_data.setDay_of_month(r_data.get(0).getDayOfMonth());
-                                        broadcate_save_data.setOccurs_monthly("Day");
-                                    }
-                                    else {
-                                        broadcate_save_data.setEvery_second(r_data.get(0).getEveryWeekNo());
-                                        broadcate_save_data.setEvery_day(r_data.get(1).getEveryDayofweek());
-                                        broadcate_save_data.setOccurs_monthly("Every");
+                                          }
+                                      }
+                                      catch (Exception e)
+                                      {
+                                          broadcate_save_data.setEvery_second(r_data.getEveryWeekNo());
+                                          broadcate_save_data.setEvery_day(r_data.getEveryDayofweek());
+                                          broadcate_save_data.setOccurs_monthly("Every");
 
-                                    }
+                                      }
+
+
+
                                   //  broadcate_save_data.setOccurs_weekly(r_data.get(i).getEveryWeekNo());
 
 
@@ -251,16 +261,16 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     } else if (broadcasteda.getRecurringType().equals("W")) {
                         broadcate_save_data.setRecurrence("Weekly");
                         String data="";
-                        for (int i=0;i<broadcasteda.getRecurringDetail().get(1).getOccursOn().get(0).getDay_of_week().size();i++)
+                       for (int i=0;i<broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().size();i++)
                         {
                             if (data.equals(""))
                             {
 
-                                data=broadcasteda.getRecurringDetail().get(1).getOccursOn().get(0).getDay_of_week().get(i).toString();
+                                data=broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().get(i).toString();
 
                                 }
                             else {
-                                data=data+","+broadcasteda.getRecurringDetail().get(1).getOccursOn().get(0).getDay_of_week().get(i).toString();
+                                data=data+","+broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().get(i).toString();
 
                             }
 
@@ -271,7 +281,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                         broadcate_save_data.setRecurrence("Daily");
 
                     }
-                    broadcate_save_data.setRepeat_every(broadcasteda.getRecurringDetail().get(0).getRepeatEvery());
+                   broadcate_save_data.setRepeat_every(broadcasteda.getRecurringDetail().getRepeatEvery());
 
 
 
@@ -417,7 +427,14 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                         }.getType();
                         BroadcastActivityModel emailActivityListModel = new Gson().fromJson(headerString, listType);
                         broadcasteda = emailActivityListModel.get0();
-                        setData();
+                        try {
+                            setData();
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
                         broadcastProspects = emailActivityListModel.getBroadcastProspect();
                         SessionManager.setBroadcast_Contect(getApplicationContext(), broadcastProspects);
                         save_button.setEnabled(
