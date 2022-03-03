@@ -23,6 +23,7 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.CreateBzcard.Add_New_Bzcard_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.BZcardListModel;
@@ -58,7 +59,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    List<BZcardListModel.Bizcard> bizcardList_ = new ArrayList<>();
+    List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
     int Card_id=1;
 
     @Override
@@ -97,37 +98,15 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    bizcardList_.clear();
+                    bizcardList.clear();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<BZcardListModel>() {
                     }.getType();
                     BZcardListModel bZcardListModel = new Gson().fromJson(headerString, listType);
 
-                    List<BZcardListModel.Bizcard> bizcardList = bZcardListModel.getBizcard();
-                    for (int i = 0; i < bizcardList.size(); i++) {
-                        BZcardListModel.Bizcard bizcard = new BZcardListModel.Bizcard();
-                        bizcard.setId(bizcardList.get(i).getId());
-                        bizcard.setCardName(bizcardList.get(i).getCardName());
-                        bizcard.setFields(bizcardList.get(i).getFields());
-                        bizcard.setCreatedAt(bizcardList.get(i).getCreatedAt());
-                        bizcard.setCreatedBy(bizcardList.get(i).getCreatedBy());
-                        bizcard.setUpdatedAt(bizcardList.get(i).getUpdatedAt());
-                        if (bizcardList.get(i).getId().equals(1)) {
-                            bizcard.setBzstore_image(R.drawable.bzstore1);
-                        } else if (bizcardList.get(i).getId().equals(2)) {
-                            bizcard.setBzstore_image(R.drawable.bzstore2);
-                        } else if (bizcardList.get(i).getId().equals(3)) {
-                            bizcard.setBzstore_image(R.drawable.bzstore3);
-                        } else if (bizcardList.get(i).getId().equals(4)) {
-                            bizcard.setBzstore_image(R.drawable.bzstore4);
-                        } else if (bizcardList.get(i).getId().equals(5)) {
-                            bizcard.setBzstore_image(R.drawable.bzstore5);
-                        } else if (bizcardList.get(i).getId().equals(6)) {
-                            bizcard.setBzstore_image(R.drawable.bzstore2);
-                        }
-                        bizcardList_.add(bizcard);
-                    }
+                     bizcardList = bZcardListModel.getBizcard();
+
 
                     setImage();
 
@@ -144,7 +123,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     }
 
     private void setImage() {
-        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(),  bizcardList_));
+        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(),  bizcardList));
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
@@ -230,9 +209,9 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 SessionManager.setBzcard(getApplicationContext(), new Bzcard_Fields_Model());
                 Bzcard_Fields_Model main_model;
                 main_model = SessionManager.getBzcard(this);
-                for(int i=0;i<bizcardList_.size();i++){
+                for(int i=0;i<bizcardList.size();i++){
                     if(viewPager2.getCurrentItem()==i){
-                        Card_id=bizcardList_.get(i).getId();
+                        Card_id=bizcardList.get(i).getId();
                         break;
                     }
                 }
@@ -270,7 +249,12 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         @Override
         public void onBindViewHolder(@NonNull ViewPageAdepter.viewholder holder, int position) {
             BZcardListModel.Bizcard bizcard = bizcardList.get(position);
-            holder.iv_card.setImageDrawable(mCtx.getDrawable(bizcard.getBzstore_image()));
+
+            int resID = mCtx.getResources().getIdentifier(bizcard.getCardName()
+                    .replace(" ", "_").toLowerCase(), "drawable", mCtx.getPackageName());
+            if (resID != 0) {
+                Glide.with(mCtx.getApplicationContext()).load(resID).into(holder.iv_card);
+            }
 
         }
 

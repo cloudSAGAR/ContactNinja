@@ -14,6 +14,9 @@ public class BZcardListModel {
     @SerializedName("Bizcard")
     @Expose
     private List<Bizcard> bizcard = new ArrayList<>();
+    @SerializedName("Bizcarduser")
+    @Expose
+    private List<Bizcard> bizcardList_user = new ArrayList<>();
 
     public Integer getTotal() {
         return total;
@@ -31,6 +34,14 @@ public class BZcardListModel {
         this.bizcard = bizcard;
     }
 
+    public List<Bizcard> getBizcardList_user() {
+        return bizcardList_user;
+    }
+
+    public void setBizcardList_user(List<Bizcard> bizcardList_user) {
+        this.bizcardList_user = bizcardList_user;
+    }
+
     public static class Bizcard {
 
             @SerializedName("id")
@@ -39,12 +50,9 @@ public class BZcardListModel {
             @SerializedName("card_name")
             @Expose
             private String cardName = "";
-            @SerializedName("bzstore_image")
-            @Expose
-            private int bzstore_image = 0;
             @SerializedName("fields")
             @Expose
-            private String fields = "";
+            private Bzcard_Fields_Model bzcardFieldsModel=new Bzcard_Fields_Model();
             @SerializedName("created_at")
             @Expose
             private String createdAt = "";
@@ -71,15 +79,15 @@ public class BZcardListModel {
                 this.cardName = cardName;
             }
 
-            public String getFields () {
-                return fields;
-            }
+        public Bzcard_Fields_Model getBzcardFieldsModel() {
+            return bzcardFieldsModel;
+        }
 
-            public void setFields (String fields){
-                this.fields = fields;
-            }
+        public void setBzcardFieldsModel(Bzcard_Fields_Model bzcardFieldsModel) {
+            this.bzcardFieldsModel = bzcardFieldsModel;
+        }
 
-            public String getCreatedAt () {
+        public String getCreatedAt () {
                 return createdAt;
             }
 
@@ -103,12 +111,6 @@ public class BZcardListModel {
                 this.updatedAt = updatedAt;
             }
 
-        public int getBzstore_image() {
-            return bzstore_image;
-        }
 
-        public void setBzstore_image(int bzstore_image) {
-            this.bzstore_image = bzstore_image;
-        }
     }
 }

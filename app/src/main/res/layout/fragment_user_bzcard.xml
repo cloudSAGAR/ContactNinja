@@ -11,4 +11,16 @@
     <include
         layout="@layout/common_dialog"/>
 
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_button"
+        android:layout_below="@+id/txt_title"
+        android:layout_weight="1"
+        android:paddingStart="@dimen/_40sdp"
+        android:paddingEnd="@dimen/_40sdp"
+        tools:ignore="RtlSymmetry" />
+
 </LinearLayout>

@@ -489,6 +489,13 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
+    public void BZcard_User_list(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.BZcard_User_list(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
     public void BZcard_Add_Update(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.BZcard_Add_Update(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
