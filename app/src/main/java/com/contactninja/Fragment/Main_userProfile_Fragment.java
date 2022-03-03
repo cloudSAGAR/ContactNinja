@@ -1163,11 +1163,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     private void uploadImageTos3(String imageUri) {
         loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
         if (!imageUri.equals("")) {
             //String[] nameList = imageUri.split("/");
             // String uploadFileName = nameList[nameList.length - 1];
             olld_image = user_image_Url;
-            String contect_group = s3uploaderObj.initUpload(imageUri, "user_profile");
+            String contect_group = s3uploaderObj.initUpload(imageUri, "user_profile", Integer.valueOf(signResponseModel.getUser().getId()));
             s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
                 @Override
                 public void onUploadSuccess(String response) {

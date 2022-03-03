@@ -416,8 +416,8 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_dummy_cover_img.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setCover_image(cover_filePath);
-                        String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
-                        bzcard_model.setCover_url(contect_url);
+                      //  String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
+                       // bzcard_model.setCover_url(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
                     }
@@ -433,8 +433,8 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setProfile_image(profile_filePath);
-                        String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
-                        bzcard_model.setProfile_url(contect_url);
+                     //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
+                     //  bzcard_model.setProfile_url(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
                     }
@@ -465,8 +465,8 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_dummy_cover_img.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setCover_image(cover_filePath);
-                        String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
-                        bzcard_model.setCover_url(contect_url);
+                     // String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
+                     // bzcard_model.setCover_url(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
                     }
@@ -482,8 +482,8 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setProfile_image(profile_filePath);
-                        String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
-                        bzcard_model.setProfile_image(contect_url);
+                     //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
+                     //  bzcard_model.setProfile_image(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
                     }

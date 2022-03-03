@@ -604,8 +604,8 @@
 
                         </TextView>
 
-                        <EditText
-                            android:id="@+id/ev_image_size"
+                        <TextView
+                            android:id="@+id/tv_image_size"
                             android:enabled="false"
                             style="@style/tv_regular_13"
                             android:layout_width="match_parent"
@@ -617,7 +617,7 @@
                             android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
 
-                        </EditText>
+                        </TextView>
                         <TextView
                             android:layout_marginTop="@dimen/_5sdp"
                             android:id="@+id/tv_reupload"
@@ -640,9 +640,9 @@
 
                     </ImageView>
                     <ImageView
+                        android:scaleType="fitXY"
                         android:visibility="gone"
                         android:id="@+id/iv_company_icon"
-                        android:src="@drawable/ic_comany_icon"
                         android:layout_gravity="center"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp">

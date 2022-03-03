@@ -10,6 +10,9 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.contactninja.Bzcard.CreateBzcard.Title_bzcardActivity;
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Utils.SessionManager;
 
 import java.io.File;
 
@@ -24,34 +27,55 @@ public class S3Uploader {
     public S3Uploader(Context context) {
         this.context = context;
         transferUtility = AmazonUtil.getTransferUtility(context);
-
     }
 
-    public String initUpload(String filePath,String folder) {
+    public String initUpload(String filePath,String folder,Integer uesrID) {
 
         File uploadToS3 = new File(filePath);
         String[] nameList = filePath.split("/");
         String defaultFolder = folder;
         String uploadFileName = nameList[nameList.length - 1];
-        String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/"+uploadFileName;
+        String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/"+uesrID+"_"+uploadFileName;
         ObjectMetadata metadataCopy = new ObjectMetadata();
         metadataCopy.setContentType("image/png");
-        TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/"+ uploadFileName,
+        TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/"+uesrID+"_"+uploadFileName,
                 uploadToS3, metadataCopy,  CannedAccessControlList.PublicRead
         );
         transferObserver.setTransferListener(new UploadListener());
         return  audioURL;
-       /* File file = new File(filePath);
-        ObjectMetadata myObjectMetadata = new ObjectMetadata();
-        myObjectMetadata.setContentType("image/png");
-        String mediaUrl = file.getName();
-        String defaultFolder="contactninja";
-
-        TransferObserver observer = transferUtility.upload(AWSKeys.BUCKET_NAME, mediaUrl,
-                file, CannedAccessControlList.PublicRead);
-        observer.setTransferListener(new UploadListener());*/
     }
 
+
+    public String BZcard_image_Upload(String filePath,String folder,String type) {
+
+        File uploadToS3 = new File(filePath);
+        String[] nameList = filePath.split("/");
+        String defaultFolder = folder;
+        String uploadFileName = nameList[nameList.length - 1];
+        String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/"+type+"_"+uploadFileName;
+        ObjectMetadata metadataCopy = new ObjectMetadata();
+        metadataCopy.setContentType("image/png");
+        TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/"+type+"_"+uploadFileName,
+                uploadToS3, metadataCopy,  CannedAccessControlList.PublicRead
+        );
+        transferObserver.setTransferListener(new UploadListener());
+        return  audioURL;
+    }
+    public String BZcard_pdf_Upload(String filePath,String folder,String type) {
+
+        File uploadToS3 = new File(filePath);
+        String[] nameList = filePath.split("/");
+        String defaultFolder = folder;
+        String uploadFileName = nameList[nameList.length - 1];
+        String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/"+type+"_"+uploadFileName;
+        ObjectMetadata metadataCopy = new ObjectMetadata();
+        metadataCopy.setContentType("*/*");
+        TransferObserver transferObserver = transferUtility.upload(AWSKeys.BUCKET_NAME, defaultFolder + "/"+type+"_"+uploadFileName,
+                uploadToS3, metadataCopy,  CannedAccessControlList.PublicRead
+        );
+        transferObserver.setTransferListener(new UploadListener());
+        return  audioURL;
+    }
     private class UploadListener implements TransferListener {
 
         // Simply updates the UI list when notified.

@@ -24,11 +24,14 @@ public class Bzcard_Fields_Model {
     String zipcode="";
     String country_code="";
 
-    String theme ="";
+    String themeColor ="";
+    String themeColorHash ="";
     String button1_name="";
     String button1_url="";
     String button2_name="";
     String button2_url="";
+    String action_name="";
+    String action_url="";
     String bio_head="";
     String bio_description="";
     String html="";
@@ -308,12 +311,20 @@ public class Bzcard_Fields_Model {
         this.other_filed1 = other_filed1;
     }
 
-    public String getTheme() {
-        return theme;
+    public String getThemeColor() {
+        return themeColor;
     }
 
-    public void setTheme(String theme) {
-        this.theme = theme;
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
+
+    public String getThemeColorHash() {
+        return themeColorHash;
+    }
+
+    public void setThemeColorHash(String themeColorHash) {
+        this.themeColorHash = themeColorHash;
     }
 
     public String getButton1_name() {
@@ -372,10 +383,28 @@ public class Bzcard_Fields_Model {
         this.button2_url = button2_url;
     }
 
+    public String getAction_name() {
+        return action_name;
+    }
+
+    public void setAction_name(String action_name) {
+        this.action_name = action_name;
+    }
+
+    public String getAction_url() {
+        return action_url;
+    }
+
+    public void setAction_url(String action_url) {
+        this.action_url = action_url;
+    }
+
     public static class BZ_media_information implements Serializable {
         Integer id=0;
         String media_type="";
+        String media_filePath ="";
         String media_url="";
+        String media_thumbnail="";
         String FileName="";
         String media_title="";
         String media_description="";
@@ -397,12 +426,12 @@ public class Bzcard_Fields_Model {
             this.media_type = media_type;
         }
 
-        public String getMedia_url() {
-            return media_url;
+        public String getMedia_filePath() {
+            return media_filePath;
         }
 
-        public void setMedia_url(String media_url) {
-            this.media_url = media_url;
+        public void setMedia_filePath(String media_filePath) {
+            this.media_filePath = media_filePath;
         }
 
         public String getMedia_title() {
@@ -435,6 +464,22 @@ public class Bzcard_Fields_Model {
 
         public void setFileName(String fileName) {
             FileName = fileName;
+        }
+
+        public String getMedia_url() {
+            return media_url;
+        }
+
+        public void setMedia_url(String media_url) {
+            this.media_url = media_url;
+        }
+
+        public String getMedia_thumbnail() {
+            return media_thumbnail;
+        }
+
+        public void setMedia_thumbnail(String media_thumbnail) {
+            this.media_thumbnail = media_thumbnail;
         }
     }
     public static class Bz_color_Model {

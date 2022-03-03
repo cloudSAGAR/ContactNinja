@@ -73,7 +73,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
     EditText ev_first, ev_last_name, edt_mobile_no, ev_email,
             ev_company, ev_company_url, ev_job, ev_address, ev_zip;
     CountryCodePicker ccp_id;
-    TextView iv_invalid, iv_invalid1, tv_reupload;
+    TextView iv_invalid, iv_invalid1, tv_reupload,tv_image_size;
     LinearLayout company_layout;
     BottomSheetDialog bottomSheetDialog_company;
     CompanyAdapter companyAdapter;
@@ -324,6 +324,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
         ev_address = view.findViewById(R.id.ev_address);
         ev_zip = view.findViewById(R.id.ev_zip);
         tv_reupload = view.findViewById(R.id.tv_reupload);
+        tv_image_size = view.findViewById(R.id.tv_image_size);
         tv_reupload.setOnClickListener(this);
         company_layout.setOnClickListener(this);
         iv_company_dummy.setOnClickListener(this);
@@ -517,8 +518,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
                     logo_filePath = uri.getPath();
                     bzcard_model.setCompany_logo(logo_filePath);
-                    String contect_url=s3uploaderObj.Upload_Url(logo_filePath,"bzcard_company_logo");
-                    bzcard_model.setCompany_logo_url(contect_url);
+                  //String contect_url=s3uploaderObj.Upload_Url(logo_filePath,"bzcard_company_logo");
+                  //bzcard_model.setCompany_logo_url(contect_url);
                     SessionManager.setBzcard(getActivity(),bzcard_model);
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
                     Glide.with(getActivity()).
@@ -527,6 +528,9 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                             into(iv_company_icon);
                     iv_company_icon.setVisibility(View.VISIBLE);
                     iv_company_dummy.setVisibility(View.GONE);
+                    tv_reupload.setVisibility(View.VISIBLE);
+                    tv_image_size.setVisibility(View.GONE);
+
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
@@ -543,8 +547,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                     Uri uri = Uri.fromFile(file);
                     logo_filePath = uri.getPath();
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
-                    String contect_url=s3uploaderObj.Upload_Url(logo_filePath,"bzcard_company_logo");
-                    bzcard_model.setCompany_logo_url(contect_url);
+                  // String contect_url=s3uploaderObj.Upload_Url(logo_filePath,"bzcard_company_logo");
+                  // bzcard_model.setCompany_logo_url(contect_url);
                     bzcard_model.setCompany_logo(logo_filePath);
                     SessionManager.setBzcard(getActivity(),bzcard_model);
                     Glide.with(getActivity()).
@@ -554,6 +558,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                     iv_company_icon.setVisibility(View.VISIBLE);
                     iv_company_dummy.setVisibility(View.GONE);
 
+                    tv_reupload.setVisibility(View.VISIBLE);
+                    tv_image_size.setVisibility(View.GONE);
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();

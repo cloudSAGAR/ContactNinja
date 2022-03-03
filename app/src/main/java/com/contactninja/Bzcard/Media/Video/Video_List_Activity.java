@@ -216,7 +216,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
                 holder.iv_Featured.setVisibility(View.GONE);
             }
             Glide.with(mCtx)
-                    .load(Global.getYoutubeThumbnailUrlFromVideoUrl(information.getMedia_url()))
+                    .load(information.getMedia_filePath())
                     .into(holder.iv_video);
             holder.txt_title.setText(information.getMedia_title());
             holder.txt_dicription.setText(information.getMedia_description());

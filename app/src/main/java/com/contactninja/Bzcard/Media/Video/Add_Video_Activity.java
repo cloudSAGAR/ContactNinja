@@ -1,12 +1,20 @@
 package com.contactninja.Bzcard.Media.Video;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.EditText;
@@ -17,9 +25,12 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.Media.Select_Media_Activity;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -27,6 +38,12 @@ import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +63,8 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
     Integer is_featured = 0;
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
     Bzcard_Fields_Model model;
+    String media_thumbnail="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,14 +94,81 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
             setVideo();
         }
 
-    }
+        DownloadImage(Global.getYoutubeThumbnailUrlFromVideoUrl(Link));
 
+    }
+    void DownloadImage(String ImageUrl) {
+
+        if (ContextCompat.checkSelfPermission(Add_Video_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(Add_Video_Activity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Add_Video_Activity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
+            ActivityCompat.requestPermissions(Add_Video_Activity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+        } else {
+            //Asynctask to create a thread to downlaod image in the background
+            new DownloadsImage().execute(ImageUrl);
+        }
+    }
+    class DownloadsImage extends AsyncTask<String, Void,Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            URL url = null;
+            try {
+                url = new URL(strings[0]);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            Bitmap bm = null;
+            try {
+                bm =    BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Create Path to save Image
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+ "/contactninja"); //Creates app specific folder
+
+            if(!path.exists()) {
+                path.mkdirs();
+            }
+
+            File imageFile = new File(path, String.valueOf(System.currentTimeMillis())+".png"); // Imagename.png
+            FileOutputStream out = null;
+            try {
+                out = new FileOutputStream(imageFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try{
+                bm.compress(Bitmap.CompressFormat.PNG, 100, out); // Compress Image
+                out.flush();
+                out.close();
+                // Tell the media scanner about the new file so that it is
+                // immediately available to the user.
+                MediaScannerConnection.scanFile(Add_Video_Activity.this,new String[] { imageFile.getAbsolutePath() }, null,new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        // Log.i("ExternalStorage", "Scanned " + path + ":");
+                        //    Log.i("ExternalStorage", "-> uri=" + uri);
+
+                        media_thumbnail=path;
+                    }
+                });
+            } catch(Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
     private void setVideo_info() {
 
         edt_video_title.setText(information.getMedia_title());
         edt_Add_description.setText(information.getMedia_description());
         if(!Global.IsNotNull(Link)){
-            Link = information.getMedia_url();
+            Link = information.getMedia_filePath();
         }
         Glide.with(getApplicationContext())
                 .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
@@ -231,6 +317,7 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
                                 information.setId(bzMediaInformationList.get(i).getId());
                                 information.setMedia_type(bzMediaInformationList.get(i).getMedia_type());
                                 information.setMedia_url(Link);
+                                information.setMedia_filePath(media_thumbnail);
                                 information.setMedia_title(edt_video_title.getText().toString().trim());
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
                                 information.setIs_featured(is_featured);
@@ -246,6 +333,7 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
                         information.setId(bzMediaInformationList.size());
                         information.setMedia_type("video");
                         information.setMedia_url(Link);
+                        information.setMedia_filePath(media_thumbnail);
                         information.setMedia_title(edt_video_title.getText().toString().trim());
                         information.setMedia_description(edt_Add_description.getText().toString().trim());
                         if (bzMediaInformationList.size() == 0) {

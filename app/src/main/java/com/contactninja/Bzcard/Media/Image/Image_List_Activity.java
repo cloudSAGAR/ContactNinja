@@ -213,7 +213,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
                 holder.iv_Featured.setVisibility(View.GONE);
             }
             Glide.with(mCtx)
-                    .load(information.getMedia_url())
+                    .load(information.getMedia_filePath())
                     .into(holder.iv_video);
 
             holder.txt_title.setText(information.getMedia_title());

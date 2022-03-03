@@ -575,11 +575,12 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     private void uploadImageTos3(String imageUri) {
         //   final String path = getRealPathFromURI(imageUri);
         loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Final_Group.this);
         if (!imageUri.equals("")) {
             //String[] nameList = imageUri.split("/");
             // String uploadFileName = nameList[nameList.length - 1];
             old_image=user_image_Url;
-            String contect_group=s3uploaderObj.initUpload(imageUri,"contact_group");
+            String contect_group=s3uploaderObj.initUpload(imageUri,"contact_group", Integer.valueOf(signResponseModel.getUser().getId()));
             s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
                 @Override
                 public void onUploadSuccess(String response) {

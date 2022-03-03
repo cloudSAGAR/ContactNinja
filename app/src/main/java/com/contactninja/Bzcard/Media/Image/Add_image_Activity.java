@@ -94,10 +94,10 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
         edt_image_title.setText(information.getMedia_title());
         edt_Add_description.setText(information.getMedia_description());
         Glide.with(getApplicationContext())
-                .load(information.getMedia_url())
+                .load(information.getMedia_filePath())
                 .into(iv_image);
-        SelectImagePath=information.getMedia_url();
-        olld_image=information.getMedia_url();
+        SelectImagePath=information.getMedia_filePath();
+        olld_image=information.getMedia_filePath();
         is_featured = information.getIs_featured();
         layout_featured.setVisibility(View.VISIBLE);
         layout_Cancel.setVisibility(View.VISIBLE);
@@ -233,7 +233,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                                 Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                                 information.setId(bzMediaInformationList.get(i).getId());
                                 information.setMedia_type(bzMediaInformationList.get(i).getMedia_type());
-                                information.setMedia_url(SelectImagePath);
+                                information.setMedia_filePath(SelectImagePath);
                                 information.setMedia_title(edt_image_title.getText().toString().trim());
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
                                 information.setIs_featured(is_featured);
@@ -248,7 +248,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                         Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                         information.setId(bzMediaInformationList.size());
                         information.setMedia_type("image");
-                        information.setMedia_url(SelectImagePath);
+                        information.setMedia_filePath(SelectImagePath);
                         information.setMedia_title(edt_image_title.getText().toString().trim());
                         information.setMedia_description(edt_Add_description.getText().toString().trim());
                         if (bzMediaInformationList.size() == 0) {

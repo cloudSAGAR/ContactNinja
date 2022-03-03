@@ -124,4 +124,5 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-s3:2.6.31'
     implementation 'com.amazonaws:aws-android-sdk-cognito:2.6.31'
 
+
 }

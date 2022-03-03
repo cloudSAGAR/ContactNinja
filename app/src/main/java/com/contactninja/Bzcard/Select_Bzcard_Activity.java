@@ -114,29 +114,17 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                         bizcard.setCreatedBy(bizcardList.get(i).getCreatedBy());
                         bizcard.setUpdatedAt(bizcardList.get(i).getUpdatedAt());
                         if (bizcardList.get(i).getId().equals(1)) {
-
                             bizcard.setBzstore_image(R.drawable.bzstore1);
-
                         } else if (bizcardList.get(i).getId().equals(2)) {
-
                             bizcard.setBzstore_image(R.drawable.bzstore2);
-
                         } else if (bizcardList.get(i).getId().equals(3)) {
-
                             bizcard.setBzstore_image(R.drawable.bzstore3);
-
                         } else if (bizcardList.get(i).getId().equals(4)) {
-
                             bizcard.setBzstore_image(R.drawable.bzstore4);
-
                         } else if (bizcardList.get(i).getId().equals(5)) {
-
                             bizcard.setBzstore_image(R.drawable.bzstore5);
-
                         } else if (bizcardList.get(i).getId().equals(6)) {
-
                             bizcard.setBzstore_image(R.drawable.bzstore2);
-
                         }
                         bizcardList_.add(bizcard);
                     }
@@ -239,7 +227,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 onBackPressed();
                 break;
             case R.id.txt_Use:
-             /*   SessionManager.setBzcard(getApplicationContext(), new Bzcard_Fields_Model());
+                SessionManager.setBzcard(getApplicationContext(), new Bzcard_Fields_Model());
                 Bzcard_Fields_Model main_model;
                 main_model = SessionManager.getBzcard(this);
                 for(int i=0;i<bizcardList_.size();i++){
@@ -249,7 +237,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     }
                 }
                 main_model.setCard_id(Card_id);
-                SessionManager.setBzcard(this, main_model);*/
+                SessionManager.setBzcard(this, main_model);
                 startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
                 break;
         }

@@ -50,7 +50,8 @@
         <activity
             android:name=".Bzcard.CreateBzcard.Title_bzcardActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" />
         <activity
             android:name=".Bzcard.Media.PDF.PDF_List_Activity"
             android:exported="false"

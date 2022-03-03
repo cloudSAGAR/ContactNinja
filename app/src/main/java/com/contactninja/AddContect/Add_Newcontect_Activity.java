@@ -1224,9 +1224,11 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
     private void uploadImageTos3(String imageUri, String flag) {
         loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Newcontect_Activity.this);
+
         if (!imageUri.toString().equals("")) {
             olld_image=user_image_Url;
-            String contect_url=s3uploaderObj.initUpload(imageUri,"contact_image");
+            String contect_url=s3uploaderObj.initUpload(imageUri,"contact_image", Integer.valueOf(signResponseModel.getUser().getId()));
             s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
                 @Override
                 public void onUploadSuccess(String response) {

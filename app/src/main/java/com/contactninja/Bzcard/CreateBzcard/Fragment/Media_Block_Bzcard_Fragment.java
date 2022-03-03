@@ -728,7 +728,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         }
                     }
                     item.setIs_Select(true);
-                    main_model.setTheme("#"+item.getColorName());
+                    main_model.setThemeColorHash("#"+item.getColorName());
                     SessionManager.setBzcard(mCtx, main_model);
                     notifyDataSetChanged();
                 }
@@ -819,7 +819,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             switch (information.getMedia_type()) {
                 case "video":
                     Glide.with(mCtx)
-                            .load(Global.getYoutubeThumbnailUrlFromVideoUrl(information.getMedia_url()))
+                            .load(information.getMedia_filePath())
                             .into(holder.iv_video);
 
                     holder.layout_pdf.setVisibility(View.GONE);
@@ -834,7 +834,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                     holder.layout_pdf.setVisibility(View.GONE);
                     holder.layout_video_image.setVisibility(View.VISIBLE);
                     Glide.with(mCtx)
-                            .load(information.getMedia_url())
+                            .load(information.getMedia_filePath())
                             .into(holder.iv_video);
                     break;
             }
