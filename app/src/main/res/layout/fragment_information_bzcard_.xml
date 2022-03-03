@@ -553,7 +553,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
                             android:background="@color/add_contect_transpernt"
-                            android:enabled="false"
+                            android:enabled="true"
                             android:hint="@string/add_company_a"
                             android:textColor="@color/text_reg"
                             android:textColorHint="@color/home_list_sub_data">
@@ -697,7 +697,7 @@
                         <EditText
                             android:id="@+id/ev_company_url"
                             style="@style/tv_regular_13"
-                            android:enabled="false"
+                            android:enabled="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"

@@ -129,6 +129,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
         companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
         enterPhoneNumber();
         bzcard_model=SessionManager.getBzcard(getActivity());
+        Log.e("Model is",new Gson().toJson(SessionManager.getBzcard(getActivity())));
         setData();
         onAddTextChnageListnerCall();
         return view;
@@ -147,6 +148,24 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                 bzcard_model.setFirst_name(ev_first.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_company.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                bzcard_model.setCompany_name(ev_company.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
             @Override
@@ -399,7 +418,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                showBottomSheetDialog_For_Company();
+                //showBottomSheetDialog_For_Company();
                 break;
             case R.id.iv_company_dummy:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -505,22 +524,21 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("On Activty Response is",String.valueOf(requestCode));
-        Log.e("On Activty resultCode is",String.valueOf(resultCode));
-
         if (requestCode == 0) {
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == getActivity().RESULT_OK) {
                     Uri resultUri = result.getUri();
+                    bzcard_model.setCompany_logo(result.getUri().getPath());
+                    Log.e("Url is",resultUri.getPath());
+                    Log.e("Info is",new Gson().toJson(bzcard_model));
+                    SessionManager.setBzcard(getActivity(),bzcard_model);
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
 
                     logo_filePath = uri.getPath();
-                    bzcard_model.setCompany_logo(logo_filePath);
-                  //String contect_url=s3uploaderObj.Upload_Url(logo_filePath,"bzcard_company_logo");
-                  //bzcard_model.setCompany_logo_url(contect_url);
-                    SessionManager.setBzcard(getActivity(),bzcard_model);
+                    Log.e("Copany Logo",logo_filePath);
+
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
                     Glide.with(getActivity()).
                             load(resultUri).
@@ -543,14 +561,19 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == getActivity().RESULT_OK) {
                     Uri resultUri = result.getUri();
+                    bzcard_model=SessionManager.getBzcard(getActivity());
+                    bzcard_model.setCover_image(bzcard_model.getCover_image());
+                    bzcard_model.setProfile_image(bzcard_model.getProfile_image());
+                    bzcard_model.setCompany_logo(result.getUri().getPath());
+                    Log.e("Url is",resultUri.getPath());
+                    Log.e("Info is",new Gson().toJson(bzcard_model));
+                    SessionManager.setBzcard(getActivity(),bzcard_model);
+
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     logo_filePath = uri.getPath();
                     String profilePath = Global.getPathFromUri(getActivity(), uri);
-                  // String contect_url=s3uploaderObj.Upload_Url(logo_filePath,"bzcard_company_logo");
-                  // bzcard_model.setCompany_logo_url(contect_url);
-                    bzcard_model.setCompany_logo(logo_filePath);
-                    SessionManager.setBzcard(getActivity(),bzcard_model);
+
                     Glide.with(getActivity()).
                             load(resultUri).
                             apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
@@ -726,6 +749,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
     @Override
     public void onResume() {
+        bzcard_model=SessionManager.getBzcard(getActivity());
+        Log.e("bz Card",new Gson().toJson(bzcard_model));
         currentPage = PAGE_START;
         isLastPage = false;
         companyList.clear();

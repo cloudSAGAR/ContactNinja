@@ -52,6 +52,7 @@
     <color name="linkView_border">#9B9B9B</color>
     <color name="spinner">#BBBBBB</color>
     <color name="unSelect">#E9E9E9</color>
+    <color name="home_top_back">#E5E5E5</color>
 
 
     <color name="calendar_header_title">#FFF</color>
@@ -86,6 +87,10 @@
     <color name="bz_864879">#864879</color>
     <color name="bz_CF8A39">#CF8A39</color>
     <color name="bz_4A4A4A">#4A4A4A</color>
+    <color name="text_gray_50">#80ABABAB</color>
+    <color name="home_per_text">#27AE60</color>
+
+    
 
 
 </resources>

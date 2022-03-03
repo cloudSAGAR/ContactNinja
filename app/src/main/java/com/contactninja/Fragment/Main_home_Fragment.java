@@ -3,6 +3,8 @@ package com.contactninja.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -37,6 +40,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.eazegraph.lib.charts.BarChart;
+import org.eazegraph.lib.charts.ValueLineChart;
+import org.eazegraph.lib.models.BarModel;
+import org.eazegraph.lib.models.ValueLinePoint;
+import org.eazegraph.lib.models.ValueLineSeries;
 import org.json.JSONException;
 
 import java.lang.reflect.Type;
@@ -44,6 +52,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
+import im.dacer.androidcharts.PieHelper;
+import im.dacer.androidcharts.PieView;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
@@ -63,10 +73,12 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     SignResponseModel user_data;
     MainActivity mainActivity;
 
+    ValueLineChart mBarChart;
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity=mainActivity;
     }
     private long mLastClickTime = 0;
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -125,6 +137,17 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             }
         });
 
+
+
+         mBarChart = (ValueLineChart)view.findViewById(R.id.cubiclinechart);
+         mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
+         mBarChart.startAnimation();
+        loadData();
+        PieView pieView = (PieView)view.findViewById(R.id.pie_view);
+        ArrayList<PieHelper> pieHelperArrayList = new ArrayList<PieHelper>();
+        pieView.setDate(pieHelperArrayList);
+        pieView.selectedPie(2); //optional
+        pieView.showPercentLabel(false); //optional
 
         return view;
     }
@@ -285,6 +308,53 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         });
     }
 
+    private void loadData() {
+
+
+        ValueLineSeries series = new ValueLineSeries();
+        series.setColor(Color.parseColor("#79D2DE"));
+        series.addPoint(new ValueLinePoint(2.4f));
+        series.addPoint(new ValueLinePoint(3.2f));
+        series.addPoint(new ValueLinePoint(2.6f));
+        series.addPoint(new ValueLinePoint(5.0f));
+        series.addPoint(new ValueLinePoint(3.5f));
+        series.addPoint(new ValueLinePoint(2.4f));
+        series.addPoint(new ValueLinePoint(0.4f));
+        series.addPoint(new ValueLinePoint(3.4f));
+        series.addPoint(new ValueLinePoint(2.5f));
+        series.addPoint(new ValueLinePoint(1.4f));
+        series.addPoint(new ValueLinePoint(4.4f));
+        series.addPoint(new ValueLinePoint(2.4f));
+        series.addPoint(new ValueLinePoint(3.2f));
+        series.addPoint(new ValueLinePoint(2.6f));
+        series.addPoint(new ValueLinePoint(5.0f));
+        series.addPoint(new ValueLinePoint(3.5f));
+        series.addPoint(new ValueLinePoint(2.4f));
+        series.addPoint(new ValueLinePoint(0.4f));
+        series.addPoint(new ValueLinePoint(3.4f));
+        series.addPoint(new ValueLinePoint(2.5f));
+        series.addPoint(new ValueLinePoint(1.0f));
+        series.addPoint(new ValueLinePoint(4.4f));
+        series.addPoint(new ValueLinePoint(2.4f));
+        series.addPoint(new ValueLinePoint(3.2f));
+        series.addPoint(new ValueLinePoint(2.6f));
+        series.addPoint(new ValueLinePoint(5.0f));
+        series.addPoint(new ValueLinePoint(3.5f));
+        series.addPoint(new ValueLinePoint(2.4f));
+        series.addPoint(new ValueLinePoint(0.4f));
+        series.addPoint(new ValueLinePoint(3.4f));
+        series.addPoint(new ValueLinePoint(2.5f));
+        series.addPoint(new ValueLinePoint(1.0f));
+        series.addPoint(new ValueLinePoint(4.2f));
+        series.addPoint(new ValueLinePoint(2.4f));
+        series.addPoint(new ValueLinePoint(3.6f));
+        series.addPoint(new ValueLinePoint(1.0f));
+        series.addPoint(new ValueLinePoint(2.5f));
+        series.addPoint(new ValueLinePoint(2.0f));
+        series.addPoint(new ValueLinePoint(1.4f));
+        mBarChart.addSeries(series);
+
+    }
     private void Working_hour(Integer value) {
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();

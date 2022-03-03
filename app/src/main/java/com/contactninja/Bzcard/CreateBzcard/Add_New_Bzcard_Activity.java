@@ -39,6 +39,7 @@ import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -433,7 +434,9 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setProfile_image(profile_filePath);
-                     //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
+                        Log.e("Info is",new Gson().toJson(bzcard_model));
+
+                        //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
                      //  bzcard_model.setProfile_url(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
@@ -465,7 +468,9 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_dummy_cover_img.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setCover_image(cover_filePath);
-                     // String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
+                        Log.e("Info is",new Gson().toJson(bzcard_model));
+
+                        // String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
                      // bzcard_model.setCover_url(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
@@ -482,11 +487,14 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.setProfile_image(profile_filePath);
+                        Log.e("Info is",new Gson().toJson(bzcard_model));
+
                      //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
                      //  bzcard_model.setProfile_image(contect_url);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
                     }
+
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }

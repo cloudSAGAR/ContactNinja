@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +38,13 @@ public class Contect_Demo extends AppCompatActivity {
 
     RecyclerView contact_list;
     CompanyAdapter paginationAdapter;
-    int currentPage = 1;
+    int currentPage = PAGE_START;
     boolean isLoading = false;
     boolean isLastPage = false;
     int Total = 0;
     LinearLayoutManager layoutManager;
-    int count = 49;
+    int count = 50;
+    int item_count=0;
     private List<ContectListData.Contact> contectListData = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -51,7 +53,6 @@ public class Contect_Demo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contect_demo);
         Total = SessionManager.getContectList(getApplicationContext()).get(0).getContacts().size();
-        Log.e("Size is a", String.valueOf(SessionManager.getContectList(getApplicationContext()).get(0).getContacts().size()));
         contact_list = findViewById(R.id.contact_list);
         layoutManager = new LinearLayoutManager(this);
         contact_list.setLayoutManager(layoutManager);
@@ -59,43 +60,14 @@ public class Contect_Demo extends AppCompatActivity {
         contact_list.setAdapter(paginationAdapter);
         contact_list.setItemViewCacheSize(15000);
 
-
-        if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
-            List<ContectListData.Contact> s = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
-            List<ContectListData.Contact> mainlist = s.subList(0, count);
-
-            if (currentPage != PAGE_START)
-                paginationAdapter.removeLoading();
-                paginationAdapter.addItems(mainlist);
-            // check weather is last page or not
-            if (Total > paginationAdapter.getItemCount()) {
-                paginationAdapter.addLoading();
-            } else {
-                isLastPage = true;
-            }
-            isLoading = false;
-
-
-        }
-
+        doApiCall();
         contact_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
-
-                    count = count + 50;
-                    isLoading = true;
-                    currentPage++;
-                    List<ContectListData.Contact> s = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
-                    contectListData = s.subList(count - 49, count);
-                    if (currentPage != PAGE_START)
-                        paginationAdapter.removeLoading();
-                        paginationAdapter.addItems(contectListData);
-                    if (Total > paginationAdapter.getItemCount()) {
-                        paginationAdapter.addLoading();
-                    } else {
-                        isLastPage = true;
-                    }
-                    isLoading = false;
+                count=count+50;
+                isLoading = true;
+                currentPage++;
+                doApiCall();
 
 
             }
@@ -112,6 +84,29 @@ public class Contect_Demo extends AppCompatActivity {
         });
 
     }
+
+    private void doApiCall() {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                List<ContectListData.Contact> s = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
+                contectListData = s.subList(count - 50, count);
+
+                if (currentPage != PAGE_START) paginationAdapter.removeLoading();
+                paginationAdapter.addItems(contectListData);
+                // check weather is last page or not
+                if (currentPage < SessionManager.getContectList(getApplicationContext()).get(0).getContacts().size()/50) {
+                    paginationAdapter.addLoading();
+                } else {
+                    isLastPage = true;
+                }
+                isLoading = false;
+            }
+        }, 1500);
+    }
+
 
 
     public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.viewData> {

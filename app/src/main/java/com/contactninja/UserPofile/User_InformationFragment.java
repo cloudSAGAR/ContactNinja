@@ -139,7 +139,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         View view = inflater.inflate(R.layout.fragment_user_information, container, false);
         IntentUI(view);
-        Log.e("On Click Method ","3");
+        //Log.e("On Click Method ","3");
         addcontectModel = new AddcontectModel();
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());

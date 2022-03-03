@@ -626,4 +626,15 @@ Number</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    //Home Text
+    <string name="home_campaign">Campaign</string>
+    <string name="home_text">Text</string>
+    <string name="home_email">Email</string>
+    <string name="home_broadcast">Broadcast</string>
+    <string name="hoome_affiliategroth">Affiliate Groth</string>
+    <string name="home_lastday">last 7 days</string>
+    <string name="home_affiliate_text">View Detailed Affiliate Report</string>
+    <string name="home_today_activity">Today  Activity</string>
+
 </resources>
