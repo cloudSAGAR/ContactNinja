@@ -353,8 +353,22 @@ public class Company_Fragment extends Fragment {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = "BLOCK";
+                    companyAdapter.clear();
+                    companyList.clear();
+                    companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
+
+                    rvinviteuserdetails.setLayoutManager(layoutManager);
+                    rvinviteuserdetails.setHasFixedSize(true);
+                    rvinviteuserdetails.setAdapter(companyAdapter);
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
                     RefreshList();
 //
+                }
+                else {
+                    bottomSheetDialog.dismiss();
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Filter = "All";
+                    RefreshList();
                 }
 
             }
@@ -680,7 +694,7 @@ public class Company_Fragment extends Fragment {
 
     }
     public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-  private static final int VIEW_TYPE_LOADING = 0;
+        private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
         TextView phone_txt;

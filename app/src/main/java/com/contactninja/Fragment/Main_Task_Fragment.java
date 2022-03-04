@@ -354,6 +354,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     Filter = Filters[0];
                     refresf_api();
                 }
+                else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    bottomSheetDialog.dismiss();
+                    Filter = "";
+                    refresf_api();
+                }
 
             }
         });
@@ -364,6 +370,11 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[1];
+                    refresf_api();
+                }
+                else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);                    bottomSheetDialog.dismiss();
+                    Filter = "";
                     refresf_api();
                 }
 
@@ -379,6 +390,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     refresf_api();
                 }
 
+                else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    bottomSheetDialog.dismiss();
+                    Filter = "";
+                    refresf_api();
+                }
             }
         });
         ch_complate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -388,6 +405,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[3];
+                    refresf_api();
+                }
+                else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    bottomSheetDialog.dismiss();
+                    Filter = "";
                     refresf_api();
                 }
 
@@ -402,6 +425,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     Filter = Filters[4];
                     refresf_api();
                 }
+                else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    bottomSheetDialog.dismiss();
+                    Filter = "";
+                    refresf_api();
+                }
 
             }
         });
@@ -414,7 +443,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     Filter = Filters[5];
                     refresf_api();
                 }
-
+                else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                   bottomSheetDialog.dismiss();
+                    Filter = "";
+                    refresf_api();
+                }
             }
         });
         ch_all_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

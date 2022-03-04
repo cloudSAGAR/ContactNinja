@@ -217,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 listContacts = new ContactFetcher(MainActivity.this).fetchAll();
-
                 SignResponseModel user_data = SessionManager.getGetUserdata(MainActivity.this);
                 String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
 
@@ -236,16 +235,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             splitdata(listContacts);
                         } else {
                             try{
-                                splitdata(listContacts);
+                              splitdata(listContacts);
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
-                           //getTasks();
+                           /* MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                            myAsyncTasks.execute();*/
                         }
                     }
                     else {
-                        splitdata(listContacts);
-
+                       splitdata(listContacts);
+                 /*       MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks.execute();*/
                     }
                 }
 
@@ -921,17 +922,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getUser_check(ArrayList<Contact> csv_inviteListData) {
-        //Get One By One Model Data
-       Log.e("Csv List Size",String.valueOf(csv_inviteListData.size()));
+
         try {
             for (int i = 0; i < csv_inviteListData.size(); i++) {
-                check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(0).number);
+                for ( int j=0;j<csv_inviteListData.get(i).numbers.size();j++)
+                {
+                    check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(j).number);
+                }
             }
         }
         catch (Exception e)
         {
 
         }
+
+
+
+
 
 
 
@@ -1115,6 +1122,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SaveTask st = new SaveTask();
         st.execute();
     }
+
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+               getTasks();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
+    }
+
 
 
 }
