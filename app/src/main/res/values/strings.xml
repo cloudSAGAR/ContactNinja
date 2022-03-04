@@ -561,6 +561,7 @@ Number</string>
     <string name="select_bzcard">Select Bzcard</string>
     <string name="preview">Preview</string>
     <string name="use_template">Use This Template</string>
+    <string name="edit_template">Edit This Template</string>
     <string name="bz_footer">*Represents dummy data, upload photos, videos, and text content to make it your own!</string>
     <string name="bz_footer2">Share your mission with the world when you bring your business contact info to life on a virtual BZcard.</string>
     <string name="Bzcard_theme_colour">Bzcard theme colour</string>
@@ -636,6 +637,11 @@ Number</string>
     <string name="home_lastday">last 7 days</string>
     <string name="home_affiliate_text">View Detailed Affiliate Report</string>
     <string name="home_today_activity">Today  Activity</string>
+    <string name="Edit">Edit</string>
+    <string name="Delete">Delete</string>
+    <string name="Share">Share</string>
+    <string name="Preview">Preview</string>
+
     <string name="home_bz_card">Bzcard analytics</string>
     <string name="home_email_text">Connected Email</string>
 </resources>

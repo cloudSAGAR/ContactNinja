@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.Interface.Bz_MediaClick;
+import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -44,7 +45,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
     ImageView iv_back,iv_media_title;
     RecyclerView rv_imageList;
     ImagelistAdepter imagelistAdepter;
-    static Bzcard_Fields_Model model;
+    static BZcardListModel.Bizcard model;
     static List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
     List<Bzcard_Fields_Model.BZ_media_information> bzMedia_image_List =new ArrayList<>();
 
@@ -59,7 +60,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
     }
     private void setList() {
         model= SessionManager.getBzcard(Image_List_Activity.this);
-        bzMediaInformationList=model.getBzMediaInformationList();
+        bzMediaInformationList=model.getBzcardFieldsModel().getBzMediaInformationList();
         for(int i=0;i<bzMediaInformationList.size();i++){
             if(bzMediaInformationList.get(i).getMedia_type().equals("image")){
                 bzMedia_image_List.add(bzMediaInformationList.get(i));
@@ -232,7 +233,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
                     bzMediaInformationList.remove(i);
-                    model.setBzMediaInformationList(bzMediaInformationList);
+                    model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                     SessionManager.setBzcard(mCtx, model);
                     break;
                 }

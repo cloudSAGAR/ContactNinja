@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.contactninja.MainActivity;
+import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
@@ -66,7 +67,7 @@ import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
-
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Information_Bzcard_Fragment extends Fragment implements View.OnClickListener {
 
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
@@ -91,7 +92,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    Bzcard_Fields_Model bzcard_model;
+    BZcardListModel.Bizcard bzcard_model;
     String urlFromS3 = null;
     S3Uploader s3uploaderObj;
 
@@ -145,7 +146,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.setFirst_name(ev_first.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().setFirst_name(ev_first.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -164,7 +165,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.setCompany_name(ev_company.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().setCompany_name(ev_company.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
@@ -182,7 +183,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                bzcard_model.setLast_name(ev_last_name.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().setLast_name(ev_last_name.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
@@ -199,7 +200,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.setContant_number(edt_mobile_no.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().setContant_number(edt_mobile_no.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
@@ -216,7 +217,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.setEmail(ev_email.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().setEmail(ev_email.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
@@ -233,7 +234,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.setCompany_url(ev_company_url.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().setCompany_url(ev_company_url.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
@@ -251,7 +252,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                bzcard_model.setJobtitle(ev_job.getText().toString());
+                bzcard_model.getBzcardFieldsModel().setJobtitle(ev_job.getText().toString());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
@@ -268,7 +269,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.setAddrees(ev_address.getText().toString());
+                bzcard_model.getBzcardFieldsModel().setAddrees(ev_address.getText().toString());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
@@ -285,7 +286,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.setZipcode(ev_zip.getText().toString());
+                bzcard_model.getBzcardFieldsModel().setZipcode(ev_zip.getText().toString());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -298,32 +299,60 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
     }
 
     private void setData() {
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        ev_first.setText(user_data.getUser().getFirstName());
-        bzcard_model.setFirst_name(user_data.getUser().getFirstName());
-        ev_last_name.setText(user_data.getUser().getLastName());
-        bzcard_model.setLast_name(user_data.getUser().getLastName());
-        edt_mobile_no.setText(user_data.getUser().getContactNumber());
-        bzcard_model.setContant_number(user_data.getUser().getContactNumber());
-        //Country Code Set
-        ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),user_data.getUser().getContactNumber())));
-        ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),user_data.getUser().getContactNumber()));
-        ccp_id.resetToDefaultCountry();
-        ccp_id.registerCarrierNumberEditText(edt_mobile_no);
-        bzcard_model.setCountry_code(ccp_id.getSelectedCountryCode());
-        ev_email.setText(user_data.getUser().getEmail());
-        bzcard_model.setEmail(user_data.getUser().getEmail());
-        ev_company.setText(user_data.getUser().getUserprofile().getCompany_name());
-        bzcard_model.setCompany_name(user_data.getUser().getUserprofile().getCompany_name());
-        ev_company_url.setText(user_data.getUser().getUserprofile().getCompany_url());
-        bzcard_model.setCompany_url(user_data.getUser().getUserprofile().getCompany_url());
-        ev_job.setText(user_data.getUser().getUserprofile().getJob_title());
-        bzcard_model.setJobtitle(user_data.getUser().getUserprofile().getJob_title());
-        ev_address.setText(user_data.getUser().getUserprofile().getAddress());
-        bzcard_model.setAddrees(user_data.getUser().getUserprofile().getAddress());
-        ev_zip.setText(user_data.getUser().getUserprofile().getZipcode());
-        bzcard_model.setZipcode(user_data.getUser().getUserprofile().getZipcode());
-        SessionManager.setBzcard(getActivity(),bzcard_model);
+        if(bzcard_model.isEdit()){
+            ev_first.setText(bzcard_model.getBzcardFieldsModel().getFirst_name());
+            ev_last_name.setText(bzcard_model.getBzcardFieldsModel().getLast_name());
+            edt_mobile_no.setText(bzcard_model.getBzcardFieldsModel().getContant_number());
+            //Country Code Set
+            ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(), bzcard_model.getBzcardFieldsModel().getContant_number())));
+            ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(), bzcard_model.getBzcardFieldsModel().getContant_number()));
+            ccp_id.resetToDefaultCountry();
+            ccp_id.registerCarrierNumberEditText(edt_mobile_no);
+            ev_email.setText(bzcard_model.getBzcardFieldsModel().getEmail());
+            ev_company.setText(bzcard_model.getBzcardFieldsModel().getCompany_name());
+            ev_company_url.setText(bzcard_model.getBzcardFieldsModel().getCompany_url());
+            ev_job.setText(bzcard_model.getBzcardFieldsModel().getJobtitle());
+            ev_address.setText(bzcard_model.getBzcardFieldsModel().getAddrees());
+            ev_zip.setText(bzcard_model.getBzcardFieldsModel().getZipcode());
+
+            Glide.with(getActivity()).
+                    load(bzcard_model.getBzcardFieldsModel().getCompany_logo_url()).
+                    apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
+                    into(iv_company_icon);
+            iv_company_icon.setVisibility(View.VISIBLE);
+            iv_company_dummy.setVisibility(View.GONE);
+
+            tv_reupload.setVisibility(View.VISIBLE);
+            tv_image_size.setVisibility(View.GONE);
+
+        }else {
+            SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+            ev_first.setText(user_data.getUser().getFirstName());
+            bzcard_model.getBzcardFieldsModel().setFirst_name(user_data.getUser().getFirstName());
+            ev_last_name.setText(user_data.getUser().getLastName());
+            bzcard_model.getBzcardFieldsModel().setLast_name(user_data.getUser().getLastName());
+            edt_mobile_no.setText(user_data.getUser().getContactNumber());
+            bzcard_model.getBzcardFieldsModel().setContant_number(user_data.getUser().getContactNumber());
+            //Country Code Set
+            ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(), user_data.getUser().getContactNumber())));
+            ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(), user_data.getUser().getContactNumber()));
+            ccp_id.resetToDefaultCountry();
+            ccp_id.registerCarrierNumberEditText(edt_mobile_no);
+            bzcard_model.getBzcardFieldsModel().setCountry_code(ccp_id.getSelectedCountryCode());
+            ev_email.setText(user_data.getUser().getEmail());
+            bzcard_model.getBzcardFieldsModel().setEmail(user_data.getUser().getEmail());
+            ev_company.setText(user_data.getUser().getUserprofile().getCompany_name());
+            bzcard_model.getBzcardFieldsModel().setCompany_name(user_data.getUser().getUserprofile().getCompany_name());
+            ev_company_url.setText(user_data.getUser().getUserprofile().getCompany_url());
+            bzcard_model.getBzcardFieldsModel().setCompany_url(user_data.getUser().getUserprofile().getCompany_url());
+            ev_job.setText(user_data.getUser().getUserprofile().getJob_title());
+            bzcard_model.getBzcardFieldsModel().setJobtitle(user_data.getUser().getUserprofile().getJob_title());
+            ev_address.setText(user_data.getUser().getUserprofile().getAddress());
+            bzcard_model.getBzcardFieldsModel().setAddrees(user_data.getUser().getUserprofile().getAddress());
+            ev_zip.setText(user_data.getUser().getUserprofile().getZipcode());
+            bzcard_model.getBzcardFieldsModel().setZipcode(user_data.getUser().getUserprofile().getZipcode());
+            SessionManager.setBzcard(getActivity(), bzcard_model);
+        }
     }
 
     private void IntentUI(View view) {
@@ -529,7 +558,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == getActivity().RESULT_OK) {
                     Uri resultUri = result.getUri();
-                    bzcard_model.setCompany_logo(result.getUri().getPath());
+                    bzcard_model.getBzcardFieldsModel().setCompany_logo(result.getUri().getPath());
                     Log.e("Url is",resultUri.getPath());
                     Log.e("Info is",new Gson().toJson(bzcard_model));
                     SessionManager.setBzcard(getActivity(),bzcard_model);
@@ -562,9 +591,9 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                 if (resultCode == getActivity().RESULT_OK) {
                     Uri resultUri = result.getUri();
                     bzcard_model=SessionManager.getBzcard(getActivity());
-                    bzcard_model.setCover_image(bzcard_model.getCover_image());
-                    bzcard_model.setProfile_image(bzcard_model.getProfile_image());
-                    bzcard_model.setCompany_logo(result.getUri().getPath());
+                    bzcard_model.getBzcardFieldsModel().setCover_image(bzcard_model.getBzcardFieldsModel().getCover_image());
+                    bzcard_model.getBzcardFieldsModel().setProfile_image(bzcard_model.getBzcardFieldsModel().getProfile_image());
+                    bzcard_model.getBzcardFieldsModel().setCompany_logo(result.getUri().getPath());
                     Log.e("Url is",resultUri.getPath());
                     Log.e("Info is",new Gson().toJson(bzcard_model));
                     SessionManager.setBzcard(getActivity(),bzcard_model);
@@ -853,9 +882,9 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                         ev_company.setText(holder.tv_item.getText().toString());
                         ev_company_url.setText("");
                         ev_company_url.setText(WorkData.getCompany_url());
-                        bzcard_model.setCompany_id(String.valueOf(WorkData.getId()));
-                        bzcard_model.setCompany_name(holder.tv_item.getText().toString());
-                        bzcard_model.setCompany_url(WorkData.getCompany_url());
+                        bzcard_model.getBzcardFieldsModel().setCompany_id(String.valueOf(WorkData.getId()));
+                        bzcard_model.getBzcardFieldsModel().setCompany_name(holder.tv_item.getText().toString());
+                        bzcard_model.getBzcardFieldsModel().setCompany_url(WorkData.getCompany_url());
                         SessionManager.setBzcard(getActivity(),bzcard_model);
 
                     }

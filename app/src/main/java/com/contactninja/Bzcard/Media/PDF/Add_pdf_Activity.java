@@ -28,6 +28,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.contactninja.Bzcard.Media.Select_Media_Activity;
+import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -46,7 +47,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
     TextView save_button, txt_selected_file_name;
     SessionManager sessionManager;
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    Bzcard_Fields_Model model;
+    BZcardListModel.Bizcard model;
     Bzcard_Fields_Model.BZ_media_information information;
     EditText edt_pdf_title, edt_Add_description;
     LinearLayout layout_replace, layout_Cancel;
@@ -62,7 +63,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager = new SessionManager(this);
         model = SessionManager.getBzcard(Add_pdf_Activity.this);
-        bzMediaInformationList = model.getBzMediaInformationList();
+        bzMediaInformationList = model.getBzcardFieldsModel().getBzMediaInformationList();
         initUI();
         try {
             Intent intent = getIntent();
@@ -158,7 +159,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                 for (int i = 0; i < bzMediaInformationList.size(); i++) {
                     if (bzMediaInformationList.get(i).getId().equals(information.getId())) {
                         bzMediaInformationList.remove(i);
-                        model.setBzMediaInformationList(bzMediaInformationList);
+                        model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                         SessionManager.setBzcard(Add_pdf_Activity.this, model);
                         break;
                     }
@@ -187,7 +188,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
                                 information.setIs_featured(is_featured);
                                 bzMediaInformationList.set(i, information);
-                                model.setBzMediaInformationList(bzMediaInformationList);
+                                model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                                 SessionManager.setBzcard(Add_pdf_Activity.this, model);
 
                                 break;
@@ -207,7 +208,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                             information.setIs_featured(0);
                         }
                         bzMediaInformationList.add(information);
-                        model.setBzMediaInformationList(bzMediaInformationList);
+                        model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                         SessionManager.setBzcard(Add_pdf_Activity.this, model);
                     }
                     intent = new Intent(getApplicationContext(), Select_Media_Activity.class);

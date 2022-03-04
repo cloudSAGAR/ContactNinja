@@ -11,6 +11,7 @@ import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.BroadcastActivityListModel;
 import com.contactninja.Model.BroadcastActivityModel;
 import com.contactninja.Model.Broadcast_Data;
@@ -669,19 +670,19 @@ public class SessionManager {
     }
 
 
-    public static Bzcard_Fields_Model getBzcard(Context context) {
+    public static BZcardListModel.Bizcard getBzcard(Context context) {
         Gson gson = new Gson();
         String json = pref.getString(Bzcard, "");
-        Type type = new TypeToken<Bzcard_Fields_Model>() {
+        Type type = new TypeToken<BZcardListModel.Bizcard>() {
         }.getType();
-        Bzcard_Fields_Model signModel = gson.fromJson(json, type);
+        BZcardListModel.Bizcard signModel = gson.fromJson(json, type);
         if (signModel == null) {
-            signModel = new Bzcard_Fields_Model();
+            signModel = new BZcardListModel.Bizcard();
         }
         return signModel;
     }
 
-    public static void setBzcard(Context context, Bzcard_Fields_Model bzcard_model) {
+    public static void setBzcard(Context context, BZcardListModel.Bizcard bzcard_model) {
         Gson gson = new Gson();
         String json = gson.toJson(bzcard_model);
         SharedPreferences.Editor editor = pref.edit();

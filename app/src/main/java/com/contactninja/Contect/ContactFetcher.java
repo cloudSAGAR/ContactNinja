@@ -9,6 +9,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.telephony.TelephonyManager;
 
 import com.contactninja.MainActivity;
+import com.contactninja.Utils.Global;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,28 +93,28 @@ public class ContactFetcher {
             PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(context);
             while (!phone.isAfterLast()) {
                 String number = phone.getString(contactNumberColumnIndex);
-                final String contactId = phone.getString(contactIdColumnIndex);
-                Contact contact = contactsMap.get(contactId);
+                    final String contactId = phone.getString(contactIdColumnIndex);
+                    Contact contact = contactsMap.get(contactId);
 
-                if (contact == null) {
-                    continue;
-                }
-                final int type = phone.getInt(contactTypeColumnIndex);
-                String customLabel = "Custom";
-                CharSequence phoneType = Phone.getTypeLabel(context.getResources(), type, customLabel);
-                Phonenumber.PhoneNumber numberProto = null;
-                try {
-                numberProto = phoneUtil.parse(number, country.toUpperCase());
-                countryCode = numberProto.getCountryCode();
-                number = number.replace(" ", "");
-                number = number.replace("-", "");
-                if (!number.contains("+")) {
-                    number = "+" + countryCode + number;
-                }
-                } catch (NumberParseException e) {
-                    e.printStackTrace();
-                }
-                contact.addNumber(number, phoneType.toString());
+                    if (contact == null) {
+                        continue;
+                    }
+                    final int type = phone.getInt(contactTypeColumnIndex);
+                    String customLabel = "Custom";
+                    CharSequence phoneType = Phone.getTypeLabel(context.getResources(), type, customLabel);
+                    Phonenumber.PhoneNumber numberProto = null;
+                    try {
+                        numberProto = phoneUtil.parse(number, country.toUpperCase());
+                        countryCode = numberProto.getCountryCode();
+                        number = number.replace(" ", "");
+                        number = number.replace("-", "");
+                        if (!number.contains("+")) {
+                            number = "+" + countryCode + number;
+                        }
+                    } catch (NumberParseException e) {
+                        e.printStackTrace();
+                    }
+                        contact.addNumber(number, phoneType.toString());
                 phone.moveToNext();
             }
         }

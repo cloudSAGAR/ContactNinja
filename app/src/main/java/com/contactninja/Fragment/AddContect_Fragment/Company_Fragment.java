@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -678,9 +679,8 @@ public class Company_Fragment extends Fragment {
         });
 
     }
-
-    public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.viewData> {
-        private static final int VIEW_TYPE_LOADING = 0;
+    public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+  private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
         TextView phone_txt;
@@ -696,22 +696,134 @@ public class Company_Fragment extends Fragment {
 
         @NonNull
         @Override
-        public CompanyAdapter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            RecyclerView.ViewHolder viewHolder = null;
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
-                    return new CompanyAdapter.viewData(
-                            LayoutInflater.from(parent.getContext()).inflate(R.layout.comany_item_layout, parent, false));
+                    View viewItem = inflater.inflate(R.layout.comany_item_layout, parent, false);
+                    viewHolder = new CompanyAdapter.MovieViewHolder(viewItem);
+                    break;
                 case VIEW_TYPE_LOADING:
-                    return new CompanyAdapter.ProgressHolder(
-                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
-                default:
-                    return null;
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
+                    viewHolder = new CompanyAdapter.LoadingViewHolder(viewLoading);
+                    break;
             }
-
+            return viewHolder;
         }
 
         @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            CompanyModel.Company WorkData = companyList.get(position);
+            switch (getItemViewType(position)) {
+                case VIEW_TYPE_NORMAL:
+                   MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
+
+                    if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
+                        try {
+                            if (WorkData.getIs_blocked().equals(1)) {
+                                movieViewHolder.iv_block.setVisibility(View.VISIBLE);
+                                movieViewHolder.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
+                            } else {
+                                movieViewHolder.iv_block.setVisibility(View.GONE);
+                                movieViewHolder.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                        if (Global.IsNotNull(WorkData.getName())) {
+                            movieViewHolder.userName.setText(WorkData.getName());
+                            movieViewHolder.userNumber.setVisibility(View.GONE);
+                        }
+
+
+                        movieViewHolder.first_latter.setVisibility(View.VISIBLE);
+                        movieViewHolder.top_layout.setVisibility(View.VISIBLE);
+
+
+                        String first_latter = WorkData.getName().substring(0, 1).toUpperCase();
+                        movieViewHolder.first_latter.setText(first_latter);
+                        if (second_latter.equals("")) {
+                            current_latter = first_latter;
+                            second_latter = first_latter;
+                            movieViewHolder.first_latter.setVisibility(View.VISIBLE);
+                            movieViewHolder.top_layout.setVisibility(View.VISIBLE);
+
+                        } else if (second_latter.equals(first_latter)) {
+                            current_latter = second_latter;
+                            // inviteUserDetails.setF_latter("");
+                            movieViewHolder.first_latter.setVisibility(View.GONE);
+                            movieViewHolder.top_layout.setVisibility(View.GONE);
+
+                        } else {
+
+                            current_latter = first_latter;
+                            second_latter = first_latter;
+                            movieViewHolder.first_latter.setVisibility(View.VISIBLE);
+                            movieViewHolder.top_layout.setVisibility(View.VISIBLE);
+
+
+                        }
+
+
+                        String name = WorkData.getName();
+                        String add_text = "";
+                        String[] split_data = name.split(" ");
+                        try {
+                            for (int i = 0; i < split_data.length; i++) {
+                                if (i == 0) {
+                                    add_text = split_data[i].substring(0, 1);
+                                } else {
+                                    add_text = add_text + split_data[i].charAt(0);
+                                    break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                        movieViewHolder.no_image.setText(add_text);
+                        movieViewHolder.no_image.setVisibility(View.VISIBLE);
+                        movieViewHolder.profile_image.setVisibility(View.GONE);
+
+
+                        movieViewHolder.main_layout.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+
+                                broadcast_manu(WorkData);
+                                return false;
+                            }
+                        });
+                        movieViewHolder.main_layout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+
+                                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                                intent.putExtra("flag", "read");
+                                intent.putExtra("id", WorkData.getId());
+                                startActivity(intent);
+                            }
+                        });
+
+                    break;
+                case VIEW_TYPE_LOADING:
+                    CompanyAdapter.LoadingViewHolder loadingViewHolder =(CompanyAdapter.LoadingViewHolder) holder;
+                    loadingViewHolder.progressBar.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+        }
+        @Override
         public int getItemViewType(int position) {
+       //     return (position == companyList.size() - 1 && isLoaderVisible) ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
             if (isLoaderVisible) {
                 return position == companyList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
             } else {
@@ -722,8 +834,6 @@ public class Company_Fragment extends Fragment {
         public void addItems(List<CompanyModel.Company> postItems) {
             companyList.addAll(postItems);
             notifyDataSetChanged();
-
-
         }
 
         public void addLoading() {
@@ -752,113 +862,18 @@ public class Company_Fragment extends Fragment {
             return companyList.get(position);
         }
 
-        @Override
-        public void onBindViewHolder(@NonNull CompanyAdapter.viewData holder, int position) {
-            CompanyModel.Company WorkData = companyList.get(position);
-            if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
-                try {
-                    if (WorkData.getIs_blocked().equals(1)) {
-                        holder.iv_block.setVisibility(View.VISIBLE);
-                        holder.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
-                    } else {
-                        holder.iv_block.setVisibility(View.GONE);
-                        holder.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                holder.userName.setText(WorkData.getName());
-                holder.userNumber.setVisibility(View.GONE);
+        public class LoadingViewHolder extends RecyclerView.ViewHolder {
 
-                holder.first_latter.setVisibility(View.VISIBLE);
-                holder.top_layout.setVisibility(View.VISIBLE);
+            private final ProgressBar progressBar;
 
-
-                String first_latter = WorkData.getName().substring(0, 1).toUpperCase();
-                holder.first_latter.setText(first_latter);
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
-
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                    // inviteUserDetails.setF_latter("");
-                    holder.first_latter.setVisibility(View.GONE);
-                    holder.top_layout.setVisibility(View.GONE);
-
-                } else {
-
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
-
-
-                }
-
-
-                String name = WorkData.getName();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                holder.no_image.setText(add_text);
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
-
-
-                holder.main_layout.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-
-                        broadcast_manu(WorkData);
-                        return false;
-                    }
-                });
-                holder.main_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-
-                        Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
-                        intent.putExtra("flag", "read");
-                        intent.putExtra("id", WorkData.getId());
-                        startActivity(intent);
-                    }
-                });
+            public LoadingViewHolder(View itemView) {
+                super(itemView);
+                progressBar = itemView.findViewById(R.id.progressBar);
 
             }
-
         }
 
-        @Override
-        public int getItemCount() {
-            return companyList.size();
-        }
-
-        public void removeitem() {
-            companyList.clear();
-            notifyDataSetChanged();
-        }
-
-        public class viewData extends RecyclerView.ViewHolder {
+        public class MovieViewHolder extends RecyclerView.ViewHolder {
             TextView no_image;
             TextView userName, userNumber, first_latter;
             CircleImageView profile_image;
@@ -866,8 +881,7 @@ public class Company_Fragment extends Fragment {
             RelativeLayout main_layout;
             ImageView iv_block;
 
-
-            public viewData(@NonNull View itemView) {
+            public MovieViewHolder(View itemView) {
                 super(itemView);
                 first_latter = itemView.findViewById(R.id.first_latter);
                 userName = itemView.findViewById(R.id.username);
@@ -880,13 +894,18 @@ public class Company_Fragment extends Fragment {
             }
         }
 
-        public class ProgressHolder extends CompanyAdapter.viewData {
-            ProgressHolder(View itemView) {
-                super(itemView);
-            }
-
+        @Override
+        public int getItemCount() {
+            return companyList.size();
         }
-    }
 
+        public void removeitem() {
+            companyList.clear();
+            notifyDataSetChanged();
+        }
+
+
+
+    }
 
 }

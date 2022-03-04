@@ -206,8 +206,8 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 onBackPressed();
                 break;
             case R.id.txt_Use:
-                SessionManager.setBzcard(getApplicationContext(), new Bzcard_Fields_Model());
-                Bzcard_Fields_Model main_model;
+                SessionManager.setBzcard(getApplicationContext(), new BZcardListModel.Bizcard());
+                BZcardListModel.Bizcard main_model;
                 main_model = SessionManager.getBzcard(this);
                 for(int i=0;i<bizcardList.size();i++){
                     if(viewPager2.getCurrentItem()==i){
@@ -215,7 +215,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                         break;
                     }
                 }
-                main_model.setCard_id(Card_id);
+                main_model.getBzcardFieldsModel().setCard_id(Card_id);
                 SessionManager.setBzcard(this, main_model);
                 startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
                 break;

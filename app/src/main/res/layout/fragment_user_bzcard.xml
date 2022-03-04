@@ -10,17 +10,88 @@
     tools:context=".Fragment.AddContect_Fragment.BzcardFragment">
     <include
         layout="@layout/common_dialog"/>
-
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/layout_button"
-        android:layout_below="@+id/txt_title"
+<LinearLayout
+    android:id="@+id/layout_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
         android:layout_weight="1"
-        android:paddingStart="@dimen/_40sdp"
-        android:paddingEnd="@dimen/_40sdp"
-        tools:ignore="RtlSymmetry" />
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/bottom_backword"
+            android:padding="@dimen/_15sdp"
+            android:src="@drawable/ic_backword"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <androidx.viewpager.widget.ViewPager
+            android:layout_weight="1"
+            android:id="@+id/images_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </androidx.viewpager.widget.ViewPager>
+
+        <ImageView
+            android:id="@+id/bottom_forword"
+            android:padding="@dimen/_15sdp"
+            android:src="@drawable/ic_forword"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_card_name"
+        android:padding="@dimen/_5sdp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/tv_regular_12"
+        android:textColor="@color/text_gray"/>
+    <LinearLayout
+        android:id="@+id/layout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txt_footer"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_Preview"
+            style="@style/tv_regular_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_50_blue_line"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/preview"
+            android:textColor="@color/purple_200" />
+
+        <TextView
+            android:id="@+id/button_edit"
+            style="@style/tv_regular_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_50_blue"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/edit_template"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+
+</LinearLayout>
+
 
 </LinearLayout>

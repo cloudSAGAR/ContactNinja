@@ -12,27 +12,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.CompositePageTransformer;
-import androidx.viewpager2.widget.MarginPageTransformer;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Bzcard.CreateBzcard.Add_New_Bzcard_Activity;
 import com.contactninja.Bzcard.Select_Bzcard_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.BZcardListModel;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
-import com.contactninja.Setting.EmailListActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -48,16 +46,17 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class User_BzcardFragment extends Fragment implements View.OnClickListener {
 
-    LinearLayout demo_layout;
-    TextView tv_create,sub_txt;
-    private long mLastClickTime=0;
+    LinearLayout demo_layout, layout_list;
+    TextView tv_create, sub_txt, txt_card_name, button_edit;
+    private long mLastClickTime = 0;
 
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
-    ViewPager2 viewPager2;
-    ViewPageAdepter viewPageAdepter;
+    ViewPager viewPager;
+    ImageView nextButton, backButton;
+    CustomViewPagerAdapter customViewPagerAdapter;
 
     public User_BzcardFragment() {
         // Required empty public constructor
@@ -67,7 +66,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view=inflater.inflate(R.layout.fragment_user_bzcard, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_bzcard, container, false);
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
@@ -83,18 +82,45 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
     }
 
     private void IntentUI(View view) {
-        demo_layout=view.findViewById(R.id.demo_layout);
-        viewPager2=view.findViewById(R.id.viewpager);
+        demo_layout = view.findViewById(R.id.demo_layout);
+        layout_list = view.findViewById(R.id.layout_list);
+        nextButton = view.findViewById(R.id.bottom_forword);
+        backButton = view.findViewById(R.id.bottom_backword);
+        viewPager = view.findViewById(R.id.images_pager);
         demo_layout.setOnClickListener(this);
-        tv_create=view.findViewById(R.id.tv_create);
-        sub_txt=view.findViewById(R.id.sub_txt);
+        tv_create = view.findViewById(R.id.tv_create);
+        sub_txt = view.findViewById(R.id.sub_txt);
+        txt_card_name = view.findViewById(R.id.txt_card_name);
+        button_edit = view.findViewById(R.id.button_edit);
+        button_edit.setOnClickListener(this);
         tv_create.setText("Click to create\n" +
                 " BZcard");
         sub_txt.setText("A digital business card that acts like a mini-website sharing your business information, work portfolio, customer testimonials, contact information, and so much more!\n");
 
 
+        nextButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+            }
+        });
+
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            }
+        });
 
     }
+
+    private int getItemofviewpager(int i) {
+        return viewPager.getCurrentItem() + i;
+    }
+
     void Data_list() throws JSONException {
 
         loadingDialog.showLoadingDialog();
@@ -121,13 +147,12 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
                     bizcardList = bZcardListModel.getBizcardList_user();
 
-
                     setImage();
-                    viewPager2.setVisibility(View.VISIBLE);
+                    layout_list.setVisibility(View.VISIBLE);
                     demo_layout.setVisibility(View.GONE);
 
-                }else {
-                    viewPager2.setVisibility(View.GONE);
+                } else {
+                    layout_list.setVisibility(View.GONE);
                     demo_layout.setVisibility(View.VISIBLE);
                 }
             }
@@ -142,42 +167,39 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
     }
 
     private void setImage() {
-        viewPager2.setAdapter(new Select_Bzcard_Activity.ViewPageAdepter(getActivity(),  bizcardList));
-        viewPager2.setClipToPadding(false);
-        viewPager2.setClipChildren(false);
-        viewPager2.setOffscreenPageLimit(3);
-        viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        CompositePageTransformer compositePagerTransformer = new CompositePageTransformer();
-        compositePagerTransformer.addTransformer(new MarginPageTransformer(40));
-        compositePagerTransformer.addTransformer(new ViewPager2.PageTransformer() {
+        customViewPagerAdapter = new CustomViewPagerAdapter(getActivity(), bizcardList);
+        viewPager.setAdapter(customViewPagerAdapter);
+        backButton.setVisibility(View.INVISIBLE);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void transformPage(@NonNull View page, float position) {
-                float r = 1 - Math.abs(position);
-                page.setScaleY(0.85f + r * 0.15f);
+            public void onPageScrolled(int i, float v, int i1) {
 
-              /*  if (viewPager2.getCurrentItem() == 0) {
-                    txt_footer.setText(getResources().getString(R.string.bz_footer));
-                } else if (viewPager2.getCurrentItem() == 1) {
-                    txt_footer.setText(getResources().getString(R.string.bz_footer2));
-                } else if (viewPager2.getCurrentItem() == 2) {
-                    txt_footer.setText(getResources().getString(R.string.bz_footer));
-                } else if (viewPager2.getCurrentItem() == 3) {
-                    txt_footer.setText(getResources().getString(R.string.bz_footer2));
-                } else if (viewPager2.getCurrentItem() == 4) {
-                    txt_footer.setText(getResources().getString(R.string.bz_footer));
-                } else if (viewPager2.getCurrentItem() == 5) {
-                    txt_footer.setText(getResources().getString(R.string.bz_footer2));
-                }*/
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    backButton.setVisibility(View.INVISIBLE);
+                } else {
+                    backButton.setVisibility(View.VISIBLE);
+                }
+                if (position < viewPager.getAdapter().getCount() - 1) {
+                    nextButton.setVisibility(View.VISIBLE);
+                } else {
+                    nextButton.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
 
             }
         });
-        viewPager2.setPageTransformer(compositePagerTransformer);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.demo_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -185,51 +207,143 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getActivity(), Select_Bzcard_Activity.class));
                 break;
+            case R.id.button_edit:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                if(viewPager.getCurrentItem()==0){
+                    manu(bizcardList.get(0));
+                }else  if(viewPager.getCurrentItem()==1){
+                    manu(bizcardList.get(1));
+                }else  if(viewPager.getCurrentItem()==2){
+                    manu( bizcardList.get(2));
+                }else  if(viewPager.getCurrentItem()==3){
+                    manu(bizcardList.get(3));
+                }else  if(viewPager.getCurrentItem()==4){
+                    manu(bizcardList.get(4));
+                }
+                break;
         }
     }
-    public static class ViewPageAdepter extends RecyclerView.Adapter<ViewPageAdepter.viewholder> {
 
-        public Context mCtx;
-        List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
+    private void manu(BZcardListModel.Bizcard bizcard) {
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.bz_edit_dialog_item, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
 
-        public ViewPageAdepter(Context applicationContext, List<BZcardListModel.Bizcard> bizcardList) {
-            this.mCtx = applicationContext;
-            this.bizcardList = bizcardList;
-        }
+        TextView selected_Edit = bottomSheetDialog.findViewById(R.id.selected_Edit);
+        TextView selected_Delete = bottomSheetDialog.findViewById(R.id.selected_Delete);
+        TextView selected_Share = bottomSheetDialog.findViewById(R.id.selected_Share);
+        TextView selected_Preview = bottomSheetDialog.findViewById(R.id.selected_Preview);
 
-        @NonNull
-        @Override
-        public ViewPageAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.bzcard_fix_item_select, parent, false);
-            return new ViewPageAdepter.viewholder(view);
-        }
 
-        @Override
-        public void onBindViewHolder(@NonNull ViewPageAdepter.viewholder holder, int position) {
-            BZcardListModel.Bizcard bizcard = bizcardList.get(position);
+        selected_Edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            int resID = mCtx.getResources().getIdentifier(bizcard.getCardName()
-                    .replace(" ", "_").toLowerCase(), "drawable", mCtx.getPackageName());
-            if (resID != 0) {
-                Glide.with(mCtx.getApplicationContext()).load(resID).into(holder.iv_card);
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+
+                SessionManager.setBzcard(getActivity(), new BZcardListModel.Bizcard());
+                bizcard.setEdit(true);
+                SessionManager.setBzcard(getActivity(), bizcard);
+
+                startActivity(new Intent(getActivity(), Add_New_Bzcard_Activity.class));
+                bottomSheetDialog.dismiss();
             }
+        });
+        selected_Delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+        selected_Share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+        selected_Preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+        bottomSheetDialog.show();
+    }
+
+    public class CustomViewPagerAdapter extends PagerAdapter {
+
+        List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
+        Context mContext;
+        LayoutInflater mLayoutInflater;
+
+        public CustomViewPagerAdapter(Context context, List<BZcardListModel.Bizcard> List) {
+            bizcardList = List;
+            mContext = context;
+            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
-        public int getItemCount() {
+        public int getCount() {
             return bizcardList.size();
         }
 
-        public static class viewholder extends RecyclerView.ViewHolder {
-            ImageView iv_card;
-
-            public viewholder(View view) {
-                super(view);
-                iv_card = view.findViewById(R.id.iv_card);
-
-            }
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == ((LinearLayout) object);
         }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View itemView = mLayoutInflater.inflate(R.layout.bzcard_my_item_select, container, false);
+
+            BZcardListModel.Bizcard bizcard = bizcardList.get(position);
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_card);
+
+            int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
+                    .replace(" ", "_").toLowerCase(), "drawable", mContext.getPackageName());
+            if (resID != 0) {
+                Glide.with(mContext.getApplicationContext()).load(resID).into(imageView);
+            }
+            txt_card_name.setText(bizcard.getBzcardFieldsModel().getCard_name());
+            container.addView(itemView);
+
+            return itemView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((LinearLayout) object);
+        }
+
     }
+
+
 }

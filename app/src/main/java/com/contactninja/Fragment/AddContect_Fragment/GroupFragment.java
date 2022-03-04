@@ -507,7 +507,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
             public LoadingViewHolder(View itemView) {
                 super(itemView);
-                progressBar = itemView.findViewById(R.id.idPBLoading);
+                progressBar = itemView.findViewById(R.id.progressBar);
 
             }
         }

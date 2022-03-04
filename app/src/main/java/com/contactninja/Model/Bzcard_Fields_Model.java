@@ -9,6 +9,7 @@ import java.util.List;
 @SuppressLint("UnknownNullness")
 public class Bzcard_Fields_Model {
     int card_id =0;
+    String card_name="";
     String cover_image="";
     String profile_image="";
     String first_name="";
@@ -57,6 +58,14 @@ public class Bzcard_Fields_Model {
 
     public int getCard_id() {
         return card_id;
+    }
+
+    public String getCard_name() {
+        return card_name;
+    }
+
+    public void setCard_name(String card_name) {
+        this.card_name = card_name;
     }
 
     public void setCard_id(int card_id) {

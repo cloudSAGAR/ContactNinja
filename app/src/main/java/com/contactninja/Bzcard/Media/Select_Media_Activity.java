@@ -23,6 +23,7 @@ import com.contactninja.Bzcard.Media.PDF.Add_pdf_Activity;
 import com.contactninja.Bzcard.Media.PDF.PDF_List_Activity;
 import com.contactninja.Bzcard.Media.Video.Video_LinkAdd_Activity;
 import com.contactninja.Bzcard.Media.Video.Video_List_Activity;
+import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -52,8 +53,8 @@ public class Select_Media_Activity extends AppCompatActivity implements Connecti
         setContentView(R.layout.activity_select_media);
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager=new SessionManager(this);
-        Bzcard_Fields_Model model= SessionManager.getBzcard(Select_Media_Activity.this);
-        bzMediaInformationList=model.getBzMediaInformationList();
+        BZcardListModel.Bizcard model= SessionManager.getBzcard(Select_Media_Activity.this);
+        bzMediaInformationList=model.getBzcardFieldsModel().getBzMediaInformationList();
 
         initUI();
         setCount();

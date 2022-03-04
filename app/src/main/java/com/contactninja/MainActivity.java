@@ -235,7 +235,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             limit = listContacts.size();
                             splitdata(listContacts);
                         } else {
-                            splitdata(listContacts);
+                            try{
+                                splitdata(listContacts);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                            //getTasks();
                         }
                     }
@@ -303,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (int i = 0; i < response.size(); i++) {
 
-            if(Global.IsNotNull(response.get(i).name)) {
+            if(Global.IsNotNull(response.get(i).name)&& !response.get(i).name.equals("null")) {
                 String email = "";
                 String number = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
@@ -326,15 +330,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
 
-                if (number.equals(""))
+                if (Global.IsNotNull(number)|| !number.equals("null"))
                 {
-
-                }
-                else if (number.equals("null"))
-                {
-
-                }
-                else {
                     data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
                             ',' + ' ' +
                             ',' + ' ' +

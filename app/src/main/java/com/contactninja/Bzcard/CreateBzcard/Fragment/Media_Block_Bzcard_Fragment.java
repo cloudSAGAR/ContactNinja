@@ -30,6 +30,7 @@ import com.contactninja.Bzcard.Media.Select_Media_Activity;
 import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.Bzcard.Media.Video.Add_Video_Activity;
 import com.contactninja.Interface.Bz_MediaClick;
+import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -103,7 +104,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
 
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    public static Bzcard_Fields_Model main_model;
+    public static BZcardListModel.Bizcard main_model;
     MedialistAdepter medialistAdepter;
     boolean media_show=true;
 
@@ -113,7 +114,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_media__block__bzcard_, container, false);
          main_model = SessionManager.getBzcard(getActivity());
-         bzMediaInformationList= main_model.getBzMediaInformationList();
+         bzMediaInformationList= main_model.getBzcardFieldsModel().getBzMediaInformationList();
 
         IntentView(view);
         setColor();
@@ -331,7 +332,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.setButton1_name(edt_title_1.getText().toString().trim());
+                main_model.getBzcardFieldsModel().setButton1_name(edt_title_1.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), main_model);
             }
 
@@ -349,7 +350,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.setButton1_url(edt_add_url_1.getText().toString().trim());
+                main_model.getBzcardFieldsModel().setButton1_url(edt_add_url_1.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), main_model);
             }
 
@@ -367,7 +368,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.setButton2_name(edt_title_2.getText().toString().trim());
+                main_model.getBzcardFieldsModel().setButton2_name(edt_title_2.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), main_model);
             }
 
@@ -385,7 +386,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.setButton2_url(edt_add_url_2.getText().toString().trim());
+                main_model.getBzcardFieldsModel().setButton2_url(edt_add_url_2.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), main_model);
             }
 
@@ -404,7 +405,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.setBio_head(edt_Bio.getText().toString().trim());
+                main_model.getBzcardFieldsModel().setBio_head(edt_Bio.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), main_model);
             }
 
@@ -422,7 +423,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.setBio_description(edt_Add_description.getText().toString().trim());
+                main_model.getBzcardFieldsModel().setBio_description(edt_Add_description.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), main_model);
             }
 
@@ -440,7 +441,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.setHtml(edt_add_Custom_HTML.getText().toString().trim());
+                main_model.getBzcardFieldsModel().setHtml(edt_add_Custom_HTML.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), main_model);
             }
 
@@ -728,7 +729,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         }
                     }
                     item.setIs_Select(true);
-                    main_model.setThemeColorHash("#"+item.getColorName());
+                    main_model.getBzcardFieldsModel().setThemeColorHash("#"+item.getColorName());
                     SessionManager.setBzcard(mCtx, main_model);
                     notifyDataSetChanged();
                 }
@@ -852,7 +853,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
                     bzMediaInformationList.remove(i);
-                    main_model.setBzMediaInformationList(bzMediaInformationList);
+                    main_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                     SessionManager.setBzcard(mCtx, main_model);
                     break;
                 }
