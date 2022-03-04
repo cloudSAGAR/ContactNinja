@@ -1,7 +1,12 @@
 package com.contactninja.Fragment.Home;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,32 +20,27 @@ import com.contactninja.R;
 import java.util.Calendar;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+public class Campaign_Fragment extends Fragment implements View.OnClickListener {
 
-
-public class Dashboard_Fragment extends Fragment implements View.OnClickListener {
-    private static final String dateTemplate = "MMMM yyyy";
     Calendar calendar;
     CalendarView calendarView;
-    ImageView prevMonth, nextMonth;
+    ImageView prevMonth,nextMonth;
     TextView currentMonth;
     private Calendar _calendar;
-    private int month, year, current_month, current_year;
-
+    private int month, year;
+    private final DateFormat dateFormatter = new DateFormat();
+    private static final String dateTemplate = "MMMM yyyy";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard_, container, false);
+        // Inflate the layout for this fragment
+        View view=inflater.inflate(R.layout.fragment_contact__growth_, container, false);
         IntentUI(view);
-
 
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
         year = _calendar.get(Calendar.YEAR);
-        current_month = month;
-        current_year = year;
-        // Log.e("Current Mothe", String.valueOf(month));
+
         setGridCellAdapterToDate(month, year);
         calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, Calendar.NOVEMBER);
@@ -48,6 +48,7 @@ public class Dashboard_Fragment extends Fragment implements View.OnClickListener
         calendar.set(Calendar.YEAR, 2012);
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         calendar.add(Calendar.YEAR, 1);
+        Log.e("Current Mothe", String.valueOf(month));
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
@@ -55,37 +56,44 @@ public class Dashboard_Fragment extends Fragment implements View.OnClickListener
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
+
         return view;
     }
-
     private void IntentUI(View view) {
+
         calendarView = view.findViewById(R.id.calendarView);
-        prevMonth = view.findViewById(R.id.prevMonth);
-        currentMonth = view.findViewById(R.id.currentMonth);
-        nextMonth = view.findViewById(R.id.nextMonth);
+        prevMonth=view.findViewById(R.id.prevMonth);
+        currentMonth=view.findViewById(R.id.currentMonth);
+        nextMonth=view.findViewById(R.id.nextMonth);
         prevMonth.setOnClickListener(this);
         nextMonth.setOnClickListener(this);
     }
 
-
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()) {
+        switch (view.getId())
+        {
             case R.id.prevMonth:
-                if (month <= 1) {
+                if (month <= 1)
+                {
                     month = 12;
                     year--;
-                } else {
+                }
+                else
+                {
                     month--;
                 }
                 setGridCellAdapterToDate(month, year);
                 break;
             case R.id.nextMonth:
-                if (month > 11) {
+                if (month > 11)
+                {
                     month = 1;
                     year++;
-                } else {
+                }
+                else
+                {
                     month++;
                 }
                 setGridCellAdapterToDate(month, year);
@@ -93,8 +101,10 @@ public class Dashboard_Fragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void setGridCellAdapterToDate(int month, int year) {
+    private void setGridCellAdapterToDate(int month, int year)
+    {
         _calendar.set(year, month - 1, _calendar.get(Calendar.DAY_OF_MONTH));
-        currentMonth.setText(DateFormat.format(dateTemplate, _calendar.getTime()));
+        currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
     }
+
 }

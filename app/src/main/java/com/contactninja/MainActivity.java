@@ -235,10 +235,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             limit = listContacts.size();
                             splitdata(listContacts);
                         } else {
-                           // splitdata(listContacts);
-                           getTasks();
+                            splitdata(listContacts);
+                           //getTasks();
                         }
-                    } else {
+                    }
+                    else {
                         getTasks();
                         //splitdata(listContacts);
                     }
@@ -924,6 +925,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getUser_check(ArrayList<Contact> csv_inviteListData) {
         //Get One By One Model Data
+       Log.e("Csv List Size",String.valueOf(csv_inviteListData.size()));
         try {
             for (int i = 0; i < csv_inviteListData.size(); i++) {
                 check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(0).number);

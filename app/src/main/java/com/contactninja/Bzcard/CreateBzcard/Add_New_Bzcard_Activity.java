@@ -513,7 +513,6 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
 
         }
 
-
     }
 
     public void ImageCropFunctionCustom(Uri uri) {

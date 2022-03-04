@@ -1,7 +1,6 @@
 package com.contactninja.Fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -11,19 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import com.contactninja.Fragment.Home.Affiliate_Groth_Fragment;
-import com.contactninja.Fragment.Home.Contact_Growth_Fragment;
-import com.contactninja.Fragment.Home.Dashboard_Fragment;
+import com.contactninja.Fragment.AddContect_Fragment.Company_Fragment;
+import com.contactninja.Fragment.AddContect_Fragment.ContectFragment;
+import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
+import com.contactninja.Fragment.Home.Broadcast_Fragment;
+import com.contactninja.Fragment.Home.Campaign_Fragment;
+import com.contactninja.Fragment.Home.Task_Fragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Timezon;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -40,9 +35,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import org.eazegraph.lib.charts.BarChart;
+import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.charts.ValueLineChart;
-import org.eazegraph.lib.models.BarModel;
+import org.eazegraph.lib.models.PieModel;
 import org.eazegraph.lib.models.ValueLinePoint;
 import org.eazegraph.lib.models.ValueLineSeries;
 import org.json.JSONException;
@@ -51,6 +46,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
+
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
@@ -58,20 +58,25 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
-    ImageView  iv_toolbar_notification;
+    ImageView iv_toolbar_notification;
     LinearLayout layout_toolbar_logo;
     TabLayout tabLayout;
-    ViewPager viewPager;
-    ViewpaggerAdapter adapter;
-    Integer user_id=0;
-    String token_api = "",  organization_id = "", team_id = "";
+    Integer user_id = 0;
+    String token_api = "", organization_id = "", team_id = "";
     SignResponseModel user_data;
     MainActivity mainActivity;
     ValueLineChart mBarChart;
-    public Main_home_Fragment(MainActivity mainActivity) {
-        this.mainActivity=mainActivity;
-    }
+    PieChart mBarChart1;
     private long mLastClickTime = 0;
+
+
+    // we're going to display pie chart for smartphones martket shares
+    private float[] yData = {5, 10, 15, 30, 40};
+    private String[] xData = {"Sony", "Huawei", "LG", "Apple", "Samsung"};
+    public Main_home_Fragment(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,37 +87,83 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         sessionManager = new SessionManager(getActivity());
         token_api = Global.getToken(sessionManager);
         user_data = SessionManager.getGetUserdata(getActivity());
-        user_id =user_data.getUser().getId();
+        user_id = user_data.getUser().getId();
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         TimeZone tz = TimeZone.getDefault();
-        Log.e("offset", tz.getID());
-        if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList())||user_data.getUser().getWorkingHoursList().size() == 0) {
+        if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList()) || user_data.getUser().getWorkingHoursList().size() == 0) {
             try {
                 if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                    Timezone( tz.getID());
+                    Timezone(tz.getID());
                 }
             } catch (Exception e) {
-            e.printStackTrace();
+                e.printStackTrace();
             }
         }
 
         intentView(view);
-        tabLayout.addTab(tabLayout.newTab().setText("Dashboard"));
-        tabLayout.addTab(tabLayout.newTab().setText("Affiliate Groth"));
-        tabLayout.addTab(tabLayout.newTab().setText("Contact Growth"));
+        tabLayout.addTab(tabLayout.newTab().setText("Task"));
+        tabLayout.addTab(tabLayout.newTab().setText("Broadcast"));
+        tabLayout.addTab(tabLayout.newTab().setText("Campaign"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        adapter = new ViewpaggerAdapter(getActivity(), getChildFragmentManager(),
-                tabLayout.getTabCount(), "");
+        Fragment fragment = new Task_Fragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment, "Fragment");
+        fragmentTransaction.commitAllowingStateLoss();
 
-        viewPager.setAdapter(adapter);
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        mBarChart = view.findViewById(R.id.cubiclinechart);
+        mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
+        mBarChart.startAnimation();
+        loadData();
+
+
+        mBarChart1 = view.findViewById(R.id.rkt_pie_chart);
+        final int[] MY_COLORS = {Color.rgb(192, 0, 0), Color.rgb(255, 0, 0), Color.rgb(255, 192, 0), Color.rgb(127, 127, 127), Color.rgb(146, 208, 80), Color.rgb(0, 176, 80), Color.rgb(79, 129, 189)};
+
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : MY_COLORS) colors.add(c);
+
+        mBarChart1.startAnimation();
+        mBarChart1.addPieSlice(new PieModel("Freetime", 20, Color.parseColor("#F07676")));
+        mBarChart1.addPieSlice(new PieModel("Sleep", 80, Color.parseColor("#FAAD64")));
+        mBarChart1.startAnimation();
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        TabSet();
+        super.onResume();
+    }
+
+    private void TabSet() {
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                Fragment fragment = null;
+                switch (tab.getPosition()) {
+                    case 0:
+                        fragment = new Task_Fragment();
+                        break;
+                    case 1:
+                        fragment = new Broadcast_Fragment();
+                        break;
+                    case 2:
+                        fragment = new Campaign_Fragment();
+                        break;
+
+                }
+                if (fragment != null) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame, fragment, "Fragment");
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
             }
 
             @Override
@@ -126,15 +177,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             }
         });
 
-
-
-         mBarChart = (ValueLineChart)view.findViewById(R.id.cubiclinechart);
-         mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
-         mBarChart.startAnimation();
-        loadData();
-        return view;
     }
-
     private void intentView(View view) {
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
         iv_toolbar_notification.setVisibility(View.VISIBLE);
@@ -145,7 +188,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         tabLayout = view.findViewById(R.id.tabLayout);
-        viewPager = view.findViewById(R.id.viewPager);
         iv_toolbar_notification.setOnClickListener(this);
     }
 
@@ -170,44 +212,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 }
                 break;*/
 
-        }
-    }
-
-
-    static class ViewpaggerAdapter extends FragmentPagerAdapter {
-
-        Context context;
-        int totalTabs;
-        String strtext1;
-
-        public ViewpaggerAdapter(Context c, FragmentManager fm, int totalTabs, String strtext1) {
-            super(fm);
-            context = c;
-            this.totalTabs = totalTabs;
-            this.strtext1 = strtext1;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0:
-                    Dashboard_Fragment dashboard_fragment = new Dashboard_Fragment();
-                    return dashboard_fragment;
-                case 1:
-                    Affiliate_Groth_Fragment affiliate_groth_fragment = new Affiliate_Groth_Fragment();
-                    return affiliate_groth_fragment;
-                case 2:
-                    Contact_Growth_Fragment contact_growth_fragment = new Contact_Growth_Fragment();
-                    return contact_growth_fragment;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return totalTabs;
         }
     }
 
@@ -277,12 +281,12 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 Type listType = new TypeToken<ArrayList<Timezon.TimezonData>>() {
                 }.getType();
                 List<Timezon.TimezonData> timezonDataList = new Gson().fromJson(headerString, listType);
-                    for (int i=0;i<timezonDataList.size();i++){
-                        if(id.equals(timezonDataList.get(i).getTzname())){
-                            Working_hour(timezonDataList.get(i).getValue());
-                            break;
-                        }
+                for (int i = 0; i < timezonDataList.size(); i++) {
+                    if (id.equals(timezonDataList.get(i).getTzname())) {
+                        Working_hour(timezonDataList.get(i).getValue());
+                        break;
                     }
+                }
             }
 
             @Override
@@ -338,6 +342,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         mBarChart.addSeries(series);
 
     }
+
     private void Working_hour(Integer value) {
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -347,8 +352,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
-        String version_name=Global.getVersionname(mainActivity);
-        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api,version_name , Global.Device, new RetrofitCallback() {
+        String version_name = Global.getVersionname(mainActivity);
+        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, version_name, Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));

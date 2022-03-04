@@ -636,5 +636,6 @@ Number</string>
     <string name="home_lastday">last 7 days</string>
     <string name="home_affiliate_text">View Detailed Affiliate Report</string>
     <string name="home_today_activity">Today  Activity</string>
-
+    <string name="home_bz_card">Bzcard analytics</string>
+    <string name="home_email_text">Connected Email</string>
 </resources>
