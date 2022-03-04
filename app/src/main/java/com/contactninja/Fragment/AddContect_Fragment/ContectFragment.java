@@ -124,6 +124,8 @@ public class ContectFragment extends Fragment {
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
     private List<ContectListData.Contact> contectListData;
+    private List<ContectListData.Contact> main_contectListData=new ArrayList<>();
+
     String Filter = "";//BLOCK / ALL
 
     String userName = "", user_phone_number = "", user_image = "", user_des = "", old_latter = "", contect_type = "", contect_email = "",
@@ -198,10 +200,21 @@ public class ContectFragment extends Fragment {
 
         if (SessionManager.getContectList(getActivity()).size() != 0) {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-            paginationAdapter.addAll(contectListData);
+           // main_contectListData=contectListData.subList(0,50);
+            paginationAdapter.addAll(main_contectListData);
             num_count.setText(contectListData.size() + " Contacts");
+            onScrolledToBottom();
         }
 
+        rvinviteuserdetails.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1))
+                       onScrolledToBottom();
+
+            }
+        });
         // EnableRuntimePermission();
 
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
@@ -331,6 +344,27 @@ public class ContectFragment extends Fragment {
         );
     }
 
+    private void onScrolledToBottom() {
+        Log.e("MainSize", String.valueOf(paginationAdapter.getItemCount()));
+        Log.e("All Size", String.valueOf(contectListData.size()));
+        if (paginationAdapter.getItemCount() < contectListData.size()) {
+            int x, y;
+            if ((contectListData.size() - paginationAdapter.getItemCount()) >= 50) {
+                x = paginationAdapter.getItemCount();
+                y = x + 50;
+            } else {
+                x = paginationAdapter.getItemCount();
+                y = x + contectListData.size() - paginationAdapter.getItemCount();
+            }
+          /*  for (int i = x; i < y; i++) {
+               // main_contectListData.add(contectListData.get(i));
+                paginationAdapter.add(contectListData.get(i));
+            }*/
+            paginationAdapter.addAll(contectListData.subList(x,y));
+            paginationAdapter.notifyDataSetChanged();
+        }
+
+    }
     //Update Contect Number Direct
     public static boolean updateNameAndNumber(final Context context, String number, String newName, String newNumber) {
 
@@ -870,7 +904,7 @@ public class ContectFragment extends Fragment {
                             Type listType = new TypeToken<ContectListData>() {
                             }.getType();
                             ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
-                            contectListData.addAll(contectListData1.getContacts());
+                           // contectListData.addAll(contectListData1.getContacts());
                             List<ContectListData> contectListData_store = new ArrayList<>();
                             contectListData_store.add(contectListData1);
                             sessionManager.setContectList(getActivity(), contectListData_store);

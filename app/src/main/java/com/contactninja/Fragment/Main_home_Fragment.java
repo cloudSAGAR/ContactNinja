@@ -51,15 +51,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
-
-import im.dacer.androidcharts.PieHelper;
-import im.dacer.androidcharts.PieView;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Main_home_Fragment extends Fragment implements View.OnClickListener {
-
-
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
@@ -72,7 +67,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     String token_api = "",  organization_id = "", team_id = "";
     SignResponseModel user_data;
     MainActivity mainActivity;
-
     ValueLineChart mBarChart;
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity=mainActivity;
@@ -83,14 +77,9 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_home, container, false);
-
-
-
-
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         sessionManager = new SessionManager(getActivity());
-
         token_api = Global.getToken(sessionManager);
         user_data = SessionManager.getGetUserdata(getActivity());
         user_id =user_data.getUser().getId();
@@ -143,12 +132,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
          mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
          mBarChart.startAnimation();
         loadData();
-        PieView pieView = (PieView)view.findViewById(R.id.pie_view);
-        ArrayList<PieHelper> pieHelperArrayList = new ArrayList<PieHelper>();
-        pieView.setDate(pieHelperArrayList);
-        pieView.selectedPie(2); //optional
-        pieView.showPercentLabel(false); //optional
-
         return view;
     }
 

@@ -499,11 +499,18 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             } else {
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
-                Glide.with(getActivity()).
-                        load(user_data.getUser().getUserprofile().getProfilePic())
-                        .placeholder(R.drawable.shape_primary_back)
-                        .error(R.drawable.shape_primary_back).
-                        into(iv_user);
+              try {
+                  Glide.with(getActivity()).
+                          load(user_data.getUser().getUserprofile().getProfilePic())
+                          .placeholder(R.drawable.shape_primary_back)
+                          .error(R.drawable.shape_primary_back).
+                          into(iv_user);
+              }
+              catch (Exception e)
+              {
+
+              }
+
             }
             user_image_Url = Contect_data.getContactImage();
 
