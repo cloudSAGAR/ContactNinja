@@ -240,8 +240,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                     else {
-                        getTasks();
-                        //splitdata(listContacts);
+                        splitdata(listContacts);
+
                     }
                 }
 
