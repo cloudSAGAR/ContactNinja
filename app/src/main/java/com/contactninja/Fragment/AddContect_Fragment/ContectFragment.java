@@ -1838,6 +1838,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         CheckBox ch_block = bottomSheetDialog.findViewById(R.id.ch_block);
         CheckBox ch_all = bottomSheetDialog.findViewById(R.id.ch_all);
+
         switch (Filter) {
             case "BLOCK":
                 ch_block.setChecked(true);
@@ -1875,6 +1876,15 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         layout_list_data.setVisibility(View.VISIBLE);
                         lay_no_list.setVisibility(View.GONE);
                     }
+                }
+                else {
+                    Filter = "";
+                    contectListData.clear();
+                    contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    paginationAdapter.removeloist();
+                    onScrolledToBottom();
+                    bottomSheetDialog.dismiss();
                 }
 
             }
