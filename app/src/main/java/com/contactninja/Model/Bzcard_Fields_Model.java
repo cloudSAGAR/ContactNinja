@@ -14,8 +14,8 @@ public class Bzcard_Fields_Model {
     String profile_image="";
     String first_name="";
     String last_name="";
-    String contant_number="";
-    String email="";
+    String phone_number="";
+    String email_address="";
     String company_name="";
     String company_id="";
     String company_logo="";
@@ -37,23 +37,15 @@ public class Bzcard_Fields_Model {
     String bio_description="";
     String html="";
 
-    String fb="";
-    String twitter="";
-    String youtube="";
-    String breakout="";
-    String instagram="";
-    String linkedin="";
-    String pintrest="";
-    String venmo="";
-    String skypay="";
-    String tiktok="";
-    String snapchat="";
-    String other_filed="";
-    String other_filed1="";
     String cover_url="";
     String profile_url="";
     String company_logo_url="";
-    List<BZ_media_information> bzMediaInformationList=new ArrayList<>();
+    List<BZ_media_information> media_information=new ArrayList<>();
+
+    Social_links social_links=new Social_links();
+
+    Integer custom_btn_limit=0;
+    boolean action_btn_flag=false;
 
 
     public int getCard_id() {
@@ -73,7 +65,7 @@ public class Bzcard_Fields_Model {
     }
 
     public List<BZ_media_information> getBzMediaInformationList() {
-        return bzMediaInformationList;
+        return media_information;
     }
 
     public String getCompany_logo_url() {
@@ -85,7 +77,7 @@ public class Bzcard_Fields_Model {
     }
 
     public void setBzMediaInformationList(List<BZ_media_information> bzMediaInformationList) {
-        this.bzMediaInformationList = bzMediaInformationList;
+        this.media_information = bzMediaInformationList;
     }
 
     public String getCover_url() {
@@ -137,19 +129,19 @@ public class Bzcard_Fields_Model {
     }
 
     public String getContant_number() {
-        return contant_number;
+        return phone_number;
     }
 
     public void setContant_number(String contant_number) {
-        this.contant_number = contant_number;
+        this.phone_number = contant_number;
     }
 
     public String getEmail() {
-        return email;
+        return email_address;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email_address = email;
     }
 
     public String getCompany_name() {
@@ -216,109 +208,7 @@ public class Bzcard_Fields_Model {
         this.country_code = country_code;
     }
 
-    public String getFb() {
-        return fb;
-    }
 
-    public void setFb(String fb) {
-        this.fb = fb;
-    }
-
-    public String getTwitter() {
-        return twitter;
-    }
-
-    public void setTwitter(String twitter) {
-        this.twitter = twitter;
-    }
-
-    public String getYoutube() {
-        return youtube;
-    }
-
-    public void setYoutube(String youtube) {
-        this.youtube = youtube;
-    }
-
-    public String getBreakout() {
-        return breakout;
-    }
-
-    public void setBreakout(String breakout) {
-        this.breakout = breakout;
-    }
-
-    public String getInstagram() {
-        return instagram;
-    }
-
-    public void setInstagram(String instagram) {
-        this.instagram = instagram;
-    }
-
-    public String getLinkedin() {
-        return linkedin;
-    }
-
-    public void setLinkedin(String linkedin) {
-        this.linkedin = linkedin;
-    }
-
-    public String getPintrest() {
-        return pintrest;
-    }
-
-    public void setPintrest(String pintrest) {
-        this.pintrest = pintrest;
-    }
-
-    public String getVenmo() {
-        return venmo;
-    }
-
-    public void setVenmo(String venmo) {
-        this.venmo = venmo;
-    }
-
-    public String getSkypay() {
-        return skypay;
-    }
-
-    public void setSkypay(String skypay) {
-        this.skypay = skypay;
-    }
-
-    public String getTiktok() {
-        return tiktok;
-    }
-
-    public void setTiktok(String tiktok) {
-        this.tiktok = tiktok;
-    }
-
-    public String getSnapchat() {
-        return snapchat;
-    }
-
-    public void setSnapchat(String snapchat) {
-        this.snapchat = snapchat;
-    }
-
-    public String getOther_filed() {
-        return other_filed;
-    }
-
-    public void setOther_filed(String other_filed) {
-        this.other_filed = other_filed;
-    }
-
-    public String getOther_filed1() {
-        return other_filed1;
-    }
-
-    public void setOther_filed1(String other_filed1) {
-        this.other_filed1 = other_filed1;
-    }
 
     public String getThemeColor() {
         return themeColor;
@@ -406,6 +296,30 @@ public class Bzcard_Fields_Model {
 
     public void setAction_url(String action_url) {
         this.action_url = action_url;
+    }
+
+    public Integer getCustom_btn_limit() {
+        return custom_btn_limit;
+    }
+
+    public void setCustom_btn_limit(Integer custom_btn_limit) {
+        this.custom_btn_limit = custom_btn_limit;
+    }
+
+    public boolean isAction_btn_flag() {
+        return action_btn_flag;
+    }
+
+    public void setAction_btn_flag(boolean action_btn_flag) {
+        this.action_btn_flag = action_btn_flag;
+    }
+
+    public Social_links getSocial_links() {
+        return social_links;
+    }
+
+    public void setSocial_links(Social_links social_links) {
+        this.social_links = social_links;
     }
 
     public static class BZ_media_information implements Serializable {
@@ -509,6 +423,126 @@ public class Bzcard_Fields_Model {
 
         public void setIs_Select(boolean is_Select) {
             this.is_Select = is_Select;
+        }
+    }
+
+    public class Social_links {
+        String facebook_url="";
+        String twitter_url="";
+        String youtube_url="";
+        String breakout_url="";
+        String instagram_url="";
+        String linkedin_url="";
+        String pinterest_url="";
+        String venmo_url="";
+        String skype_url="";
+        String tiktok_url="";
+        String snapchat_url="";
+        String other_1="";
+        String other_2="";
+
+        public String getFacebook_url() {
+            return facebook_url;
+        }
+
+        public void setFacebook_url(String facebook_url) {
+            this.facebook_url = facebook_url;
+        }
+
+        public String getTwitter_url() {
+            return twitter_url;
+        }
+
+        public void setTwitter_url(String twitter_url) {
+            this.twitter_url = twitter_url;
+        }
+
+        public String getYoutube_url() {
+            return youtube_url;
+        }
+
+        public void setYoutube_url(String youtube_url) {
+            this.youtube_url = youtube_url;
+        }
+
+        public String getBreakout_url() {
+            return breakout_url;
+        }
+
+        public void setBreakout_url(String breakout_url) {
+            this.breakout_url = breakout_url;
+        }
+
+        public String getInstagram_url() {
+            return instagram_url;
+        }
+
+        public void setInstagram_url(String instagram_url) {
+            this.instagram_url = instagram_url;
+        }
+
+        public String getLinkedin_url() {
+            return linkedin_url;
+        }
+
+        public void setLinkedin_url(String linkedin_url) {
+            this.linkedin_url = linkedin_url;
+        }
+
+        public String getPinterest_url() {
+            return pinterest_url;
+        }
+
+        public void setPinterest_url(String pinterest_url) {
+            this.pinterest_url = pinterest_url;
+        }
+
+        public String getVenmo_url() {
+            return venmo_url;
+        }
+
+        public void setVenmo_url(String venmo_url) {
+            this.venmo_url = venmo_url;
+        }
+
+        public String getSkype_url() {
+            return skype_url;
+        }
+
+        public void setSkype_url(String skype_url) {
+            this.skype_url = skype_url;
+        }
+
+        public String getTiktok_url() {
+            return tiktok_url;
+        }
+
+        public void setTiktok_url(String tiktok_url) {
+            this.tiktok_url = tiktok_url;
+        }
+
+        public String getSnapchat_url() {
+            return snapchat_url;
+        }
+
+        public void setSnapchat_url(String snapchat_url) {
+            this.snapchat_url = snapchat_url;
+        }
+
+        public String getOther_1() {
+            return other_1;
+        }
+
+        public void setOther_1(String other_1) {
+            this.other_1 = other_1;
+        }
+
+        public String getOther_2() {
+            return other_2;
+        }
+
+        public void setOther_2(String other_2) {
+            this.other_2 = other_2;
         }
     }
 }

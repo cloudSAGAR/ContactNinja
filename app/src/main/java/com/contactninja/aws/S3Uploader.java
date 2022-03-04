@@ -113,24 +113,7 @@ public class S3Uploader {
     }
 
 
-    public String Upload_Url(String filePath,String folder) {
 
-        File uploadToS3 = new File(filePath);
-        String[] nameList = filePath.split("/");
-        String defaultFolder = folder;
-        String uploadFileName = nameList[nameList.length - 1];
-        String audioURL = AWSKeys.BUCKET_URL + defaultFolder + "/"+uploadFileName;
-        return  audioURL;
-       /* File file = new File(filePath);
-        ObjectMetadata myObjectMetadata = new ObjectMetadata();
-        myObjectMetadata.setContentType("image/png");
-        String mediaUrl = file.getName();
-        String defaultFolder="contactninja";
-
-        TransferObserver observer = transferUtility.upload(AWSKeys.BUCKET_NAME, mediaUrl,
-                file, CannedAccessControlList.PublicRead);
-        observer.setTransferListener(new UploadListener());*/
-    }
 
 }
 

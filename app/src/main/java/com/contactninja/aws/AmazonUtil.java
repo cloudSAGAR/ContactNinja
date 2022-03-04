@@ -61,7 +61,11 @@ public class AmazonUtil {
         if (sS3Client != null) {
             new Thread(new Runnable() {
                 @Override public void run() {
-                    AmazonUtil.sS3Client.deleteObject(new DeleteObjectRequest(AWSKeys.BUCKET_NAME, olld_image.replace("https://d8jbwc2cfepgp.cloudfront.net/","")));
+                    try {
+                        AmazonUtil.sS3Client.deleteObject(new DeleteObjectRequest(AWSKeys.BUCKET_NAME, olld_image.replace("https://d8jbwc2cfepgp.cloudfront.net/","")));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }).start();
             isfinish=true;

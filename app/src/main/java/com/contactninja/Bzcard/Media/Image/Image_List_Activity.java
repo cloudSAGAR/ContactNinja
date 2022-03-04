@@ -45,7 +45,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
     ImageView iv_back,iv_media_title;
     RecyclerView rv_imageList;
     ImagelistAdepter imagelistAdepter;
-    static BZcardListModel.Bizcard model;
+    static BZcardListModel.Bizcard bzcard_model;
     static List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
     List<Bzcard_Fields_Model.BZ_media_information> bzMedia_image_List =new ArrayList<>();
 
@@ -59,8 +59,8 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
         setList();
     }
     private void setList() {
-        model= SessionManager.getBzcard(Image_List_Activity.this);
-        bzMediaInformationList=model.getBzcardFieldsModel().getBzMediaInformationList();
+        bzcard_model = SessionManager.getBzcard(Image_List_Activity.this);
+        bzMediaInformationList= bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
         for(int i=0;i<bzMediaInformationList.size();i++){
             if(bzMediaInformationList.get(i).getMedia_type().equals("image")){
                 bzMedia_image_List.add(bzMediaInformationList.get(i));
@@ -213,9 +213,15 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
             }else {
                 holder.iv_Featured.setVisibility(View.GONE);
             }
-            Glide.with(mCtx)
-                    .load(information.getMedia_filePath())
-                    .into(holder.iv_video);
+            if(bzcard_model.isEdit()){
+                Glide.with(mCtx)
+                        .load(information.getMedia_url())
+                        .into(holder.iv_video);
+            }else {
+                Glide.with(mCtx)
+                        .load(information.getMedia_filePath())
+                        .into(holder.iv_video);
+            }
 
             holder.txt_title.setText(information.getMedia_title());
             holder.txt_dicription.setText(information.getMedia_description());
@@ -233,8 +239,8 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
                     bzMediaInformationList.remove(i);
-                    model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                    SessionManager.setBzcard(mCtx, model);
+                    bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                    SessionManager.setBzcard(mCtx, bzcard_model);
                     break;
                 }
             }

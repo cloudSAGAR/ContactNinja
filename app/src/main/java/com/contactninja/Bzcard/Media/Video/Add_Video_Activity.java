@@ -30,7 +30,6 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.Media.Select_Media_Activity;
-import com.contactninja.MainActivity;
 import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.R;
@@ -63,7 +62,7 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
     Bzcard_Fields_Model.BZ_media_information information;
     Integer is_featured = 0;
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    BZcardListModel.Bizcard model;
+    BZcardListModel.Bizcard bzcard_model;
     String media_thumbnail="";
 
 
@@ -73,8 +72,8 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
         setContentView(R.layout.activity_add_video);
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager = new SessionManager(this);
-        model = SessionManager.getBzcard(Add_Video_Activity.this);
-        bzMediaInformationList = model.getBzcardFieldsModel().getBzMediaInformationList();
+        bzcard_model = SessionManager.getBzcard(Add_Video_Activity.this);
+        bzMediaInformationList = bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
 
         initUI();
 
@@ -171,9 +170,16 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
         if(!Global.IsNotNull(Link)){
             Link = information.getMedia_filePath();
         }
-        Glide.with(getApplicationContext())
-                .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
-                .into(iv_video);
+        if(bzcard_model.isEdit()){
+            Glide.with(getApplicationContext())
+                    .load(information.getMedia_thumbnail())
+                    .into(iv_video);
+        }else {
+            Glide.with(getApplicationContext())
+                    .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
+                    .into(iv_video);
+        }
+
 
         is_featured = information.getIs_featured();
         layout_featured.setVisibility(View.VISIBLE);
@@ -193,9 +199,15 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
 
     private void setVideo() {
 
-        Glide.with(getApplicationContext())
-                .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
-                .into(iv_video);
+        if(bzcard_model.isEdit()){
+            Glide.with(getApplicationContext())
+                    .load(information.getMedia_thumbnail())
+                    .into(iv_video);
+        }else {
+            Glide.with(getApplicationContext())
+                    .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
+                    .into(iv_video);
+        }
 
     }
 
@@ -272,8 +284,8 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
                 for (int i = 0; i < bzMediaInformationList.size(); i++) {
                     if (bzMediaInformationList.get(i).getId().equals(information.getId())) {
                         bzMediaInformationList.remove(i);
-                        model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                        SessionManager.setBzcard(Add_Video_Activity.this, model);
+                        bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                        SessionManager.setBzcard(Add_Video_Activity.this, bzcard_model);
                         break;
                     }
                 }
@@ -323,8 +335,8 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
                                 information.setIs_featured(is_featured);
                                 bzMediaInformationList.set(i, information);
-                                model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                                SessionManager.setBzcard(Add_Video_Activity.this, model);
+                                bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                                SessionManager.setBzcard(Add_Video_Activity.this, bzcard_model);
 
                                 break;
                             }
@@ -343,8 +355,8 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
                             information.setIs_featured(0);
                         }
                         bzMediaInformationList.add(information);
-                        model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                        SessionManager.setBzcard(Add_Video_Activity.this, model);
+                        bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                        SessionManager.setBzcard(Add_Video_Activity.this, bzcard_model);
                     }
                     intent = new Intent(getApplicationContext(), Select_Media_Activity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

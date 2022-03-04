@@ -94,7 +94,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     List<Bzcard_Fields_Model.Bz_color_Model> color_modelList = new ArrayList<>();
     ImageView iv_Cutom_Button, iv_Cutom_Button_other, iv_Add_call, iv_Schedule_a_meeting_radio, iv_Know_more,
             iv_Visit_now, iv_Inquire_now, iv_Learn_more, iv_Custom_HTML, iv_media_title;
-    LinearLayout layout_Cutom_Button, layout_Add_call, layout_Schedule_a_meeting, layout_Know_more, layout_Visit_now,
+    LinearLayout layout_Cutom_Button,layout_Custom_other, layout_Add_call, layout_Schedule_a_meeting, layout_Know_more, layout_Visit_now,
             layout_Inquire_now, layout_Learn_more, layout_Custom_HTML, layout_media, layout_Schedule_a_meeting_edit,
             layout_Know_more_edit, layout_Visit_now_edit, layout_Inquire_now_edit, layout_Learn_more_edit,
             layout_media_list,layout_item_add_new,layout_Cutom_Button_other;
@@ -104,7 +104,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
 
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    public static BZcardListModel.Bizcard main_model;
+    public static BZcardListModel.Bizcard bzcard_model;
     MedialistAdepter medialistAdepter;
     boolean media_show=true;
 
@@ -113,16 +113,79 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_media__block__bzcard_, container, false);
-         main_model = SessionManager.getBzcard(getActivity());
-         bzMediaInformationList= main_model.getBzcardFieldsModel().getBzMediaInformationList();
+         bzcard_model = SessionManager.getBzcard(getActivity());
+         bzMediaInformationList= bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
 
         IntentView(view);
         setColor();
+        setdata();
         if(bzMediaInformationList.size()!=0){
             setCreatedVideoandImage();
         }
 
         return view;
+    }
+
+    private void setdata() {
+        if(bzcard_model.getBzcardFieldsModel1().getCustom_btn_limit()==1){
+            layout_Custom_other.setVisibility(View.GONE);
+        }else {
+            layout_Custom_other.setVisibility(View.VISIBLE);
+        }
+
+        if(!bzcard_model.getBzcardFieldsModel().getButton1_name().equals("")){
+            layout_Cutom_Button.setVisibility(View.VISIBLE);
+            iv_Cutom_Button.setBackgroundResource(R.drawable.ic_select_on);
+        }
+        if(!bzcard_model.getBzcardFieldsModel().getButton2_name().equals("")){
+            layout_Cutom_Button_other.setVisibility(View.VISIBLE);
+            iv_Cutom_Button_other.setBackgroundResource(R.drawable.ic_select_on);
+        }
+
+
+        edt_title_1.setText(bzcard_model.getBzcardFieldsModel().getButton1_name());
+        edt_add_url_1 .setText(bzcard_model.getBzcardFieldsModel().getButton1_url());
+        edt_title_2 .setText(bzcard_model.getBzcardFieldsModel().getButton2_name());
+        edt_add_url_2 .setText(bzcard_model.getBzcardFieldsModel().getButton2_url());
+
+        edt_Bio.setText(bzcard_model.getBzcardFieldsModel().getBio_head());
+        edt_Add_description .setText(bzcard_model.getBzcardFieldsModel().getBio_description());
+
+        if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Schedule a meeting")){
+            layout_Add_call.setVisibility(View.VISIBLE);
+            iv_Schedule_a_meeting_radio.setBackgroundResource(R.drawable.ic_radio_on);
+            layout_Schedule_a_meeting_edit.setVisibility(View.VISIBLE);
+            edt_Schedule_a_meeting_url1.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+        }else if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Know more")){
+            layout_Add_call.setVisibility(View.VISIBLE);
+            iv_Know_more.setBackgroundResource(R.drawable.ic_radio_on);
+            layout_Know_more_edit.setVisibility(View.VISIBLE);
+            edt_Know_more_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+        }else if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Visit now")){
+            layout_Add_call.setVisibility(View.VISIBLE);
+            iv_Visit_now.setBackgroundResource(R.drawable.ic_radio_on);
+            layout_Visit_now_edit.setVisibility(View.VISIBLE);
+            edt_Visit_now_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+        }else if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Inquire now")){
+            layout_Add_call.setVisibility(View.VISIBLE);
+            iv_Inquire_now.setBackgroundResource(R.drawable.ic_radio_on);
+            layout_Inquire_now_edit.setVisibility(View.VISIBLE);
+            edt_Inquire_now_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+        }else if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Learn more")){
+            layout_Add_call.setVisibility(View.VISIBLE);
+            iv_Learn_more.setBackgroundResource(R.drawable.ic_radio_on);
+            layout_Learn_more_edit.setVisibility(View.VISIBLE);
+            edt_Learn_more_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+        }
+
+        if(!bzcard_model.getBzcardFieldsModel().getHtml().equals("")){
+            layout_Custom_HTML.setVisibility(View.VISIBLE);
+            iv_Custom_HTML.setBackgroundResource(R.drawable.ic_select_on);
+            edt_add_Custom_HTML.setText(bzcard_model.getBzcardFieldsModel().getHtml());
+        }
+
+
+        medialistAdepter.notifyDataSetChanged();
     }
 
     @Override
@@ -198,6 +261,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         iv_Cutom_Button = view.findViewById(R.id.iv_Cutom_Button);
         iv_Cutom_Button_other = view.findViewById(R.id.iv_Cutom_Button_other);
         layout_Cutom_Button = view.findViewById(R.id.layout_Cutom_Button);
+        layout_Custom_other = view.findViewById(R.id.layout_Custom_other);
         layout_Add_call = view.findViewById(R.id.layout_Add_call);
         iv_Add_call = view.findViewById(R.id.iv_Add_call);
         iv_Schedule_a_meeting_radio = view.findViewById(R.id.iv_Schedule_a_meeting_radio);
@@ -332,8 +396,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.getBzcardFieldsModel().setButton1_name(edt_title_1.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(), main_model);
+                bzcard_model.getBzcardFieldsModel().setButton1_name(edt_title_1.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), bzcard_model);
             }
 
             @Override
@@ -350,8 +414,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.getBzcardFieldsModel().setButton1_url(edt_add_url_1.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(), main_model);
+                bzcard_model.getBzcardFieldsModel().setButton1_url(edt_add_url_1.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), bzcard_model);
             }
 
             @Override
@@ -368,8 +432,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.getBzcardFieldsModel().setButton2_name(edt_title_2.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(), main_model);
+                bzcard_model.getBzcardFieldsModel().setButton2_name(edt_title_2.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), bzcard_model);
             }
 
             @Override
@@ -386,8 +450,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.getBzcardFieldsModel().setButton2_url(edt_add_url_2.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(), main_model);
+                bzcard_model.getBzcardFieldsModel().setButton2_url(edt_add_url_2.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), bzcard_model);
             }
 
             @Override
@@ -405,8 +469,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.getBzcardFieldsModel().setBio_head(edt_Bio.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(), main_model);
+                bzcard_model.getBzcardFieldsModel().setBio_head(edt_Bio.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), bzcard_model);
             }
 
             @Override
@@ -423,8 +487,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.getBzcardFieldsModel().setBio_description(edt_Add_description.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(), main_model);
+                bzcard_model.getBzcardFieldsModel().setBio_description(edt_Add_description.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), bzcard_model);
             }
 
             @Override
@@ -441,8 +505,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                main_model.getBzcardFieldsModel().setHtml(edt_add_Custom_HTML.getText().toString().trim());
-                SessionManager.setBzcard(getActivity(), main_model);
+                bzcard_model.getBzcardFieldsModel().setHtml(edt_add_Custom_HTML.getText().toString().trim());
+                SessionManager.setBzcard(getActivity(), bzcard_model);
             }
 
             @Override
@@ -569,16 +633,27 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         for (int i = 0; i < color_list.length; i++) {
             Bzcard_Fields_Model.Bz_color_Model bzColorModel = new Bzcard_Fields_Model.Bz_color_Model();
             bzColorModel.setColorName(color_list[i]);
-            if (i == 0) {
-                bzColorModel.setIs_Select(true);
-            } else {
-                bzColorModel.setIs_Select(false);
+            if(bzcard_model.isEdit()){
+                if (bzcard_model.getBzcardFieldsModel().getThemeColorHash().equals("#"+color_list[i])) {
+                    bzColorModel.setIs_Select(true);
+                } else {
+                    bzColorModel.setIs_Select(false);
+                }
+            }else {
+                if (i == 0) {
+                    bzColorModel.setIs_Select(true);
+                } else {
+                    bzColorModel.setIs_Select(false);
+                }
             }
             color_modelList.add(bzColorModel);
         }
         rv_color_list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         colorAdepter = new ColorAdepter(getActivity(), color_modelList);
         rv_color_list.setAdapter(colorAdepter);
+
+
+
 
     }
 
@@ -729,8 +804,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         }
                     }
                     item.setIs_Select(true);
-                    main_model.getBzcardFieldsModel().setThemeColorHash("#"+item.getColorName());
-                    SessionManager.setBzcard(mCtx, main_model);
+                    bzcard_model.getBzcardFieldsModel().setThemeColorHash("#"+item.getColorName());
+                    SessionManager.setBzcard(mCtx, bzcard_model);
                     notifyDataSetChanged();
                 }
             });
@@ -817,27 +892,52 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             }else {
                 holder.iv_Featured.setVisibility(View.GONE);
             }
-            switch (information.getMedia_type()) {
-                case "video":
-                    Glide.with(mCtx)
-                            .load(information.getMedia_filePath())
-                            .into(holder.iv_video);
+            if(bzcard_model.isEdit()){
+                switch (information.getMedia_type()) {
+                    case "video":
+                        Glide.with(mCtx)
+                                .load(information.getMedia_thumbnail())
+                                .into(holder.iv_video);
 
-                    holder.layout_pdf.setVisibility(View.GONE);
-                    holder.layout_video_image.setVisibility(View.VISIBLE);
-                    break;
-                case "pdf":
-                    holder.layout_pdf.setVisibility(View.VISIBLE);
-                    holder.layout_video_image.setVisibility(View.GONE);
-                    break;
-                case "image":
+                        holder.layout_pdf.setVisibility(View.GONE);
+                        holder.layout_video_image.setVisibility(View.VISIBLE);
+                        break;
+                    case "pdf":
+                        holder.layout_pdf.setVisibility(View.VISIBLE);
+                        holder.layout_video_image.setVisibility(View.GONE);
+                        break;
+                    case "image":
 
-                    holder.layout_pdf.setVisibility(View.GONE);
-                    holder.layout_video_image.setVisibility(View.VISIBLE);
-                    Glide.with(mCtx)
-                            .load(information.getMedia_filePath())
-                            .into(holder.iv_video);
-                    break;
+                        holder.layout_pdf.setVisibility(View.GONE);
+                        holder.layout_video_image.setVisibility(View.VISIBLE);
+                        Glide.with(mCtx)
+                                .load(information.getMedia_url())
+                                .into(holder.iv_video);
+                        break;
+                }
+            }else {
+                switch (information.getMedia_type()) {
+                    case "video":
+                        Glide.with(mCtx)
+                                .load(information.getMedia_url())
+                                .into(holder.iv_video);
+
+                        holder.layout_pdf.setVisibility(View.GONE);
+                        holder.layout_video_image.setVisibility(View.VISIBLE);
+                        break;
+                    case "pdf":
+                        holder.layout_pdf.setVisibility(View.VISIBLE);
+                        holder.layout_video_image.setVisibility(View.GONE);
+                        break;
+                    case "image":
+
+                        holder.layout_pdf.setVisibility(View.GONE);
+                        holder.layout_video_image.setVisibility(View.VISIBLE);
+                        Glide.with(mCtx)
+                                .load(information.getMedia_url())
+                                .into(holder.iv_video);
+                        break;
+                }
             }
             holder.txt_title.setText(information.getMedia_title());
             holder.txt_dicription.setText(information.getMedia_description());
@@ -853,8 +953,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
                     bzMediaInformationList.remove(i);
-                    main_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                    SessionManager.setBzcard(mCtx, main_model);
+                    bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                    SessionManager.setBzcard(mCtx, bzcard_model);
                     break;
                 }
             }

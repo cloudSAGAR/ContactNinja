@@ -51,7 +51,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
     TextView save_button, txt_Featured;
     SessionManager sessionManager;
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    BZcardListModel.Bizcard model;
+    BZcardListModel.Bizcard bzcard_model;
     Bzcard_Fields_Model.BZ_media_information information;
     EditText edt_image_title, edt_Add_description;
     RoundedImageView iv_image;
@@ -59,7 +59,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
     LinearLayout layout_replace, layout_Cancel, layout_featured;
     private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
-    String olld_image = "", File_name = "",SelectImagePath="";
+    String olld_image = "", File_name = "", SelectImagePath = "";
     Uri mCapturedImageURI;
     Integer CAPTURE_IMAGE = 3;
     int image_flag = 1;
@@ -71,8 +71,8 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
         setContentView(R.layout.activity_add_image);
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager = new SessionManager(this);
-        model = SessionManager.getBzcard(Add_image_Activity.this);
-        bzMediaInformationList = model.getBzcardFieldsModel().getBzMediaInformationList();
+        bzcard_model = SessionManager.getBzcard(Add_image_Activity.this);
+        bzMediaInformationList = bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
         initUI();
         try {
             Intent intent = getIntent();
@@ -94,11 +94,18 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
 
         edt_image_title.setText(information.getMedia_title());
         edt_Add_description.setText(information.getMedia_description());
-        Glide.with(getApplicationContext())
-                .load(information.getMedia_filePath())
-                .into(iv_image);
-        SelectImagePath=information.getMedia_filePath();
-        olld_image=information.getMedia_filePath();
+        if (bzcard_model.isEdit()) {
+            Glide.with(getApplicationContext())
+                    .load(information.getMedia_url())
+                    .into(iv_image);
+        } else {
+            Glide.with(getApplicationContext())
+                    .load(information.getMedia_filePath())
+                    .into(iv_image);
+        }
+
+        SelectImagePath = information.getMedia_filePath();
+        olld_image = information.getMedia_filePath();
         is_featured = information.getIs_featured();
         layout_featured.setVisibility(View.VISIBLE);
         layout_Cancel.setVisibility(View.VISIBLE);
@@ -189,8 +196,8 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                 for (int i = 0; i < bzMediaInformationList.size(); i++) {
                     if (bzMediaInformationList.get(i).getId().equals(information.getId())) {
                         bzMediaInformationList.remove(i);
-                        model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                        SessionManager.setBzcard(Add_image_Activity.this, model);
+                        bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                        SessionManager.setBzcard(Add_image_Activity.this, bzcard_model);
                         break;
                     }
                 }
@@ -239,8 +246,8 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
                                 information.setIs_featured(is_featured);
                                 bzMediaInformationList.set(i, information);
-                                model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                                SessionManager.setBzcard(Add_image_Activity.this, model);
+                                bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                                SessionManager.setBzcard(Add_image_Activity.this, bzcard_model);
 
                                 break;
                             }
@@ -258,8 +265,8 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                             information.setIs_featured(0);
                         }
                         bzMediaInformationList.add(information);
-                        model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                        SessionManager.setBzcard(Add_image_Activity.this, model);
+                        bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                        SessionManager.setBzcard(Add_image_Activity.this, bzcard_model);
                     }
                     intent = new Intent(getApplicationContext(), Select_Media_Activity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -480,11 +487,18 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
             Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.image_title_error), false);
         } else if (edt_Add_description.getText().toString().trim().equals("")) {
             Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.image_description_error), false);
+        } else if (Global.IsNotNull(information)) {
+            if (Global.IsNotNull(information.getMedia_url()) && SelectImagePath.equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.select_image), false);
+            } else {
+                return true;
+            }
         } else if (SelectImagePath.equals("")) {
             Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.select_image), false);
         } else {
             return true;
         }
+
         return false;
     }
 

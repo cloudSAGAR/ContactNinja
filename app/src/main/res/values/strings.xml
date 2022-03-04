@@ -604,6 +604,7 @@ Number</string>
     <string name="video_description_error">Add video description</string>
     <string name="image_description_error">Add image description</string>
     <string name="select_image">Please select image</string>
+    <string name="select_pdf">Please select pdf</string>
     <string name="max_media">Can add only up to 10 media blocks.</string>
     <string name="add_featured">Add to featured media</string>
     <string name="Remove_featured">Remove featured media</string>

@@ -51,7 +51,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setFb(ev_fb.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setFacebook_url(ev_fb.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
             }
 
@@ -69,7 +69,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                bzcard_model.getBzcardFieldsModel().setTwitter(ev_twitter.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setTwitter_url(ev_twitter.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -87,7 +87,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setYoutube(ev_youtube.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setYoutube_url(ev_youtube.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -105,7 +105,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setBreakout(ev_breakout.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setBreakout_url(ev_breakout.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -124,7 +124,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                bzcard_model.getBzcardFieldsModel().setInstagram(ev_instagram.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setInstagram_url(ev_instagram.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -142,7 +142,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setLinkedin(ev_linkedin.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setLinkedin_url(ev_linkedin.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -160,7 +160,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setPintrest(ev_pintrest.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setPinterest_url(ev_pintrest.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -178,7 +178,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setVenmo(ev_venmo.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setVenmo_url(ev_venmo.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -196,7 +196,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setSkypay(ev_skypay.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setSkype_url(ev_skypay.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -214,7 +214,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setTiktok(ev_tiktok.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setTiktok_url(ev_tiktok.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -232,7 +232,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setSnapchat(ev_snap_chat.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setSnapchat_url(ev_snap_chat.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -250,7 +250,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setOther_filed(ev_other_filed.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setOther_1(ev_other_filed.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -267,7 +267,7 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bzcard_model.getBzcardFieldsModel().setOther_filed1(ev_other_filed1.getText().toString().trim());
+                bzcard_model.getBzcardFieldsModel().getSocial_links().setOther_2(ev_other_filed1.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(),bzcard_model);
 
             }
@@ -282,16 +282,19 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
     public void setData()
     {
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        ev_fb.setText(user_data.getUser().getUserprofile().getFacebook_link());
-        bzcard_model.getBzcardFieldsModel().setFb(user_data.getUser().getUserprofile().getFacebook_link());
-        ev_breakout.setText(user_data.getUser().getUserprofile().getBreakout_link());
-        bzcard_model.getBzcardFieldsModel().setBreakout(user_data.getUser().getUserprofile().getBreakout_link());
-        ev_linkedin.setText(user_data.getUser().getUserprofile().getLinkedin_link());
-        bzcard_model.getBzcardFieldsModel().setLinkedin(user_data.getUser().getUserprofile().getLinkedin_link());
-        ev_twitter.setText(user_data.getUser().getUserprofile().getTwitter_link());
-        bzcard_model.getBzcardFieldsModel().setTwitter(user_data.getUser().getUserprofile().getTwitter_link());
-        SessionManager.setBzcard(getActivity(),bzcard_model);
+        ev_fb.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getFacebook_url());
+        ev_twitter.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getTwitter_url());
+        ev_youtube.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getYoutube_url());
+        ev_breakout.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getBreakout_url());
+        ev_instagram.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getInstagram_url());
+        ev_linkedin.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getLinkedin_url());
+        ev_pintrest.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getPinterest_url());
+        ev_venmo.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getVenmo_url());
+        ev_skypay.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getSkype_url());
+        ev_tiktok.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getTiktok_url());
+        ev_snap_chat.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getSnapchat_url());
+        ev_other_filed.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getOther_1());
+        ev_other_filed1.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getOther_2());
     }
 
     private void IntentUI(View view) {

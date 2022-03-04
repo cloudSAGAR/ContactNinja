@@ -47,7 +47,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
     TextView save_button, txt_selected_file_name;
     SessionManager sessionManager;
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    BZcardListModel.Bizcard model;
+    BZcardListModel.Bizcard bzcard_model;
     Bzcard_Fields_Model.BZ_media_information information;
     EditText edt_pdf_title, edt_Add_description;
     LinearLayout layout_replace, layout_Cancel;
@@ -62,8 +62,8 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
         setContentView(R.layout.activity_add_pdf);
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager = new SessionManager(this);
-        model = SessionManager.getBzcard(Add_pdf_Activity.this);
-        bzMediaInformationList = model.getBzcardFieldsModel().getBzMediaInformationList();
+        bzcard_model = SessionManager.getBzcard(Add_pdf_Activity.this);
+        bzMediaInformationList = bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
         initUI();
         try {
             Intent intent = getIntent();
@@ -86,7 +86,13 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
         edt_pdf_title.setText(information.getMedia_title());
         edt_Add_description.setText(information.getMedia_description());
 
-        txt_selected_file_name.setText(information.getFileName());
+        if(bzcard_model.isEdit()){
+            String hostURL = information.getMedia_url().substring(information.getMedia_url().lastIndexOf("/") + 1, information.getMedia_url().length());
+            String pdfname=hostURL.replace("pdf_A_","");
+            txt_selected_file_name.setText(pdfname);
+        }else {
+            txt_selected_file_name.setText(information.getFileName());
+        }
         layout_pdf_add.setVisibility(View.GONE);
         layout_Cancel.setVisibility(View.VISIBLE);
     }
@@ -159,8 +165,8 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                 for (int i = 0; i < bzMediaInformationList.size(); i++) {
                     if (bzMediaInformationList.get(i).getId().equals(information.getId())) {
                         bzMediaInformationList.remove(i);
-                        model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                        SessionManager.setBzcard(Add_pdf_Activity.this, model);
+                        bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                        SessionManager.setBzcard(Add_pdf_Activity.this, bzcard_model);
                         break;
                     }
                 }
@@ -188,8 +194,8 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
                                 information.setIs_featured(is_featured);
                                 bzMediaInformationList.set(i, information);
-                                model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                                SessionManager.setBzcard(Add_pdf_Activity.this, model);
+                                bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                                SessionManager.setBzcard(Add_pdf_Activity.this, bzcard_model);
 
                                 break;
                             }
@@ -208,8 +214,8 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                             information.setIs_featured(0);
                         }
                         bzMediaInformationList.add(information);
-                        model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                        SessionManager.setBzcard(Add_pdf_Activity.this, model);
+                        bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                        SessionManager.setBzcard(Add_pdf_Activity.this, bzcard_model);
                     }
                     intent = new Intent(getApplicationContext(), Select_Media_Activity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -442,9 +448,15 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
             Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.image_title_error), false);
         } else if (edt_Add_description.getText().toString().trim().equals("")) {
             Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.image_description_error), false);
+        } else if (Global.IsNotNull(information)) {
+            if (Global.IsNotNull(information.getMedia_url()) && SelectFilePath.equals("")) {
+                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.select_pdf), false);
+            } else {
+                return true;
+            }
         } else if (SelectFilePath.equals("")) {
-            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.select_image), false);
-        } else {
+            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.select_pdf), false);
+        }else {
             return true;
         }
         return false;

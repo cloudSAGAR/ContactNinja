@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -55,12 +57,14 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     private BroadcastReceiver mNetworkReceiver;
     RelativeLayout mMainLayout;
     ViewPager2 viewPager2;
-    TextView txt_footer, txt_Use;
+    TextView txt_footer, txt_Use,tv_Preview;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
     int Card_id=1;
+    private long mLastClickTime=0;
+    BZcardListModel bZcardListModel = new BZcardListModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +107,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<BZcardListModel>() {
                     }.getType();
-                    BZcardListModel bZcardListModel = new Gson().fromJson(headerString, listType);
+                     bZcardListModel = new Gson().fromJson(headerString, listType);
 
                      bizcardList = bZcardListModel.getBizcard();
 
@@ -165,7 +169,9 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         viewPager2 = findViewById(R.id.viewpager);
         txt_footer = findViewById(R.id.txt_footer);
         txt_Use = findViewById(R.id.txt_Use);
+        tv_Preview = findViewById(R.id.tv_Preview);
         txt_Use.setOnClickListener(this);
+        tv_Preview.setOnClickListener(this);
     }
 
     @Override
@@ -206,18 +212,44 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 onBackPressed();
                 break;
             case R.id.txt_Use:
-                SessionManager.setBzcard(getApplicationContext(), new BZcardListModel.Bizcard());
-                BZcardListModel.Bizcard main_model;
-                main_model = SessionManager.getBzcard(this);
-                for(int i=0;i<bizcardList.size();i++){
-                    if(viewPager2.getCurrentItem()==i){
-                        Card_id=bizcardList.get(i).getId();
-                        break;
+                if(bZcardListModel.getUser_total()<=5){
+                    SessionManager.setBzcard(getApplicationContext(), new BZcardListModel.Bizcard());
+                    BZcardListModel.Bizcard main_model;
+                    main_model = SessionManager.getBzcard(this);
+                    for(int i=0;i<bizcardList.size();i++){
+                        if(viewPager2.getCurrentItem()==i){
+                            Card_id=bizcardList.get(i).getId();
+                            break;
+                        }
                     }
+                    main_model.getBzcardFieldsModel().setCard_id(Card_id);
+                    SessionManager.setBzcard(this, main_model);
+                    startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
+                }else {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"only 5 card add",false);
                 }
-                main_model.getBzcardFieldsModel().setCard_id(Card_id);
-                SessionManager.setBzcard(this, main_model);
-                startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
+
+                break;
+                case R.id.tv_Preview:
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                    if (viewPager2.getCurrentItem() == 0) {
+                        intent.putExtra("WebUrl", " https://app.contactninja.org/master-preview/1");
+                    } else if (viewPager2.getCurrentItem() == 1) {
+                        intent.putExtra("WebUrl", " https://app.contactninja.org/master-preview/2");
+                    } else if (viewPager2.getCurrentItem() == 2) {
+                        intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/3");
+                    } else if (viewPager2.getCurrentItem() == 3) {
+                        intent.putExtra("WebUrl", " https://app.contactninja.org/master-preview/4");
+                    } else if (viewPager2.getCurrentItem() == 4) {
+                        intent.putExtra("WebUrl", " https://app.contactninja.org/master-preview/5");
+                    } else if (viewPager2.getCurrentItem() == 5) {
+                        intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
+                    }
+                    startActivity(intent);
                 break;
         }
     }

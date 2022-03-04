@@ -58,11 +58,11 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
     EditText ev_titale;
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
-    String sequence_Name = "";
+    String card_Name = "";
     private long mLastClickTime = 0;
     S3Uploader s3uploaderObj;
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    BZcardListModel.Bizcard main_model;
+    BZcardListModel.Bizcard bzcard_model;
     int UploadCount = 0, TotalFileUpload = 0;
 
     @SuppressLint("SetTextI18n")
@@ -72,8 +72,8 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_title_bzcard);
         mNetworkReceiver = new ConnectivityReceiver();
 
-        main_model = SessionManager.getBzcard(this);
-        bzMediaInformationList = main_model.getBzcardFieldsModel().getBzMediaInformationList();
+        bzcard_model = SessionManager.getBzcard(this);
+        bzMediaInformationList = bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
         IntentUI();
 
         loadingDialog = new LoadingDialog(this);
@@ -82,8 +82,10 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         tv_remain_txt.setText("40 " + getResources().getString(R.string.camp_remaingn));
         ev_titale.requestFocus();
 
-        if (Global.IsNotNull(sequence_Name)) {
-            ev_titale.setText(sequence_Name);
+        card_Name=bzcard_model.getBzcardFieldsModel().getCard_name();
+
+        if (Global.IsNotNull(card_Name)) {
+            ev_titale.setText(card_Name);
             ev_titale.setSelection(ev_titale.getText().length());
         }
 
@@ -146,14 +148,14 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                     tv_error.setVisibility(View.VISIBLE);
                 } else {
                     tv_error.setVisibility(View.GONE);
-                    if (Global.IsNotNull(main_model.getBzcardFieldsModel().getProfile_image())) {
+                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getProfile_image())) {
                         TotalFileUpload++;
                     }
-                    if (Global.IsNotNull(main_model.getBzcardFieldsModel().getCover_image())) {
+                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCover_image())) {
                         TotalFileUpload++;
 
                     }
-                    if (Global.IsNotNull(main_model.getBzcardFieldsModel().getCompany_logo())) {
+                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCompany_logo())) {
                         TotalFileUpload++;
                     }
                     if (Global.IsNotNull(bzMediaInformationList)||bzMediaInformationList.size()!=0) {
@@ -173,40 +175,69 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Title_bzcardActivity.this);
 
-        if (Global.IsNotNull(main_model.getBzcardFieldsModel().getProfile_image())) {
-            s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
-            String Bzcard_profile = s3uploaderObj.BZcard_image_Upload(main_model.getBzcardFieldsModel().getProfile_image(),
-                    "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId() , "pro_A");
-            UploadS3();
-            main_model.getBzcardFieldsModel().setProfile_url(Bzcard_profile);
-            SessionManager.setBzcard(Title_bzcardActivity.this, main_model);
+        if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getProfile_url())) {
+          /*  if(!signResponseModel.getUser().getUserprofile().equals(bzcard_model.getBzcardFieldsModel().getProfile_image())){
+                if (!bzcard_model.getBzcardFieldsModel().getProfile_image().equals("")) {
+                    try{
+                        AmazonUtil.deleteS3Client(getApplicationContext(), bzcard_model.getBzcardFieldsModel().getProfile_image());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }*/
+            if(!bzcard_model.isEdit()) {
+                s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
+                String Bzcard_profile = s3uploaderObj.BZcard_image_Upload(bzcard_model.getBzcardFieldsModel().getProfile_url(),
+                        "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId(), "pro_A");
+                UploadS3();
+                bzcard_model.getBzcardFieldsModel().setProfile_image(Bzcard_profile);
+                SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
+            }
         }
-        if (Global.IsNotNull(main_model.getBzcardFieldsModel().getCover_image())) {
-            s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
-            String Bzcard_Cover_image = s3uploaderObj.BZcard_image_Upload(main_model.getBzcardFieldsModel().getCover_image(),
-                    "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId() , "cov_A");
-            UploadS3();
-            main_model.getBzcardFieldsModel().setCover_url(Bzcard_Cover_image);
-            SessionManager.setBzcard(Title_bzcardActivity.this, main_model);
+        if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCover_url())) {
+         /*   if (!bzcard_model.getBzcardFieldsModel().getCover_image().equals("")) {
+                try{
+                    AmazonUtil.deleteS3Client(getApplicationContext(), bzcard_model.getBzcardFieldsModel().getCover_image());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }*/
+            if(!bzcard_model.isEdit()) {
+                s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
+                String Bzcard_Cover_image = s3uploaderObj.BZcard_image_Upload(bzcard_model.getBzcardFieldsModel().getCover_url(),
+                        "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId(), "cov_A");
+                UploadS3();
+                bzcard_model.getBzcardFieldsModel().setCover_image(Bzcard_Cover_image);
+                SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
+            }
         }
-        if (Global.IsNotNull(main_model.getBzcardFieldsModel().getCompany_logo())) {
-            s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
-            String Bzcard_Company_logo = s3uploaderObj.BZcard_image_Upload(main_model.getBzcardFieldsModel().getCompany_logo(),
-                    "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId() , "com_A");
-            UploadS3();
-            main_model.getBzcardFieldsModel().setCompany_logo_url(Bzcard_Company_logo);
-            SessionManager.setBzcard(Title_bzcardActivity.this, main_model);
+        if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCompany_logo_url())) {
+           /* if (!bzcard_model.getBzcardFieldsModel().getCompany_logo().equals("")) {
+               try{    AmazonUtil.deleteS3Client(getApplicationContext(), bzcard_model.getBzcardFieldsModel().getCompany_logo());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            }*/
+            if(!bzcard_model.isEdit()) {
+                s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
+                String Bzcard_Company_logo = s3uploaderObj.BZcard_image_Upload(bzcard_model.getBzcardFieldsModel().getCompany_logo_url(),
+                        "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId(), "com_A");
+                UploadS3();
+                bzcard_model.getBzcardFieldsModel().setCompany_logo(Bzcard_Company_logo);
+                SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
+            }
         }
-        if (Global.IsNotNull(bzMediaInformationList)) {
+        if(!bzcard_model.isEdit()) {
+            if (Global.IsNotNull(bzMediaInformationList)&&bzMediaInformationList.size()!=0) {
 
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 switch (bzMediaInformationList.get(i).getMedia_type()) {
                     case "video": {
                         Bzcard_Fields_Model.BZ_media_information information1 = bzMediaInformationList.get(i);
                         s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
-                        if (!bzMediaInformationList.get(i).getMedia_url().equals("")) {
-                            AmazonUtil.deleteS3Client(getApplicationContext(), bzMediaInformationList.get(i).getMedia_url());
-                        }
+                      /*  if (!bzMediaInformationList.get(i).getMedia_thumbnail().equals("")) {
+                            AmazonUtil.deleteS3Client(getApplicationContext(), bzMediaInformationList.get(i).getMedia_thumbnail());
+                        }*/
                         String Bzcard_thumbnail = s3uploaderObj.BZcard_image_Upload(bzMediaInformationList.get(i).getMedia_filePath(),
                                 "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId() , "thu_A");
                         UploadS3();
@@ -221,17 +252,17 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                             information.setMedia_description(bzMediaInformationList.get(i).getMedia_description());
                             information.setIs_featured(bzMediaInformationList.get(i).getIs_featured());
                             bzMediaInformationList.set(i, information);
-                            main_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                            SessionManager.setBzcard(Title_bzcardActivity.this, main_model);
+                            bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                            SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
                         }
                         break;
                     }
                     case "image": {
                         Bzcard_Fields_Model.BZ_media_information information1 = bzMediaInformationList.get(i);
                         s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
-                        if (!bzMediaInformationList.get(i).getMedia_url().equals("")) {
+                      /*  if (!bzMediaInformationList.get(i).getMedia_url().equals("")) {
                             AmazonUtil.deleteS3Client(getApplicationContext(), bzMediaInformationList.get(i).getMedia_url());
-                        }
+                        }*/
                         String Bzcard_image = s3uploaderObj.BZcard_image_Upload(bzMediaInformationList.get(i).getMedia_filePath(),
                                 "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId() , "img_A");
                         UploadS3();
@@ -245,17 +276,17 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                             information.setMedia_description(bzMediaInformationList.get(i).getMedia_description());
                             information.setIs_featured(bzMediaInformationList.get(i).getIs_featured());
                             bzMediaInformationList.set(i, information);
-                            main_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                            SessionManager.setBzcard(Title_bzcardActivity.this, main_model);
+                            bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                            SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
                         }
                         break;
                     }
                     case "pdf": {
                         Bzcard_Fields_Model.BZ_media_information information1 = bzMediaInformationList.get(i);
                         s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
-                        if (!bzMediaInformationList.get(i).getMedia_url().equals("")) {
+                      /*  if (!bzMediaInformationList.get(i).getMedia_url().equals("")) {
                             AmazonUtil.deleteS3Client(getApplicationContext(), bzMediaInformationList.get(i).getMedia_url());
-                        }
+                        }*/
                         String Bzcard_image = s3uploaderObj.BZcard_pdf_Upload(bzMediaInformationList.get(i).getMedia_filePath(),
                                 "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId(), "pdf_A");
                         UploadS3();
@@ -269,14 +300,23 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                             information.setMedia_description(bzMediaInformationList.get(i).getMedia_description());
                             information.setIs_featured(bzMediaInformationList.get(i).getIs_featured());
                             bzMediaInformationList.set(i, information);
-                            main_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                            SessionManager.setBzcard(Title_bzcardActivity.this, main_model);
+                            bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                            SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
                         }
                         break;
                     }
                 }
             }
-        } else {
+        }else {
+                try {
+                    if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
+                        Data_Upload();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else {
             try {
                 if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
                     Data_Upload();
@@ -296,84 +336,86 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         JSONObject obj = new JSONObject();
 
         JSONObject paramObject = new JSONObject();
-
+        if(bzcard_model.isEdit()){
+            paramObject.put("id", bzcard_model.getId());
+        }
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", signResponseModel.getUser().getId());
-        paramObject.put("card_id", main_model.getBzcardFieldsModel().getCard_id());
+        paramObject.put("card_id", bzcard_model.getBzcardFieldsModel().getCard_id());
 
 
         JSONObject param = new JSONObject();
         /*Infirmaction key*/
        // if(Global.IsNotNull(main_model.getCover_image())){
-            param.put("cover_image", main_model.getBzcardFieldsModel().getCover_url());
+            param.put("cover_image", bzcard_model.getBzcardFieldsModel().getCover_image());
        // }
        // if(Global.IsNotNull(main_model.getProfile_url())) {
-            param.put("profile_image", main_model.getBzcardFieldsModel().getProfile_url());
+            param.put("profile_image", bzcard_model.getBzcardFieldsModel().getProfile_image());
        // }
        // if(Global.IsNotNull(main_model.getFirst_name())) {
-            param.put("first_name", main_model.getBzcardFieldsModel().getFirst_name());
+            param.put("first_name", bzcard_model.getBzcardFieldsModel().getFirst_name());
         //}
         //if(Global.IsNotNull(main_model.getLast_name())) {
-            param.put("last_name", main_model.getBzcardFieldsModel().getLast_name());
+            param.put("last_name", bzcard_model.getBzcardFieldsModel().getLast_name());
       //  }
       // if(Global.IsNotNull(main_model.getContant_number())) {
-            param.put("phone_number", main_model.getBzcardFieldsModel().getContant_number());
+            param.put("phone_number", bzcard_model.getBzcardFieldsModel().getContant_number());
       //  }
       //  if(Global.IsNotNull(main_model.getEmail())) {
-            param.put("email_address", main_model.getBzcardFieldsModel().getEmail());
+            param.put("email_address", bzcard_model.getBzcardFieldsModel().getEmail());
      //   }
      //   if(Global.IsNotNull(main_model.getCompany_name())) {
-            param.put("company_name", main_model.getBzcardFieldsModel().getCompany_name());
+            param.put("company_name", bzcard_model.getBzcardFieldsModel().getCompany_name());
       //  }
      //   if(Global.IsNotNull(main_model.getCompany_logo_url())) {
-            param.put("company_logo", main_model.getBzcardFieldsModel().getCompany_logo_url());
+            param.put("company_logo", bzcard_model.getBzcardFieldsModel().getCompany_logo());
        // }
      //   if(Global.IsNotNull(main_model.getCompany_url())) {
-            param.put("company_url", main_model.getBzcardFieldsModel().getCompany_url());
+            param.put("company_url", bzcard_model.getBzcardFieldsModel().getCompany_url());
        // }
        // if(Global.IsNotNull(main_model.getJobtitle())) {
-            param.put("job_title", main_model.getBzcardFieldsModel().getJobtitle());
+            param.put("job_title", bzcard_model.getBzcardFieldsModel().getJobtitle());
       //  }
      //   if(Global.IsNotNull(main_model.getAddrees())) {
-            param.put("address", main_model.getBzcardFieldsModel().getAddrees());
+            param.put("address", bzcard_model.getBzcardFieldsModel().getAddrees());
       //  }
       //  if(Global.IsNotNull(main_model.getZipcode())) {
-            param.put("zipcode", main_model.getBzcardFieldsModel().getZipcode());
+            param.put("zipcode", bzcard_model.getBzcardFieldsModel().getZipcode());
       //  }
         /*media key*/
       //  if(Global.IsNotNull(main_model.getThemeColor())) {
             param.put("theme", "");
      //   }
      //   if(Global.IsNotNull(main_model.getThemeColorHash())) {
-            param.put("themeColorHash", main_model.getBzcardFieldsModel().getThemeColorHash());
+            param.put("themeColorHash", bzcard_model.getBzcardFieldsModel().getThemeColorHash());
       //  }
      //   if(Global.IsNotNull(main_model.getButton1_name())) {
-            param.put("button1_name", main_model.getBzcardFieldsModel().getButton1_name());
+            param.put("button1_name", bzcard_model.getBzcardFieldsModel().getButton1_name());
       //  }
      //   if(Global.IsNotNull(main_model.getButton1_url())) {
-            param.put("button1_url", main_model.getBzcardFieldsModel().getButton1_url());
+            param.put("button1_url", bzcard_model.getBzcardFieldsModel().getButton1_url());
       //  }
        // if(Global.IsNotNull(main_model.getButton2_name())) {
-            param.put("button2_name", main_model.getBzcardFieldsModel().getButton2_name());
+            param.put("button2_name", bzcard_model.getBzcardFieldsModel().getButton2_name());
       //  }
       //  if(Global.IsNotNull(main_model.getButton2_url())) {
-            param.put("button2_url", main_model.getBzcardFieldsModel().getButton2_url());
+            param.put("button2_url", bzcard_model.getBzcardFieldsModel().getButton2_url());
       //  }
       //  if(Global.IsNotNull(main_model.getBio_head())) {
-            param.put("bio_head", main_model.getBzcardFieldsModel().getBio_head());
+            param.put("bio_head", bzcard_model.getBzcardFieldsModel().getBio_head());
       //  }
       //  if(Global.IsNotNull(main_model.getBio_description())) {
-            param.put("bio_description", main_model.getBzcardFieldsModel().getBio_description());
+            param.put("bio_description", bzcard_model.getBzcardFieldsModel().getBio_description());
       //  }
       //  if(Global.IsNotNull(main_model.getHtml())) {
-            param.put("html", main_model.getBzcardFieldsModel().getHtml());
+            param.put("html", bzcard_model.getBzcardFieldsModel().getHtml());
       //  }
       //  if(Global.IsNotNull(main_model.getAction_name())) {
-            param.put("action_name", main_model.getBzcardFieldsModel().getAction_name());
+            param.put("action_name", bzcard_model.getBzcardFieldsModel().getAction_name());
       //  }
       //  if(Global.IsNotNull(main_model.getAction_url())) {
-            param.put("action_url", main_model.getBzcardFieldsModel().getAction_url());
+            param.put("action_url", bzcard_model.getBzcardFieldsModel().getAction_url());
     //    }
 
        // if(Global.IsNotNull(bzMediaInformationList)||bzMediaInformationList.size()!=0){
@@ -411,43 +453,43 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         /*social key*/
         JSONObject social = new JSONObject();
       //  if(Global.IsNotNull(main_model.getFb())) {
-            social.put("facebook_url", main_model.getBzcardFieldsModel().getFb());
+            social.put("facebook_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getFacebook_url());
      //   }
       //  if(Global.IsNotNull(main_model.getTwitter())) {
-            social.put("twitter_url", main_model.getBzcardFieldsModel().getTwitter());
+            social.put("twitter_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getTwitter_url());
       //  }
       //  if(Global.IsNotNull(main_model.getYoutube())) {
-            social.put("youtube_url", main_model.getBzcardFieldsModel().getYoutube());
+            social.put("youtube_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getYoutube_url());
       //  }
      //   if(Global.IsNotNull(main_model.getBreakout())) {
-            social.put("breakout_url", main_model.getBzcardFieldsModel().getBreakout());
+            social.put("breakout_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getBreakout_url());
       //  }
       //  if(Global.IsNotNull(main_model.getInstagram())) {
-            social.put("instagram_url", main_model.getBzcardFieldsModel().getInstagram());
+            social.put("instagram_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getInstagram_url());
      //   }
     //    if(Global.IsNotNull(main_model.getLinkedin())) {
-            social.put("linkedin_url", main_model.getBzcardFieldsModel().getLinkedin());
+            social.put("linkedin_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getLinkedin_url());
       //  }
       //  if(Global.IsNotNull(main_model.getProfile_url())) {
-            social.put("pinterest_url", main_model.getBzcardFieldsModel().getProfile_url());
+            social.put("pinterest_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getPinterest_url());
       //  }
        // if(Global.IsNotNull(main_model.getVenmo())) {
-            social.put("venmo_url", main_model.getBzcardFieldsModel().getVenmo());
+            social.put("venmo_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getVenmo_url());
        // }
        // if(Global.IsNotNull(main_model.getSkypay())) {
-            social.put("skype_url", main_model.getBzcardFieldsModel().getSkypay());
+            social.put("skype_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getSkype_url());
       //  }
       //  if(Global.IsNotNull(main_model.getTiktok())) {
-            social.put("tiktok_url", main_model.getBzcardFieldsModel().getTiktok());
+            social.put("tiktok_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getTiktok_url());
      //   }
        // if(Global.IsNotNull(main_model.getSnapchat())) {
-            social.put("snapchat_url", main_model.getBzcardFieldsModel().getSnapchat());
+            social.put("snapchat_url", bzcard_model.getBzcardFieldsModel().getSocial_links().getSnapchat_url());
        // }
       //  if(Global.IsNotNull(main_model.getOther_filed())) {
-            social.put("other_1", main_model.getBzcardFieldsModel().getOther_filed());
+            social.put("other_1", bzcard_model.getBzcardFieldsModel().getSocial_links().getOther_1());
       //  }
       //  if(Global.IsNotNull(main_model.getOther_filed1())) {
-            social.put("other_2", main_model.getBzcardFieldsModel().getOther_filed1());
+            social.put("other_2", bzcard_model.getBzcardFieldsModel().getSocial_links().getOther_2());
       //  }
         param.put("social_links", social);
         param.put("card_name", ev_titale.getText().toString().trim());

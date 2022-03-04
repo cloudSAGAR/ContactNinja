@@ -24,6 +24,7 @@ import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -47,7 +48,7 @@ import retrofit2.Response;
 public class User_BzcardFragment extends Fragment implements View.OnClickListener {
 
     LinearLayout demo_layout, layout_list;
-    TextView tv_create, sub_txt, txt_card_name, button_edit;
+    TextView tv_create, sub_txt, txt_card_name, button_edit,button_Preview;
     private long mLastClickTime = 0;
 
     SessionManager sessionManager;
@@ -92,7 +93,9 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
         sub_txt = view.findViewById(R.id.sub_txt);
         txt_card_name = view.findViewById(R.id.txt_card_name);
         button_edit = view.findViewById(R.id.button_edit);
+        button_Preview = view.findViewById(R.id.button_Preview);
         button_edit.setOnClickListener(this);
+        button_Preview.setOnClickListener(this);
         tv_create.setText("Click to create\n" +
                 " BZcard");
         sub_txt.setText("A digital business card that acts like a mini-website sharing your business information, work portfolio, customer testimonials, contact information, and so much more!\n");
@@ -224,6 +227,24 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 }else  if(viewPager.getCurrentItem()==4){
                     manu(bizcardList.get(4));
                 }
+                break;  case R.id.button_Preview:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                if(viewPager.getCurrentItem()==0){
+                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
+                }else  if(viewPager.getCurrentItem()==1){
+                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
+                }else  if(viewPager.getCurrentItem()==2){
+                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
+                }else  if(viewPager.getCurrentItem()==3){
+                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
+                }else  if(viewPager.getCurrentItem()==4){
+                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
+                }
+                startActivity(intent);
                 break;
         }
     }

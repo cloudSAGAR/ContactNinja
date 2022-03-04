@@ -23,7 +23,13 @@ public class BZcardListModel {
     @Expose
     private List<Bizcard> bizcardList_user = new ArrayList<>();
 
+    public Integer getUser_total() {
+        return user_total;
+    }
 
+    public void setUser_total(Integer user_total) {
+        this.user_total = user_total;
+    }
 
     public Integer getTotal() {
         return total;
@@ -74,6 +80,7 @@ public class BZcardListModel {
         @SerializedName("updated_at")
         @Expose
         private String updatedAt = "";
+
 
         public boolean isEdit() {
             return isEdit;

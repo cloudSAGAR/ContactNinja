@@ -41,6 +41,7 @@ import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -64,7 +65,8 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
     FrameLayout frameContainer;
     TabLayout tabLayout;
     ImageView iv_back, iv_dummy_cover_img,
-            iv_cover_img, pulse_icon, iv_edit;
+             pulse_icon, iv_edit;
+
     LinearLayout layout_cover;
     int image_flag = 1;
     Uri mCapturedImageURI;
@@ -73,6 +75,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
     private BroadcastReceiver mNetworkReceiver;
     private long mLastClickTime = 0;
     CircleImageView iv_user;
+    RoundedImageView iv_cover_img;
     BZcardListModel.Bizcard bzcard_model;
     SessionManager sessionManager;
     TextView tv_done;
@@ -120,27 +123,40 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         bzcard_model=SessionManager.getBzcard(getApplicationContext());
 
         if(bzcard_model.isEdit()){
-            if (!bzcard_model.getBzcardFieldsModel().getProfile_url().equals("")) {
+            if (!bzcard_model.getBzcardFieldsModel().getProfile_image().equals("")) {
                 Glide.with(getApplicationContext()).
-                        load(bzcard_model.getBzcardFieldsModel().getProfile_url()).
+                        load(bzcard_model.getBzcardFieldsModel().getProfile_image()).
                         into(iv_user);
                 iv_user.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
                 bzcard_model = SessionManager.getBzcard(getApplicationContext());
-                bzcard_model.getBzcardFieldsModel().setProfile_url(bzcard_model.getBzcardFieldsModel().getProfile_url());
+                bzcard_model.getBzcardFieldsModel().setProfile_image(bzcard_model.getBzcardFieldsModel().getProfile_image());
                 SessionManager.setBzcard(getApplicationContext(),bzcard_model);
             } else {
-                iv_user.setVisibility(View.VISIBLE);
-                pulse_icon.setVisibility(View.VISIBLE);
+                SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+                Log.e("User Data Is ", user_data.getUser().getUserprofile().getProfilePic());
+                if (!user_data.getUser().getUserprofile().getProfilePic().equals("")) {
+                    Glide.with(getApplicationContext()).
+                            load(user_data.getUser().getUserprofile().getProfilePic()).
+                            into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    pulse_icon.setVisibility(View.GONE);
+                    bzcard_model = SessionManager.getBzcard(getApplicationContext());
+                    bzcard_model.getBzcardFieldsModel().setProfile_image(user_data.getUser().getUserprofile().getProfilePic());
+                    SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+                } else {
+                    iv_user.setVisibility(View.GONE);
+                    pulse_icon.setVisibility(View.VISIBLE);
+                }
             }
-               if (!bzcard_model.getBzcardFieldsModel().getCover_url().equals("")) {
+               if (!bzcard_model.getBzcardFieldsModel().getCover_image().equals("")) {
                 Glide.with(getApplicationContext()).
-                        load(bzcard_model.getBzcardFieldsModel().getCover_url()).
+                        load(bzcard_model.getBzcardFieldsModel().getCover_image()).
                         into(iv_cover_img);
                    iv_cover_img.setVisibility(View.VISIBLE);
                    iv_dummy_cover_img.setVisibility(View.GONE);
                    bzcard_model = SessionManager.getBzcard(getApplicationContext());
-                   bzcard_model.getBzcardFieldsModel().setCover_image(bzcard_model.getBzcardFieldsModel().getCover_url());
+                   bzcard_model.getBzcardFieldsModel().setCover_image(bzcard_model.getBzcardFieldsModel().getCover_image());
                    SessionManager.setBzcard(getApplicationContext(),bzcard_model);
             } else {
                    iv_cover_img.setVisibility(View.GONE);
@@ -156,11 +172,24 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 iv_user.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
                 bzcard_model = SessionManager.getBzcard(getApplicationContext());
-                bzcard_model.getBzcardFieldsModel().setProfile_url(user_data.getUser().getUserprofile().getProfilePic());
+                bzcard_model.getBzcardFieldsModel().setProfile_image(user_data.getUser().getUserprofile().getProfilePic());
                 SessionManager.setBzcard(getApplicationContext(),bzcard_model);
             } else {
-                iv_user.setVisibility(View.VISIBLE);
+                iv_user.setVisibility(View.GONE);
                 pulse_icon.setVisibility(View.VISIBLE);
+            }
+            if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCover_image())) {
+                Glide.with(getApplicationContext()).
+                        load(bzcard_model.getBzcardFieldsModel().getCover_image()).
+                        into(iv_cover_img);
+                iv_cover_img.setVisibility(View.VISIBLE);
+                iv_dummy_cover_img.setVisibility(View.GONE);
+                bzcard_model = SessionManager.getBzcard(getApplicationContext());
+                bzcard_model.getBzcardFieldsModel().setCover_image(bzcard_model.getBzcardFieldsModel().getCover_url());
+                SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+            } else {
+                iv_cover_img.setVisibility(View.GONE);
+                iv_dummy_cover_img.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -447,7 +476,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_cover_img.setVisibility(View.VISIBLE);
                         iv_dummy_cover_img.setVisibility(View.GONE);
                         bzcard_model = SessionManager.getBzcard(getApplicationContext());
-                        bzcard_model.getBzcardFieldsModel().setCover_image(cover_filePath);
+                        bzcard_model.getBzcardFieldsModel().setCover_url(cover_filePath);
                         SessionManager.setBzcard(getApplicationContext(),bzcard_model);
 
                     }
@@ -462,7 +491,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_user.setVisibility(View.VISIBLE);
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
-                        bzcard_model.getBzcardFieldsModel().setProfile_image(profile_filePath);
+                        bzcard_model.getBzcardFieldsModel().setProfile_url(profile_filePath);
                         Log.e("Info is",new Gson().toJson(bzcard_model));
 
                         //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
@@ -496,7 +525,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_cover_img.setVisibility(View.VISIBLE);
                         iv_dummy_cover_img.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
-                        bzcard_model.getBzcardFieldsModel().setCover_image(cover_filePath);
+                        bzcard_model.getBzcardFieldsModel().setCover_url(cover_filePath);
                         Log.e("Info is",new Gson().toJson(bzcard_model));
 
                         // String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
@@ -515,7 +544,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                         iv_user.setVisibility(View.VISIBLE);
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model= SessionManager.getBzcard(getApplicationContext());
-                        bzcard_model.getBzcardFieldsModel().setProfile_image(profile_filePath);
+                        bzcard_model.getBzcardFieldsModel().setProfile_url(profile_filePath);
                         Log.e("Info is",new Gson().toJson(bzcard_model));
 
                      //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");

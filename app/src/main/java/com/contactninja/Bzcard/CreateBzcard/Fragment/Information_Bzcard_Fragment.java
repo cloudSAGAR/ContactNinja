@@ -316,7 +316,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
             ev_zip.setText(bzcard_model.getBzcardFieldsModel().getZipcode());
 
             Glide.with(getActivity()).
-                    load(bzcard_model.getBzcardFieldsModel().getCompany_logo_url()).
+                    load(bzcard_model.getBzcardFieldsModel().getCompany_logo()).
                     apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
                     into(iv_company_icon);
             iv_company_icon.setVisibility(View.VISIBLE);
@@ -558,7 +558,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == getActivity().RESULT_OK) {
                     Uri resultUri = result.getUri();
-                    bzcard_model.getBzcardFieldsModel().setCompany_logo(result.getUri().getPath());
+                    bzcard_model.getBzcardFieldsModel().setCompany_logo_url(result.getUri().getPath());
                     Log.e("Url is",resultUri.getPath());
                     Log.e("Info is",new Gson().toJson(bzcard_model));
                     SessionManager.setBzcard(getActivity(),bzcard_model);
@@ -591,9 +591,9 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                 if (resultCode == getActivity().RESULT_OK) {
                     Uri resultUri = result.getUri();
                     bzcard_model=SessionManager.getBzcard(getActivity());
-                    bzcard_model.getBzcardFieldsModel().setCover_image(bzcard_model.getBzcardFieldsModel().getCover_image());
-                    bzcard_model.getBzcardFieldsModel().setProfile_image(bzcard_model.getBzcardFieldsModel().getProfile_image());
-                    bzcard_model.getBzcardFieldsModel().setCompany_logo(result.getUri().getPath());
+                    bzcard_model.getBzcardFieldsModel().setCover_url(bzcard_model.getBzcardFieldsModel().getCover_image());
+                    bzcard_model.getBzcardFieldsModel().setProfile_url(bzcard_model.getBzcardFieldsModel().getProfile_image());
+                    bzcard_model.getBzcardFieldsModel().setCompany_logo_url(result.getUri().getPath());
                     Log.e("Url is",resultUri.getPath());
                     Log.e("Info is",new Gson().toJson(bzcard_model));
                     SessionManager.setBzcard(getActivity(),bzcard_model);

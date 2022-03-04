@@ -49,15 +49,17 @@
                     android:layout_height="match_parent">
 
                 </ImageView>
-                <ImageView
-                    android:scaleType="fitXY"
-                    android:visibility="gone"
-                    android:id="@+id/iv_cover_img"
-                    android:src="@drawable/ic_cover_back"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
-                </ImageView>
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/iv_cover_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:scaleType="fitXY"
+                        app:riv_border_color="@color/purple_200"
+                        app:riv_border_width="0dp"
+                        app:riv_corner_radius="@dimen/_20sdp"
+                         />
 
             </LinearLayout>
 
