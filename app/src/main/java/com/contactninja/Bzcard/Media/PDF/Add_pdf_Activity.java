@@ -188,6 +188,7 @@ public class Add_pdf_Activity extends AppCompatActivity implements ConnectivityR
                                 Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                                 information.setId(bzMediaInformationList.get(i).getId());
                                 information.setMedia_type(bzMediaInformationList.get(i).getMedia_type());
+                                information.setMedia_url(bzMediaInformationList.get(i).getMedia_url());
                                 information.setMedia_filePath(SelectFilePath);
                                 information.setFileName(SelectFileName);
                                 information.setMedia_title(edt_pdf_title.getText().toString().trim());

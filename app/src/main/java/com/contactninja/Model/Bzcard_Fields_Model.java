@@ -42,7 +42,7 @@ public class Bzcard_Fields_Model {
     String company_logo_url="";
     List<BZ_media_information> media_information=new ArrayList<>();
 
-    Social_links social_links=new Social_links();
+    Social_links social_links= new Social_links();
 
     Integer custom_btn_limit=0;
     boolean action_btn_flag=false;
@@ -426,7 +426,7 @@ public class Bzcard_Fields_Model {
         }
     }
 
-    public class Social_links {
+    public static class Social_links {
         String facebook_url="";
         String twitter_url="";
         String youtube_url="";

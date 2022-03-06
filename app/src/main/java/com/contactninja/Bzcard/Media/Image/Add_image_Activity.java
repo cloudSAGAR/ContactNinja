@@ -241,6 +241,7 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
                                 Bzcard_Fields_Model.BZ_media_information information = new Bzcard_Fields_Model.BZ_media_information();
                                 information.setId(bzMediaInformationList.get(i).getId());
                                 information.setMedia_type(bzMediaInformationList.get(i).getMedia_type());
+                                information.setMedia_url(bzMediaInformationList.get(i).getMedia_url());
                                 information.setMedia_filePath(SelectImagePath);
                                 information.setMedia_title(edt_image_title.getText().toString().trim());
                                 information.setMedia_description(edt_Add_description.getText().toString().trim());
