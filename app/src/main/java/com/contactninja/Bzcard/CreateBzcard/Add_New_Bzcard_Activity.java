@@ -164,7 +164,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
             }
         }else {
             SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-            Log.e("User Data Is ", user_data.getUser().getUserprofile().getProfilePic());
+           // Log.e("User Data Is ", user_data.getUser().getUserprofile().getProfilePic());
             if (!user_data.getUser().getUserprofile().getProfilePic().equals("")) {
                 Glide.with(getApplicationContext()).
                         load(user_data.getUser().getUserprofile().getProfilePic()).

@@ -225,6 +225,17 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 } else {
                     nextButton.setVisibility(View.INVISIBLE);
                 }
+                if (viewPager.getCurrentItem() == 0)
+                {
+                    txt_card_name.setText(bizcardList.get(0).getBzcardFieldsModel().getCard_name());
+                } else if (viewPager.getCurrentItem() == 1) {
+                    txt_card_name.setText(bizcardList.get(1).getBzcardFieldsModel().getCard_name());
+                } else if (viewPager.getCurrentItem() == 2) {
+                    txt_card_name.setText(bizcardList.get(2).getBzcardFieldsModel().getCard_name());
+                } else if (viewPager.getCurrentItem() == 3) {
+                    txt_card_name.setText(bizcardList.get(3).getBzcardFieldsModel().getCard_name());
+                } else if (viewPager.getCurrentItem() == 4) {
+                    txt_card_name.setText(bizcardList.get(4).getBzcardFieldsModel().getCard_name());                }
             }
 
             @Override
