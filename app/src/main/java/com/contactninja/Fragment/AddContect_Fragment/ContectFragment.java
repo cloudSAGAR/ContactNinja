@@ -870,6 +870,7 @@ public class ContectFragment extends Fragment {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 
 
+                loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     try {
                         if (swipeToRefresh.isRefreshing()) {
@@ -908,6 +909,10 @@ public class ContectFragment extends Fragment {
                             List<ContectListData> contectListData_store = new ArrayList<>();
                             contectListData_store.add(contectListData1);
                             sessionManager.setContectList(getActivity(), contectListData_store);
+                            contectListData.clear();
+                            paginationAdapter.removeloist();
+                            contectListData.addAll(contectListData_store.get(0).getContacts());
+                            onScrolledToBottom();
 
                         }
                     } catch(Exception e){
@@ -1756,8 +1761,9 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void success(Response<ApiResponse> response) {
 
-                loadingDialog.cancelLoading();
+
                 if (response.body().getHttp_status() == 200) {
+
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
                     try {
                         ContectEvent();
@@ -1766,6 +1772,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                     bottomSheetDialog.cancel();
                 } else {
+                    loadingDialog.cancelLoading();
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
                     bottomSheetDialog.cancel();
                 }
@@ -1800,16 +1807,18 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void success(Response<ApiResponse> response) {
 
-                loadingDialog.cancelLoading();
+
                 if (response.body().getHttp_status() == 200) {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
                     try {
+                       // loadingDialog.showLoadingDialog();
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     bottomSheetDialog.cancel();
                 } else {
+                    loadingDialog.cancelLoading();
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
                     bottomSheetDialog.cancel();
                 }

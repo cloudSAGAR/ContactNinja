@@ -115,7 +115,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
-
+    MyAsyncTasks myAsyncTasks;
     //Declare Variabls for fragment
     public static int navItemIndex = 0;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @RequiresApi(api = Build.VERSION_CODES.N)
     private BroadcastReceiver mNetworkReceiver;
     ArrayList<Contact> listContacts;
-    ArrayList<Contact> new_listContacts=new ArrayList<>();
+    List<Contact> new_listContacts=new ArrayList<>();
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -215,6 +215,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                if (!SessionManager.getnewContect(getApplicationContext()).equals(null))
+                {
+                    splitdata((ArrayList<Contact>) SessionManager.getnewContect(getApplicationContext()));
+                }
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
@@ -242,13 +246,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }catch (Exception e){
                                 e.printStackTrace();
                             }*/
-                            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                            myAsyncTasks = new MyAsyncTasks();
                             myAsyncTasks.execute();
                         }
                     }
                     else {
                     //   splitdata(listContacts);
-                      MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
                     }
                 }
@@ -335,35 +339,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 catch (Exception e)
                 {
-
+                    number = "null";
                 }
 
 
                 }
 
-                if (Global.IsNotNull(number)|| !number.equals("null"))
-                {
-                    data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + ' ' +
-                            ',' + '"' + email + ',' + '"' +
-                            ',' + '"' + number + ',' + '"' +
-                            ',' + ' '
-                    );
-                }
+
+                    if (Global.IsNotNull(number)|| !number.equals("null"))
+                    {
+                        data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + ' ' +
+                                ',' + '"' + email + ',' + '"' +
+                                ',' + '"' + number + ',' + '"' +
+                                ',' + ' '
+                        );
+                    }
+
 
             }
         }
@@ -444,6 +450,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             try {
                                 limit = csv_inviteListData.size();
                                 ContectEvent();
+                                SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -451,6 +458,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             try {
                                 ContectEvent();
+                                SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -463,6 +472,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
+                        SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
+
                     }
 
                 });
@@ -943,7 +954,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         catch (Exception e)
         {
-
         }
 
 
@@ -962,7 +972,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .getInstance(getApplicationContext())
                         .getAppDatabase()
                         .taskDao()
-                        .getSameValue(userName, last_name, userPhoneNumber);
+                        .getSameValue(userName.replaceAll("[-+.^:,]", ""), last_name.replaceAll("[-+.^:,]", ""), userPhoneNumber);
                 if (taskList.size() == 0) {
                     //Update Call
                     check_list_for_Update(userName, last_name, userPhoneNumber,csv_inviteListData,i);
@@ -997,27 +1007,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .getInstance(getApplicationContext())
                         .getAppDatabase()
                         .taskDao()
-                        .getSameValue_Firstorlastname(userPhoneNumber);
+                        .getSameValue_Firstorlastname(userPhoneNumber.replaceAll("[-+.^:,]", ""));
 
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
-                   new_listContacts.add(csv_inviteListData.get(i));
-                   /* Collections.sort(new_listContacts, new Comparator<Contact>() {
-                        @Override
-                        public int compare(Contact s1, Contact s2) {
-                            return s1.name.compareToIgnoreCase(s2.name);
-                        }
-                    });*/
-                   splitdata(new_listContacts);
+                    new_listContacts=SessionManager.getnewContect(getApplicationContext());
+                    new_listContacts.add(csv_inviteListData.get(i));
+                    SessionManager.setnewContect(getApplicationContext(),new_listContacts);
+               //    splitdata(new_listContacts);
+
+
                 } else {
                     //Update Contect Api Call
-                    try {
+                   /* try {
                         if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
                             AddContect_Api1(userName, last_name, userPhoneNumber, taskList.get(0).getContect_id(), taskList.get(0).getContactId());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 }
                 return taskList;
             }

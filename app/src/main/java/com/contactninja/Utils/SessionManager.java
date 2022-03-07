@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Contect.Contact;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.BZcardListModel;
@@ -84,6 +85,7 @@ public class SessionManager {
     public static final String Broadcaste_Detail="Broadcaste_detail";
     public static final String Broadcast_contect="Broadcast_contect";
     public static final String Bzcard="Bzcard";
+    public static final String Add_newcontect="add_new_contect";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -832,6 +834,29 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(userLinkedGmailList);
         editor.putString(Broadcast_contect, json);
+        Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+        editor.apply();
+    }
+
+
+    public static List<Contact> getnewContect(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(Add_newcontect, null);
+        Type type = new TypeToken<ArrayList<Contact>>() {
+        }.getType();
+        List<Contact> userLinkedGmailList = gson.fromJson(json, type);
+        if (userLinkedGmailList == null) {
+            userLinkedGmailList = new ArrayList<>();
+        }
+        return userLinkedGmailList;
+
+    }
+
+    public static void setnewContect(Context context, List<Contact> userLinkedGmailList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userLinkedGmailList);
+        editor.putString(Add_newcontect, json);
         Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
         editor.apply();
     }
