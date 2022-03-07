@@ -924,8 +924,15 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                     }.getType();
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
                     if (user_model.getTemplate_slug() != null) {
-                        Global.Messageshow(getApplicationContext(), mMainLayout,
-                                user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
+                       try {
+                           Global.Messageshow(getApplicationContext(), mMainLayout,
+                                   user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
+                       }
+                       catch (Exception e)
+                       {
+
+                       }
+
                     }
                 }
             }

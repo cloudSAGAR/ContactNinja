@@ -92,6 +92,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -143,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @RequiresApi(api = Build.VERSION_CODES.N)
     private BroadcastReceiver mNetworkReceiver;
     ArrayList<Contact> listContacts;
+    ArrayList<Contact> new_listContacts=new ArrayList<>();
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -234,19 +237,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             limit = listContacts.size();
                             splitdata(listContacts);
                         } else {
-                            try{
+                         /*   try{
                               splitdata(listContacts);
                             }catch (Exception e){
                                 e.printStackTrace();
-                            }
-                           /* MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-                            myAsyncTasks.execute();*/
+                            }*/
+                            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                            myAsyncTasks.execute();
                         }
                     }
                     else {
-                       splitdata(listContacts);
-                 /*       MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-                        myAsyncTasks.execute();*/
+                    //   splitdata(listContacts);
+                      MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks.execute();
                     }
                 }
 
@@ -323,11 +326,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 for (int j = 0; j < response.get(i).numbers.size(); j++) {
 
+                try {
                     if (number.equals("")) {
                         number = response.get(i).numbers.get(j).number;
                     } else {
                         number = number + "," + response.get(i).numbers.get(j).number;
                     }
+                }
+                catch (Exception e)
+                {
+
+                }
+
 
                 }
 
@@ -906,7 +916,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         boolean found = contect_list.stream().anyMatch(p -> p.getEmailNumber().equals(num));
                         boolean found1 = contect_list.stream().anyMatch(p -> p.getFirst_name().equals(f_name));
                         if (found == true && found1 == false) {
-                            check_list_for_Update(listContacts.get(i).name, "", listContacts.get(i).numbers.get(0).number);
+                            check_list_for_Update(listContacts.get(i).name, "", listContacts.get(i).numbers.get(0).number,listContacts,i);
                         }
                     }
                 } else {
@@ -927,7 +937,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for (int i = 0; i < csv_inviteListData.size(); i++) {
                 for ( int j=0;j<csv_inviteListData.get(i).numbers.size();j++)
                 {
-                    check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(j).number);
+                    check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(j).number,csv_inviteListData,i);
                 }
             }
         }
@@ -944,7 +954,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void check_list(String userName, String last_name, String userPhoneNumber) {
+    public void check_list(String userName, String last_name, String userPhoneNumber, ArrayList<Contact> csv_inviteListData, int i) {
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
             protected List<Contect_Db> doInBackground(Void... voids) {
@@ -955,7 +965,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .getSameValue(userName, last_name, userPhoneNumber);
                 if (taskList.size() == 0) {
                     //Update Call
-                    check_list_for_Update(userName, last_name, userPhoneNumber);
+                    check_list_for_Update(userName, last_name, userPhoneNumber,csv_inviteListData,i);
 
                 } else if (taskList.size() != 1) {
                     loadingDialog.cancelLoading();   //Multiple Same Data Then Remove
@@ -979,7 +989,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gt.execute();
     }
 
-    public void check_list_for_Update(String userName, String last_name, String userPhoneNumber) {
+    public void check_list_for_Update(String userName, String last_name, String userPhoneNumber,ArrayList<Contact> csv_inviteListData, int i) {
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
             protected List<Contect_Db> doInBackground(Void... voids) {
@@ -991,14 +1001,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
-                    List<Csv_InviteListData> csv_inviteListData1 = new ArrayList<>();
-                    csv_inviteListData1.add(new Csv_InviteListData(userName, userPhoneNumber, "", "", "", "", "", "", last_name));
-                    //splitdata(csv_inviteListData1);
+                   new_listContacts.add(csv_inviteListData.get(i));
+                   /* Collections.sort(new_listContacts, new Comparator<Contact>() {
+                        @Override
+                        public int compare(Contact s1, Contact s2) {
+                            return s1.name.compareToIgnoreCase(s2.name);
+                        }
+                    });*/
+                   splitdata(new_listContacts);
                 } else {
                     //Update Contect Api Call
                     try {
                         if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
-
                             AddContect_Api1(userName, last_name, userPhoneNumber, taskList.get(0).getContect_id(), taskList.get(0).getContactId());
                         }
                     } catch (JSONException e) {
@@ -1049,13 +1063,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    try {
-                        ContectEvent();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+
                 } else {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                  //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
 
@@ -1150,6 +1160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(String s) {
+
         }
 
     }
