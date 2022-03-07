@@ -28,7 +28,7 @@ public class Userprofile {
     private Object referredBalance;
     @SerializedName("timezone_id")
     @Expose
-    private Object timezoneId;
+    private Integer timezoneId;
     @SerializedName("affiliate_json")
     @Expose
     private List<Integer> affiliateJson = null;
@@ -142,11 +142,11 @@ public class Userprofile {
         this.referredBalance = referredBalance;
     }
 
-    public Object getTimezoneId() {
+    public Integer getTimezoneId() {
         return timezoneId;
     }
 
-    public void setTimezoneId(Object timezoneId) {
+    public void setTimezoneId(Integer timezoneId) {
         this.timezoneId = timezoneId;
     }
 

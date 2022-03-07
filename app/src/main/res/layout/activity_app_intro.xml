@@ -46,11 +46,11 @@
         tools:ignore="MissingConstraints" />-->
 
     <com.google.android.material.tabs.TabLayout
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         android:id="@+id/tab_layout"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_50sdp"
         android:background="@color/purple_200"
         app:tabBackground="@drawable/tab_selector"
