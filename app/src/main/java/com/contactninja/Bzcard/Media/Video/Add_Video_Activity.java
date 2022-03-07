@@ -92,9 +92,9 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
             setVideo_info();
         } else {
             setVideo();
+            DownloadImage(Global.getYoutubeThumbnailUrlFromVideoUrl(Link));
         }
 
-        DownloadImage(Global.getYoutubeThumbnailUrlFromVideoUrl(Link));
 
     }
     void DownloadImage(String ImageUrl) {
@@ -171,6 +171,11 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
             Link = information.getMedia_filePath();
         }
         if(bzcard_model.isEdit()){
+            if(Global.IsNotNull(information.getMedia_url())){
+                Glide.with(getApplicationContext())
+                        .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
+                        .into(iv_video);
+            }
             Glide.with(getApplicationContext())
                     .load(information.getMedia_thumbnail())
                     .into(iv_video);
@@ -199,10 +204,12 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
 
     private void setVideo() {
 
-        if(bzcard_model.isEdit()){
-            Glide.with(getApplicationContext())
-                    .load(information.getMedia_thumbnail())
-                    .into(iv_video);
+        if(bzcard_model.isEdit()&&Global.IsNotNull(information)){
+            if(!information.getMedia_thumbnail().equals("")){
+                Glide.with(getApplicationContext())
+                        .load(information.getMedia_thumbnail())
+                        .into(iv_video);
+            }
         }else {
             Glide.with(getApplicationContext())
                     .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))

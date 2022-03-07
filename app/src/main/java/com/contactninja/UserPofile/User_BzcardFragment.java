@@ -21,7 +21,6 @@ import com.contactninja.Bzcard.CreateBzcard.Add_New_Bzcard_Activity;
 import com.contactninja.Bzcard.Select_Bzcard_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.BZcardListModel;
-import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Setting.WebActivity;
@@ -48,7 +47,7 @@ import retrofit2.Response;
 public class User_BzcardFragment extends Fragment implements View.OnClickListener {
 
     LinearLayout demo_layout, layout_list;
-    TextView tv_create, sub_txt, txt_card_name, button_edit,button_Preview;
+    TextView tv_create, sub_txt, txt_card_name, button_edit, button_Preview;
     private long mLastClickTime = 0;
 
     SessionManager sessionManager;
@@ -168,6 +167,41 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
 
     }
+    void Select_item(Integer id) throws JSONException {
+
+       // loadingDialog.showLoadingDialog();
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("id", id);
+        obj.add("data", paramObject);
+        retrofitCalls.BZcard_User_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<List<BZcardListModel.Bizcard>>() {
+                    }.getType();
+                    List<BZcardListModel.Bizcard> bizcard = new Gson().fromJson(headerString, listType);
+                    manu(bizcard.get(0));
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
 
     private void setImage() {
         customViewPagerAdapter = new CustomViewPagerAdapter(getActivity(), bizcardList);
@@ -216,35 +250,68 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                if(viewPager.getCurrentItem()==0){
-                    manu(bizcardList.get(0));
-                }else  if(viewPager.getCurrentItem()==1){
-                    manu(bizcardList.get(1));
-                }else  if(viewPager.getCurrentItem()==2){
-                    manu( bizcardList.get(2));
-                }else  if(viewPager.getCurrentItem()==3){
-                    manu(bizcardList.get(3));
-                }else  if(viewPager.getCurrentItem()==4){
-                    manu(bizcardList.get(4));
+                if (viewPager.getCurrentItem() == 0) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                            Select_item(bizcardList.get(0).getId());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (viewPager.getCurrentItem() == 1) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                            Select_item(bizcardList.get(1).getId());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else if (viewPager.getCurrentItem() == 2) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                            Select_item(bizcardList.get(2).getId());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else if (viewPager.getCurrentItem() == 3) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                            Select_item(bizcardList.get(3).getId());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else if (viewPager.getCurrentItem() == 4) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                            Select_item(bizcardList.get(4).getId());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-                break;  case R.id.button_Preview:
+                break;
+            case R.id.button_Preview:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getActivity(), WebActivity.class);
-                if(viewPager.getCurrentItem()==0){
-                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
-                }else  if(viewPager.getCurrentItem()==1){
-                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
-                }else  if(viewPager.getCurrentItem()==2){
-                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
-                }else  if(viewPager.getCurrentItem()==3){
-                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
-                }else  if(viewPager.getCurrentItem()==4){
-                    intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
+                if (viewPager.getCurrentItem() == 0) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(0).getId_encoded());
+                } else if (viewPager.getCurrentItem() == 1) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(1).getId_encoded());
+                } else if (viewPager.getCurrentItem() == 2) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(2).getId_encoded());
+                } else if (viewPager.getCurrentItem() == 3) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(3).getId_encoded());
+                } else if (viewPager.getCurrentItem() == 4) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(4).getId_encoded());
                 }
                 startActivity(intent);
+
                 break;
         }
     }
@@ -299,6 +366,12 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,"https://app.contactninja.org/bzcard/"+bizcard.getId_encoded());
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+
                 bottomSheetDialog.dismiss();
             }
         });
@@ -310,6 +383,21 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+
+
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                if (viewPager.getCurrentItem() == 0) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                } else if (viewPager.getCurrentItem() == 1) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                } else if (viewPager.getCurrentItem() == 2) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                } else if (viewPager.getCurrentItem() == 3) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                } else if (viewPager.getCurrentItem() == 4) {
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                }
+                startActivity(intent);
 
                 bottomSheetDialog.dismiss();
             }
@@ -338,7 +426,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == ((LinearLayout) object);
+            return view == object;
         }
 
         @Override
@@ -346,7 +434,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
             View itemView = mLayoutInflater.inflate(R.layout.bzcard_my_item_select, container, false);
 
             BZcardListModel.Bizcard bizcard = bizcardList.get(position);
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_card);
+            ImageView imageView = itemView.findViewById(R.id.iv_card);
 
             int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
                     .replace(" ", "_").toLowerCase(), "drawable", mContext.getPackageName());

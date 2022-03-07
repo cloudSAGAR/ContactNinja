@@ -140,8 +140,8 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 float r = 1 - Math.abs(position);
                 page.setScaleY(0.85f + r * 0.15f);
 
-                if (viewPager2.getCurrentItem() == 0) {
-                    txt_footer.setText(getResources().getString(R.string.bz_footer));
+                txt_footer.setText(getResources().getString(R.string.bz_footer));
+  /*              if (viewPager2.getCurrentItem() == 0) {
                 } else if (viewPager2.getCurrentItem() == 1) {
                     txt_footer.setText(getResources().getString(R.string.bz_footer2));
                 } else if (viewPager2.getCurrentItem() == 2) {
@@ -153,7 +153,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 } else if (viewPager2.getCurrentItem() == 5) {
                     txt_footer.setText(getResources().getString(R.string.bz_footer2));
                 }
-
+*/
 
             }
         });

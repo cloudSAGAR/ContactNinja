@@ -95,9 +95,16 @@ public class Add_image_Activity extends AppCompatActivity implements Connectivit
         edt_image_title.setText(information.getMedia_title());
         edt_Add_description.setText(information.getMedia_description());
         if (bzcard_model.isEdit()) {
-            Glide.with(getApplicationContext())
-                    .load(information.getMedia_url())
-                    .into(iv_image);
+            if(Global.IsNotNull(information.getMedia_filePath())){
+                Glide.with(getApplicationContext())
+                        .load(information.getMedia_filePath())
+                        .into(iv_image);
+
+            }else{
+                Glide.with(getApplicationContext())
+                        .load(information.getMedia_url())
+                        .into(iv_image);
+            }
         } else {
             Glide.with(getApplicationContext())
                     .load(information.getMedia_filePath())

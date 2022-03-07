@@ -314,16 +314,26 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
             ev_job.setText(bzcard_model.getBzcardFieldsModel().getJobtitle());
             ev_address.setText(bzcard_model.getBzcardFieldsModel().getAddrees());
             ev_zip.setText(bzcard_model.getBzcardFieldsModel().getZipcode());
+            if(!bzcard_model.getBzcardFieldsModel().getCompany_logo().equals("")){
 
-            Glide.with(getActivity()).
-                    load(bzcard_model.getBzcardFieldsModel().getCompany_logo()).
-                    apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
-                    into(iv_company_icon);
-            iv_company_icon.setVisibility(View.VISIBLE);
-            iv_company_dummy.setVisibility(View.GONE);
+                Glide.with(getActivity()).
+                        load(bzcard_model.getBzcardFieldsModel().getCompany_logo()).
+                        apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
+                        into(iv_company_icon);
+                iv_company_icon.setVisibility(View.VISIBLE);
+                iv_company_dummy.setVisibility(View.GONE);
 
-            tv_reupload.setVisibility(View.VISIBLE);
-            tv_image_size.setVisibility(View.GONE);
+
+                tv_reupload.setVisibility(View.VISIBLE);
+                tv_image_size.setVisibility(View.GONE);
+            }else {
+                iv_company_icon.setVisibility(View.GONE);
+                iv_company_dummy.setVisibility(View.VISIBLE);
+
+                tv_reupload.setVisibility(View.GONE);
+                tv_image_size.setVisibility(View.VISIBLE);
+            }
+
 
         }else {
             SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
@@ -591,8 +601,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                 if (resultCode == getActivity().RESULT_OK) {
                     Uri resultUri = result.getUri();
                     bzcard_model=SessionManager.getBzcard(getActivity());
-                    bzcard_model.getBzcardFieldsModel().setCover_url(bzcard_model.getBzcardFieldsModel().getCover_image());
-                    bzcard_model.getBzcardFieldsModel().setProfile_url(bzcard_model.getBzcardFieldsModel().getProfile_image());
+                  //  bzcard_model.getBzcardFieldsModel().setCover_url(bzcard_model.getBzcardFieldsModel().getCover_image());
+                   // bzcard_model.getBzcardFieldsModel().setProfile_url(bzcard_model.getBzcardFieldsModel().getProfile_image());
                     bzcard_model.getBzcardFieldsModel().setCompany_logo_url(result.getUri().getPath());
                     Log.e("Url is",resultUri.getPath());
                     Log.e("Info is",new Gson().toJson(bzcard_model));

@@ -148,19 +148,17 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                     tv_error.setVisibility(View.VISIBLE);
                 } else {
                     tv_error.setVisibility(View.GONE);
-                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getProfile_image())) {
+                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getProfile_url())) {
                         TotalFileUpload++;
                     }
-                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCover_image())) {
+                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCover_url())) {
                         TotalFileUpload++;
 
                     }
-                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCompany_logo())) {
+                    if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCompany_logo_url())) {
                         TotalFileUpload++;
                     }
-                    if (Global.IsNotNull(bzMediaInformationList) || bzMediaInformationList.size() != 0) {
-                        TotalFileUpload = TotalFileUpload + bzMediaInformationList.size();
-                    }
+
                     Uplod_inage_and_audio();
 
 
@@ -243,36 +241,35 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
 
 
         if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getProfile_url())) {
-            if (!bzcard_model.isEdit()) {
                 s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
                 String Bzcard_profile = s3uploaderObj.BZcard_image_Upload(bzcard_model.getBzcardFieldsModel().getProfile_url(),
                         "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId(), "pro_A");
                 UploadS3();
                 bzcard_model.getBzcardFieldsModel().setProfile_image(Bzcard_profile);
                 SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
-            }
+
+
         }
         if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCover_url())) {
 
-            if (!bzcard_model.isEdit()) {
                 s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
                 String Bzcard_Cover_image = s3uploaderObj.BZcard_image_Upload(bzcard_model.getBzcardFieldsModel().getCover_url(),
                         "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId(), "cov_A");
                 UploadS3();
                 bzcard_model.getBzcardFieldsModel().setCover_image(Bzcard_Cover_image);
                 SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
-            }
+
+
         }
         if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCompany_logo_url())) {
 
-            if (!bzcard_model.isEdit()) {
                 s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
                 String Bzcard_Company_logo = s3uploaderObj.BZcard_image_Upload(bzcard_model.getBzcardFieldsModel().getCompany_logo_url(),
                         "bzcard" + "/" + "bzcard_" + signResponseModel.getUser().getId(), "com_A");
                 UploadS3();
                 bzcard_model.getBzcardFieldsModel().setCompany_logo(Bzcard_Company_logo);
                 SessionManager.setBzcard(Title_bzcardActivity.this, bzcard_model);
-            }
+
         }
         if (Global.IsNotNull(bzMediaInformationList) && bzMediaInformationList.size() != 0) {
 
@@ -280,6 +277,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 switch (bzMediaInformationList.get(i).getMedia_type()) {
                     case "video": {
                         if (!bzMediaInformationList.get(i).getMedia_filePath().equals("")) {
+                            TotalFileUpload++;
                             Bzcard_Fields_Model.BZ_media_information information1 = bzMediaInformationList.get(i);
                             s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
                             String Bzcard_thumbnail = s3uploaderObj.BZcard_image_Upload(bzMediaInformationList.get(i).getMedia_filePath(),
@@ -306,6 +304,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                     case "image": {
                         if (!bzMediaInformationList.get(i).getMedia_filePath().equals("")) {
 
+                            TotalFileUpload++;
                             Bzcard_Fields_Model.BZ_media_information information1 = bzMediaInformationList.get(i);
                             s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
 
@@ -330,7 +329,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                     }
                     case "pdf": {
                         if (!bzMediaInformationList.get(i).getMedia_filePath().equals("")) {
-
+                            TotalFileUpload++;
                             Bzcard_Fields_Model.BZ_media_information information1 = bzMediaInformationList.get(i);
                             s3uploaderObj = new S3Uploader(Title_bzcardActivity.this);
 
@@ -568,6 +567,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                     try {
                         if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
                             UploadCount = 0;
+                            TotalFileUpload=0;
                             Data_Upload();
                         }
                     } catch (JSONException e) {

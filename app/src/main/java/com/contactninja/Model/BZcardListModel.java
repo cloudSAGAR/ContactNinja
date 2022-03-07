@@ -80,6 +80,9 @@ public class BZcardListModel {
         @SerializedName("updated_at")
         @Expose
         private String updatedAt = "";
+        @SerializedName("id_encoded")
+        @Expose
+        private String id_encoded = "";
 
 
         public boolean isEdit() {
@@ -144,6 +147,14 @@ public class BZcardListModel {
 
         public void setBzcardFieldsModel1(Bzcard_Fields_Model bzcardFieldsModel1) {
             this.bzcardFieldsModel1 = bzcardFieldsModel1;
+        }
+
+        public String getId_encoded() {
+            return id_encoded;
+        }
+
+        public void setId_encoded(String id_encoded) {
+            this.id_encoded = id_encoded;
         }
     }
 }

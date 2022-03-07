@@ -117,8 +117,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
          bzMediaInformationList= bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
 
         IntentView(view);
-        setColor();
         setdata();
+        setColor();
         if(bzMediaInformationList.size()!=0){
             setCreatedVideoandImage();
         }
@@ -140,6 +140,8 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         if(!bzcard_model.getBzcardFieldsModel().getButton2_name().equals("")){
             layout_Cutom_Button_other.setVisibility(View.VISIBLE);
             iv_Cutom_Button_other.setBackgroundResource(R.drawable.ic_select_on);
+        }else {
+            layout_Custom_other.setVisibility(View.GONE);
         }
 
 
@@ -151,31 +153,37 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         edt_Bio.setText(bzcard_model.getBzcardFieldsModel().getBio_head());
         edt_Add_description .setText(bzcard_model.getBzcardFieldsModel().getBio_description());
 
-        if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Schedule a meeting")){
-            layout_Add_call.setVisibility(View.VISIBLE);
-            iv_Schedule_a_meeting_radio.setBackgroundResource(R.drawable.ic_radio_on);
-            layout_Schedule_a_meeting_edit.setVisibility(View.VISIBLE);
-            edt_Schedule_a_meeting_url1.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
-        }else if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Know more")){
-            layout_Add_call.setVisibility(View.VISIBLE);
-            iv_Know_more.setBackgroundResource(R.drawable.ic_radio_on);
-            layout_Know_more_edit.setVisibility(View.VISIBLE);
-            edt_Know_more_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
-        }else if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Visit now")){
-            layout_Add_call.setVisibility(View.VISIBLE);
-            iv_Visit_now.setBackgroundResource(R.drawable.ic_radio_on);
-            layout_Visit_now_edit.setVisibility(View.VISIBLE);
-            edt_Visit_now_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
-        }else if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Inquire now")){
-            layout_Add_call.setVisibility(View.VISIBLE);
-            iv_Inquire_now.setBackgroundResource(R.drawable.ic_radio_on);
-            layout_Inquire_now_edit.setVisibility(View.VISIBLE);
-            edt_Inquire_now_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
-        }else if(bzcard_model.getBzcardFieldsModel().getAction_name().equals("Learn more")){
-            layout_Add_call.setVisibility(View.VISIBLE);
-            iv_Learn_more.setBackgroundResource(R.drawable.ic_radio_on);
-            layout_Learn_more_edit.setVisibility(View.VISIBLE);
-            edt_Learn_more_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+        switch (bzcard_model.getBzcardFieldsModel().getAction_name()) {
+            case "Schedule a meeting":
+                layout_Add_call.setVisibility(View.VISIBLE);
+                iv_Schedule_a_meeting_radio.setBackgroundResource(R.drawable.ic_radio_on);
+                layout_Schedule_a_meeting_edit.setVisibility(View.VISIBLE);
+                edt_Schedule_a_meeting_url1.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+                break;
+            case "Know more":
+                layout_Add_call.setVisibility(View.VISIBLE);
+                iv_Know_more.setBackgroundResource(R.drawable.ic_radio_on);
+                layout_Know_more_edit.setVisibility(View.VISIBLE);
+                edt_Know_more_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+                break;
+            case "Visit now":
+                layout_Add_call.setVisibility(View.VISIBLE);
+                iv_Visit_now.setBackgroundResource(R.drawable.ic_radio_on);
+                layout_Visit_now_edit.setVisibility(View.VISIBLE);
+                edt_Visit_now_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+                break;
+            case "Inquire now":
+                layout_Add_call.setVisibility(View.VISIBLE);
+                iv_Inquire_now.setBackgroundResource(R.drawable.ic_radio_on);
+                layout_Inquire_now_edit.setVisibility(View.VISIBLE);
+                edt_Inquire_now_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+                break;
+            case "Learn more":
+                layout_Add_call.setVisibility(View.VISIBLE);
+                iv_Learn_more.setBackgroundResource(R.drawable.ic_radio_on);
+                layout_Learn_more_edit.setVisibility(View.VISIBLE);
+                edt_Learn_more_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
+                break;
         }
 
         if(!bzcard_model.getBzcardFieldsModel().getHtml().equals("")){
@@ -191,10 +199,6 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        setColor();
-        if(bzMediaInformationList.size()!=0){
-            setCreatedVideoandImage();
-        }
     }
 
     private void setCreatedVideoandImage() {
@@ -728,7 +732,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                     layout_media_list.setVisibility(View.GONE);
                     iv_media_title.setBackgroundResource(R.drawable.ic_select_off);
                 }else {
-                    setCreatedVideoandImage();
+                    //setCreatedVideoandImage();
                     if(media_show){
                         media_show=false;
                         layout_media_list.setVisibility(View.GONE);
@@ -895,9 +899,16 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             if(bzcard_model.isEdit()){
                 switch (information.getMedia_type()) {
                     case "video":
-                        Glide.with(mCtx)
-                                .load(information.getMedia_thumbnail())
-                                .into(holder.iv_video);
+                        if(Global.IsNotNull(information.getMedia_filePath())){
+                            Glide.with(mCtx)
+                                    .load(information.getMedia_filePath())
+                                    .into(holder.iv_video);
+                        }else {
+
+                            Glide.with(mCtx)
+                                    .load(information.getMedia_thumbnail())
+                                    .into(holder.iv_video);
+                        }
 
                         holder.layout_pdf.setVisibility(View.GONE);
                         holder.layout_video_image.setVisibility(View.VISIBLE);
@@ -910,17 +921,25 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
                         holder.layout_pdf.setVisibility(View.GONE);
                         holder.layout_video_image.setVisibility(View.VISIBLE);
-                        Glide.with(mCtx)
-                                .load(information.getMedia_url())
-                                .into(holder.iv_video);
+                        if(Global.IsNotNull(information.getMedia_filePath())){
+                            Glide.with(mCtx)
+                                    .load(information.getMedia_filePath())
+                                    .into(holder.iv_video);
+                        }else {
+
+                            Glide.with(mCtx)
+                                    .load(information.getMedia_url())
+                                    .into(holder.iv_video);
+                        }
                         break;
                 }
             }else {
                 switch (information.getMedia_type()) {
                     case "video":
-                        Glide.with(mCtx)
-                                .load(information.getMedia_url())
-                                .into(holder.iv_video);
+                            Glide.with(mCtx)
+                                    .load(information.getMedia_filePath())
+                                    .into(holder.iv_video);
+
 
                         holder.layout_pdf.setVisibility(View.GONE);
                         holder.layout_video_image.setVisibility(View.VISIBLE);
@@ -933,9 +952,12 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
                         holder.layout_pdf.setVisibility(View.GONE);
                         holder.layout_video_image.setVisibility(View.VISIBLE);
-                        Glide.with(mCtx)
-                                .load(information.getMedia_url())
-                                .into(holder.iv_video);
+
+
+                            Glide.with(mCtx)
+                                    .load(information.getMedia_url())
+                                    .into(holder.iv_video);
+
                         break;
                 }
             }

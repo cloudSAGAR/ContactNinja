@@ -214,9 +214,15 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
                 holder.iv_Featured.setVisibility(View.GONE);
             }
             if(bzcard_model.isEdit()){
-                Glide.with(mCtx)
-                        .load(information.getMedia_url())
-                        .into(holder.iv_video);
+                if(Global.IsNotNull(information.getMedia_filePath())){
+                    Glide.with(mCtx)
+                            .load(information.getMedia_filePath())
+                            .into(holder.iv_video);
+                }else {
+                    Glide.with(mCtx)
+                            .load(information.getMedia_url())
+                            .into(holder.iv_video);
+                }
             }else {
                 Glide.with(mCtx)
                         .load(information.getMedia_filePath())
