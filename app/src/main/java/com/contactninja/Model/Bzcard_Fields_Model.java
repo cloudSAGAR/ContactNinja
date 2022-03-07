@@ -41,12 +41,20 @@ public class Bzcard_Fields_Model {
     String profile_url="";
     String company_logo_url="";
     List<BZ_media_information> media_information=new ArrayList<>();
+    List<BZ_media_delete> media_deletes=new ArrayList<>();
 
     Social_links social_links= new Social_links();
 
     Integer custom_btn_limit=0;
     boolean action_btn_flag=false;
 
+    public List<BZ_media_delete> getMedia_deletes() {
+        return media_deletes;
+    }
+
+    public void setMedia_deletes(List<BZ_media_delete> media_deletes) {
+        this.media_deletes = media_deletes;
+    }
 
     public int getCard_id() {
         return card_id;
@@ -404,6 +412,28 @@ public class Bzcard_Fields_Model {
         public void setMedia_thumbnail(String media_thumbnail) {
             this.media_thumbnail = media_thumbnail;
         }
+    }
+    public static class BZ_media_delete implements Serializable {
+        String media_type="";
+        String media_url="";
+
+
+        public String getMedia_type() {
+            return media_type;
+        }
+
+        public void setMedia_type(String media_type) {
+            this.media_type = media_type;
+        }
+
+        public String getMedia_url() {
+            return media_url;
+        }
+
+        public void setMedia_url(String media_url) {
+            this.media_url = media_url;
+        }
+
     }
     public static class Bz_color_Model {
         String ColorName="";

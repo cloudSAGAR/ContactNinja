@@ -64,6 +64,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
     LinearLayout add_new_email;
     private long mLastClickTime=0;
+    boolean CheckScreen=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +118,10 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
                     userLinkedGmailList=userLinkedGmail.getUserLinkedGmail();
                     if (userLinkedGmailList.size() == 0) {
-                        startActivity(new Intent(getApplicationContext(), Verification_web.class));
+                        if(!CheckScreen){
+                            CheckScreen=true;
+                            startActivity(new Intent(getApplicationContext(), Verification_web.class));
+                        }
                     }else {
                         sessionManager.setUserLinkedGmail(getApplicationContext(),userLinkedGmailList);
                     }
@@ -126,7 +130,10 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                     rv_email_list.setAdapter(emailAdepter);
 
                 }else {
-                    startActivity(new Intent(getApplicationContext(), Verification_web.class));
+                    if(!CheckScreen){
+                        CheckScreen=true;
+                        startActivity(new Intent(getApplicationContext(), Verification_web.class));
+                    }
                 }
             }
 

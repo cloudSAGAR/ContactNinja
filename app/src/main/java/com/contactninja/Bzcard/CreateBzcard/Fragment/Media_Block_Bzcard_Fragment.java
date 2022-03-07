@@ -104,6 +104,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
 
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    List<Bzcard_Fields_Model.BZ_media_delete> deleteList = new ArrayList<>();
     public static BZcardListModel.Bizcard bzcard_model;
     MedialistAdepter medialistAdepter;
     boolean media_show=true;
@@ -115,6 +116,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         View view = inflater.inflate(R.layout.fragment_media__block__bzcard_, container, false);
          bzcard_model = SessionManager.getBzcard(getActivity());
          bzMediaInformationList= bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
+        deleteList= bzcard_model.getBzcardFieldsModel().getMedia_deletes();
 
         IntentView(view);
         setdata();
@@ -247,6 +249,15 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                             @Override
                             public void onClick(final int pos) {
                                 final Bzcard_Fields_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
+                                Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
+                                bz_media_delete.setMedia_type(item.getMedia_type());
+                                if(item.getMedia_type().equals("video")){
+                                    bz_media_delete.setMedia_url(item.getMedia_thumbnail());
+                                }else {
+                                    bz_media_delete.setMedia_url(item.getMedia_url());
+                                }
+                                deleteList.add(bz_media_delete);
+                                bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
                                 medialistAdepter.removeItem(pos,item);
 
                                 Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();

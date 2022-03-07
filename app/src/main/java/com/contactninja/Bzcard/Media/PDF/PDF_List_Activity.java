@@ -43,9 +43,10 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
     ImageView iv_back,iv_media_title;
     RecyclerView rv_imageList;
     pdflistAdepter pdflistAdepter;
-    static BZcardListModel.Bizcard model;
+    static BZcardListModel.Bizcard bzcard_model;
     static List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
     List<Bzcard_Fields_Model.BZ_media_information> bzMedia_pdf_List =new ArrayList<>();
+    List<Bzcard_Fields_Model.BZ_media_delete> deleteList =new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,9 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
         initUI();
         setList();
     }  private void setList() {
-        model= SessionManager.getBzcard(PDF_List_Activity.this);
-        bzMediaInformationList=model.getBzcardFieldsModel().getBzMediaInformationList();
+        bzcard_model = SessionManager.getBzcard(PDF_List_Activity.this);
+        bzMediaInformationList= bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
+        deleteList= bzcard_model.getBzcardFieldsModel().getMedia_deletes();
         for(int i=0;i<bzMediaInformationList.size();i++){
             if(bzMediaInformationList.get(i).getMedia_type().equals("pdf")){
                 bzMedia_pdf_List.add(bzMediaInformationList.get(i));
@@ -94,6 +96,11 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
                             @Override
                             public void onClick(final int pos) {
                                 final Bzcard_Fields_Model.BZ_media_information item = pdflistAdepter.getData().get(pos);
+                                Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
+                                bz_media_delete.setMedia_type(item.getMedia_type());
+                                bz_media_delete.setMedia_url(item.getMedia_url());
+                                deleteList.add(bz_media_delete);
+                                bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
                                 pdflistAdepter.removeItem(pos,item);
 
                                 Toast.makeText(PDF_List_Activity.this, "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -222,8 +229,8 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
                     bzMediaInformationList.remove(i);
-                    model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
-                    SessionManager.setBzcard(mCtx, model);
+                    bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
+                    SessionManager.setBzcard(mCtx, bzcard_model);
                     break;
                 }
             }

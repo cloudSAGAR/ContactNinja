@@ -60,6 +60,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
     String card_Name = "";
     S3Uploader s3uploaderObj;
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    List<Bzcard_Fields_Model.BZ_media_delete> deleteList = new ArrayList<>();
     BZcardListModel.Bizcard bzcard_model;
     int UploadCount = 0, TotalFileUpload = 0;
     private BroadcastReceiver mNetworkReceiver;
@@ -74,6 +75,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
 
         bzcard_model = SessionManager.getBzcard(this);
         bzMediaInformationList = bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
+        deleteList = bzcard_model.getBzcardFieldsModel().getMedia_deletes();
         IntentUI();
 
         loadingDialog = new LoadingDialog(this);
@@ -231,6 +233,32 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                     }
                 }
             }
+            if (Global.IsNotNull(deleteList) && deleteList.size() != 0) {
+
+                for (int i = 0; i < deleteList.size(); i++) {
+                    switch (deleteList.get(i).getMedia_type()) {
+                        case "video": {
+                            if (!deleteList.get(i).getMedia_url().equals("")) {
+                                AmazonUtil.deleteS3Client(getApplicationContext(), bzMediaInformationList.get(i).getMedia_url());
+                            }
+                            break;
+                        }
+                        case "image": {
+                            if (!deleteList.get(i).getMedia_url().equals("")) {
+                                AmazonUtil.deleteS3Client(getApplicationContext(), deleteList.get(i).getMedia_url());
+                            }
+
+                            break;
+                        }
+                        case "pdf": {
+                            if (!deleteList.get(i).getMedia_url().equals("")) {
+                                AmazonUtil.deleteS3Client(getApplicationContext(), deleteList.get(i).getMedia_url());
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
 
@@ -354,7 +382,8 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                     }
                 }
             }
-        } else {
+        }
+        if(TotalFileUpload==0) {
             try {
                 if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
                     Data_Upload();

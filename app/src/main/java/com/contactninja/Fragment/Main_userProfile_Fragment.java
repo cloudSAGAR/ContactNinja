@@ -193,9 +193,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         );
         option_type = "save";
         setTab();
+        setdata();
 
-        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-        myAsyncTasks.execute();
 
 
         pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
@@ -283,6 +282,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         });
 
+        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+        myAsyncTasks.execute();
+
         return view;
     }
     private void Userinfo() throws JSONException {
@@ -307,7 +309,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
                             Log.e("Main Data Is ", new Gson().toJson(user_model));
-                            setdata();
+
                             // setTab();
 
 
@@ -538,17 +540,13 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
-                        if (flag.equals("edit")) {
-                            view_single.setVisibility(View.VISIBLE);
-                            fragment = new User_InformationFragment();
-
-                        } else {
+                        if (!flag.equals("edit")) {
                             edt_FirstName.setEnabled(false);
                             edt_lastname.setEnabled(false);
-                            view_single.setVisibility(View.VISIBLE);
-                            fragment = new User_InformationFragment();
 
                         }
+                        view_single.setVisibility(View.VISIBLE);
+                        fragment = new User_InformationFragment();
                         break;
                     case 1:
                         if (flag.equals("edit")) {
@@ -564,10 +562,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             edit_profile.setVisibility(View.VISIBLE);
                             edt_FirstName.setEnabled(false);
                             setdata();
-                            fragment = new User_BzcardFragment();
-                        } else {
-                            fragment = new User_BzcardFragment();
                         }
+                        fragment = new User_BzcardFragment();
                         break;
                     case 2:
                         if (flag.equals("edit")) {
@@ -583,10 +579,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             edit_profile.setVisibility(View.VISIBLE);
                             setdata();
                             edt_FirstName.setEnabled(false);
-                            fragment = new User_GrowthFragment();
-                        } else {
-                            fragment = new User_GrowthFragment();
                         }
+                        fragment = new User_GrowthFragment();
                         break;
 
                 }

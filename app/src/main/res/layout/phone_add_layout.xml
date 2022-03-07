@@ -243,6 +243,7 @@
                     android:orientation="horizontal">
 
                 <com.hbb20.CountryCodePicker
+                    app:ccp_textSize="@dimen/_12sdp"
                     android:id="@+id/ccp_id"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

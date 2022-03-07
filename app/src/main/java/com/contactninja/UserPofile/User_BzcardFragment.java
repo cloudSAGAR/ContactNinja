@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -27,6 +29,7 @@ import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.aws.AmazonUtil;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -167,9 +170,10 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
 
     }
+
     void Select_item(Integer id) throws JSONException {
 
-       // loadingDialog.showLoadingDialog();
+        // loadingDialog.showLoadingDialog();
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
         String token = Global.getToken(sessionManager);
@@ -225,8 +229,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 } else {
                     nextButton.setVisibility(View.INVISIBLE);
                 }
-                if (viewPager.getCurrentItem() == 0)
-                {
+                if (viewPager.getCurrentItem() == 0) {
                     txt_card_name.setText(bizcardList.get(0).getBzcardFieldsModel().getCard_name());
                 } else if (viewPager.getCurrentItem() == 1) {
                     txt_card_name.setText(bizcardList.get(1).getBzcardFieldsModel().getCard_name());
@@ -235,7 +238,8 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 } else if (viewPager.getCurrentItem() == 3) {
                     txt_card_name.setText(bizcardList.get(3).getBzcardFieldsModel().getCard_name());
                 } else if (viewPager.getCurrentItem() == 4) {
-                    txt_card_name.setText(bizcardList.get(4).getBzcardFieldsModel().getCard_name());                }
+                    txt_card_name.setText(bizcardList.get(4).getBzcardFieldsModel().getCard_name());
+                }
             }
 
             @Override
@@ -311,15 +315,15 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 if (viewPager.getCurrentItem() == 0) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(0).getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(0).getId_encoded());
                 } else if (viewPager.getCurrentItem() == 1) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(1).getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(1).getId_encoded());
                 } else if (viewPager.getCurrentItem() == 2) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(2).getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(2).getId_encoded());
                 } else if (viewPager.getCurrentItem() == 3) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(3).getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(3).getId_encoded());
                 } else if (viewPager.getCurrentItem() == 4) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcardList.get(4).getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(4).getId_encoded());
                 }
                 startActivity(intent);
 
@@ -365,6 +369,15 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
+
+                try {
+                    if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                        Delete_card(bizcard.getId(), bizcard);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 bottomSheetDialog.dismiss();
             }
         });
@@ -379,7 +392,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"https://app.contactninja.org/bzcard/"+bizcard.getId_encoded());
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://app.contactninja.org/bzcard/" + bizcard.getId_encoded());
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 
@@ -398,15 +411,15 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 if (viewPager.getCurrentItem() == 0) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
                 } else if (viewPager.getCurrentItem() == 1) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
                 } else if (viewPager.getCurrentItem() == 2) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
                 } else if (viewPager.getCurrentItem() == 3) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
                 } else if (viewPager.getCurrentItem() == 4) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/"+bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
                 }
                 startActivity(intent);
 
@@ -416,6 +429,101 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
 
         bottomSheetDialog.show();
+    }
+
+    void Delete_card(Integer id, BZcardListModel.Bizcard bizcard) throws JSONException {
+
+        loadingDialog.showLoadingDialog();
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("status", "D");
+        paramObject.addProperty("id", id);
+        obj.add("data", paramObject);
+        retrofitCalls.BZcard_Add_Update(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getHttp_status() == 200) {
+
+
+                    if (Global.IsNotNull(bizcard.getBzcardFieldsModel().getProfile_image())) {
+                        if (!bizcard.getBzcardFieldsModel().getProfile_image().equals("")) {
+                            try {
+                                AmazonUtil.deleteS3Client(getActivity(), bizcard.getBzcardFieldsModel().getProfile_image());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                    if (Global.IsNotNull(bizcard.getBzcardFieldsModel().getCover_image())) {
+                        if (!bizcard.getBzcardFieldsModel().getCover_image().equals("")) {
+                            try {
+                                AmazonUtil.deleteS3Client(getActivity(), bizcard.getBzcardFieldsModel().getCover_image());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    if (Global.IsNotNull(bizcard.getBzcardFieldsModel().getCompany_logo())) {
+                        if (!bizcard.getBzcardFieldsModel().getCompany_logo().equals("")) {
+                            try {
+                                AmazonUtil.deleteS3Client(getActivity(), bizcard.getBzcardFieldsModel().getCompany_logo());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    if (Global.IsNotNull(bizcard.getBzcardFieldsModel().getBzMediaInformationList()) && bizcard.getBzcardFieldsModel().getBzMediaInformationList().size() != 0) {
+
+                        for (int i = 0; i < bizcard.getBzcardFieldsModel().getBzMediaInformationList().size(); i++) {
+                            switch (bizcard.getBzcardFieldsModel().getBzMediaInformationList().get(i).getMedia_type()) {
+                                case "video": {
+                                    if (!bizcard.getBzcardFieldsModel().getBzMediaInformationList().get(i).getMedia_thumbnail().equals("")) {
+                                        AmazonUtil.deleteS3Client(getActivity(), bizcard.getBzcardFieldsModel().getBzMediaInformationList().get(i).getMedia_thumbnail());
+                                    }
+                                    break;
+                                }
+                                case "image": {
+                                    if (!bizcard.getBzcardFieldsModel().getBzMediaInformationList().get(i).getMedia_url().equals("")) {
+                                        AmazonUtil.deleteS3Client(getActivity(), bizcard.getBzcardFieldsModel().getBzMediaInformationList().get(i).getMedia_url());
+                                    }
+
+                                    break;
+                                }
+                                case "pdf": {
+                                    if (!bizcard.getBzcardFieldsModel().getBzMediaInformationList().get(i).getMedia_url().equals("")) {
+                                        AmazonUtil.deleteS3Client(getActivity(), bizcard.getBzcardFieldsModel().getBzMediaInformationList().get(i).getMedia_url());
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    loadingDialog.cancelLoading();
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                            Data_list();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
     }
 
     public class CustomViewPagerAdapter extends PagerAdapter {
@@ -452,7 +560,6 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
             if (resID != 0) {
                 Glide.with(mContext.getApplicationContext()).load(resID).into(imageView);
             }
-            txt_card_name.setText(bizcard.getBzcardFieldsModel().getCard_name());
             container.addView(itemView);
 
             return itemView;
@@ -460,7 +567,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
+            container.removeView((RelativeLayout) object);
         }
 
     }
