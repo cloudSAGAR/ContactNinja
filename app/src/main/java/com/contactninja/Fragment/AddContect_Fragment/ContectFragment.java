@@ -345,8 +345,7 @@ public class ContectFragment extends Fragment {
     }
 
     private void onScrolledToBottom() {
-        Log.e("MainSize", String.valueOf(paginationAdapter.getItemCount()));
-        Log.e("All Size", String.valueOf(contectListData.size()));
+
         if (paginationAdapter.getItemCount() < contectListData.size()) {
             int x, y;
             if ((contectListData.size() - paginationAdapter.getItemCount()) >= 50) {
@@ -361,7 +360,7 @@ public class ContectFragment extends Fragment {
                 paginationAdapter.add(contectListData.get(i));
             }*/
             paginationAdapter.addAll(contectListData.subList(x,y));
-            paginationAdapter.notifyDataSetChanged();
+            //paginationAdapter.notifyDataSetChanged();
         }
 
     }

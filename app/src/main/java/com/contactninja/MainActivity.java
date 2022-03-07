@@ -1007,7 +1007,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .getInstance(getApplicationContext())
                         .getAppDatabase()
                         .taskDao()
-                        .getSameValue_Firstorlastname(userPhoneNumber.replaceAll("[-+.^:,]", ""));
+                        .getSameValue_Firstorlastname(userPhoneNumber);
 
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
