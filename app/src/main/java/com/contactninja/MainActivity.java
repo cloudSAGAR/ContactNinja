@@ -217,7 +217,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 if (!SessionManager.getnewContect(getApplicationContext()).equals(null))
                 {
-                    splitdata((ArrayList<Contact>) SessionManager.getnewContect(getApplicationContext()));
+                    try {
+                        splitdata((ArrayList<Contact>) SessionManager.getnewContect(getApplicationContext()));
+
+                    }catch (Exception e)
+                    {
+
+                    }
                 }
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
@@ -239,7 +245,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //Not Upload Contect Then If Call
                         if (Is_contact_exist.equals("0")) {
                             limit = listContacts.size();
-                            splitdata(listContacts);
+                            try {
+                                splitdata(listContacts);
+                            }catch (Exception e)
+                            {
+
+                            }
+
                         } else {
                          /*   try{
                               splitdata(listContacts);

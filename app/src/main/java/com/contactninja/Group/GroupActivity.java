@@ -273,9 +273,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         if (groupContectAdapter.getItemCount() < contectListData.size()) {
             int x, y;
-            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 10) {
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 50) {
                 x = groupContectAdapter.getItemCount();
-                y = x + 10;
+                y = x + 50;
             } else {
                 x = groupContectAdapter.getItemCount();
                 y = x + contectListData.size() - groupContectAdapter.getItemCount();
@@ -989,6 +989,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                             if (contact1.get(i).getId().equals(contacts.get(position).getId())) {
 
                                 if (holder1.add_new_contect_icon.getVisibility() == View.VISIBLE) {
+                                    contacts.get(position).setFlag("false");
                                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                     holder1.add_new_contect_icon.setVisibility(View.GONE);
                                 } else {
