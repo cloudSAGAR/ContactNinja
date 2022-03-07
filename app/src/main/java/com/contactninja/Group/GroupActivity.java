@@ -1011,6 +1011,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         }
 
                     }
+
                     /*
                      * select number */
                     holder1.layout_contact_item.setOnClickListener(new View.OnClickListener() {

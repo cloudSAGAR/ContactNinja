@@ -187,6 +187,15 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
 
 
         call_updatedata();
+        contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1))
+                    onScrolledToBottom();
+
+            }
+        });
     }
 
     private void EmailList() {
@@ -210,13 +219,14 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                 }
             }
             if (contectListData.size() != 0) {
-                groupContectAdapter.addAll(contectListData);
+              //  groupContectAdapter.addAll(contectListData);
+                onScrolledToBottom();
             } else {
 
                 finish();
             }
             // contectListData.addAll(SessionManager.getContectList(getApplicationContext()).get(0).getContacts());
-            groupContectAdapter.notifyDataSetChanged();
+            //groupContectAdapter.notifyDataSetChanged();
             num_count.setText(contectListData.size() + " Contacts");
         }
         else {
@@ -232,6 +242,28 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
     }
 
 
+
+    private void onScrolledToBottom() {
+
+        if (groupContectAdapter.getItemCount() < contectListData.size()) {
+            int x, y;
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 50) {
+                x = groupContectAdapter.getItemCount();
+                y = x + 50;
+            } else {
+                x = groupContectAdapter.getItemCount();
+                y = x + contectListData.size() - groupContectAdapter.getItemCount();
+            }
+            for (int i = x; i < y; i++) {
+                contectListData.get(i).setFlag("true");
+                groupContectAdapter.add(contectListData.get(i));
+            }
+            // group_flag = "true";
+            //   groupContectAdapter.addAll(contectListData.subList(x, y));
+            //groupContectAdapter.notifyDataSetChanged();
+        }
+
+    }
     public void call_updatedata() {
         if (SessionManager.getGroupList(getApplicationContext()).size() != 0) {
             select_contectListData.clear();

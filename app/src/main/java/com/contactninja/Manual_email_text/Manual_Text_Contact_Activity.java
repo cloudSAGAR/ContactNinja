@@ -185,13 +185,43 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
 
 
         call_updatedata();
+        contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1))
+                    onScrolledToBottom();
+
+            }
+        });
     }
 
+    private void onScrolledToBottom() {
+
+        if (groupContectAdapter.getItemCount() < contectListData.size()) {
+            int x, y;
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 50) {
+                x = groupContectAdapter.getItemCount();
+                y = x + 50;
+            } else {
+                x = groupContectAdapter.getItemCount();
+                y = x + contectListData.size() - groupContectAdapter.getItemCount();
+            }
+            for (int i = x; i < y; i++) {
+                contectListData.get(i).setFlag("true");
+                groupContectAdapter.add(contectListData.get(i));
+            }
+            // group_flag = "true";
+            //   groupContectAdapter.addAll(contectListData.subList(x, y));
+            //groupContectAdapter.notifyDataSetChanged();
+        }
+
+    }
     private void ContectList() {
         if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
             contectListData.clear();
             List<ContectListData.Contact> list_data = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
-            Log.e("List Data is", new Gson().toJson(list_data));
+         //   Log.e("List Data is", new Gson().toJson(list_data));
             for (int i = 0; i < list_data.size(); i++) {
 
                 List<ContectListData.Contact.ContactDetail> contect_detail = list_data.get(i).getContactDetails();
@@ -205,8 +235,9 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                 }
             }
             // contectListData.addAll(SessionManager.getContectList(getApplicationContext()).get(0).getContacts());
-            groupContectAdapter.addAll(contectListData);
-            groupContectAdapter.notifyDataSetChanged();
+         //   groupContectAdapter.addAll(contectListData);
+           // groupContectAdapter.notifyDataSetChanged();
+            onScrolledToBottom();
             num_count.setText(contectListData.size() + " Contacts");
         }
         else {
