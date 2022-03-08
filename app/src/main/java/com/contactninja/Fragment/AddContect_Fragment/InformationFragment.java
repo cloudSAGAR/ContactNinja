@@ -220,6 +220,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
                         contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setContect_id(detail_contect.get(i).getId());
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
                         emaildetails_list.add(contactdetail);
@@ -240,6 +241,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         contactdetail.setType(detail_contect.get(i).getType());
                         contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
                         contactdetail.setId(detail_contect.get(i).getId());
+                        contactdetail.setContect_id(detail_contect.get(i).getId());
                         contactdetail.setLabel(detail_contect.get(i).getLabel());
                         contactdetail.setIs_default(detail_contect.get(i).getIsDefault());
 
@@ -568,11 +570,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
+                                Log.e(" Email Postion is", String.valueOf(pos));
                                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                                     return;
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
-                                final Contactdetail item = contactdetails.get(pos);
+                                final Contactdetail item = emaildetails_list.get(pos);
                                 emailAdapter.setdefault(pos,item);
                             }
                         }
@@ -614,6 +617,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
+                                Log.e("Phone Position is", String.valueOf(pos));
                                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                                     return;
                                 }
@@ -2150,7 +2154,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.ccp_id.resetToDefaultCountry();
                 holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
 
-            } else if (flag.equals("read")) {
+
+            }
+            else if (flag.equals("read")) {
 
                 holder.select_label.setVisibility(View.GONE);
                 holder.contect_msg.setVisibility(View.VISIBLE);
@@ -2349,13 +2355,28 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         }
 
         public void setdefault(int pos, Contactdetail item) {
-            for (int i = 0; i < contactdetails.size(); i++) {
-                if (item.getId() == contactdetails.get(i).getId()) {
-                    contactdetails.get(i).setIs_default(1);
-                } else {
-                    contactdetails.get(i).setIs_default(0);
-                }
-            }
+
+           if (contactdetails.size()==1)
+           {
+              // contactdetails.get(0).setEmail_number(contactdetails.get(0).getEmail_number());
+               contactdetails.get(0).setIs_default(1);
+           }
+           else {
+               for (int i = 0; i < contactdetails.size(); i++) {
+                   contactdetails.get(i).setEmail_number(contactdetails.get(i).getEmail_number());
+                   if (item.getId() == contactdetails.get(i).getId()) {
+                       contactdetails.get(i).setIs_default(1);
+                   } else {
+                       contactdetails.get(i).setIs_default(0);
+                   }
+               }
+           }
+
+            addcontectModel.setContactdetails(contactdetails);
+            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+            contactdetails.clear();
+            contactdetails.addAll(SessionManager.getAdd_Contect_Detail(getActivity()).getContactdetails());
             notifyDataSetChanged();
         }
 
@@ -2419,10 +2440,13 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.layout_icon_email.setVisibility(View.GONE);
             holder.edt_email.setEnabled(true);
 
-
-
             if (edit) {
 
+                if (contactdetails.get(position).getIs_default() == 1) {
+                    holder.iv_set_default.setVisibility(View.VISIBLE);
+                } else {
+                    holder.iv_set_default.setVisibility(View.GONE);
+                }
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -2470,6 +2494,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             } else if (flag.equals("read")) {
 
+                if (contactdetails.get(position).getIs_default() == 1) {
+                    holder.iv_set_default.setVisibility(View.VISIBLE);
+                } else {
+                    holder.iv_set_default.setVisibility(View.GONE);
+                }
                 if (Is_blocked != 1) {
                     holder.layout_icon_email.setVisibility(View.VISIBLE);
                 } else {
@@ -2483,7 +2512,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.tv_email.setText(holder.tv_email.getText().toString() + "(" + item.getLabel() + ")");
             } else {
 
-
+                if (contactdetails.get(position).getIs_default() == 1) {
+                    holder.iv_set_default.setVisibility(View.VISIBLE);
+                } else {
+                    holder.iv_set_default.setVisibility(View.GONE);
+                }
 
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -2568,13 +2601,31 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         }
 
         public void setdefault(int pos, Contactdetail item) {
-            for (int i = 0; i < contactdetails.size(); i++) {
-                if (item.getId() == contactdetails.get(i).getId()) {
-                    contactdetails.get(i).setIs_default(1);
-                } else {
-                    contactdetails.get(i).setIs_default(0);
-                }
-            }
+
+            Log.e("postion is",String.valueOf(pos));
+            Log.e("Data is ",new Gson().toJson(item));
+            Log.e("Contect list is",new Gson().toJson(contactdetails));
+          if (contactdetails.size()==1)
+          {
+              contactdetails.get(0).setIs_default(1);
+          }
+          else {
+              for (int i = 0; i < contactdetails.size(); i++) {
+                  contactdetails.get(i).setEmail_number(contactdetails.get(i).getEmail_number());
+                  Log.e("Id is", String.valueOf(item.getId()));
+                  Log.e("Contect Id ", String.valueOf(contactdetails.get(i).getId()));
+                  if (item.getId() == contactdetails.get(i).getId()) {
+                      contactdetails.get(i).setIs_default(1);
+                  } else {
+                      contactdetails.get(i).setIs_default(0);
+                  }
+              }
+          }
+
+            addcontectModel.setContactdetails_email(contactdetails);
+            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+            contactdetails.clear();
+            contactdetails.addAll(SessionManager.getAdd_Contect_Detail(getActivity()).getContactdetails_email());
             notifyDataSetChanged();
         }
 
@@ -2598,7 +2649,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             EditText edt_email;
             TextView email_txt, iv_invalid, tv_email;
             LinearLayout select_email_label, layout_swap, layout_icon_email;
-
+            ImageView iv_set_default;
             public InviteListDataclass(@NonNull View itemView) {
                 super(itemView);
 
@@ -2609,7 +2660,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 layout_swap = itemView.findViewById(R.id.layout_swap);
                 layout_icon_email = itemView.findViewById(R.id.layout_icon_email);
                 tv_email = itemView.findViewById(R.id.tv_email);
-
+                iv_set_default=itemView.findViewById(R.id.iv_set_default);
             }
 
         }

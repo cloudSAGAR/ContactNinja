@@ -927,7 +927,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 phone_type = contactdetails.get(i).getLabel();
                 paramObject1.put("email_number", contactdetails.get(i).getEmail_number());
 
-                if (contactdetails.get(i).getId() != 0) {
+                if (contactdetails.get(i).getContect_id() != 0) {
                     paramObject1.put("id", contactdetails.get(i).getId());
                 }
                 paramObject1.put("is_default", contactdetails.get(i).getIs_default());

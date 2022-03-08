@@ -109,8 +109,6 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
     }
 
     private void loadData() {
-
-
         ValueLineSeries series = new ValueLineSeries();
         series.setColor(Color.parseColor("#79D2DE"));
         series.addPoint(new ValueLinePoint(2.4f));
@@ -152,6 +150,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
         series.addPoint(new ValueLinePoint(2.5f));
         series.addPoint(new ValueLinePoint(2.0f));
         series.addPoint(new ValueLinePoint(1.4f));
+
         mBarChart.addSeries(series);
 
     }
