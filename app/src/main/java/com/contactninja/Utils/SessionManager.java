@@ -247,7 +247,7 @@ public class SessionManager {
         String json = gson.toJson(signModel);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Sign_Model, json);
-        Log.e("Sessioin data", new Gson().toJson(signModel));
+        //Log.e("Sessioin data", new Gson().toJson(signModel));
         editor.apply();
     }
 
@@ -289,7 +289,7 @@ public class SessionManager {
         String json = gson.toJson(group);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Group_Model, json);
-        Log.e("Sessioin data", new Gson().toJson(group));
+  /*      Log.e("Sessioin data", new Gson().toJson(group));*/
         editor.apply();
     }
 
@@ -311,7 +311,7 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(groupModel);
         editor.putString(GroupListData, json);
-        Log.e("Sessioin data", new Gson().toJson(groupModel));
+     /*   Log.e("Sessioin data", new Gson().toJson(groupModel));*/
         editor.apply();
     }
 
@@ -353,7 +353,7 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(groupModel);
         editor.putString(Contect_List, json);
-        Log.e("Sessioin data", new Gson().toJson(groupModel));
+       /* Log.e("Sessioin data", new Gson().toJson(groupModel));*/
         editor.apply();
     }
 
@@ -808,7 +808,7 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(userLinkedGmailList);
         editor.putString(UserLinkedGmailList, json);
-        Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+     /*   Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));*/
         editor.apply();
     }
 
@@ -834,7 +834,9 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(userLinkedGmailList);
         editor.putString(Broadcast_contect, json);
+/*
         Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+*/
         editor.apply();
     }
 
@@ -857,7 +859,9 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(userLinkedGmailList);
         editor.putString(Add_newcontect, json);
+/*
         Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+*/
         editor.apply();
     }
 

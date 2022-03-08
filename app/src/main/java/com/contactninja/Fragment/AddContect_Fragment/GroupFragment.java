@@ -416,7 +416,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                         Glide.with(context).
                                 load(Group_data.getGroupImage()).
                                 placeholder(R.drawable.shape_primary_back).
-                                error(R.drawable.shape_primary_back).into(movieViewHolder.group_image);
+                                error(R.drawable.shape_primary_back).
+                                into(movieViewHolder.group_image);
 
                         movieViewHolder.no_image.setVisibility(View.GONE);
                         movieViewHolder.group_image.setVisibility(View.VISIBLE);

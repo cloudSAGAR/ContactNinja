@@ -361,7 +361,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="Automated Email"
+                        android:text=""
                         android:textColor="@color/text_reg" />
 
                     <ImageView

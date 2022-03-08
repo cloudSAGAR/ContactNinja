@@ -92,18 +92,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.OptionalInt;
 import java.util.TimeZone;
-import java.util.stream.IntStream;
-
-import io.michaelrocks.libphonenumber.android.NumberParseException;
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
-import io.michaelrocks.libphonenumber.android.Phonenumber;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -220,7 +212,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try {
                         splitdata((ArrayList<Contact>) SessionManager.getnewContect(getApplicationContext()));
 
-                    }catch (Exception e)
+                    }
+                    catch (Exception e)
                     {
 
                     }
@@ -247,7 +240,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             limit = listContacts.size();
                             try {
                                 splitdata(listContacts);
-                            }catch (Exception e)
+                            }
+                            catch (Exception e)
                             {
 
                             }

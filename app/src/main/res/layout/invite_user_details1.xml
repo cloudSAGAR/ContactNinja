@@ -78,6 +78,7 @@
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_gravity="center|left"
+                        android:background="@drawable/shape_primary_back"
                         app:civ_border_color="#FF000000"
                         app:civ_border_width="0dp" />
 
