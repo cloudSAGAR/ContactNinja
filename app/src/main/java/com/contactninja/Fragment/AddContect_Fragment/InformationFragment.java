@@ -591,7 +591,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                     return;
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
-                                final Contactdetail item = contactdetails.get(pos);
+                                final Contactdetail item = emaildetails_list.get(pos);
                                 emailAdapter.removeItem(pos,item);
 
                                 Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -622,7 +622,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                     return;
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
-                                final Contactdetail item = contactdetails.get(pos);
+                                final Contactdetail item = phonedetails_list.get(pos);
                                 phoneAdapter.setdefault(pos,item);
                             }
                         }
@@ -638,7 +638,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                     return;
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
-                                  final Contactdetail item = contactdetails.get(pos);
+                                  final Contactdetail item = phonedetails_list.get(pos);
                                    phoneAdapter.removeItem(pos,item);
 
                                 Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -2340,28 +2340,29 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         public void removeItem(int pos,Contactdetail item) {
 
-            contactdetails.remove(pos);
-            notifyDataSetChanged();
+            if (contactdetails.size()>=1)
+            {
 
-            if (edit) {
-                try {
-                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                        RemoveContect(item.getId());
+                contactdetails.remove(pos);
+                notifyDataSetChanged();
+
+                if (edit) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            RemoveContect(item.getId());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
+
+
         }
 
         public void setdefault(int pos, Contactdetail item) {
 
-           if (contactdetails.size()==1)
-           {
-              // contactdetails.get(0).setEmail_number(contactdetails.get(0).getEmail_number());
-               contactdetails.get(0).setIs_default(1);
-           }
-           else {
+
                for (int i = 0; i < contactdetails.size(); i++) {
                    contactdetails.get(i).setEmail_number(contactdetails.get(i).getEmail_number());
                    if (item.getId() == contactdetails.get(i).getId()) {
@@ -2369,7 +2370,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                    } else {
                        contactdetails.get(i).setIs_default(0);
                    }
-               }
+
            }
 
             addcontectModel.setContactdetails(contactdetails);
@@ -2630,16 +2631,19 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         }
 
         public void removeItem(int pos, Contactdetail item) {
-            contactdetails.remove(pos);
-            notifyDataSetChanged();
+            if (contactdetails.size()>=1) {
 
-            if (edit) {
-                try {
-                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                        RemoveContect(item.getId());
+                contactdetails.remove(pos);
+                notifyDataSetChanged();
+
+                if (edit) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            RemoveContect(item.getId());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }

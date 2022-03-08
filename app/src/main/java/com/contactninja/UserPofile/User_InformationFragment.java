@@ -679,24 +679,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         SwipeHelper swipeHelper = new SwipeHelper(getActivity()) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Set as\n" +
-                                "default",
-                        0,
-                        Color.parseColor("#5495EC"),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                    return;
-                                }
-                                mLastClickTime = SystemClock.elapsedRealtime();
-                                final Contactdetail item = contactdetails.get(pos);
-                                emailAdapter.setdefault(pos,item);
-                            }
-                        }
-                ));
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Delete",
                         0,
@@ -708,7 +690,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                                     return;
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
-                                final Contactdetail item = contactdetails.get(pos);
+                                final Contactdetail item = emaildetails_list.get(pos);
                                 emailAdapter.removeItem(pos,item);
 
                                 Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -724,24 +706,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         SwipeHelper swipeHelper = new SwipeHelper(getActivity()) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Set as\n" +
-                                "default",
-                        0,
-                        Color.parseColor("#5495EC"),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                    return;
-                                }
-                                mLastClickTime = SystemClock.elapsedRealtime();
-                                final Contactdetail item = contactdetails.get(pos);
-                                phoneAdapter.setdefault(pos,item);
-                            }
-                        }
-                ));
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Delete",
                         0,
@@ -753,7 +717,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                                     return;
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
-                                final Contactdetail item = contactdetails.get(pos);
+                                final Contactdetail item = phonedetails_list.get(pos);
                                 phoneAdapter.removeItem(pos,item);
 
                                 Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -2114,7 +2078,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         public void removeItem(int pos, Contactdetail item) {
             contactdetails.remove(pos);
             notifyDataSetChanged();
+            addcontectModel.setContactdetails(contactdetails);
+            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
+/*
             if (edit) {
                 try {
                     if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
@@ -2123,7 +2090,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
         }
 
         public void setdefault(int pos, Contactdetail item) {
@@ -2350,8 +2317,11 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
             contactdetails.remove(pos);
             notifyDataSetChanged();
+            addcontectModel.setContactdetails_email(contactdetails);
+            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
-            if (edit) {
+
+            /*if (edit) {
                 try {
                     if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                         RemoveContect(item.getId());
@@ -2359,7 +2329,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
 
         }
 

@@ -145,6 +145,7 @@ public class ContectFragment extends Fragment {
 
 
     TextView tv_upload;
+    String fillter_text="";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -231,6 +232,7 @@ public class ContectFragment extends Fragment {
                     try {
                         //  GetContactsIntoArrayList();
                         if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            fillter_text="";
                             ContectEvent();
                         }
                     } catch (JSONException e) {
@@ -293,7 +295,7 @@ public class ContectFragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                //    loadingDialog.showLoadingDialog();
+                    loadingDialog.showLoadingDialog();
                 EnableRuntimePermission();
                 // splitdata(csv_inviteListData);
             }
@@ -305,21 +307,13 @@ public class ContectFragment extends Fragment {
                     Global.hideKeyboard(getActivity());
                     iv_cancle_search_icon.setVisibility(View.VISIBLE);
                     iv_filter_icon.setVisibility(View.GONE);
-                    List<ContectListData.Contact> temp = new ArrayList();
-                    for (ContectListData.Contact d : contectListData) {
-                        if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
-                            temp.add(d);
-                        }
+                    fillter_text=ev_search.getText().toString().trim();
+                    try {
+                        loadingDialog.showLoadingDialog();
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    if(temp.size()==0){
-                        txt_nolist.setText(mCtx.getResources().getString(R.string.no_contact));
-                        lay_no_list.setVisibility(View.VISIBLE);
-                        layout_list_data.setVisibility(View.GONE);
-                    }else {
-                        layout_list_data.setVisibility(View.VISIBLE);
-                        lay_no_list.setVisibility(View.GONE);
-                    }
-                    paginationAdapter.updateList(temp);
                     return true;
                 }
                 return false;
@@ -486,8 +480,8 @@ public class ContectFragment extends Fragment {
                 "Fax");
 
         for (int i = 0; i < response.size(); i++) {
-
-            if(Global.IsNotNull(response.get(i).name)) {
+            if(Global.IsNotNull(response.get(i).name)&& !response.get(i).name.equals("null") &&
+                    Global.IsNotNull(response.get(i).numbers)&& !response.get(i).numbers.equals("null")) {
                 String email = "";
                 String number = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
@@ -638,6 +632,7 @@ public class ContectFragment extends Fragment {
 
                 if (listContacts.size() == 0) {
                     try {
+                        fillter_text="";
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -822,14 +817,13 @@ public class ContectFragment extends Fragment {
                 ev_search.setText("");
                 iv_cancle_search_icon.setVisibility(View.GONE);
                 iv_filter_icon.setVisibility(View.VISIBLE);
-                List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : contectListData) {
-                    if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
-                        temp.add(d);
-                    }
+                try {
+                    loadingDialog.showLoadingDialog();
+                    fillter_text="";
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                paginationAdapter.updateList(temp);
-
                 layout_list_data.setVisibility(View.VISIBLE);
                 lay_no_list.setVisibility(View.GONE);
             }
@@ -855,7 +849,7 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("page", currentPage);
         paramObject.addProperty("perPage", 0);
         paramObject.addProperty("status", "A");
-        paramObject.addProperty("q", "");
+        paramObject.addProperty("q", fillter_text);
         paramObject.addProperty("orderBy", "firstname");
         paramObject.addProperty("order", "asc");
         obj.add("data", paramObject);
@@ -1009,6 +1003,7 @@ public class ContectFragment extends Fragment {
         }
         try {
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                fillter_text="";
                 ContectEvent();
             }
         } catch (Exception e) {
@@ -1772,6 +1767,8 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
                     try {
+                        fillter_text="";
+
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -1817,6 +1814,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 if (response.body().getHttp_status() == 200) {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
                     try {
+                        fillter_text="";
                        // loadingDialog.showLoadingDialog();
                         ContectEvent();
                     } catch (JSONException e) {
