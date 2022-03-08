@@ -799,6 +799,7 @@
         </LinearLayout>
 
         <ImageView
+            android:layout_marginTop="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_18sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:src="@drawable/ic_power_by"

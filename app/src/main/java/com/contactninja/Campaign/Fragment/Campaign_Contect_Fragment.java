@@ -201,14 +201,20 @@ public class Campaign_Contect_Fragment extends Fragment {
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         Global.hideKeyboard(getActivity());
-                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
                         List<ContectListData.Contact> temp = new ArrayList();
                         for (ContectListData.Contact d : contectListData) {
-                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString())) {
                                 temp.add(d);
                             }
+
                         }
-                        groupContectAdapter.updateList(temp);
+                        contect_list_unselect.setItemViewCacheSize(50000);
+                        contectListData.clear();
+                        contectListData.addAll(temp);
+                        add_contect_list.setItemViewCacheSize(50000);
+                        groupContectAdapter.clear();
+                        onScrolledToBottom();
+                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
 
                         return true;
                     }
@@ -218,9 +224,10 @@ public class Campaign_Contect_Fragment extends Fragment {
 
             if (SessionManager.getContectList(getActivity()).size() != 0) {
                 contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                groupContectAdapter.addAll(contectListData);
+              //  groupContectAdapter.addAll(contectListData);
                 /*
                  * set select contact count */
+                onScrolledToBottom();
                 select_Contact(0);
             }
             else {
@@ -269,7 +276,8 @@ public class Campaign_Contect_Fragment extends Fragment {
 
                 }
             });
-        } else if (SessionManager.getContect_flag(getActivity()).equals("check")) {
+        }
+        else if (SessionManager.getContect_flag(getActivity()).equals("check")) {
             select_contectListData.clear();
             CampaignTask_overview main_sesion = SessionManager.getCampaign_data(getActivity());
             Log.e("Main Data", new Gson().toJson(main_sesion));
@@ -318,11 +326,18 @@ public class Campaign_Contect_Fragment extends Fragment {
                         iv_cancle_search_icon.setVisibility(View.VISIBLE);
                         List<ContectListData.Contact> temp = new ArrayList();
                         for (ContectListData.Contact d : contectListData) {
-                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString())) {
                                 temp.add(d);
                             }
+
                         }
-                        groupContectAdapter.updateList(temp);
+                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                        contect_list_unselect.setItemViewCacheSize(50000);
+                        contectListData.clear();
+                        contectListData.addAll(temp);
+                        add_contect_list.setItemViewCacheSize(50000);
+                        groupContectAdapter.clear();
+                        onScrolledToBottom();
 
                         return true;
                     }
@@ -331,9 +346,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             });
             if (SessionManager.getContectList(getActivity()).size() != 0) {
                 contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                groupContectAdapter.addAll(contectListData);
+               // groupContectAdapter.addAll(contectListData);
                 /*
                  * set select contact count */
+                onScrolledToBottom();
                 select_Contact(0);
             }
             else {
@@ -389,9 +405,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             contect_list_unselect.setAdapter(groupContectAdapter);
             if (SessionManager.getContectList(getActivity()).size() != 0) {
                 contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                groupContectAdapter.addAll(contectListData);
+               // groupContectAdapter.addAll(contectListData);
                 /*
                  * set select contact count */
+                onScrolledToBottom();
                 select_Contact(0);
             }
             else {
@@ -445,15 +462,20 @@ public class Campaign_Contect_Fragment extends Fragment {
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         Global.hideKeyboard(getActivity());
-                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
                         List<ContectListData.Contact> temp = new ArrayList();
                         for (ContectListData.Contact d : contectListData) {
-                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString())) {
                                 temp.add(d);
                             }
-                        }
-                        groupContectAdapter.updateList(temp);
 
+                        }
+                        contect_list_unselect.setItemViewCacheSize(50000);
+                        contectListData.clear();
+                        contectListData.addAll(temp);
+                        add_contect_list.setItemViewCacheSize(50000);
+                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                        groupContectAdapter.clear();
+                        onScrolledToBottom();
                         return true;
                     }
                     return false;
@@ -495,9 +517,10 @@ public class Campaign_Contect_Fragment extends Fragment {
             contectListData.clear();
             if (SessionManager.getContectList(getActivity()).size() != 0) {
                 contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                groupContectAdapter.addAll(contectListData);
+               // groupContectAdapter.addAll(contectListData);
                 /*
                  * set select contact count */
+                onScrolledToBottom();
                 select_Contact(0);
 
             }
@@ -546,8 +569,39 @@ public class Campaign_Contect_Fragment extends Fragment {
 
                 }
         );
+        contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1))
+                    onScrolledToBottom();
+
+            }
+        });
 
         return view;
+    }
+
+    private void onScrolledToBottom() {
+
+        if (groupContectAdapter.getItemCount() < contectListData.size()) {
+            int x, y;
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 50) {
+                x = groupContectAdapter.getItemCount();
+                y = x + 50;
+            } else {
+                x = groupContectAdapter.getItemCount();
+                y = x + contectListData.size() - groupContectAdapter.getItemCount();
+            }
+            for (int i = x; i < y; i++) {
+                contectListData.get(i).setFlag("true");
+                groupContectAdapter.add(contectListData.get(i));
+            }
+            // group_flag = "true";
+            //   groupContectAdapter.addAll(contectListData.subList(x, y));
+            //groupContectAdapter.notifyDataSetChanged();
+        }
+
     }
 
     private void select_Contact(int size) {
@@ -572,6 +626,7 @@ public class Campaign_Contect_Fragment extends Fragment {
     }
 
     private void IntentUI(View view) {
+        iv_cancle_search_icon = view.findViewById(R.id.iv_cancle_search_icon);
         layout_select_list = view.findViewById(R.id.layout_select_list);
         add_new_contect_icon1 = view.findViewById(R.id.add_new_contect_icon1);
         layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
@@ -588,19 +643,15 @@ public class Campaign_Contect_Fragment extends Fragment {
         add_new_contect_icon = view.findViewById(R.id.add_new_contect_icon);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
         mMainLayout = view.findViewById(R.id.mMainLayout);
-        iv_cancle_search_icon = view.findViewById(R.id.iv_cancle_search_icon);
         iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ev_search.setText("");
+                contectListData.clear();
+                groupContectAdapter.clear();
+                contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+                onScrolledToBottom();
                 iv_cancle_search_icon.setVisibility(View.GONE);
-                List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : contectListData) {
-                    if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
-                        temp.add(d);
-                    }
-                }
-                groupContectAdapter.updateList(temp);
+                ev_search.setText("");
             }
         });
     }
@@ -1155,7 +1206,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                         userDetails.remove(position);
                         topUserListDataAdapter.notifyDataSetChanged();
 
-                        //num_count.setText(userDetails.size() + " Contacts");
+                        num_count.setText(userDetails.size() + " Contacts");
                         SessionManager.setGroupList(getActivity(), new ArrayList<>());
                         SessionManager.setGroupList(getActivity(), select_contectListData);
 
@@ -1733,6 +1784,11 @@ public class Campaign_Contect_Fragment extends Fragment {
 
         public ContectListData.Contact getItem(int position) {
             return contacts.get(position);
+        }
+
+        public void clear() {
+            contacts.clear();
+            notifyDataSetChanged();
         }
 
 
