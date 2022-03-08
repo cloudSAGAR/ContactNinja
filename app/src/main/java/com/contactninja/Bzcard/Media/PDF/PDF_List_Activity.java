@@ -46,7 +46,7 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
     static BZcardListModel.Bizcard bzcard_model;
     static List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList=new ArrayList<>();
     List<Bzcard_Fields_Model.BZ_media_information> bzMedia_pdf_List =new ArrayList<>();
-    List<Bzcard_Fields_Model.BZ_media_delete> deleteList =new ArrayList<>();
+    static List<Bzcard_Fields_Model.BZ_media_delete> deleteList =new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +96,7 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
                             @Override
                             public void onClick(final int pos) {
                                 final Bzcard_Fields_Model.BZ_media_information item = pdflistAdepter.getData().get(pos);
-                                Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
-                                bz_media_delete.setMedia_type(item.getMedia_type());
-                                bz_media_delete.setMedia_url(item.getMedia_url());
-                                deleteList.add(bz_media_delete);
-                                bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
+
                                 pdflistAdepter.removeItem(pos,item);
 
                                 Toast.makeText(PDF_List_Activity.this, "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -228,6 +224,12 @@ public class PDF_List_Activity extends AppCompatActivity implements Connectivity
 
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
+                    Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
+                    bz_media_delete.setMedia_type(item.getMedia_type());
+                    bz_media_delete.setMedia_url(item.getMedia_url());
+                    deleteList.add(bz_media_delete);
+                    bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
+
                     bzMediaInformationList.remove(i);
                     bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                     SessionManager.setBzcard(mCtx, bzcard_model);

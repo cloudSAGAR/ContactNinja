@@ -104,7 +104,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
 
     List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    List<Bzcard_Fields_Model.BZ_media_delete> deleteList = new ArrayList<>();
+    public static List<Bzcard_Fields_Model.BZ_media_delete> deleteList = new ArrayList<>();
     public static BZcardListModel.Bizcard bzcard_model;
     MedialistAdepter medialistAdepter;
     boolean media_show=true;
@@ -200,6 +200,11 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
     @Override
     public void onResume() {
+      /*  setdata();
+        setColor();
+        if(bzMediaInformationList.size()!=0){
+            setCreatedVideoandImage();
+        }*/
         super.onResume();
     }
 
@@ -249,15 +254,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                             @Override
                             public void onClick(final int pos) {
                                 final Bzcard_Fields_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
-                                Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
-                                bz_media_delete.setMedia_type(item.getMedia_type());
-                                if(item.getMedia_type().equals("video")){
-                                    bz_media_delete.setMedia_url(item.getMedia_thumbnail());
-                                }else {
-                                    bz_media_delete.setMedia_url(item.getMedia_url());
-                                }
-                                deleteList.add(bz_media_delete);
-                                bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
+
                                 medialistAdepter.removeItem(pos,item);
 
                                 Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -966,7 +963,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
 
                             Glide.with(mCtx)
-                                    .load(information.getMedia_url())
+                                    .load(information.getMedia_filePath())
                                     .into(holder.iv_video);
 
                         break;
@@ -985,6 +982,17 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         public void removeItem(int position, Bzcard_Fields_Model.BZ_media_information item) {
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
+
+                    Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
+                    bz_media_delete.setMedia_type(item.getMedia_type());
+                    if(item.getMedia_type().equals("video")){
+                        bz_media_delete.setMedia_url(item.getMedia_thumbnail());
+                    }else {
+                        bz_media_delete.setMedia_url(item.getMedia_url());
+                    }
+                    deleteList.add(bz_media_delete);
+                    bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
+
                     bzMediaInformationList.remove(i);
                     bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                     SessionManager.setBzcard(mCtx, bzcard_model);

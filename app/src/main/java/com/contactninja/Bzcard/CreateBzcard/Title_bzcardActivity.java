@@ -137,7 +137,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
     public void onClick (View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.save_button:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -177,6 +177,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         /*first delete image id is available in s3 bucket */
 
 
+
         if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getProfile_url())) {
             if (!signResponseModel.getUser().getUserprofile().equals(bzcard_model.getBzcardFieldsModel().getProfile_image())) {
                 if (!bzcard_model.getBzcardFieldsModel().getProfile_image().equals("")) {
@@ -206,7 +207,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         }
-        if (!bzcard_model.isEdit()) {
+        if (bzcard_model.isEdit()) {
             if (Global.IsNotNull(bzMediaInformationList) && bzMediaInformationList.size() != 0) {
 
                 for (int i = 0; i < bzMediaInformationList.size(); i++) {
@@ -383,6 +384,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         }
+
         if(TotalFileUpload==0) {
             try {
                 if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
@@ -392,7 +394,6 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 e.printStackTrace();
             }
         }
-
 
     }
 
@@ -570,9 +571,8 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
             public void success (Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    UploadCount = 0;
+                    TotalFileUpload=0;
                     finish();
                 }
             }
@@ -595,8 +595,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 if (UploadCount == TotalFileUpload) {
                     try {
                         if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
-                            UploadCount = 0;
-                            TotalFileUpload=0;
+
                             Data_Upload();
                         }
                     } catch (JSONException e) {
@@ -653,7 +652,8 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed () {
-        finish();
         super.onBackPressed();
+        startActivity(new Intent(getApplicationContext(),Add_New_Bzcard_Activity.class));
+        finish();
     }
 }

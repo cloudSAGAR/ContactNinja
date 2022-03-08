@@ -357,6 +357,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
 
             case R.id.save_button:
                 startActivity(new Intent(getApplicationContext(),Title_bzcardActivity.class));
+                finish();
                 break;
             case R.id.iv_user:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {

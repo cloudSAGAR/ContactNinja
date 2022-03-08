@@ -406,8 +406,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             rv_phone.setAdapter(phoneAdapter);
                             addcontectModel.setContactdetails(contactdetails);
                             Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
-
-
                         }
                     }
                 }
@@ -419,6 +417,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
             EmailViewAdd();
             PhoneViewAdd();
+
+
+
+
 
 
         } else if (flag.equals("read")) {

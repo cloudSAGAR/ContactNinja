@@ -112,6 +112,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     ImageView iv_Setting, pulse_icon, iv_back, iv_edit,iv_Bzcard;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
+    TabLayout.Tab tab;
     String fragment_name, user_image_Url = "", File_name = "", File_extension = "";
     EditText edt_FirstName, edt_lastname;
     SessionManager sessionManager;
@@ -127,12 +128,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     String option_type = "";
     LinearLayout layout_toolbar_logo;
     TextView edit_profile;
-    View view_single;
     AmazonS3Client s3Client;
     S3Uploader s3uploaderObj;
     private long mLastClickTime = 0;
     private BroadcastReceiver mNetworkReceiver;
-
+    String flag;
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
         Intent intent = new Intent(context, Add_Newcontect_Activity.class);
@@ -192,6 +192,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 Regions.US_EAST_2 // Region
         );
         option_type = "save";
+
+
+
         setTab();
         setdata();
 
@@ -365,18 +368,96 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     private void setTab() {
         // loadingDialog = new LoadingDialog(this);
         //Set Viewpagger
+        flag = SessionManager.getContect_flag(getActivity());
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
         tabLayout.addTab(tabLayout.newTab().setText("Growth"));
         fragment_name = "Info";
 
 
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        Fragment fragment = new User_InformationFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+
+        if (fragmentManager != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+            fragmentTransaction.commitAllowingStateLoss();
+        }
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Fragment fragment = null;
+                switch (tab.getPosition()) {
+                    case 0:
+                        if (!flag.equals("edit")) {
+                            edt_FirstName.setEnabled(false);
+                            edt_lastname.setEnabled(false);
+
+                        }
+                        fragment = new User_InformationFragment();
+                        break;
+                    case 1:
+                        if (flag.equals("edit")) {
+                            layout_toolbar_logo.setVisibility(View.VISIBLE);
+                            iv_back.setVisibility(View.GONE);
+                            SessionManager.setContect_flag("read");
+                            save_button.setVisibility(View.GONE);
+                            iv_Setting.setVisibility(View.VISIBLE);
+                            save_button.setText("Save");
+                            iv_edit.setVisibility(View.GONE);
+                            edt_lastname.setVisibility(View.GONE);
+                            edit_profile.setVisibility(View.VISIBLE);
+                            edt_FirstName.setEnabled(false);
+                            //  setdata();
+                        }
+                        fragment = new User_BzcardFragment();
+                        break;
+                    case 2:
+                        if (flag.equals("edit")) {
+                            layout_toolbar_logo.setVisibility(View.VISIBLE);
+                            iv_back.setVisibility(View.GONE);
+                            SessionManager.setContect_flag("read");
+                            save_button.setVisibility(View.GONE);
+                            iv_Setting.setVisibility(View.VISIBLE);
+                            save_button.setText("Save");
+                            iv_edit.setVisibility(View.GONE);
+                            edt_lastname.setVisibility(View.GONE);
+                            edit_profile.setVisibility(View.VISIBLE);
+                            // setdata();
+                            edt_FirstName.setEnabled(false);
+                        }
+                        fragment = new User_GrowthFragment();
+                        break;
+
+                }
+                if (fragment != null) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
     }
 
     @SuppressLint("SetTextI18n")
     private void setdata() {
-
-        String flag = SessionManager.getContect_flag(getActivity());
+        flag = SessionManager.getContect_flag(getActivity());
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -510,7 +591,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
               }
               catch (Exception e)
               {
-
+                e.printStackTrace();
               }
 
             }
@@ -523,91 +604,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         }
 
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        Fragment fragment = new User_InformationFragment();
-        FragmentManager fragmentManager = getFragmentManager();
 
-        if (fragmentManager != null) {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
-            fragmentTransaction.commitAllowingStateLoss();
-        }
-
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                Fragment fragment = null;
-                switch (tab.getPosition()) {
-                    case 0:
-                        if (!flag.equals("edit")) {
-                            edt_FirstName.setEnabled(false);
-                            edt_lastname.setEnabled(false);
-
-                        }
-                        view_single.setVisibility(View.VISIBLE);
-                        fragment = new User_InformationFragment();
-                        break;
-                    case 1:
-                        if (flag.equals("edit")) {
-                            view_single.setVisibility(View.GONE);
-                            layout_toolbar_logo.setVisibility(View.VISIBLE);
-                            iv_back.setVisibility(View.GONE);
-                            SessionManager.setContect_flag("read");
-                            save_button.setVisibility(View.GONE);
-                            iv_Setting.setVisibility(View.VISIBLE);
-                            save_button.setText("Save");
-                            iv_edit.setVisibility(View.GONE);
-                            edt_lastname.setVisibility(View.GONE);
-                            edit_profile.setVisibility(View.VISIBLE);
-                            edt_FirstName.setEnabled(false);
-                            setdata();
-                        }
-                        fragment = new User_BzcardFragment();
-                        break;
-                    case 2:
-                        if (flag.equals("edit")) {
-                            view_single.setVisibility(View.VISIBLE);
-                            layout_toolbar_logo.setVisibility(View.VISIBLE);
-                            iv_back.setVisibility(View.GONE);
-                            SessionManager.setContect_flag("read");
-                            save_button.setVisibility(View.GONE);
-                            iv_Setting.setVisibility(View.VISIBLE);
-                            save_button.setText("Save");
-                            iv_edit.setVisibility(View.GONE);
-                            edt_lastname.setVisibility(View.GONE);
-                            edit_profile.setVisibility(View.VISIBLE);
-                            setdata();
-                            edt_FirstName.setEnabled(false);
-                        }
-                        fragment = new User_GrowthFragment();
-                        break;
-
-                }
-                if (fragment != null) {
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
-                    fragmentTransaction.commitAllowingStateLoss();
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
 
     }
 
     private void intentView(View view) {
-        view_single = view.findViewById(R.id.view_single);
         iv_edit = view.findViewById(R.id.iv_edit);
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
@@ -981,6 +983,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+                tab=tabLayout.getTabAt(0);
+                tab.select();
+
                 layout_toolbar_logo.setVisibility(View.GONE);
                 iv_back.setVisibility(View.VISIBLE);
                 SessionManager.setContect_flag("edit");

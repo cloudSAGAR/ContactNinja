@@ -91,11 +91,12 @@
             android:orientation="vertical"
             android:layout_gravity="center|left"
             android:gravity="center|left"
-            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
+                android:padding="@dimen/_2sdp"
                 android:id="@+id/edt_FirstName"
                 style="@style/tv_Medium_14"
                 android:layout_width="match_parent"
@@ -111,7 +112,6 @@
 
             <View
                 android:id="@+id/view_single"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:background="@color/home_list_search_border"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"/>
@@ -120,7 +120,6 @@
                 android:visibility="gone"
                 android:background="@color/add_contect_transpernt"
                 android:id="@+id/edt_lastname"
-                android:layout_marginTop="@dimen/_5sdp"
                 style="@style/tv_regular_12"
                 android:textColor="@color/otp_header_text_color"
                 android:hint="Last Name"
@@ -132,10 +131,10 @@
             </EditText>
             <TextView
                 android:id="@+id/edit_profile"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:textColor="@color/purple_200"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:text="Edit Profile"
+                android:padding="@dimen/_2sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

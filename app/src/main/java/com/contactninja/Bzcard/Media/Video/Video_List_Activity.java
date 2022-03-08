@@ -48,7 +48,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
     static BZcardListModel.Bizcard bzcard_model;
     static List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
     List<Bzcard_Fields_Model.BZ_media_information> bzMedia_video_List = new ArrayList<>();
-    List<Bzcard_Fields_Model.BZ_media_delete> deleteList = new ArrayList<>();
+   static List<Bzcard_Fields_Model.BZ_media_delete> deleteList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +101,7 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
                             @Override
                             public void onClick(final int pos) {
                                 final Bzcard_Fields_Model.BZ_media_information item = videolistAdepter.getData().get(pos);
-                                Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
-                                bz_media_delete.setMedia_type(item.getMedia_type());
-                                bz_media_delete.setMedia_url(item.getMedia_thumbnail());
-                                deleteList.add(bz_media_delete);
-                                bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
+
                                 videolistAdepter.removeItem(pos, item);
 
                                 Toast.makeText(Video_List_Activity.this, "Item was removed from the list.", Toast.LENGTH_LONG).show();
@@ -254,6 +250,12 @@ public class Video_List_Activity extends AppCompatActivity implements Connectivi
             bzMedia_video_List.remove(position);
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
+                    Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
+                    bz_media_delete.setMedia_type(item.getMedia_type());
+                    bz_media_delete.setMedia_url(item.getMedia_thumbnail());
+                    deleteList.add(bz_media_delete);
+                    bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
+
                     bzMediaInformationList.remove(i);
                     bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                     SessionManager.setBzcard(mCtx, bzcard_model);

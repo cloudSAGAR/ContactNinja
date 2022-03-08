@@ -74,6 +74,12 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         IntentUI(view);
+       
+        return view;
+    }
+
+    @Override
+    public void onResume() {
         try {
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 Data_list();
@@ -81,7 +87,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return view;
+        super.onResume();
     }
 
     private void IntentUI(View view) {
