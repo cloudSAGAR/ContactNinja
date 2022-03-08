@@ -211,11 +211,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     try {
                         splitdata((ArrayList<Contact>) SessionManager.getnewContect(getApplicationContext()));
-
                     }
                     catch (Exception e)
                     {
-
+                        e.printStackTrace();
                     }
                 }
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                             catch (Exception e)
                             {
-
+                                e.printStackTrace();
                             }
 
                         } else {
@@ -321,7 +320,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (int i = 0; i < response.size(); i++) {
 
-            if(Global.IsNotNull(response.get(i).name)&& !response.get(i).name.equals("null")) {
+            if(Global.IsNotNull(response.get(i).name)&& !response.get(i).name.equals("null") &&
+                    Global.IsNotNull(response.get(i).numbers)&& !response.get(i).numbers.equals("null")) {
                 String email = "";
                 String number = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 catch (Exception e)
                 {
-                    number = "null";
+                    number = "";
                 }
 
 

@@ -14,7 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -23,7 +23,6 @@ import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
@@ -43,17 +42,16 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.bumptech.glide.Glide;
+import com.contactninja.Bzcard.Media.Image.Add_image_Activity;
+import com.contactninja.Bzcard.Media.Image.Image_List_Activity;
+import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -64,7 +62,6 @@ import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
-import com.contactninja.aws.AWSKeys;
 import com.contactninja.aws.AmazonUtil;
 import com.contactninja.aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
@@ -76,7 +73,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -234,6 +230,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             }
             user_image_Url = Contect_data.getContactImage();
             save_button.setText("Save Contact");
+
 
 
         } else if (flag.equals("read")) {
@@ -968,6 +965,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                    }
                     save_button.setText("Edit Contact");
+                    SessionManager.setContect_edit(true);
                     finish();
                 } else {
                     Gson gson = new Gson();
@@ -1233,7 +1231,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 @Override
                 public void onUploadSuccess(String response) {
                     Log.e("Reppnse is",new Gson().toJson(response));
-                    Toast.makeText(Add_Newcontect_Activity.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
 
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url=contect_url;
@@ -1323,7 +1320,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 }
 
             }
-            Toast.makeText(this, "Null Path", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1611,6 +1607,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                     contact_data.setIs_blocked(block);
                     SessionManager.setOneCotect_deatil(getApplicationContext(), contact_data);
+                    SessionManager.setContect_edit(true);
 
                 } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
@@ -1650,6 +1647,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
+                    SessionManager.setContect_edit(true);
                     finish();
                 } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);

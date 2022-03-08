@@ -869,7 +869,6 @@ public class ContectFragment extends Fragment {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 
 
-                loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     try {
                         if (swipeToRefresh.isRefreshing()) {
@@ -1004,6 +1003,10 @@ public class ContectFragment extends Fragment {
         Filter = "";
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
+        if(SessionManager.getContect_edit(getActivity())){
+            loadingDialog.showLoadingDialog();
+            SessionManager.setContect_edit(false);
+        }
         try {
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                 ContectEvent();

@@ -49,6 +49,7 @@ public class SessionManager {
     public static final String Group_Model = "group_model";
     public static final String Contect_Model = "contect_model";
     public static final String Contect_flag = "contect_flag";
+    public static final String Contect_edit = "contect_edit";
     public static final String Campign_flag = "campign_flag";
     public static final String Refresh_token = "refresh_token";
     public static final String Access_token = "access_token";
@@ -184,16 +185,22 @@ public class SessionManager {
     }
 
     public static String getContect_flag(Context context) {
-
         String type = pref.getString(Contect_flag, "");
         return type;
-
     }
-
-
 
     public static void setContect_flag(String plantype) {
         editor.putString(Contect_flag, plantype);
+        editor.commit();
+    }
+
+    public static boolean getContect_edit(Context context) {
+        boolean type = pref.getBoolean(Contect_edit, false);
+        return type;
+    }
+
+    public static void setContect_edit(boolean contect_flag) {
+        editor.putBoolean(Contect_edit, contect_flag);
         editor.commit();
     }
 
