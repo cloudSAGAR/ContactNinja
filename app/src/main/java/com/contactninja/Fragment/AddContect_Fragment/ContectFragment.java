@@ -888,29 +888,33 @@ public class ContectFragment extends Fragment {
                             }.getType();
                             ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                             contectListData.addAll(contectListData1.getContacts());
-                            paginationAdapter.addAll(contectListData);
-                            paginationAdapter.notifyDataSetChanged();
+                           // paginationAdapter.addAll(contectListData);
+                            //paginationAdapter.notifyDataSetChanged();
                             List<ContectListData> contectListData_store = new ArrayList<>();
                             contectListData_store.add(contectListData1);
                             sessionManager.setContectList(getActivity(), contectListData_store);
                             num_count.setText("" + contectListData1.getTotal() + " Contacts");
                             totale_group = contectListData1.getTotal();
+                            contectListData.addAll(contectListData_store.get(0).getContacts());
+                            onScrolledToBottom();
                         } else{
-
+                            contectListData.clear();
+                            paginationAdapter.removeloist();
                             sessionManager.setContectList(getActivity(), new ArrayList<>());
-
                             Gson gson = new Gson();
                             String headerString = gson.toJson(response.body().getData());
                             Type listType = new TypeToken<ContectListData>() {
                             }.getType();
                             ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
-                           // contectListData.addAll(contectListData1.getContacts());
+                            contectListData.addAll(contectListData1.getContacts());
                             List<ContectListData> contectListData_store = new ArrayList<>();
                             contectListData_store.add(contectListData1);
                             sessionManager.setContectList(getActivity(), contectListData_store);
-                            contectListData.clear();
-                            paginationAdapter.removeloist();
-                            contectListData.addAll(contectListData_store.get(0).getContacts());
+                            //contectListData.addAll(contectListData_store.get(0).getContacts());
+                            rvinviteuserdetails.setItemViewCacheSize(50000);
+                            paginationAdapter = new ContectListAdapter(getActivity());
+                            rvinviteuserdetails.setAdapter(paginationAdapter);
+
                             onScrolledToBottom();
 
                         }

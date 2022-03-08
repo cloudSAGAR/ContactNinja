@@ -292,7 +292,6 @@
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:padding="@dimen/_2sdp"
-                                    android:src="@drawable/ic_email_mini"
                                     android:text="1"
                                     android:textColor="@color/text_White">
 
