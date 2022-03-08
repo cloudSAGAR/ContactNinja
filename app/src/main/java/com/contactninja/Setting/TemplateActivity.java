@@ -55,8 +55,8 @@ import retrofit2.Response;
 
 public class TemplateActivity extends AppCompatActivity implements View.OnClickListener,
         ConnectivityReceiver.ConnectivityReceiverListener,TemplateClick, SwipeRefreshLayout.OnRefreshListener {
-    ImageView iv_back;
-    LinearLayout demo_layout, add_new_Template;
+    ImageView iv_back,iv_add_new_Template;
+    LinearLayout demo_layout;
     LinearLayout mMainLayout1;
     TextView tv_create;
     private BroadcastReceiver mNetworkReceiver;
@@ -184,8 +184,8 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
         rv_template_list = findViewById(R.id.template_list);
         mMainLayout = findViewById(R.id.mMainLayout);
         mMainLayout1 = findViewById(R.id.mMainLayout1);
-        add_new_Template = findViewById(R.id.add_new_Template);
-        add_new_Template.setOnClickListener(this);
+        iv_add_new_Template = findViewById(R.id.iv_add_new_Template);
+        iv_add_new_Template.setOnClickListener(this);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
@@ -207,7 +207,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(@SuppressLint("UnknownNullness") View v) {
         switch (v.getId()) {
             case R.id.demo_layout:
-            case R.id.add_new_Template:
+            case R.id.iv_add_new_Template:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }

@@ -154,7 +154,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     Global.hideKeyboard(getActivity());
                     iv_cancle_search_icon.setVisibility(View.VISIBLE);
                     iv_filter_icon.setVisibility(View.GONE);
-                    Filter="";
+                    Filter = "";
                     onResume();
                     return true;
                 }
@@ -289,7 +289,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.iv_cancle_search_icon:
                 ev_search.setText("");
-                Filter="";
+                Filter = "";
                 iv_cancle_search_icon.setVisibility(View.GONE);
                 iv_filter_icon.setVisibility(View.VISIBLE);
                 onResume();
@@ -313,6 +313,8 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         CheckBox ch_complate = bottomSheetDialog.findViewById(R.id.ch_complate);
         CheckBox ch_skipped = bottomSheetDialog.findViewById(R.id.ch_skipped);
         CheckBox ch_Paused = bottomSheetDialog.findViewById(R.id.ch_Paused);
+        CheckBox ch_auto_complate_task = bottomSheetDialog.findViewById(R.id.ch_auto_complate_task);
+        CheckBox ch_auto_upcomimg_task = bottomSheetDialog.findViewById(R.id.ch_auto_upcomimg_task);
         CheckBox ch_all_task = bottomSheetDialog.findViewById(R.id.ch_all_task);
 
 
@@ -340,6 +342,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 ch_Paused.setChecked(true);
 
                 break;
+            case "auto":
+                ch_auto_upcomimg_task.setChecked(true);
+                break;
+                case "autocomplate":
+                ch_auto_complate_task.setChecked(true);
+                break;
         }
 
 
@@ -353,8 +361,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     bottomSheetDialog.dismiss();
                     Filter = Filters[0];
                     refresf_api();
-                }
-                else {
+                } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
@@ -371,9 +378,9 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     bottomSheetDialog.dismiss();
                     Filter = Filters[1];
                     refresf_api();
-                }
-                else {
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter);                    bottomSheetDialog.dismiss();
+                } else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    bottomSheetDialog.dismiss();
                     Filter = "";
                     refresf_api();
                 }
@@ -388,9 +395,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     bottomSheetDialog.dismiss();
                     Filter = Filters[2];
                     refresf_api();
-                }
-
-                else {
+                } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
@@ -406,8 +411,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     bottomSheetDialog.dismiss();
                     Filter = Filters[3];
                     refresf_api();
-                }
-                else {
+                } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
@@ -424,8 +428,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     bottomSheetDialog.dismiss();
                     Filter = Filters[4];
                     refresf_api();
-                }
-                else {
+                } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
@@ -442,10 +445,41 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     bottomSheetDialog.dismiss();
                     Filter = Filters[5];
                     refresf_api();
-                }
-                else {
+                } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                   bottomSheetDialog.dismiss();
+                    bottomSheetDialog.dismiss();
+                    Filter = "";
+                    refresf_api();
+                }
+            }
+        });
+        ch_auto_upcomimg_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = Filters[6];
+                    refresf_api();
+                } else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    bottomSheetDialog.dismiss();
+                    Filter = "";
+                    refresf_api();
+                }
+            }
+        });
+        ch_auto_complate_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    Filter = Filters[7];
+                    refresf_api();
+                } else {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    bottomSheetDialog.dismiss();
                     Filter = "";
                     refresf_api();
                 }

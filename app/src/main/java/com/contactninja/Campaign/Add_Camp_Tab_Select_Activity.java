@@ -28,17 +28,34 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Campaign.Fragment.Campaign_Email_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Sms_Fragment;
+import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_text.Manual_Email_Contect_Activity;
+import com.contactninja.Manual_email_text.Manual_Email_Send_Activty;
 import com.contactninja.Model.CampaignTask;
+import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener  {
@@ -202,88 +219,13 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
-                   if (SessionManager.getTask(getApplicationContext()).equals(null))
-                   {
-                       //startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
-
-
-                       Intent intent=getIntent();
-                       Bundle bundle=intent.getExtras();
-                       String flag=bundle.getString("flag");
-                       if (flag.equals("edit"))
-                       {
-
-                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
-                           new_task.putExtra("flag","edit");
-                           new_task.putExtra("body",bundle.getString("body"));
-                           new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
-                           new_task.putExtra("manage_by",bundle.getString("manage_by"));
-                           new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
-                           new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
-                           new_task.putExtra("type",bundle.getString("type"));
-                           new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
-                           new_task.putExtra("header",bundle.getString("header"));
-                           new_task.putExtra("step",bundle.getInt("step"));
-                           new_task.putExtra("from_ac",bundle.getString("from_ac"));
-                           new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
-                           startActivity(new_task);
-                           finish();
-
-                       }
-                       else {
-                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
-                           new_task.putExtra("flag","add");
-                           startActivity(new_task);
-                           finish();
-                       }
-
-                   }
-                   else {
-                       if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
-                       {
-                           Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Day",false);
-                       }
-                       else if (SessionManager.getCampaign_minute(getApplicationContext()).equals(""))
-                       {
-                           Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Minute",false);
-                       }
-                       else {
-
-                           Intent intent=getIntent();
-                           Bundle bundle=intent.getExtras();
-                           String flag=bundle.getString("flag");
-                           if (flag.equals("edit"))
-                           {
-
-                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
-                               new_task.putExtra("flag","edit");
-                               new_task.putExtra("body",bundle.getString("body"));
-                               new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
-                               new_task.putExtra("manage_by",bundle.getString("manage_by"));
-                               new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
-                               new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
-                               new_task.putExtra("type",bundle.getString("type"));
-                               new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
-                               new_task.putExtra("header",bundle.getString("header"));
-                               new_task.putExtra("step",bundle.getInt("step"));
-                               new_task.putExtra("from_ac",bundle.getString("from_ac"));
-                               new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
-
-                               startActivity(new_task);
-                               finish();
-
-                           }
-                           else {
-                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
-                               new_task.putExtra("flag","add");
-                               startActivity(new_task);
-                               finish();
-                           }
-
-
-                       }
-                   }
-
+                    try {
+                        if(Global.isNetworkAvailable(Add_Camp_Tab_Select_Activity.this, MainActivity.mMainLayout)) {
+                            Mail_list();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                }
                else {
                    if (SessionManager.getTask(getApplicationContext()).equals(null))
@@ -372,6 +314,130 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                 break;
 
         }
+
+
+    }
+    void Mail_list() throws JSONException {
+
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Add_Camp_Tab_Select_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp",1);
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Add_Camp_Tab_Select_Activity.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    SessionManager.setUserLinkedGmail(Add_Camp_Tab_Select_Activity.this,new ArrayList<>());
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
+
+                    List<UserLinkedList.UserLinkedGmail>  List=userLinkedGmail.getUserLinkedGmail();
+                    if (List.size() == 0) {
+                        Global.Messageshow(Add_Camp_Tab_Select_Activity.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
+                    }else {
+                        SessionManager.setUserLinkedGmail(Add_Camp_Tab_Select_Activity.this,List);
+
+                        if (SessionManager.getTask(getApplicationContext()).equals(null))
+                        {
+                            //startActivity(new Intent(getApplicationContext(),Automated_Email_Activity.class));
+
+
+                            Intent intent=getIntent();
+                            Bundle bundle=intent.getExtras();
+                            String flag=bundle.getString("flag");
+                            if (flag.equals("edit"))
+                            {
+
+                                Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
+                                new_task.putExtra("flag","edit");
+                                new_task.putExtra("body",bundle.getString("body"));
+                                new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                                new_task.putExtra("manage_by",bundle.getString("manage_by"));
+                                new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
+                                new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
+                                new_task.putExtra("type",bundle.getString("type"));
+                                new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                                new_task.putExtra("header",bundle.getString("header"));
+                                new_task.putExtra("step",bundle.getInt("step"));
+                                new_task.putExtra("from_ac",bundle.getString("from_ac"));
+                                new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
+                                startActivity(new_task);
+                                finish();
+
+                            }
+                            else {
+                                Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
+                                new_task.putExtra("flag","add");
+                                startActivity(new_task);
+                                finish();
+                            }
+
+                        }
+                        else {
+                            if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
+                            {
+                                Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Day",false);
+                            }
+                            else if (SessionManager.getCampaign_minute(getApplicationContext()).equals(""))
+                            {
+                                Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Minute",false);
+                            }
+                            else {
+
+                                Intent intent=getIntent();
+                                Bundle bundle=intent.getExtras();
+                                String flag=bundle.getString("flag");
+                                if (flag.equals("edit"))
+                                {
+
+                                    Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
+                                    new_task.putExtra("flag","edit");
+                                    new_task.putExtra("body",bundle.getString("body"));
+                                    new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                                    new_task.putExtra("manage_by",bundle.getString("manage_by"));
+                                    new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
+                                    new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
+                                    new_task.putExtra("type",bundle.getString("type"));
+                                    new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                                    new_task.putExtra("header",bundle.getString("header"));
+                                    new_task.putExtra("step",bundle.getInt("step"));
+                                    new_task.putExtra("from_ac",bundle.getString("from_ac"));
+                                    new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
+
+                                    startActivity(new_task);
+                                    finish();
+
+                                }
+                                else {
+                                    Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
+                                    new_task.putExtra("flag","add");
+                                    startActivity(new_task);
+                                    finish();
+                                }
+
+
+                            }
+                        }
+                    }
+                }else {
+                    Global.Messageshow(Add_Camp_Tab_Select_Activity.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
 
 
     }

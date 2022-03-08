@@ -62,7 +62,8 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
     SwipeRefreshLayout swipeToRefresh;
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
-    LinearLayout add_new_email;
+    LinearLayout lay_no_list;
+    ImageView iv_add_new_email;
     private long mLastClickTime=0;
     boolean CheckScreen=false;
 
@@ -123,6 +124,8 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                             startActivity(new Intent(getApplicationContext(), Verification_web.class));
                         }
                     }else {
+                        lay_no_list.setVisibility(View.GONE);
+                        rv_email_list.setVisibility(View.VISIBLE);
                         sessionManager.setUserLinkedGmail(getApplicationContext(),userLinkedGmailList);
                     }
                     rv_email_list.setLayoutManager(new LinearLayoutManager(EmailListActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -134,6 +137,8 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                         CheckScreen=true;
                         startActivity(new Intent(getApplicationContext(), Verification_web.class));
                     }
+                    lay_no_list.setVisibility(View.VISIBLE);
+                    rv_email_list.setVisibility(View.GONE);
                 }
             }
 
@@ -147,13 +152,14 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
     }
     private void IntentUI() {
-        add_new_email = findViewById(R.id.add_new_email);
+        lay_no_list = findViewById(R.id.lay_no_list);
+        iv_add_new_email = findViewById(R.id.iv_add_new_email);
         rv_email_list = findViewById(R.id.rv_email_list);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
-        add_new_email.setOnClickListener(this);
+        iv_add_new_email.setOnClickListener(this);
 
 
 
@@ -168,7 +174,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
             case R.id.iv_back:
                 onBackPressed();
                 break;
-                case R.id.add_new_email:
+                case R.id.iv_add_new_email:
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                         return;
                     }

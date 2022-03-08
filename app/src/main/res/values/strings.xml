@@ -464,6 +464,7 @@ Number</string>
     <string name="no_contact">👍 You\'re all good ! \n You don\'t have any contact here</string>
     <string name="no_group">👍 You\'re all good ! \n You don\'t have any group here</string>
     <string name="no_company">👍 You\'re all good ! \n You don\'t have any company here</string>
+    <string name="no_email">👍 You\'re all good ! \n You don\'t have any Mail here</string>
     <string name="manual_Today">Today</string>
     <string name="manual_Upcoming">Upcoming</string>
     <string name="manual_Due">Due</string>
@@ -474,6 +475,8 @@ Number</string>
     <string name="manual_Snooze">Snooze</string>
     <string name="manual_Delete">Delete</string>
     <string name="manual_All_tasks">All tasks</string>
+    <string name="manual_auto_complate_tasks">Automted completed</string>
+    <string name="manual_auto_upcoming_tasks">Automted Upcoming</string>
     <string name="Filters">Filters</string>
     <string name="send_complate">Send now &amp; mark task as complete</string>
     <string name="Snooze_task">Snooze task</string>
@@ -494,6 +497,8 @@ Number</string>
         <item>finished</item>
         <item>skipped</item>
         <item>paused</item>
+        <item>auto</item>
+        <item>autocomplate</item>
     </string-array>
     <string-array name="manual_Select">
         <item>MARK</item>
@@ -645,4 +650,5 @@ Number</string>
 
     <string name="home_bz_card">Bzcard analytics</string>
     <string name="home_email_text">Connected Email</string>
+    <string name="setting_mail">"You havent linked your mailbox. Add from settings > Mailbox."</string>
 </resources>

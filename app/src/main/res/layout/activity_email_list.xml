@@ -26,7 +26,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:id="@+id/add_new_contect_icon"
+                android:id="@+id/iv_add_new_email"
                 android:src="@drawable/ic_plus_blue"
                 android:padding="@dimen/_10sdp"
                 android:background="@drawable/shape_oval_border_10_blue"
@@ -61,15 +61,48 @@
                 android:id="@+id/swipeToRefresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_email_list"
-                    android:layout_weight="1"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_email_list"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <LinearLayout
+                        android:id="@+id/lay_no_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/lay_bouttom"
+                        android:layout_below="@+id/line"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-2dp"
+                        android:layout_marginBottom="3dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_small_logo" />
+
+                        <TextView
+                            android:id="@+id/txt_nolist"
+                            style="@style/tv_Medium_14"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/no_email"
+                            android:textColor="@color/text_reg" />
+                    </LinearLayout>
+                </LinearLayout>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>
 

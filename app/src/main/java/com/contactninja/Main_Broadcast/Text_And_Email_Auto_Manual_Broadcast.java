@@ -26,19 +26,35 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.contactninja.MainActivity;
+import com.contactninja.Manual_email_text.Manual_Auto_Task_Name_Activity;
+import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
+
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     SessionManager sessionManager;
@@ -234,14 +250,18 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                 else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
-                    SessionManager.setGroupList(this,new ArrayList<>());
-                    SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
-                    SessionManager.setBroadcast_flag("add");
-                    SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
-                    intent=new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
-                    intent.putExtra("Activty","Auto_Manual");
-                    intent.putExtra("type","EMAIL");
-                    startActivity(intent);
+
+                    try {
+                        if(Global.isNetworkAvailable(Text_And_Email_Auto_Manual_Broadcast.this, MainActivity.mMainLayout)) {
+                            Mail_list();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+
 
                 }
                 else {
@@ -263,7 +283,58 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
 
 
     }
+    void Mail_list() throws JSONException {
 
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Text_And_Email_Auto_Manual_Broadcast.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp",1);
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Text_And_Email_Auto_Manual_Broadcast.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual_Broadcast.this,new ArrayList<>());
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
+
+                    List<UserLinkedList.UserLinkedGmail>  List=userLinkedGmail.getUserLinkedGmail();
+                    if (List.size() == 0) {
+                        Global.Messageshow(Text_And_Email_Auto_Manual_Broadcast.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
+                    }else {
+                        SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual_Broadcast.this,List);
+
+                        SessionManager.setGroupList(Text_And_Email_Auto_Manual_Broadcast.this,new ArrayList<>());
+                        SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
+                        SessionManager.setBroadcast_flag("add");
+                        SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
+                       Intent intent=new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
+                        intent.putExtra("Activty","Auto_Manual");
+                        intent.putExtra("type","EMAIL");
+                        startActivity(intent);
+
+                    }
+                }else {
+                    Global.Messageshow(Text_And_Email_Auto_Manual_Broadcast.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
