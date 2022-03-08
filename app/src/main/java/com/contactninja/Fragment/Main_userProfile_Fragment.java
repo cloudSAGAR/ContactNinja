@@ -972,6 +972,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 }
                 break;
 
+
             case R.id.iv_user:
             case R.id.tv_nameLetter:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
