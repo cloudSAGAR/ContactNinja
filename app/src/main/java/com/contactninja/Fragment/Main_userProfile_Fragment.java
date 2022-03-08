@@ -340,7 +340,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     @Override
                     public void success(Response<ApiResponse> response) {
                         if (response.body().getHttp_status() == 200) {
-                            loadingDialog.cancelLoading();
                             SessionManager.setUserdata(getActivity(), new SignResponseModel());
 
                             Gson gson = new Gson();
@@ -350,7 +349,17 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
                             setdata();
-                            //setTab();
+
+                            Fragment fragment = new User_InformationFragment();
+                            FragmentManager fragmentManager = getFragmentManager();
+
+                            if (fragmentManager != null) {
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+                                fragmentTransaction.commitAllowingStateLoss();
+                            }
+
+                            loadingDialog.cancelLoading();
 
 
                         } else {
@@ -941,6 +950,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
+        Fragment fragment;
+        FragmentManager fragmentManager ;
         switch (v.getId()) {
             case R.id.iv_Bzcard:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -983,8 +994,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
-                tab=tabLayout.getTabAt(0);
-                tab.select();
+
 
                 layout_toolbar_logo.setVisibility(View.GONE);
                 iv_back.setVisibility(View.VISIBLE);
@@ -997,6 +1007,19 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 edt_FirstName.setEnabled(true);
                 edt_lastname.setEnabled(true);
                 setdata();
+
+                tab=tabLayout.getTabAt(0);
+                tab.select();
+
+                 fragment = new User_InformationFragment();
+                 fragmentManager = getFragmentManager();
+
+                if (fragmentManager != null) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+
 
 
                 break;
@@ -1014,6 +1037,15 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 edt_lastname.setVisibility(View.GONE);
                 edit_profile.setVisibility(View.VISIBLE);
                 setdata();
+
+                 fragment = new User_InformationFragment();
+                 fragmentManager = getFragmentManager();
+
+                if (fragmentManager != null) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
         }
     }
 
