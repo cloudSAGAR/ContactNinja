@@ -204,10 +204,6 @@ public class ContectFragment extends Fragment {
 
         if (SessionManager.getContectList(getActivity()).size() != 0) {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-
             // main_contectListData=contectListData.subList(0,50);
             paginationAdapter.addAll(main_contectListData);
             num_count.setText(contectListData.size() + " Contacts");

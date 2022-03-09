@@ -185,7 +185,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
 
 
         call_updatedata();
-        contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      /*  contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -193,16 +193,16 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     onScrolledToBottom();
 
             }
-        });
+        });*/
     }
 
     private void onScrolledToBottom() {
 
         if (groupContectAdapter.getItemCount() < contectListData.size()) {
             int x, y;
-            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 50) {
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= contectListData.size()) {
                 x = groupContectAdapter.getItemCount();
-                y = x + 50;
+                y = x + contectListData.size();
             } else {
                 x = groupContectAdapter.getItemCount();
                 y = x + contectListData.size() - groupContectAdapter.getItemCount();

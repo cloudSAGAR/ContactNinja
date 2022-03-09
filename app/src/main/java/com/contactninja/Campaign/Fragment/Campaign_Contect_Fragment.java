@@ -119,11 +119,11 @@ public class Campaign_Contect_Fragment extends Fragment {
         if (SessionManager.getContect_flag(getActivity()).equals("read")) {
             // Log.e("Main Method","Read");
             CampaignTask_overview main_sesion = SessionManager.getCampaign_data(getActivity());
-            Log.e("Campign list Task", new Gson().toJson(main_sesion.getSequenceProspects()));
+            //Log.e("Campign list Task", new Gson().toJson(main_sesion.getSequenceProspects()));
 
             ContectListData.Contact.ContactDetail detail;
             for (int i = 0; i < main_sesion.getSequenceProspects().size(); i++) {
-                Log.e("Size is", "" + i);
+                //Log.e("Size is", "" + i);
                 //Log.e("First Name is",main_sesion.getSequenceProspects().get(i).getFirstname());
                 ContectListData.Contact contact = new ContectListData.Contact();
                 contact.setFirstname(main_sesion.getSequenceProspects().get(i).getFirstname());
@@ -569,7 +569,7 @@ public class Campaign_Contect_Fragment extends Fragment {
 
                 }
         );
-        contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      /*  contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -577,7 +577,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                     onScrolledToBottom();
 
             }
-        });
+        });*/
 
         return view;
     }
@@ -586,9 +586,9 @@ public class Campaign_Contect_Fragment extends Fragment {
 
         if (groupContectAdapter.getItemCount() < contectListData.size()) {
             int x, y;
-            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 50) {
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= contectListData.size()) {
                 x = groupContectAdapter.getItemCount();
-                y = x + 50;
+                y = x + contectListData.size();
             } else {
                 x = groupContectAdapter.getItemCount();
                 y = x + contectListData.size() - groupContectAdapter.getItemCount();

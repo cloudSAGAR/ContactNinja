@@ -234,7 +234,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
             onScrolledToBottom();
             select_Contact(0);
         }
-        contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      /*  contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -242,7 +242,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                     onScrolledToBottom();
 
             }
-        });
+        });*/
         call_updatedata();
 
 
@@ -296,9 +296,9 @@ public class Broadcast_Contect_Fragment extends Fragment {
 
         if (groupContectAdapter.getItemCount() < contectListData.size()) {
             int x, y;
-            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 50) {
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= contectListData.size()) {
                 x = groupContectAdapter.getItemCount();
-                y = x + 50;
+                y = x + contectListData.size();
             } else {
                 x = groupContectAdapter.getItemCount();
                 y = x + contectListData.size() - groupContectAdapter.getItemCount();

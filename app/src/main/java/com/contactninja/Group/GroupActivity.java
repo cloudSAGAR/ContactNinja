@@ -255,7 +255,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+       /* contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -263,7 +263,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     onScrolledToBottom();
 
             }
-        });
+        });*/
 
 
     }
@@ -273,9 +273,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         if (groupContectAdapter.getItemCount() < contectListData.size()) {
             int x, y;
-            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= 50) {
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= contectListData.size()) {
                 x = groupContectAdapter.getItemCount();
-                y = x + 50;
+                y = x + contectListData.size();
             } else {
                 x = groupContectAdapter.getItemCount();
                 y = x + contectListData.size() - groupContectAdapter.getItemCount();
