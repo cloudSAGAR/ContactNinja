@@ -75,6 +75,13 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         retrofitCalls = new RetrofitCalls(Select_Bzcard_Activity.this);
         loadingDialog = new LoadingDialog(Select_Bzcard_Activity.this);
         initUI();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         try {
             if (Global.isNetworkAvailable(Select_Bzcard_Activity.this, MainActivity.mMainLayout)) {
                 Data_list();
@@ -82,7 +89,6 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     void Data_list() throws JSONException {
@@ -108,12 +114,8 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     Type listType = new TypeToken<BZcardListModel>() {
                     }.getType();
                      bZcardListModel = new Gson().fromJson(headerString, listType);
-
                      bizcardList = bZcardListModel.getBizcard();
-
-
                     setImage();
-
                 }
             }
 
@@ -212,7 +214,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 onBackPressed();
                 break;
             case R.id.txt_Use:
-                if(bZcardListModel.getUser_total()<=5){
+                if(bZcardListModel.getUser_total()<5){
                     SessionManager.setBzcard(getApplicationContext(), new BZcardListModel.Bizcard());
                     BZcardListModel.Bizcard main_model;
                     main_model = SessionManager.getBzcard(this);
@@ -237,17 +239,17 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     mLastClickTime = SystemClock.elapsedRealtime();
                     Intent intent = new Intent(getApplicationContext(), WebActivity.class);
                     if (viewPager2.getCurrentItem() == 0) {
-                        intent.putExtra("WebUrl", " https://app.contactninja.org/master-preview/1");
+                        intent.putExtra("WebUrl", Global.bzcard_master +1);
                     } else if (viewPager2.getCurrentItem() == 1) {
-                        intent.putExtra("WebUrl", " https://app.contactninja.org/master-preview/2");
+                        intent.putExtra("WebUrl", Global.bzcard_master+2);
                     } else if (viewPager2.getCurrentItem() == 2) {
-                        intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/3");
+                        intent.putExtra("WebUrl",Global.bzcard_master+3);
                     } else if (viewPager2.getCurrentItem() == 3) {
-                        intent.putExtra("WebUrl", " https://app.contactninja.org/master-preview/4");
+                        intent.putExtra("WebUrl", Global.bzcard_master+4);
                     } else if (viewPager2.getCurrentItem() == 4) {
-                        intent.putExtra("WebUrl", " https://app.contactninja.org/master-preview/5");
+                        intent.putExtra("WebUrl", Global.bzcard_master+5);
                     } else if (viewPager2.getCurrentItem() == 5) {
-                        intent.putExtra("WebUrl"," https://app.contactninja.org/master-preview/6");
+                        intent.putExtra("WebUrl",Global.bzcard_master +6);
                     }
                     startActivity(intent);
                 break;

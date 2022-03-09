@@ -60,6 +60,9 @@ public class Global extends Application {
     public static String about = "https://contactninja.us/about/";
     public static String Email_auth = "https://app.contactninja.org/email_api/callback.php";
     public static int count = 1;
+    public static String bzcard_share ="https://app.contactninja.org/bzcard/";
+    public static String bzcard_priview="https://app.contactninja.org/bzpreview/";
+    public static String bzcard_master="https://app.contactninja.org/master-preview/";
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;

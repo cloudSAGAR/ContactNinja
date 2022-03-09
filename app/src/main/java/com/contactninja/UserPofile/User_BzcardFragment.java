@@ -321,15 +321,15 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 if (viewPager.getCurrentItem() == 0) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(0).getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcardList.get(0).getId_encoded());
                 } else if (viewPager.getCurrentItem() == 1) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(1).getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcardList.get(1).getId_encoded());
                 } else if (viewPager.getCurrentItem() == 2) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(2).getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcardList.get(2).getId_encoded());
                 } else if (viewPager.getCurrentItem() == 3) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(3).getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcardList.get(3).getId_encoded());
                 } else if (viewPager.getCurrentItem() == 4) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcardList.get(4).getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcardList.get(4).getId_encoded());
                 }
                 startActivity(intent);
 
@@ -398,7 +398,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://app.contactninja.org/bzcard/" + bizcard.getId_encoded());
+                sendIntent.putExtra(Intent.EXTRA_TEXT, Global.bzcard_share + bizcard.getId_encoded());
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 
@@ -417,15 +417,15 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 if (viewPager.getCurrentItem() == 0) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcard.getId_encoded());
                 } else if (viewPager.getCurrentItem() == 1) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcard.getId_encoded());
                 } else if (viewPager.getCurrentItem() == 2) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcard.getId_encoded());
                 } else if (viewPager.getCurrentItem() == 3) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcard.getId_encoded());
                 } else if (viewPager.getCurrentItem() == 4) {
-                    intent.putExtra("WebUrl", "https://app.contactninja.org/bzpreview/" + bizcard.getId_encoded());
+                    intent.putExtra("WebUrl", Global.bzcard_priview + bizcard.getId_encoded());
                 }
                 startActivity(intent);
 

@@ -58,6 +58,7 @@ public class BZcardListModel {
 
     public static class Bizcard {
         boolean isEdit = false;
+        boolean isScelect=false;
 
         @SerializedName("id")
         @Expose
@@ -84,6 +85,13 @@ public class BZcardListModel {
         @Expose
         private String id_encoded = "";
 
+        public boolean isScelect() {
+            return isScelect;
+        }
+
+        public void setScelect(boolean scelect) {
+            isScelect = scelect;
+        }
 
         public boolean isEdit() {
             return isEdit;

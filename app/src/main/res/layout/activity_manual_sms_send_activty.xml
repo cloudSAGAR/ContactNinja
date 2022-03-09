@@ -143,7 +143,7 @@
         <EditText
 
             android:id="@+id/ev_txt"
-            style="@style/tv_Medium_16"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -158,7 +158,7 @@
             android:paddingStart="@dimen/_15sdp"
             android:text=""
             android:textColor="@color/text_reg"
-            android:textSize="@dimen/_15sdp">
+            >
 
         </EditText>
 

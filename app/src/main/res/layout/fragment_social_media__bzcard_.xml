@@ -49,7 +49,7 @@
 
                       </ImageView>
                        <TextView
-                           style="@style/tv_regular_13"
+                           style="@style/tv_regular_12"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content"
                            android:text="@string/add_fab"
@@ -64,7 +64,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_fb"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -123,7 +123,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_twittera"
@@ -138,7 +138,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_twitter"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -197,7 +197,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_youtube"
@@ -212,7 +212,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_youtube"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -271,7 +271,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_breakout"
@@ -286,7 +286,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_breakout"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -345,7 +345,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_instagram"
@@ -360,7 +360,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_instagram"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -419,7 +419,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_linkedin1"
@@ -434,7 +434,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_linkedin"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -493,7 +493,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_pintrest"
@@ -508,7 +508,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_pintrest"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -567,7 +567,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_venmo"
@@ -582,7 +582,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_venmo"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -641,7 +641,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_skypay"
@@ -656,7 +656,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_skypay"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -715,7 +715,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_tiktok"
@@ -730,7 +730,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_tiktok"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -789,7 +789,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_snapchat"
@@ -804,7 +804,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_snap_chat"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -863,7 +863,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_other_filed"
@@ -878,7 +878,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_other_filed"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
@@ -937,7 +937,7 @@
 
                         </ImageView>
                         <TextView
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/add_other_filed"
@@ -952,7 +952,7 @@
                     <EditText
                         android:layout_marginStart="@dimen/_1sdp"
                         android:id="@+id/ev_other_filed1"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
