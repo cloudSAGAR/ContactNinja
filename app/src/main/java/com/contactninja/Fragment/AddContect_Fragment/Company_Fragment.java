@@ -254,6 +254,13 @@ public class Company_Fragment extends Fragment {
                     Global.hideKeyboard(getActivity());
                     iv_cancle_search_icon.setVisibility(View.VISIBLE);
                     iv_filter_icon.setVisibility(View.GONE);
+
+                    companyAdapter.clear();
+                    companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
+                    rvinviteuserdetails.setLayoutManager(layoutManager);
+                    rvinviteuserdetails.setHasFixedSize(true);
+                    rvinviteuserdetails.setAdapter(companyAdapter);
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
                     onResume();
                     return true;
                 }
@@ -456,7 +463,8 @@ public class Company_Fragment extends Fragment {
                     linearLayout3.setVisibility(View.VISIBLE);
                     demo_layout.setVisibility(View.GONE);
 
-                } else {
+                }
+                else {
                     if (Filter.equals("") && ev_search.getText().toString().equals("")) {
                         linearLayout3.setVisibility(View.GONE);
                         demo_layout.setVisibility(View.VISIBLE);

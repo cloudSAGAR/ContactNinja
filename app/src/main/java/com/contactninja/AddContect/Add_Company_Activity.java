@@ -51,7 +51,7 @@ import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Add_Company_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
-    ImageView iv_back, iv_toolbar_manu_vertical, iv_block;
+    ImageView iv_back, iv_toolbar_manu_vertical, iv_block,iv_edit;
     TextView save_button, no_image, tv_remain_txt, tv_error, iv_invalid, iv_invalid1;
     EditText add_name, add_detail, edit_Mobile, edit_email, edit_address, edit_company_url;
     CountryCodePicker ccp_id;
@@ -64,6 +64,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     Integer id = 0;
     private BroadcastReceiver mNetworkReceiver;
     private long mLastClickTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
 
     }
     private void IntentUI() {
+        iv_edit=findViewById(R.id.iv_edit);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_invalid1 = findViewById(R.id.iv_invalid1);
         edit_email = findViewById(R.id.edit_email);
@@ -216,6 +218,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
 
     private void setdata(CompanyModel.Company WorkData) {
         if (flag.equals("read")) {
+            iv_edit.setVisibility(View.GONE);
             save_button.setText("Edit");
             iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
 
@@ -256,7 +259,9 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                     WorkData.getContact_number())));
             ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Add_Company_Activity.this,WorkData.getContact_number()));
             ccp_id.resetToDefaultCountry();
-            edit_Mobile.setText(WorkData.getContact_number());
+            String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Add_Company_Activity.this,
+                    WorkData.getContact_number())), "");
+            edit_Mobile.setText(main_data);
             edit_email.setText(WorkData.getEmail());
             edit_company_url.setText("");
             edit_address.setText(WorkData.getAddress());
@@ -265,6 +270,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
         }else if (flag.equals("edit")) {
             try {
 
+                iv_edit.setVisibility(View.VISIBLE);
                 save_button.setText("Save");
                 iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
                 String name = WorkData.getName();
@@ -311,7 +317,6 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                         WorkData.getContact_number())), "");
                 edit_Mobile.setText(main_data);
 
-                edit_Mobile.setText(WorkData.getContact_number());
                 edit_email.setText(WorkData.getEmail());
                 edit_company_url.setText("");
                 edit_address.setText(WorkData.getAddress());

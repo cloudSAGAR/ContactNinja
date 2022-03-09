@@ -187,7 +187,7 @@ public class ContectFragment extends Fragment {
 
         //Faste View Code
         fastscroller_thumb.setupWithFastScroller(fastscroller);
-        fastscroller.setUseDefaultScroller(false);
+        fastscroller.setUseDefaultScroller(true);
 
         fastscroller.getItemIndicatorSelectedCallbacks().add(
                 new FastScrollerView.ItemIndicatorSelectedCallback() {
@@ -415,7 +415,7 @@ public class ContectFragment extends Fragment {
             ContentProviderResult[] results = context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
 
             for (ContentProviderResult result : results) {
-                Log.e("Upadte Contect", result.toString());
+             //   Log.e("Upadte Contect", result.toString());
             }
 
             return true;
@@ -1485,7 +1485,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                         }
 
-                        Log.e("Contect Image is",Contact_data.getContactImage());
+                     //   Log.e("Contect Image is",Contact_data.getContactImage());
 
                         if (Contact_data.getContactImage() == null || Contact_data.getContactImage().equals("")) {
                             String name = Contact_data.getFirstname();
