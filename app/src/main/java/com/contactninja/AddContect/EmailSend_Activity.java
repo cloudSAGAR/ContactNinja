@@ -912,6 +912,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                                 bizcardList.get(i).setScelect(false);
                                 break;
                             }
+
                         }
                     }
                 }
