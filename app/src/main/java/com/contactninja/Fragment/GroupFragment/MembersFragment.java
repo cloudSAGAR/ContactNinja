@@ -120,7 +120,7 @@ public class MembersFragment extends Fragment {
                 (position) -> {
                     // ItemModel item = data.get(position);
                     FastScrollItemIndicator fastScrollItemIndicator= new FastScrollItemIndicator.Text(
-                            contectListData.get(position).getFirstname().substring(0, 1)
+                            selected_contectListData.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
