@@ -27,13 +27,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Campaign.Campaign_Overview;
-import com.contactninja.Interface.CardClick;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_text.Manual_Text_Send_Activty;
 import com.contactninja.Model.BZcardListModel;
-import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
@@ -70,7 +67,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class Add_Broad_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
+public class Add_Broad_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick,
+        TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
     static CoordinatorLayout mMainLayout;
     public String template_id_is = "";
@@ -81,7 +79,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    EditText ev_subject, edit_template;
+    static EditText ev_subject, edit_template;
     LinearLayout top_layout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
@@ -120,6 +118,13 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
         try {
             if (Global.isNetworkAvailable(Add_Broad_Email_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (Global.isNetworkAvailable(Add_Broad_Email_Activity.this, MainActivity.mMainLayout)) {
+                BZCard_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -779,31 +784,19 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
         }
     }
 
-    @Override
-    public void Onclick(List<BZcardListModel.Bizcard> bizcardList1) {
-        for (int i = 0; i < bizcardList.size(); i++) {
-            if (bizcardList.get(i).getId().equals(bizcardList1.get(i).getId())) {
-                bizcardList.get(i).setScelect(true);
-            } else {
-                bizcardList.get(i).setScelect(false);
-            }
-        }
-        cardListAdepter.notifyDataSetChanged();
-    }
+
 
     static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
 
         Activity mContext;
         List<BZcardListModel.Bizcard> bizcardList;
-        CardClick cardClick;
         BottomSheetDialog bottomSheetDialog;
         TextClick interfaceClick;
 
         public CardListAdepter(Activity activity, List<BZcardListModel.Bizcard> bizcardList,
-                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+                                BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
             this.mContext = activity;
             this.bizcardList = bizcardList;
-            this.cardClick = cardClick;
             this.bottomSheetDialog = bottomSheetDialog;
             this.interfaceClick = interfaceClick;
         }
@@ -828,10 +821,29 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             }
 
             holder.layout_select_image.setOnClickListener(v -> {
-                cardClick.Onclick(bizcardList);
+                String newUrl="",oldUrl="",Newtext="";
+                for(int i=0;i<bizcardList.size();i++){
+                    if(bizcardList.get(i).isScelect()){
+                        oldUrl=Global.bzcard_priview+bizcardList.get(i).getId_encoded();
+                        bizcardList.get(i).setScelect(false);
+                        break;
+                    }
+                }
                 bizcard.setScelect(true);
+                newUrl=Global.bzcard_priview+bizcard.getId_encoded();
+
+                String curenttext = edit_template.getText().toString();
+                if(!oldUrl.equals("")&& !oldUrl.equals(newUrl)){
+                    String changeurl=curenttext.replace(oldUrl,newUrl);
+                    Newtext = changeurl;
+                }else {
+                    Newtext = curenttext+newUrl;
+                }
+                edit_template.setText(Newtext);
+                edit_template.setSelection(edit_template.getText().length());
+
                 bottomSheetDialog.dismiss();
-                interfaceClick.OnClick(Global.bzcard_priview+bizcard.getId_encoded());
+                notifyDataSetChanged();
             });
             if (bizcard.isScelect()) {
                 holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
@@ -956,6 +968,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                 iv_unselected = view.findViewById(R.id.iv_unselected);
                 layout_select = view.findViewById(R.id.layout_select);
             }
+
         }
     }
 
@@ -1004,6 +1017,12 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                         showAlertDialogButtonClicked(view, edit_template);
                     } else {
                         interfaceClick.OnClick(item);
+                        for(int i=0;i<bizcardList.size();i++){
+                            if(bizcardList.get(i).isScelect()){
+                                bizcardList.get(i).setScelect(false);
+                                break;
+                            }
+                        }
                     }
                 }
             });
@@ -1088,13 +1107,12 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                         bottomSheetDialog.setContentView(mView);
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
 
-                        try {
-                            if (Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
-                                BZCard_list(rv_image_card,bottomSheetDialog,interfaceClick);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Broad_Email_Activity.this,
+                                LinearLayoutManager.HORIZONTAL, false));
+                        rv_image_card.setHasFixedSize(true);
+                        cardListAdepter = new CardListAdepter(Add_Broad_Email_Activity.this, bizcardList,
+                                bottomSheetDialog, interfaceClick);
+                        rv_image_card.setAdapter(cardListAdepter);
 
                         bottomSheetDialog.show();
                     }
@@ -1147,7 +1165,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             }
         }
     }
-    void BZCard_list(RecyclerView rv_image_card, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) throws JSONException {
+    void BZCard_list() throws JSONException {
 
         loadingDialog.showLoadingDialog();
 
@@ -1174,12 +1192,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                     bizcardList = bZcardListModel.getBizcardList_user();
 
 
-                    rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Broad_Email_Activity.this,
-                            LinearLayoutManager.HORIZONTAL, false));
-                    rv_image_card.setHasFixedSize(true);
-                    cardListAdepter = new CardListAdepter(Add_Broad_Email_Activity.this, bizcardList,
-                            Add_Broad_Email_Activity.this, bottomSheetDialog, interfaceClick);
-                    rv_image_card.setAdapter(cardListAdepter);
+
 
                 }
             }

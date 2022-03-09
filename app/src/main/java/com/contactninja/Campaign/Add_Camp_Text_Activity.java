@@ -31,13 +31,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Interface.CardClick;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_text.Manual_Text_Send_Activty;
 import com.contactninja.Model.BZcardListModel;
-import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.ContecModel;
 import com.contactninja.Model.HastagList;
@@ -67,7 +64,8 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
-public class Add_Camp_Text_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
+public class Add_Camp_Text_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick,
+        ConnectivityReceiver.ConnectivityReceiverListener {
     public String template_id_is = "";
     List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
     CardListAdepter cardListAdepter;
@@ -82,7 +80,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
     RecyclerView rv_direct_list;
     PicUpTextAdepter picUpTextAdepter;
     TemplateAdepter templateAdepter;
-    EditText edit_template, edit_template_name;
+    static EditText edit_template, edit_template_name;
     List<HastagList.TemplateText> templateTextList = new ArrayList<>();
     List<TemplateList.Template> templateList = new ArrayList<>();
     RelativeLayout mMainLayout;
@@ -114,6 +112,13 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         try {
             if (Global.isNetworkAvailable(Add_Camp_Text_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (Global.isNetworkAvailable(Add_Camp_Text_Activity.this, MainActivity.mMainLayout)) {
+                BZCard_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -532,17 +537,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         bottomSheetDialog_templateList1.show();
     }
 
-    @Override
-    public void Onclick(List<BZcardListModel.Bizcard> bizcardList1) {
-        for (int i = 0; i < bizcardList.size(); i++) {
-            if (bizcardList.get(i).getId().equals(bizcardList1.get(i).getId())) {
-                bizcardList.get(i).setScelect(true);
-            } else {
-                bizcardList.get(i).setScelect(false);
-            }
-        }
-        cardListAdepter.notifyDataSetChanged();
-    }
+
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
         String Newtext = curenttext + s;
@@ -792,15 +787,13 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
 
         Activity mContext;
         List<BZcardListModel.Bizcard> bizcardList;
-        CardClick cardClick;
         BottomSheetDialog bottomSheetDialog;
         TextClick interfaceClick;
 
         public CardListAdepter(Activity activity, List<BZcardListModel.Bizcard> bizcardList,
-                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+                             BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
             this.mContext = activity;
             this.bizcardList = bizcardList;
-            this.cardClick = cardClick;
             this.bottomSheetDialog = bottomSheetDialog;
             this.interfaceClick = interfaceClick;
         }
@@ -825,10 +818,29 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             }
 
             holder.layout_select_image.setOnClickListener(v -> {
-                cardClick.Onclick(bizcardList);
+                String newUrl="",oldUrl="",Newtext="";
+                for(int i=0;i<bizcardList.size();i++){
+                    if(bizcardList.get(i).isScelect()){
+                        oldUrl=Global.bzcard_priview+bizcardList.get(i).getId_encoded();
+                        bizcardList.get(i).setScelect(false);
+                        break;
+                    }
+                }
                 bizcard.setScelect(true);
+                newUrl=Global.bzcard_priview+bizcard.getId_encoded();
+
+                String curenttext = edit_template.getText().toString();
+                if(!oldUrl.equals("")&& !oldUrl.equals(newUrl)){
+                    String changeurl=curenttext.replace(oldUrl,newUrl);
+                    Newtext = changeurl;
+                }else {
+                    Newtext = curenttext+newUrl;
+                }
+                edit_template.setText(Newtext);
+                edit_template.setSelection(edit_template.getText().length());
+
                 bottomSheetDialog.dismiss();
-                interfaceClick.OnClick(Global.bzcard_priview+bizcard.getId_encoded());
+                notifyDataSetChanged();
             });
             if (bizcard.isScelect()) {
                 holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
@@ -1044,13 +1056,12 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
 
 
-                        try {
-                            if (Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
-                                BZCard_list(rv_image_card,bottomSheetDialog,interfaceClick);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Camp_Text_Activity.this,
+                                LinearLayoutManager.HORIZONTAL, false));
+                        rv_image_card.setHasFixedSize(true);
+                        cardListAdepter = new CardListAdepter(Add_Camp_Text_Activity.this, bizcardList,
+                                 bottomSheetDialog, interfaceClick);
+                        rv_image_card.setAdapter(cardListAdepter);
 
 
                         bottomSheetDialog.show();
@@ -1082,7 +1093,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             }
         }
     }
-    void BZCard_list(RecyclerView rv_image_card, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) throws JSONException {
+    void BZCard_list() throws JSONException {
 
         loadingDialog.showLoadingDialog();
 
@@ -1109,12 +1120,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     bizcardList = bZcardListModel.getBizcardList_user();
 
 
-                    rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Camp_Text_Activity.this,
-                            LinearLayoutManager.HORIZONTAL, false));
-                    rv_image_card.setHasFixedSize(true);
-                    cardListAdepter = new CardListAdepter(Add_Camp_Text_Activity.this, bizcardList,
-                            Add_Camp_Text_Activity.this, bottomSheetDialog, interfaceClick);
-                    rv_image_card.setAdapter(cardListAdepter);
+
 
                 }
             }
@@ -1167,6 +1173,12 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                         bottomSheetDialog_templateList.cancel();
                     } else {
                         interfaceClick.OnClick(item);
+                        for(int i=0;i<bizcardList.size();i++){
+                            if(bizcardList.get(i).isScelect()){
+                                bizcardList.get(i).setScelect(false);
+                                break;
+                            }
+                        }
 
                         bottomSheetDialog_templateList.cancel();
                     }
