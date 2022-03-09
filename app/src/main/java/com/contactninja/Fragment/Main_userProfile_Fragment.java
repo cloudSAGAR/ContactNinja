@@ -468,151 +468,152 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     private void setdata() {
         flag = SessionManager.getContect_flag(getActivity());
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        if(Global.IsNotNull(user_data.getUser().getId())) {
 
 
-        User user_data_model = user_data.getUser();
-        ContectListData.Contact set_contact = new ContectListData.Contact();
-        set_contact.setFirstname(user_data_model.getFirstName());
-        set_contact.setLastname(user_data_model.getLastName());
-        List<ContectListData.Contact.ContactDetail> contactDetails_list = new ArrayList<>();
-        ContectListData.Contact.ContactDetail contactDetail_model = new ContectListData.Contact.ContactDetail();
-        contactDetail_model.setEmailNumber(user_data_model.getContactNumber());
-        contactDetail_model.setLabel("");
-        /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
-        contactDetail_model.setContactId(user_data_model.getId());
-        contactDetail_model.setType("NUMBER");
-        contactDetail_model.setIsDefault(1);
-        contactDetail_model.setLabel("Home");
-        contactDetails_list.add(0, contactDetail_model);
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        ContectListData.Contact.ContactDetail contactDetail_model1 = new ContectListData.Contact.ContactDetail();
-        contactDetail_model1.setEmailNumber(user_data_model.getEmail());
-        contactDetail_model1.setLabel("");
-        /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
-        contactDetail_model1.setContactId(user_data_model.getId());
-        contactDetail_model1.setType("EMAIL");
-        contactDetail_model1.setIsDefault(1);
-        contactDetail_model1.setLabel("Home");
-        contactDetails_list.add(1, contactDetail_model1);
-        set_contact.setContactDetails(contactDetails_list);
-        SessionManager.setOneCotect_deatil(getActivity(), set_contact);
 
-        if (flag.equals("edit")) {
-            pulse_icon.setEnabled(true);
-            iv_user.setEnabled(true);
-            tv_nameLetter.setEnabled(true);
-            iv_edit.setVisibility(View.VISIBLE);
-            edt_FirstName.setEnabled(true);
-            edt_lastname.setEnabled(true);
-            ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            edt_FirstName.setText(Contect_data.getFirstname());
-            edt_lastname.setText(Contect_data.getLastname());
-            f_name = Contect_data.getFirstname();
-            l_name = Contect_data.getLastname();
+            User user_data_model = user_data.getUser();
+            ContectListData.Contact set_contact = new ContectListData.Contact();
+            set_contact.setFirstname(user_data_model.getFirstName());
+            set_contact.setLastname(user_data_model.getLastName());
+            List<ContectListData.Contact.ContactDetail> contactDetails_list = new ArrayList<>();
+            ContectListData.Contact.ContactDetail contactDetail_model = new ContectListData.Contact.ContactDetail();
+            contactDetail_model.setEmailNumber(user_data_model.getContactNumber());
+            contactDetail_model.setLabel("");
+            /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
+            contactDetail_model.setContactId(user_data_model.getId());
+            contactDetail_model.setType("NUMBER");
+            contactDetail_model.setIsDefault(1);
+            contactDetail_model.setLabel("Home");
+            contactDetails_list.add(0, contactDetail_model);
 
-            if (user_data.getUser().getUserprofile().getProfilePic() == null) {
-                iv_user.setVisibility(View.GONE);
-                layout_pulse.setVisibility(View.VISIBLE);
-                user_image.setVisibility(View.GONE);
-                tv_nameLetter.setVisibility(View.VISIBLE);
-                tv_nameLetter.setOnClickListener(this);
+            ContectListData.Contact.ContactDetail contactDetail_model1 = new ContectListData.Contact.ContactDetail();
+            contactDetail_model1.setEmailNumber(user_data_model.getEmail());
+            contactDetail_model1.setLabel("");
+            /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
+            contactDetail_model1.setContactId(user_data_model.getId());
+            contactDetail_model1.setType("EMAIL");
+            contactDetail_model1.setIsDefault(1);
+            contactDetail_model1.setLabel("Home");
+            contactDetails_list.add(1, contactDetail_model1);
+            set_contact.setContactDetails(contactDetails_list);
+            SessionManager.setOneCotect_deatil(getActivity(), set_contact);
 
-                String name = Contect_data.getFirstname();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
+            if (flag.equals("edit")) {
+                pulse_icon.setEnabled(true);
+                iv_user.setEnabled(true);
+                tv_nameLetter.setEnabled(true);
+                iv_edit.setVisibility(View.VISIBLE);
+                edt_FirstName.setEnabled(true);
+                edt_lastname.setEnabled(true);
+                ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+                edt_FirstName.setText(Contect_data.getFirstname());
+                edt_lastname.setText(Contect_data.getLastname());
+                f_name = Contect_data.getFirstname();
+                l_name = Contect_data.getLastname();
+
+                if (user_data.getUser().getUserprofile().getProfilePic() == null) {
+                    iv_user.setVisibility(View.GONE);
+                    layout_pulse.setVisibility(View.VISIBLE);
+                    user_image.setVisibility(View.GONE);
+                    tv_nameLetter.setVisibility(View.VISIBLE);
+                    tv_nameLetter.setOnClickListener(this);
+
+                    String name = Contect_data.getFirstname();
+                    String add_text = "";
+                    String[] split_data = name.split(" ");
+                    try {
+                        for (int i = 0; i < split_data.length; i++) {
+                            if (i == 0) {
+                                add_text = split_data[i].substring(0, 1);
+                            } else {
+                                add_text = add_text + split_data[i].charAt(0);
+                                break;
+                            }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    tv_nameLetter.setText(add_text);
+
+                } else {
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+                    Glide.with(getActivity()).
+                            load(user_data.getUser().getUserprofile().getProfilePic())
+                            .placeholder(R.drawable.shape_primary_back)
+                            .error(R.drawable.shape_primary_back).
+                            into(iv_user);
                 }
-                tv_nameLetter.setText(add_text);
+                user_image_Url = Contect_data.getContactImage();
+
+                save_button.setText("Save");
+
+
+            } else if (flag.equals("read")) {
+
+                iv_user.setEnabled(false);
+                pulse_icon.setEnabled(false);
+                tv_nameLetter.setEnabled(false);
+                save_button.setVisibility(View.GONE);
+                edt_FirstName.setEnabled(false);
+                edt_lastname.setEnabled(false);
+
+
+                ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+                edt_FirstName.setText(Contect_data.getFirstname() + " " + Contect_data.getLastname());
+                edt_lastname.setText(Contect_data.getLastname());
+                f_name = Contect_data.getFirstname();
+                l_name = Contect_data.getLastname();
+                if (user_data.getUser().getUserprofile().getProfilePic() == null) {
+                    iv_user.setVisibility(View.GONE);
+                    layout_pulse.setVisibility(View.VISIBLE);
+                    user_image.setVisibility(View.GONE);
+                    tv_nameLetter.setVisibility(View.VISIBLE);
+                    String name = Contect_data.getFirstname();
+                    String add_text = "";
+                    String[] split_data = name.split(" ");
+                    try {
+                        for (int i = 0; i < split_data.length; i++) {
+                            if (i == 0) {
+                                add_text = split_data[i].substring(0, 1);
+                            } else {
+                                add_text = add_text + split_data[i].charAt(0);
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    tv_nameLetter.setText(add_text);
+
+                } else {
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+                    try {
+                        Glide.with(getActivity()).
+                                load(user_data.getUser().getUserprofile().getProfilePic())
+                                .placeholder(R.drawable.shape_primary_back)
+                                .error(R.drawable.shape_primary_back).
+                                into(iv_user);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                user_image_Url = Contect_data.getContactImage();
 
             } else {
-                iv_user.setVisibility(View.VISIBLE);
-                layout_pulse.setVisibility(View.GONE);
-                Glide.with(getActivity()).
-                        load(user_data.getUser().getUserprofile().getProfilePic())
-                        .placeholder(R.drawable.shape_primary_back)
-                        .error(R.drawable.shape_primary_back).
-                        into(iv_user);
+                pulse_icon.setEnabled(false);
+                tv_nameLetter.setEnabled(false);
+                Log.e("Null", "No Call");
             }
-            user_image_Url = Contect_data.getContactImage();
 
-            save_button.setText("Save");
-
-
-        } else if (flag.equals("read")) {
-
-            iv_user.setEnabled(false);
-            pulse_icon.setEnabled(false);
-            tv_nameLetter.setEnabled(false);
-            save_button.setVisibility(View.GONE);
-            edt_FirstName.setEnabled(false);
-            edt_lastname.setEnabled(false);
-
-
-            ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            edt_FirstName.setText(Contect_data.getFirstname() + " " + Contect_data.getLastname());
-            edt_lastname.setText(Contect_data.getLastname());
-            f_name = Contect_data.getFirstname();
-            l_name = Contect_data.getLastname();
-            if (user_data.getUser().getUserprofile().getProfilePic() == null) {
-                iv_user.setVisibility(View.GONE);
-                layout_pulse.setVisibility(View.VISIBLE);
-                user_image.setVisibility(View.GONE);
-                tv_nameLetter.setVisibility(View.VISIBLE);
-                String name = Contect_data.getFirstname();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                tv_nameLetter.setText(add_text);
-
-            } else {
-                iv_user.setVisibility(View.VISIBLE);
-                layout_pulse.setVisibility(View.GONE);
-              try {
-                  Glide.with(getActivity()).
-                          load(user_data.getUser().getUserprofile().getProfilePic())
-                          .placeholder(R.drawable.shape_primary_back)
-                          .error(R.drawable.shape_primary_back).
-                          into(iv_user);
-              }
-              catch (Exception e)
-              {
-                e.printStackTrace();
-              }
-
-            }
-            user_image_Url = Contect_data.getContactImage();
-
-        } else {
-            pulse_icon.setEnabled(false);
-            tv_nameLetter.setEnabled(false);
-            Log.e("Null", "No Call");
         }
-
-
 
 
 

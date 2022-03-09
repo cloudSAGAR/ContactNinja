@@ -756,9 +756,8 @@ public class SessionManager {
         }
     }
 
-    public void logoutUser() {
-        NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+    public void logoutUser(Context context) {
+
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
@@ -771,7 +770,7 @@ public class SessionManager {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // Staring Login Activity
-        _context.startActivity(i);
+        context.startActivity(i);
     }
 
     // Get Login State

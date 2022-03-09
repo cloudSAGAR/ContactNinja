@@ -6,8 +6,11 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +24,8 @@ public class WebActivity extends AppCompatActivity implements ConnectivityReceiv
     WebView wv_url;
     String webURL = "";
     private BroadcastReceiver mNetworkReceiver;
-    ConstraintLayout mMainLayout;
+    LinearLayout mMainLayout;
+    ImageView iv_back;
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +44,21 @@ public class WebActivity extends AppCompatActivity implements ConnectivityReceiv
         wv_url.getSettings().setJavaScriptEnabled(true);
         WebSettings webSettings = wv_url.getSettings();
         webSettings.setJavaScriptEnabled(true);
+
+        iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override

@@ -510,7 +510,7 @@ public class RetrofitCalls {
 
                 if (response.code() != 200) {
                     if(response.code()==404){
-                        session.logoutUser();
+                        //session.logoutUser();
                     }else
                     {
                         if(response.code()==401&&response.message().equals("Unauthenticated.")){

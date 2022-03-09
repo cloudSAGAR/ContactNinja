@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mMainLayout"
+    android:orientation="vertical"
     tools:context=".Setting.Verification_web">
+    <include layout="@layout/toolbar"/>
     <WebView
         android:id="@+id/webEmail"
         android:layout_width="match_parent"

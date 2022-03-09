@@ -13,6 +13,7 @@ import android.util.Base64;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -54,7 +55,7 @@ public class Verification_web extends AppCompatActivity implements ConnectivityR
     RetrofitCalls retrofitCalls;
     String create="",Activtiy_back="",ZoomAct="";
     private BroadcastReceiver mNetworkReceiver;
-
+    ImageView iv_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +67,17 @@ public class Verification_web extends AppCompatActivity implements ConnectivityR
         retrofitCalls = new RetrofitCalls(this);
         mMainLayout = findViewById(R.id.mMainLayout);
         webEmail = findViewById(R.id.webEmail);
+
+        iv_back = findViewById(R.id.iv_back);
+        iv_back.setVisibility(View.VISIBLE);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
         try {
             Intent intent=getIntent();
             Bundle bundle=intent.getExtras();

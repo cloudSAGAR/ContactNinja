@@ -58,6 +58,7 @@ public class Global extends Application {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static String AppVersion = "";
     public static String about = "https://contactninja.us/about/";
+    public static String conditions = "https://contactninja.us/terms-and-conditions/";
     public static String Email_auth = "https://app.contactninja.org/email_api/callback.php";
     public static int count = 1;
     public static String bzcard_share ="https://app.contactninja.org/bzcard/";

@@ -289,7 +289,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
                 delete();
                 SessionManager sessionManager = new SessionManager(getApplicationContext());
-                sessionManager.logoutUser();
+                sessionManager.logoutUser(SettingActivity.this);
                 finish();
             }
         });

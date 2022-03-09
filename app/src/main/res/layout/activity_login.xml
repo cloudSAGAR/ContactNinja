@@ -338,6 +338,8 @@
                 </LinearLayout>
 
                 <TextView
+                    android:layout_marginStart="@dimen/_50sdp"
+                    android:layout_marginEnd="@dimen/_50sdp"
                     android:id="@+id/tv_terms"
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"
@@ -347,6 +349,7 @@
                     android:layout_gravity="center|bottom"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center|top"
+                    android:textColorLink="@color/purple_200"
                     android:text="@string/terms"
                     android:textColor="@color/text_welcome" />
 
