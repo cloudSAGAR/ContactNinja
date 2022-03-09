@@ -594,7 +594,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                 final Contactdetail item = emaildetails_list.get(pos);
                                 emailAdapter.removeItem(pos,item);
 
-                                Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
                             }
                         }
                 ));
@@ -641,7 +641,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                   final Contactdetail item = phonedetails_list.get(pos);
                                    phoneAdapter.removeItem(pos,item);
 
-                                Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                            //    Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
                             }
                         }
                 ));
@@ -2340,7 +2340,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         public void removeItem(int pos,Contactdetail item) {
 
-            if (contactdetails.size()>=1)
+            if (contactdetails.size()>1)
             {
 
                 contactdetails.remove(pos);
@@ -2356,6 +2356,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     }
                 }
             }
+
 
 
         }
@@ -2631,7 +2632,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         }
 
         public void removeItem(int pos, Contactdetail item) {
-            if (contactdetails.size()>=1) {
+            if (contactdetails.size()>1) {
 
                 contactdetails.remove(pos);
                 notifyDataSetChanged();
