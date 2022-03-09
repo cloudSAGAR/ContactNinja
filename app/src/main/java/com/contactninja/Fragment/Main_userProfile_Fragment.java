@@ -778,7 +778,15 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
 
         param_data.put("company_url", addcontectModel.getCompany_url());
-        param_data.put("dob", addcontectModel.getBirthday());
+
+        if (addcontectModel.getBirthday().equals("0000-00-00"))
+        {
+            param_data.put("dob", "");
+        }
+        else
+        {
+            param_data.put("dob", addcontectModel.getBirthday());
+        }
         param_data.put("dynamic_fields_value", "");
         param_data.put("facebook_link", addcontectModel.getFacebook());
         param_data.put("first_name", edt_FirstName.getText().toString().trim());
