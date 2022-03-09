@@ -156,6 +156,7 @@ public class ContectFragment extends Fragment {
 
         View content_view = inflater.inflate(R.layout.fragment_contect, container, false);
         IntentUI(content_view);
+        Filter="";
         setAllData();
         return content_view;
 
@@ -1693,7 +1694,8 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-
+                Filter = "";
+                iv_filter_icon.setImageResource(R.drawable.ic_filter);
                 try {
                     Contect_BLock(contact_item, "1", bottomSheetDialog);
                 } catch (JSONException e) {
@@ -1712,9 +1714,10 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-
+                Filter = "";
+                iv_filter_icon.setImageResource(R.drawable.ic_filter);
                 try {
-                    Contect_BLock(contact_item, "0", bottomSheetDialog);
+                   Contect_BLock(contact_item, "0", bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1733,6 +1736,8 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                 try {
+                    Filter = "";
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Contect_Remove(contact_item, "0", bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1895,6 +1900,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 }
                 else {
+                    ch_block.setChecked(false);
                     Filter = "";
                     contectListData.clear();
                     contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
@@ -1921,6 +1927,10 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     Filter = "All";
                     layout_list_data.setVisibility(View.VISIBLE);
                     lay_no_list.setVisibility(View.GONE);
+                }
+                else {
+
+
                 }
 
             }

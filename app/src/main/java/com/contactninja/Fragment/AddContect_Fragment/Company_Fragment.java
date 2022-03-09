@@ -369,6 +369,7 @@ public class Company_Fragment extends Fragment {
                     rvinviteuserdetails.setAdapter(companyAdapter);
                     rvinviteuserdetails.setItemViewCacheSize(5000);
                     RefreshList();
+                    ch_all.setChecked(false);
 //
                 }
                 else {
@@ -376,6 +377,7 @@ public class Company_Fragment extends Fragment {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Filter = "All";
                     RefreshList();
+                    ch_all.setChecked(true);
                 }
 
             }
