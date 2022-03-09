@@ -375,7 +375,7 @@ public class Company_Fragment extends Fragment {
                 else {
                     bottomSheetDialog.dismiss();
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    Filter = "All";
+                    Filter = "ALL";
                     RefreshList();
                     ch_all.setChecked(true);
                 }
@@ -389,7 +389,7 @@ public class Company_Fragment extends Fragment {
                 if (isChecked) {
                     bottomSheetDialog.dismiss();
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    Filter = "All";
+                    Filter = "ALL";
                     RefreshList();
 
                 }

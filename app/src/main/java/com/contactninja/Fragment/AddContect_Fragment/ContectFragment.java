@@ -297,10 +297,12 @@ public class ContectFragment extends Fragment {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                     loadingDialog.showLoadingDialog();
                 EnableRuntimePermission();
+                tv_upload.setEnabled(false);
                 // splitdata(csv_inviteListData);
             }
         });
@@ -591,6 +593,7 @@ public class ContectFragment extends Fragment {
                     @Override
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
+                        tv_upload.setEnabled(true);
                         sessionManager.setcontectexits("1");
                         if (response.body().getHttp_status() == 200) {
 
@@ -615,6 +618,7 @@ public class ContectFragment extends Fragment {
                     @Override
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
+                        tv_upload.setEnabled(true);
                     }
 
                 });
@@ -1924,7 +1928,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
                     paginationAdapter.addAll(contectListData);
                     num_count.setText(contectListData.size() + " Contacts");
-                    Filter = "All";
+                    Filter = "ALL";
                     layout_list_data.setVisibility(View.VISIBLE);
                     lay_no_list.setVisibility(View.GONE);
                 }

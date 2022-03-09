@@ -731,7 +731,13 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         }*/
 
         paramObject.put("company_url", "");
-        paramObject.put("dob", addcontectModel.getBirthday());
+        if (addcontectModel.getBirthday().equals("0000-00-00"))
+        {
+            paramObject.put("dob","");
+        }
+        else {
+            paramObject.put("dob",addcontectModel.getBirthday());
+        }
         paramObject.put("dynamic_fields_value", "");
         paramObject.put("facebook_link", addcontectModel.getFacebook());
         paramObject.put("firstname", edt_FirstName.getText().toString().trim());
@@ -881,7 +887,15 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
 
         paramObject.put("company_url", "");
-        paramObject.put("dob", addcontectModel.getBirthday());
+        if (addcontectModel.getBirthday().equals("0000-00-00"))
+        {
+            paramObject.put("dob","");
+        }
+        else {
+            paramObject.put("dob",addcontectModel.getBirthday());
+        }
+
+
         paramObject.put("dynamic_fields_value", "");
         paramObject.put("facebook_link", addcontectModel.getFacebook());
         paramObject.put("firstname", edt_FirstName.getText().toString().trim());
