@@ -71,7 +71,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/add_new_contect_icon"
+                android:id="@+id/iv_add_new_contect_icon"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/shape_oval_border_10_blue"

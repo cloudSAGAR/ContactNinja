@@ -31,7 +31,7 @@
                 android:textColor="@color/white" />
 
             <ImageView
-                android:id="@+id/iv_camp"
+                android:id="@+id/iv_labal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

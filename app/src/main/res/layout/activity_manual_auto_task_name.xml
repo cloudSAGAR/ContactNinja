@@ -43,19 +43,24 @@
               />
 
             <EditText
-                android:maxEms="40"
+
                 android:id="@+id/ev_titale"
-                android:layout_marginTop="@dimen/_50sdp"
-                android:background="@color/add_contect_transpernt"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:focusable="true"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLength="40"
-                style="@style/tv_Medium_14"
-                android:layout_height="wrap_content"/>
+                android:background="@color/add_contect_transpernt"
+                android:hint="Enter Your task name"
+                android:linksClickable="true"
+                android:padding="@dimen/_5sdp"
+                android:paddingStart="@dimen/_15sdp"
+                android:maxEms="40"
+                android:textColor="@color/text_reg">
+
+            </EditText>
+
             <View
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_15sdp"

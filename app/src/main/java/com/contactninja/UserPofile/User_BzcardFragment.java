@@ -1,6 +1,7 @@
 package com.contactninja.UserPofile;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -134,7 +135,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
     void Data_list() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+        //loadingDialog.showLoadingDialog();
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
         String token = Global.getToken(sessionManager);
@@ -214,45 +215,48 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
     }
 
     private void setImage() {
-        customViewPagerAdapter = new CustomViewPagerAdapter(getActivity(), bizcardList);
-        viewPager.setAdapter(customViewPagerAdapter);
-        backButton.setVisibility(View.INVISIBLE);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
+        if(Global.IsNotNull(getActivity())){
+            customViewPagerAdapter = new CustomViewPagerAdapter(getActivity(), bizcardList);
+            viewPager.setAdapter(customViewPagerAdapter);
+            backButton.setVisibility(View.INVISIBLE);
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int i, float v, int i1) {
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    backButton.setVisibility(View.INVISIBLE);
-                } else {
-                    backButton.setVisibility(View.VISIBLE);
                 }
-                if (position < viewPager.getAdapter().getCount() - 1) {
-                    nextButton.setVisibility(View.VISIBLE);
-                } else {
-                    nextButton.setVisibility(View.INVISIBLE);
-                }
-                if (viewPager.getCurrentItem() == 0) {
-                    txt_card_name.setText(bizcardList.get(0).getBzcardFieldsModel().getCard_name());
-                } else if (viewPager.getCurrentItem() == 1) {
-                    txt_card_name.setText(bizcardList.get(1).getBzcardFieldsModel().getCard_name());
-                } else if (viewPager.getCurrentItem() == 2) {
-                    txt_card_name.setText(bizcardList.get(2).getBzcardFieldsModel().getCard_name());
-                } else if (viewPager.getCurrentItem() == 3) {
-                    txt_card_name.setText(bizcardList.get(3).getBzcardFieldsModel().getCard_name());
-                } else if (viewPager.getCurrentItem() == 4) {
-                    txt_card_name.setText(bizcardList.get(4).getBzcardFieldsModel().getCard_name());
-                }
-            }
 
-            @Override
-            public void onPageScrollStateChanged(int i) {
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == 0) {
+                        backButton.setVisibility(View.INVISIBLE);
+                    } else {
+                        backButton.setVisibility(View.VISIBLE);
+                    }
+                    if (position < viewPager.getAdapter().getCount() - 1) {
+                        nextButton.setVisibility(View.VISIBLE);
+                    } else {
+                        nextButton.setVisibility(View.INVISIBLE);
+                    }
+                    if (viewPager.getCurrentItem() == 0) {
+                        txt_card_name.setText(bizcardList.get(0).getBzcardFieldsModel().getCard_name());
+                    } else if (viewPager.getCurrentItem() == 1) {
+                        txt_card_name.setText(bizcardList.get(1).getBzcardFieldsModel().getCard_name());
+                    } else if (viewPager.getCurrentItem() == 2) {
+                        txt_card_name.setText(bizcardList.get(2).getBzcardFieldsModel().getCard_name());
+                    } else if (viewPager.getCurrentItem() == 3) {
+                        txt_card_name.setText(bizcardList.get(3).getBzcardFieldsModel().getCard_name());
+                    } else if (viewPager.getCurrentItem() == 4) {
+                        txt_card_name.setText(bizcardList.get(4).getBzcardFieldsModel().getCard_name());
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onPageScrollStateChanged(int i) {
+
+                }
+            });
+        }
+
     }
 
     @Override
@@ -535,10 +539,10 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
     public class CustomViewPagerAdapter extends PagerAdapter {
 
         List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
-        Context mContext;
+        Activity mContext;
         LayoutInflater mLayoutInflater;
 
-        public CustomViewPagerAdapter(Context context, List<BZcardListModel.Bizcard> List) {
+        public CustomViewPagerAdapter(Activity context, List<BZcardListModel.Bizcard> List) {
             bizcardList = List;
             mContext = context;
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

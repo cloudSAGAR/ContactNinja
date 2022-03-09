@@ -79,10 +79,9 @@ public class Company_Fragment extends Fragment {
     FastScrollerThumbView fastscroller_thumb;
     SearchView contect_search;
     TextView add_new_contect, num_count,txt_nolist;
-    ImageView add_new_contect_icon, iv_filter_icon,iv_cancle_search_icon;
+    ImageView add_new_contect_icon, iv_filter_icon,iv_cancle_search_icon,iv_add_new_contect_icon;
     View view1;
     FragmentActivity fragmentActivity;
-    LinearLayout add_new_contect_layout;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -232,7 +231,7 @@ public class Company_Fragment extends Fragment {
                 startActivity(intent);
             }
         });
-        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
+        iv_add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -305,7 +304,7 @@ public class Company_Fragment extends Fragment {
         add_new_contect = content_view.findViewById(R.id.add_new_contect);
         num_count = content_view.findViewById(R.id.num_count);
         add_new_contect_icon = content_view.findViewById(R.id.add_new_contect_icon);
-        add_new_contect_layout = content_view.findViewById(R.id.add_new_contect_layout);
+        iv_add_new_contect_icon = content_view.findViewById(R.id.iv_add_new_contect_icon);
         swipeToRefresh = content_view.findViewById(R.id.swipeToRefresh);
         ev_search = content_view.findViewById(R.id.ev_search);
         iv_filter_icon.setOnClickListener(new View.OnClickListener() {

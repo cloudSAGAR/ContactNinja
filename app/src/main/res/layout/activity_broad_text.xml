@@ -115,6 +115,8 @@
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_25sdp"
                     android:background="@drawable/shape_10_white_gray_line"
+                    android:linksClickable="true"
+                    android:autoLink="web|email"
                     android:focusable="true"
                     android:gravity="left"
                     android:hint="@string/Typehere"

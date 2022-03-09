@@ -19,6 +19,9 @@ public class ManualTaskModel {
     @SerializedName("seq_id")
     @Expose
     private Integer seqId = 0;
+    @SerializedName("sequence_task_from")
+    @Expose
+    private Integer sequence_task_from = 0;
     @SerializedName("seq_task_id")
     @Expose
     private Integer seqTaskId;
@@ -285,5 +288,13 @@ public class ManualTaskModel {
 
     public void setTask_name(String task_name) {
         this.task_name = task_name;
+    }
+
+    public Integer getSequence_task_from() {
+        return sequence_task_from;
+    }
+
+    public void setSequence_task_from(Integer sequence_task_from) {
+        this.sequence_task_from = sequence_task_from;
     }
 }

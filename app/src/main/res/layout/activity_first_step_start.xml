@@ -116,7 +116,8 @@
                     android:background="@drawable/shape_10_white_gray_line"
                     android:focusable="true"
                     android:gravity="left"
-
+                    android:linksClickable="true"
+                    android:autoLink="web|email"
                     android:hint="@string/Typehere"
                     android:imeOptions="actionDone"
                     android:padding="15dp"

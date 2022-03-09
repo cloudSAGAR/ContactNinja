@@ -112,11 +112,11 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    ImageView iv_filter_icon, iv_cancle_search_icon;
+    ImageView iv_filter_icon, iv_cancle_search_icon, iv_add_new_contect_icon;
     TextView add_new_contect;
 
     LinearLayout mMainLayout;
-    LinearLayout demo_layout, add_new_contect_layout, lay_no_list;
+    LinearLayout demo_layout, lay_no_list;
     LinearLayout layout_toolbar_logo;
     RelativeLayout lay_mainlayout;
     TextView tv_create;
@@ -206,7 +206,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 startActivity(intent1);//  finish();
             }
         });
-        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
+        iv_add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -263,7 +263,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         tv_create = view.findViewById(R.id.tv_create);
         tv_create.setText(getString(R.string.txt_task));
         rv_Task_list = view.findViewById(R.id.rv_Task_list);
-        add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
+        iv_add_new_contect_icon = view.findViewById(R.id.iv_add_new_contect_icon);
 
         swipeToRefresh = view.findViewById(R.id.swipeToRefresh);
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
@@ -319,33 +319,33 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
 
         switch (Filter) {
-            case "today":
+            case "TODAY":
                 ch_today.setChecked(true);
                 break;
-            case "upcoming":
+            case "UPCOMINGE":
                 ch_upcoming.setChecked(true);
 
                 break;
-            case "due":
+            case "DUE":
                 ch_due.setChecked(true);
 
                 break;
-            case "finished":
+            case "FINISHED":
                 ch_complate.setChecked(true);
 
                 break;
-            case "skipped":
+            case "SKIPPED":
                 ch_skipped.setChecked(true);
 
                 break;
-            case "paused":
+            case "PAUSED":
                 ch_Paused.setChecked(true);
 
                 break;
-            case "auto":
+            case "AUTO":
                 ch_auto_upcomimg_task.setChecked(true);
                 break;
-                case "autocomplate":
+            case "FINISHED_AUTO":
                 ch_auto_complate_task.setChecked(true);
                 break;
         }
@@ -360,13 +360,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[0];
-                    refresf_api();
                 } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
-                    refresf_api();
                 }
+                refresf_api();
 
             }
         });
@@ -377,13 +376,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[1];
-                    refresf_api();
                 } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
-                    refresf_api();
                 }
+                refresf_api();
 
             }
         });
@@ -394,13 +392,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[2];
-                    refresf_api();
                 } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
-                    refresf_api();
                 }
+                refresf_api();
             }
         });
         ch_complate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -410,13 +407,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[3];
-                    refresf_api();
                 } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
-                    refresf_api();
                 }
+                refresf_api();
 
             }
         });
@@ -427,13 +423,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[4];
-                    refresf_api();
                 } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
-                    refresf_api();
                 }
+                refresf_api();
 
             }
         });
@@ -444,13 +439,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[5];
-                    refresf_api();
                 } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
-                    refresf_api();
                 }
+                refresf_api();
             }
         });
         ch_auto_upcomimg_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -460,13 +454,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[6];
-                    refresf_api();
                 } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
-                    refresf_api();
                 }
+                refresf_api();
             }
         });
         ch_auto_complate_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -476,13 +469,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = Filters[7];
-                    refresf_api();
                 } else {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     bottomSheetDialog.dismiss();
                     Filter = "";
-                    refresf_api();
                 }
+                refresf_api();
             }
         });
         ch_all_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -801,10 +793,21 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 } else {
                     holder.image_icon.setImageResource(R.drawable.ic_email);
                 }
-                if (!Global.IsNotNull(item.getSeqId()) || item.getSeqId() != 0) {
-                    holder.iv_camp.setVisibility(View.VISIBLE);
-                } else {
-                    holder.iv_camp.setVisibility(View.GONE);
+                if (Global.IsNotNull(item.getSequence_task_from())) {
+                    if(item.getSequence_task_from()==1){
+                        holder.iv_labal.setVisibility(View.VISIBLE);
+                        holder.iv_labal.setImageResource(R.drawable.ic_campaning_icon);
+
+                    }else if(item.getSequence_task_from()==2){
+                        holder.iv_labal.setVisibility(View.GONE);
+
+                    }else if(item.getSequence_task_from()==3){
+                        holder.iv_labal.setVisibility(View.VISIBLE);
+                        holder.iv_labal.setImageResource(R.drawable.ic_broadcast);
+
+                    }else {
+                        holder.iv_labal.setVisibility(View.GONE);
+                    }
                 }
 
                 String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
@@ -873,7 +876,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         public class viewData extends RecyclerView.ViewHolder {
             TextView tv_username, tv_task_description, tv_time, no_image, tv_status;
             LinearLayout layout_contec;
-            ImageView image_icon, iv_camp;
+            ImageView image_icon, iv_labal;
 
             public viewData(@NonNull View itemView) {
                 super(itemView);
@@ -884,7 +887,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 tv_status = itemView.findViewById(R.id.tv_status);
                 layout_contec = itemView.findViewById(R.id.layout_contec);
                 image_icon = itemView.findViewById(R.id.image_icon);
-                iv_camp = itemView.findViewById(R.id.iv_camp);
+                iv_labal = itemView.findViewById(R.id.iv_labal);
             }
         }
     }
