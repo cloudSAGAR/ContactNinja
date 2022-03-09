@@ -83,6 +83,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -186,6 +188,7 @@ public class ContectFragment extends Fragment {
         //Faste View Code
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
+
         fastscroller.getItemIndicatorSelectedCallbacks().add(
                 new FastScrollerView.ItemIndicatorSelectedCallback() {
                     @Override
@@ -201,13 +204,17 @@ public class ContectFragment extends Fragment {
 
         if (SessionManager.getContectList(getActivity()).size() != 0) {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-           // main_contectListData=contectListData.subList(0,50);
+            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+            contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+
+            // main_contectListData=contectListData.subList(0,50);
             paginationAdapter.addAll(main_contectListData);
             num_count.setText(contectListData.size() + " Contacts");
             onScrolledToBottom();
         }
 
-        rvinviteuserdetails.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      /*  rvinviteuserdetails.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -215,7 +222,7 @@ public class ContectFragment extends Fragment {
                        onScrolledToBottom();
 
             }
-        });
+        });*/
         // EnableRuntimePermission();
 
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
@@ -319,10 +326,10 @@ public class ContectFragment extends Fragment {
                 return false;
             }
         });
+
         fastscroller.setupWithRecyclerView(
                 rvinviteuserdetails,
                 (position) -> {
-
                     try {
                         FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
                                 paginationAdapter.getItem(position).getFirstname().substring(0, 1)
@@ -342,9 +349,9 @@ public class ContectFragment extends Fragment {
 
         if (paginationAdapter.getItemCount() < contectListData.size()) {
             int x, y;
-            if ((contectListData.size() - paginationAdapter.getItemCount()) >= 50) {
+            if ((contectListData.size() - paginationAdapter.getItemCount()) >= contectListData.size()) {
                 x = paginationAdapter.getItemCount();
-                y = x + 50;
+                y = x + contectListData.size();
             } else {
                 x = paginationAdapter.getItemCount();
                 y = x + contectListData.size() - paginationAdapter.getItemCount();
