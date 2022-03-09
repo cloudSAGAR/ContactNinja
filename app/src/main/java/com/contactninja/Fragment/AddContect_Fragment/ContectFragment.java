@@ -1482,8 +1482,9 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                         }
 
+                        Log.e("Contect Image is",Contact_data.getContactImage());
 
-                        if (Contact_data.getContactImage() == null) {
+                        if (Contact_data.getContactImage() == null || Contact_data.getContactImage().equals("")) {
                             String name = Contact_data.getFirstname();
                             String add_text = "";
                             String[] split_data = name.split(" ");

@@ -1154,7 +1154,7 @@ public class Campaign_Contect_Fragment extends Fragment {
 
 
             String file = "" + select_contectListData.get(position).getContactImage();
-            if (file.equals("null")) {
+            if (file.equals("null") || file.equals("")) {
                 holder.no_image.setVisibility(View.VISIBLE);
                 holder.profile_image.setVisibility(View.GONE);
                 String name = select_contectListData.get(position).getFirstname();
@@ -1387,7 +1387,7 @@ public class Campaign_Contect_Fragment extends Fragment {
                     }
 
 
-                    if (Contact_data.getContactImage() == null) {
+                    if (Contact_data.getContactImage() == null ||Contact_data.getContactImage().equals("")) {
                         String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
                         String add_text = "";
                         String[] split_data = name.split(" ");

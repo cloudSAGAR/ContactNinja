@@ -873,7 +873,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
 
 
             String file = "" + inviteUserDetails.getContactImage();
-            if (file.equals("null")) {
+            if (file.equals("null") || file.equals("")) {
                 holder.no_image.setVisibility(View.VISIBLE);
                 holder.profile_image.setVisibility(View.GONE);
                 String name = inviteUserDetails.getFirstname();

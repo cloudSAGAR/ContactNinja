@@ -561,7 +561,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                         holder1.first_latter.setVisibility(View.VISIBLE);
                         holder1.top_layout.setVisibility(View.VISIBLE);
                     }
-                    if (Contact_data.getContactImage() == null) {
+                    if (Contact_data.getContactImage() == null || Contact_data.getContactImage().equals("")) {
                         String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
                         String add_text = "";
                         String[] split_data = name.split(" ");

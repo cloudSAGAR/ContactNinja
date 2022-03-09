@@ -186,28 +186,28 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setFacebook(Contect_data.getFacebook_link());
             addcontectModel.setBirthday(Contect_data.getDob());
 
-            ev_zip.setText(Contect_data.getZipcode());
-            ev_address.setText(Contect_data.getAddress());
-            ev_zoom.setText(Contect_data.getZoomId());
-            ev_company.setText(Contect_data.getCompanyName());
-            ev_state.setText(Contect_data.getState());
-            ev_city.setText(Contect_data.getCity());
+            ev_zip.setText(""+Contect_data.getZipcode().toString().trim());
+            ev_address.setText(""+Contect_data.getAddress().toString().trim());
+            ev_zoom.setText(""+Contect_data.getZoomId().toString().trim());
+            ev_company.setText(""+Contect_data.getCompanyName().toString().trim());
+            ev_state.setText(""+Contect_data.getState().toString().trim());
+            ev_city.setText(""+Contect_data.getCity().toString().trim());
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
                 String time_zone = TimeZone.getDefault().getID();
-                zone_txt.setText(time_zone);
+                zone_txt.setText(""+time_zone.toString().trim());
             } else {
-                zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
+                zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()).toString().trim());
             }
-            ev_job.setText(Contect_data.getJobTitle());
+            ev_job.setText(""+Contect_data.getJobTitle().toString().trim());
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
-            ev_company_url.setText(Contect_data.getCompany_url());
-            ev_bob.setText(Contect_data.getDob());
-            ev_twitter.setText(Contect_data.getTwitter_link());
-            ev_fb.setText(Contect_data.getFacebook_link());
-            ev_linkedin.setText(Contect_data.getLinkedin_link());
-            ev_breakout.setText(Contect_data.getBreakout_link());
+            ev_company_url.setText(""+Contect_data.getCompany_url().toString().trim());
+            ev_bob.setText(""+Contect_data.getDob().toString().trim());
+            ev_twitter.setText(""+Contect_data.getTwitter_link().toString().trim());
+            ev_fb.setText(""+Contect_data.getFacebook_link().toString().trim());
+            ev_linkedin.setText(""+Contect_data.getLinkedin_link().toString().trim());
+            ev_breakout.setText(""+Contect_data.getBreakout_link().toString().trim());
             TextSet();
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
@@ -319,25 +319,25 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setBirthday(Contect_data.getDob());
 
 
-            ev_zip.setText(Contect_data.getZipcode());
-            ev_address.setText(Contect_data.getAddress());
-            ev_zoom.setText(Contect_data.getZoomId());
-            ev_company.setText(Contect_data.getCompanyName());
-            ev_state.setText(Contect_data.getState());
-            ev_city.setText(Contect_data.getCity());
+            ev_zip.setText(""+Contect_data.getZipcode().toString().trim());
+            ev_address.setText(""+Contect_data.getAddress().toString().trim());
+            ev_zoom.setText(""+Contect_data.getZoomId().toString().trim());
+            ev_company.setText(""+Contect_data.getCompanyName().toString().trim());
+            ev_state.setText(""+Contect_data.getState().toString().trim());
+            ev_city.setText(""+Contect_data.getCity().toString().trim());
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
                 String time_zone = TimeZone.getDefault().getID();
-                zone_txt.setText(time_zone);
+                zone_txt.setText(""+time_zone.toString().trim());
             } else {
                 zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
             }
 
-            ev_job.setText(Contect_data.getJobTitle());
+            ev_job.setText(""+Contect_data.getJobTitle().toString().trim());
             contect_id = Contect_data.getId();
-            organization_id = String.valueOf(Contect_data.getOrganizationId());
-            team_id = String.valueOf(Contect_data.getTeamId());
-            ev_company_url.setText(Contect_data.getCompany_url());
-            ev_bob.setText(Contect_data.getDob());
+            organization_id = String.valueOf(Contect_data.getOrganizationId()).toString().trim();
+            team_id = String.valueOf(Contect_data.getTeamId().toString().trim());
+            ev_company_url.setText(""+Contect_data.getCompany_url().toString().trim());
+            ev_bob.setText(""+Contect_data.getDob().toString().trim());
             media_link.setVisibility(View.GONE);
             try {
 
@@ -374,10 +374,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             }
 
-            ev_twitter.setText(Contect_data.getTwitter_link());
-            ev_fb.setText(Contect_data.getFacebook_link());
-            ev_linkedin.setText(Contect_data.getLinkedin_link());
-            ev_breakout.setText(Contect_data.getBreakout_link());
+            ev_twitter.setText(""+Contect_data.getTwitter_link().toString().trim());
+            ev_fb.setText(""+Contect_data.getFacebook_link().toString().trim());
+            ev_linkedin.setText(""+Contect_data.getLinkedin_link().toString().trim());
+            ev_breakout.setText(""+Contect_data.getBreakout_link().toString().trim());
             img_twitter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

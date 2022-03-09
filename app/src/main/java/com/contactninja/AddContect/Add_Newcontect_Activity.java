@@ -183,17 +183,17 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
         if (flag.equals("edit")) {
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
-            edt_FirstName.setText(Contect_data.getFirstname());
-            edt_lastname.setText(Contect_data.getLastname());
-            f_name = Contect_data.getFirstname();
-            l_name = Contect_data.getLastname();
+            edt_FirstName.setText(Contect_data.getFirstname().toString().trim());
+            edt_lastname.setText(Contect_data.getLastname().toString().trim());
+            f_name = Contect_data.getFirstname().toString().trim();
+            l_name = Contect_data.getLastname().toString().trim();
             iv_user.setOnClickListener(this);
             if (Contect_data.getIs_blocked().equals(1)) {
                 iv_block.setVisibility(View.VISIBLE);
             } else {
                 iv_block.setVisibility(View.GONE);
             }
-            if (Contect_data.getContactImage() == null) {
+            if (Contect_data.getContactImage() == null || Contect_data.getContactImage().equals("")) {
                 iv_user.setVisibility(View.GONE);
 
                 layout_pulse.setVisibility(View.VISIBLE);
@@ -239,16 +239,16 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             iv_user.setOnClickListener(null);
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
-            edt_FirstName.setText(Contect_data.getFirstname());
-            edt_lastname.setText(Contect_data.getLastname());
-            f_name = Contect_data.getFirstname();
-            l_name = Contect_data.getLastname();
+            edt_FirstName.setText(Contect_data.getFirstname().toString().trim());
+            edt_lastname.setText(Contect_data.getLastname().toString().trim());
+            f_name = Contect_data.getFirstname().toString().trim();
+            l_name = Contect_data.getLastname().toString().trim();
             if (Contect_data.getIs_blocked().equals(1)) {
                 iv_block.setVisibility(View.VISIBLE);
             } else {
                 iv_block.setVisibility(View.GONE);
             }
-            if (Contect_data.getContactImage() == null) {
+            if (Contect_data.getContactImage() == null || Contect_data.getContactImage().equals("")) {
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
