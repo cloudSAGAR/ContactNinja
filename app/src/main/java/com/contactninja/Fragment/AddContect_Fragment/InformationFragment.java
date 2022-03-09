@@ -317,8 +317,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setLinkedin(Contect_data.getLinkedin_link());
             addcontectModel.setFacebook(Contect_data.getFacebook_link());
             addcontectModel.setBirthday(Contect_data.getDob());
-
-
             ev_zip.setText(""+Contect_data.getZipcode().toString().trim());
             ev_address.setText(""+Contect_data.getAddress().toString().trim());
             ev_zoom.setText(""+Contect_data.getZoomId().toString().trim());

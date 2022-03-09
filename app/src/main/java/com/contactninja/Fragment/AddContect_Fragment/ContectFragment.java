@@ -898,6 +898,8 @@ public class ContectFragment extends Fragment {
                             totale_group = contectListData1.getTotal();
                             contectListData.addAll(contectListData_store.get(0).getContacts());
                             onScrolledToBottom();
+                            num_count.setText(contectListData.size() + " Contacts");
+
                         } else{
                             contectListData.clear();
                             paginationAdapter.removeloist();
@@ -917,6 +919,7 @@ public class ContectFragment extends Fragment {
                             rvinviteuserdetails.setAdapter(paginationAdapter);
 
                             onScrolledToBottom();
+                            num_count.setText(contectListData.size() + " Contacts");
 
                         }
                     } catch(Exception e){
