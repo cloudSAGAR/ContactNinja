@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,13 +43,16 @@ import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Contect.Contact;
 import com.contactninja.Contect.ContactFetcher;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Contect_Db;
 import com.contactninja.Model.Csv_InviteListData;
 import com.contactninja.Model.InviteListData;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -129,6 +133,7 @@ public class ContectFragment extends Fragment {
     private List<ContectListData.Contact> main_contectListData=new ArrayList<>();
 
     String Filter = "";//BLOCK / ALL
+    List<Contact> new_listContacts=new ArrayList<>();
 
     String userName = "", user_phone_number = "", user_image = "", user_des = "", old_latter = "", contect_type = "", contect_email = "",
             contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
@@ -138,6 +143,7 @@ public class ContectFragment extends Fragment {
     List<Csv_InviteListData> csv_inviteListData = new ArrayList<>();
     List<Csv_InviteListData> csv_multiple_data = new ArrayList<>();
     private long mLastClickTime = 0;
+    MyAsyncTasks myAsyncTasks;
 
     public ContectFragment(View view, FragmentActivity activity) {
 
@@ -300,7 +306,6 @@ public class ContectFragment extends Fragment {
 
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                    loadingDialog.showLoadingDialog();
                 EnableRuntimePermission();
                 tv_upload.setEnabled(false);
                 // splitdata(csv_inviteListData);
@@ -342,6 +347,206 @@ public class ContectFragment extends Fragment {
 
                 }
         );
+    }
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                getTasks();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+    }
+
+    private void getTasks() {
+        class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
+            @Override
+            protected List<Contect_Db> doInBackground(Void... voids) {
+                List<Contect_Db> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getvalue();
+                return taskList;
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            protected void onPostExecute(List<Contect_Db> contect_list) {
+                //Get All Contect Locale Room Database  No Data Then Upload Csv Code Call
+                if (contect_list.size() == 0) {
+                    //    splitdata(csv_inviteListData);
+                } else if (contect_list.size() == listContacts.size()) {
+                    for (int i = 0; i < listContacts.size(); i++) {
+                        String num = listContacts.get(i).numbers.get(0).number;
+                        String f_name = listContacts.get(i).name;
+                        boolean found = contect_list.stream().anyMatch(p -> p.getEmailNumber().equals(num));
+                        boolean found1 = contect_list.stream().anyMatch(p -> p.getFirst_name().equals(f_name));
+                        if (found == true && found1 == false) {
+                            check_list_for_Update(listContacts.get(i).name, "", listContacts.get(i).numbers.get(0).number,listContacts,i);
+                        }
+                    }
+                } else {
+                    getUser_check(listContacts);
+                }
+
+                super.onPostExecute(contect_list);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
+    }
+
+
+
+    private void getUser_check(ArrayList<Contact> csv_inviteListData) {
+
+        try {
+            for (int i = 0; i < csv_inviteListData.size(); i++) {
+                for ( int j=0;j<csv_inviteListData.get(i).numbers.size();j++)
+                {
+                    check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(j).number,csv_inviteListData,i);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+        }
+
+
+
+
+
+
+
+    }
+
+    public void check_list(String userName, String last_name, String userPhoneNumber, ArrayList<Contact> csv_inviteListData, int i) {
+        class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
+            @Override
+            protected List<Contect_Db> doInBackground(Void... voids) {
+                List<Contect_Db> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getSameValue(userName.replaceAll("[-+.^:,]", ""), last_name.replaceAll("[-+.^:,]", ""), userPhoneNumber);
+                if (taskList.size() == 0) {
+                    //Update Call
+                    check_list_for_Update(userName, last_name, userPhoneNumber,csv_inviteListData,i);
+
+                } else if (taskList.size() != 1) {
+                    loadingDialog.cancelLoading();   //Multiple Same Data Then Remove
+                    Duplicate_remove();
+                } else if (taskList.size() == 1) {
+                    loadingDialog.cancelLoading();
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+                return taskList;
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            protected void onPostExecute(List<Contect_Db> contect_list) {
+                super.onPostExecute(contect_list);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
+    }
+
+
+    public void Duplicate_remove() {
+        class DeleteTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                DatabaseClient.getInstance(getActivity()).getAppDatabase()
+                        .taskDao()
+                        //.deleteDuplicates();
+                        //.DeleteData(inviteListData.getUserPhoneNumber());
+                        .deleteDuplicates();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+            }
+        }
+        DeleteTask ut = new DeleteTask();
+        ut.execute();
+    }
+    public void check_list_for_Update(String userName, String last_name, String userPhoneNumber,ArrayList<Contact> csv_inviteListData, int i) {
+        class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
+            @Override
+            protected List<Contect_Db> doInBackground(Void... voids) {
+                List<Contect_Db> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .taskDao()
+                        .getSameValue_Firstorlastname(userPhoneNumber);
+
+                if (taskList.size() == 0) {
+                    //No Data Then Add Contect
+                    new_listContacts=SessionManager.getnewContect(getActivity());
+                    new_listContacts.add(csv_inviteListData.get(i));
+                    SessionManager.setnewContect(getActivity(),new_listContacts);
+                    loadingDialog.cancelLoading();
+                    //    splitdata(new_listContacts);
+
+
+                } else {
+                    loadingDialog.cancelLoading();
+                    //Update Contect Api Call
+                   /* try {
+                        if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
+                            AddContect_Api1(userName, last_name, userPhoneNumber, taskList.get(0).getContect_id(), taskList.get(0).getContactId());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+                return taskList;
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            protected void onPostExecute(List<Contect_Db> contect_list) {
+                //Log.e("Contect List Update Size 1 "," : "+contect_list.size());
+                super.onPostExecute(contect_list);
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
     }
 
     private void onScrolledToBottom() {
@@ -633,25 +838,63 @@ public class ContectFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (!SessionManager.getnewContect(getActivity()).equals(null))
+                {
+                    try {
+                        splitdata((ArrayList<Contact>) SessionManager.getnewContect(getActivity()));
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
                 listContacts = new ContactFetcher(getActivity()).fetchAll();
-
                 SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
                 String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
 
+
                 if (listContacts.size() == 0) {
                     try {
-                        fillter_text="";
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
+                    loadingDialog.showLoadingDialog();
+                    String isContact = SessionManager.getcontectexits();
+                    if (isContact.equals("0")) {
+                        //Not Upload Contect Then If Call
+                        if (Is_contact_exist.equals("0")) {
+                            limit = listContacts.size();
+                            try {
+                                splitdata(listContacts);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
 
-                    limit = listContacts.size();
-                    splitdata(listContacts);
-
+                        } else {
+                         /*   try{
+                              splitdata(listContacts);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }*/
+                            myAsyncTasks = new MyAsyncTasks();
+                            myAsyncTasks.execute();
+                        }
+                    }
+                    else {
+                        //   splitdata(listContacts);
+                        myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks.execute();
+                    }
                 }
-
 
             }
 
@@ -898,7 +1141,6 @@ public class ContectFragment extends Fragment {
                             totale_group = contectListData1.getTotal();
                             contectListData.addAll(contectListData_store.get(0).getContacts());
                             onScrolledToBottom();
-                            num_count.setText(contectListData.size() + " Contacts");
 
                         } else{
                             contectListData.clear();
@@ -1019,6 +1261,17 @@ public class ContectFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (!SessionManager.getnewContect(getActivity()).equals(null))
+        {
+            try {
+                splitdata((ArrayList<Contact>) SessionManager.getnewContect(getActivity()));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
     }
