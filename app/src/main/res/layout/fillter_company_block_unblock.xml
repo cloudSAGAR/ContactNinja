@@ -65,13 +65,14 @@
             android:padding="@dimen/_5sdp">
 
             <CheckBox
+                android:checked="true"
                 android:id="@+id/ch_all"
                 style="@style/tv_Medium_16"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="@dimen/_5sdp"
-                android:text="@string/fillter_compnay_all" />
+                android:text="@string/company_all" />
 
 
             <ImageView

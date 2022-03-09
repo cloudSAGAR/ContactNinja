@@ -330,7 +330,7 @@ public class Company_Fragment extends Fragment {
         Change By :- Paras
         Chnage Date:- 4-2-22
         */
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.fillter_contact_block_unblock, null);
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.fillter_company_block_unblock, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
 

@@ -65,6 +65,7 @@
             android:padding="@dimen/_5sdp">
 
             <CheckBox
+                android:checked="true"
                 android:id="@+id/ch_all"
                 style="@style/tv_Medium_16"
                 android:layout_width="0dp"
