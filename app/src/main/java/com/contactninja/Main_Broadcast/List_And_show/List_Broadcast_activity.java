@@ -59,10 +59,10 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    ImageView iv_back, iv_cancle_search_icon,iv_add_new_contect_icon;
+    ImageView iv_back, iv_cancle_search_icon;
     TextView save_button;
 
-    LinearLayout mMainLayout;
+    LinearLayout mMainLayout,add_new_contect_layout;
     LinearLayout demo_layout,  lay_no_list;
     RelativeLayout lay_mainlayout;
     RecyclerView rv_Broadcast_list;
@@ -151,7 +151,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 startActivity(intent1);//  finish();
             }
         });
-        iv_add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
+        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -211,7 +211,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         demo_layout = findViewById(R.id.demo_layout);
         mMainLayout = findViewById(R.id.mMainLayout);
         rv_Broadcast_list = findViewById(R.id.rv_Broadcast_list);
-        iv_add_new_contect_icon = findViewById(R.id.iv_add_new_contect_icon);
+        add_new_contect_layout = findViewById(R.id.add_new_contect_layout);
 
         swipeToRefresh = findViewById(R.id.swipeToRefresh);
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);

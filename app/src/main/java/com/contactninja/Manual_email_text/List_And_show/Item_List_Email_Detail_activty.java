@@ -1433,7 +1433,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     }
     void BZCard_list() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+       // loadingDialog.showLoadingDialog();
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Item_List_Email_Detail_activty.this);
         String token = Global.getToken(sessionManager);

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.List_And_show.Item_List_Email_Detail_activty;
 import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
+import com.contactninja.Manual_email_text.Manual_Shooz_Time_Date_Activity;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
@@ -47,9 +49,11 @@ import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -112,10 +116,10 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    ImageView iv_filter_icon, iv_cancle_search_icon, iv_add_new_contect_icon;
+    ImageView iv_filter_icon, iv_cancle_search_icon;
     TextView add_new_contect;
 
-    LinearLayout mMainLayout;
+    LinearLayout mMainLayout,add_new_contect_layout;
     LinearLayout demo_layout, lay_no_list;
     LinearLayout layout_toolbar_logo;
     RelativeLayout lay_mainlayout;
@@ -131,6 +135,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
+    public boolean isLoaderVisible = false;
 
 
     private long mLastClickTime = 0;
@@ -206,7 +211,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 startActivity(intent1);//  finish();
             }
         });
-        iv_add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
+        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -236,6 +241,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         isLastPage = false;
         manualTaskModelList.clear();
         emailAdepter.clear();
+        isLoaderVisible=false;
         try {
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 if (!swipeToRefresh.isRefreshing()) {
@@ -263,7 +269,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         tv_create = view.findViewById(R.id.tv_create);
         tv_create.setText(getString(R.string.txt_task));
         rv_Task_list = view.findViewById(R.id.rv_Task_list);
-        iv_add_new_contect_icon = view.findViewById(R.id.iv_add_new_contect_icon);
+        add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
 
         swipeToRefresh = view.findViewById(R.id.swipeToRefresh);
         swipeToRefresh.setColorSchemeResources(R.color.purple_200);
@@ -322,7 +328,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
             case "TODAY":
                 ch_today.setChecked(true);
                 break;
-            case "UPCOMINGE":
+            case "UPCOMING":
                 ch_upcoming.setChecked(true);
 
                 break;
@@ -340,11 +346,12 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 break;
             case "PAUSED":
                 ch_Paused.setChecked(true);
-
                 break;
+
             case "AUTO":
                 ch_auto_upcomimg_task.setChecked(true);
                 break;
+
             case "FINISHED_AUTO":
                 ch_auto_complate_task.setChecked(true);
                 break;
@@ -597,6 +604,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         isLastPage = false;
         manualTaskModelList.clear();
         emailAdepter.clear();
+        isLoaderVisible=false;
         try {
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                 if (!swipeToRefresh.isRefreshing()) {
@@ -712,7 +720,6 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
         List<ManualTaskModel> manualTaskModelList;
-        private boolean isLoaderVisible = false;
 
         public ListItemAdepter(Context context, List<ManualTaskModel> manualTaskModelList) {
             this.mCtx = context;
@@ -730,14 +737,14 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
         @NonNull
         @Override
-        public ListItemAdepter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
-                    return new ListItemAdepter.viewData(
+                    return new viewData(
                             LayoutInflater.from(parent.getContext()).inflate(R.layout.item_emailactivitylist, parent, false));
                 case VIEW_TYPE_LOADING:
-                    return new ListItemAdepter.ProgressHolder(
+                    return new ProgressHolder(
                             LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
                 default:
                     return null;
@@ -785,7 +792,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
         @SuppressLint("LogConditional")
         @Override
-        public void onBindViewHolder(@NonNull ListItemAdepter.viewData holder, int position) {
+        public void onBindViewHolder(@NonNull viewData holder, int position) {
             ManualTaskModel item = manualTaskModelList.get(position);
             if (Global.IsNotNull(item.getType()) && !item.getType().equals("")) {
                 if (item.getType().equals("SMS")) {
@@ -793,21 +800,21 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 } else {
                     holder.image_icon.setImageResource(R.drawable.ic_email);
                 }
+
+
                 if (Global.IsNotNull(item.getSequence_task_from())) {
                     if(item.getSequence_task_from()==1){
                         holder.iv_labal.setVisibility(View.VISIBLE);
                         holder.iv_labal.setImageResource(R.drawable.ic_campaning_icon);
-
                     }else if(item.getSequence_task_from()==2){
                         holder.iv_labal.setVisibility(View.GONE);
 
-                    }else if(item.getSequence_task_from()==3){
+                    } else if(item.getSequence_task_from()==3){
                         holder.iv_labal.setVisibility(View.VISIBLE);
                         holder.iv_labal.setImageResource(R.drawable.ic_broadcast);
-
-                    }else {
-                        holder.iv_labal.setVisibility(View.GONE);
                     }
+                } else {
+                    holder.iv_labal.setVisibility(View.GONE);
                 }
 
                 String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
@@ -837,25 +844,39 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 holder.layout_contec.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (!item.getManage_by().toString().equals("AUTO")) {
+                            if (item.getType().toString().equals("SMS")) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+                                Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
+                                intent.putExtra("record_id", item.getId());
+                                startActivity(intent);
+                            } else {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+                                Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
+                                intent.putExtra("record_id", item.getId());
+                                startActivity(intent);
+                            }
+                        }else {
+                            String[] selet_item = getResources().getStringArray(R.array.auto_Select);
 
-                        if (item.getType().toString().equals("SMS")) {
-                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                return;
+                            switch (item.getStatus()) {
+                                case "PAUSED":
+                                    showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
+                                            getResources().getString(R.string.manual_aleart_paused_des), selet_item[1],item.getId());
+                                    break;
+                                case "NOT_STARTED":
+                                    showAlertDialogButtonClicked(getResources().getString(R.string.auto_aleart_Paused),
+                                            getResources().getString(R.string.auto_aleart_Paused_des), selet_item[0],item.getId());
+                                    break;
+
                             }
-                            mLastClickTime = SystemClock.elapsedRealtime();
-                            Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
-                            intent.putExtra("record_id", item.getId());
-                            startActivity(intent);
-                        } else {
-                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                return;
-                            }
-                            mLastClickTime = SystemClock.elapsedRealtime();
-                            Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
-                            intent.putExtra("record_id", item.getId());
-                            startActivity(intent);
                         }
-
                     }
                 });
             }
@@ -866,7 +887,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
             return manualTaskModelList.size();
         }
 
-        public class ProgressHolder extends ListItemAdepter.viewData {
+        public class ProgressHolder extends viewData {
             ProgressHolder(View itemView) {
                 super(itemView);
             }
@@ -890,6 +911,110 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 iv_labal = itemView.findViewById(R.id.iv_labal);
             }
         }
+    }
+
+
+
+
+
+    public void showAlertDialogButtonClicked(String title, String dis, String type,Integer id) {
+
+        // Create an alert builder
+        androidx.appcompat.app.AlertDialog.Builder builder
+                = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.MyDialogStyle);
+
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.logout_dialog, null);
+        builder.setView(customLayout);
+        androidx.appcompat.app.AlertDialog dialog
+                = builder.create();
+
+        TextView tv_title = customLayout.findViewById(R.id.tv_title);
+        TextView tv_sub_titale = customLayout.findViewById(R.id.tv_sub_titale);
+        TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
+        tv_title.setText(title);
+        tv_sub_titale.setText(dis);
+        TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                try {
+
+                    switch (type) {
+                        case "PAUSED":
+                            SMSAPI(type,id);
+                            break;
+                        case "NOT_STARTED":
+                            SMSAPI(type,id);
+                            break;
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        dialog.show();
+    }
+
+    private void SMSAPI(String type,Integer id) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("team_id", 1);
+        paramObject.put("organization_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
+        paramObject.put("id", id);
+        switch (type) {
+            case "PAUSED":
+                paramObject.put("status", "PAUSED");
+                break;
+            case "NOT_STARTED":
+                paramObject.put("status", "NOT_STARTED");
+                break;
+        }
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+
+
+        retrofitCalls.active_task_update(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                if (response.body().getHttp_status() == 200) {
+                    loadingDialog.cancelLoading();
+                    ev_search.setText("");
+                    iv_cancle_search_icon.setVisibility(View.GONE);
+                    iv_filter_icon.setVisibility(View.VISIBLE);
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Filter = "";
+
+                    refresf_api();
+
+                } else {
+                    loadingDialog.cancelLoading();
+                }
+
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
     }
 
 }

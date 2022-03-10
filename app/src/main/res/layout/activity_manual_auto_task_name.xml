@@ -56,6 +56,7 @@
                 android:hint="Enter Your task name"
                 android:linksClickable="true"
                 android:maxEms="40"
+                android:maxLength="40"
                 android:padding="@dimen/_5sdp"
                 android:paddingStart="@dimen/_15sdp"
                 android:textColor="@color/text_reg"

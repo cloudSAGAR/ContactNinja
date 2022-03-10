@@ -239,6 +239,11 @@ public interface RetrofitApiInterface {
                                         @Body JsonObject jsonObject,
                                         @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
+ @POST("active_task/update")
+    Call<ApiResponse> active_task_update(@Header("Accept") String api, @Header("Authorization") String auth,
+                                        @Body JsonObject jsonObject,
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
 
     @POST("sequence/contacttask_update")
     Call<ApiResponse> manual_task_store_snooze(@Header("Accept") String api, @Header("Authorization") String auth,

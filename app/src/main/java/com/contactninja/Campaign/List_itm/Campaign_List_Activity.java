@@ -65,9 +65,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    ImageView iv_back, iv_cancle_search_icon,iv_add_new_contect_icon;
+    ImageView iv_back, iv_cancle_search_icon;
     TextView tv_create, sub_txt;
-    LinearLayout demo_layout,  mMainLayout1, mMainLayout;
+    LinearLayout demo_layout,  mMainLayout1, mMainLayout,add_campaign_layout;
     EditText ev_search;
     SwipeRefreshLayout swipeToRefresh;
     RecyclerView rv_campaign_list;
@@ -99,7 +99,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         IntentUI();
         iv_back.setOnClickListener(this);
         demo_layout.setOnClickListener(this);
-        iv_add_new_contect_icon.setOnClickListener(this);
+        add_campaign_layout.setOnClickListener(this);
         rv_campaign_list.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv_campaign_list.setLayoutManager(layoutManager);
@@ -159,7 +159,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         tv_create = findViewById(R.id.tv_create);
         sub_txt = findViewById(R.id.sub_txt);
         ev_search = findViewById(R.id.ev_search);
-        iv_add_new_contect_icon = findViewById(R.id.iv_add_new_contect_icon);
+        add_campaign_layout = findViewById(R.id.add_campaign_layout);
         tv_create.setText(getString(R.string.campaign_alert_txt));
         sub_txt.setText(getString(R.string.campaign_alert_sub_txt));
 
@@ -347,7 +347,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 onResume();
                 break;
             case R.id.demo_layout:
-            case R.id.iv_add_new_contect_icon:
+            case R.id.add_campaign_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }

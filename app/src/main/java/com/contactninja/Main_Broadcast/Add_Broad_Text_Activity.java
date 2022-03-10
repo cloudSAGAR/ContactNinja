@@ -984,7 +984,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
     }
     void BZCard_list() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+     //   loadingDialog.showLoadingDialog();
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Broad_Text_Activity.this);
         String token = Global.getToken(sessionManager);

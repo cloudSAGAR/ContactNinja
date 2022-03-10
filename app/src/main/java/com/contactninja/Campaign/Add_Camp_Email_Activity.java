@@ -1189,7 +1189,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
     void BZCard_list() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+     //   loadingDialog.showLoadingDialog();
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);

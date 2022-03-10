@@ -1167,7 +1167,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
     }
     void BZCard_list() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+     //   loadingDialog.showLoadingDialog();
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Broad_Email_Activity.this);
         String token = Global.getToken(sessionManager);

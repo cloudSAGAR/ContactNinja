@@ -91,6 +91,7 @@
                     android:background="@color/add_contect_transpernt"
                     android:enabled="false"
                     android:focusable="true"
+                    android:singleLine="true"
                     android:gravity="left|center"
                     android:imeOptions="actionDone"
                     android:textColor="@color/text_reg"

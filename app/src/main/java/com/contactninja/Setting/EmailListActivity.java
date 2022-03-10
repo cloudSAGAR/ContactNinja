@@ -62,8 +62,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
     SwipeRefreshLayout swipeToRefresh;
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
-    LinearLayout lay_no_list;
-    ImageView iv_add_new_email;
+    LinearLayout lay_no_list,add_new_email;
     private long mLastClickTime=0;
     boolean CheckScreen=false;
 
@@ -153,13 +152,13 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
     }
     private void IntentUI() {
         lay_no_list = findViewById(R.id.lay_no_list);
-        iv_add_new_email = findViewById(R.id.iv_add_new_email);
+        add_new_email = findViewById(R.id.add_new_email);
         rv_email_list = findViewById(R.id.rv_email_list);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
-        iv_add_new_email.setOnClickListener(this);
+        add_new_email.setOnClickListener(this);
 
 
 
@@ -174,7 +173,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
             case R.id.iv_back:
                 onBackPressed();
                 break;
-                case R.id.iv_add_new_email:
+                case R.id.add_new_email:
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                         return;
                     }

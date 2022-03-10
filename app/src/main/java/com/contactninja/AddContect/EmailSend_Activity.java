@@ -1073,7 +1073,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     }
     void BZCard_list() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+      //  loadingDialog.showLoadingDialog();
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
         String token = Global.getToken(sessionManager);

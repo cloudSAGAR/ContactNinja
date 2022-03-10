@@ -936,7 +936,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     }
     void BZCard_list() throws JSONException {
 
-        loadingDialog.showLoadingDialog();
+     //   loadingDialog.showLoadingDialog();
 
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Manual_Email_Send_Activty.this);
         String token = Global.getToken(sessionManager);

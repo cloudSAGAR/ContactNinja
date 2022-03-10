@@ -480,6 +480,7 @@ Number</string>
     <string name="Filters">Filters</string>
     <string name="send_complate">Send now &amp; mark task as complete</string>
     <string name="Snooze_task">Snooze task</string>
+    <string name="Auto_play">play</string>
 
     <string name="manual_aleart_delete">Remove Task ?</string>
     <string name="manual_aleart_delete_des">Are you sure that you would like to task remove?</string>
@@ -489,6 +490,12 @@ Number</string>
     <string name="manual_aleart_finished_des">Are you sure that you would like to task finished?</string>
     <string name="manual_aleart_snooze">Snooze Task ?</string>
     <string name="manual_aleart_snooze_des">Are you sure that you would like to task snooze?</string>
+
+    <string name="auto_aleart_play">Paly Task ?</string>
+    <string name="auto_aleart_play_des">Are you sure that you would like to task play?</string>
+
+    <string name="auto_aleart_Paused">Paused Task ?</string>
+    <string name="auto_aleart_Paused_des">Are you sure that you would like to task Paused?</string>
 
     <string-array name="manual_filter">
         <item>TODAY</item>
@@ -505,6 +512,11 @@ Number</string>
         <item>PAUSED</item>
         <item>SNOOZE</item>
         <item>DELETE</item>
+    </string-array>
+    <string-array name="auto_Select">
+        <item>PAUSED</item>
+        <item>NOT_STARTED</item>
+
     </string-array>
     <string-array name="Select_Tab">
         <item>Text</item>

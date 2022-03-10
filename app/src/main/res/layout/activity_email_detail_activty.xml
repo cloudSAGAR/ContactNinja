@@ -99,12 +99,11 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:background="@color/add_contect_transpernt"
-                        android:ellipsize="end"
                         android:enabled="false"
+                        android:singleLine="true"
                         android:focusable="true"
                         android:gravity="left|center"
                         android:imeOptions="actionDone"
-                        android:maxLines="1"
                         android:scrollHorizontally="true"
                         android:textColor="@color/text_reg"
                         tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />

@@ -28,6 +28,9 @@ public class ManualTaskModel {
     @SerializedName("type")
     @Expose
     private String type;
+    @SerializedName("manage_by")
+    @Expose
+    private String manage_by="";
     @SerializedName("prospect_id")
     @Expose
     private Integer prospectId;
@@ -296,5 +299,13 @@ public class ManualTaskModel {
 
     public void setSequence_task_from(Integer sequence_task_from) {
         this.sequence_task_from = sequence_task_from;
+    }
+
+    public String getManage_by() {
+        return manage_by;
+    }
+
+    public void setManage_by(String manage_by) {
+        this.manage_by = manage_by;
     }
 }
