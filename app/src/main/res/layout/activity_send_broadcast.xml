@@ -116,73 +116,13 @@
 
         </TextView>
 
-        <LinearLayout
+
+
+        <FrameLayout
+            android:id="@+id/frame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/tv_start_broadcast"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_5_blue"
-                android:gravity="center"
-                android:text="@string/group_broadcast"
-                android:textColor="@color/white">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/tv_group_text"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_5_blue"
-                android:gravity="center"
-                android:text="@string/group_broadcast_group"
-                android:textColor="@color/white">
-
-            </TextView>
-        </LinearLayout>
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            style="@style/tv_bold_16"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:background="@color/white"
-            app:tabIndicatorColor="@color/home_list_tab_bg"
-            app:tabIndicatorHeight="2dp"
-            app:tabSelectedTextColor="@color/text_reg"
-            app:tabTextColor="@color/text_reg"
-            tools:ignore="SpeakableTextPresentCheck"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/home_list_back_line" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tabLayout"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/_3sdp"
-
-            tools:ignore="SpeakableTextPresentCheck"
-            tools:layout_editor_absoluteX="8dp" />
+            android:layout_height="match_parent"
+            android:layout_above="@id/llFooter" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

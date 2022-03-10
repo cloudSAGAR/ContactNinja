@@ -303,7 +303,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_note.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            Log.e("All Contect Data", new Gson().toJson(Contect_data));
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
             addcontectModel.setJob_title(Contect_data.getJobTitle());
             addcontectModel.setState(Contect_data.getState());

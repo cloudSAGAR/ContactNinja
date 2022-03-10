@@ -81,6 +81,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
     }
 
     public void setData() {
+
         if (broadcasteda.getType().equals("SMS")) {
             image_icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_sms_mini));
             tv_status.setText(broadcasteda.getBroadcastName());
@@ -430,6 +431,19 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                            broadcasteda = emailActivityListModel.get0();
                            try {
                                setData();
+                               tv_contect.setText(String.valueOf(emailActivityListModel.getBroadcastProspect().size()));
+                               int sms_count=0;
+                               int email_count=0;
+
+                                   if (emailActivityListModel.get0().getType().equals("SMS"))
+                                   {
+                                       sms_count=sms_count+1;
+                                   }
+                                   else {
+                                       email_count=email_count+1;
+                                   }
+                               tv_sms.setText(String.valueOf(sms_count));
+                               tv_email.setText(String.valueOf(email_count));
                            }
                            catch (Exception e)
                            {
@@ -438,9 +452,8 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
 
                            broadcastProspects = emailActivityListModel.getBroadcastProspect();
                            SessionManager.setBroadcast_Contect(getApplicationContext(), broadcastProspects);
-                           save_button.setEnabled(
-                                   true
-                           );
+
+                           save_button.setEnabled(true);
                        }
                        catch (Exception e)
                        {

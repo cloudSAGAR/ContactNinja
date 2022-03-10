@@ -89,7 +89,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     BottomSheetDialog bottomSheetDialog_time, bottomSheetDialog_company;
     EditText ev_address, ev_city, ev_zip, ev_zoom, ev_note,
             ev_company_url, ev_state, ev_job, ev_bob, ev_fb, ev_twitter, ev_breakout,
-            ev_linkedin, ev_company, edt_email;
+            ev_linkedin, ev_company, edt_email,ev_affiliatecode;
     LinearLayout select_state, add_mobile_Number,
             layout_Add_phone, layout_Add_email, layout_mobile, fb_layout;
     TextView tv_phone, tv_more_field, tv_company_url, tv_job,
@@ -288,10 +288,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_linkedin.setEnabled(true);
             ev_twitter.setEnabled(true);
             ev_fb.setEnabled(true);
+            ev_affiliatecode.setEnabled(true);
 
             layout_bod.setEnabled(true);
             edt_mobile_no.setEnabled(false);
             edt_mobile_no.setText(user_data_model.getContactNumber());
+            ev_affiliatecode.setText(user_data_model.getReferenceCode());
             edt_email.setText(user_data_model.getEmail());
             edt_email.setEnabled(false);
             layout_country_piker.setVisibility(View.VISIBLE);
@@ -435,6 +437,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             edt_email.setEnabled(false);
             layout_country_piker.setVisibility(View.GONE);
             layout_bod.setEnabled(false);
+            ev_affiliatecode.setEnabled(false);
 
             company_layout.setEnabled(false);
             media_link.setVisibility(View.GONE);
@@ -473,6 +476,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_zip.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             ev_bob.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             ev_note.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_affiliatecode.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
 
             // ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             Userprofile Contect_data = user_data_model.getUserprofile();
@@ -489,6 +493,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             addcontectModel.setLinkedin(Contect_data.getLinkedin_link());
             addcontectModel.setFacebook(Contect_data.getFacebook_link());
             addcontectModel.setBirthday(Contect_data.getDob());
+            addcontectModel.setBreakoutu(user_data_model.getReferenceCode());
+
             /* addcontectModel.setTime(Contect_data.getTimezoneId());*//*
           /* img_fb.setVisibility(View.GONE);
             img_breakout.setVisibility(View.GONE);
@@ -502,6 +508,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_company.setText(Contect_data.getCompany_name());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
+            ev_affiliatecode.setText(user_data_model.getReferenceCode());
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
                 time_zone_id = TimeZone.getDefault().getID();
                 zone_txt.setText(time_zone_id);
@@ -887,6 +894,24 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
             }
         });
+        ev_affiliatecode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                addcontectModel.setReferenceCode(charSequence.toString());
+                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         ev_city.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1127,6 +1152,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     }
 
     private void IntentUI(View view) {
+        ev_affiliatecode=view.findViewById(R.id.ev_affiliatecode);
         layout_referenceCode = view.findViewById(R.id.layout_referenceCode);
         layout_country_piker = view.findViewById(R.id.layout_country_piker);
         edt_email = view.findViewById(R.id.edt_email);
@@ -1189,7 +1215,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         company_layout.setOnClickListener(this);
         other_company_layout = view.findViewById(R.id.other_company_layout);
         ev_othre_company = view.findViewById(R.id.ev_othre_company);
-        layout_referenceCode.setOnClickListener(this);
 
     }
 
@@ -1221,12 +1246,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.layout_referenceCode:
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Code", referenceCode);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getContext(), "Code copy", Toast.LENGTH_SHORT).show();
-                break;
+
         }
     }
 

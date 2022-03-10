@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Open"
+                    android:text="Contacts"
                     android:textColor="@color/white">
 
                 </TextView>
@@ -127,7 +127,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Replied"
+                    android:text="SMS"
                     android:textColor="@color/white">
 
                 </TextView>
@@ -158,7 +158,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Failed"
+                    android:text="Emails"
                     android:textColor="@color/white">
 
                 </TextView>
@@ -177,6 +177,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_10sdp"

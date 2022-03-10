@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (!SessionManager.getnewContect(getApplicationContext()).equals(null))
+                if (SessionManager.getnewContect(getApplicationContext())==null)
                 {
                     try {
                         Duplicate_remove();

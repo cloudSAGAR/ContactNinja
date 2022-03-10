@@ -3,6 +3,7 @@ package com.contactninja.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -296,7 +297,10 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     }
 
     private void loadData() {
+        Paint paint=new Paint();
+        paint.setColor(Color.parseColor("#79D2DE"));
 
+        mBarChart.setLayerPaint(paint);
 
         ValueLineSeries series = new ValueLineSeries();
         series.setColor(Color.parseColor("#79D2DE"));
