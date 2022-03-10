@@ -14,7 +14,7 @@
         android:layout_gravity="center|top"
         android:layout_marginTop="@dimen/_50sdp"
         android:src="@drawable/ic_group_otp_logo"
-        tools:ignore="ContentDescription">
+        tools:ignore="ContentDescription,ImageContrastCheck">
 
     </ImageView>
 
@@ -107,7 +107,7 @@
                                     android:padding="10dp"
                                     android:textColor="@color/otp_header_text_color"
                                     android:textColorHint="@color/otp_header_text_color"
-                                    tools:ignore="Autofill,RtlHardcoded" />
+                                    tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
                                 <ImageView
                                     android:id="@+id/iv_current_showPassword"
@@ -154,7 +154,7 @@
                                     android:padding="10dp"
                                     android:textColor="@color/otp_header_text_color"
                                     android:textColorHint="@color/otp_header_text_color"
-                                    tools:ignore="Autofill,RtlHardcoded" />
+                                    tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
                                 <ImageView
                                     android:id="@+id/iv_new_showPassword"
@@ -201,7 +201,7 @@
                                     android:padding="10dp"
                                     android:textColor="@color/otp_header_text_color"
                                     android:textColorHint="@color/otp_header_text_color"
-                                    tools:ignore="Autofill,RtlHardcoded" />
+                                    tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
                                 <ImageView
                                     android:id="@+id/iv_Confirm_showPassword"
@@ -257,7 +257,7 @@
                     android:text="@string/Create_password"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_13sdp"
-                  />
+                    tools:ignore="TextContrastCheck" />
 
 
             </RelativeLayout>

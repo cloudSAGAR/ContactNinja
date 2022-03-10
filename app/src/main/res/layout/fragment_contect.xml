@@ -35,19 +35,20 @@
                 />
 
             <EditText
-                android:layout_weight="2"
                 android:id="@+id/ev_search"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="2"
                 android:background="@color/add_contect_transpernt"
                 android:gravity="center|left"
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
-                android:textColor="@color/text_reg" />
+                android:textColor="@color/text_reg"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
             <ImageView
                 android:layout_gravity="center"
@@ -87,7 +88,7 @@
                 android:layout_weight="1"
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -189,7 +190,8 @@
                         android:layout_marginTop="-2dp"
                         android:layout_marginBottom="3dp"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="@dimen/_30sdp"
@@ -199,7 +201,7 @@
 
                         <TextView
                             android:id="@+id/txt_nolist"
-                            style="@style/tv_Medium_14"
+                            style="@style/tv_Medium_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -227,7 +229,7 @@
         <TextView
             android:layout_marginTop="-30dp"
             android:id="@+id/num_count"
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:paddingTop="@dimen/_5sdp"
             android:background="@color/white"
             android:layout_width="match_parent"

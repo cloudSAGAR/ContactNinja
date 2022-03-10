@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".Fragment.AddContect_Fragment.GroupFragment"
-    tools:ignore="ContentDescription,UseCompoundDrawables">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
 
     <include layout="@layout/common_dialog" />
@@ -19,13 +18,13 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:weightSum="1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/shape_25_white_eee_line">
+            android:background="@drawable/shape_25_white_eee_line"
+            android:weightSum="1">
 
             <ImageView
                 android:id="@+id/search_icon"
@@ -38,19 +37,21 @@
             </ImageView>
 
             <EditText
-                android:layout_weight="1"
                 android:id="@+id/ev_search"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
                 android:background="@color/add_contect_transpernt"
                 android:gravity="center|left"
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
-                android:textColor="@color/text_reg" />
+                android:textColor="@color/text_reg"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
             <ImageView
                 android:id="@+id/iv_cancle_search_icon"
                 android:layout_width="wrap_content"
@@ -80,7 +81,7 @@
 
             <TextView
                 android:id="@+id/add_new_contect"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -91,8 +92,6 @@
                 android:textColor="@color/text_reg" />
 
             <TextView
-                android:visibility="gone"
-                android:padding="@dimen/_5sdp"
                 android:id="@+id/num_count"
                 style="@style/tv_regular_12"
                 android:layout_width="match_parent"
@@ -101,8 +100,10 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center|end"
+                android:padding="@dimen/_5sdp"
                 android:singleLine="true"
-                android:textColor="@color/purple_500" />
+                android:textColor="@color/purple_500"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -158,18 +159,16 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_group_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_group_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
 
-                </androidx.recyclerview.widget.RecyclerView>
-
+                    </androidx.recyclerview.widget.RecyclerView>
 
 
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/lay_no_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -179,7 +178,8 @@
                         android:layout_marginTop="-2dp"
                         android:layout_marginBottom="3dp"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="@dimen/_30sdp"
@@ -188,7 +188,7 @@
                             android:src="@drawable/ic_small_logo" />
 
                         <TextView
-                            style="@style/tv_Medium_14"
+                            style="@style/tv_Medium_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"

@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context="com.contactninja.MainActivity">
+    tools:context="com.contactninja.MainActivity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="UselessLeaf">
 
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,291 +36,292 @@
             android:layout_height="@dimen/_15sdp"
             android:layout_gravity="center" />
 
-        </LinearLayout>
+    </LinearLayout>
 
     <TextView
 
-        android:layout_marginTop="@dimen/_5sdp"
         android:id="@+id/tv_status"
         style="@style/tv_Medium_12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:gravity="center"
-        android:textColor="@color/black"
         android:padding="@dimen/_2sdp"
-        android:textSize="@dimen/_14sdp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/shape_15_blue"
         android:orientation="vertical"
         android:padding="@dimen/_15sdp">
 
         <TextView
-            android:visibility="gone"
-            style="@style/tv_Medium_14"
             android:id="@+id/tv_camp_name"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            >
+            android:visibility="gone">
 
         </TextView>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal"
-            android:weightSum="3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:weightSum="3">
 
 
             <LinearLayout
-                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_weight="1"
-                    style="@style/tv_Medium_14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Open"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    >
+                android:weightSum="2">
 
-                </TextView>
                 <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/tv_contect"
-                    android:gravity="center"
                     style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    >
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Open"
+                    android:textColor="@color/white">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_contect"
+                    style="@style/tv_Medium_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white">
 
                 </TextView>
 
             </LinearLayout>
+
             <LinearLayout
-                android:weightSum="2"
-                android:orientation="vertical"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="2">
+
                 <TextView
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="Replied"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
+
                 <TextView
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
                     android:id="@+id/tv_sms"
                     style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    >
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
 
             <LinearLayout
-                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:weightSum="2">
+
                 <TextView
-                    android:layout_weight="1"
-                    style="@style/tv_Medium_14"
-                    android:gravity="center"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="Failed"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
 
                 <TextView
-                    android:layout_weight="1"
                     android:id="@+id/tv_email"
                     style="@style/tv_Medium_12"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    >
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:weightSum="2">
 
 
             <LinearLayout
-                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_weight="1"
-                    style="@style/tv_Medium_14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tv_contect"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    >
+                android:weightSum="2">
 
-                </TextView>
                 <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/tv_contect1"
-                    android:gravity="center"
                     style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    >
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/tv_contect"
+                    android:textColor="@color/white">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_contect1"
+                    style="@style/tv_Medium_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white">
 
                 </TextView>
 
             </LinearLayout>
 
             <LinearLayout
-                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:weightSum="2">
+
                 <TextView
-                    android:layout_weight="1"
-                    style="@style/tv_Medium_14"
-                    android:gravity="center"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="Exposure"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
 
                 <TextView
-                    android:layout_weight="1"
                     android:id="@+id/tv_exposure"
                     style="@style/tv_Medium_12"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    >
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:weightSum="2"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="2">
 
             <LinearLayout
-                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:visibility="gone">
+
                 <TextView
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/con_reach"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
+
                 <TextView
-                    android:layout_gravity="center|left"
-                    android:gravity="left|center"
                     android:id="@+id/tv_contec_reach"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:gravity="left|center"
                     android:text="0"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
+
             <LinearLayout
-                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:visibility="gone">
+
                 <TextView
-                    android:paddingStart="10dp"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
                     android:text="@string/con_pending"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
+
                 <TextView
-                    android:paddingStart="10dp"
-                    android:layout_gravity="center|left"
-                    android:gravity="left|center"
                     android:id="@+id/tv_pending"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:gravity="left|center"
+                    android:paddingStart="10dp"
                     android:text="0"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:orientation="vertical">
 
 
@@ -345,13 +348,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1">
+
                     <ImageView
 
                         android:id="@+id/image_step"
-                        android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/_5sdp" />
 
                     <TextView
                         android:id="@+id/tv_title"
@@ -386,13 +390,13 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/iv_manu"
                     android:layout_width="@dimen/_18sdp"
                     android:layout_height="@dimen/_18sdp"
                     android:layout_gravity="center|end"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:background="@drawable/ic_camp_edit">
+                    android:background="@drawable/ic_camp_edit"
+                    android:visibility="gone">
 
                 </ImageView>
             </LinearLayout>
@@ -406,78 +410,81 @@
                 android:background="@color/line_separator">
 
             </View>
+
             <LinearLayout
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:hint="Starts"
-                    android:textColor="@color/purple_200" />
+                    android:textColor="@color/purple_200"
+                    tools:ignore="TextContrastCheck" />
 
                 <TextView
                     android:id="@+id/tv_date"
-                    android:enabled="false"
                     style="@style/tv_regular_12"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:enabled="false"
                     android:gravity="center|left"
                     android:hint="@string/Enter_subject_here"
                     android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/purple_200"
                     android:textColorHint="@color/purple_200"
-                    tools:ignore="Autofill,RtlHardcoded" />
+                    tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
 
             </LinearLayout>
 
             <LinearLayout
 
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:hint="Repeats"
-                    android:textColor="@color/purple_200" />
+                    android:textColor="@color/purple_200"
+                    tools:ignore="TextContrastCheck" />
 
                 <TextView
                     android:id="@+id/tv_repete_type"
-                    android:enabled="false"
                     style="@style/tv_regular_12"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:enabled="false"
                     android:gravity="center|left"
                     android:hint="@string/Enter_subject_here"
                     android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/purple_200"
                     android:textColorHint="@color/purple_200"
-                    tools:ignore="Autofill,RtlHardcoded" />
+                    tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
 
             </LinearLayout>
@@ -491,6 +498,7 @@
                 android:background="@color/line_separator">
 
             </View>
+
             <LinearLayout
                 android:id="@+id/layout_email_subject"
                 android:layout_width="match_parent"
@@ -507,7 +515,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_5sdp"
@@ -515,7 +523,6 @@
                         android:textColor="@color/purple_200" />
 
                     <EditText
-                        android:enabled="false"
                         android:id="@+id/ev_subject"
                         style="@style/tv_regular_12"
                         android:layout_width="0dp"
@@ -523,13 +530,14 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@null"
+                        android:enabled="false"
                         android:gravity="center|left"
                         android:hint="@string/Enter_subject_here"
                         android:imeOptions="actionDone"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/text_reg"
                         android:textColorHint="@color/otp_header_text_color"
-                        tools:ignore="Autofill,RtlHardcoded" />
+                        tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
 
                 </LinearLayout>
@@ -559,9 +567,7 @@
                 android:textColor="@color/text_reg" />
 
 
-
         </LinearLayout>
-
 
 
     </LinearLayout>

@@ -4,19 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Fragment.Campaign_Stats_Fragment">
+    tools:context=".Campaign.Fragment.Campaign_Stats_Fragment"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
 
-
-  <include layout="@layout/under_development"/>
+    <include layout="@layout/under_development" />
 
     <LinearLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <LinearLayout
@@ -27,12 +26,11 @@
             <TextView
 
                 android:id="@+id/tv_step"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Step#1 (Manual Sms)"
-                android:textColor="@color/text_reg"
-                />
+                android:textColor="@color/text_reg" />
 
             <ImageView
                 android:id="@+id/iv_message"
@@ -76,7 +74,7 @@
 
                 <TextView
                     android:id="@+id/tv_totale"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
@@ -88,8 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Total "
-                    android:textColor="@color/tv_regular"
-                    />
+                    android:textColor="@color/tv_regular" />
             </LinearLayout>
 
             <LinearLayout
@@ -102,7 +99,7 @@
 
                 <TextView
                     android:id="@+id/tv_pending"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
@@ -114,8 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Pending "
-                    android:textColor="@color/tv_regular"
-                    />
+                    android:textColor="@color/tv_regular" />
             </LinearLayout>
 
             <LinearLayout
@@ -128,12 +124,11 @@
 
                 <TextView
                     android:id="@+id/tv_pushed"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/text_reg"
-                    />
+                    android:textColor="@color/text_reg" />
 
                 <TextView
                     style="@style/tv_regular_12"
@@ -141,8 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Pushed "
-                    android:textColor="@color/tv_regular"
-                    />
+                    android:textColor="@color/tv_regular" />
             </LinearLayout>
 
             <LinearLayout
@@ -155,12 +149,11 @@
 
                 <TextView
                     android:id="@+id/tv_finished"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/text_reg"
-                    />
+                    android:textColor="@color/text_reg" />
 
                 <TextView
                     style="@style/tv_regular_12"
@@ -168,8 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Finished "
-                    android:textColor="@color/tv_regular"
-                    />
+                    android:textColor="@color/tv_regular" />
             </LinearLayout>
         </LinearLayout>
 
@@ -194,12 +186,11 @@
 
                 <TextView
                     android:id="@+id/tv_open"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/text_reg"
-                   />
+                    android:textColor="@color/text_reg" />
 
                 <TextView
                     style="@style/tv_regular_12"
@@ -207,8 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Open"
-                    android:textColor="@color/tv_regular"
-                   />
+                    android:textColor="@color/tv_regular" />
             </LinearLayout>
 
             <LinearLayout
@@ -225,8 +215,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/text_reg"
-                    />
+                    android:textColor="@color/text_reg" />
 
                 <TextView
                     style="@style/tv_regular_12"
@@ -234,8 +223,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Replied"
-                    android:textColor="@color/tv_regular"
-                    />
+                    android:textColor="@color/tv_regular" />
             </LinearLayout>
 
             <LinearLayout
@@ -248,12 +236,11 @@
 
                 <TextView
                     android:id="@+id/tv_failed"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4"
-                    android:textColor="@color/text_reg"
-                    />
+                    android:textColor="@color/text_reg" />
 
                 <TextView
                     style="@style/tv_regular_12"
@@ -261,8 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Failed"
-                    android:textColor="@color/tv_regular"
-                    />
+                    android:textColor="@color/tv_regular" />
             </LinearLayout>
 
         </LinearLayout>

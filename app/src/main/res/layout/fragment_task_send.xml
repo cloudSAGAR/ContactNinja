@@ -1,19 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
-    android:gravity="center"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:orientation="vertical"
-    android:id="@+id/mMainLayout"
     android:background="@color/white"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Fragment.Main_Task_Fragment">
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".Fragment.Main_Task_Fragment"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />
-    <include
-        layout="@layout/common_dialog"/>
+
+    <include layout="@layout/common_dialog" />
+
     <RelativeLayout
         android:id="@+id/lay_mainlayout"
         android:layout_width="match_parent"
@@ -37,20 +39,22 @@
                 android:src="@drawable/ic_search">
 
             </ImageView>
+
             <EditText
-                android:layout_weight="1"
                 android:id="@+id/ev_search"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
                 android:background="@color/add_contect_transpernt"
                 android:gravity="center|left"
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
-                android:textColor="@color/text_reg" />
+                android:textColor="@color/text_reg"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
             <ImageView
                 android:id="@+id/iv_filter_icon"
@@ -59,6 +63,7 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/ic_filter" />
+
             <ImageView
                 android:id="@+id/iv_cancle_search_icon"
                 android:layout_width="wrap_content"
@@ -88,15 +93,16 @@
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
-                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:ellipsize="end"
-                android:maxLines="1"   android:text="@string/create_new_text"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/create_new_text"
                 android:textColor="@color/text_reg" />
 
             <TextView
@@ -108,7 +114,8 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:ellipsize="end"
-                android:maxLines="1" android:gravity="center|end"
+                android:gravity="center|end"
+                android:maxLines="1"
                 android:text=""
                 android:textColor="@color/purple_500" />
 
@@ -117,11 +124,11 @@
 
         <View
             android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_below="@+id/add_new_contect_layout"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/home_list_back_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:background="@color/home_list_back_line" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeToRefresh"
@@ -135,12 +142,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_Task_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_Task_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/lay_no_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -150,7 +157,8 @@
                     android:layout_marginTop="-2dp"
                     android:layout_marginBottom="3dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="@dimen/_30sdp"
@@ -159,7 +167,7 @@
                         android:src="@drawable/ic_small_logo" />
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -173,24 +181,26 @@
 
 
         <LinearLayout
-            android:layout_alignParentBottom="true"
             android:id="@+id/lay_bouttom"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
             android:orientation="vertical">
+
             <ImageView
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_gravity="center"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_campaning_icon"/>
-            <TextView
-                android:padding="@dimen/_2sdp"
                 android:layout_gravity="center"
-                android:text="Shows your campaign’s manual task"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:src="@drawable/ic_campaning_icon" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:text="Shows your campaign’s manual task" />
         </LinearLayout>
 
     </RelativeLayout>

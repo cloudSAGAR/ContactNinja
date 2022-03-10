@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
@@ -28,64 +27,69 @@
             android:textColor="@color/text_reg" />
 
         <TextView
-            android:layout_marginTop="@dimen/_20sdp"
             style="@style/tv_regular_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
             android:padding="@dimen/_10sdp"
             android:text="@string/choose"
-            android:textColor="@color/text_gray" />
+            android:textColor="@color/text_gray"
+            tools:ignore="TextContrastCheck" />
 
 
         <LinearLayout
-            android:layout_weight="3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="3"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
             <RelativeLayout
                 android:id="@+id/layout_video"
-                android:padding="@dimen/_5sdp"
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
-                >
+                android:padding="@dimen/_5sdp"
+                tools:ignore="NestedWeights">
 
                 <LinearLayout
                     android:id="@+id/layout_video_1"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:background="@drawable/cardview"
+                    android:gravity="center"
                     tools:ignore="MissingConstraints">
+
                     <ImageView
-                        android:padding="@dimen/_20sdp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_video"/>
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_20sdp"
+                        android:src="@drawable/ic_bz_video" />
 
                 </LinearLayout>
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/layout_count_video"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center"
-                    android:background="@drawable/shape_50_blue"
-                    android:orientation="vertical"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/shape_50_blue"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone"
                     tools:ignore="MissingConstraints">
+
                     <TextView
                         android:id="@+id/txt_count_video"
-                        android:layout_gravity="center"
-                        android:text="5"
-                        android:textColor="@color/white"
+                        style="@style/tv_regular_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/tv_regular_10"/>
+                        android:layout_gravity="center"
+                        android:text="5"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
                 <TextView
@@ -99,48 +103,51 @@
                     android:text="@string/Video"
                     android:textColor="@color/text_reg" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/layout_Image"
-                android:layout_weight="1"
-                android:padding="@dimen/_5sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
-                >
+                android:padding="@dimen/_5sdp">
 
                 <LinearLayout
-                    android:gravity="center"
                     android:id="@+id/layout_Image_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:background="@drawable/cardview"
-                    >
+                    android:gravity="center">
+
                     <ImageView
-                        android:padding="@dimen/_20sdp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_image"/>
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_20sdp"
+                        android:src="@drawable/ic_image"
+                        tools:ignore="ImageContrastCheck" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/layout_count_image"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center"
-                    android:background="@drawable/shape_50_blue"
-                    android:orientation="vertical"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/shape_50_blue"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone"
                     tools:ignore="MissingConstraints">
+
                     <TextView
                         android:id="@+id/txt_count_image"
-                        android:layout_gravity="center"
-                        android:text="5"
-                        android:textColor="@color/white"
+                        style="@style/tv_regular_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/tv_regular_10"/>
+                        android:layout_gravity="center"
+                        android:text="5"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
                 <TextView
@@ -154,48 +161,50 @@
                     android:text="@string/Image"
                     android:textColor="@color/text_reg" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/layout_pdf"
-                android:padding="@dimen/_5sdp"
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
-                >
+                android:padding="@dimen/_5sdp">
 
                 <LinearLayout
-                    android:gravity="center"
                     android:id="@+id/layout_pdf_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:background="@drawable/cardview"
-                    >
+                    android:gravity="center">
+
                     <ImageView
-                        android:padding="@dimen/_20sdp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_pdf"/>
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_20sdp"
+                        android:src="@drawable/ic_pdf" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/layout_count_pdf"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center"
-                    android:background="@drawable/shape_50_blue"
-                    android:orientation="vertical"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/shape_50_blue"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone"
                     tools:ignore="MissingConstraints">
+
                     <TextView
                         android:id="@+id/txt_count_pdf"
-                        android:layout_gravity="center"
-                        android:text="5"
-                        android:textColor="@color/white"
+                        style="@style/tv_regular_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/tv_regular_10"/>
+                        android:layout_gravity="center"
+                        android:text="5"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
                 <TextView

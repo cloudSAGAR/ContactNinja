@@ -38,7 +38,7 @@
 
             <TextView
                 android:id="@+id/selected_broadcast"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:gravity="center"

@@ -22,14 +22,16 @@
             android:layout_height="@dimen/_15sdp">
 
         </ImageView>
+
         <ImageView
             android:id="@+id/iv_selected"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_unselected"
             android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_height="@dimen/_15sdp">
+            android:src="@drawable/ic_unselected"
+            tools:ignore="ImageContrastCheck">
 
         </ImageView>
         <TextView

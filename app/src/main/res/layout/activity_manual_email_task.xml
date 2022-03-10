@@ -25,7 +25,7 @@
                 android:layout_marginStart="-25dp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:src="@drawable/ic_group_otp_logo"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription,ImageContrastCheck" />
 
 
         </LinearLayout>
@@ -45,7 +45,7 @@
 
 
         <TextView
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
            android:layout_marginTop="@dimen/_30sdp"
@@ -65,21 +65,22 @@
             android:gravity="left|center"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="@dimen/_40sdp">
+
             <TextView
                 android:id="@+id/tv_date"
-                android:layout_marginStart="@dimen/_15sdp"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:hint="@string/email_date"
                 android:textColor="@color/text_reg"
-              >
+                tools:ignore="TextContrastCheck">
 
             </TextView>
         </LinearLayout>
 
         <TextView
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
@@ -98,27 +99,30 @@
             android:gravity="left|center"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="@dimen/_40sdp">
+
             <TextView
                 android:id="@+id/tv_time"
-                android:layout_marginStart="@dimen/_15sdp"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:hint="@string/email_time"
                 android:textColor="@color/text_reg"
-              >
+                tools:ignore="TextContrastCheck">
 
             </TextView>
         </LinearLayout>
+
         <TextView
             android:id="@+id/tc_time_zone"
-            android:layout_marginStart="@dimen/_22sdp"
             style="@style/tv_regular_12"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_22sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:hint="@string/email_date"
-            android:textColor="@color/text_reg">
+            android:textColor="@color/text_reg"
+            tools:ignore="TextContrastCheck">
 
         </TextView>
 

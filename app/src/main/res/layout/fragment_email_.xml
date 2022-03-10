@@ -4,59 +4,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragment.Home.Email_Fragment">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:textColor="@color/black"
         style="@style/tv_Medium_16"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/composse_email" />
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:text="@string/composse_email"
+        android:textColor="@color/text_reg" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/shape_25_white_eee_line">
+
         <ImageView
             android:id="@+id/search_icon"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_gravity="center|left"
-            android:src="@drawable/ic_search"
             android:layout_width="@dimen/_15sdp"
             android:layout_height="@dimen/_15sdp"
-            >
+            android:layout_gravity="center|left"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:src="@drawable/ic_search">
 
         </ImageView>
 
         <EditText
-            style="@style/tv_Medium_14"
             android:id="@+id/ev_search"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center|left"
             android:layout_marginStart="@dimen/_5sdp"
             android:background="@color/add_contect_transpernt"
             android:gravity="center|left"
-            android:singleLine="true"
             android:hint="@string/search_hint"
+            android:singleLine="true"
             android:textColor="@color/text_reg"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck,TextContrastCheck">
 
         </EditText>
     </LinearLayout>
-    <include
-        layout="@layout/common_dialog"/>
+
+    <include layout="@layout/common_dialog" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp">
 
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

@@ -8,9 +8,10 @@
 
 
     <androidx.core.widget.NestedScrollView
-        android:layout_above="@+id/below_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/below_list">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,7 +32,8 @@
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:src="@drawable/ic_message_tab">
+                    android:src="@drawable/ic_message_tab"
+                    tools:ignore="ImageContrastCheck">
 
                 </ImageView>
 
@@ -58,7 +60,7 @@
                     android:weightSum="1">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -81,7 +83,7 @@
                         android:gravity="left|center"
                         android:imeOptions="actionDone"
                         android:textColor="@color/text_reg"
-                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                     <ImageView
                         android:id="@+id/iv_down"
@@ -113,16 +115,16 @@
                     android:layout_below="@+id/line_view"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_25sdp"
+                    android:autoLink="web|email"
                     android:background="@drawable/shape_10_white_gray_line"
                     android:focusable="true"
                     android:gravity="left"
-                    android:linksClickable="true"
-                    android:autoLink="web|email"
                     android:hint="@string/Typehere"
                     android:imeOptions="actionDone"
+                    android:linksClickable="true"
                     android:padding="15dp"
                     android:textColor="@color/text_reg"
-                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TextContrastCheck" />
 
 
             </LinearLayout>

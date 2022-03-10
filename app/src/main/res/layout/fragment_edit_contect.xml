@@ -11,7 +11,7 @@
         android:layout_marginEnd="@dimen/_5sdp"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context=".Fragment.AddContect_Fragment.InformationFragment">
         <LinearLayout
@@ -46,27 +46,30 @@
                           android:layout_height="wrap_content">
 
                       </TextView>
+
                       <ImageView
-                          android:layout_marginStart="@dimen/_10sdp"
-                          android:layout_gravity="center"
-                          android:src="@drawable/shape_yallow_circle"
                           android:layout_width="@dimen/_8sdp"
-                          android:layout_height="@dimen/_8sdp">
+                          android:layout_height="@dimen/_8sdp"
+                          android:layout_gravity="center"
+                          android:layout_marginStart="@dimen/_10sdp"
+                          android:src="@drawable/shape_yallow_circle"
+                          tools:ignore="ImageContrastCheck">
 
                       </ImageView>
                   </LinearLayout>
 
                     <EditText
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/tv_mobile_no"
                         style="@style/tv_regular_12"
-                        android:maxLength="10"
-                        android:inputType="number"
-                        android:hint="@string/add_number"
-                        android:background="@color/add_contect_transpernt"
-                        android:textColor="@color/home_list_sub_data"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_number"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
                     </EditText>
 
@@ -246,15 +249,17 @@
                         android:layout_height="wrap_content">
 
                     </TextView>
+
                     <EditText
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_email"
                         style="@style/tv_regular_12"
-                        android:hint="@string/add_email_a"
-                        android:background="@color/add_contect_transpernt"
-                        android:textColor="@color/home_list_sub_data"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_email_a"
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
                     </EditText>
 
@@ -408,15 +413,17 @@
                         android:layout_height="wrap_content">
 
                     </TextView>
+
                     <EditText
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_address"
                         style="@style/tv_regular_12"
-                        android:hint="@string/add_address_a"
-                        android:background="@color/add_contect_transpernt"
-                        android:textColor="@color/home_list_sub_data"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_address_a"
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
                     </EditText>
 
@@ -461,15 +468,17 @@
                         android:layout_height="wrap_content">
 
                     </TextView>
+
                     <EditText
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_city"
                         style="@style/tv_regular_12"
-                        android:hint="@string/add_city_a"
-                        android:background="@color/add_contect_transpernt"
-                        android:textColor="@color/home_list_sub_data"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_city_a"
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
                     </EditText>
 
@@ -526,15 +535,16 @@
                     android:layout_height="@dimen/_27sdp">
 
                     <TextView
-                        android:layout_weight="1"
                         style="@style/tv_regular_12"
-                        android:text="@string/add_state_a"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textColor="@color/home_list_sub_data"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/add_state_a"
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TextContrastCheck">
 
                     </TextView>
                     <ImageView
@@ -587,17 +597,19 @@
                         android:layout_height="wrap_content">
 
                     </TextView>
+
                     <EditText
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_zip"
                         style="@style/tv_regular_12"
-                        android:maxLength="6"
-                        android:inputType="number"
-                        android:hint="@string/add_zip_a"
-                        android:background="@color/add_contect_transpernt"
-                        android:textColor="@color/home_list_sub_data"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_zip_a"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
                     </EditText>
 
@@ -644,17 +656,19 @@
                         android:layout_height="wrap_content">
 
                     </TextView>
+
                     <EditText
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_zoom"
                         style="@style/tv_regular_12"
-                        android:maxLength="6"
-                        android:inputType="number"
-                        android:hint="@string/add_zoom_a"
-                        android:background="@color/add_contect_transpernt"
-                        android:textColor="@color/home_list_sub_data"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_zoom_a"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
                     </EditText>
 
@@ -703,17 +717,19 @@
                         android:layout_height="wrap_content">
 
                     </TextView>
+
                     <EditText
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:id="@+id/ev_note"
                         style="@style/tv_regular_12"
-                        android:maxLength="6"
-                        android:inputType="number"
-                        android:hint="@string/add_note_a"
-                        android:background="@color/add_contect_transpernt"
-                        android:textColor="@color/home_list_sub_data"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@color/add_contect_transpernt"
+                        android:hint="@string/add_note_a"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
                     </EditText>
 

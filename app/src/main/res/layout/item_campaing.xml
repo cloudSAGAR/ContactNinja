@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:layout_height="wrap_content">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
         android:id="@+id/layout_item"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/iv_puse_icon"
-            android:src="@drawable/ic_push"
-            android:padding="@dimen/_5sdp"
-            android:layout_gravity="center"
             android:layout_width="@dimen/_50sdp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_push"
+            android:visibility="gone" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/iv_play_icon"
-            android:src="@drawable/ic_play"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:padding="@dimen/_5sdp"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="match_parent"/>
+            android:src="@drawable/ic_play"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_hold"
-            android:src="@drawable/ic_hold"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:padding="@dimen/_5sdp"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="match_parent"/>
+            android:src="@drawable/ic_hold" />
 
         <TextView
-            android:padding="@dimen/_5sdp"
-            android:layout_weight="1"
             android:id="@+id/campaign_name"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center|left"
+            android:layout_weight="1"
             android:gravity="center|left"
+            android:padding="@dimen/_5sdp"
             android:singleLine="true"
             android:text="@string/add_new_group_name"
-            android:textColor="@color/text_reg"
-            />
+            android:textColor="@color/text_reg" />
 
     </LinearLayout>
+
     <View
-        android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp">
+        android:layout_height="1dp"
+        android:background="@color/home_list_back_line">
 
     </View>
 

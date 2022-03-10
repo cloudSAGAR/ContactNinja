@@ -1,84 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mMainLayout"
     android:background="@color/white"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Auth.Thankyou_Screen">
+    tools:context=".Auth.Thankyou_Screen"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-
-
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/start_button"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_above="@+id/start_button"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:id="@+id/tv_back"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_width="@dimen/_16sdp"
-                        android:layout_height="@dimen/_16sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:src="@drawable/ic_back" />
-                    <ImageView
-                        android:layout_width="@dimen/_70sdp"
-                        android:layout_height="@dimen/_70sdp"
-                        android:layout_marginStart="-27dp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:src="@drawable/ic_group_otp_logo" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_main_text"
-                    style="@style/tv_Medium_16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|left"
+                <ImageView
+                    android:id="@+id/tv_back"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:gravity="center|left"
-                    android:paddingStart="@dimen/_20sdp"
-                    android:text="@string/plan_deatil_header_text"
-                    android:textColor="@color/text_reg" />
+                    android:src="@drawable/ic_back" />
 
-                <TextView
-                    android:id="@+id/tv_sub_titale"
-                    style="@style/tv_regular_12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|left"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:gravity="center|left"
-                    android:text="@string/thanks_info_text"
-                    android:textColor="@color/tv_regular" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/plan_condition"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-
-
-
-
+                <ImageView
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:layout_marginStart="-27dp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:src="@drawable/ic_group_otp_logo"
+                    tools:ignore="ImageContrastCheck" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_main_text"
+                style="@style/tv_Medium_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center|left"
+                android:paddingStart="@dimen/_20sdp"
+                android:text="@string/plan_deatil_header_text"
+                android:textColor="@color/text_reg" />
+
+            <TextView
+                android:id="@+id/tv_sub_titale"
+                style="@style/tv_regular_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:gravity="center|left"
+                android:text="@string/thanks_info_text"
+                android:textColor="@color/tv_regular" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/plan_condition"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_20sdp" />
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/start_button"
@@ -93,8 +91,7 @@
             android:background="@drawable/shape_primary_back"
             android:gravity="center"
             android:text="@string/plan_deatil_button_text"
-            android:textColor="@color/white"
-             />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

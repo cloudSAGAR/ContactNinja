@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
@@ -12,18 +11,18 @@
         android:background="@drawable/top_corner15"
         android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/red_5"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:textAlignment="textStart"
-                android:layout_gravity="start"
-                android:text="@string/m_5" />
+        <RadioButton
+            android:id="@+id/red_5"
+            style="@style/tv_regular_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layoutDirection="rtl"
+            android:text="@string/m_5"
+            android:textAlignment="textStart" />
 
 
         <View
@@ -33,15 +32,15 @@
 
         <RadioButton
             android:id="@+id/red_15"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutDirection="rtl"
-            android:textAlignment="textStart"
             android:layout_gravity="start"
-            android:text="@string/m_15" />
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layoutDirection="rtl"
+            android:text="@string/m_15"
+            android:textAlignment="textStart" />
 
         <View
             android:layout_width="match_parent"
@@ -50,47 +49,49 @@
 
         <RadioButton
             android:id="@+id/red_30"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutDirection="rtl"
-            android:textAlignment="textStart"
             android:layout_gravity="start"
-            android:text="@string/m_30" />
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layoutDirection="rtl"
+            android:text="@string/m_30"
+            android:textAlignment="textStart" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/line_separator" />
+
         <RadioButton
             android:id="@+id/red_45"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutDirection="rtl"
-            android:textAlignment="textStart"
             android:layout_gravity="start"
-            android:text="@string/m_45" />
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layoutDirection="rtl"
+            android:text="@string/m_45"
+            android:textAlignment="textStart" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/line_separator" />
+
         <RadioButton
             android:id="@+id/red_60"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutDirection="rtl"
-            android:textAlignment="textStart"
             android:layout_gravity="start"
-            android:text="@string/m_60" />
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layoutDirection="rtl"
+            android:text="@string/m_60"
+            android:textAlignment="textStart" />
 
         <View
             android:layout_width="match_parent"

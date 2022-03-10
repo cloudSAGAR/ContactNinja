@@ -68,14 +68,15 @@
 
         <ImageView
             android:id="@+id/iv_block"
-            android:visibility="gone"
-            android:layout_marginStart="-20dp"
-            android:layout_gravity="center|bottom"
-            android:src="@drawable/ic_block"
             android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp">
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginStart="-20dp"
+            android:src="@drawable/ic_block"
+            android:visibility="gone">
 
         </ImageView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,7 +88,7 @@
 
             <EditText
                 android:id="@+id/edt_FirstName"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/add_contect_transpernt"
@@ -95,7 +96,8 @@
                 android:inputType="text|textCapSentences"
                 android:singleLine="true"
                 android:textColor="@color/text_reg"
-                android:textColorHint="@color/text_gray">
+                android:textColorHint="@color/text_gray"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
             </EditText>
 
@@ -110,7 +112,8 @@
                 android:inputType="text|textCapSentences"
                 android:singleLine="true"
                 android:textColor="@color/otp_header_text_color"
-                android:textColorHint="@color/home_list_sub_data">
+                android:textColorHint="@color/home_list_sub_data"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
             </EditText>
         </LinearLayout>
@@ -125,11 +128,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/white"
-        app:tabTextAppearance="@style/CustomTextAppearanceTab"
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/text_reg"
-        app:tabTextColor="@color/text_reg"/>
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
+        app:tabTextColor="@color/text_reg"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <View
         android:layout_width="match_parent"

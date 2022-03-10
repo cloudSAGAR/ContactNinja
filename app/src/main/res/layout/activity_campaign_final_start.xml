@@ -7,8 +7,9 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context="com.contactninja.MainActivity">
+    tools:context="com.contactninja.MainActivity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <include
         android:id="@+id/include2"
         layout="@layout/toolbar" />
@@ -17,187 +18,188 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/shape_15_blue"
         android:orientation="vertical"
         android:padding="@dimen/_15sdp">
 
         <TextView
-            style="@style/tv_Medium_14"
             android:id="@+id/tv_camp_name"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            >
+            android:textColor="@color/white">
 
         </TextView>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal"
-            android:weightSum="3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:weightSum="3">
 
 
             <LinearLayout
-                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_weight="1"
-                    style="@style/tv_Medium_14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tv_contect"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    >
+                android:weightSum="2">
 
-                </TextView>
                 <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/tv_contect"
-                    android:gravity="center"
                     style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    >
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/tv_contect"
+                    android:textColor="@color/white">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_contect"
+                    style="@style/tv_Medium_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white">
 
                 </TextView>
 
             </LinearLayout>
+
             <LinearLayout
-                android:weightSum="2"
-                android:orientation="vertical"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="2">
+
                 <TextView
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="@string/tv_text"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
+
                 <TextView
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
                     android:id="@+id/tv_sms"
                     style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    >
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
 
             <LinearLayout
-                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:weightSum="2">
+
                 <TextView
-                    android:layout_weight="1"
-                    style="@style/tv_Medium_14"
-                    android:gravity="center"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="@string/tv_email"
-                    android:textColor="@color/white"
-                   >
+                    android:textColor="@color/white">
 
                 </TextView>
 
                 <TextView
-                    android:layout_weight="1"
                     android:id="@+id/tv_email"
                     style="@style/tv_Medium_12"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    >
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:weightSum="2"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="2">
 
             <LinearLayout
-                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:visibility="gone">
+
                 <TextView
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/con_reach"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
+
                 <TextView
-                    android:layout_gravity="center|left"
-                    android:gravity="left|center"
                     android:id="@+id/tv_contec_reach"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:gravity="left|center"
                     android:text="0"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
+
             <LinearLayout
-                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:visibility="gone">
+
                 <TextView
-                    android:paddingStart="10dp"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
                     android:text="@string/con_pending"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
+
                 <TextView
-                    android:paddingStart="10dp"
-                    android:layout_gravity="center|left"
-                    android:gravity="left|center"
                     android:id="@+id/tv_pending"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:gravity="left|center"
+                    android:paddingStart="10dp"
                     android:text="0"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
 
                 </TextView>
             </LinearLayout>
@@ -214,17 +216,19 @@
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/text_reg"
-        app:tabTextColor="@color/text_reg"/>
+        app:tabTextColor="@color/text_reg"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/home_list_back_line"/>
+        android:background="@color/home_list_back_line" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tabLayout"
-        android:layout_marginTop="@dimen/_3sdp" />
+        android:layout_marginTop="@dimen/_3sdp"
+        tools:ignore="SpeakableTextPresentCheck" />
 </LinearLayout>

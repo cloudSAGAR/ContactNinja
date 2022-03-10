@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Bzcard.Media.PDF.PDF_List_Activity">
+
     <include layout="@layout/toolbar" />
 
     <LinearLayout
@@ -27,16 +27,16 @@
 
 
         <LinearLayout
-            android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/layout_media"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -56,7 +56,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="@string/media_title4"
-                    android:textColor="@color/text_gray" />
+                    android:textColor="@color/text_gray"
+                    tools:ignore="TextContrastCheck" />
             </LinearLayout>
 
             <ImageView
@@ -64,7 +65,8 @@
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/_5sdp" />
+                android:layout_marginEnd="@dimen/_5sdp"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

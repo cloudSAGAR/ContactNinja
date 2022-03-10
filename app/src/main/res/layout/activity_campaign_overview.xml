@@ -1,61 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:id="@+id/mMainLayout"
-    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Campaign_Overview">
+    tools:context=".Campaign.Campaign_Overview"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".Campaign.Add_Camp_Text_Activity">
-    <include
-        layout="@layout/toolbar"/>
+
+        <include layout="@layout/toolbar" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
+                <ImageView
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:src="@drawable/ic_small_logo"
+                    tools:ignore="ImageContrastCheck">
 
+                </ImageView>
 
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:src="@drawable/ic_small_logo"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp">
+                <TextView
+                    android:id="@+id/add_new_contect"
+                    style="@style/tv_Medium_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/campaign_step_title"
+                    android:textColor="@color/text_reg"
+                    android:textSize="@dimen/_16sdp" />
 
-        </ImageView>
-        <TextView
-            android:layout_marginTop="@dimen/_10sdp"
-            android:id="@+id/add_new_contect"
-            style="@style/tv_Medium_14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textSize="@dimen/_16sdp"
-            android:text="@string/campaign_step_title"
-            android:textColor="@color/text_reg"
-            android:layout_marginBottom="@dimen/_10sdp"
-             />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/item_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/item_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.recyclerview.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

@@ -32,24 +32,25 @@
                 android:padding="@dimen/_10sdp"
                 android:singleLine="true"
                 android:text="@string/camp_name"
-                android:textColor="@color/text_reg_75"
-                />
+                android:textColor="@color/text_reg_75" />
 
 
             <EditText
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp" android:id="@+id/edt_titale"
+                android:id="@+id/edt_titale"
                 style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@drawable/shap_10_line_view"
                 android:hint="@string/camp_name"
                 android:inputType="textCapSentences"
                 android:maxLength="40"
                 android:padding="15dp"
                 android:textColorHint="@color/text_reg_75"
-                tools:ignore="Autofill,HardcodedText" />
+                tools:ignore="Autofill,HardcodedText,DuplicateSpeakableTextCheck" />
+
             <TextView
                 android:id="@+id/tv_error_title"
                 style="@style/tv_regular_12"
@@ -74,7 +75,7 @@
                 android:padding="@dimen/_10sdp"
                 android:text="@string/characters40"
                 android:textColor="@color/text_reg_75"
-                />
+                tools:ignore="TextContrastCheck" />
 
 
             <TextView
@@ -84,12 +85,12 @@
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:padding="@dimen/_10sdp"
                 android:gravity="center|left"
+                android:padding="@dimen/_10sdp"
                 android:text="Max prospects that can be enrolled in this  campaign
 in a day"
                 android:textColor="@color/home_list_sub_data"
-                />
+                tools:ignore="HardcodedText,TextContrastCheck" />
 
             <EditText
                 android:id="@+id/edt_day"
@@ -101,13 +102,14 @@ in a day"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@drawable/shap_10_line_view"
                 android:digits="0123456789"
-                android:maxLength="5"
-                android:inputType="number"
                 android:focusable="true"
                 android:hint="100/Day"
-                android:text="100"
+                android:inputType="number"
+                android:maxLength="5"
                 android:padding="@dimen/_10sdp"
-                 />
+                android:text="100"
+                tools:ignore="HardcodedText" />
+
             <TextView
                 android:id="@+id/tv_error_day"
                 style="@style/tv_regular_12"
@@ -118,8 +120,8 @@ in a day"
                 android:singleLine="true"
                 android:text="Max prospects add"
                 android:textColor="@color/shape_red"
-                android:visibility="gone" />
-
+                android:visibility="gone"
+                tools:ignore="HardcodedText" />
 
 
             <TextView
@@ -134,7 +136,7 @@ in a day"
                 android:singleLine="true"
                 android:text="Schedule Timezone"
                 android:textColor="@color/text_reg_75"
-                />
+                tools:ignore="HardcodedText" />
 
             <LinearLayout
                 android:id="@+id/layout_time_zone"
@@ -157,8 +159,8 @@ in a day"
                     android:layout_weight="1"
                     android:gravity="center|left"
                     android:singleLine="true"
-                    android:textColor="@color/text_reg"
-                    />
+                    android:textColor="@color/text_reg" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -166,6 +168,7 @@ in a day"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:src="@drawable/ic_down" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/txt_Curent_time"
                 style="@style/tv_regular_12"
@@ -176,8 +179,7 @@ in a day"
                 android:gravity="center|left"
                 android:lineSpacingExtra="5sp"
                 android:padding="@dimen/_10sdp"
-                android:textColor="@color/text_reg_75"
-                />
+                android:textColor="@color/text_reg_75" />
         </LinearLayout>
     </LinearLayout>
 

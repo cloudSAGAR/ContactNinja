@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:layout_height="match_parent">
     <RelativeLayout
         android:paddingTop="@dimen/_10sdp"
@@ -18,7 +20,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:padding="@dimen/_5sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +36,7 @@
 
         <TextView
             android:padding="@dimen/_5sdp"  android:id="@+id/tv_munual"
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -57,7 +59,7 @@
             android:padding="@dimen/_5sdp"
             android:id="@+id/tv_api"
             android:layout_marginBottom="@dimen/_10sdp"
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

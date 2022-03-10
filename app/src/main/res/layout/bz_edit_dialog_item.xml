@@ -18,69 +18,71 @@
 
         <TextView
             android:id="@+id/selected_Edit"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_12"
             android:gravity="center"
             android:text="@string/Edit"
-            android:textColor="@color/purple_200"
-            />
+            android:textColor="@color/purple_200" />
+
         <View
             android:id="@+id/line_brodcste"
-            android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp">
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
 
         </View>
+
         <TextView
             android:id="@+id/selected_Delete"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_12"
             android:gravity="center"
             android:text="@string/Delete"
-            android:textColor="@color/purple_200"
-            />
+            android:textColor="@color/purple_200" />
+
         <View
             android:id="@+id/line_caampaign"
-            android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp">
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
 
         </View>
 
         <TextView
             android:id="@+id/selected_Share"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_12"
             android:gravity="center"
             android:text="@string/Share"
-            android:textColor="@color/purple_200"
-            />
+            android:textColor="@color/purple_200" />
+
         <View
-            android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp">
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
 
         </View>
+
         <TextView
             android:id="@+id/selected_Preview"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_12"
             android:gravity="center"
             android:text="@string/Preview"
-            android:textColor="@color/purple_200"
-            />
+            android:textColor="@color/purple_200" />
+
         <View
-            android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp">
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
 
         </View>
     </LinearLayout>

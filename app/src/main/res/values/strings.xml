@@ -651,4 +651,5 @@ Number</string>
     <string name="home_bz_card">Bzcard analytics</string>
     <string name="home_email_text">Connected Email</string>
     <string name="setting_mail">"You havent linked your mailbox. Add from settings > Mailbox."</string>
+    <string name="task_title_email">Task title:</string>
 </resources>

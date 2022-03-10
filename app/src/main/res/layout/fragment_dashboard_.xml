@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,8 +20,8 @@
         android:paddingStart="@dimen/_13sdp"
         android:paddingTop="@dimen/_15sdp"
         android:paddingEnd="@dimen/_13sdp"
-        android:paddingBottom="@dimen/_20sdp"
-       >
+        android:paddingBottom="@dimen/_20sdp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,10 +52,10 @@
 
                         <ImageView
                             android:id="@+id/image_icon"
-                            android:src="@drawable/ic_email"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
-                            android:layout_gravity="center" />
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_email" />
 
                         <TextView
                             android:id="@+id/tv_status"
@@ -67,19 +66,19 @@
                             android:layout_marginStart="@dimen/_5sdp"
                             android:gravity="center|left"
                             android:padding="@dimen/_2sdp"
-                            android:textSize="@dimen/_12sdp"
+                            android:singleLine="true"
                             android:text="Active"
                             android:textColor="@color/green"
-                            android:singleLine="true" />
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
                     <TextView
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:id="@+id/tv_username"
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center|left"
                         android:padding="@dimen/_2sdp"
                         android:singleLine="true"
@@ -95,11 +94,12 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:gravity="center|start"
                         android:padding="@dimen/_2sdp"
-                        android:textSize="@dimen/_12sdp"
                         android:singleLine="true"
                         android:text="Hello fellow Ninjas! Check out..."
                         android:textColor="@color/text_gray"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold"
+                        tools:ignore="TextContrastCheck" />
 
                 </LinearLayout>
             </LinearLayout>

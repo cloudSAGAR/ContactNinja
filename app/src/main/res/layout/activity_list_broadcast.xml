@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:id="@+id/mMainLayout"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Add_Camp_Tab_Select_Activity">
-    <include
-        layout="@layout/toolbar"/>
-    <include
-        layout="@layout/common_dialog"/>
+    tools:context=".Campaign.Add_Camp_Tab_Select_Activity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
+    <include layout="@layout/toolbar" />
+
+    <include layout="@layout/common_dialog" />
+
     <RelativeLayout
         android:id="@+id/lay_mainlayout"
         android:layout_width="match_parent"
@@ -39,20 +40,20 @@
             </ImageView>
 
             <EditText
-                android:layout_weight="1"
-                style="@style/tv_Medium_14"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_gravity="center|left"
-                android:gravity="center|left"
                 android:id="@+id/ev_search"
-                android:singleLine="true"
-                android:textColor="@color/text_reg"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@color/add_contect_transpernt"
+                android:gravity="center|left"
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
-                android:background="@color/add_contect_transpernt"
-                />
+                android:singleLine="true"
+                android:textColor="@color/text_reg"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
             <ImageView
                 android:id="@+id/iv_cancle_search_icon"
@@ -84,19 +85,18 @@
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
-                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:padding="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text="@string/add_brodcaste"
                 android:textColor="@color/text_reg" />
 
             <TextView
-                android:padding="@dimen/_5sdp"
                 android:id="@+id/num_count"
                 style="@style/tv_regular_12"
                 android:layout_width="match_parent"
@@ -105,6 +105,7 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center|end"
+                android:padding="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/purple_500" />
@@ -114,11 +115,11 @@
 
         <View
             android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_below="@+id/add_new_contect_layout"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/home_list_back_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:background="@color/home_list_back_line" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeToRefresh"
@@ -126,17 +127,18 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/lay_bouttom"
             android:layout_below="@+id/line">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_Broadcast_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_Broadcast_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/lay_no_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -146,7 +148,8 @@
                     android:layout_marginTop="-2dp"
                     android:layout_marginBottom="3dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="@dimen/_30sdp"
@@ -155,7 +158,7 @@
                         android:src="@drawable/ic_small_logo" />
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -168,26 +171,27 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-
         <LinearLayout
-            android:visibility="gone"
-            android:layout_alignParentBottom="true"
             android:id="@+id/lay_bouttom"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <ImageView
-                android:layout_gravity="center"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_campaning_icon"/>
-            <TextView
-                android:padding="@dimen/_10sdp"
                 android:layout_gravity="center"
-                android:text="Shows your campaign’s manual task"
+                android:src="@drawable/ic_campaning_icon" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="Shows your campaign’s manual task" />
         </LinearLayout>
 
     </RelativeLayout>

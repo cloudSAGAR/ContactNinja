@@ -48,7 +48,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
-                    android:src="@drawable/ic_copy" />
+                    android:src="@drawable/ic_copy"
+                    tools:ignore="ImageContrastCheck" />
 
 
             </LinearLayout>
@@ -121,9 +122,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/add_phone"
-                                        android:textColor="@color/text_reg">
+                                        android:textColor="@color/text_reg"
+                                        tools:ignore="TooDeepLayout" />
 
-                                    </TextView>
 
                                     <ImageView
                                         android:id="@+id/iv_set_default"
@@ -298,7 +299,6 @@
                         android:orientation="horizontal">
 
                         <com.hbb20.CountryCodePicker
-                            app:ccp_textSize="@dimen/_12sdp"
                             android:id="@+id/ccp_id"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -308,7 +308,8 @@
                             app:ccpDialog_textColor="@color/text_reg"
                             app:ccp_autoDetectCountry="true"
                             app:ccp_contentColor="@color/text_reg"
-                            app:ccp_showNameCode="false" />
+                            app:ccp_showNameCode="false"
+                            app:ccp_textSize="@dimen/_12sdp" />
 
                         <View
                             android:layout_width="1dp"
@@ -421,7 +422,7 @@
                 android:background="@color/home_list_add_contect_view" />
         </LinearLayout>
 
-        <ru.rambler.libs.swipe_layout.SwipeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <ru.rambler.libs.swipe_layout.SwipeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:left_swipe_enabled="true"
@@ -543,7 +544,8 @@
                     android:hint="@string/add_email_a"
                     android:singleLine="true"
                     android:textColor="@color/text_reg"
-                    android:textColorHint="@color/text_gray">
+                    android:textColorHint="@color/text_gray"
+                    tools:ignore="TextContrastCheck,TouchTargetSizeCheck">
 
                 </EditText>
 
@@ -761,7 +763,8 @@
                         android:enabled="false"
                         android:hint="@string/add_company_a"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data">
+                        android:textColorHint="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck">
 
                     </EditText>
 
@@ -815,11 +818,11 @@
                     <EditText
                         android:id="@+id/ev_company_url"
                         style="@style/tv_regular_12"
-                        android:enabled="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:background="@color/add_contect_transpernt"
+                        android:enabled="false"
                         android:hint="@string/add_company_url_a"
                         android:textColor="@color/home_list_sub_data"
                         android:textColorHint="@color/home_list_sub_data">
@@ -999,7 +1002,8 @@
                         android:hint="@string/add_address_a"
                         android:inputType="text|textCapSentences"
                         android:textColor="@color/home_list_sub_data"
-                        android:textColorHint="@color/home_list_sub_data">
+                        android:textColorHint="@color/home_list_sub_data"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
                     </EditText>
 
@@ -1427,10 +1431,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/add_note"
-                        android:textColor="@color/text_reg">
-                        android:textColor="@color/text_reg">
+                        android:textColor="@color/text_reg" />
 
-                    </TextView>
 
                     <EditText
                         android:id="@+id/ev_note"

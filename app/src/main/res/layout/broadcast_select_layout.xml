@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:layout_height="wrap_content">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
         android:id="@+id/layout_item"
@@ -13,45 +13,45 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_marginStart="@dimen/_20sdp"
             android:id="@+id/tv_phone"
-            android:padding="@dimen/_10sdp"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_weight="1"
             android:gravity="center|start"
+            android:padding="@dimen/_10sdp"
             android:text="Phone"
             android:textColor="@color/text_reg" />
 
         <LinearLayout
 
             android:id="@+id/layout_select"
-            android:orientation="vertical"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="center"
-            android:gravity="end">
+            android:gravity="end"
+            android:orientation="vertical">
 
             <ImageView
-                android:visibility="gone"
-                android:layout_margin="@dimen/_15sdp"
                 android:id="@+id/iv_selected"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"
+                android:layout_margin="@dimen/_15sdp"
                 android:background="@drawable/ic_ellipse"
                 android:padding="@dimen/_5sdp"
-                android:src="@drawable/shape_primary_circle"/>
+                android:src="@drawable/shape_primary_circle"
+                android:visibility="gone" />
 
 
             <ImageView
-                android:layout_margin="@dimen/_15sdp"
                 android:id="@+id/iv_unselected"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"
+                android:layout_margin="@dimen/_15sdp"
                 android:background="@drawable/ic_ellipse"
                 tools:ignore="ContentDescription" />
 
@@ -59,16 +59,13 @@
         </LinearLayout>
 
 
-
-
-
-
     </LinearLayout>
+
     <View
-        android:layout_marginTop="@dimen/_5sdp"
-        android:background="#EEEEEE"
         android:layout_width="match_parent"
-        android:layout_height="1dp">
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="#EEEEEE">
 
     </View>
 

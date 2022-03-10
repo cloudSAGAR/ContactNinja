@@ -2,11 +2,11 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/otp_background"
     android:orientation="vertical"
-    android:id="@+id/mMainLayout"
     tools:context=".Auth.LoginActivity">
 
     <RelativeLayout
@@ -17,9 +17,9 @@
         android:orientation="vertical">
 
         <ScrollView
-            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="never"
             tools:ignore="UselessParent">
 
             <RelativeLayout
@@ -112,7 +112,7 @@
                                 android:textColor="@color/otp_header_text_color"
                                 android:textColorHighlight="@color/purple_200"
                                 android:textColorHint="@color/otp_header_text_color"
-                                tools:ignore="Autofill,RtlHardcoded" />
+                                tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
                         </LinearLayout>
 
@@ -127,16 +127,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:orientation="vertical"
-                       >
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:visibility="gone"
                             android:id="@+id/layout_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
 
                             <EditText
@@ -154,8 +153,7 @@
                                 android:textColor="@color/otp_header_text_color"
                                 android:textColorHighlight="@color/purple_200"
                                 android:textColorHint="@color/otp_header_text_color"
-                                tools:ignore="Autofill,RtlHardcoded"
-                                />
+                                tools:ignore="Autofill,RtlHardcoded" />
 
 
                             <View
@@ -163,6 +161,7 @@
                                 android:layout_height="1dp"
                                 android:background="#A7A0A0" />
                         </LinearLayout>
+
                         <RelativeLayout
 
                             android:layout_width="match_parent"
@@ -180,7 +179,8 @@
                                 android:padding="@dimen/_5sdp"
                                 android:textColor="@color/red"
                                 android:textIsSelectable="true"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                             <TextView
                                 android:id="@+id/btn_chnage_phone_email"
@@ -196,44 +196,46 @@
                                 tools:ignore="RelativeOverlap" />
 
                         </RelativeLayout>
+
                         <LinearLayout
-                            android:visibility="gone"
                             android:id="@+id/email_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
-                            <EditText
-                                android:layout_weight="1"
-                                android:id="@+id/edit_password"
-                                style="@style/tv_regular_12"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:textStyle="bold"
-                                android:background="@null"
-                                android:gravity="center|left"
-                                android:hint="@string/enter_password"
-                                android:imeOptions="actionDone"
-                                android:inputType="textPassword"
-                                android:padding="10dp"
-                                android:textColor="@color/otp_header_text_color"
-                                android:textColorHint="@color/otp_header_text_color"
-                                tools:ignore="Autofill,RtlHardcoded" />
+                                <EditText
+                                    android:id="@+id/edit_password"
+                                    style="@style/tv_regular_12"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:background="@null"
+                                    android:gravity="center|left"
+                                    android:hint="@string/enter_password"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="textPassword"
+                                    android:padding="10dp"
+                                    android:textColor="@color/otp_header_text_color"
+                                    android:textColorHint="@color/otp_header_text_color"
+                                    android:textStyle="bold"
+                                    tools:ignore="Autofill,RtlHardcoded" />
+
                                 <ImageView
                                     android:id="@+id/iv_showPassword"
-                                    android:padding="@dimen/_5sdp"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_visibility_off"
                                     android:layout_width="@dimen/_25sdp"
                                     android:layout_height="@dimen/_25sdp"
+                                    android:layout_gravity="center"
+                                    android:padding="@dimen/_5sdp"
+                                    android:src="@drawable/ic_visibility_off"
                                     tools:ignore="ContentDescription">
 
                                 </ImageView>
@@ -244,13 +246,14 @@
                                 android:layout_height="1dp"
                                 android:background="#A7A0A0" />
                         </LinearLayout>
+
                         <RelativeLayout
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:visibility="gone"
                             android:id="@+id/forgot_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:orientation="horizontal"
+                            android:visibility="gone"
                             android:weightSum="2">
 
                             <TextView
@@ -282,12 +285,11 @@
                     </LinearLayout>
 
 
-
                 </LinearLayout>
 
                 <TextView
-                    style="@style/tv_regular_12"
                     android:id="@+id/btn_login"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_below="@+id/layout_phone"
@@ -299,8 +301,7 @@
                     android:gravity="center"
                     android:letterSpacing="0.05"
                     android:text="@string/signIn"
-                    android:textColor="@color/white"
-                    />
+                    android:textColor="@color/white" />
 
                 <LinearLayout
                     android:id="@+id/lay_signup"
@@ -334,12 +335,10 @@
                         android:paddingBottom="@dimen/_5sdp"
                         android:text="@string/signup"
                         android:textColor="@color/otp_background"
-                        />
+                        tools:ignore="RtlSymmetry" />
                 </LinearLayout>
 
                 <TextView
-                    android:layout_marginStart="@dimen/_50sdp"
-                    android:layout_marginEnd="@dimen/_50sdp"
                     android:id="@+id/tv_terms"
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"
@@ -347,11 +346,13 @@
                     android:layout_below="@+id/lay_signup"
                     android:layout_alignParentBottom="true"
                     android:layout_gravity="center|bottom"
+                    android:layout_marginStart="@dimen/_50sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_50sdp"
                     android:gravity="center|top"
-                    android:textColorLink="@color/purple_200"
                     android:text="@string/terms"
-                    android:textColor="@color/text_welcome" />
+                    android:textColor="@color/text_welcome"
+                    android:textColorLink="@color/purple_200" />
 
             </RelativeLayout>
         </ScrollView>
@@ -363,7 +364,7 @@
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_55sdp"
         android:src="@drawable/ic_group_otp_logo"
-        tools:ignore="ContentDescription">
+        tools:ignore="ContentDescription,ImageContrastCheck">
 
     </ImageView>
 

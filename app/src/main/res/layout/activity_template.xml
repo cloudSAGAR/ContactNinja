@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/mMainLayout"
     tools:context=".Setting.TemplateActivity">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-    <include
-        layout="@layout/common_dialog"/>
+
+    <include layout="@layout/common_dialog" />
 
 
     <LinearLayout
         android:id="@+id/mMainLayout1"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
         <LinearLayout
             android:id="@+id/add_new_Template"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:id="@+id/iv_add_new_Template"
-                android:src="@drawable/ic_plus_blue"
-                android:padding="@dimen/_10sdp"
-                android:background="@drawable/shape_oval_border_10_blue"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/shape_oval_border_10_blue"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_plus_blue"
                 tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/add_Template"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -50,16 +51,18 @@
                 android:text="@string/addTemplate"
                 android:textColor="@color/text_reg" />
         </LinearLayout>
+
         <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/home_list_back_line"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@color/home_list_back_line" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeToRefresh"
                 android:layout_width="match_parent"
@@ -68,19 +71,20 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/template_list"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp">
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
             <ProgressBar
-                android:visibility="gone"
                 android:id="@+id/idPBLoading"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

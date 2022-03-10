@@ -5,219 +5,215 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Fragment.GroupFragment.ExposuresFragment">
+    tools:context=".Fragment.GroupFragment.ExposuresFragment"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
-    <include layout="@layout/under_development"/>
+    <include layout="@layout/under_development" />
+
     <LinearLayout
-        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <LinearLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-
-        android:weightSum="1">
+        android:visibility="gone">
 
         <LinearLayout
-            android:id="@+id/layout_left"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp">
 
-            <ImageView
-                android:id="@+id/icon_left"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:src="@drawable/ic_left_arrow">
-
-            </ImageView>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_date"
-            style="@style/tv_regular_12"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text=""
-            android:textColor="@color/text_reg"
-            android:textSize="@dimen/_14sdp"
-            />
+            android:layout_height="@dimen/_40sdp"
 
-        <LinearLayout
-            android:id="@+id/layout_right"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp">
-
-            <ImageView
-                android:id="@+id/ic_right"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:src="@drawable/ic_right_arrow">
-
-            </ImageView>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_weight="2"
-            android:orientation="vertical">
+            android:weightSum="1">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center">
-
-                <TextView
-
-                    android:id="@+id/tv_last_time"
-                    style="@style/tv_regular_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:gravity="center|left"
-                    android:singleLine="true"
-                    android:text="Today"
-                    android:textColor="@color/text_reg"
-                     />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:background="@color/home_list_back_line"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|left"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:gravity="center|left">
+                android:id="@+id/layout_left"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp">
 
                 <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_group_22">
+                    android:id="@+id/icon_left"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:src="@drawable/ic_left_arrow">
 
                 </ImageView>
-
-                <TextView
-                    android:padding="@dimen/_5sdp"
-                    android:id="@+id/tv_name"
-                    style="@style/tv_regular_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:gravity="center|left"
-                    android:singleLine="true"
-                    android:text="Adam Smith, benjamin..."
-                    android:textColor="@color/text_reg"
-                     />
-
             </LinearLayout>
 
             <TextView
-                android:padding="@dimen/_5sdp"
-                android:id="@+id/tv_time"
+                android:id="@+id/tv_date"
                 style="@style/tv_regular_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/text_reg"
+                android:textSize="@dimen/_14sdp" />
+
+            <LinearLayout
+                android:id="@+id/layout_right"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp">
+
+                <ImageView
+                    android:id="@+id/ic_right"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:src="@drawable/ic_right_arrow">
+
+                </ImageView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+                    <TextView
+
+                        android:id="@+id/tv_last_time"
+                        style="@style/tv_regular_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:gravity="center|left"
+                        android:singleLine="true"
+                        android:text="Today"
+                        android:textColor="@color/text_reg" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:background="@color/home_list_back_line" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center|left">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_group_22">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        style="@style/tv_regular_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:gravity="center|left"
+                        android:padding="@dimen/_5sdp"
+                        android:singleLine="true"
+                        android:text="Adam Smith, benjamin..."
+                        android:textColor="@color/text_reg" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/tv_regular_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginStart="@dimen/_60sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center|left"
+                    android:padding="@dimen/_5sdp"
+                    android:singleLine="true"
+                    android:text="12:00"
+                    android:textColor="@color/purple_200"
+                    android:textSize="@dimen/_10sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center|left">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_refress">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/tv_refress"
+                        style="@style/tv_regular_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:gravity="center|left"
+                        android:padding="@dimen/_5sdp"
+                        android:singleLine="true"
+                        android:text="Contact Ninja Blast"
+                        android:textColor="@color/home_list_sub_data"
+                        android:textSize="@dimen/_10sdp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|left"
-                android:layout_marginStart="@dimen/_60sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:gravity="center|left"
-                android:singleLine="true"
-                android:text="12:00"
-                android:textColor="@color/purple_200"
-                android:textSize="@dimen/_10sdp"
-                />
+                android:layout_gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|left"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:gravity="center|left">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ic_profile"
+                    android:layout_width="@dimen/_38sdp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:background="@drawable/shape_primary_back"
+                    android:src="@drawable/shape_primary_back">
 
-                <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_refress">
-
-                </ImageView>
+                </de.hdodenhof.circleimageview.CircleImageView>
 
                 <TextView
-                    android:padding="@dimen/_5sdp"
-                    android:id="@+id/tv_refress"
+                    android:id="@+id/tv_latter"
                     style="@style/tv_regular_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:gravity="center|left"
-                    android:singleLine="true"
-                    android:text="Contact Ninja Blast"
-                    android:textColor="@color/home_list_sub_data"
-                    android:textSize="@dimen/_10sdp"
-                     />
+                    android:layout_width="@dimen/_38sdp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:background="@drawable/shape_primary_back">
 
+                </TextView>
             </LinearLayout>
+
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ic_profile"
-                android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
-                android:background="@drawable/shape_primary_back"
-                android:src="@drawable/shape_primary_back">
-
-            </de.hdodenhof.circleimageview.CircleImageView>
-
-            <TextView
-                style="@style/tv_regular_12"
-                android:id="@+id/tv_latter"
-                android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
-                android:background="@drawable/shape_primary_back">
-
-            </TextView>
-        </LinearLayout>
-
-
-    </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

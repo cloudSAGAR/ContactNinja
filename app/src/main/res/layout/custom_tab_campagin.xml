@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="horizontal"
-    android:gravity="center">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <TextView
         android:id="@+id/tabContent"
-        android:layout_marginEnd="@dimen/_5sdp"
+        style="@style/tv_regular_12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:gravity="center"
         android:textAlignment="center"
-        style="@style/tv_regular_12"
-        android:textSize="@dimen/_14sdp"
-        android:gravity="center"/>
+        android:textSize="@dimen/_14sdp" />
+
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="@dimen/_15sdp"
         android:layout_height="@dimen/_15sdp"
+        android:gravity="center"
         android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:gravity="center"/>
+        android:textColor="@android:color/white" />
 </LinearLayout>

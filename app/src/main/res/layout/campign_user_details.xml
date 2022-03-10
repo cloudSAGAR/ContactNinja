@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/thumbnail"
@@ -34,106 +34,108 @@
 
 
             <LinearLayout
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/layout_contec"
-                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:weightSum="2">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/profile_image"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_gravity="center|left"
 
-                        app:civ_border_width="0dp"
-                        app:civ_border_color="#FF000000"/>
+                        app:civ_border_color="#FF000000"
+                        app:civ_border_width="0dp" />
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/no_image"
-                        android:textColor="@color/white"
                         style="@style/tv_regular_12"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:background="@drawable/shape_primary_circle"
                         android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp">
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/shape_primary_circle"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:visibility="gone">
 
                     </TextView>
 
                     <LinearLayout
-                        android:layout_gravity="center"
-                        android:gravity="center|left"
-                        android:layout_weight="2"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:gravity="center|left"
+                        android:orientation="vertical">
+
                         <TextView
-                            android:layout_marginStart="@dimen/_12sdp"
                             android:id="@+id/username"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
                             android:gravity="center"
-                            android:textColor="@color/text_reg"
-                            style="@style/tv_regular_12"
                             android:singleLine="true"
                             android:text="GC Gregory Christakis"
-                            />
+                            android:textColor="@color/text_reg" />
+
                         <TextView
-                            style="@style/tv_Medium_14"
-                            android:textColor="@color/home_list_sub_data"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_marginStart="@dimen/_12sdp"
                             android:id="@+id/user_number"
+                            style="@style/tv_Medium_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
                             android:gravity="center"
                             android:singleLine="true"
-                          />
+                            android:textColor="@color/home_list_sub_data" />
 
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_gravity="center"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+
                         <TextView
                             android:id="@+id/tv_step"
-                            android:layout_marginStart="@dimen/_12sdp"
+                            style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
                             android:gravity="center"
-                            android:textColor="@color/black"
-                            style="@style/tv_regular_12"
                             android:singleLine="true"
                             android:text="GC Gregory Christakis"
-                            />
+                            android:textColor="@color/black" />
+
                         <ImageView
-                            android:layout_marginStart="@dimen/_5sdp"
                             android:id="@+id/iv_email"
-                            android:src="@drawable/ic_email"
-                            android:layout_gravity="center"
                             android:layout_width="@dimen/_18sdp"
-                            android:layout_height="@dimen/_18sdp">
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@drawable/ic_email">
 
                         </ImageView>
 
                         <ImageView
-                            android:layout_marginStart="@dimen/_5sdp"
                             android:id="@+id/iv_mesage"
-                            android:src="@drawable/ic_message_tab"
-                            android:layout_gravity="center"
                             android:layout_width="@dimen/_18sdp"
-                            android:layout_height="@dimen/_18sdp">
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@drawable/ic_message_tab"
+                            tools:ignore="ImageContrastCheck">
 
                         </ImageView>
                     </LinearLayout>
@@ -142,20 +144,17 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@color/home_list_back_line"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@color/home_list_back_line" />
 
 
             </LinearLayout>
 
 
         </LinearLayout>
-
-
-
 
 
     </RelativeLayout>

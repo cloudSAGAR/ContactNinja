@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/otp_background"
-    android:id="@+id/mMainLayout"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Auth.Phone_email_verificationActivity">
+    tools:context=".Auth.Phone_email_verificationActivity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -105,18 +105,17 @@
                             android:textColor="@color/otp_header_text_color"
                             android:textColorHighlight="@color/purple_200"
                             android:textColorHint="@color/otp_header_text_color"
-                            tools:ignore="Autofill" />
+                            tools:ignore="Autofill,TouchTargetSizeCheck" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/layout_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:orientation="horizontal"
-                        >
+                        android:visibility="gone">
 
 
                         <EditText
@@ -142,7 +141,6 @@
                         android:background="#A7A0A0" />
 
 
-
                     <TextView
                         android:id="@+id/iv_invalid"
                         style="@style/tv_regular_12"
@@ -151,13 +149,12 @@
                         android:layout_gravity="start"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
-                        android:textColor="@color/red"
-                        />
+                        android:textColor="@color/red" />
                 </LinearLayout>
 
                 <TextView
-                    style="@style/tv_regular_12"
                     android:id="@+id/btn_getStarted"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_below="@+id/layout_phone"
@@ -169,21 +166,20 @@
                     android:gravity="center"
                     android:letterSpacing="0.05"
                     android:text="@string/get_started"
-                    android:textColor="@color/white"
-                   />
+                    android:textColor="@color/white" />
 
 
-   </RelativeLayout>
+            </RelativeLayout>
         </ScrollView>
     </RelativeLayout>
 
     <ImageView
-        android:layout_marginTop="@dimen/_50sdp"
-        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_50sdp"
         android:src="@drawable/ic_group_otp_logo"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints,ImageContrastCheck">
 
     </ImageView>
 

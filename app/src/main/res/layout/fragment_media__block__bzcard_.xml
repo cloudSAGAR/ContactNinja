@@ -7,8 +7,7 @@
     android:layout_marginEnd="@dimen/_10sdp"
     android:orientation="vertical"
     tools:context=".Bzcard.CreateBzcard.Fragment.Media_Block_Bzcard_Fragment"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    >
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -74,11 +73,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_Cutom_Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -137,8 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
                         style="@style/tv_regular_12"
@@ -157,13 +155,15 @@
                         android:layout_marginEnd="@dimen/_5sdp" />
 
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:visibility="gone"
                     android:id="@+id/layout_Cutom_Button_other"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -802,83 +802,83 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/_5sdp" />
             </LinearLayout>
-      <LinearLayout
-          android:id="@+id/layout_media_list"
-          android:visibility="gone"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="@dimen/_10sdp"
-          android:orientation="vertical">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_media_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 />
-
 
             <LinearLayout
-                android:id="@+id/layout_item_add_new"
+                android:id="@+id/layout_media_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_media_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-                            <RelativeLayout
-                                android:layout_width="@dimen/_120sdp"
-                                android:layout_height="@dimen/_80sdp">
 
-                                <LinearLayout
-                                    android:gravity="center"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:background="@drawable/shape_10_gray_ddd8d8"
-                                    android:orientation="vertical" />
+                <LinearLayout
+                    android:id="@+id/layout_item_add_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                                <ImageView
-                                    android:layout_centerInParent="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_10sdp"
-                                    android:src="@drawable/ic_empty_plash"
-                                    />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                            </RelativeLayout>
-
+                        <RelativeLayout
+                            android:layout_width="@dimen/_120sdp"
+                            android:layout_height="@dimen/_80sdp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@drawable/shape_10_gray_ddd8d8"
                                 android:gravity="center"
-                                android:layout_marginStart="@dimen/_5sdp"
-                                android:orientation="vertical">
+                                android:orientation="vertical" />
 
-                                <TextView
-                                    android:id="@+id/txt_title"
-                                    style="@style/tv_regular_12"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:singleLine="true"
-                                    android:text="Add another media"
-                                    android:textColor="@color/text_reg" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:src="@drawable/ic_empty_plash" />
 
-                                <TextView
-                                    android:id="@+id/txt_dicription"
-                                    style="@style/tv_regular_12"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Far far away, behind the word mountains..."
-                                    android:textColor="@color/text_gray" />
+                        </RelativeLayout>
 
-                            </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txt_title"
+                                style="@style/tv_regular_12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="Add another media"
+                                android:textColor="@color/text_reg" />
+
+                            <TextView
+                                android:id="@+id/txt_dicription"
+                                style="@style/tv_regular_12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Far far away, behind the word mountains..."
+                                android:textColor="@color/text_gray" />
+
                         </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
-
-      </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

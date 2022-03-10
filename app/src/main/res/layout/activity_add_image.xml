@@ -37,7 +37,8 @@
             android:hint="Image Title"
             android:padding="@dimen/_5sdp"
             android:textColor="@color/text_reg"
-            android:textColorHint="@color/home_list_sub_data" />
+            android:textColorHint="@color/home_list_sub_data"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
         <View
             android:layout_width="match_parent"
@@ -59,7 +60,8 @@
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_5sdp"
-            android:textColor="@color/text_reg" />
+            android:textColor="@color/text_reg"
+            tools:ignore="TextContrastCheck" />
 
 
         <TextView
@@ -70,7 +72,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="(100 characters max.)"
-            android:textColor="@color/text_gray" />
+            android:textColor="@color/text_gray"
+            tools:ignore="TextContrastCheck" />
 
     </LinearLayout>
 
@@ -91,7 +94,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                app:riv_corner_radius="@dimen/_10sdp" />
+                app:riv_corner_radius="@dimen/_10sdp"
+                tools:ignore="ImageContrastCheck" />
+
             <ImageView
                 android:id="@+id/iv_Featured"
                 android:layout_width="wrap_content"
@@ -124,15 +129,17 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:src="@drawable/ic_empty_plash" />
+                        android:src="@drawable/ic_empty_plash"
+                        tools:ignore="ImageContrastCheck" />
 
                     <TextView
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:textColor="@color/text_gray"
                         style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Upload an image" />
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:text="Upload an image"
+                        android:textColor="@color/text_gray"
+                        tools:ignore="TextContrastCheck" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
@@ -156,7 +163,8 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_replace_image" />
+                android:src="@drawable/ic_replace_image"
+                tools:ignore="ImageContrastCheck" />
 
             <TextView
                 style="@style/tv_regular_12"

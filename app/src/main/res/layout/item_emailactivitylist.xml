@@ -76,7 +76,7 @@
 
             <TextView
                 android:id="@+id/tv_username"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"

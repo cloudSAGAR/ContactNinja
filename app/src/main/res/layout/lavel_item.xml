@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="UselessParent,InefficientWeight,RtlHardcoded,ContentDescription"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
 android:layout_height="wrap_content">
 
     <LinearLayout
@@ -34,7 +33,7 @@ android:layout_height="wrap_content">
         <TextView
             android:layout_weight="1"
             android:id="@+id/tv_user_name"
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -45,19 +44,20 @@ android:layout_height="wrap_content">
             android:text="@string/add_new_group_name"
             android:textColor="@color/text_reg"
           />
+
         <TextView
             android:id="@+id/tv_Referrer_by"
             style="@style/tv_regular_12"
-            android:padding="@dimen/_5sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
             android:layout_marginStart="@dimen/_12sdp"
             android:gravity="center|left"
+            android:padding="@dimen/_5sdp"
             android:singleLine="true"
             android:text="@string/add_new_group_name"
             android:textColor="@color/text_gray"
-          />
+            tools:ignore="TextContrastCheck" />
 
     </LinearLayout>
     <View

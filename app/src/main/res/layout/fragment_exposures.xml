@@ -4,26 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:gravity="center"
     android:background="@color/white"
+    android:gravity="center"
     android:orientation="vertical"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Fragment.AddContect_Fragment.BzcardFragment">
+    tools:context=".Fragment.AddContect_Fragment.BzcardFragment"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <ImageView
-        android:layout_gravity="center"
-        android:src="@drawable/ic_group_otp_logo"
         android:layout_width="@dimen/_55sdp"
-        android:layout_height="@dimen/_55sdp"/>
-    <TextView
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_height="@dimen/_55sdp"
         android:layout_gravity="center"
+        android:src="@drawable/ic_group_otp_logo" />
+
+    <TextView
+        style="@style/tv_regular_12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_40sdp"
         android:gravity="center"
         android:text="@string/add_exposures_text"
-        android:layout_width="match_parent"
-        style="@style/tv_regular_12"
-        android:textColor="@color/text_reg"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_40sdp"
-        />
+        android:textColor="@color/text_reg" />
 
 </LinearLayout>

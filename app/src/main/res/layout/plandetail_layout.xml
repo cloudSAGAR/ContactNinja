@@ -42,9 +42,10 @@
 
         <ImageView
             android:id="@+id/plan_selected_or_not1"
-            android:src="@drawable/ic_planuncheck"
             android:layout_width="@dimen/_28sdp"
-            android:layout_height="@dimen/_28sdp" />
+            android:layout_height="@dimen/_28sdp"
+            android:src="@drawable/ic_planuncheck"
+            tools:ignore="ImageContrastCheck" />
 
         <TextView
 

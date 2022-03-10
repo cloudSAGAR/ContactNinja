@@ -2,174 +2,182 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
-    android:id="@+id/mMainLayout"
-    tools:ignore="ContentDescription,RtlHardcoded,Autofill,TextFields,InefficientWeight,NegativeMargin"
-    tools:context=".Group.Final_Group">
-    <include
-        layout="@layout/toolbar"/>
+    android:orientation="vertical"
+    tools:context=".Group.Final_Group"
+    tools:ignore="ContentDescription,RtlHardcoded,Autofill,TextFields,InefficientWeight,NegativeMargin">
+
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:id="@+id/add_new_contect_layout"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_marginStart="@dimen/_15sdp"
             android:id="@+id/iv_dummy"
-            android:src="@drawable/ic_plus_blue"
-            android:padding="@dimen/_15sdp"
-            android:background="@drawable/shape_oval_border_10_blue"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-             />
+            android:layout_marginStart="@dimen/_15sdp"
+            android:background="@drawable/shape_oval_border_10_blue"
+            android:padding="@dimen/_15sdp"
+            android:src="@drawable/ic_plus_blue" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:layout_marginStart="@dimen/_15sdp"
             android:id="@+id/iv_user"
-            android:visibility="gone"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="right"
+            android:layout_marginStart="@dimen/_15sdp"
             android:padding="1dp"
             android:scaleType="fitXY"
+            android:visibility="gone"
             app:riv_border_color="@color/purple_200"
             app:riv_border_width="0dp"
             app:riv_corner_radius="@dimen/_50sdp"
             app:riv_oval="false" />
+
         <LinearLayout
-            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center|left"
             android:gravity="center|left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
+
             <EditText
                 android:id="@+id/add_new_contect"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:gravity="center|left"
                 android:background="@color/add_contect_transpernt"
-                android:singleLine="true"
-                android:inputType="textCapSentences"
+                android:gravity="center|left"
                 android:hint="@string/add_group_txt"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
                 android:textColor="@color/text_reg"
-                />
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
             <View
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@color/home_list_back_line"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@color/home_list_back_line" />
         </LinearLayout>
 
 
-
-
     </LinearLayout>
+
     <EditText
+        android:id="@+id/add_detail"
         style="@style/tv_regular_12"
-        android:background="@drawable/shape_5_white_ccc_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_70sdp"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:id="@+id/add_detail"
-        android:textColor="@color/text_reg"
-        android:paddingStart="@dimen/_15sdp"
-        android:hint="@string/add_group_description"
+        android:background="@drawable/shape_5_white_ccc_line"
         android:focusable="true"
         android:gravity="top|left"
-        android:padding="@dimen/_10sdp"
+        android:hint="@string/add_group_description"
+        android:maxEms="100"
 
         android:maxLength="100"
-        android:maxEms="100"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_70sdp">
+        android:padding="@dimen/_10sdp"
+        android:paddingStart="@dimen/_15sdp"
+        android:textColor="@color/text_reg"
+        tools:ignore="RtlSymmetry,TextContrastCheck">
 
     </EditText>
 
 
     <TextView
         android:id="@+id/topic_remainingCharacter"
-        android:layout_marginTop="@dimen/_10sdp"
         style="@style/tv_regular_12"
-        android:textColor="@color/min_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         android:text="@string/add_group_description_min_txt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:textColor="@color/min_text">
 
     </TextView>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_gravity="center|left"
-            android:gravity="left|center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:gravity="left|center">
 
             <TextView
 
-            style="@style/tv_Medium_14"
-            android:textColor="@color/text_reg"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:text="@string/add_group_all_member"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                style="@style/tv_Medium_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:text="@string/add_group_all_member"
+                android:textColor="@color/text_reg">
 
-        </TextView>
+            </TextView>
+
             <View
 
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@color/line_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:background="@color/line_separator" />
 
         </LinearLayout>
-        <View
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:background="@color/home_list_tab_bg"
-            android:layout_width="@dimen/_70sdp"
 
-            android:layout_height="2dp"/>
+        <View
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="2dp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+
+            android:background="@color/home_list_tab_bg" />
     </LinearLayout>
+
     <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/shape_25_white_eee_line">
+
         <ImageView
             android:id="@+id/search_icon"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_gravity="center|left"
-            android:src="@drawable/ic_search"
             android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp">
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center|left"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:src="@drawable/ic_search">
 
         </ImageView>
+
         <EditText
             android:id="@+id/ev_search"
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
@@ -179,36 +187,37 @@
             android:hint="@string/search_hint"
             android:imeOptions="actionSearch"
             android:singleLine="true"
-            android:textColor="@color/text_reg" />
+            android:textColor="@color/text_reg"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/add_new_member"
-        android:layout_marginTop="@dimen/_12sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:orientation="horizontal">
 
         <ImageView
-            android:src="@drawable/ic_plus_blue"
-            android:padding="@dimen/_10sdp"
-            android:background="@drawable/shape_oval_border_10_blue"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/shape_oval_border_10_blue"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_plus_blue"
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:padding="@dimen/_5sdp"
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/_12sdp"
             android:gravity="center"
+            android:padding="@dimen/_5sdp"
             android:singleLine="true"
             android:text="@string/add_group_all_more"
-            android:textColor="@color/text_reg"
-             />
+            android:textColor="@color/text_reg" />
 
         <TextView
             android:id="@+id/num_count"
@@ -226,35 +235,35 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
     <View
-        android:layout_marginTop="@dimen/_12sdp"
-        android:background="@color/home_list_back_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@color/home_list_back_line" />
 
     <LinearLayout
-        android:weightSum="4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:weightSum="4"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contect_list_unselect"
             android:layout_width="match_parent"
-            android:layout_weight="4"
+            android:layout_height="match_parent"
             android:layout_marginEnd="-40dp"
-            android:layout_height="match_parent">
+            android:layout_weight="4">
 
         </androidx.recyclerview.widget.RecyclerView>
-
-
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
+
             <com.reddit.indicatorfastscroll.FastScrollerThumbView
                 android:id="@+id/fastscroller_thumb"
                 android:layout_width="40dp"
@@ -277,17 +286,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/fastscroller"
-            app:layout_constraintEnd_toStartOf="@+id/fastscroller"
-            app:layout_constraintTop_toTopOf="@+id/fastscroller"
-            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            >
-        </androidx.core.widget.NestedScrollView>
+            app:layout_constraintEnd_toStartOf="@+id/fastscroller"
+            app:layout_constraintTop_toTopOf="@+id/fastscroller"></androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
 </LinearLayout>

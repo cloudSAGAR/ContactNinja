@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/mMainLayout"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
         android:padding="10dp"
@@ -14,7 +15,7 @@
         tools:ignore="MissingConstraints">
 
         <TextView
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
@@ -36,23 +37,26 @@
             android:weightSum="1"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="@dimen/_40sdp">
+
             <TextView
-                android:layout_weight="1"
                 android:id="@+id/tv_date"
-                android:layout_marginStart="@dimen/_15sdp"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_weight="1"
                 android:hint="@string/email_date"
                 android:textColor="@color/text_reg"
-                >
+                tools:ignore="TextContrastCheck">
 
             </TextView>
+
             <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:src="@drawable/ic_date_icon"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp">
+                tools:ignore="ImageContrastCheck">
 
             </ImageView>
         </LinearLayout>
@@ -68,23 +72,26 @@
             android:weightSum="1"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_height="@dimen/_40sdp">
+
             <TextView
-                android:layout_weight="1"
                 android:id="@+id/tv_time"
-                android:layout_marginStart="@dimen/_15sdp"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_weight="1"
                 android:hint="@string/email_time"
                 android:textColor="@color/text_reg"
-                >
+                tools:ignore="TextContrastCheck">
 
             </TextView>
+
             <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:src="@drawable/ic_time_icon"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp">
+                tools:ignore="ImageContrastCheck">
 
             </ImageView>
         </LinearLayout>
@@ -118,7 +125,7 @@
                <TextView
                    android:padding="@dimen/_2sdp"
                    android:layout_marginStart="@dimen/_10sdp"
-                   style="@style/tv_Medium_14"
+                   style="@style/tv_Medium_12"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:text="@string/meeting"
@@ -139,11 +146,12 @@
 
                <ImageView
 
-                   android:padding="@dimen/_5sdp"
-                   android:layout_marginEnd="@dimen/_10sdp"
-                   android:src="@drawable/ic_right_arrow_gray"
                    android:layout_width="@dimen/_20sdp"
-                   android:layout_height="@dimen/_20sdp">
+                   android:layout_height="@dimen/_20sdp"
+                   android:layout_marginEnd="@dimen/_10sdp"
+                   android:padding="@dimen/_5sdp"
+                   android:src="@drawable/ic_right_arrow_gray"
+                   tools:ignore="ImageContrastCheck">
 
                </ImageView>
            </LinearLayout>

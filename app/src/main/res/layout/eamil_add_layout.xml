@@ -2,16 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:layout_height="wrap_content">
- <!--   <ru.rambler.libs.swipe_layout.SwipeLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/swipe_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:left_swipe_enabled="true"
-        app:right_swipe_enabled="true"
-        tools:ignore="MissingConstraints">-->
+    android:layout_height="wrap_content"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+    <!--   <ru.rambler.libs.swipe_layout.SwipeLayout
+           xmlns:app="http://schemas.android.com/apk/res-auto"
+           android:id="@+id/swipe_layout"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:left_swipe_enabled="true"
+           app:right_swipe_enabled="true"
+           tools:ignore="MissingConstraints">-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,11 +22,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
+            android:layout_gravity="center"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_weight="3"
-            android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -45,39 +45,39 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-
-                    <TextView
-                        android:id="@+id/tv_email"
-                        style="@style/tv_regular_12"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_email"
-                        android:textColor="@color/text_reg">
+                        android:orientation="horizontal">
 
-                    </TextView>
 
-                    <ImageView
-                        android:id="@+id/iv_set_default"
-                        android:layout_width="@dimen/_8sdp"
-                        android:layout_height="@dimen/_8sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:src="@drawable/shape_yallow_circle"
-                        android:visibility="gone">
+                        <TextView
+                            android:id="@+id/tv_email"
+                            style="@style/tv_regular_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_email"
+                            android:textColor="@color/text_reg">
 
-                    </ImageView>
+                        </TextView>
+
+                        <ImageView
+                            android:id="@+id/iv_set_default"
+                            android:layout_width="@dimen/_8sdp"
+                            android:layout_height="@dimen/_8sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:src="@drawable/shape_yallow_circle"
+                            android:visibility="gone">
+
+                        </ImageView>
                     </LinearLayout>
-                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginEnd="@dimen/_5sdp"
                     android:id="@+id/select_email_label"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:background="@drawable/shape_5_white_ccc_line"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp">
@@ -92,7 +92,8 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/add_home"
-                        android:textColor="@color/home_list_sub_data">
+                        android:textColor="@color/home_list_sub_data"
+                        tools:ignore="TextContrastCheck">
 
                     </TextView>
 
@@ -128,88 +129,89 @@
                 </LinearLayout>
             </LinearLayout>
 
-           <!-- <LinearLayout
-                android:background="@color/white"
-                android:layout_alignParentRight="true"
-                android:visibility="gone"
-                android:id="@+id/layout_swap"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                app:bring_to_clamp="150dp"
-                android:layout_marginStart="@dimen/_10sdp"
-                app:clamp="self"
-                app:gravity="center"
-                app:sticky="100dp">
+            <!-- <LinearLayout
+                 android:background="@color/white"
+                 android:layout_alignParentRight="true"
+                 android:visibility="gone"
+                 android:id="@+id/layout_swap"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_gravity="center"
+                 android:gravity="center"
+                 app:bring_to_clamp="150dp"
+                 android:layout_marginStart="@dimen/_10sdp"
+                 app:clamp="self"
+                 app:gravity="center"
+                 app:sticky="100dp">
 
-                <LinearLayout
-                    android:id="@+id/layout_remove"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/shape_red_back"
-                    android:gravity="center">
+                 <LinearLayout
+                     android:id="@+id/layout_remove"
+                     android:layout_width="@dimen/_60sdp"
+                     android:layout_height="@dimen/_40sdp"
+                     android:layout_gravity="center"
+                     android:background="@drawable/shape_red_back"
+                     android:gravity="center">
 
-                    <ImageView
-                        android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_15sdp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_remove" />
+                     <ImageView
+                         android:layout_width="@dimen/_15sdp"
+                         android:layout_height="@dimen/_15sdp"
+                         android:layout_gravity="center"
+                         android:src="@drawable/ic_remove" />
 
-                </LinearLayout>
+                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/layout_defult"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:background="@drawable/shape_5_blue"
-                    android:gravity="center">
+                 <LinearLayout
+                     android:id="@+id/layout_defult"
+                     android:layout_width="@dimen/_60sdp"
+                     android:layout_height="@dimen/_40sdp"
+                     android:layout_gravity="center"
+                     android:layout_marginStart="@dimen/_5sdp"
+                     android:background="@drawable/shape_5_blue"
+                     android:gravity="center">
 
-                    <TextView
-                        style="@style/tv_regular_12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/add_defult_text"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10sdp"
-                        />
-                </LinearLayout>
+                     <TextView
+                         style="@style/tv_regular_12"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:gravity="center"
+                         android:text="@string/add_defult_text"
+                         android:textColor="@color/white"
+                         android:textSize="@dimen/_10sdp"
+                         />
+                 </LinearLayout>
 
-            </LinearLayout>-->
+             </LinearLayout>-->
         </RelativeLayout>
 
 
         <EditText
-            android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/edt_email"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
+            android:layout_marginStart="@dimen/_10sdp"
             android:background="@color/add_contect_transpernt"
             android:hint="@string/add_email_a"
+            android:singleLine="true"
             android:textColor="@color/text_reg"
             android:textColorHint="@color/text_gray"
-            >
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
         </EditText>
+
         <TextView
-            android:text="@string/invalid_email"
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/_10sdp"
             android:id="@+id/iv_invalid"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:padding="@dimen/_5sdp"
+            android:text="@string/invalid_email"
             android:textColor="@color/red"
-           />
+            android:visibility="gone" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -218,7 +220,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:background="@color/line_separator" />
     </LinearLayout>
-<!--
-    </ru.rambler.libs.swipe_layout.SwipeLayout>
--->
+    <!--
+        </ru.rambler.libs.swipe_layout.SwipeLayout>
+    -->
 </androidx.constraintlayout.widget.ConstraintLayout>

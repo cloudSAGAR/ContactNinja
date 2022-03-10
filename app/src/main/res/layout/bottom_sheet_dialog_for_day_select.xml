@@ -1,68 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#00000000"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:layout_height="match_parent">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <LinearLayout
-        android:background="@drawable/shape_white_top_left_right_20"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_white_top_left_right_20"
+        android:orientation="vertical">
+
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
+
             <TextView
-                android:visibility="gone"
-                android:paddingTop="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_12sdp"
                 android:id="@+id/tv_item"
                 style="@style/tv_regular_12"
-                android:text="Please select label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:paddingTop="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                android:text="Please select label"
                 android:textColor="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:visibility="gone">
 
             </TextView>
 
             <View
-                android:visibility="gone"
-                android:background="@color/line_separator"
                 android:layout_width="match_parent"
-                android:layout_height="1dp">
+                android:layout_height="1dp"
+                android:background="@color/line_separator"
+                android:visibility="gone">
 
             </View>
         </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="@dimen/_5sdp"
             android:id="@+id/home_type_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp">
 
         </androidx.recyclerview.widget.RecyclerView>
+
         <TextView
             android:id="@+id/bt_done"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             style="@style/tv_regular_12"
-            android:background="@drawable/shape_primary_back"
-            android:text="@string/add_done"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp">
+            android:layout_height="@dimen/_35sdp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@drawable/shape_primary_back"
+            android:gravity="center"
+            android:text="@string/add_done"
+            android:textColor="@color/white"
+            android:textStyle="bold">
 
         </TextView>
     </LinearLayout>

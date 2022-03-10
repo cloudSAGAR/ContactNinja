@@ -2,85 +2,88 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:id="@+id/mMainLayout"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Add_Camp_Tab_Select_Activity">
+    tools:context=".Campaign.Add_Camp_Tab_Select_Activity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+        layout="@layout/toolbar" />
+
     <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|left"
-        android:src="@drawable/ic_broadcast_tab_demo_girl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-<LinearLayout
-    android:id="@+id/layout_title"
-    android:layout_below="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+        android:src="@drawable/ic_broadcast_tab_demo_girl" />
 
     <LinearLayout
-        android:gravity="center"
-        android:layout_gravity="center"
+        android:id="@+id/layout_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/add_new_contect"
-            style="@style/tv_Medium_14"
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="Create your "
-            android:textColor="@color/text_reg"
-            />
-        <TextView
-            style="@style/tv_Medium_14"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/add_new_contect"
+                style="@style/tv_Medium_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="Create your "
+                android:textColor="@color/text_reg" />
+
+            <TextView
+                style="@style/tv_Medium_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text=" Broadcast"
+                android:textColor="@color/purple_200" />
+        </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            style="@style/tv_bold_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:background="@color/white"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/home_list_tab_bg"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/text_reg"
+            app:tabTextColor="@color/text_reg"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/home_list_back_line" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text=" Broadcast"
-            android:textColor="@color/purple_200"
-            />
+            android:layout_below="@id/tabLayout"
+            android:layout_marginTop="@dimen/_3sdp"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:layout_marginTop="@dimen/_25sdp"
-        android:id="@+id/tabLayout"
-        style="@style/tv_bold_16"
-        app:tabIndicatorColor="@color/home_list_tab_bg"
-        app:tabSelectedTextColor="@color/text_reg"
-        app:tabTextColor="@color/text_reg"
-        android:layout_width="match_parent"
-        app:tabIndicatorHeight="2dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:tabGravity="fill"
-        app:tabMode="fixed">
-    </com.google.android.material.tabs.TabLayout>
-
-    <View
-        android:background="@color/home_list_back_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-    <androidx.viewpager.widget.ViewPager
-        android:layout_marginTop="@dimen/_3sdp"
-        android:id="@+id/viewPager"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tabLayout"
-        />
-</LinearLayout>
 
 
 </RelativeLayout>

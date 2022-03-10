@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <RelativeLayout
-        android:paddingTop="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_15sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_40sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:paddingStart="@dimen/_10sdp"
         android:background="@drawable/shape_20_white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_15sdp">
 
         <EditText
 
@@ -28,7 +29,8 @@
             android:gravity="center"
             android:hint="Add custom lable name"
             android:textColor="@color/text_reg"
-            android:textColorHint="@color/text_gray">
+            android:textColorHint="@color/text_gray"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
 
         </EditText>
 
@@ -40,7 +42,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@color/line_separator"/>
+            android:background="@color/line_separator" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,15 +54,16 @@
             <TextView
                 android:id="@+id/tv_cancel"
                 style="@style/tv_regular_12"
-android:padding="@dimen/_10sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
+                android:padding="@dimen/_10sdp"
+                android:text="Cancel"
                 android:textColor="@color/text_gray"
-                android:text="Cancel">
+                tools:ignore="TextContrastCheck">
 
             </TextView>
 
@@ -73,10 +76,9 @@ android:padding="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
-                android:text="Add"
                 android:padding="@dimen/_10sdp"
-                android:textColor="@color/purple_200"
-                >
+                android:text="Add"
+                android:textColor="@color/purple_200">
 
             </TextView>
         </LinearLayout>
@@ -87,7 +89,8 @@ android:padding="@dimen/_10sdp"
         android:layout_height="@dimen/_60sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/ic_group_otp_logo">
+        android:src="@drawable/ic_group_otp_logo"
+        tools:ignore="ImageContrastCheck">
 
     </ImageView>
 

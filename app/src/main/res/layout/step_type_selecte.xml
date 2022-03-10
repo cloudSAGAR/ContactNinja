@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,20 +11,21 @@
         android:weightSum="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:layout_weight="1"
-        android:paddingTop="@dimen/_12sdp"
-        android:paddingBottom="@dimen/_12sdp"
-        android:id="@+id/tv_item"
-        style="@style/tv_regular_12"
-        android:text="Phone"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textColor="@color/text_reg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </TextView>
+
+        <TextView
+            android:id="@+id/tv_item"
+            style="@style/tv_regular_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="@dimen/_12sdp"
+            android:paddingBottom="@dimen/_12sdp"
+            android:text="Phone"
+            android:textColor="@color/text_reg"
+            tools:ignore="TextContrastCheck"/>
         <ImageView
             android:visibility="gone"
             android:id="@+id/iv_message"

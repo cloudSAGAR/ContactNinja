@@ -39,21 +39,22 @@
                     android:layout_height="@dimen/_15sdp">
 
                 </ImageView>
+
                 <EditText
-                    android:layout_weight="1"
-                    style="@style/tv_Medium_14"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_gravity="center|left"
-                    android:gravity="center|left"
                     android:id="@+id/ev_search"
-                    android:singleLine="true"
-                    android:textColor="@color/text_reg"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@color/add_contect_transpernt"
+                    android:gravity="center|left"
                     android:hint="@string/search_hint"
                     android:imeOptions="actionSearch"
-                    android:background="@color/add_contect_transpernt"
-                    />
+                    android:singleLine="true"
+                    android:textColor="@color/text_reg"
+                    tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
                 <ImageView
                     android:id="@+id/iv_cancle_search_icon"
                     android:layout_width="wrap_content"
@@ -82,7 +83,7 @@
 
                 <TextView
                     android:id="@+id/add_new_contect"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -101,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|end"
                     android:textColor="@color/purple_500"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:singleLine="true"
                     android:text=""
                     />

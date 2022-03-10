@@ -1,130 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mMainLayout"
     android:orientation="vertical"
     tools:context=".Setting.TemplateCreateActivity">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-<LinearLayout
-    android:id="@+id/lay_title"
-    android:orientation="vertical"
-    android:layout_below="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/lay_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:id="@+id/layout_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/_10sdp">
-
-        <TextView
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/tv_item"
-            style="@style/tv_Medium_14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:text="@string/Template_name"
-            android:textColor="@color/purple_200"
-          />
-
-        <EditText
-            android:id="@+id/edit_template_name"
-            style="@style/tv_Medium_14"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="center|left"
-            android:hint="@string/Enter_template_name"
-            android:imeOptions="actionDone"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/text_reg"
-            android:textColorHint="@color/text_gray"
-
-            tools:ignore="Autofill,RtlHardcoded" />
-
-
-    </LinearLayout>
-        <View
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:id="@+id/line_view"
-            android:layout_below="@+id/layout_title"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_separator"/>
-    </LinearLayout>
-    <LinearLayout
-        android:visibility="gone"
-        android:layout_below="@+id/layout_title"
-        android:id="@+id/layout_email_subject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
         <LinearLayout
+            android:id="@+id/layout_title"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/_10sdp">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/tv_regular_12"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:text="@string/Subject"
-                android:textColor="@color/purple_200"
-             />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
 
-            <EditText
-                android:id="@+id/edit_template_subject"
-                style="@style/tv_regular_12"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="center|left"
-                android:hint="@string/Enter_subject_here"
-                android:imeOptions="actionDone"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/text_reg"
-                android:textColorHint="@color/text_gray"
-                tools:ignore="Autofill,RtlHardcoded" />
+                <TextView
+                    android:id="@+id/tv_item"
+                    style="@style/tv_Medium_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/Template_name"
+                    android:textColor="@color/purple_200" />
+
+                <EditText
+                    android:id="@+id/edit_template_name"
+                    style="@style/tv_Medium_12"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="@string/Enter_template_name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/text_reg"
+                    android:textColorHint="@color/text_gray"
+
+                    tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,TextContrastCheck" />
 
 
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/layout_title"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/line_separator" />
         </LinearLayout>
-        <View
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_below="@+id/layout_title"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_gray"/>
-    </LinearLayout>
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_email_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_title"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    style="@style/tv_regular_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:text="@string/Subject"
+                    android:textColor="@color/purple_200" />
+
+                <EditText
+                    android:id="@+id/edit_template_subject"
+                    style="@style/tv_regular_12"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="@string/Enter_subject_here"
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/text_reg"
+                    android:textColorHint="@color/text_gray"
+                    tools:ignore="Autofill,RtlHardcoded" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/layout_title"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/text_gray" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 
     <EditText
@@ -145,11 +148,11 @@
 
 
     <LinearLayout
-        android:layout_marginBottom="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="horizontal">
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -161,12 +164,6 @@
 
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
-
-
-
-
-
-
 
 
 </RelativeLayout>

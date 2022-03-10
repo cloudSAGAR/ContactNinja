@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -32,16 +32,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_today"
                 style="@style/tv_regular_12"
-                android:padding="@dimen/_5sdp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:padding="@dimen/_5sdp"
                 android:text="@string/manual_Today" />
 
             <ImageView
@@ -62,8 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-          >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_upcoming"
@@ -92,8 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-         >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_due"
@@ -122,8 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-           >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_complate"
@@ -152,8 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_skipped"
@@ -176,13 +171,13 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/line_separator" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_Paused"
@@ -202,9 +197,6 @@
         </LinearLayout>
 
 
-
-
-
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
@@ -215,8 +207,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_auto_complate_task"
@@ -234,6 +225,7 @@
                 android:src="@drawable/ic_auto_complate"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
@@ -244,8 +236,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_auto_upcomimg_task"
@@ -263,17 +254,18 @@
                 android:src="@drawable/ic_auto_upcoming"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/line_separator" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/ch_all_task"

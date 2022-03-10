@@ -2,33 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:id="@+id/mMainLayout"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Campaign.Add_Camp_Tab_Select_Activity">
+    tools:context=".Campaign.Add_Camp_Tab_Select_Activity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+        layout="@layout/toolbar" />
+
     <TextView
-        android:layout_below="@+id/toolbar"
         android:id="@+id/add_new_contect"
         style="@style/tv_regular_12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         android:layout_gravity="center"
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/campaign_step_one"
-        android:textColor="@color/text_reg"
-         />
+        android:textColor="@color/text_reg" />
 
     <LinearLayout
-        android:layout_below="@+id/add_new_contect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/add_new_contect"
         android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
@@ -43,19 +44,21 @@
             app:tabIndicatorHeight="2dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/text_reg"
-            app:tabTextColor="@color/text_reg"/>
+            app:tabTextColor="@color/text_reg"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-    <View
-        android:background="@color/home_list_back_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/home_list_back_line" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tabLayout"
-            android:layout_marginTop="@dimen/_3sdp" />
+            android:layout_marginTop="@dimen/_3sdp"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 
 </RelativeLayout>
