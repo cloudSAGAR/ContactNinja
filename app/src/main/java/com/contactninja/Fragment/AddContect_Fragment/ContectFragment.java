@@ -1112,6 +1112,7 @@ public class ContectFragment extends Fragment {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                SessionManager.setnewContect(getActivity(),new ArrayList<>());
 
 
                 if (response.body().getHttp_status() == 200) {
@@ -1141,6 +1142,7 @@ public class ContectFragment extends Fragment {
                             totale_group = contectListData1.getTotal();
                             contectListData.addAll(contectListData_store.get(0).getContacts());
                             onScrolledToBottom();
+
 
                         } else{
                             contectListData.clear();
@@ -1266,7 +1268,11 @@ public class ContectFragment extends Fragment {
         if (!SessionManager.getnewContect(getActivity()).equals(null))
         {
             try {
-                splitdata((ArrayList<Contact>) SessionManager.getnewContect(getActivity()));
+                Duplicate_remove();
+                Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
+                ArrayList<Contact> listContacts1=new ArrayList<>();
+                listContacts1.addAll(SessionManager.getnewContect(getActivity()));
+                splitdata(listContacts1);
             }
             catch (Exception e)
             {

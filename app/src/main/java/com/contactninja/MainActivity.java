@@ -210,7 +210,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!SessionManager.getnewContect(getApplicationContext()).equals(null))
                 {
                     try {
-                        splitdata((ArrayList<Contact>) SessionManager.getnewContect(getApplicationContext()));
+                        Duplicate_remove();
+                        Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getApplicationContext())));
+                        ArrayList<Contact> listContacts1=new ArrayList<>();
+                        listContacts1.addAll(SessionManager.getnewContect(getApplicationContext()));
+                        splitdata(listContacts1);
                     }
                     catch (Exception e)
                     {
@@ -402,15 +406,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
-          /*  Intent intent = ShareCompat.IntentBuilder.from(this)
+   /*      Intent intent = ShareCompat.IntentBuilder.from(this)
                     .setType("application/pdf")
                     .setStream(path)
                     .setChooserTitle("Choose bar")
                     .createChooserIntent()
                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            startActivity(intent);
-*/
+            startActivity(intent);*/
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
                 Uploadcsv(file);
             }
@@ -1103,8 +1106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     contect_db.setId1(data.getId());
                     contect_db.setContect_id(String.valueOf(contectListData.get(i).getId()));
                     contect_db.setCreatedAt(data.getCreatedAt());
-                    contect_db.setOrganizationId(contectListData.get(i).getOrganizationId());
-                    contect_db.setTeamId(contectListData.get(i).getTeamId());
+                    contect_db.setOrganizationId(1);
+                    contect_db.setTeamId(1);
                     contect_db.setFirst_name(contectListData.get(i).getFirstname());
                     contect_db.setLast_name(contectListData.get(i).getLastname());
                     contect_db.setFlag("csv");

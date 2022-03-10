@@ -56,7 +56,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     EditText add_name, add_detail, edit_Mobile, edit_email, edit_address, edit_company_url;
     CountryCodePicker ccp_id;
     ConstraintLayout mMainLayout;
-    String flag;
+    String flag="";
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;

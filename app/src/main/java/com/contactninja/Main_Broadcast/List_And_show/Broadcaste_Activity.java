@@ -423,23 +423,30 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     if (response.body().getHttp_status() == 200) {
-                        Type listType = new TypeToken<BroadcastActivityModel>() {
-                        }.getType();
-                        BroadcastActivityModel emailActivityListModel = new Gson().fromJson(headerString, listType);
-                        broadcasteda = emailActivityListModel.get0();
-                        try {
-                            setData();
-                        }
-                        catch (Exception e)
-                        {
+                       try {
+                           Type listType = new TypeToken<BroadcastActivityModel>() {
+                           }.getType();
+                           BroadcastActivityModel emailActivityListModel = new Gson().fromJson(headerString, listType);
+                           broadcasteda = emailActivityListModel.get0();
+                           try {
+                               setData();
+                           }
+                           catch (Exception e)
+                           {
 
-                        }
+                           }
 
-                        broadcastProspects = emailActivityListModel.getBroadcastProspect();
-                        SessionManager.setBroadcast_Contect(getApplicationContext(), broadcastProspects);
-                        save_button.setEnabled(
-                                true
-                        );
+                           broadcastProspects = emailActivityListModel.getBroadcastProspect();
+                           SessionManager.setBroadcast_Contect(getApplicationContext(), broadcastProspects);
+                           save_button.setEnabled(
+                                   true
+                           );
+                       }
+                       catch (Exception e)
+                       {
+
+                       }
+
 
                     }
 
