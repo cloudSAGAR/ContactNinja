@@ -610,7 +610,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             } else {
                 pulse_icon.setEnabled(false);
                 tv_nameLetter.setEnabled(false);
-                Log.e("Null", "No Call");
+               // Log.e("Null", "No Call");
             }
 
         }
@@ -756,8 +756,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("team_id", 1);
         param_data.put("user_id", user_data.getUser().getId());
         param_data.put("role_id", rol_id);
-        param_data.put("contact_number", contect_number);
-        param_data.put("email", email_address);
+        param_data.put("contact_number", contect_number.toString().trim());
+        param_data.put("email", email_address.toString().trim());
 
 
         // JSONArray jsonArray_contect = new JSONArray();
@@ -766,18 +766,18 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         // JSONObject paramObject = new JSONObject();
         //Other Company Add
         if (addcontectModel.getCompany().trim().equalsIgnoreCase("")) {
-            param_data.put("company_name", addcontectModel.getCompany());
+            param_data.put("company_name", addcontectModel.getCompany().toString().trim());
             //param_data.put("company_id",  addcontectModel.getCompany_id());
         } else {
-            param_data.put("company_name", addcontectModel.getCompany());
+            param_data.put("company_name", addcontectModel.getCompany().toString().trim());
             // param_data.put("company_id",   addcontectModel.getCompany_id());
         }
-        param_data.put("address", address);
-        param_data.put("breakout_link", addcontectModel.getBreakoutu());
-        param_data.put("city", city);
+        param_data.put("address", address.toString().trim());
+        param_data.put("breakout_link", addcontectModel.getBreakoutu().toString().trim());
+        param_data.put("city", city.toString().trim());
 
 
-        param_data.put("company_url", addcontectModel.getCompany_url());
+        param_data.put("company_url", addcontectModel.getCompany_url().toString().trim());
 
         if (addcontectModel.getBirthday().equals("0000-00-00"))
         {
@@ -788,20 +788,20 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             param_data.put("dob", addcontectModel.getBirthday());
         }
         param_data.put("dynamic_fields_value", "");
-        param_data.put("facebook_link", addcontectModel.getFacebook());
+        param_data.put("facebook_link", addcontectModel.getFacebook().toString().trim());
         param_data.put("first_name", edt_FirstName.getText().toString().trim());
-        param_data.put("last_name", edt_lastname.getText().toString());
-        param_data.put("job_title", addcontectModel.getJob_title());
-        param_data.put("linkedin_link", addcontectModel.getLinkedin());
+        param_data.put("last_name", edt_lastname.getText().toString().toString().trim());
+        param_data.put("job_title", addcontectModel.getJob_title().toString().trim());
+        param_data.put("linkedin_link", addcontectModel.getLinkedin().toString().trim());
         param_data.put("organization_id", "1");
-        param_data.put("state", state);
+        param_data.put("state", state.toString().trim());
         param_data.put("team_id", "1");
         // addcontectModel.getTime()
-        param_data.put("timezone_id", addcontectModel.getTime());
-        param_data.put("twitter_link", addcontectModel.getTwitter());
+        param_data.put("timezone_id", addcontectModel.getTime().toString().trim());
+        param_data.put("twitter_link", addcontectModel.getTwitter().toString().trim());
         param_data.put("user_id", user_data.getUser().getId());
-        param_data.put("zipcode", addcontectModel.getZip_code());
-        param_data.put("zoom_id", addcontectModel.getZoom_id());
+        param_data.put("zipcode", addcontectModel.getZip_code().toString().trim());
+        param_data.put("zoom_id", addcontectModel.getZoom_id().toString().trim());
 
         /*if (!user_image_Url.equals("")) {
             param_data.put("profile_pic", user_image_Url);
@@ -818,9 +818,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             //   paramObject.put("contact_image", "");
             //   paramObject.put("contact_image_name", "");
         }*/
-        param_data.put("user_img", user_image_Url);
+        param_data.put("user_img", user_image_Url.toString().trim());
 
-        param_data.put("notes", addcontectModel.getNote());
+        param_data.put("notes", addcontectModel.getNote().toString().trim());
 
 
         for (int i = 0; i < contactdetails.size(); i++) {

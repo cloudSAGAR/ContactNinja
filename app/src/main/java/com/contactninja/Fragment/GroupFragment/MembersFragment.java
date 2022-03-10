@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -79,6 +80,7 @@ public class MembersFragment extends Fragment {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     EditText ev_search;
+    ImageView iv_cancle_search_icon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,9 +130,18 @@ public class MembersFragment extends Fragment {
                 }
         );
 
+        iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                userListDataAdapter.updateList(selected_contectListData);
+            }
+        });
         ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                iv_cancle_search_icon.setVisibility(View.VISIBLE);
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     List<ContectListData.Contact> temp = new ArrayList();
                     for (ContectListData.Contact d : selected_contectListData) {
@@ -151,6 +162,7 @@ public class MembersFragment extends Fragment {
         fastscroller=view.findViewById(R.id.fastscroller);
         fastscroller_thumb=view.findViewById(R.id.fastscroller_thumb);
         ev_search = view.findViewById(R.id.ev_search);
+        iv_cancle_search_icon=view.findViewById(R.id.iv_cancle_search_icon);
 
     }
 

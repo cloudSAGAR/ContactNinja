@@ -204,7 +204,7 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
-
+                        //rvinviteuserdetails.scrollToPosition(itemPosition);
                     }
                 }
         );

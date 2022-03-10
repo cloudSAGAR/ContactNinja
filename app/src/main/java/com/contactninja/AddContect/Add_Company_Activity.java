@@ -616,12 +616,12 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("name", add_name.getText().toString());
-        paramObject.put("address", edit_address.getText().toString());
-        paramObject.put("description", add_detail.getText().toString());
-        paramObject.put("email", edit_email.getText().toString());
-        paramObject.put("company_url", edit_company_url.getText().toString());
-        paramObject.put("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+edit_Mobile.getText().toString());
+        paramObject.put("name", add_name.getText().toString().trim());
+        paramObject.put("address", edit_address.getText().toString().trim());
+        paramObject.put("description", add_detail.getText().toString().trim());
+        paramObject.put("email", edit_email.getText().toString().trim());
+        paramObject.put("company_url", edit_company_url.getText().toString().trim());
+        paramObject.put("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+edit_Mobile.getText().toString().trim());
         //paramObject.put("status", "A");
         if (id!=0) {
             paramObject.put("id", id);

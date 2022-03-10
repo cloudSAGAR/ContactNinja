@@ -379,7 +379,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 group_name = add_new_contect.getText().toString().trim();
-                group_description = add_detail.getText().toString();
+                group_description = add_detail.getText().toString().trim();
                 if (group_name.equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.add_group_txt), false);
                 } else if (group_description.equals("")) {

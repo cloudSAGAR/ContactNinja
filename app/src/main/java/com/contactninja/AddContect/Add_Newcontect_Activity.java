@@ -718,12 +718,12 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             paramObject.put("company_name", "");
             paramObject.put("company_id", addcontectModel.getCompany_id());
         } else {
-            paramObject.put("company_name", addcontectModel.getCompany());
+            paramObject.put("company_name", addcontectModel.getCompany().toString().trim());
             paramObject.put("company_id", "");
         }
         paramObject.put("address", address);
-        paramObject.put("breakout_link", addcontectModel.getBreakoutu());
-        paramObject.put("city", city);
+        paramObject.put("breakout_link", addcontectModel.getBreakoutu().toString().trim());
+        paramObject.put("city", city.toString().trim());
        /* if (olld_image != null) {
             paramObject.put("oldImage", olld_image);
         } else {
@@ -739,24 +739,24 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             paramObject.put("dob",addcontectModel.getBirthday());
         }
         paramObject.put("dynamic_fields_value", "");
-        paramObject.put("facebook_link", addcontectModel.getFacebook());
+        paramObject.put("facebook_link", addcontectModel.getFacebook().toString().trim());
         paramObject.put("firstname", edt_FirstName.getText().toString().trim());
-        paramObject.put("lastname", l_name);
-        paramObject.put("job_title", addcontectModel.getJob_title());
+        paramObject.put("lastname", l_name.toString().trim());
+        paramObject.put("job_title", addcontectModel.getJob_title().toString().trim());
         paramObject.put("lastname", edt_lastname.getText().toString().trim());
-        paramObject.put("linkedin_link", addcontectModel.getLinkedin());
+        paramObject.put("linkedin_link", addcontectModel.getLinkedin().toString().trim());
         paramObject.put("organization_id", 1);
-        paramObject.put("state", state);
+        paramObject.put("state", state.toString().trim());
         paramObject.put("team_id", 1);
         // addcontectModel.getTime()
-        paramObject.put("timezone_id", addcontectModel.getTime());
-        paramObject.put("twitter_link", addcontectModel.getTwitter());
+        paramObject.put("timezone_id", addcontectModel.getTime().toString().trim());
+        paramObject.put("twitter_link", addcontectModel.getTwitter().toString().trim());
         paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("zipcode", zip_code);
-        paramObject.put("zoom_id", zoom_id);
+        paramObject.put("zipcode", zip_code.toString().trim());
+        paramObject.put("zoom_id", zoom_id.toString().trim());
 
         paramObject.put("imei", Global.imei);
-        paramObject.put("contact_image",user_image_Url);
+        paramObject.put("contact_image",user_image_Url.toString().trim());
       ///  paramObject.put("contact_image", user_image_Url);
         //paramObject.put("image_extension", File_extension);
        // paramObject.put("contact_image_name", File_name);
@@ -875,14 +875,14 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         //Other Company Add
         if (addcontectModel.getCompany().trim().equalsIgnoreCase("")) {
             paramObject.put("company_name", "");
-            paramObject.put("company_id", addcontectModel.getCompany_id());
+            paramObject.put("company_id", addcontectModel.getCompany_id().toString().trim());
         } else {
-            paramObject.put("company_name", addcontectModel.getCompany());
+            paramObject.put("company_name", addcontectModel.getCompany().toString().trim());
             paramObject.put("company_id", "");
         }
         paramObject.put("id", Contect_data.getId());
-        paramObject.put("address", address);
-        paramObject.put("breakout_link", addcontectModel.getBreakoutu());
+        paramObject.put("address", address.toString().trim());
+        paramObject.put("breakout_link", addcontectModel.getBreakoutu().toString().trim());
         paramObject.put("city", city);
 
 
@@ -897,21 +897,21 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
 
         paramObject.put("dynamic_fields_value", "");
-        paramObject.put("facebook_link", addcontectModel.getFacebook());
+        paramObject.put("facebook_link", addcontectModel.getFacebook().toString().trim());
         paramObject.put("firstname", edt_FirstName.getText().toString().trim());
-        paramObject.put("lastname", l_name);
-        paramObject.put("job_title", addcontectModel.getJob_title());
+        paramObject.put("lastname", l_name.toString().trim());
+        paramObject.put("job_title", addcontectModel.getJob_title().toString().trim());
         paramObject.put("lastname", edt_lastname.getText().toString().trim());
-        paramObject.put("linkedin_link", addcontectModel.getLinkedin());
+        paramObject.put("linkedin_link", addcontectModel.getLinkedin().toString().trim());
         paramObject.put("organization_id", 1);
-        paramObject.put("state", state);
+        paramObject.put("state", state.toString().trim());
         paramObject.put("team_id", 1);
         // addcontectModel.getTime()
-        paramObject.put("timezone_id", addcontectModel.getTime());
-        paramObject.put("twitter_link", addcontectModel.getTwitter());
+        paramObject.put("timezone_id", addcontectModel.getTime().toString().trim());
+        paramObject.put("twitter_link", addcontectModel.getTwitter().toString().trim());
         paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("zipcode", zip_code);
-        paramObject.put("zoom_id", zoom_id);
+        paramObject.put("zipcode", zip_code.toString().trim());
+        paramObject.put("zoom_id", zoom_id.toString().trim());
        /* if (!user_image_Url.equals("")) {
             paramObject.put("contact_image", user_image_Url);
             paramObject.put("contact_image_name", File_name);
@@ -927,8 +927,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             //   paramObject.put("contact_image", "");
             //   paramObject.put("contact_image_name", "");
         }*/
-        paramObject.put("contact_image",user_image_Url);
-        paramObject.put("notes", addcontectModel.getNote());
+        paramObject.put("contact_image",user_image_Url.toString().trim());
+        paramObject.put("notes", addcontectModel.getNote().toString().trim());
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
