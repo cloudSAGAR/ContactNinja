@@ -79,7 +79,7 @@ public class Company_Fragment extends Fragment {
     FastScrollerThumbView fastscroller_thumb;
     SearchView contect_search;
     TextView add_new_contect, num_count,txt_nolist;
-    ImageView add_new_contect_icon, iv_filter_icon,iv_cancle_search_icon,iv_add_new_contect_icon;
+    ImageView  iv_filter_icon,iv_cancle_search_icon,iv_add_new_contect_icon;
     View view1;
     FragmentActivity fragmentActivity;
     LoadingDialog loadingDialog;
@@ -217,20 +217,6 @@ public class Company_Fragment extends Fragment {
                 startActivity(intent);
             }
         });
-        add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
-                SessionManager.setCampaign_data(new CampaignTask_overview());
-                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
-                intent.putExtra("flag", "add");
-                startActivity(intent);
-            }
-        });
         iv_add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -303,7 +289,6 @@ public class Company_Fragment extends Fragment {
         contect_search = content_view.findViewById(R.id.contect_search);
         add_new_contect = content_view.findViewById(R.id.add_new_contect);
         num_count = content_view.findViewById(R.id.num_count);
-        add_new_contect_icon = content_view.findViewById(R.id.add_new_contect_icon);
         iv_add_new_contect_icon = content_view.findViewById(R.id.iv_add_new_contect_icon);
         swipeToRefresh = content_view.findViewById(R.id.swipeToRefresh);
         ev_search = content_view.findViewById(R.id.ev_search);
