@@ -95,7 +95,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
     private long mLastClickTime = 0;
     Integer CAPTURE_IMAGE = 3;
     String urlFromS3 = null;
-
+    String Validation="";
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     int image_flag=1;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
@@ -425,7 +425,37 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                             if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
                                 //AddContect_Update();
 
-                                uploadImageTos3(filePath1,"update");
+
+                                AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
+                                List<Contactdetail> contect_list=save_data.getContactdetails();
+                                List<Contactdetail> email_list=save_data.getContactdetails_email();
+
+                                if (email_list.size()==0 && contect_list.size()==0)
+                                {
+
+                                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Contect Or Emaail",false);
+                                }
+                                else {
+                                    for (int i=0;i<contect_list.size();i++)
+                                    {
+                                        if (contect_list.get(i).getEmail_number().equals(""))
+                                        {
+                                            contect_list.remove(i);
+                                        }
+                                    }
+
+                                    for (int i=0;i<email_list.size();i++)
+                                    {
+                                        if (email_list.get(i).getEmail_number().equals(""))
+                                        {
+                                            email_list.remove(i);
+                                        }
+                                    }
+                                    save_data.setContactdetails(contect_list);
+                                    save_data.setContactdetails_email(email_list);
+                                    SessionManager.setAdd_Contect_Detail(getApplicationContext(),save_data);
+                                    uploadImageTos3(filePath1,"update");
+                                }
 
                             }
 
@@ -445,7 +475,36 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
 
                             if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
-                             uploadImageTos3(filePath1,"add");
+
+
+                                AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
+                                List<Contactdetail> contect_list=save_data.getContactdetails();
+                                List<Contactdetail> email_list=save_data.getContactdetails_email();
+
+                                if (email_list.size()==0 && contect_list.size()==0)
+                                {
+
+                                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Contect Or Emaail",false);
+                                }
+                                else {
+                                    for (int i = 0; i < contect_list.size(); i++) {
+                                        if (contect_list.get(i).getEmail_number().equals("")) {
+                                            contect_list.remove(i);
+                                        }
+                                    }
+
+                                    for (int i = 0; i < email_list.size(); i++) {
+                                        if (email_list.get(i).getEmail_number().equals("")) {
+                                            email_list.remove(i);
+                                        }
+                                    }
+                                    save_data.setContactdetails(contect_list);
+                                    save_data.setContactdetails_email(email_list);
+                                    SessionManager.setAdd_Contect_Detail(getApplicationContext(), save_data);
+                                    uploadImageTos3(filePath1,"add");
+                                }
+
+
                                 //AddContect_Api();
                             }
 
@@ -468,8 +527,32 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
                             if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
-                                //AddContect_Update();
-                                uploadImageTos3(filePath1,"update");
+                                AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
+                                List<Contactdetail> contect_list=save_data.getContactdetails();
+                                List<Contactdetail> email_list=save_data.getContactdetails_email();
+
+                                if (email_list.size()==0 && contect_list.size()==0)
+                                {
+
+                                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Contect Or Emaail",false);
+                                }
+                                else {
+                                    for (int i = 0; i < contect_list.size(); i++) {
+                                        if (contect_list.get(i).getEmail_number().equals("")) {
+                                            contect_list.remove(i);
+                                        }
+                                    }
+
+                                    for (int i = 0; i < email_list.size(); i++) {
+                                        if (email_list.get(i).getEmail_number().equals("")) {
+                                            email_list.remove(i);
+                                        }
+                                    }
+                                    save_data.setContactdetails(contect_list);
+                                    save_data.setContactdetails_email(email_list);
+                                    SessionManager.setAdd_Contect_Detail(getApplicationContext(), save_data);
+                                    uploadImageTos3(filePath1, "update");
+                                }
                             }
 
                     }

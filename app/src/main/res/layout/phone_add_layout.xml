@@ -221,6 +221,7 @@
                     tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -228,7 +229,17 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/home_list_add_contect_view" />
-
+            <TextView
+                android:id="@+id/iv_invalid1"
+                style="@style/tv_regular_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/invalid_phone"
+                android:textColor="@color/red"
+                android:visibility="gone" />
         </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
