@@ -57,9 +57,7 @@ public class User {
     @SerializedName("role_access")
     @Expose
     private List<RoleAccess> roleAccess = new ArrayList<>();
-    @SerializedName("affiliate_info")
-    @Expose
-    private AffiliateInfo affiliateInfo = new AffiliateInfo();
+
     @SerializedName("user_timezone")
     @Expose
     private List<UserTimezone> userTimezone = null;
@@ -192,13 +190,7 @@ public class User {
         this.roleAccess = roleAccess;
     }
 
-    public AffiliateInfo getAffiliateInfo() {
-        return affiliateInfo;
-    }
 
-    public void setAffiliateInfo(AffiliateInfo affiliateInfo) {
-        this.affiliateInfo = affiliateInfo;
-    }
 
     public Integer getIs_contact_exist() {
         return is_contact_exist;

@@ -94,7 +94,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             layout_Add_phone, layout_Add_email, layout_mobile, fb_layout;
     TextView tv_phone, tv_more_field, tv_company_url, tv_job,
             zone_txt, tv_add_social;
-    ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout;
+    ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout,iv_copy_affilate;
     String Name = "", job_titel = "", time_zone_id;
     SessionManager sessionManager;
     AddcontectModel addcontectModel;
@@ -1153,6 +1153,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
     private void IntentUI(View view) {
         ev_affiliatecode=view.findViewById(R.id.ev_affiliatecode);
+        iv_copy_affilate=view.findViewById(R.id.iv_copy_affilate);
         layout_referenceCode = view.findViewById(R.id.layout_referenceCode);
         layout_country_piker = view.findViewById(R.id.layout_country_piker);
         edt_email = view.findViewById(R.id.edt_email);
@@ -1246,6 +1247,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_copy_affilate:
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Code", referenceCode);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getContext(), "Code copy", Toast.LENGTH_SHORT).show();
+                break;
 
         }
     }

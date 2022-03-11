@@ -74,9 +74,8 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
 
     private void setdate() {
 
-        SignResponseModel user_data = SessionManager.getGetUserdata(Affiliate_Report_LavelActivity.this);
 
-        affiliateInfo = user_data.getUser().getAffiliateInfo();
+        affiliateInfo = new AffiliateInfo();
         lavelName.clear();
         if (affiliateInfo != null) {
             if (affiliateInfo.getLevel1() != null) {

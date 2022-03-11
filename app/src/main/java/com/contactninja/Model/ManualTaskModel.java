@@ -37,6 +37,9 @@ public class ManualTaskModel {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("stage")
+    @Expose
+    private String stage;
     @SerializedName("email")
     @Expose
     private String email;
@@ -92,6 +95,14 @@ public class ManualTaskModel {
     @SerializedName("sent_tbl_id")
     @Expose
     private String sent_tbl_id;
+
+    public String getStage() {
+        return stage;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
 
     public String getMail_module() {
         return mail_module;

@@ -310,16 +310,18 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
                     if (List.size() == 0) {
                         Global.Messageshow(Text_And_Email_Auto_Manual_Broadcast.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
                     }else {
-                        SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual_Broadcast.this,List);
+                        if(List.size()==1){
+                            if(List.get(0).getIsDefault()==1){
+                                NextScreen(List);
 
-                        SessionManager.setGroupList(Text_And_Email_Auto_Manual_Broadcast.this,new ArrayList<>());
-                        SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
-                        SessionManager.setBroadcast_flag("add");
-                        SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
-                       Intent intent=new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
-                        intent.putExtra("Activty","Auto_Manual");
-                        intent.putExtra("type","EMAIL");
-                        startActivity(intent);
+                            }else {
+                                Global.Messageshow(Text_And_Email_Auto_Manual_Broadcast.this,mMainLayout,getResources().getString(R.string.setting_mail_defoult),false);
+                            }
+                        }else {
+                            NextScreen(List);
+
+                        }
+
 
                     }
                 }else {
@@ -335,6 +337,21 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
 
 
     }
+
+    private void NextScreen(List<UserLinkedList.UserLinkedGmail>  List) {
+
+        SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual_Broadcast.this,List);
+
+        SessionManager.setGroupList(Text_And_Email_Auto_Manual_Broadcast.this,new ArrayList<>());
+        SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
+        SessionManager.setBroadcast_flag("add");
+        SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
+        Intent intent=new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
+        intent.putExtra("Activty","Auto_Manual");
+        intent.putExtra("type","EMAIL");
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -33,29 +33,23 @@
                 android:orientation="horizontal">
 
 
-                <TextView
-                    android:visibility="gone"
+               <!-- <TextView
+                    android:visibility=""
                     style="@style/tv_regular_12"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/AffiliateCode"
                     android:textColor="@color/text_reg"
-                    tools:ignore="NestedWeights" />
+                    tools:ignore="NestedWeights" />-->
 
 
-                <ImageView
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/ic_copy"
-                    tools:ignore="ImageContrastCheck" />
+
 
                 <LinearLayout
+                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -102,15 +96,16 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:background="@color/home_list_add_contect_view" />
+
 
                 </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_copy_affilate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_copy"
+                    tools:ignore="ImageContrastCheck" />
             </LinearLayout>
 
             <View

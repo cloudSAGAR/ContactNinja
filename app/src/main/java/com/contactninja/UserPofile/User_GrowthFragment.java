@@ -77,9 +77,9 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
     }
 
     private void setdata() {
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+    //    SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
 
-      AffiliateInfo affiliateInfo = user_data.getUser().getAffiliateInfo();
+      AffiliateInfo affiliateInfo = new AffiliateInfo();
         if(affiliateInfo.getLevel1().size()!=0||
                 affiliateInfo.getLevel2().size()!=0||
                 affiliateInfo.getLevel3().size()!=0||

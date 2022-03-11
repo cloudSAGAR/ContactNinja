@@ -865,7 +865,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                         }else {
                             String[] selet_item = getResources().getStringArray(R.array.auto_Select);
 
-                            switch (item.getStatus()) {
+                            switch (item.getStage()) {
                                 case "PAUSED":
                                     showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
                                             getResources().getString(R.string.manual_aleart_paused_des), selet_item[1],item.getId());
@@ -998,9 +998,8 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     ev_search.setText("");
                     iv_cancle_search_icon.setVisibility(View.GONE);
                     iv_filter_icon.setVisibility(View.VISIBLE);
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    Filter = "";
-
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                  //  Filter = "";
                     refresf_api();
 
                 } else {

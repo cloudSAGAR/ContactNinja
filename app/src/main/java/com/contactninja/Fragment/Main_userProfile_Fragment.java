@@ -749,6 +749,28 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         List<Contactdetail> contactdetails_email = new ArrayList<>();
         contactdetails_email.addAll(addcontectModel.getContactdetails_email());
         contactdetails.addAll(contactdetails_email);
+
+
+        /**
+         *
+         * Chek affilate code change or not and api call only code date
+         *
+         * */
+        if(!user_data.getUser().getReferenceCode().equals(addcontectModel.getReferenceCode())){
+            try {
+                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                    UpdateCode();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
         JSONObject obj = new JSONObject();
 
         JSONObject param_data = new JSONObject();
@@ -760,11 +782,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("email", email_address.toString().trim());
 
 
-        // JSONArray jsonArray_contect = new JSONArray();
 
-
-        // JSONObject paramObject = new JSONObject();
-        //Other Company Add
         if (addcontectModel.getCompany().trim().equalsIgnoreCase("")) {
             param_data.put("company_name", addcontectModel.getCompany().toString().trim());
             //param_data.put("company_id",  addcontectModel.getCompany_id());
@@ -796,28 +814,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("organization_id", "1");
         param_data.put("state", state.toString().trim());
         param_data.put("team_id", "1");
-        // addcontectModel.getTime()
         param_data.put("timezone_id", addcontectModel.getTime().toString().trim());
         param_data.put("twitter_link", addcontectModel.getTwitter().toString().trim());
         param_data.put("user_id", user_data.getUser().getId());
         param_data.put("zipcode", addcontectModel.getZip_code().toString().trim());
         param_data.put("zoom_id", addcontectModel.getZoom_id().toString().trim());
 
-        /*if (!user_image_Url.equals("")) {
-            param_data.put("profile_pic", user_image_Url);
-            param_data.put("pic_name", File_name);
-            param_data.put("pic_extension", File_extension);
-            if (olld_image != null) {
-                param_data.put("old_pic_name", olld_image);
-            } else {
-                param_data.put("old_pic_name", "");
-            }
-
-        } else {
-            param_data.put("profile_pic", olld_image);
-            //   paramObject.put("contact_image", "");
-            //   paramObject.put("contact_image_name", "");
-        }*/
         param_data.put("user_img", user_image_Url.toString().trim());
 
         param_data.put("notes", addcontectModel.getNote().toString().trim());
@@ -866,7 +868,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             jsonArray.put(paramObject1);
         }
         param_data.put("contact_details", jsonArray);
-        param_data.put("reference_code",addcontectModel.getReferenceCode());
         obj.put("data", param_data);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -927,6 +928,45 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     }
 
 
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
+
+
+
+    public void UpdateCode() throws JSONException {
+
+        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+
+
+        JSONObject obj = new JSONObject();
+        JSONObject param_data = new JSONObject();
+        param_data.put("organization_id", 1);
+        param_data.put("team_id", 1);
+        param_data.put("user_id", user_data.getUser().getId());
+        param_data.put("reference_code",addcontectModel.getReferenceCode());
+        obj.put("data", param_data);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+
+        Log.e("Final Data is", new Gson().toJson(gsonObject));
+
+
+        retrofitCalls.UpdateUser_Profile(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
                 }
             }
 
