@@ -19,10 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.contactninja.Model.UserData.AffiliateInfo;
-import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.Dashboard.Des_AffiliateInfo;
 import com.contactninja.R;
-import com.contactninja.Utils.SessionManager;
 
 import org.eazegraph.lib.charts.ValueLineChart;
 import org.eazegraph.lib.models.ValueLinePoint;
@@ -79,12 +77,12 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
     private void setdata() {
     //    SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
 
-      AffiliateInfo affiliateInfo = new AffiliateInfo();
-        if(affiliateInfo.getLevel1().size()!=0||
-                affiliateInfo.getLevel2().size()!=0||
-                affiliateInfo.getLevel3().size()!=0||
-                affiliateInfo.getLevel4().size()!=0||
-                affiliateInfo.getLevel5().size()!=0){
+      Des_AffiliateInfo desAffiliateInfo = new Des_AffiliateInfo();
+        if(desAffiliateInfo.getLevel1().size()!=0||
+                desAffiliateInfo.getLevel2().size()!=0||
+                desAffiliateInfo.getLevel3().size()!=0||
+                desAffiliateInfo.getLevel4().size()!=0||
+                desAffiliateInfo.getLevel5().size()!=0){
             button_Affiliate_Report.setVisibility(View.VISIBLE);
         }else {
             button_Affiliate_Report.setVisibility(View.GONE);

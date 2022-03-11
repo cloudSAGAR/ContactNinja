@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import com.contactninja.Model.SignModel;
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -196,7 +198,11 @@ public interface RetrofitApiInterface {
                                      @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
-    @POST("timezone/list")
+    @POST("dashboard")
+    Call<ApiResponse> Dashboard(@Header("Accept") String api, @Header("Authorization") String auth,
+                                   @Body JsonObject jsonObject,
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+ @POST("timezone/list")
     Call<ApiResponse> Timezone(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);

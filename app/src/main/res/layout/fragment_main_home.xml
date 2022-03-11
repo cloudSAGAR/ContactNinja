@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="12"
+                        android:text="0"
                         android:textColor="@color/text_reg"/>
 
                     <ImageView
@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="123"
+                        android:text="0"
                         android:textColor="@color/text_reg"/>
 
                     <ImageView
@@ -133,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="12"
+                        android:text="0"
                         android:textColor="@color/text_reg"/>
 
                     <ImageView
@@ -172,7 +172,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="12"
+                        android:text="0"
                         android:textColor="@color/text_reg"/>
 
                     <ImageView
@@ -197,7 +197,11 @@
                 </LinearLayout>
 
             </LinearLayout>
-
+        <LinearLayout
+            android:id="@+id/layout_Affiliate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,15 +220,16 @@
                     android:textColor="@color/text_reg"/>
 
                 <View
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:id="@+id/view_single"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_weight="1"
                     android:background="@color/home_list_search_border" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -277,14 +282,14 @@
 
 
                     <TextView
-                        android:id="@+id/ic_home_grow_up"
+                        android:id="@+id/tv_total_lavel"
                         style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
-                        android:text="300"
+                        android:text="0"
                         android:textColor="@color/plan_price_text_color"/>
 
                     <LinearLayout
@@ -310,7 +315,7 @@
                             android:layout_gravity="center|left"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:gravity="center"
-                            android:text="+22%"
+                            android:text="+0%"
                             android:textColor="@color/home_per_text"
                             tools:ignore="TextContrastCheck"/>
 
@@ -344,7 +349,7 @@
                 android:layout_marginStart="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:weightSum="3">
+                android:weightSum="5">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -363,13 +368,14 @@
 
 
                     <TextView
+                        android:id="@+id/tv_lavel_count_1"
                         style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
-                        android:text="150"
+                        android:text="0"
                         android:textColor="@color/plan_price_text_color"/>
 
                     <LinearLayout
@@ -388,14 +394,6 @@
 
                         </ImageView>
 
-                        <ImageView
-                            android:layout_width="@dimen/_17sdp"
-                            android:layout_height="@dimen/_17sdp"
-                            android:padding="@dimen/_5sdp"
-                            android:src="@drawable/ic_home_grow_down"
-                            android:visibility="gone">
-
-                        </ImageView>
 
                         <TextView
                             style="@style/tv_regular_10"
@@ -404,7 +402,7 @@
                             android:layout_gravity="center|left"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:gravity="center|left"
-                            android:text="+22%"
+                            android:text="+0%"
                             android:textColor="@color/home_per_text"
                             tools:ignore="TextContrastCheck" />
 
@@ -425,18 +423,19 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
                         android:gravity="center|left"
-                        android:text="Level 1:"
+                        android:text="Level 2:"
                         android:textColor="@color/tv_regular"/>
 
 
                     <TextView
+                        android:id="@+id/tv_lavel_count_2"
                         style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
-                        android:text="150"
+                        android:text="0"
                         android:textColor="@color/plan_price_text_color"/>
 
                     <LinearLayout
@@ -455,14 +454,7 @@
 
                         </ImageView>
 
-                        <ImageView
-                            android:layout_width="@dimen/_17sdp"
-                            android:layout_height="@dimen/_17sdp"
-                            android:padding="@dimen/_5sdp"
-                            android:src="@drawable/ic_home_grow_down"
-                            android:visibility="gone">
 
-                        </ImageView>
 
                         <TextView
                             style="@style/tv_regular_10"
@@ -471,7 +463,128 @@
                             android:layout_gravity="center|left"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:gravity="center|left"
-                            android:text="+22%"
+                            android:text="+0%"
+                            android:textColor="@color/home_per_text"
+                            tools:ignore="TextContrastCheck" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/tv_regular_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|left"
+                        android:gravity="center|left"
+                        android:text="Level 3:"
+                        android:textColor="@color/tv_regular"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_lavel_count_3"
+                        style="@style/tv_regular_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|left"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/plan_price_text_color"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="center|left"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:src="@drawable/ic_home_grow_up"
+                            tools:ignore="ImageContrastCheck">
+
+                        </ImageView>
+
+
+
+                        <TextView
+                            style="@style/tv_regular_10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|left"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:gravity="center|left"
+                            android:text="+0%"
+                            android:textColor="@color/home_per_text"
+                            tools:ignore="TextContrastCheck" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/tv_regular_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|left"
+                        android:gravity="center|left"
+                        android:text="Level 4:"
+                        android:textColor="@color/tv_regular"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_lavel_count_4"
+                        style="@style/tv_regular_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|left"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/plan_price_text_color"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="center|left"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:src="@drawable/ic_home_grow_up"
+                            tools:ignore="ImageContrastCheck">
+
+                        </ImageView>
+
+
+                        <TextView
+                            style="@style/tv_regular_10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|left"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:gravity="center|left"
+                            android:text="+0%"
                             android:textColor="@color/home_per_text"
                             tools:ignore="TextContrastCheck"/>
 
@@ -492,18 +605,19 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
                         android:gravity="center|left"
-                        android:text="Level 1:"
+                        android:text="Level 5:"
                         android:textColor="@color/tv_regular"/>
 
 
                     <TextView
+                        android:id="@+id/tv_lavel_count_5"
                         style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
-                        android:text="150"
+                        android:text="0"
                         android:textColor="@color/plan_price_text_color"/>
 
                     <LinearLayout
@@ -522,14 +636,6 @@
 
                         </ImageView>
 
-                        <ImageView
-                            android:layout_width="@dimen/_17sdp"
-                            android:layout_height="@dimen/_17sdp"
-                            android:padding="@dimen/_5sdp"
-                            android:src="@drawable/ic_home_grow_down"
-                            android:visibility="gone">
-
-                        </ImageView>
 
                         <TextView
                             style="@style/tv_regular_10"
@@ -538,7 +644,7 @@
                             android:layout_gravity="center|left"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:gravity="center|left"
-                            android:text="+22%"
+                            android:text="+0%"
                             android:textColor="@color/home_per_text"
                             tools:ignore="TextContrastCheck"/>
 
@@ -549,19 +655,23 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_affilate_detail"
+                android:padding="@dimen/_15sdp"
+                android:id="@+id/btn_view_affilate_detail"
                 style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
                 android:gravity="center"
                 android:text="@string/home_affiliate_text"
                 android:textColor="@color/okey_button">
 
             </TextView>
-
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_Activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -616,10 +726,11 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
-                    android:gravity="center"
+                    android:gravity="center|start"
                     android:orientation="vertical">
 
                     <TextView
+                        android:visibility="gone"
                         style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -646,12 +757,12 @@
                         </ImageView>
 
                         <TextView
+                            android:id="@+id/tv_autometed_task"
                             style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="80 % Automated tasks"
                             android:textColor="@color/plan_price_text_color"/>
                     </LinearLayout>
 
@@ -672,12 +783,12 @@
                         </ImageView>
 
                         <TextView
+                            android:id="@+id/tv_manual_task"
                             style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="20% Automated tasks"
                             android:textColor="@color/plan_price_text_color"/>
                     </LinearLayout>
 
@@ -685,7 +796,12 @@
                 </LinearLayout>
 
             </LinearLayout>
-
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_tab_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
                 style="@style/tv_bold_16"
@@ -713,7 +829,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@id/llFooter" />
-
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layout_Bz_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -790,6 +912,15 @@
 
                 </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layout_connected_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -843,6 +974,7 @@
 
                     android:textColor="@color/text_gray"/>
 
+            </LinearLayout>
             </LinearLayout>
 
             <ImageView

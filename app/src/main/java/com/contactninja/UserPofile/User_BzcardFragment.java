@@ -460,7 +460,6 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
 
-
                     if (Global.IsNotNull(bizcard.getBzcardFieldsModel().getProfile_image())) {
                         if (!bizcard.getBzcardFieldsModel().getProfile_image().equals("")) {
                             try {
@@ -524,6 +523,8 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                         e.printStackTrace();
                     }
 
+                }else {
+                    loadingDialog.cancelLoading();
                 }
             }
 

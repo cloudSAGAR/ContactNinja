@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:padding="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_camp_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/tv_Medium_12"/>
+    <LinearLayout
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:textColor="@color/purple_200"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/tv_total_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/tv_Medium_12"/>
+        <TextView
+            android:textColor="@color/text_gray"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/tv_Medium_12"/>
+    </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_last_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/home_list_back_line" />
+</LinearLayout>

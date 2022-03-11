@@ -17,12 +17,24 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/shap_15_line_view"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/_13sdp"
-        android:paddingTop="@dimen/_15sdp"
-        android:paddingEnd="@dimen/_13sdp"
-        android:paddingBottom="@dimen/_20sdp">
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/rv_Task_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/iv_demo"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_task_des"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp">
+
+        </ImageView>
+       <!-- <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -108,8 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@color/home_list_back_line" />
+                android:background="@color/home_list_back_line" />-->
         </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>

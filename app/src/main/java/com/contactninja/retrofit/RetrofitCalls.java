@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.Objects;
@@ -284,6 +285,13 @@ public class RetrofitCalls {
 
 
 
+    public void Dashboard(SessionManager session, JsonObject registerinfo, LoadingDialog loadingDialog, String token, String version , String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Dashboard(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
     public void Timezone(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Timezone(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
