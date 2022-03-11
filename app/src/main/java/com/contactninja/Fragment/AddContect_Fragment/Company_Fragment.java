@@ -86,7 +86,7 @@ public class Company_Fragment extends Fragment {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     int currentPage = 1;
-    int perPage = 20;
+    int perPage =10;
     boolean isLoading = false;
     boolean isLastPage = false;
     LinearLayoutManager layoutManager;
@@ -158,6 +158,12 @@ public class Company_Fragment extends Fragment {
                     isLastPage = false;
                     companyList.clear();
                     companyAdapter.clear();
+                    companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
+
+                    rvinviteuserdetails.setLayoutManager(layoutManager);
+                    rvinviteuserdetails.setHasFixedSize(true);
+                    rvinviteuserdetails.setAdapter(companyAdapter);
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
                     try {
                         CompanyList();
                     } catch (JSONException e) {
@@ -770,7 +776,17 @@ public class Company_Fragment extends Fragment {
 
                         String first_latter = WorkData.getName().substring(0, 1).toUpperCase();
                         movieViewHolder.first_latter.setText(first_latter);
-                        if (second_latter.equals("")) {
+
+                        if (first_latter != second_latter)
+                            {
+                                second_latter=first_latter;
+                                movieViewHolder.first_latter.setVisibility(View.VISIBLE);
+                                movieViewHolder.top_layout.setVisibility(View.VISIBLE);
+
+                            }
+
+
+                     /*   if (second_latter.equals("")) {
                             current_latter = first_latter;
                             second_latter = first_latter;
                             movieViewHolder.first_latter.setVisibility(View.VISIBLE);
@@ -789,8 +805,7 @@ public class Company_Fragment extends Fragment {
                             movieViewHolder.first_latter.setVisibility(View.VISIBLE);
                             movieViewHolder.top_layout.setVisibility(View.VISIBLE);
 
-
-                        }
+                        }*/
 
 
                         String name = WorkData.getName();

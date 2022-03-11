@@ -405,8 +405,6 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                         if (add_name.getText().toString().equals("")) {
                             Global.Messageshow(getApplicationContext(), mMainLayout, "Add Company Name", false);
 
-                        } else if (add_detail.getText().toString().equals("")) {
-                            Global.Messageshow(getApplicationContext(), mMainLayout, "Add Company Detail", false);
                         } else {
                             iv_invalid.setVisibility(View.GONE);
                             iv_invalid1.setVisibility(View.GONE);

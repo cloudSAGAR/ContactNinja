@@ -565,7 +565,7 @@ public class ContectFragment extends Fragment {
                 paginationAdapter.add(contectListData.get(i));
             }*/
             paginationAdapter.addAll(contectListData.subList(x,y));
-            //paginationAdapter.notifyDataSetChanged();
+            paginationAdapter.notifyDataSetChanged();
         }
 
     }
@@ -1730,25 +1730,35 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         holder1.userName.setText(Contact_data.getFirstname() + " " + Contact_data.getLastname());
                         holder1.userNumber.setVisibility(View.GONE);
 
-                        holder1.first_latter.setVisibility(View.VISIBLE);
+                     /*   holder1.first_latter.setVisibility(View.VISIBLE);
                         holder1.top_layout.setVisibility(View.VISIBLE);
 
-
+*/
                         String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
-                        holder1.first_latter.setText(first_latter);
-                        if (second_latter.equals("")) {
+                        if (!first_latter.equals(second_latter))
+                        {
+                            holder1.first_latter.setText(first_latter);
+                            second_latter=first_latter;
+                            holder1.first_latter.setVisibility(View.VISIBLE);
+                            holder1.top_layout.setVisibility(View.VISIBLE);
+
+                        }
+
+                      /*  if (second_latter.equals("")) {
                             current_latter = first_latter;
                             second_latter = first_latter;
                             holder1.first_latter.setVisibility(View.VISIBLE);
                             holder1.top_layout.setVisibility(View.VISIBLE);
 
-                        } else if (second_latter.equals(first_latter)) {
+                        }
+                        else if (second_latter.equals(first_latter)) {
                             current_latter = second_latter;
                             // inviteUserDetails.setF_latter("");
                             holder1.first_latter.setVisibility(View.GONE);
                             holder1.top_layout.setVisibility(View.GONE);
 
-                        } else {
+                        }
+                        else {
 
                             current_latter = first_latter;
                             second_latter = first_latter;
@@ -1756,7 +1766,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             holder1.top_layout.setVisibility(View.VISIBLE);
 
 
-                        }
+                        }*/
 
                      //   Log.e("Contect Image is",Contact_data.getContactImage());
 
