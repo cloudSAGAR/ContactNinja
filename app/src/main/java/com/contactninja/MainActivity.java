@@ -49,6 +49,7 @@ import com.contactninja.Model.Contect_Db;
 import com.contactninja.Model.Csv_InviteListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.InviteListData;
+import com.contactninja.Model.Timezon;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Utils.App;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -132,6 +133,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BroadcastReceiver mNetworkReceiver;
     ArrayList<Contact> listContacts;
     List<Contact> new_listContacts=new ArrayList<>();
+    Integer user_id = 0;
+    String token_api = "", organization_id = "", team_id = "";
+    SignResponseModel user_data;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -159,7 +163,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String offset = localTime.substring(0, 1);
 
         UpdateManageCheck();
-        EnableRuntimePermission();
+
+        user_data = SessionManager.getGetUserdata(getApplicationContext());
+        user_id = user_data.getUser().getId();
+        organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+        TimeZone tz = TimeZone.getDefault();
+        if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList()) || user_data.getUser().getWorkingHoursList().size() == 0) {
+            try {
+                if (Global.isNetworkAvailable(this, MainActivity.mMainLayout)) {
+                    Timezone(tz.getID());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+       else {
+            EnableRuntimePermission();
+        }
         navItemIndex = 0;
         displayView();
         ImageSetLight(getResources().getString(R.string.select_Home));
@@ -175,6 +197,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    //TimeZone Call
+    private void Timezone(String id) throws JSONException {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Timezone(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+
+                Gson gson = new Gson();
+                String headerString = gson.toJson(response.body().getData());
+                Type listType = new TypeToken<ArrayList<Timezon.TimezonData>>() {
+                }.getType();
+                List<Timezon.TimezonData> timezonDataList = new Gson().fromJson(headerString, listType);
+                for (int i = 0; i < timezonDataList.size(); i++) {
+                    if (id.equals(timezonDataList.get(i).getTzname())) {
+                        Working_hour(timezonDataList.get(i).getValue());
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
+    }
+
+
+
+    //Working Hourse Call
+    private void Working_hour(Integer value) {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("timezone_id", value);
+        paramObject.addProperty("is_default", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        String version_name = Global.getVersionname(this);
+        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, version_name, Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                EnableRuntimePermission();
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
+
+    }
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -220,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 listContacts = new ContactFetcher(MainActivity.this).fetchAll();
+                Log.e("List Contect Is ",new Gson().toJson(listContacts));
                 SignResponseModel user_data = SessionManager.getGetUserdata(MainActivity.this);
                 String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
 

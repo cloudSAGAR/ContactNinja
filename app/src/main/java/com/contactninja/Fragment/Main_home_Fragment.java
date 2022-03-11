@@ -92,16 +92,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
-        TimeZone tz = TimeZone.getDefault();
-        if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList()) || user_data.getUser().getWorkingHoursList().size() == 0) {
-            try {
-                if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                    Timezone(tz.getID());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         intentView(view);
         tabLayout.addTab(tabLayout.newTab().setText("Task"));
@@ -265,37 +255,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void Timezone(String id) throws JSONException {
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", 1);
-        paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", user_id);
-        obj.add("data", paramObject);
-        retrofitCalls.Timezone(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-
-                Gson gson = new Gson();
-                String headerString = gson.toJson(response.body().getData());
-                Type listType = new TypeToken<ArrayList<Timezon.TimezonData>>() {
-                }.getType();
-                List<Timezon.TimezonData> timezonDataList = new Gson().fromJson(headerString, listType);
-                for (int i = 0; i < timezonDataList.size(); i++) {
-                    if (id.equals(timezonDataList.get(i).getTzname())) {
-                        Working_hour(timezonDataList.get(i).getValue());
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-            }
-        });
-    }
-
     private void loadData() {
         Paint paint=new Paint();
         paint.setColor(Color.parseColor("#79D2DE"));
@@ -347,26 +306,5 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     }
 
-    private void Working_hour(Integer value) {
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("timezone_id", value);
-        paramObject.addProperty("is_default", "1");
-        paramObject.addProperty("organization_id", 1);
-        paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", user_id);
-        obj.add("data", paramObject);
-        String version_name = Global.getVersionname(mainActivity);
-        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, version_name, Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                //Log.e("Response is",new Gson().toJson(response));
-            }
 
-            @Override
-            public void error(Response<ApiResponse> response) {
-            }
-        });
-
-    }
 }
