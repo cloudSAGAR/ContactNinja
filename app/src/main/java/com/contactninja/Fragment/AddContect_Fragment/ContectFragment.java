@@ -565,7 +565,7 @@ public class ContectFragment extends Fragment {
                 paginationAdapter.add(contectListData.get(i));
             }*/
             paginationAdapter.addAll(contectListData.subList(x,y));
-            paginationAdapter.notifyDataSetChanged();
+          //  paginationAdapter.notifyDataSetChanged();
         }
 
     }
