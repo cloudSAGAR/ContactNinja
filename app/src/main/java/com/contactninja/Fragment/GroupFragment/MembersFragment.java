@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.SigleGroupModel;
@@ -49,6 +50,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -234,7 +237,7 @@ public class MembersFragment extends Fragment {
                 holder.top_layout.setVisibility(View.VISIBLE);
                 String first_latter=inviteUserDetails.getFirstname().substring(0,1).toUpperCase();
                 holder.first_latter.setText(first_latter);
-                if (second_latter.equals(""))
+          /*      if (second_latter.equals(""))
                 {
                     current_latter=first_latter;
                     second_latter=first_latter;
@@ -257,7 +260,18 @@ public class MembersFragment extends Fragment {
                     holder.top_layout.setVisibility(View.VISIBLE);
 
 
-                }
+                }*/
+
+            holder.first_latter.setVisibility(View.GONE);
+            holder.top_layout.setVisibility(View.GONE);
+            if (!first_latter.equals(second_latter))
+            {
+                holder.first_latter.setText(first_latter);
+                second_latter=first_latter;
+                holder.first_latter.setVisibility(View.VISIBLE);
+                holder.top_layout.setVisibility(View.VISIBLE);
+
+            }
 
 
             String name =inviteUserDetails.getFirstname();
@@ -389,6 +403,16 @@ public class MembersFragment extends Fragment {
                     }
                     sessionManager.setGroupList(getActivity(),selected_contectListData);
                     inviteListData.addAll(groups .get(0).getContactIds());
+
+
+                    Collections.sort(selected_contectListData, new Comparator<ContectListData.Contact>() {
+                        @Override
+                        public int compare(ContectListData.Contact s1, ContectListData.Contact s2) {
+                            return s1.getFirstname().compareToIgnoreCase(s2.getFirstname());
+                        }
+                    });
+                  //  Log.e("Data Is ",new Gson().toJson(selected_contectListData));
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
                     userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), selected_contectListData);
                     rvinviteuserdetails.setAdapter(userListDataAdapter);
                     userListDataAdapter.notifyDataSetChanged();

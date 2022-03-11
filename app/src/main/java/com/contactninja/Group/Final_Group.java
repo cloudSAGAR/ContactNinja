@@ -260,11 +260,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         );
 
         add_new_member.setOnClickListener(this);
-        Collections.sort(inviteListData, new Comparator<ContectListData.Contact>() {
-            public int compare(ContectListData.Contact obj1, ContectListData.Contact obj2) {
-                return obj1.getFirstname().compareToIgnoreCase(obj1.getFirstname());
-            }
-        });
+
         fastscroller.setupWithRecyclerView(
                 contect_list_unselect,
                 (position) -> {
@@ -285,7 +281,13 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 }
         );
 
-
+        Collections.sort(inviteListData, new Comparator<ContectListData.Contact>() {
+            @Override
+            public int compare(ContectListData.Contact s1, ContectListData.Contact s2) {
+                return s1.getFirstname().compareToIgnoreCase(s2.getFirstname());
+            }
+        });
+        Log.e("Data Is",new Gson().toJson(inviteListData));
         userListDataAdapter = new UserListDataAdapter(this, getApplicationContext(), inviteListData);
         contect_list_unselect.setAdapter(userListDataAdapter);
         loadingDialog = new LoadingDialog(this);
