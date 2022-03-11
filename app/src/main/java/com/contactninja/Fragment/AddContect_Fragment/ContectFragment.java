@@ -162,7 +162,7 @@ public class ContectFragment extends Fragment {
 
         View content_view = inflater.inflate(R.layout.fragment_contect, container, false);
         IntentUI(content_view);
-        Filter="";
+        Filter="ALL";
         setAllData();
         return content_view;
 
@@ -1059,6 +1059,7 @@ public class ContectFragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
+                Log.e("Filtter Is",Filter);
                 showBottomSheetDialog_Filtter();
             }
         });
@@ -1145,6 +1146,8 @@ public class ContectFragment extends Fragment {
 
 
                         } else{
+                            if (!Filter.equals("BLOCK"))
+                            {
                             contectListData.clear();
                             paginationAdapter.removeloist();
                             sessionManager.setContectList(getActivity(), new ArrayList<>());
@@ -1158,12 +1161,16 @@ public class ContectFragment extends Fragment {
                             contectListData_store.add(contectListData1);
                             sessionManager.setContectList(getActivity(), contectListData_store);
                             //contectListData.addAll(contectListData_store.get(0).getContacts());
-                            rvinviteuserdetails.setItemViewCacheSize(50000);
-                            paginationAdapter = new ContectListAdapter(getActivity());
-                            rvinviteuserdetails.setAdapter(paginationAdapter);
 
-                            onScrolledToBottom();
-                            num_count.setText(contectListData.size() + " Contacts");
+
+                                rvinviteuserdetails.setItemViewCacheSize(50000);
+                                paginationAdapter = new ContectListAdapter(getActivity());
+                                rvinviteuserdetails.setAdapter(paginationAdapter);
+
+                                onScrolledToBottom();
+                                num_count.setText(contectListData.size() + " Contacts");
+
+                            }
 
                         }
                     } catch(Exception e){
@@ -1249,7 +1256,6 @@ public class ContectFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ev_search.setText("");
-        Filter = "";
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
         if(SessionManager.getContect_edit(getActivity())){
@@ -1960,7 +1966,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Filter = "";
+                Filter = "ALL";
                 iv_filter_icon.setImageResource(R.drawable.ic_filter);
                 try {
                     Contect_BLock(contact_item, "1", bottomSheetDialog);
@@ -1980,7 +1986,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Filter = "";
+                Filter = "ALL";
                 iv_filter_icon.setImageResource(R.drawable.ic_filter);
                 try {
                    Contect_BLock(contact_item, "0", bottomSheetDialog);
@@ -2002,7 +2008,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                 try {
-                    Filter = "";
+                    Filter = "ALL";
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Contect_Remove(contact_item, "0", bottomSheetDialog);
                 } catch (JSONException e) {
@@ -2130,9 +2136,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (Filter) {
             case "BLOCK":
                 ch_block.setChecked(true);
+                ch_all.setChecked(false);
                 break;
             case "ALL":
                 ch_all.setChecked(true);
+                ch_block.setChecked(false);
                 break;
 
         }
@@ -2164,10 +2172,14 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         layout_list_data.setVisibility(View.VISIBLE);
                         lay_no_list.setVisibility(View.GONE);
                     }
+                    ch_all.setChecked(false);
+                    ch_block.setChecked(true);
+
                 }
                 else {
                     ch_block.setChecked(false);
-                    Filter = "";
+                    ch_all.setChecked(true);
+                    Filter = "ALL";
                     contectListData.clear();
                     contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
@@ -2193,9 +2205,12 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     Filter = "ALL";
                     layout_list_data.setVisibility(View.VISIBLE);
                     lay_no_list.setVisibility(View.GONE);
+                    ch_block.setChecked(false);
+                    ch_all.setChecked(true);
                 }
                 else {
-
+                    ch_all.setChecked(false);
+                    bottomSheetDialog.dismiss();
 
                 }
 

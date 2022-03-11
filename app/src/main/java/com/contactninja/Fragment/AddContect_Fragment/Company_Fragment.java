@@ -105,6 +105,7 @@ public class Company_Fragment extends Fragment {
         View content_view = inflater.inflate(R.layout.fragment_company_, container, false);
         IntentUI(content_view);
         on_dataset();
+        Filter="ALL";
 
       /*  if (companyAdapter.getItemCount() == 0) {
             linearLayout3.setVisibility(View.GONE);
@@ -331,9 +332,11 @@ public class Company_Fragment extends Fragment {
         switch (Filter) {
             case "BLOCK":
                 ch_block.setChecked(true);
+                ch_all.setChecked(false);
                 break;
             case "ALL":
                 ch_all.setChecked(true);
+                ch_block.setChecked(false);
                 break;
 
         }
@@ -354,14 +357,17 @@ public class Company_Fragment extends Fragment {
                     rvinviteuserdetails.setItemViewCacheSize(5000);
                     RefreshList();
                     ch_all.setChecked(false);
+                    ch_block.setChecked(true);
 //
                 }
                 else {
+
                     bottomSheetDialog.dismiss();
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Filter = "ALL";
                     RefreshList();
                     ch_all.setChecked(true);
+                    ch_block.setChecked(false);
                 }
 
             }
@@ -375,7 +381,13 @@ public class Company_Fragment extends Fragment {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Filter = "ALL";
                     RefreshList();
+                    ch_block.setChecked(false);
+                    ch_all.setChecked(true);
 
+                }
+                else {
+                    ch_all.setChecked(false);
+                    bottomSheetDialog.dismiss();
                 }
 
             }
@@ -490,7 +502,6 @@ public class Company_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Filter = "";
         iv_filter_icon.setImageResource(R.drawable.ic_filter);
         RefreshList();
     }
@@ -547,6 +558,8 @@ public class Company_Fragment extends Fragment {
                 //Block Contect
 
                 try {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Filter = "ALL";
                     Contect_BLock(Company, "1", bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -566,6 +579,8 @@ public class Company_Fragment extends Fragment {
                 //Block Contect
 
                 try {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Filter = "ALL";
                     Contect_BLock(Company, "0", bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -585,6 +600,8 @@ public class Company_Fragment extends Fragment {
                 //Block Contect
 
                 try {
+                    Filter = "ALL";
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Company_Remove(Company, "0", bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
