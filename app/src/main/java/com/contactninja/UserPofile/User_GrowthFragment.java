@@ -48,8 +48,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import retrofit2.Response;
@@ -64,7 +66,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
     ImageView prevMonth,nextMonth;
     TextView currentMonth;
     private Calendar _calendar;
-    private int month, year;
+    private int month, year,current_month,current_year;
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
     private static final String ApidateTemplate = "yyyy-mm";
@@ -82,6 +84,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
     Des_AffiliateInfo des_affiliateInfo = new Des_AffiliateInfo();
 
     TextView  tv_lavel_count_1, tv_lavel_count_2, tv_lavel_count_3, tv_lavel_count_4, tv_lavel_count_5, tv_total_lavel;
+
 
 
     public User_GrowthFragment() {
@@ -102,6 +105,14 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
+        Date date = new Date();
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy");
+
+        current_month= Integer.parseInt(dateFormat.format(date));
+        current_year= Integer.parseInt(dateFormat1.format(date));
+
+        Log.d("Month",dateFormat.format(date));
         IntentUI(view);
         setdata();
 
@@ -126,6 +137,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
                 //Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
+
         return view;
     }
 
@@ -349,6 +361,17 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
                 startActivity(new Intent(getActivity(),Affiliate_Report_LavelActivity.class));
                 break;
             case R.id.prevMonth:
+                prevMonth.setColorFilter(Color.parseColor("#5495EC"));
+                nextMonth.setColorFilter(Color.parseColor("#AEA1A1"));
+
+                if (current_month==month && current_year == year)
+                {
+                    nextMonth.setColorFilter(Color.parseColor("#AEA1A1"));
+                }
+                else {
+                    nextMonth.setColorFilter(Color.parseColor("#5495EC"));
+
+                }
                 if (month <= 1)
                 {
                     month = 12;
@@ -361,16 +384,26 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
                 setGridCellAdapterToDate(month, year);
                 break;
             case R.id.nextMonth:
-                if (month > 11)
+
+                if (current_month==month && current_year == year)
                 {
-                    month = 1;
-                    year++;
+                    nextMonth.setColorFilter(Color.parseColor("#AEA1A1"));
                 }
-                else
-                {
-                    month++;
+                else {
+                    nextMonth.setColorFilter(Color.parseColor("#5495EC"));
+                    if (month > 11)
+                    {
+                        month = 1;
+                        year++;
+                    }
+                    else
+                    {
+                        month++;
+                    }
+                    setGridCellAdapterToDate(month, year);
                 }
-                setGridCellAdapterToDate(month, year);
+
+
                 break;
         }
     }
