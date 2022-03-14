@@ -405,7 +405,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
+               // Log.e("Error is", throwable.getMessage());
                 loadingDialog.cancelLoading();
 
             }
@@ -825,10 +825,10 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
             tv_done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.e("Main List Is",new Gson().toJson(contacts));
-                    Log.e("Postion is",String.valueOf(s_position));
-                    Log.e("Contect Size ",String.valueOf(contacts.get(s_position).getContactDetails().size()));
-                    Log.e("User SELCT List",new Gson().toJson(userLinkedGmailList));
+                  //  Log.e("Main List Is",new Gson().toJson(contacts));
+                   // Log.e("Postion is",String.valueOf(s_position));
+                   // Log.e("Contect Size ",String.valueOf(contacts.get(s_position).getContactDetails().size()));
+                    //Log.e("User SELCT List",new Gson().toJson(userLinkedGmailList));
                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                     holder1.add_new_contect_icon.setVisibility(View.GONE);
 
@@ -839,7 +839,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     contacts.get(s_position).setContactDetails(contactDetails);
                     select_contectListData.add(contacts.get(s_position));
                     //userDetailsfull.get(position).setId(position);
-                    Log.e("OHH DATA",new Gson().toJson(select_contectListData));
+                    //Log.e("OHH DATA",new Gson().toJson(select_contectListData));
                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                     SessionManager.setGroupList(getApplicationContext(), select_contectListData);
                     num_count.setText(select_contectListData.size() + " Contact Selcted");

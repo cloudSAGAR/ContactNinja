@@ -191,7 +191,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     groupContectAdapter.clear();
                     onScrolledToBottom();
                     // groupContectAdapter.updateList(temp);
-                    Log.e("Temp List Data is", new Gson().toJson(temp));
+                  //  Log.e("Temp List Data is", new Gson().toJson(temp));
                     return true;
                 }
                 return false;
@@ -389,7 +389,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
 
-        Log.e("Selcete List Is", new Gson().toJson(select_contectListData));
+       // Log.e("Selcete List Is", new Gson().toJson(select_contectListData));
         select_contectListData.clear();
         add_contect_list.setItemViewCacheSize(50000);
         topUserListDataAdapter = new TopUserListDataAdapter(this, getApplicationContext(), select_contectListData);
@@ -464,7 +464,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
+            //    Log.e("Error is", throwable.getMessage());
                 loadingDialog.cancelLoading();
 
             }
@@ -477,7 +477,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                     GroupContectAdapter.MovieViewHolder holder1, List<ContectListData.Contact> contacts,
                                     int position, List<ContectListData.Contact.ContactDetail> detailList1_email) {
 
-        Log.e("Data list is", new Gson().toJson(detailList_phone));
+    //    Log.e("Data list is", new Gson().toJson(detailList_phone));
         final View mView = getLayoutInflater().inflate(R.layout.phone_bottom_sheet, null);
         bottomSheetDialog_templateList1 = new BottomSheetDialog(GroupActivity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
@@ -511,7 +511,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         layout_phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("Size is", String.valueOf(detailList_phone.size()));
+        //        Log.e("Size is", String.valueOf(detailList_phone.size()));
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
@@ -550,7 +550,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 v_email1.setVisibility(View.VISIBLE);
                 v_email.setVisibility(View.GONE);
                 phone_list.setVisibility(View.GONE);
-                Log.e("Size is", String.valueOf(detailList1_email.size()));
+        //        Log.e("Size is", String.valueOf(detailList1_email.size()));
                 if (detailList1_email.size() == 0) {
 
                     tv_error.setVisibility(View.VISIBLE);
@@ -609,7 +609,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                     contactDetails.addAll(userLinkedGmailList);
-                    Log.e("contactDetails", new Gson().toJson(userLinkedGmailList));
+              //      Log.e("contactDetails", new Gson().toJson(userLinkedGmailList));
                     contacts.get(position).setContactDetails(contactDetails);
                     select_contectListData.add(contacts.get(position));
                     SessionManager.setGroupList(getApplicationContext(), select_contectListData);
@@ -1119,7 +1119,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                 topUserListDataAdapter.remove_item(position, contacts.get(position).getId());
 
                                 topUserListDataAdapter.notifyDataSetChanged();
-                                Log.e("Size is", new Gson().toJson(select_contectListData));
+                               // Log.e("Size is", new Gson().toJson(select_contectListData));
                                 SessionManager.setGroupList(getApplicationContext(), select_contectListData);
                                 /*
                                  * set select contact count */

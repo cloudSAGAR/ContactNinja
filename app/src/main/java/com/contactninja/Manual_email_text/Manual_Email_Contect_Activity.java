@@ -417,7 +417,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
+               // Log.e("Error is", throwable.getMessage());
                 loadingDialog.cancelLoading();
 
             }
@@ -835,12 +835,12 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                     holder1.add_new_contect_icon.setVisibility(View.GONE);
                     List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
                     contactDetails.add(userLinkedGmailList.get(position));
-                    Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
+                 //   Log.e("contactDetails",new Gson().toJson(userLinkedGmailList));
                     contacts.get(s_position).setContactDetails(contactDetails);
                     select_contectListData.add(contacts.get(s_position));
                     //userDetailsfull.get(position).setId(position);
                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-                    Log.e("Contect Is ",new Gson().toJson(select_contectListData));
+                   //Log.e("Contect Is ",new Gson().toJson(select_contectListData));
                     SessionManager.setGroupList(getApplicationContext(), select_contectListData);
                     num_count.setText(select_contectListData.size() + " Contact Selcted");
                     contacts.get(s_position).setFlag("false");
