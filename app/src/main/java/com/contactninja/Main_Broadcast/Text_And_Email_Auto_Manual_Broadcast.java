@@ -269,6 +269,8 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
                     SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
                     SessionManager.setBroadcast_flag("add");
                     SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
+                    SessionManager.setContect_flag("add");
+
                     intent=new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
                     intent.putExtra("Activty","Auto_Manual");
                     intent.putExtra("type","SMS");

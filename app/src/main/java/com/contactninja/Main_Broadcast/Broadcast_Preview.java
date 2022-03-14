@@ -284,6 +284,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+                SessionManager.setContect_flag("add");
                 Intent broad_caste = new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
                 broad_caste.putExtra("Activty","Preview");
                 startActivity(broad_caste);
