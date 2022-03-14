@@ -131,7 +131,7 @@ public class ContectFragment extends Fragment {
     EditText ev_search;
     private List<ContectListData.Contact> contectListData;
     private List<ContectListData.Contact> main_contectListData=new ArrayList<>();
-
+    LinearLayout demo_layout, linearLayout3;
     String Filter = "";//BLOCK / ALL
     List<Contact> new_listContacts=new ArrayList<>();
 
@@ -1035,6 +1035,8 @@ public class ContectFragment extends Fragment {
     }
 
     private void IntentUI(View content_view) {
+        linearLayout3 = content_view.findViewById(R.id.linearLayout3);
+        demo_layout = content_view.findViewById(R.id.demo_layout);
         iv_filter_icon = content_view.findViewById(R.id.iv_filter_icon);
         txt_nolist = content_view.findViewById(R.id.txt_nolist);
         layout_list_data = content_view.findViewById(R.id.layout_list_data);
@@ -1118,6 +1120,8 @@ public class ContectFragment extends Fragment {
 
                 if (response.body().getHttp_status() == 200) {
                     try {
+                        layout_list_data.setVisibility(View.VISIBLE);
+                        lay_no_list.setVisibility(View.GONE);
                         if (swipeToRefresh.isRefreshing()) {
                             contectListData.clear();
                             paginationAdapter.removeloist();
@@ -1161,8 +1165,6 @@ public class ContectFragment extends Fragment {
                             contectListData_store.add(contectListData1);
                             sessionManager.setContectList(getActivity(), contectListData_store);
                             //contectListData.addAll(contectListData_store.get(0).getContacts());
-
-
                                 rvinviteuserdetails.setItemViewCacheSize(50000);
                                 paginationAdapter = new ContectListAdapter(getActivity());
                                 rvinviteuserdetails.setAdapter(paginationAdapter);
@@ -1177,6 +1179,13 @@ public class ContectFragment extends Fragment {
                         e.printStackTrace();
                     }
 
+                }
+                else {
+                    num_count.setText("0 Contacts");
+
+                    txt_nolist.setText(mCtx.getResources().getString(R.string.no_contact));
+                    lay_no_list.setVisibility(View.VISIBLE);
+                    layout_list_data.setVisibility(View.GONE);
                 }
                 loadingDialog.cancelLoading();
                 swipeToRefresh.setRefreshing(false);
@@ -2178,9 +2187,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         txt_nolist.setText(mCtx.getResources().getString(R.string.no_block_contact));
                         lay_no_list.setVisibility(View.VISIBLE);
                         layout_list_data.setVisibility(View.GONE);
+               //         demo_layout.setVisibility(View.VISIBLE);
                     }else {
                         layout_list_data.setVisibility(View.VISIBLE);
                         lay_no_list.setVisibility(View.GONE);
+                   //     demo_layout.setVisibility(View.GONE);
                     }
                     ch_all.setChecked(false);
                     ch_block.setChecked(true);
