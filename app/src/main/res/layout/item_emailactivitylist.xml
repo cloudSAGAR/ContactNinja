@@ -71,8 +71,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:gravity="center|left"
-                    android:padding="@dimen/_2sdp"
-                    android:singleLine="true" />
+                    android:padding="@dimen/_2sdp" />
             </LinearLayout>
 
             <TextView
