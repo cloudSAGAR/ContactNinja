@@ -26,14 +26,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
@@ -56,6 +48,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
@@ -78,15 +77,16 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     ImageView iv_toolbar_manu;
     Toolbar toolbar;
     RelativeLayout contect_layout;
-    ImageView add_icon,iv_camp_edit;
+    ImageView add_icon, iv_camp_edit;
     LinearLayout layout_toolbar_logo;
     ConstraintLayout mMainLayout;
     List<CampaignTask_overview.SequenceTask> main_data = new ArrayList<>();
     String Camp_name = "";
-    private BroadcastReceiver mNetworkReceiver;
     LinearLayout layout_name;
-    private long mLastClickTime=0;
-
+    LinearLayout add_new_step;
+    TextView tv_add_new_step;
+    private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +99,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         retrofitCalls = new RetrofitCalls(this);
         Global.count = 1;
 
+
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
             // StepData();
+            tv_add_new_step.setText(getString(R.string.txt_campaign));
+
             tv_name.setEnabled(false);
             layout_name.setEnabled(false);
             iv_camp_edit.setVisibility(View.GONE);
@@ -110,6 +113,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name")) {
             // StepData();
+            tv_add_new_step.setText(getString(R.string.txt_campaign));
             tv_name.setEnabled(false);
             layout_name.setEnabled(false);
             iv_camp_edit.setVisibility(View.GONE);
@@ -118,6 +122,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else {
+            tv_add_new_step.setText("Add New Step");
             tv_name.setEnabled(false);
             layout_name.setEnabled(false);
             iv_camp_edit.setVisibility(View.VISIBLE);
@@ -130,6 +135,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             item_list.setAdapter(campaign_overviewAdapter);
 
         }
+
 
     }
 
@@ -166,9 +172,12 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
     @SuppressLint("WrongViewCast")
     private void IntentUI() {
-        iv_camp_edit=findViewById(R.id.iv_camp_edit);
+        add_new_step = findViewById(R.id.add_new_step);
+        tv_add_new_step = findViewById(R.id.tv_add_new_step);
+        tv_add_new_step.setOnClickListener(this);
+        iv_camp_edit = findViewById(R.id.iv_camp_edit);
         iv_camp_edit.setOnClickListener(this);
-        layout_name=findViewById(R.id.layout_name);
+        layout_name = findViewById(R.id.layout_name);
         mMainLayout = findViewById(R.id.mMainLayout);
         add_icon = findViewById(R.id.add_icon);
         add_icon.setVisibility(View.GONE);
@@ -238,6 +247,36 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
+            case R.id.tv_add_new_step:
+                if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
+
+                    onBackPressed();
+                    //StartCampignApi();
+
+                } else if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read_name")) {
+
+                    onBackPressed();
+                    //StartCampignApi();
+
+                } else {
+                    SessionManager.setCampaign_type("");
+                    SessionManager.setCampaign_type_name("");
+                    SessionManager.setCampaign_minute("00");
+                    SessionManager.setCampaign_Day("1");
+                    CampaignTask campaignTask = new CampaignTask();
+                    campaignTask.setStepNo(0);
+                    campaignTask.setSequenceId(sequence_id);
+                    List<CampaignTask> campaignTaskList = new ArrayList<>();
+                    campaignTaskList.add(campaignTask);
+                    SessionManager.setTask(getApplicationContext(), campaignTaskList);
+
+                    Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
+                    intent.putExtra("flag", "new");
+                    startActivity(intent);
+                    finish();
+                }
+                break;
             case R.id.iv_back:
                 onBackPressed();
 
@@ -300,10 +339,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     startActivity(in);
                     finish();
                 } else {
-                    if(!tv_name.getText().toString().equals("")){
+                    if (!tv_name.getText().toString().equals("")) {
                         AddName();
-                    }else {
-                        Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.enter_campaign_name),false);
+                    } else {
+                        Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.enter_campaign_name), false);
                     }
                 }
 
@@ -319,9 +358,9 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 name_intent.putExtra("sequence_id", sequence_id);
                 name_intent.putExtra("seq_task_id", sequence_task_id);
                 name_intent.putExtra("sequence_Name", tv_name.getText().toString());
-                name_intent.putExtra("flag","edit");
+                name_intent.putExtra("flag", "edit");
                 startActivity(name_intent);
-              //  finish();
+                //  finish();
                 break;
 
             case R.id.iv_camp_edit:
@@ -333,7 +372,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 name_intent1.putExtra("sequence_id", sequence_id);
                 name_intent1.putExtra("seq_task_id", sequence_task_id);
                 name_intent1.putExtra("sequence_Name", tv_name.getText().toString());
-                name_intent1.putExtra("flag","edit");
+                name_intent1.putExtra("flag", "edit");
                 startActivity(name_intent1);
                 //finish();
                 break;
@@ -406,8 +445,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("minute", sequenceTask.getMinute());
                     intent.putExtra("header", sequenceTask.getContentHeader());
                     intent.putExtra("step", sequenceTask.getStepNo());
-                    intent.putExtra("from_ac",sequenceTask.getMail_module());
-                    intent.putExtra("from_ac_id",sequenceTask.getSent_tbl_id());
+                    intent.putExtra("from_ac", sequenceTask.getMail_module());
+                    intent.putExtra("from_ac_id", sequenceTask.getSent_tbl_id());
                     startActivity(intent);
                     finish();
                     // startActivity(new Intent(getActivity(),First_Step_Activity.class));
@@ -442,8 +481,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("type", sequenceTask.getType());
                     intent.putExtra("minute", sequenceTask.getMinute());
                     intent.putExtra("step", sequenceTask.getStepNo());
-                    intent.putExtra("from_ac",sequenceTask.getMail_module());
-                    intent.putExtra("from_ac_id",sequenceTask.getSent_tbl_id());
+                    intent.putExtra("from_ac", sequenceTask.getMail_module());
+                    intent.putExtra("from_ac_id", sequenceTask.getSent_tbl_id());
                     startActivity(intent);
                     //  SessionManager.setTask(getActivity(),campaignTasks1);
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
@@ -551,11 +590,17 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
                             CampaignTask_overview user_model1 = new Gson().fromJson(headerString, listType);
                             contect_count.setText(user_model1.get0().getProspect() + " Prospects");
-                            sequence_task_id = user_model1.getSequenceTask().get(0).getId();
                             main_data.clear();
                             campaign_overviewAdapter.remove_all();
                             main_data = user_model1.getSequenceTask();
-                            campaign_overviewAdapter.addAll(main_data);
+                            if (main_data.size() == 0) {
+                                add_new_step.setVisibility(View.VISIBLE);
+
+                            } else {
+                                add_new_step.setVisibility(View.GONE);
+                                sequence_task_id = user_model1.getSequenceTask().get(0).getId();
+                                campaign_overviewAdapter.addAll(main_data);
+                            }
                             Camp_name = user_model1.get0().getSeqName();
                             tv_name.setText(user_model1.get0().getSeqName());
                             topUserListDataAdapter = new TopUserListDataAdapter(Campaign_Preview.this, getApplicationContext(), user_model1.getSequenceProspects());
@@ -703,8 +748,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             holder.userName.setText(inviteUserDetails.getFirstname());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            if(Global.IsNotNull(inviteUserDetails.getFirstname())||!inviteUserDetails.getFirstname().equals("")){
-                String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+            if (Global.IsNotNull(inviteUserDetails.getFirstname()) || !inviteUserDetails.getFirstname().equals("")) {
+                String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
 
                 if (second_latter.equals("")) {
                     current_latter = first_latter;
@@ -718,9 +763,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     second_latter = first_latter;
                 }
             }
-
-
-
 
 
             holder.no_image.setVisibility(View.VISIBLE);
@@ -824,21 +866,41 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
                         movieViewHolder.tv_add_new_step.setText(getString(R.string.txt_campaign));
                         movieViewHolder.iv_manu.setVisibility(View.GONE);
-                    }
-
-                    else if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read_name")) {
+                    } else if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read_name")) {
                         movieViewHolder.tv_add_new_step.setText(getString(R.string.txt_campaign));
                         movieViewHolder.iv_manu.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         movieViewHolder.tv_add_new_step.setText("Add New Step");
                         movieViewHolder.iv_manu.setVisibility(View.VISIBLE);
                     }
 
                     if (position == movieList.size() - 1) {
-                        movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
-                        int num = movieList.size() + 1;
-                        movieViewHolder.tv_add_new_step_num.setText(String.valueOf(num));
+                        if (movieList.size() < 10) {
+                            movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
+                            int num = movieList.size() + 1;
+                            movieViewHolder.tv_add_new_step_num.setText(String.valueOf(num));
+                            movieViewHolder.cam_line.setVisibility(View.VISIBLE);
+                        } else {
+                            if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read")) {
+                                int num = movieList.size() + 1;
+                                movieViewHolder.tv_add_new_step_num.setText(String.valueOf(num));
+                                movieViewHolder.cam_line.setVisibility(View.VISIBLE);
+                                movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
+
+                            }
+                            else if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read_name")) {
+                                int num = movieList.size() + 1;
+                                movieViewHolder.tv_add_new_step_num.setText(String.valueOf(num));
+
+                                movieViewHolder.cam_line.setVisibility(View.VISIBLE);
+                                movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                movieViewHolder.cam_line.setVisibility(View.INVISIBLE);
+                                movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
+                            }
+
+                        }
                     } else {
                         movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
                     }
@@ -900,15 +962,12 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                                 onBackPressed();
                                 //StartCampignApi();
 
-                            }
-
-                           else if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read_name")) {
+                            } else if (SessionManager.getCampign_flag(Campaign_Preview.this).equals("read_name")) {
 
                                 onBackPressed();
                                 //StartCampignApi();
 
-                            }
-                            else {
+                            } else {
                                 SessionManager.setCampaign_type("");
                                 SessionManager.setCampaign_type_name("");
                                 SessionManager.setCampaign_minute("00");
@@ -967,8 +1026,15 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
 
         public void remove_item(int position) {
-            movieList.remove(position);
-            notifyDataSetChanged();
+            if (movieList.size() == 1) {
+                movieList.remove(position);
+                notifyDataSetChanged();
+                add_new_step.setVisibility(View.VISIBLE);
+            } else {
+                add_new_step.setVisibility(View.GONE);
+                movieList.remove(position);
+                notifyDataSetChanged();
+            }
         }
 
         public void remove_all() {
@@ -1008,7 +1074,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
             TextView tv_add_new_step_num, tv_item_num, tv_title, tv_detail,
                     tv_email_title, tv_email_detail, tv_add_new_step;
-            View line_one;
+            View line_one, cam_line;
             LinearLayout add_new_step_layout, run_time_layout, email_layout, run_time_email_layout;
             ImageView iv_manu, iv_email_manu, iv_message, iv_email;
             EditText edit_day, edit_minutes, edit_email_day, edit_email_minutes;
@@ -1016,6 +1082,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
+                cam_line = itemView.findViewById(R.id.cam_line);
                 iv_message = itemView.findViewById(R.id.iv_message);
                 iv_email = itemView.findViewById(R.id.iv_email);
                 add_new_step_layout = itemView.findViewById(R.id.add_new_step);
