@@ -254,44 +254,54 @@ public class Verification_web extends AppCompatActivity implements ConnectivityR
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
 
-            if(Global.IsNotNull(Activtiy_back)&&Activtiy_back.equals("zoom")){
+            try {
+                if(Global.IsNotNull(Activtiy_back)&&Activtiy_back.equals("zoom")){
 
-                String hostURL = url.substring(url.lastIndexOf("?") + 1, url.length());
-                String code = url.substring(url.lastIndexOf("=") + 1, url.length());
+                    String hostURL = url.substring(url.lastIndexOf("?") + 1, url.length());
+                    String code = url.substring(url.lastIndexOf("=") + 1, url.length());
 
-                String first4char = hostURL.substring(0,5);
+                    String first4char = hostURL.substring(0,5);
 
-                // decode
-                if (first4char.equals("code=")) {
+                    // decode
+                    if (first4char.equals("code=")) {
 
-                    try {
-                        if(Global.isNetworkAvailable(Verification_web.this, MainActivity.mMainLayout)) {
-                            /*Zoom Tokens Generation*/
-                            Zoom_helpZoomOauth(code);
+                        try {
+                            if(Global.isNetworkAvailable(Verification_web.this, MainActivity.mMainLayout)) {
+                                /*Zoom Tokens Generation*/
+                                Zoom_helpZoomOauth(code);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+                    }
+                    else {
+                        try {
+                            webView.loadUrl(url);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
                     }
 
-                }else {
-                    webView.loadUrl(url);
                 }
+                else {
+                    String hostURL = url.substring(url.lastIndexOf("/") + 1, url.length());
 
-            }else {
-                String hostURL = url.substring(url.lastIndexOf("/") + 1, url.length());
-
-                String AccessURL = url.substring(url.lastIndexOf("/")- 2, url.length());
-                String[] bits = AccessURL.split("/");
-                String access = bits[bits.length-2];
-                String val2 = "";
-                if (access.equals("1")) {
-                    try {
-                        byte[] tmp2 = Base64.decode(hostURL, Base64.DEFAULT);
-                        val2 = new String(tmp2, "UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                    String AccessURL = url.substring(url.lastIndexOf("/")- 2, url.length());
+                    String[] bits = AccessURL.split("/");
+                    String access = bits[bits.length-2];
+                    String val2 = "";
+                    if (access.equals("1")) {
+                        try {
+                            byte[] tmp2 = Base64.decode(hostURL, Base64.DEFAULT);
+                            val2 = new String(tmp2, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
 
 
             /*    // decode
@@ -305,19 +315,25 @@ public class Verification_web extends AppCompatActivity implements ConnectivityR
                     }
                 }
 */
-                if (Global.emailValidator(val2)) {
-                    try {
-                        if (Global.isNetworkAvailable(Verification_web.this, mMainLayout)) {
+                    if (Global.emailValidator(val2)) {
+                        try {
+                            if (Global.isNetworkAvailable(Verification_web.this, mMainLayout)) {
                                 GoogleAuth(val2);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
-                } else {
-                    webView.loadUrl(url);
+                    } else {
+                        webView.loadUrl(url);
+                    }
                 }
             }
+            catch (Exception exception)
+            {
+
+            }
+
 
 
             return true;

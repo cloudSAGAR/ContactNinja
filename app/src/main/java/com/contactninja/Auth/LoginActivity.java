@@ -275,7 +275,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
         spannableString.setSpan(clickableSpan1, 41,59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv_terms.setText(spannableString);
-        tv_terms.setMovementMethod(LinkMovementMethod.getInstance());
+        try {
+            tv_terms.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        catch (Exception e)
+        {
+
+        }
 
     }
 

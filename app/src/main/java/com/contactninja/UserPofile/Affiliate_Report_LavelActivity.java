@@ -146,7 +146,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
                     }
                     lavelAdapter.updateList(temp);
                     //groupContectAdapter.notifyDataSetChanged();
-                    contect_search.setText("");
+                    //contect_search.setText("");
                 }
 
                 @Override
