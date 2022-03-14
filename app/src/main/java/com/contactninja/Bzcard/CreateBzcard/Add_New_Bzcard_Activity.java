@@ -165,18 +165,20 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         }else {
             SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
            // Log.e("User Data Is ", user_data.getUser().getUserprofile().getProfilePic());
-            if (!user_data.getUser().getUserprofile().getProfilePic().equals("")) {
-                Glide.with(getApplicationContext()).
-                        load(user_data.getUser().getUserprofile().getProfilePic()).
-                        into(iv_user);
-                iv_user.setVisibility(View.VISIBLE);
-                pulse_icon.setVisibility(View.GONE);
-                bzcard_model = SessionManager.getBzcard(getApplicationContext());
-                bzcard_model.getBzcardFieldsModel().setProfile_image(user_data.getUser().getUserprofile().getProfilePic());
-                SessionManager.setBzcard(getApplicationContext(),bzcard_model);
-            } else {
-                iv_user.setVisibility(View.GONE);
-                pulse_icon.setVisibility(View.VISIBLE);
+            if(Global.IsNotNull(user_data.getUser().getUserprofile().getProfilePic())){
+                if (!user_data.getUser().getUserprofile().getProfilePic().equals("")) {
+                    Glide.with(getApplicationContext()).
+                            load(user_data.getUser().getUserprofile().getProfilePic()).
+                            into(iv_user);
+                    iv_user.setVisibility(View.VISIBLE);
+                    pulse_icon.setVisibility(View.GONE);
+                    bzcard_model = SessionManager.getBzcard(getApplicationContext());
+                    bzcard_model.getBzcardFieldsModel().setProfile_image(user_data.getUser().getUserprofile().getProfilePic());
+                    SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+                } else {
+                    iv_user.setVisibility(View.GONE);
+                    pulse_icon.setVisibility(View.VISIBLE);
+                }
             }
             if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCover_image())) {
                 Glide.with(getApplicationContext()).

@@ -292,7 +292,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
             layout_bod.setEnabled(true);
             edt_mobile_no.setEnabled(false);
-            edt_mobile_no.setText(user_data_model.getContactNumber());
+            String main_data = user_data_model.getContactNumber().replace("+" + String.valueOf(Global.Countrycode(getActivity(), user_data_model.getContactNumber())), "");
+            edt_mobile_no.setText(main_data);
             ev_affiliatecode.setText(user_data_model.getReferenceCode());
             edt_email.setText(user_data_model.getEmail());
             edt_email.setEnabled(false);

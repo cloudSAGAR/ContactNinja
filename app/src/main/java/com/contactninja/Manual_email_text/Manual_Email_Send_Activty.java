@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -89,7 +90,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     LoadingDialog loadingDialog;
     ImageView iv_back;
     TextView save_button, tv_use_tamplet;
-    CoordinatorLayout mMainLayout;
+    RelativeLayout mMainLayout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
     PicUpTextAdepter picUpTextAdepter;

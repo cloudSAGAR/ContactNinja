@@ -302,7 +302,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
         if(bzcard_model.isEdit()){
             ev_first.setText(bzcard_model.getBzcardFieldsModel().getFirst_name());
             ev_last_name.setText(bzcard_model.getBzcardFieldsModel().getLast_name());
-            edt_mobile_no.setText(bzcard_model.getBzcardFieldsModel().getContant_number());
+            String main_data = bzcard_model.getBzcardFieldsModel().getContant_number().replace("+" + String.valueOf(Global.Countrycode(getActivity(), bzcard_model.getBzcardFieldsModel().getContant_number())), "");
+            edt_mobile_no.setText(main_data);
             //Country Code Set
             ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(), bzcard_model.getBzcardFieldsModel().getContant_number())));
             ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(), bzcard_model.getBzcardFieldsModel().getContant_number()));
@@ -314,12 +315,20 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
             ev_job.setText(bzcard_model.getBzcardFieldsModel().getJobtitle());
             ev_address.setText(bzcard_model.getBzcardFieldsModel().getAddrees());
             ev_zip.setText(bzcard_model.getBzcardFieldsModel().getZipcode());
-            if(!bzcard_model.getBzcardFieldsModel().getCompany_logo().equals("")){
+            if(!bzcard_model.getBzcardFieldsModel().getCompany_logo().equals("")||
+                !bzcard_model.getBzcardFieldsModel().getCompany_logo_url().equals("")){
+                    if(!bzcard_model.getBzcardFieldsModel().getCompany_logo().equals("")){
+                        Glide.with(getActivity()).
+                                load(bzcard_model.getBzcardFieldsModel().getCompany_logo()).
+                                apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
+                                into(iv_company_icon);
+                    }else {
+                        Glide.with(getActivity()).
+                                load(bzcard_model.getBzcardFieldsModel().getCompany_logo_url()).
+                                apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
+                                into(iv_company_icon);
 
-                Glide.with(getActivity()).
-                        load(bzcard_model.getBzcardFieldsModel().getCompany_logo()).
-                        apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
-                        into(iv_company_icon);
+                    }
                 iv_company_icon.setVisibility(View.VISIBLE);
                 iv_company_dummy.setVisibility(View.GONE);
 
@@ -341,7 +350,8 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
             bzcard_model.getBzcardFieldsModel().setFirst_name(user_data.getUser().getFirstName());
             ev_last_name.setText(user_data.getUser().getLastName());
             bzcard_model.getBzcardFieldsModel().setLast_name(user_data.getUser().getLastName());
-            edt_mobile_no.setText(user_data.getUser().getContactNumber());
+            String main_data = user_data.getUser().getContactNumber().replace("+" + String.valueOf(Global.Countrycode(getActivity(), user_data.getUser().getContactNumber())), "");
+            edt_mobile_no.setText(main_data);
             bzcard_model.getBzcardFieldsModel().setContant_number(user_data.getUser().getContactNumber());
             //Country Code Set
             ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(), user_data.getUser().getContactNumber())));
@@ -361,7 +371,40 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
             bzcard_model.getBzcardFieldsModel().setAddrees(user_data.getUser().getUserprofile().getAddress());
             ev_zip.setText(user_data.getUser().getUserprofile().getZipcode());
             bzcard_model.getBzcardFieldsModel().setZipcode(user_data.getUser().getUserprofile().getZipcode());
+
+
+            if(!bzcard_model.getBzcardFieldsModel().getCompany_logo().equals("")||
+                    !bzcard_model.getBzcardFieldsModel().getCompany_logo_url().equals("")){
+                if(!bzcard_model.getBzcardFieldsModel().getCompany_logo().equals("")){
+                    Glide.with(getActivity()).
+                            load(bzcard_model.getBzcardFieldsModel().getCompany_logo()).
+                            apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
+                            into(iv_company_icon);
+                }else {
+                    Glide.with(getActivity()).
+                            load(bzcard_model.getBzcardFieldsModel().getCompany_logo_url()).
+                            apply(RequestOptions.bitmapTransform(new RoundedCorners(5))).
+                            into(iv_company_icon);
+
+                }
+                iv_company_icon.setVisibility(View.VISIBLE);
+                iv_company_dummy.setVisibility(View.GONE);
+
+
+                tv_reupload.setVisibility(View.VISIBLE);
+                tv_image_size.setVisibility(View.GONE);
+            }else {
+                iv_company_icon.setVisibility(View.GONE);
+                iv_company_dummy.setVisibility(View.VISIBLE);
+
+                tv_reupload.setVisibility(View.GONE);
+                tv_image_size.setVisibility(View.VISIBLE);
+            }
+
+
             SessionManager.setBzcard(getActivity(), bzcard_model);
+
+
         }
     }
 
