@@ -21,6 +21,10 @@ import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Dashboard.Dashboard;
+import com.contactninja.Model.Dashboard.Des_Broadcast;
+import com.contactninja.Model.Dashboard.Des_Sequence;
+import com.contactninja.Model.Dashboard.Des_Task;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -87,6 +91,9 @@ public class SessionManager {
     public static final String Broadcast_contect="Broadcast_contect";
     public static final String Bzcard="Bzcard";
     public static final String Add_newcontect="add_new_contect";
+    public static final String destasks="des_tasks";
+    public static final String DesBroadcast="Des_Broadcast";
+    public static final String DesSequence="Des_Sequence";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -870,5 +877,78 @@ public class SessionManager {
 */
         editor.apply();
     }
+
+
+
+
+
+
+
+
+
+
+ /** Dashboard api list */
+
+ public static List<Des_Task> getDes_Task(Context context) {
+
+     Gson gson = new Gson();
+     String json = pref.getString(destasks, null);
+     Type type = new TypeToken<ArrayList<Des_Task>>() {
+     }.getType();
+     List<Des_Task> des_tasks = gson.fromJson(json, type);
+     if (des_tasks == null) {
+         des_tasks = new ArrayList<>();
+     }
+     return des_tasks;
+
+ }
+
+    public static void setDes_Task(Context context, List<Des_Task> des_tasks) {
+        Gson gson = new Gson();
+        String json = gson.toJson(des_tasks);
+        editor.putString(destasks, json);
+        editor.apply();
+    }
+    public static List<Des_Broadcast> getDes_Broadcast(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(DesBroadcast, null);
+        Type type = new TypeToken<ArrayList<Des_Broadcast>>() {
+        }.getType();
+        List<Des_Broadcast> des_broadcasts = gson.fromJson(json, type);
+        if (des_broadcasts == null) {
+            des_broadcasts = new ArrayList<>();
+        }
+        return des_broadcasts;
+
+    }
+
+    public static void setDes_Broadcast(Context context, List<Des_Broadcast> des_broadcasts) {
+        Gson gson = new Gson();
+        String json = gson.toJson(des_broadcasts);
+        editor.putString(DesBroadcast, json);
+        editor.apply();
+    }
+    public static List<Des_Sequence> getDes_Sequence(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(DesSequence, null);
+        Type type = new TypeToken<ArrayList<Des_Sequence>>() {
+        }.getType();
+        List<Des_Sequence> des_sequences = gson.fromJson(json, type);
+        if (des_sequences == null) {
+            des_sequences = new ArrayList<>();
+        }
+        return des_sequences;
+
+    }
+
+    public static void setDes_Sequence(Context context, List<Des_Sequence> des_sequences) {
+        Gson gson = new Gson();
+        String json = gson.toJson(des_sequences);
+        editor.putString(DesSequence, json);
+        editor.apply();
+    }
+
 
 }

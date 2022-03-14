@@ -3,6 +3,7 @@ package com.contactninja.Fragment.Home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -77,13 +78,11 @@ public class Broadcast_Fragment extends Fragment {
         user_data = SessionManager.getGetUserdata(getActivity());
         user_id = user_data.getUser().getId();
         IntentUI(view);
-        try {
-            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                Api_Dashboard();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        des_broadcasts =SessionManager.getDes_Broadcast(getActivity());
+        broadcastListAdepter.add(des_broadcasts);
+        MyAsyncTasks myAsyncTasks=new MyAsyncTasks();
+        myAsyncTasks.execute();
 
 
         return view;
@@ -94,8 +93,45 @@ public class Broadcast_Fragment extends Fragment {
         iv_demo=view.findViewById(R.id.iv_demo);
         rv_broadcast_list=view.findViewById(R.id.rv_broadcast_list);
 
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rv_broadcast_list.setLayoutManager(layoutManager);
+        broadcastListAdepter = new BroadcastListAdepter(getActivity(), new ArrayList<>());
+        rv_broadcast_list.setAdapter(broadcastListAdepter);
     }
 
+    @SuppressLint("StaticFieldLeak")
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                    Api_Dashboard();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+    }
     private void Api_Dashboard() throws JSONException {
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
@@ -126,18 +162,20 @@ public class Broadcast_Fragment extends Fragment {
             public void success(Response<ApiResponse> response) {
 
 
+                SessionManager.setDes_Broadcast(getActivity(),new ArrayList<>());
+
                 Gson gson = new Gson();
                 String headerString = gson.toJson(response.body().getData());
                 Type listType = new TypeToken<Dashboard>() {
                 }.getType();
                 dashboard = new Gson().fromJson(headerString, listType);
                 des_broadcasts = dashboard.getBroadcast();
+                SessionManager.setDes_Broadcast(getActivity(),des_broadcasts);
 
                 if(Global.IsNotNull(des_broadcasts)&&des_broadcasts.size()!=0){
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                    rv_broadcast_list.setLayoutManager(layoutManager);
-                    broadcastListAdepter = new BroadcastListAdepter(getActivity(), des_broadcasts);
-                    rv_broadcast_list.setAdapter(broadcastListAdepter);
+                    broadcastListAdepter.clear();
+                    broadcastListAdepter.add(des_broadcasts);
+
                     rv_broadcast_list.setVisibility(View.VISIBLE);
                     iv_demo.setVisibility(View.GONE);
                 }else {
@@ -233,6 +271,15 @@ public class Broadcast_Fragment extends Fragment {
             return broadcastList.size();
         }
 
+        public void add(List<Des_Broadcast> des_broadcasts) {
+            broadcastList=des_broadcasts;
+            notifyDataSetChanged();
+        }
+
+        public void clear() {
+            broadcastList.clear();
+            notifyDataSetChanged();
+        }
 
 
         public class InviteListDataclass extends RecyclerView.ViewHolder {

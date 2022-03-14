@@ -2,6 +2,7 @@ package com.contactninja.Fragment.Home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,22 +74,55 @@ public class Task_Fragment extends Fragment  {
         IntentUI(view);
 
 
-        try {
-            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                Api_Dashboard();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        des_tasks=SessionManager.getDes_Task(getActivity());
+        taslListAdepter.add(des_tasks);
+        MyAsyncTasks myAsyncTasks=new MyAsyncTasks();
+        myAsyncTasks.execute();
+
         return view;
+    }
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                    Api_Dashboard();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
     }
 
     private void IntentUI(View view) {
         iv_demo=view.findViewById(R.id.iv_demo);
         rv_Task_list=view.findViewById(R.id.rv_Task_list);
 
-    }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rv_Task_list.setLayoutManager(layoutManager);
+        taslListAdepter = new TaslListAdepter(getActivity(), new ArrayList<>());
+        rv_Task_list.setAdapter(taslListAdepter);
+        rv_Task_list.setVisibility(View.VISIBLE);
 
+    }
 
     private void Api_Dashboard() throws JSONException {
         JSONObject obj = new JSONObject();
@@ -101,7 +135,6 @@ public class Task_Fragment extends Fragment  {
 
 
         array.put("TASK");
-
 
         try {
             // Add the JSONArray to the JSONObject
@@ -119,6 +152,7 @@ public class Task_Fragment extends Fragment  {
             @Override
             public void success(Response<ApiResponse> response) {
 
+                SessionManager.setDes_Task(getActivity(),new ArrayList<>());
 
                 Gson gson = new Gson();
                 String headerString = gson.toJson(response.body().getData());
@@ -126,13 +160,11 @@ public class Task_Fragment extends Fragment  {
                 }.getType();
                 dashboard = new Gson().fromJson(headerString, listType);
                 des_tasks = dashboard.getTask();
+                SessionManager.setDes_Task(getActivity(),des_tasks);
 
                 if(Global.IsNotNull(des_tasks)&&des_tasks.size()!=0){
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                    rv_Task_list.setLayoutManager(layoutManager);
-                    taslListAdepter = new TaslListAdepter(getActivity(), des_tasks);
-                    rv_Task_list.setAdapter(taslListAdepter);
-                    rv_Task_list.setVisibility(View.VISIBLE);
+                    taslListAdepter.clear();
+                    taslListAdepter.add(des_tasks);
                     iv_demo.setVisibility(View.GONE);
                 }else {
                     rv_Task_list.setVisibility(View.GONE);
@@ -237,6 +269,15 @@ public class Task_Fragment extends Fragment  {
             return taskList.size();
         }
 
+        public void add(List<Des_Task> des_tasks) {
+            taskList=des_tasks;
+            notifyDataSetChanged();
+        }
+
+        public void clear() {
+            taskList.clear();
+            notifyDataSetChanged();
+        }
 
 
         public class InviteListDataclass extends RecyclerView.ViewHolder {

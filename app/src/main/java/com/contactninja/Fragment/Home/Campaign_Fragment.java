@@ -2,6 +2,7 @@ package com.contactninja.Fragment.Home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,20 +10,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Dashboard.Dashboard;
-import com.contactninja.Model.Dashboard.Des_Broadcast;
 import com.contactninja.Model.Dashboard.Des_Sequence;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -43,9 +39,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Response;
 
@@ -75,13 +69,14 @@ public class Campaign_Fragment extends Fragment {
         user_data = SessionManager.getGetUserdata(getActivity());
         user_id = user_data.getUser().getId();
         IntentUI(view);
-        try {
-            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                Api_Dashboard();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+
+        des_sequences =SessionManager.getDes_Sequence(getActivity());
+        campaingListAdepter.add(des_sequences);
+        MyAsyncTasks myAsyncTasks=new MyAsyncTasks();
+        myAsyncTasks.execute();
+
+
 
 
         return view;
@@ -91,8 +86,44 @@ public class Campaign_Fragment extends Fragment {
         iv_demo=view.findViewById(R.id.iv_demo);
         rv_campaign_list=view.findViewById(R.id.rv_campaign_list);
 
-    }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rv_campaign_list.setLayoutManager(layoutManager);
+        campaingListAdepter = new CampaingListAdepter(getActivity(), new ArrayList<>());
+        rv_campaign_list.setAdapter(campaingListAdepter);
 
+    }
+    @SuppressLint("StaticFieldLeak")
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                    Api_Dashboard();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+    }
     private void Api_Dashboard() throws JSONException {
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
@@ -122,19 +153,18 @@ public class Campaign_Fragment extends Fragment {
             @Override
             public void success(Response<ApiResponse> response) {
 
-
+                SessionManager.setDes_Sequence(getActivity(),new ArrayList<>());
                 Gson gson = new Gson();
                 String headerString = gson.toJson(response.body().getData());
                 Type listType = new TypeToken<Dashboard>() {
                 }.getType();
                 dashboard = new Gson().fromJson(headerString, listType);
                 des_sequences = dashboard.getSequence();
+                SessionManager.setDes_Sequence(getActivity(),des_sequences);
 
                 if(Global.IsNotNull(des_sequences)&&des_sequences.size()!=0){
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                    rv_campaign_list.setLayoutManager(layoutManager);
-                    campaingListAdepter = new CampaingListAdepter(getActivity(), des_sequences);
-                    rv_campaign_list.setAdapter(campaingListAdepter);
+                  campaingListAdepter.clear();
+                    campaingListAdepter.add(des_sequences);
                     rv_campaign_list.setVisibility(View.VISIBLE);
                     iv_demo.setVisibility(View.GONE);
                 }else {
@@ -155,12 +185,12 @@ public class Campaign_Fragment extends Fragment {
 
     public class CampaingListAdepter extends RecyclerView.Adapter<CampaingListAdepter.InviteListDataclass> {
 
-        List<Des_Sequence> des_sequences;
+        List<Des_Sequence> desSequenceList;
         public Context mCtx;
 
-        public CampaingListAdepter(Context context,List<Des_Sequence> des_sequences) {
+        public CampaingListAdepter(Context context,List<Des_Sequence> desSequenceList) {
             this.mCtx = context;
-            this.des_sequences = des_sequences;
+            this.desSequenceList = desSequenceList;
         }
 
         @NonNull
@@ -174,7 +204,7 @@ public class Campaign_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CampaingListAdepter.InviteListDataclass holder, int position) {
 
-            Des_Sequence item = des_sequences.get(position);
+            Des_Sequence item = desSequenceList.get(position);
             holder.tv_camp_name.setText(item.getSeqName());
             holder.tv_total_contact.setText(String.valueOf(item.getMaxProspect()));
 
@@ -191,9 +221,19 @@ public class Campaign_Fragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return des_sequences.size();
+            return desSequenceList.size();
         }
 
+        public void add(List<Des_Sequence> des_sequences) {
+            desSequenceList=des_sequences;
+            notifyDataSetChanged();
+        }
+
+        public void clear() {
+            desSequenceList.clear();
+            notifyDataSetChanged();
+
+        }
 
 
         public class InviteListDataclass extends RecyclerView.ViewHolder {

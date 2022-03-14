@@ -863,18 +863,21 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                                 startActivity(intent);
                             }
                         }else {
-                            String[] selet_item = getResources().getStringArray(R.array.auto_Select);
+                            if(!item.getStage().equals("FINISHED")) {
 
-                            switch (item.getStage()) {
-                                case "PAUSED":
-                                    showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
-                                            getResources().getString(R.string.manual_aleart_paused_des), selet_item[1],item.getId());
-                                    break;
-                                case "NOT_STARTED":
-                                    showAlertDialogButtonClicked(getResources().getString(R.string.auto_aleart_Paused),
-                                            getResources().getString(R.string.auto_aleart_Paused_des), selet_item[0],item.getId());
-                                    break;
+                                String[] selet_item = getResources().getStringArray(R.array.auto_Select);
 
+                                switch (item.getStage()) {
+                                    case "PAUSED":
+                                        showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
+                                                getResources().getString(R.string.manual_aleart_paused_des), selet_item[1], item.getId());
+                                        break;
+                                    case "NOT_STARTED":
+                                        showAlertDialogButtonClicked(getResources().getString(R.string.auto_aleart_Paused),
+                                                getResources().getString(R.string.auto_aleart_Paused_des), selet_item[0], item.getId());
+                                        break;
+
+                                }
                             }
                         }
                     }

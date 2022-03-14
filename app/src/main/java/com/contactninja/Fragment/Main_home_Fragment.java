@@ -264,7 +264,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             @Override
             public void success(Response<ApiResponse> response) {
 
-
                 Gson gson = new Gson();
                 String headerString = gson.toJson(response.body().getData());
                 Type listType = new TypeToken<Dashboard>() {
@@ -272,10 +271,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 dashboard = new Gson().fromJson(headerString, listType);
                 des_taskCounter = dashboard.getTaskCounter();
                 des_affiliateInfo = dashboard.getAffiliate();
-
-
-
-
 
                 setdata();
 
@@ -329,7 +324,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     private void intentView(View view) {
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
-        iv_toolbar_notification.setVisibility(View.VISIBLE);
+        iv_toolbar_notification.setVisibility(View.GONE);
 
       /*  iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
         iv_toolbar_select.setVisibility(View.VISIBLE);
