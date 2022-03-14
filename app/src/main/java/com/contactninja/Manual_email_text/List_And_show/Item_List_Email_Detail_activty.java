@@ -147,6 +147,18 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             e.printStackTrace();
         }
 
+
+        try {
+            if (Global.isNetworkAvailable(Item_List_Email_Detail_activty.this, MainActivity.mMainLayout)) {
+                loadingDialog.showLoadingDialog();
+                Api_Details();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
         templateClick = this;
 
 
@@ -263,27 +275,14 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            if (Global.isNetworkAvailable(Item_List_Email_Detail_activty.this, MainActivity.mMainLayout)) {
-                loadingDialog.showLoadingDialog();
-                Api_Details();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void Mail_listDetails() {
 
         userLinkedGmailList = sessionManager.getUserLinkedGmail(getApplicationContext());
         Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
-        if (userLinkedGmailList.size() == 0) {
-            if (FirstTime == 0) {
-                FirstTime = 1;
-                startActivity(new Intent(getApplicationContext(), Verification_web.class));
-            }
-            iv_more.setVisibility(View.GONE);
-        } else if (userLinkedGmailList.size() == 1) {
+       if (userLinkedGmailList.size() == 1) {
             iv_more.setVisibility(View.GONE);
         } else {
             iv_more.setVisibility(View.VISIBLE);

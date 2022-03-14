@@ -343,6 +343,7 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                     UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
 
                     List<UserLinkedList.UserLinkedGmail>  List=userLinkedGmail.getUserLinkedGmail();
+                    SessionManager.setUserLinkedGmail(Add_Camp_Tab_Select_Activity.this,List);
                     if (List.size() == 0) {
                         Global.Messageshow(Add_Camp_Tab_Select_Activity.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
                     }else {

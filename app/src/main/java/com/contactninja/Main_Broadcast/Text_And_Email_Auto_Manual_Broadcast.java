@@ -309,6 +309,7 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
                     UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
 
                     List<UserLinkedList.UserLinkedGmail>  List=userLinkedGmail.getUserLinkedGmail();
+                    SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual_Broadcast.this,List);
                     if (List.size() == 0) {
                         Global.Messageshow(Text_And_Email_Auto_Manual_Broadcast.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
                     }else {

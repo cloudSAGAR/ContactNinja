@@ -253,12 +253,12 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
                     UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
 
                     List<UserLinkedList.UserLinkedGmail>  List=userLinkedGmail.getUserLinkedGmail();
+                    SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual.this,List);
                     if (List.size() == 0) {
                         Global.Messageshow(Text_And_Email_Auto_Manual.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
                     }else {
                         if(List.size()==1){
                             if(List.get(0).getIsDefault()==1){
-                                SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual.this,List);
                                 SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
                                 startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
                                 finish();
@@ -266,7 +266,6 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
                                 Global.Messageshow(Text_And_Email_Auto_Manual.this,mMainLayout,getResources().getString(R.string.setting_mail_defoult),false);
                             }
                         }else {
-                            SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual.this,List);
                             SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
                             startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
                             finish();

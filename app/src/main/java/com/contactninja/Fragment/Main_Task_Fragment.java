@@ -3,6 +3,7 @@ package com.contactninja.Fragment;
 import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,11 +33,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.List_And_show.Item_List_Email_Detail_activty;
 import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
+import com.contactninja.Manual_email_text.Manual_Auto_Task_Name_Activity;
 import com.contactninja.Manual_email_text.Manual_Shooz_Time_Date_Activity;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.EmailActivityListModel;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -718,10 +721,10 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     public class ListItemAdepter extends RecyclerView.Adapter<ListItemAdepter.viewData> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
-        public Context mCtx;
+        public Activity mCtx;
         List<ManualTaskModel> manualTaskModelList;
 
-        public ListItemAdepter(Context context, List<ManualTaskModel> manualTaskModelList) {
+        public ListItemAdepter(Activity context, List<ManualTaskModel> manualTaskModelList) {
             this.mCtx = context;
             this.manualTaskModelList = manualTaskModelList;
         }
@@ -844,39 +847,37 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 holder.layout_contec.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (!item.getManage_by().toString().equals("AUTO")) {
-                            if (item.getType().toString().equals("SMS")) {
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                    return;
-                                }
-                                mLastClickTime = SystemClock.elapsedRealtime();
-                                Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
-                                intent.putExtra("record_id", item.getId());
-                                startActivity(intent);
-                            } else {
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                    return;
-                                }
-                                mLastClickTime = SystemClock.elapsedRealtime();
-                                Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
-                                intent.putExtra("record_id", item.getId());
-                                startActivity(intent);
+                        if (!item.getManage_by().toString().equals("AUTO")||
+                        !item.getStatus().equals("FINISHED")) {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
                             }
+                            mLastClickTime = SystemClock.elapsedRealtime();
+
+                            try {
+                                if(Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
+                                    Mail_Checklist(item);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         }else {
-                            if(!item.getStage().equals("FINISHED")) {
+                            if(Global.IsNotNull(item.getStage())){
+                                if(!item.getStage().equals("FINISHED")) {
 
-                                String[] selet_item = getResources().getStringArray(R.array.auto_Select);
+                                    String[] selet_item = getResources().getStringArray(R.array.auto_Select);
 
-                                switch (item.getStage()) {
-                                    case "PAUSED":
-                                        showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
-                                                getResources().getString(R.string.manual_aleart_paused_des), selet_item[1], item.getId());
-                                        break;
-                                    case "NOT_STARTED":
-                                        showAlertDialogButtonClicked(getResources().getString(R.string.auto_aleart_Paused),
-                                                getResources().getString(R.string.auto_aleart_Paused_des), selet_item[0], item.getId());
-                                        break;
-
+                                    switch (item.getStage()) {
+                                        case "PAUSED":
+                                            showAlertDialogButtonClicked(getResources().getString(R.string.manual_aleart_paused),
+                                                    getResources().getString(R.string.manual_aleart_paused_des), selet_item[1], item.getId());
+                                            break;
+                                        case "NOT_STARTED":
+                                            showAlertDialogButtonClicked(getResources().getString(R.string.auto_aleart_Paused),
+                                                    getResources().getString(R.string.auto_aleart_Paused_des), selet_item[0], item.getId());
+                                            break;
+                                    }
                                 }
                             }
                         }
@@ -916,8 +917,76 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         }
     }
 
+     void Mail_Checklist (ManualTaskModel item) throws JSONException{
+      //  loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(getActivity());
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp",1);
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    SessionManager.setUserLinkedGmail(getActivity(),new ArrayList<>());
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
+
+                    List<UserLinkedList.UserLinkedGmail>  List=userLinkedGmail.getUserLinkedGmail();
+                    SessionManager.setUserLinkedGmail(getActivity(),List);
+                    if (List.size() == 0) {
+                        Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.setting_mail),false);
+                    }else {
+                        if(List.size()==1){
+                            if(List.get(0).getIsDefault()==1){
+                                if (item.getType().toString().equals("SMS")) {
+                                    Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
+                                    intent.putExtra("record_id", item.getId());
+                                    startActivity(intent);
+                                } else {
+                                    Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
+                                    intent.putExtra("record_id", item.getId());
+                                    startActivity(intent);
+                                }
+                            }else {
+                                Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.setting_mail_defoult),false);
+                            }
+                        }else {
+                            if (item.getType().toString().equals("SMS")) {
+
+                                Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
+                                intent.putExtra("record_id", item.getId());
+                                startActivity(intent);
+                            } else {
+
+                                Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
+                                intent.putExtra("record_id", item.getId());
+                                startActivity(intent);
+                            }
+                        }
+
+                    }
+                }else {
+                    Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.setting_mail),false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
 
 
+    }
 
 
     public void showAlertDialogButtonClicked(String title, String dis, String type,Integer id) {
