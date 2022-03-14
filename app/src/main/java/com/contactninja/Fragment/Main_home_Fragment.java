@@ -1,6 +1,7 @@
 package com.contactninja.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,10 +16,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Fragment.Home.Broadcast_Fragment;
 import com.contactninja.Fragment.Home.Campaign_Fragment;
@@ -26,6 +30,8 @@ import com.contactninja.Fragment.Home.Task_Fragment;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Dashboard.Dashboard;
 import com.contactninja.Model.Dashboard.Des_AffiliateInfo;
+import com.contactninja.Model.Dashboard.Des_Bizcard;
+import com.contactninja.Model.Dashboard.Des_Broadcast;
 import com.contactninja.Model.Dashboard.Des_Task;
 import com.contactninja.Model.Dashboard.Des_TaskCounter;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -74,13 +80,16 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     ValueLineChart mBarChart;
     PieChart mBarChart1;
     private long mLastClickTime = 0;
+    RecyclerView rv_bzcardlist;
+    BzcardlistAdepter bzcardlistAdepter;
     Dashboard dashboard = new Dashboard();
     Des_TaskCounter des_taskCounter = new Des_TaskCounter();
     Des_AffiliateInfo des_affiliateInfo = new Des_AffiliateInfo();
+    List<Des_Bizcard> des_bizcardList = new ArrayList<>();
 
     TextView tv_campaign, tv_text, tv_email, tv_broadcast, tv_lavel_count_1, tv_lavel_count_2, tv_lavel_count_3, tv_lavel_count_4, tv_lavel_count_5, tv_total_lavel,
             btn_view_affilate_detail,tv_autometed_task,tv_manual_task;
-    LinearLayout layout_Affiliate;
+    LinearLayout layout_Affiliate,layout_Bz_card,layout_connected_email;
 
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -122,6 +131,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    @SuppressLint("DefaultLocale")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void setdata() {
         Fragment fragment = new Task_Fragment();
@@ -145,8 +155,17 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             mBarChart1.addPieSlice(new PieModel("Manual", des_taskCounter.getManual(), Color.parseColor("#FAAD64")));
             mBarChart1.startAnimation();
 
-            tv_autometed_task.setText(String.valueOf(des_taskCounter.getAuto()+" Automated tasks"));
-            tv_manual_task.setText(String.valueOf(des_taskCounter.getManual()+" Manaul tasks"));
+            Integer total=des_taskCounter.getAuto()+des_taskCounter.getManual();
+            Double A = ((double)des_taskCounter.getAuto()/total) * 100;
+            Double m = ((double)des_taskCounter.getManual()/total) * 100;
+
+            String Auto = Integer.toString((int)A.longValue());
+            String manual = Integer.toString((int)m.longValue());
+
+            tv_autometed_task.setText(String.valueOf(Auto+"%"+" Automated tasks"));
+            tv_manual_task.setText(String.valueOf(manual+"%"+" Manaul tasks"));
+
+
         }
 
         /**
@@ -213,6 +232,17 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         }
 
 
+        /**
+         *
+         * Set data Bzcard
+         * */
+        if (Global.IsNotNull(des_bizcardList)&&des_bizcardList.size()!=0) {
+            bzcardlistAdepter.clear();
+            layout_Bz_card.setVisibility(View.VISIBLE);
+            bzcardlistAdepter.add(des_bizcardList);
+        }else {
+            layout_Bz_card.setVisibility(View.GONE);
+        }
 
 
 
@@ -245,6 +275,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         array.put("TASK_COUNTER");
         array.put("AFFILIATE");
         array.put("TASK");
+        array.put("BIZCARD");
 
 // Create a new instance of a JSONObject
 
@@ -271,6 +302,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 dashboard = new Gson().fromJson(headerString, listType);
                 des_taskCounter = dashboard.getTaskCounter();
                 des_affiliateInfo = dashboard.getAffiliate();
+                des_bizcardList = dashboard.getBizcard();
 
                 setdata();
 
@@ -354,6 +386,15 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
 
         layout_Affiliate = view.findViewById(R.id.layout_Affiliate);
+        layout_Bz_card = view.findViewById(R.id.layout_Bz_card);
+
+        rv_bzcardlist=view.findViewById(R.id.rv_bzcardlist);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rv_bzcardlist.setLayoutManager(layoutManager);
+        bzcardlistAdepter = new BzcardlistAdepter(getActivity(), new ArrayList<>());
+        rv_bzcardlist.setAdapter(bzcardlistAdepter);
+        rv_bzcardlist.setVisibility(View.VISIBLE);
 
     }
 
@@ -462,4 +503,64 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     }
 
 
+    public class BzcardlistAdepter extends RecyclerView.Adapter<BzcardlistAdepter.InviteListDataclass> {
+
+        List<Des_Bizcard> des_bizcardList;
+        public Context mCtx;
+
+        public BzcardlistAdepter(Context context,List<Des_Bizcard> des_bizcardList) {
+            this.mCtx = context;
+            this.des_bizcardList = des_bizcardList;
+        }
+
+        @NonNull
+        @Override
+        public BzcardlistAdepter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.item_emailactivitylist, parent, false);
+            return new BzcardlistAdepter.InviteListDataclass(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull BzcardlistAdepter.InviteListDataclass holder, int position) {
+
+            Des_Bizcard item = des_bizcardList.get(position);
+            holder.tv_bzname.setText(item.getCard_name());
+            holder.tv_count.setText(String.valueOf(item.getImpression()));
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return des_bizcardList.size();
+        }
+
+        public void add(List<Des_Bizcard> des_tasks) {
+            des_bizcardList=des_tasks;
+            notifyDataSetChanged();
+        }
+
+        public void clear() {
+            des_bizcardList.clear();
+            notifyDataSetChanged();
+        }
+
+
+        public class InviteListDataclass extends RecyclerView.ViewHolder {
+            TextView tv_bzname, tv_count;
+
+
+            public InviteListDataclass(@NonNull View itemView) {
+                super(itemView);
+
+                tv_bzname = itemView.findViewById(R.id.tv_bzname);
+                tv_count = itemView.findViewById(R.id.tv_count);
+
+
+            }
+
+        }
+
+    }
 }

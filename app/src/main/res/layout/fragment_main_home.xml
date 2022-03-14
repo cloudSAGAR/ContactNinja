@@ -831,7 +831,6 @@
                 android:layout_above="@id/llFooter" />
         </LinearLayout>
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/layout_Bz_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -862,56 +861,12 @@
 
 
             </LinearLayout>
-
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bzcardlist"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_18sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_15sdp">
+                android:layout_height="wrap_content"/>
 
-                <TextView
-                    style="@style/tv_bold_14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:gravity="center|left"
-                    android:text="{{ bZCard name }}"
-                    android:textColor="@color/text_reg"
-                    android:textSize="@dimen/_12sdp"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:gravity="center|end"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/tv_regular_12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="958"
-
-                        android:textColor="@color/okey_button"/>
-
-                    <TextView
-                        style="@style/tv_regular_12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|end"
-                        android:gravity="center|end"
-                        android:text="Impressions"
-
-                        android:textColor="@color/text_gray"/>
-
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
 
             <LinearLayout

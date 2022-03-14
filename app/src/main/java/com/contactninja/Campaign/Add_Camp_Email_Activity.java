@@ -332,7 +332,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(3, templateText);
+                    templateTextList.add(2, templateText);
 
 
                     Listset(templateTextList);
