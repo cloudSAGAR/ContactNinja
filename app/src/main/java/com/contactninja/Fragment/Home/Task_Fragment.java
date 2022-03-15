@@ -75,7 +75,15 @@ public class Task_Fragment extends Fragment  {
 
 
         des_tasks=SessionManager.getDes_Task(getActivity());
-        taslListAdepter.add(des_tasks);
+        if(des_tasks.size()==0){
+            rv_Task_list.setVisibility(View.GONE);
+            iv_demo.setVisibility(View.VISIBLE);
+        }else {
+            rv_Task_list.setVisibility(View.VISIBLE);
+            iv_demo.setVisibility(View.GONE);
+            taslListAdepter.add(des_tasks);
+        }
+
         MyAsyncTasks myAsyncTasks=new MyAsyncTasks();
         myAsyncTasks.execute();
 

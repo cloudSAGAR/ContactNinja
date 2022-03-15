@@ -31,8 +31,6 @@ import com.contactninja.MainActivity;
 import com.contactninja.Model.Dashboard.Dashboard;
 import com.contactninja.Model.Dashboard.Des_AffiliateInfo;
 import com.contactninja.Model.Dashboard.Des_Bizcard;
-import com.contactninja.Model.Dashboard.Des_Broadcast;
-import com.contactninja.Model.Dashboard.Des_Task;
 import com.contactninja.Model.Dashboard.Des_TaskCounter;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;
@@ -61,6 +59,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Response;
@@ -88,8 +87,10 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     List<Des_Bizcard> des_bizcardList = new ArrayList<>();
 
     TextView tv_campaign, tv_text, tv_email, tv_broadcast, tv_lavel_count_1, tv_lavel_count_2, tv_lavel_count_3, tv_lavel_count_4, tv_lavel_count_5, tv_total_lavel,
-            btn_view_affilate_detail,tv_autometed_task,tv_manual_task;
-    LinearLayout layout_Affiliate,layout_Bz_card,layout_connected_email;
+            btn_view_affilate_detail, tv_autometed_task, tv_manual_task, tv_rat_total, tv_rat_1, tv_rat_2, tv_rat_3, tv_rat_4, tv_rat_5;
+    LinearLayout layout_Affiliate, layout_Bz_card, layout_connected_email;
+    ImageView iv_all_up, iv_1_up, iv_2_up, iv_3_up, iv_4_up, iv_5_up;
+    private int Weekofday = 7;
 
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -127,13 +128,12 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
-
         return view;
     }
 
     @SuppressLint("DefaultLocale")
     @RequiresApi(api = Build.VERSION_CODES.P)
-    private void setdata() {
+    private void setdata(HashMap<String, String> map) {
         Fragment fragment = new Task_Fragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -155,15 +155,15 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             mBarChart1.addPieSlice(new PieModel("Manual", des_taskCounter.getManual(), Color.parseColor("#FAAD64")));
             mBarChart1.startAnimation();
 
-            Integer total=des_taskCounter.getAuto()+des_taskCounter.getManual();
-            Double A = ((double)des_taskCounter.getAuto()/total) * 100;
-            Double m = ((double)des_taskCounter.getManual()/total) * 100;
+            Integer total = des_taskCounter.getAuto() + des_taskCounter.getManual();
+            Double A = ((double) des_taskCounter.getAuto() / total) * 100;
+            Double m = ((double) des_taskCounter.getManual() / total) * 100;
 
-            String Auto = Integer.toString((int)A.longValue());
-            String manual = Integer.toString((int)m.longValue());
+            String Auto = Integer.toString((int) A.longValue());
+            String manual = Integer.toString((int) m.longValue());
 
-            tv_autometed_task.setText(String.valueOf(Auto+"%"+" Automated tasks"));
-            tv_manual_task.setText(String.valueOf(manual+"%"+" Manaul tasks"));
+            tv_autometed_task.setText(String.valueOf(Auto + "%" + " Automated tasks"));
+            tv_manual_task.setText(String.valueOf(manual + "%" + " Manaul tasks"));
 
 
         }
@@ -174,27 +174,70 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
          * */
         if (Global.IsNotNull(des_affiliateInfo)) {
             int Total_Affiliate = 0;
+            int Total_rat = 0;
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel1()) && des_affiliateInfo.getCountOfLevel1() != 0) {
                 tv_lavel_count_1.setText(String.valueOf(des_affiliateInfo.getCountOfLevel1()));
+                tv_rat_1.setText(String.valueOf(des_affiliateInfo.getRatiooflevel1())+"%");
+                Total_rat = des_affiliateInfo.getRatiooflevel1();
                 Total_Affiliate = des_affiliateInfo.getCountOfLevel1();
+                if (des_affiliateInfo.getRatiooflevel1() > 0) {
+                    iv_1_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel1() < 0) {
+                    iv_1_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel2()) && des_affiliateInfo.getCountOfLevel2() != 0) {
                 tv_lavel_count_2.setText(String.valueOf(des_affiliateInfo.getCountOfLevel2()));
+                tv_rat_2.setText(String.valueOf(des_affiliateInfo.getRatiooflevel2())+"%");
+                Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel2();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel2();
+                if (des_affiliateInfo.getRatiooflevel2() > 0) {
+                    iv_2_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel2() < 0) {
+                    iv_2_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel3()) && des_affiliateInfo.getCountOfLevel3() != 0) {
                 tv_lavel_count_3.setText(String.valueOf(des_affiliateInfo.getCountOfLevel3()));
+                tv_rat_3.setText(String.valueOf(des_affiliateInfo.getRatiooflevel3())+"%");
+                Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel3();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel3();
+                if (des_affiliateInfo.getRatiooflevel3() > 0) {
+                    iv_3_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel3() < 0) {
+                    iv_3_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel4()) && des_affiliateInfo.getCountOfLevel4() != 0) {
                 tv_lavel_count_4.setText(String.valueOf(des_affiliateInfo.getCountOfLevel4()));
+                tv_rat_4.setText(String.valueOf(des_affiliateInfo.getRatiooflevel4())+"%");
+                Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel4();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel4();
+                if (des_affiliateInfo.getRatiooflevel4() > 0) {
+                    iv_4_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel4() < 0) {
+                    iv_4_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel5()) && des_affiliateInfo.getCountOfLevel5() != 0) {
                 tv_lavel_count_5.setText(String.valueOf(des_affiliateInfo.getCountOfLevel5()));
+                tv_rat_5.setText(String.valueOf(des_affiliateInfo.getRatiooflevel5())+"%");
+                Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel5();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel5();
+                if (des_affiliateInfo.getRatiooflevel5() > 0) {
+                    iv_5_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel5() < 0) {
+                    iv_5_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             tv_total_lavel.setText(String.valueOf(Total_Affiliate));
+            tv_rat_total.setText(String.valueOf(Total_rat)+"%");
+
+            if (Total_rat > 0) {
+                iv_all_up.setImageResource(R.drawable.ic_home_grow_up);
+            } else if (Total_rat < 0) {
+                iv_all_up.setImageResource(R.drawable.ic_home_grow_down);
+            }
 
             btn_view_affilate_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -204,8 +247,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        Intent intent=new Intent(getActivity(), Affiliate_Report_LavelActivity.class);
-                        intent.putExtra("list",des_affiliateInfo);
+                        Intent intent = new Intent(getActivity(), Affiliate_Report_LavelActivity.class);
+                        intent.putExtra("list", des_affiliateInfo);
                         getActivity().startActivity(intent);
                     }
 
@@ -214,17 +257,16 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             });
             mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
             mBarChart.startAnimation();
-            loadData(des_affiliateInfo);
+            loadData(map);
 
 
-
-            if(des_affiliateInfo.getLevel1().size()!=0||
-                    des_affiliateInfo.getLevel2().size()!=0||
-                    des_affiliateInfo.getLevel3().size()!=0||
-                    des_affiliateInfo.getLevel4().size()!=0||
-                    des_affiliateInfo.getLevel5().size()!=0){
+            if (des_affiliateInfo.getLevel1().size() != 0 ||
+                    des_affiliateInfo.getLevel2().size() != 0 ||
+                    des_affiliateInfo.getLevel3().size() != 0 ||
+                    des_affiliateInfo.getLevel4().size() != 0 ||
+                    des_affiliateInfo.getLevel5().size() != 0) {
                 btn_view_affilate_detail.setEnabled(true);
-            }else {
+            } else {
                 btn_view_affilate_detail.setEnabled(false);
             }
 
@@ -236,11 +278,11 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
          *
          * Set data Bzcard
          * */
-        if (Global.IsNotNull(des_bizcardList)&&des_bizcardList.size()!=0) {
+        if (Global.IsNotNull(des_bizcardList) && des_bizcardList.size() != 0) {
             bzcardlistAdepter.clear();
             layout_Bz_card.setVisibility(View.VISIBLE);
             bzcardlistAdepter.add(des_bizcardList);
-        }else {
+        } else {
             layout_Bz_card.setVisibility(View.GONE);
         }
 
@@ -251,7 +293,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
         for (int c : MY_COLORS) colors.add(c);*/
-
 
 
     }
@@ -268,13 +309,14 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_id);
+        paramObject.put("date_time", Global.getCurrentTimeandDate());
 
         JSONArray array = new JSONArray();
 
         // With put() you can add a value to the array.
         array.put("TASK_COUNTER");
         array.put("AFFILIATE");
-        array.put("TASK");
+        // array.put("TASK");
         array.put("BIZCARD");
 
 // Create a new instance of a JSONObject
@@ -304,7 +346,22 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 des_affiliateInfo = dashboard.getAffiliate();
                 des_bizcardList = dashboard.getBizcard();
 
-                setdata();
+                JSONObject jsonRootObject, json, graph = null;
+                HashMap<String, String> map = new HashMap<String, String>();//Creating HashMap
+                try {
+                    jsonRootObject = new JSONObject(headerString);
+                    json = jsonRootObject.getJSONObject("AFFILIATE");
+                    graph = json.getJSONObject("graph");
+                    for (int i = 0; i < graph.names().length(); i++) {
+                        map.put(graph.names().getString(i), String.valueOf(graph.get(graph.names().getString(i))));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                setdata(map);
+
 
             }
 
@@ -369,6 +426,22 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         mBarChart1 = view.findViewById(R.id.rkt_pie_chart);
 
 
+        tv_rat_total = view.findViewById(R.id.tv_rat_total);
+        tv_rat_1 = view.findViewById(R.id.tv_rat_1);
+        tv_rat_2 = view.findViewById(R.id.tv_rat_2);
+        tv_rat_3 = view.findViewById(R.id.tv_rat_3);
+        tv_rat_4 = view.findViewById(R.id.tv_rat_4);
+        tv_rat_5 = view.findViewById(R.id.tv_rat_5);
+
+
+        iv_all_up = view.findViewById(R.id.iv_all_up);
+        iv_1_up = view.findViewById(R.id.iv_1_up);
+        iv_2_up = view.findViewById(R.id.iv_2_up);
+        iv_3_up = view.findViewById(R.id.iv_3_up);
+        iv_4_up = view.findViewById(R.id.iv_4_up);
+        iv_5_up = view.findViewById(R.id.iv_5_up);
+
+
         tv_campaign = view.findViewById(R.id.tv_campaign);
         tv_text = view.findViewById(R.id.tv_text);
         tv_email = view.findViewById(R.id.tv_email);
@@ -388,7 +461,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         layout_Affiliate = view.findViewById(R.id.layout_Affiliate);
         layout_Bz_card = view.findViewById(R.id.layout_Bz_card);
 
-        rv_bzcardlist=view.findViewById(R.id.rv_bzcardlist);
+        rv_bzcardlist = view.findViewById(R.id.rv_bzcardlist);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv_bzcardlist.setLayoutManager(layoutManager);
@@ -471,7 +544,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void loadData(Des_AffiliateInfo des_affiliateInfo) {
+    private void loadData(HashMap<String, String> map) {
         Paint paint = new Paint();
         paint.setColor(Color.parseColor("#79D2DE"));
 
@@ -479,24 +552,21 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         ValueLineSeries series = new ValueLineSeries();
         series.setColor(Color.parseColor("#79D2DE"));
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel1())){
-            series.addPoint(new ValueLinePoint(des_affiliateInfo.getCountOfLevel1()));
-        }else {
+        for (HashMap.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (Global.IsNotNull(value)) {
+                series.addPoint(new ValueLinePoint(Float.parseFloat(value)));
+            } else {
+                series.addPoint(new ValueLinePoint(0));
+            }
+            // ...
+        }
+        int a = map.size();
+        int b = Weekofday - a;
+        for (int i = 0; i < b; i++) {
             series.addPoint(new ValueLinePoint(0));
         }
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel2())){
-            series.addPoint(new ValueLinePoint(0));
-        }
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel2())){
-            series.addPoint(new ValueLinePoint(0));
-        }
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel3())){
-            series.addPoint(new ValueLinePoint(0));
-        }
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel4())){
-            series.addPoint(new ValueLinePoint(0));
-        }
-
 
         mBarChart.addSeries(series);
 
@@ -508,7 +578,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         List<Des_Bizcard> des_bizcardList;
         public Context mCtx;
 
-        public BzcardlistAdepter(Context context,List<Des_Bizcard> des_bizcardList) {
+        public BzcardlistAdepter(Context context, List<Des_Bizcard> des_bizcardList) {
             this.mCtx = context;
             this.des_bizcardList = des_bizcardList;
         }
@@ -537,7 +607,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         }
 
         public void add(List<Des_Bizcard> des_tasks) {
-            des_bizcardList=des_tasks;
+            des_bizcardList = des_tasks;
             notifyDataSetChanged();
         }
 

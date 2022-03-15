@@ -72,7 +72,14 @@ public class Campaign_Fragment extends Fragment {
 
 
         des_sequences =SessionManager.getDes_Sequence(getActivity());
-        campaingListAdepter.add(des_sequences);
+        if(des_sequences.size()==0){
+            rv_campaign_list.setVisibility(View.GONE);
+            iv_demo.setVisibility(View.VISIBLE);
+        }else {
+            rv_campaign_list.setVisibility(View.VISIBLE);
+            iv_demo.setVisibility(View.GONE);
+            campaingListAdepter.add(des_sequences);
+        }
         MyAsyncTasks myAsyncTasks=new MyAsyncTasks();
         myAsyncTasks.execute();
 

@@ -182,7 +182,7 @@ public class Global extends Application {
         Snackbar snackbar;
         View sbview;
 
-        snackbar = Snackbar.make(frameLayout, message, Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(frameLayout, message, 5000);
         sbview = snackbar.getView();
 
         TextView textView = sbview.findViewById(R.id.snackbar_text);

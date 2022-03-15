@@ -80,7 +80,14 @@ public class Broadcast_Fragment extends Fragment {
         IntentUI(view);
 
         des_broadcasts =SessionManager.getDes_Broadcast(getActivity());
-        broadcastListAdepter.add(des_broadcasts);
+        if(des_broadcasts.size()==0){
+            rv_broadcast_list.setVisibility(View.GONE);
+            iv_demo.setVisibility(View.VISIBLE);
+        }else {
+            rv_broadcast_list.setVisibility(View.VISIBLE);
+            iv_demo.setVisibility(View.GONE);
+            broadcastListAdepter.add(des_broadcasts);
+        }
         MyAsyncTasks myAsyncTasks=new MyAsyncTasks();
         myAsyncTasks.execute();
 

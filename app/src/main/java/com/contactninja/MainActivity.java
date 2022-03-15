@@ -75,6 +75,7 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -141,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Integer user_id = 0;
     String token_api = "", organization_id = "", team_id = "";
     SignResponseModel user_data;
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -207,7 +211,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
     }
-
+    public static void upload(RemoteMessage remoteMessage) {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                Global.Messageshow(activity,mMainLayout,"Hello testing chek ",true);
+            }
+        });
+    }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
