@@ -346,19 +346,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                         } else {
-                          try{
+                         /* try{
                               splitdata(listContacts);
                            }catch (Exception e){
                                 e.printStackTrace();
-                           }
-                     /*   myAsyncTasks = new MyAsyncTasks();
-                        myAsyncTasks.execute();*/
+                           }*/
+                     myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks.execute();
                        }
                     }
                     else {
-                       splitdata(listContacts);
-                        /*myAsyncTasks = new MyAsyncTasks();
-                        myAsyncTasks.execute();*/
+                      // splitdata(listContacts);
+                        myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks.execute();
                     }
                 }
 
