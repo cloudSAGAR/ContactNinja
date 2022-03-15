@@ -349,7 +349,12 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                                 loadingDialog.cancelLoading();
                                 finish();
                             } else {
-                                StartCampignApi();
+                                SessionManager.setCampign_flag("read_name");
+                                Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                                intent.putExtra("sequence_id", sequence_id);
+                                /*intent.putExtra("seq_task_id",seq_task_id);*/
+                                startActivity(intent);
+                                finish();
                             }
 
                         } else {
@@ -364,51 +369,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                 });
     }
 
-    public void StartCampignApi() {
 
-        SignResponseModel user_data = SessionManager.getGetUserdata(this);
-
-
-        if (SessionManager.getTask(getApplicationContext()).size() != 0) {
-            sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
-        } else {
-            Intent getintent = getIntent();
-            Bundle bundle = getintent.getExtras();
-            sequence_id = bundle.getInt("sequence_id");
-        }
-        Log.e("sequence_id", String.valueOf(sequence_id));
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", 1);
-        paramObject.addProperty("record_id", sequence_id);
-        paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", user_data.getUser().getId());
-        paramObject.addProperty("status", "A");
-        obj.add("data", paramObject);
-        retrofitCalls.Sequence_settings(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
-                Global.getVersionname(Campaign_Name_Activity.this), Global.Device, new RetrofitCallback() {
-                    @Override
-                    public void success(Response<ApiResponse> response) {
-                        loadingDialog.cancelLoading();
-
-                        if (response.body().getHttp_status() == 200) {
-                            SessionManager.setCampign_flag("read_name");
-                            Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-                            intent.putExtra("sequence_id", sequence_id);
-                            /*intent.putExtra("seq_task_id",seq_task_id);*/
-                            startActivity(intent);
-                            finish();
-                        } else {
-
-                        }
-                    }
-
-                    @Override
-                    public void error(Response<ApiResponse> response) {
-                        loadingDialog.cancelLoading();
-                    }
-                });
-    }
     private void Time_list() throws JSONException {
 
 

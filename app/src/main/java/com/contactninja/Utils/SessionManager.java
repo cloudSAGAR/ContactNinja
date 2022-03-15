@@ -91,6 +91,7 @@ public class SessionManager {
     public static final String Broadcast_contect="Broadcast_contect";
     public static final String Bzcard="Bzcard";
     public static final String Add_newcontect="add_new_contect";
+    public static final String update_newcontect="add_update_contect";
     public static final String destasks="des_tasks";
     public static final String DesBroadcast="Des_Broadcast";
     public static final String DesSequence="Des_Sequence";
@@ -872,6 +873,30 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(userLinkedGmailList);
         editor.putString(Add_newcontect, json);
+/*
+        Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+*/
+        editor.apply();
+    }
+
+    public static List<Contact> getupdateContect(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(update_newcontect, null);
+        Type type = new TypeToken<ArrayList<Contact>>() {
+        }.getType();
+        List<Contact> userLinkedGmailList = gson.fromJson(json, type);
+        if (userLinkedGmailList == null) {
+            userLinkedGmailList = new ArrayList<>();
+        }
+        return userLinkedGmailList;
+
+    }
+
+    public static void setupdateContect(Context context, List<Contact> userLinkedGmailList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userLinkedGmailList);
+        editor.putString(update_newcontect, json);
 /*
         Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
 */

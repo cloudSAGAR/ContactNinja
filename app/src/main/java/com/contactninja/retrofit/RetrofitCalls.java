@@ -598,10 +598,12 @@ public class RetrofitCalls {
 
 
 
-
-
-
-
+    }
+    public void S3bucket_import(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.S3bucket_import(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
 
     }
 

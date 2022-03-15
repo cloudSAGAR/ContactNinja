@@ -347,4 +347,11 @@ public interface RetrofitApiInterface {
     Call<ApiResponse> BZcard_User_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                 @Body JsonObject jsonObject,
                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+
+    @POST("S3bucket/import")
+    Call<ApiResponse> S3bucket_import(@Header("Accept") String api, @Header("Authorization") String auth,
+                                   @Body JsonObject jsonObject,
+                                   @Header("appVersion") String appVersion, @Header("deviceType") String deviceType);
+
 }

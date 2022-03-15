@@ -300,6 +300,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         TabSet();
+     //   Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
         super.onResume();
     }
 

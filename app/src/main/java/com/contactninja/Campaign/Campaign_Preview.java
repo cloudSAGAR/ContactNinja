@@ -558,14 +558,23 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
-
+        //Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("id", sequence_id);
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_data.getUser().getId());
+        if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
+            paramObject.addProperty("is_preview","1");
+        }
+        else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name"))
+        {
+            paramObject.addProperty("is_preview","1");
+        }
+
+
+
         obj.add("data", paramObject);
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();
@@ -575,6 +584,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
         retrofitCalls.Task_Data_Return(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
                 Global.getVersionname(Campaign_Preview.this), Global.Device, new RetrofitCallback() {
                     @Override

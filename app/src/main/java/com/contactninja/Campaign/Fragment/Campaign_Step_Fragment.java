@@ -568,6 +568,8 @@ public class Campaign_Step_Fragment extends Fragment {
         paramObject.addProperty("id", sequence_id);
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("is_preview","1");
+
         obj.add("data", paramObject);
         PackageManager pm = getActivity().getPackageManager();
         String pkgName = getActivity().getPackageName();
