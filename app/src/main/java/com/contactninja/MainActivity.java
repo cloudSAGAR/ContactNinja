@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
@@ -63,6 +64,8 @@ import com.contactninja.retrofit.RetrofitApiClient;
 import com.contactninja.retrofit.RetrofitApiInterface;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -71,6 +74,7 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -186,6 +190,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navItemIndex = 0;
         displayView();
         ImageSetLight(getResources().getString(R.string.select_Home));
+
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        Log.e( "fcm token : ",token);
+
+                    }
+                });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -326,17 +346,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                         } else {
-                          /* try{
-                              splitdata(listContacts);
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }*/
+//                           try{
+//                              splitdata(listContacts);
+//                            }catch (Exception e){
+//                                e.printStackTrace();
+//                            }
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
                        }
                     }
                     else {
-                       //splitdata(listContacts);
+                       splitdata(listContacts);
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
                     }
@@ -431,9 +451,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
 
-
-                    if (Global.IsNotNull(number)|| !number.equals("null"))
-                    {
+                    if (Global.IsNotNull(number) || !number.equals("null") || !number.equals("")) {
                         data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
                                 ',' + response.get(i).last_name.replaceAll("[-+.^:,]", "") +
                                 ',' + ' ' +
@@ -450,15 +468,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 ',' + ' ' +
                                 ',' + ' ' +
                                 ',' + ' ' +
-                                ',' + '"' + email + ',' + '"' +
+                                ',' + '"' + email + '"' +
                                 ',' + '"' + number + ',' + '"' +
                                 ',' + ' '
                         );
                     }
-
+                }
 
             }
-        }
+
        // Log.e("Data Is", String.valueOf(data));
         CreateCSV(data);
     }
@@ -482,14 +500,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
-      /* Intent intent = ShareCompat.IntentBuilder.from(this)
+       Intent intent = ShareCompat.IntentBuilder.from(this)
                     .setType("application/pdf")
                     .setStream(path)
                     .setChooserTitle("Choose bar")
                     .createChooserIntent()
                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            startActivity(intent);*/
+            startActivity(intent);
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
                 Uploadcsv(file);
             }
