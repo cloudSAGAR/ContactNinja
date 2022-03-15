@@ -346,19 +346,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                         } else {
-//                           try{
-//                              splitdata(listContacts);
-//                            }catch (Exception e){
-//                                e.printStackTrace();
-//                            }
-                        myAsyncTasks = new MyAsyncTasks();
-                        myAsyncTasks.execute();
+                          try{
+                              splitdata(listContacts);
+                           }catch (Exception e){
+                                e.printStackTrace();
+                           }
+                     /*   myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks.execute();*/
                        }
                     }
                     else {
                        splitdata(listContacts);
-                        myAsyncTasks = new MyAsyncTasks();
-                        myAsyncTasks.execute();
+                        /*myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks.execute();*/
                     }
                 }
 
@@ -451,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
 
-                    if (Global.IsNotNull(number) || !number.equals("null") || !number.equals("")) {
+                    if (Global.IsNotNull(number) && !number.equals("null") && !number.equals("")) {
                         data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
                                 ',' + response.get(i).last_name.replaceAll("[-+.^:,]", "") +
                                 ',' + ' ' +
@@ -477,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
-       // Log.e("Data Is", String.valueOf(data));
+        Log.e("Data Is", String.valueOf(data));
         CreateCSV(data);
     }
 

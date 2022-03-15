@@ -698,8 +698,8 @@ public class ContectFragment extends Fragment {
                 "Fax");
 
         for (int i = 0; i < response.size(); i++) {
-            if(Global.IsNotNull(response.get(i).name)&& !response.get(i).name.equals("null") &&
-                    Global.IsNotNull(response.get(i).numbers)&& !response.get(i).numbers.equals("null")) {
+            if (Global.IsNotNull(response.get(i).name) && !response.get(i).name.equals("null") &&
+                    Global.IsNotNull(response.get(i).numbers) && !response.get(i).numbers.equals("null")) {
                 String email = "";
                 String number = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
@@ -722,27 +722,29 @@ public class ContectFragment extends Fragment {
 
                 }
 
-                data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]","") +
-                        ',' + response.get(i).last_name.replaceAll("[-+.^:,]","") +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + ' ' +
-                        ',' + '"' + email + ',' + '"' +
-                        ',' + '"' + number + ',' + '"' +
-                        ',' + ' '
-                );
+                if (Global.IsNotNull(number) && !number.equals("null") && !number.equals("")) {
+                    data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
+                            ',' + response.get(i).last_name.replaceAll("[-+.^:,]", "") +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + ' ' +
+                            ',' + '"' + email + '"' +
+                            ',' + '"' + number + ',' + '"' +
+                            ',' + ' '
+                    );
 
+                }
             }
         }
         // Log.e("Data Is", String.valueOf(data));
