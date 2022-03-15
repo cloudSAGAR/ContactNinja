@@ -46,6 +46,7 @@ android:layout_height="wrap_content">
           />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_Referrer_by"
             style="@style/tv_regular_12"
             android:layout_width="wrap_content"
@@ -58,6 +59,36 @@ android:layout_height="wrap_content">
             android:text="@string/add_new_group_name"
             android:textColor="@color/text_gray"
             tools:ignore="TextContrastCheck" />
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layout_laval"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:gravity="center|left"
+                android:padding="@dimen/_5sdp"
+                android:singleLine="true"
+                android:text="Reward earn:"
+                android:textColor="@color/text_reg"
+                tools:ignore="TextContrastCheck" />
+            <TextView
+                android:id="@+id/tv_count"
+                style="@style/tv_regular_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:padding="@dimen/_5sdp"
+                android:singleLine="true"
+                android:textColor="@color/text_gray"
+                tools:ignore="TextContrastCheck" />
+        </LinearLayout>
+
 
     </LinearLayout>
     <View

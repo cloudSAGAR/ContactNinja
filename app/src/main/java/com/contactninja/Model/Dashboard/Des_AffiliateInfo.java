@@ -48,6 +48,9 @@ public class Des_AffiliateInfo implements Serializable {
     @SerializedName("level_1")
     @Expose
     private List<LevelModel> level1 = new ArrayList<>();
+    @SerializedName("All")
+    @Expose
+    private List<LevelModel> levelAll = new ArrayList<>();
     @SerializedName("level_2")
     @Expose
     private List<LevelModel> level2 = new ArrayList<>();
@@ -63,6 +66,14 @@ public class Des_AffiliateInfo implements Serializable {
 
     public Integer getRatiooflevel1() {
         return ratiooflevel1;
+    }
+
+    public List<LevelModel> getLevelAll() {
+        return levelAll;
+    }
+
+    public void setLevelAll(List<LevelModel> levelAll) {
+        this.levelAll = levelAll;
     }
 
     public void setRatiooflevel1(Integer ratiooflevel1) {

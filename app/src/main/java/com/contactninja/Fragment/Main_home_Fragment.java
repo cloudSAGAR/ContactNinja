@@ -87,7 +87,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     List<Des_Bizcard> des_bizcardList = new ArrayList<>();
 
     TextView tv_campaign, tv_text, tv_email, tv_broadcast, tv_lavel_count_1, tv_lavel_count_2, tv_lavel_count_3, tv_lavel_count_4, tv_lavel_count_5, tv_total_lavel,
-            btn_view_affilate_detail, tv_autometed_task, tv_manual_task, tv_rat_total, tv_rat_1, tv_rat_2, tv_rat_3, tv_rat_4, tv_rat_5;
+            btn_view_affilate_detail, tv_autometed_task, tv_manual_task, tv_rat_total, tv_rat_1, tv_rat_2, tv_rat_3, tv_rat_4, tv_rat_5,tv_total_reeard,tv_name_user;
     LinearLayout layout_Affiliate, layout_Bz_card, layout_connected_email;
     ImageView iv_all_up, iv_1_up, iv_2_up, iv_3_up, iv_4_up, iv_5_up;
     private int Weekofday = 7;
@@ -109,7 +109,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         user_id = user_data.getUser().getId();
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
 
         intentView(view);
 
@@ -142,6 +141,14 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         /**
          *
+         * Set data user name
+         * */
+        tv_name_user.setText(user_data.getUser().getFirstName());
+
+
+
+        /**
+         *
          * Set data TaskCounter
          * */
         if (Global.IsNotNull(des_taskCounter)) {
@@ -167,6 +174,18 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
 
         }
+
+
+
+
+        /**
+         *
+         * Set data AFFILIATE_REWARDS
+         * */
+        tv_total_reeard.setText(String.valueOf(dashboard.getAFFILIATE_REWARDS()));
+
+
+
 
         /**
          *
@@ -248,7 +267,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
                         Intent intent = new Intent(getActivity(), Affiliate_Report_LavelActivity.class);
-                        intent.putExtra("list", des_affiliateInfo);
                         getActivity().startActivity(intent);
                     }
 
@@ -258,17 +276,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
             mBarChart.startAnimation();
             loadData(map);
-
-
-            if (des_affiliateInfo.getLevel1().size() != 0 ||
-                    des_affiliateInfo.getLevel2().size() != 0 ||
-                    des_affiliateInfo.getLevel3().size() != 0 ||
-                    des_affiliateInfo.getLevel4().size() != 0 ||
-                    des_affiliateInfo.getLevel5().size() != 0) {
-                btn_view_affilate_detail.setEnabled(true);
-            } else {
-                btn_view_affilate_detail.setEnabled(false);
-            }
 
 
         }
@@ -449,6 +456,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         tv_broadcast = view.findViewById(R.id.tv_broadcast);
         tv_autometed_task = view.findViewById(R.id.tv_autometed_task);
         tv_manual_task = view.findViewById(R.id.tv_manual_task);
+        tv_total_reeard = view.findViewById(R.id.tv_total_reeard);
+        tv_name_user = view.findViewById(R.id.tv_name_user);
 
         tv_lavel_count_5 = view.findViewById(R.id.tv_lavel_count_5);
         tv_lavel_count_4 = view.findViewById(R.id.tv_lavel_count_4);
@@ -495,55 +504,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         }
     }
-
-
-    private void Refreess_token() throws JSONException {
-
-
-        String token = sessionManager.getAccess_token();
-        String Refresh_token = sessionManager.getRefresh_token();
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("refresh_token", sessionManager.getRefresh_token());
-        obj.add("data", paramObject);
-        Log.e("Tokem is ", new Gson().toJson(obj));
-        retrofitCalls.Refress_Token(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-                loadingDialog.cancelLoading();
-                ApiResponse apiResponse = response.body();
-                try {
-                    if (apiResponse.getHttp_status() == 200) {
-                        Gson gson = new Gson();
-                        String headerString = gson.toJson(response.body().getData());
-                        Type listType = new TypeToken<SignResponseModel>() {
-                        }.getType();
-                        SignResponseModel data = new Gson().fromJson(headerString, listType);
-                        sessionManager.setRefresh_token(data.getRefreshToken());
-                        sessionManager.setAccess_token(data.getTokenType() + " " + data.getAccessToken());
-
-                        Log.e("Access_token", data.getTokenType() + " " + data.getAccessToken());
-                        Log.e("Refresh_token", data.getRefreshToken());
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-
-
-        });
-
-
-    }
-
 
     private void loadData(HashMap<String, String> map) {
         Paint paint = new Paint();

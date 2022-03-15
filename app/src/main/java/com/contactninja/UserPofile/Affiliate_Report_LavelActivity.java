@@ -3,17 +3,20 @@ package com.contactninja.UserPofile;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.MainActivity;
+import com.contactninja.Model.Dashboard.Dashboard;
 import com.contactninja.Model.Dashboard.Des_AffiliateInfo;
 import com.contactninja.Model.UserData.LevelModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -33,11 +38,23 @@ import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Affiliate_Report_LavelActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
@@ -51,10 +68,17 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
     RecyclerView rv_lavel_list;
     LavelAdapter lavelAdapter;
     Des_AffiliateInfo desAffiliateInfo = new Des_AffiliateInfo();
+    Dashboard dashboard = new Dashboard();
+
     List<String> lavelName = new ArrayList<>();
     LinearLayout select_label_zone;
-    EditText contect_search;
+    EditText ev_search;
     private BroadcastReceiver mNetworkReceiver;
+    SignResponseModel user_data;
+    List<LevelModel> list = new ArrayList<>();
+
+    Integer user_id = 0;
+    String token_api = "", organization_id = "", team_id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,42 +87,185 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
         sessionManager = new SessionManager(Affiliate_Report_LavelActivity.this);
         retrofitCalls = new RetrofitCalls(Affiliate_Report_LavelActivity.this);
         loadingDialog = new LoadingDialog(Affiliate_Report_LavelActivity.this);
+        token_api = Global.getToken(sessionManager);
+        user_data = SessionManager.getGetUserdata(Affiliate_Report_LavelActivity.this);
+
+        user_id = user_data.getUser().getId();
 
         IntentView();
         try {
-            Intent intent = getIntent();
-            desAffiliateInfo = (Des_AffiliateInfo) intent.getExtras().getSerializable("list");
-        }catch (Exception e){
+            if (Global.isNetworkAvailable(Affiliate_Report_LavelActivity.this, MainActivity.mMainLayout)) {
+                Api_List();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        setdate();
-
         mNetworkReceiver = new ConnectivityReceiver();
 
+    }
 
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (Global.isNetworkAvailable(Affiliate_Report_LavelActivity.this, MainActivity.mMainLayout)) {
+                    Api_List();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+    }
+
+    private void Api_List() throws JSONException {
+        loadingDialog.showLoadingDialog();
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_id);
+
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+        retrofitCalls.affiliate_list(sessionManager, gsonObject, loadingDialog, token_api, Global.getVersionname(Affiliate_Report_LavelActivity.this), Global.Device, new RetrofitCallback() {
+            @SuppressLint("NewApi")
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+
+                Gson gson = new Gson();
+                String headerString = gson.toJson(response.body().getData());
+                Type listType = new TypeToken<Dashboard>() {
+                }.getType();
+                dashboard = new Gson().fromJson(headerString, listType);
+                desAffiliateInfo = dashboard.getAffiliate();
+
+                setdate();
+                loadingDialog.cancelLoading();
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+
+            }
+        });
     }
 
     private void setdate() {
 
 
         lavelName.clear();
+        list.clear();
         if (Global.IsNotNull(desAffiliateInfo)) {
+            lavelName.add("All");
             if (desAffiliateInfo.getLevel1().size() != 0) {
                 lavelName.add(getResources().getString(R.string.lavel1));
+                for (int i = 0; i < desAffiliateInfo.getLevel1().size(); i++) {
+                    LevelModel levelModel = new LevelModel();
+                    levelModel.setLevel_name(getResources().getString(R.string.lavel1));
+                    levelModel.setUserId(desAffiliateInfo.getLevel1().get(i).getUserId());
+                    levelModel.setReferredBy(desAffiliateInfo.getLevel1().get(i).getReferredBy());
+                    levelModel.setProfilePic(desAffiliateInfo.getLevel1().get(i).getProfilePic());
+                    levelModel.setFirstName(desAffiliateInfo.getLevel1().get(i).getFirstName());
+                    levelModel.setReferredName(desAffiliateInfo.getLevel1().get(i).getReferredName());
+                    levelModel.setCreatedAt(desAffiliateInfo.getLevel1().get(i).getCreatedAt());
+                    levelModel.setReward_earned(desAffiliateInfo.getLevel1().get(i).getReward_earned());
+                    list.add(levelModel);
+                }
+
+                desAffiliateInfo.setLevelAll(list);
             }
             if (desAffiliateInfo.getLevel2().size() != 0) {
                 lavelName.add(getResources().getString(R.string.lavel2));
+                for (int i = 0; i < desAffiliateInfo.getLevel2().size(); i++) {
+                    LevelModel levelModel = new LevelModel();
+                    levelModel.setLevel_name(getResources().getString(R.string.lavel2));
+                    levelModel.setUserId(desAffiliateInfo.getLevel2().get(i).getUserId());
+                    levelModel.setReferredBy(desAffiliateInfo.getLevel2().get(i).getReferredBy());
+                    levelModel.setProfilePic(desAffiliateInfo.getLevel2().get(i).getProfilePic());
+                    levelModel.setFirstName(desAffiliateInfo.getLevel2().get(i).getFirstName());
+                    levelModel.setReferredName(desAffiliateInfo.getLevel2().get(i).getReferredName());
+                    levelModel.setCreatedAt(desAffiliateInfo.getLevel2().get(i).getCreatedAt());
+                    levelModel.setReward_earned(desAffiliateInfo.getLevel2().get(i).getReward_earned());
+                    list.add(levelModel);
+                }
+
+                desAffiliateInfo.setLevelAll(list);
             }
             if (desAffiliateInfo.getLevel3().size() != 0) {
                 lavelName.add(getResources().getString(R.string.lavel3));
+                for (int i = 0; i < desAffiliateInfo.getLevel3().size(); i++) {
+                    LevelModel levelModel = new LevelModel();
+                    levelModel.setLevel_name(getResources().getString(R.string.lavel3));
+                    levelModel.setUserId(desAffiliateInfo.getLevel3().get(i).getUserId());
+                    levelModel.setReferredBy(desAffiliateInfo.getLevel3().get(i).getReferredBy());
+                    levelModel.setProfilePic(desAffiliateInfo.getLevel3().get(i).getProfilePic());
+                    levelModel.setFirstName(desAffiliateInfo.getLevel3().get(i).getFirstName());
+                    levelModel.setReferredName(desAffiliateInfo.getLevel3().get(i).getReferredName());
+                    levelModel.setCreatedAt(desAffiliateInfo.getLevel3().get(i).getCreatedAt());
+                    levelModel.setReward_earned(desAffiliateInfo.getLevel3().get(i).getReward_earned());
+                    list.add(levelModel);
+                }
+
+                desAffiliateInfo.setLevelAll(list);
             }
             if (desAffiliateInfo.getLevel4().size() != 0) {
                 lavelName.add(getResources().getString(R.string.lavel4));
+                for (int i = 0; i < desAffiliateInfo.getLevel4().size(); i++) {
+                    LevelModel levelModel = new LevelModel();
+                    levelModel.setLevel_name(getResources().getString(R.string.lavel4));
+                    levelModel.setUserId(desAffiliateInfo.getLevel4().get(i).getUserId());
+                    levelModel.setReferredBy(desAffiliateInfo.getLevel4().get(i).getReferredBy());
+                    levelModel.setProfilePic(desAffiliateInfo.getLevel4().get(i).getProfilePic());
+                    levelModel.setFirstName(desAffiliateInfo.getLevel4().get(i).getFirstName());
+                    levelModel.setReferredName(desAffiliateInfo.getLevel4().get(i).getReferredName());
+                    levelModel.setCreatedAt(desAffiliateInfo.getLevel4().get(i).getCreatedAt());
+                    levelModel.setReward_earned(desAffiliateInfo.getLevel4().get(i).getReward_earned());
+                    list.add(levelModel);
+                }
+
+                desAffiliateInfo.setLevelAll(list);
             }
             if (desAffiliateInfo.getLevel5().size() != 0) {
                 lavelName.add(getResources().getString(R.string.lavel5));
+                for (int i = 0; i < desAffiliateInfo.getLevel5().size(); i++) {
+                    LevelModel levelModel = new LevelModel();
+                    levelModel.setLevel_name(getResources().getString(R.string.lavel5));
+                    levelModel.setUserId(desAffiliateInfo.getLevel5().get(i).getUserId());
+                    levelModel.setReferredBy(desAffiliateInfo.getLevel5().get(i).getReferredBy());
+                    levelModel.setProfilePic(desAffiliateInfo.getLevel5().get(i).getProfilePic());
+                    levelModel.setFirstName(desAffiliateInfo.getLevel5().get(i).getFirstName());
+                    levelModel.setReferredName(desAffiliateInfo.getLevel5().get(i).getReferredName());
+                    levelModel.setCreatedAt(desAffiliateInfo.getLevel5().get(i).getCreatedAt());
+                    levelModel.setReward_earned(desAffiliateInfo.getLevel5().get(i).getReward_earned());
+                    list.add(levelModel);
+                }
+
+                desAffiliateInfo.setLevelAll(list);
             }
 
 
@@ -106,6 +273,9 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
             List<LevelModel> level1List = new ArrayList<>();
             try {
                 switch (lavelName.get(0)) {
+                    case "All":
+                        level1List = desAffiliateInfo.getLevelAll();
+                        break;
                     case "Lavel 1":
                         level1List = desAffiliateInfo.getLevel1();
                         break;
@@ -125,35 +295,30 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
             lavelAdapter = new LavelAdapter(Affiliate_Report_LavelActivity.this, level1List);
             rv_lavel_list.setAdapter(lavelAdapter);
             List<LevelModel> finalLevel1List = level1List;
-            contect_search.addTextChangedListener(new TextWatcher() {
+            ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    List<LevelModel> temp = new ArrayList<>();
-                    for (LevelModel d : finalLevel1List) {
-                        if (d.getFirstName().toLowerCase().contains(s.toString().toLowerCase())) {
-                            temp.add(d);
-                            // Log.e("Same Data ",d.getUserName());
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        Global.hideKeyboard(Affiliate_Report_LavelActivity.this);
+                        List<LevelModel> temp = new ArrayList<>();
+                        for (LevelModel d : finalLevel1List) {
+                            if (d.getFirstName().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                                temp.add(d);
+                                // Log.e("Same Data ",d.getUserName());
+                            }
                         }
+                        lavelAdapter.updateList(temp);
+                        return true;
                     }
-                    lavelAdapter.updateList(temp);
-                    //groupContectAdapter.notifyDataSetChanged();
-                    //contect_search.setText("");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
+                    return false;
                 }
             });
+
         }
 
     }
@@ -175,7 +340,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
     }
 
     private void IntentView() {
-        contect_search = findViewById(R.id.contect_search);
+        ev_search = findViewById(R.id.ev_search);
         rv_lavel_list = findViewById(R.id.lavel_list);
         tv_lavel_name = findViewById(R.id.tv_lavel_name);
         select_label_zone = findViewById(R.id.select_label_zone);
@@ -288,6 +453,9 @@ class LavelSelectAdapter extends RecyclerView.Adapter<LavelSelectAdapter.InviteL
                 level1List.clear();
                 tv_lavel_name.setText(name);
                 switch (name) {
+                    case "All":
+                        level1List = desAffiliateInfo.getLevelAll();
+                        break;
                     case "Lavel 1":
                         level1List = desAffiliateInfo.getLevel1();
                         break;
@@ -377,13 +545,21 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
 
         holder.no_image.setText(add_text);
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(mCtx);
-        String namebyreferrer = "";
+      /*  String namebyreferrer = "";
         if (signResponseModel.getUser().getId().equals(item.getReferredBy())) {
             namebyreferrer = "you";
         } else {
             namebyreferrer = item.getReferredName();
+        }*/
+        if (Global.IsNotNull(item.getLevel_name())&&!item.getLevel_name().equals("")) {
+            holder.layout_laval.setVisibility(View.GONE);
+            holder.tv_Referrer_by.setVisibility(View.VISIBLE);
+            holder.tv_Referrer_by.setText(item.getLevel_name());
+        } else {
+            holder.layout_laval.setVisibility(View.VISIBLE);
+            holder.tv_Referrer_by.setVisibility(View.GONE);
+            holder.tv_count.setText(String.valueOf(item.getReward_earned()));
         }
-        holder.tv_Referrer_by.setText("Referrer by " + namebyreferrer);
 
     }
 
@@ -399,7 +575,8 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
     }
 
     public static class viewholder extends RecyclerView.ViewHolder {
-        TextView tv_user_name, no_image, tv_Referrer_by;
+        TextView tv_user_name, no_image, tv_Referrer_by, tv_count;
+        LinearLayout layout_laval;
 
 
         public viewholder(@SuppressLint("UnknownNullness") View view) {
@@ -407,6 +584,8 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
             tv_user_name = view.findViewById(R.id.tv_user_name);
             no_image = view.findViewById(R.id.no_image);
             tv_Referrer_by = view.findViewById(R.id.tv_Referrer_by);
+            layout_laval = view.findViewById(R.id.layout_laval);
+            tv_count = view.findViewById(R.id.tv_count);
 
         }
     }

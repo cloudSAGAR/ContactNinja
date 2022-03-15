@@ -52,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import retrofit2.Response;
@@ -83,8 +84,11 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
     Dashboard dashboard = new Dashboard();
     Des_AffiliateInfo des_affiliateInfo = new Des_AffiliateInfo();
 
-    TextView  tv_lavel_count_1, tv_lavel_count_2, tv_lavel_count_3, tv_lavel_count_4, tv_lavel_count_5, tv_total_lavel;
+    TextView  tv_lavel_count_1, tv_lavel_count_2, tv_lavel_count_3, tv_lavel_count_4, tv_lavel_count_5,
+            tv_total_lavel,tv_rat_total, tv_rat_1, tv_rat_2, tv_rat_3, tv_rat_4, tv_rat_5;
 
+    ImageView iv_all_up, iv_1_up, iv_2_up, iv_3_up, iv_4_up, iv_5_up;
+    private int Weekofday=7;
 
 
     public User_GrowthFragment() {
@@ -114,7 +118,15 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
 
         Log.d("Month",dateFormat.format(date));
         IntentUI(view);
-        setdata();
+
+        try {
+            if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
+                Api_Dashboard();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
 
 
@@ -142,8 +154,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
     }
 
     @SuppressLint("NewApi")
-    private void setdata() {
-
+    private void setdata(HashMap<String, String> map) {
 
         /**
          *
@@ -151,27 +162,70 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
          * */
         if (Global.IsNotNull(des_affiliateInfo)) {
             int Total_Affiliate = 0;
+            int Total_rat = 0;
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel1()) && des_affiliateInfo.getCountOfLevel1() != 0) {
                 tv_lavel_count_1.setText(String.valueOf(des_affiliateInfo.getCountOfLevel1()));
+                tv_rat_1.setText(String.valueOf(des_affiliateInfo.getRatiooflevel1())+"%");
+                Total_rat = des_affiliateInfo.getRatiooflevel1();
                 Total_Affiliate = des_affiliateInfo.getCountOfLevel1();
+                if (des_affiliateInfo.getRatiooflevel1() > 0) {
+                    iv_1_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel1() < 0) {
+                    iv_1_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel2()) && des_affiliateInfo.getCountOfLevel2() != 0) {
                 tv_lavel_count_2.setText(String.valueOf(des_affiliateInfo.getCountOfLevel2()));
+                tv_rat_2.setText(String.valueOf(des_affiliateInfo.getRatiooflevel2())+"%");
+                Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel2();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel2();
+                if (des_affiliateInfo.getRatiooflevel2() > 0) {
+                    iv_2_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel2() < 0) {
+                    iv_2_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel3()) && des_affiliateInfo.getCountOfLevel3() != 0) {
                 tv_lavel_count_3.setText(String.valueOf(des_affiliateInfo.getCountOfLevel3()));
+                tv_rat_3.setText(String.valueOf(des_affiliateInfo.getRatiooflevel3())+"%");
+                Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel3();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel3();
+                if (des_affiliateInfo.getRatiooflevel3() > 0) {
+                    iv_3_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel3() < 0) {
+                    iv_3_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel4()) && des_affiliateInfo.getCountOfLevel4() != 0) {
                 tv_lavel_count_4.setText(String.valueOf(des_affiliateInfo.getCountOfLevel4()));
+                tv_rat_4.setText(String.valueOf(des_affiliateInfo.getRatiooflevel4())+"%");
+                Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel4();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel4();
+                if (des_affiliateInfo.getRatiooflevel4() > 0) {
+                    iv_4_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel4() < 0) {
+                    iv_4_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel5()) && des_affiliateInfo.getCountOfLevel5() != 0) {
                 tv_lavel_count_5.setText(String.valueOf(des_affiliateInfo.getCountOfLevel5()));
+                tv_rat_5.setText(String.valueOf(des_affiliateInfo.getRatiooflevel5())+"%");
+                Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel5();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel5();
+                if (des_affiliateInfo.getRatiooflevel5() > 0) {
+                    iv_5_up.setImageResource(R.drawable.ic_home_grow_up);
+                } else if (des_affiliateInfo.getRatiooflevel5() < 0) {
+                    iv_5_up.setImageResource(R.drawable.ic_home_grow_down);
+                }
             }
             tv_total_lavel.setText(String.valueOf(Total_Affiliate));
+            tv_rat_total.setText(String.valueOf(Total_rat)+"%");
+
+            if (Total_rat > 0) {
+                iv_all_up.setImageResource(R.drawable.ic_home_grow_up);
+            } else if (Total_rat < 0) {
+                iv_all_up.setImageResource(R.drawable.ic_home_grow_down);
+            }
 
             button_Affiliate_Report.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -181,8 +235,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        Intent intent=new Intent(getActivity(), Affiliate_Report_LavelActivity.class);
-                        intent.putExtra("list",des_affiliateInfo);
+                        Intent intent = new Intent(getActivity(), Affiliate_Report_LavelActivity.class);
                         getActivity().startActivity(intent);
                     }
 
@@ -191,19 +244,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
             });
             mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
             mBarChart.startAnimation();
-            loadData(des_affiliateInfo);
-
-
-
-            if(des_affiliateInfo.getLevel1().size()!=0||
-                    des_affiliateInfo.getLevel2().size()!=0||
-                    des_affiliateInfo.getLevel3().size()!=0||
-                    des_affiliateInfo.getLevel4().size()!=0||
-                    des_affiliateInfo.getLevel5().size()!=0){
-                button_Affiliate_Report.setEnabled(true);
-            }else {
-                button_Affiliate_Report.setEnabled(false);
-            }
+            loadData(map);
 
 
         }
@@ -227,6 +268,22 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
         nextMonth.setOnClickListener(this);
         button_Affiliate_Report=view.findViewById(R.id.button_Affiliate_Report);
         button_Affiliate_Report.setOnClickListener(this);
+
+
+        tv_rat_total = view.findViewById(R.id.tv_rat_total);
+        tv_rat_1 = view.findViewById(R.id.tv_rat_1);
+        tv_rat_2 = view.findViewById(R.id.tv_rat_2);
+        tv_rat_3 = view.findViewById(R.id.tv_rat_3);
+        tv_rat_4 = view.findViewById(R.id.tv_rat_4);
+        tv_rat_5 = view.findViewById(R.id.tv_rat_5);
+
+
+        iv_all_up = view.findViewById(R.id.iv_all_up);
+        iv_1_up = view.findViewById(R.id.iv_1_up);
+        iv_2_up = view.findViewById(R.id.iv_2_up);
+        iv_3_up = view.findViewById(R.id.iv_3_up);
+        iv_4_up = view.findViewById(R.id.iv_4_up);
+        iv_5_up = view.findViewById(R.id.iv_5_up);
 
 
         tv_lavel_count_5 = view.findViewById(R.id.tv_lavel_count_5);
@@ -278,9 +335,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
 
 
         JSONArray array = new JSONArray();
-
-
-        array.put("TASK");
+        array.put("AFFILIATE");
 
         try {
             // Add the JSONArray to the JSONObject
@@ -307,7 +362,21 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
                 dashboard = new Gson().fromJson(headerString, listType);
                 des_affiliateInfo = dashboard.getAffiliate();
 
-                setdata();
+                JSONObject jsonRootObject, json, graph = null;
+                HashMap<String, String> map = new HashMap<String, String>();//Creating HashMap
+                try {
+                    jsonRootObject = new JSONObject(headerString);
+                    json = jsonRootObject.getJSONObject("AFFILIATE");
+                    graph = json.getJSONObject("graph");
+                    for (int i = 0; i < graph.names().length(); i++) {
+                        map.put(graph.names().getString(i), String.valueOf(graph.get(graph.names().getString(i))));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                setdata(map);
 
 
             }
@@ -319,7 +388,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
         });
     }
 
-    private void loadData(Des_AffiliateInfo des_affiliateInfo) {
+    private void loadData(HashMap<String, String> map) {
         Paint paint = new Paint();
         paint.setColor(Color.parseColor("#79D2DE"));
 
@@ -327,28 +396,26 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
 
         ValueLineSeries series = new ValueLineSeries();
         series.setColor(Color.parseColor("#79D2DE"));
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel1())){
-            series.addPoint(new ValueLinePoint(des_affiliateInfo.getCountOfLevel1()));
-        }else {
+        for (HashMap.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (Global.IsNotNull(value)) {
+                series.addPoint(new ValueLinePoint(Float.parseFloat(value)));
+            } else {
+                series.addPoint(new ValueLinePoint(0));
+            }
+            // ...
+        }
+        int a = map.size();
+        int b = Weekofday - a;
+        for (int i = 0; i < b; i++) {
             series.addPoint(new ValueLinePoint(0));
         }
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel2())){
-            series.addPoint(new ValueLinePoint(0));
-        }
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel2())){
-            series.addPoint(new ValueLinePoint(0));
-        }
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel3())){
-            series.addPoint(new ValueLinePoint(0));
-        }
-        if(Global.IsNotNull(des_affiliateInfo.getCountOfLevel4())){
-            series.addPoint(new ValueLinePoint(0));
-        }
-
 
         mBarChart.addSeries(series);
 
     }
+
 
     @Override
     public void onClick(View v) {

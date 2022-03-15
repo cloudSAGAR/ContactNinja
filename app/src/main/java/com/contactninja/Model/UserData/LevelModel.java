@@ -15,6 +15,8 @@ public class LevelModel implements Serializable {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
+
+    private String level_name;
     @SerializedName("referred_by")
     @Expose
     private Integer referredBy;
@@ -30,6 +32,25 @@ public class LevelModel implements Serializable {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+    @SerializedName("reward_earned")
+    @Expose
+    private Integer reward_earned=0;
+
+    public Integer getReward_earned() {
+        return reward_earned;
+    }
+
+    public void setReward_earned(Integer reward_earned) {
+        this.reward_earned = reward_earned;
+    }
+
+    public String getLevel_name() {
+        return level_name;
+    }
+
+    public void setLevel_name(String level_name) {
+        this.level_name = level_name;
+    }
 
     public Integer getUserId() {
         return userId;
