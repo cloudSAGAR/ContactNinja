@@ -6,12 +6,14 @@ import java.util.ArrayList;
 public class Contact {
     public String id="";
     public String name="";
+    public String last_name="";
     public ArrayList<ContactEmail> emails=new ArrayList<>();
     public ArrayList<ContactPhone> numbers=new ArrayList<>();
 
-    public Contact(String id, String name) {
+    public Contact(String id, String name,String last_name) {
         this.id = id;
         this.name = name;
+        this.last_name=last_name;
         this.emails = new ArrayList<ContactEmail>();
         this.numbers = new ArrayList<ContactPhone>();
     }

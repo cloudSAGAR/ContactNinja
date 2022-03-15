@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
         sessionManager.login();
-/*        Intent intent=new Intent(getApplicationContext(),Contect_Demo.class);
+  /*      Intent intent=new Intent(getApplicationContext(),Contect_Demo.class);
         startActivity(intent);*/
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
@@ -325,17 +326,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                         } else {
-                         /*   try{
+                          /* try{
                               splitdata(listContacts);
                             }catch (Exception e){
                                 e.printStackTrace();
                             }*/
-                            myAsyncTasks = new MyAsyncTasks();
-                            myAsyncTasks.execute();
-                        }
+                        myAsyncTasks = new MyAsyncTasks();
+                        myAsyncTasks.execute();
+                       }
                     }
                     else {
-                    //   splitdata(listContacts);
+                       //splitdata(listContacts);
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
                     }
@@ -434,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (Global.IsNotNull(number)|| !number.equals("null"))
                     {
                         data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
-                                ',' + ' ' +
+                                ',' + response.get(i).last_name.replaceAll("[-+.^:,]", "") +
                                 ',' + ' ' +
                                 ',' + ' ' +
                                 ',' + ' ' +
@@ -481,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
-   /*      Intent intent = ShareCompat.IntentBuilder.from(this)
+      /* Intent intent = ShareCompat.IntentBuilder.from(this)
                     .setType("application/pdf")
                     .setStream(path)
                     .setChooserTitle("Choose bar")

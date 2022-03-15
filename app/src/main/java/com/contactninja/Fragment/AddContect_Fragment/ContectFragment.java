@@ -7,6 +7,7 @@ import android.content.ContentProviderResult;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,6 +15,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,6 +39,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -179,8 +183,9 @@ public class ContectFragment extends Fragment {
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
-        layoutManager = new LinearLayoutManager(getActivity());
-        rvinviteuserdetails.setLayoutManager(layoutManager);
+       /* layoutManager = new LinearLayoutManager(getActivity());
+        rvinviteuserdetails.setLayoutManager(layoutManager);*/
+        rvinviteuserdetails.setLayoutManager(new SpeedyLinearLayoutManager(getActivity(), SpeedyLinearLayoutManager.VERTICAL, false));
         rvinviteuserdetails.setHasFixedSize(true);
         contectListData = new ArrayList<>();
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
@@ -204,7 +209,8 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
-                        //rvinviteuserdetails.scrollToPosition(itemPosition);
+                    //    rvinviteuserdetails.smoothScrollToPosition(itemPosition);
+                     // rvinviteuserdetails.scrollToPosition(itemPosition);
                     }
                 }
         );
@@ -243,6 +249,7 @@ public class ContectFragment extends Fragment {
                         //  GetContactsIntoArrayList();
                         if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                             fillter_text="";
+                            Filter="ALL";
                             ContectEvent();
                         }
                     } catch (JSONException e) {
@@ -716,7 +723,7 @@ public class ContectFragment extends Fragment {
                 }
 
                 data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]","") +
-                        ',' + ' ' +
+                        ',' + response.get(i).last_name.replaceAll("[-+.^:,]","") +
                         ',' + ' ' +
                         ',' + ' ' +
                         ',' + ' ' +
@@ -2240,6 +2247,45 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
         bottomSheetDialog.show();
+    }
+
+
+
+    public class SpeedyLinearLayoutManager extends LinearLayoutManager {
+
+        private static final float MILLISECONDS_PER_INCH = 5f; //default is 25f (bigger = slower)
+
+        public SpeedyLinearLayoutManager(Context context) {
+            super(context);
+        }
+
+        public SpeedyLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
+            super(context, orientation, reverseLayout);
+        }
+
+        public SpeedyLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+            super(context, attrs, defStyleAttr, defStyleRes);
+        }
+
+        @Override
+        public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+
+            final LinearSmoothScroller linearSmoothScroller = new LinearSmoothScroller(recyclerView.getContext()) {
+
+                @Override
+                public PointF computeScrollVectorForPosition(int targetPosition) {
+                    return super.computeScrollVectorForPosition(targetPosition);
+                }
+
+                @Override
+                protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                    return MILLISECONDS_PER_INCH / displayMetrics.densityDpi;
+                }
+            };
+
+            linearSmoothScroller.setTargetPosition(position);
+            startSmoothScroll(linearSmoothScroller);
+        }
     }
 }
 

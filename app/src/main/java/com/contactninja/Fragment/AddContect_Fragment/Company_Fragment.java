@@ -159,7 +159,7 @@ public class Company_Fragment extends Fragment {
                     companyList.clear();
                     companyAdapter.clear();
                     companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
-
+                    Filter="ALL";
                     rvinviteuserdetails.setLayoutManager(layoutManager);
                     rvinviteuserdetails.setHasFixedSize(true);
                     rvinviteuserdetails.setAdapter(companyAdapter);

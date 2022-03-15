@@ -54,7 +54,37 @@ public class ContactFetcher {
             do {
                 String contactId = c.getString(idIndex);
                 String contactDisplayName = c.getString(nameIndex);
-                Contact contact = new Contact(contactId, contactDisplayName);
+                String first_name="";
+                String last_name="";
+                try {
+                    String[] split_name=contactDisplayName.split(" ");
+
+                    for (int i=0;i<split_name.length;i++)
+                    {
+                        if (i==0)
+                        {
+                            first_name=split_name[0];
+                        }
+                        else {
+                            if (last_name.equals(""))
+                            {
+                                last_name=split_name[i];
+                            }
+                            else {
+                                last_name=last_name+split_name[i];
+                            }
+
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                Contact contact = new Contact(contactId, first_name,last_name);
                 contactsMap.put(contactId, contact);
                 listContacts.add(contact);
             } while (c.moveToNext());
