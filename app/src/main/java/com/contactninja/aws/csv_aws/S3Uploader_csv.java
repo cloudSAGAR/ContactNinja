@@ -70,7 +70,7 @@ public class S3Uploader_csv {
         String uploadFileName = nameList[nameList.length - 1];
         String audioURL = AWSKeys_csv.BUCKET_URL +uploadFileName;
         ObjectMetadata metadataCopy = new ObjectMetadata();
-        metadataCopy.setContentType("*/*");
+        metadataCopy.setContentType("text/csv");
         TransferObserver transferObserver = transferUtility.upload(AWSKeys_csv.BUCKET_NAME, uploadFileName,
                 uploadToS3, metadataCopy,  CannedAccessControlList.PublicRead
         );

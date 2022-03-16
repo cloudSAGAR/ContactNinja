@@ -549,17 +549,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     csv_file=csv_file+"_"+Data.getId();
                     CreateCSV(data);
 
-                   /* JSONObject jsonRootObject, json = null;
-                    try {
-                        jsonRootObject = new JSONObject(headerString);
-                        json = jsonRootObject.getJSONObject("id");
-                        csv_file=csv_file+"_"+jsonRootObject.getJSONObject("id")+".csv";
-                        CreateCSV(data);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }*/
-
-
                 }
 
             }
