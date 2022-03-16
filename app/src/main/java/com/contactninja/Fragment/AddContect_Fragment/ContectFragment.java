@@ -32,18 +32,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ShareCompat;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSmoothScroller;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Contect.Contact;
@@ -51,8 +39,6 @@ import com.contactninja.Contect.ContactFetcher;
 import com.contactninja.Contect.ContactPhone;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
-import com.contactninja.Model.BuketModel;
-import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
 import com.contactninja.Model.Csv_InviteListData;
@@ -95,9 +81,17 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -107,29 +101,30 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged")
 public class ContectFragment extends Fragment {
+  MyAsyncTasks1 myAsyncTasks1;
     private final static String[] DATA_COLS = {
 
             ContactsContract.Data.MIMETYPE,
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
-    List<Contact> update_listContacts=new ArrayList<>();
-    static  String csv_file="";
+    public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
+    static String csv_file = "";
+    List<Contact> update_listContacts = new ArrayList<>();
     S3Uploader_csv s3uploaderObj;
     ArrayList<Contact> listContacts;
     List<ContectListData.Contact> main_store = new ArrayList<>();
-    public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     ConstraintLayout mMainLayout;
     Context mCtx;
     RecyclerView rvinviteuserdetails;
     String strtext = "";
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
-    TextView add_new_contect, num_count,txt_nolist;
-    ImageView add_new_contect_icon, iv_filter_icon,iv_cancle_search_icon;
+    TextView add_new_contect, num_count, txt_nolist;
+    ImageView add_new_contect_icon, iv_filter_icon, iv_cancle_search_icon;
     View view1;
     FragmentActivity fragmentActivity;
-    LinearLayout add_new_contect_layout,layout_list_data,lay_no_list;
+    LinearLayout add_new_contect_layout, layout_list_data, lay_no_list;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -141,12 +136,9 @@ public class ContectFragment extends Fragment {
     LinearLayoutManager layoutManager;
     SwipeRefreshLayout swipeToRefresh;
     EditText ev_search;
-    private List<ContectListData.Contact> contectListData;
-    private List<ContectListData.Contact> main_contectListData=new ArrayList<>();
     LinearLayout demo_layout, linearLayout3;
     String Filter = "";//BLOCK / ALL
-    List<Contact> new_listContacts=new ArrayList<>();
-
+    List<Contact> new_listContacts = new ArrayList<>();
     String userName = "", user_phone_number = "", user_image = "", user_des = "", old_latter = "", contect_type = "", contect_email = "",
             contect_type_work = "", email_type_home = "", email_type_work = "", country = "", city = "", region = "", street = "",
             postcode = "", postType = "", note = "";
@@ -154,18 +146,104 @@ public class ContectFragment extends Fragment {
     Cursor cursor;
     List<Csv_InviteListData> csv_inviteListData = new ArrayList<>();
     List<Csv_InviteListData> csv_multiple_data = new ArrayList<>();
-    private long mLastClickTime = 0;
     MyAsyncTasks myAsyncTasks;
-
+    TextView tv_upload;
+    String fillter_text = "";
+    private List<ContectListData.Contact> contectListData;
+    private List<ContectListData.Contact> main_contectListData = new ArrayList<>();
+    private long mLastClickTime = 0;
     public ContectFragment(View view, FragmentActivity activity) {
 
         this.view1 = view;
         this.fragmentActivity = activity;
     }
 
+    //Update Contect Number Direct
+    public static boolean updateNameAndNumber(final Context context, String number, String newName, String newNumber) {
 
-    TextView tv_upload;
-    String fillter_text="";
+        if (context == null || number == null || number.trim().isEmpty()) return false;
+
+        if (newNumber != null && newNumber.trim().isEmpty()) newNumber = null;
+
+        if (newNumber == null) return false;
+
+
+        String contactId = getContactId(context, number);
+
+        if (contactId == null) return false;
+
+        //selection for name
+        String where = String.format(
+                "%s = '%s' AND %s = ?",
+                DATA_COLS[0], //mimetype
+                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE,
+                DATA_COLS[2]/*contactId*/);
+
+        String[] args = {contactId};
+
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+
+        operations.add(
+                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                        .withSelection(where, args)
+                        .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, newName)
+                        .build()
+        );
+
+        //change selection for number
+        where = String.format(
+                "%s = '%s' AND %s = ?",
+                DATA_COLS[0],//mimetype
+                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
+                DATA_COLS[1]/*number*/);
+
+        //change args for number
+        args[0] = number;
+
+        operations.add(
+                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                        .withSelection(where, args)
+                        .withValue(DATA_COLS[1]/*number*/, newNumber)
+                        .build()
+        );
+
+        try {
+
+            ContentProviderResult[] results = context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
+
+            for (ContentProviderResult result : results) {
+                //   Log.e("Upadte Contect", result.toString());
+            }
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static String getContactId(Context context, String number) {
+
+        if (context == null) return null;
+
+        Cursor cursor = context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER},
+                ContactsContract.CommonDataKinds.Phone.NUMBER + "=?",
+                new String[]{number},
+                null
+        );
+
+        if (cursor == null || cursor.getCount() == 0) return null;
+
+        cursor.moveToFirst();
+
+        String id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+
+        cursor.close();
+        return id;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -174,7 +252,7 @@ public class ContectFragment extends Fragment {
 
         View content_view = inflater.inflate(R.layout.fragment_contect, container, false);
         IntentUI(content_view);
-        Filter="ALL";
+        Filter = "ALL";
         setAllData();
         return content_view;
 
@@ -185,8 +263,7 @@ public class ContectFragment extends Fragment {
         super.onStart();
     }
 
-    public void setAllData()
-    {
+    public void setAllData() {
         mCtx = getContext();
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
@@ -217,8 +294,8 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
-                     //    rvinviteuserdetails.smoothScrollToPosition(itemPosition);
-                     // rvinviteuserdetails.scrollToPosition(itemPosition);
+                        //    rvinviteuserdetails.smoothScrollToPosition(itemPosition);
+                        // rvinviteuserdetails.scrollToPosition(itemPosition);
                     }
                 }
         );
@@ -256,8 +333,8 @@ public class ContectFragment extends Fragment {
                     try {
                         //  GetContactsIntoArrayList();
                         if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                            fillter_text="";
-                            Filter="ALL";
+                            fillter_text = "";
+                            Filter = "ALL";
                             ContectEvent();
                         }
                     } catch (JSONException e) {
@@ -333,7 +410,7 @@ public class ContectFragment extends Fragment {
                     Global.hideKeyboard(getActivity());
                     iv_cancle_search_icon.setVisibility(View.VISIBLE);
                     iv_filter_icon.setVisibility(View.GONE);
-                    fillter_text=ev_search.getText().toString().trim();
+                    fillter_text = ev_search.getText().toString().trim();
                     try {
                         loadingDialog.showLoadingDialog();
                         ContectEvent();
@@ -364,37 +441,6 @@ public class ContectFragment extends Fragment {
         );
     }
 
-    public class MyAsyncTasks extends AsyncTask<String, String, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // display a progress dialog for good user experiance
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            // implement API in background and store the response in current variable
-            String current = "";
-            try {
-                getTasks();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "Exception: " + e.getMessage();
-            }
-            return current;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-        }
-
-    }
-
     private void getTasks() {
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
@@ -420,7 +466,7 @@ public class ContectFragment extends Fragment {
                         boolean found = contect_list.stream().anyMatch(p -> p.getEmailNumber().equals(num));
                         boolean found1 = contect_list.stream().anyMatch(p -> p.getFirst_name().equals(f_name));
                         if (found == true && found1 == false) {
-                            check_list_for_Update(listContacts.get(i).name, "", listContacts.get(i).numbers.get(0).number,listContacts,i);
+                            check_list_for_Update(listContacts.get(i).name, listContacts.get(i).last_name, listContacts.get(i).numbers.get(0).number, listContacts, i);
                         }
                     }
                 } else {
@@ -435,26 +481,16 @@ public class ContectFragment extends Fragment {
         gt.execute();
     }
 
-
-
     private void getUser_check(ArrayList<Contact> csv_inviteListData) {
 
         try {
             for (int i = 0; i < csv_inviteListData.size(); i++) {
-                for ( int j=0;j<csv_inviteListData.get(i).numbers.size();j++)
-                {
-                    check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(j).number,csv_inviteListData,i);
+                for (int j = 0; j < csv_inviteListData.get(i).numbers.size(); j++) {
+                    check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(j).number, csv_inviteListData, i);
                 }
             }
+        } catch (Exception e) {
         }
-        catch (Exception e)
-        {
-        }
-
-
-
-
-
 
 
     }
@@ -470,7 +506,7 @@ public class ContectFragment extends Fragment {
                         .getSameValue(userName.replaceAll("[-+.^:,]", ""), last_name.replaceAll("[-+.^:,]", ""), userPhoneNumber);
                 if (taskList.size() == 0) {
                     //Update Call
-                    check_list_for_Update(userName, last_name, userPhoneNumber,csv_inviteListData,i);
+                    check_list_for_Update(userName, last_name, userPhoneNumber, csv_inviteListData, i);
 
                 } else if (taskList.size() != 1) {
                     loadingDialog.cancelLoading();   //Multiple Same Data Then Remove
@@ -493,7 +529,6 @@ public class ContectFragment extends Fragment {
         GetTasks gt = new GetTasks();
         gt.execute();
     }
-
 
     public void Duplicate_remove() {
         class DeleteTask extends AsyncTask<Void, Void, Void> {
@@ -519,7 +554,8 @@ public class ContectFragment extends Fragment {
         DeleteTask ut = new DeleteTask();
         ut.execute();
     }
-    public void check_list_for_Update(String userName, String last_name, String userPhoneNumber,ArrayList<Contact> csv_inviteListData, int i) {
+
+    public void check_list_for_Update(String userName, String last_name, String userPhoneNumber, ArrayList<Contact> csv_inviteListData, int i) {
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
             protected List<Contect_Db> doInBackground(Void... voids) {
@@ -531,24 +567,24 @@ public class ContectFragment extends Fragment {
 
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
-                    new_listContacts=SessionManager.getnewContect(getActivity());
+                    new_listContacts = SessionManager.getnewContect(getActivity());
                     new_listContacts.add(csv_inviteListData.get(i));
-                    SessionManager.setnewContect(getActivity(),new_listContacts);
+                    SessionManager.setnewContect(getActivity(), new_listContacts);
                     loadingDialog.cancelLoading();
                     //    splitdata(new_listContacts);
 
 
                 } else {
                     loadingDialog.cancelLoading();
-                    update_listContacts=SessionManager.getnewContect(getActivity());
+                    update_listContacts = SessionManager.getnewContect(getActivity());
                     csv_inviteListData.get(i).setId(taskList.get(0).getContect_id());
-                    Contact update_contact=new Contact(taskList.get(0).getContect_id(),userName,last_name);
-                    ContactPhone contactPhone=new ContactPhone(userPhoneNumber,csv_inviteListData.get(i).numbers.get(0).type);
-                    ArrayList<ContactPhone> contactPhoneslist=new ArrayList<>();
+                    Contact update_contact = new Contact(taskList.get(0).getContect_id(), userName, last_name);
+                    ContactPhone contactPhone = new ContactPhone(userPhoneNumber, csv_inviteListData.get(i).numbers.get(0).type);
+                    ArrayList<ContactPhone> contactPhoneslist = new ArrayList<>();
                     contactPhoneslist.add(contactPhone);
                     update_contact.setNumbers(contactPhoneslist);
                     update_listContacts.add(update_contact);
-                    SessionManager.setupdateContect(getActivity(),update_listContacts);
+                    SessionManager.setupdateContect(getActivity(), update_listContacts);
                     //Update Contect Api Call
                    /* try {
                         if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
@@ -588,116 +624,11 @@ public class ContectFragment extends Fragment {
                // main_contectListData.add(contectListData.get(i));
                 paginationAdapter.add(contectListData.get(i));
             }*/
-            paginationAdapter.addAll(contectListData.subList(x,y));
-          //  paginationAdapter.notifyDataSetChanged();
+            paginationAdapter.addAll(contectListData.subList(x, y));
+            //  paginationAdapter.notifyDataSetChanged();
         }
 
     }
-    //Update Contect Number Direct
-    public static boolean updateNameAndNumber(final Context context, String number, String newName, String newNumber) {
-
-        if (context == null || number == null || number.trim().isEmpty()) return false;
-
-        if (newNumber != null && newNumber.trim().isEmpty()) newNumber = null;
-
-        if (newNumber == null) return false;
-
-
-        String contactId = getContactId(context, number);
-
-        if (contactId == null) return false;
-
-        //selection for name
-        String where = String.format(
-                "%s = '%s' AND %s = ?",
-                DATA_COLS[0], //mimetype
-                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE,
-                DATA_COLS[2]/*contactId*/);
-
-        String[] args = {contactId};
-
-        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-
-        operations.add(
-                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                        .withSelection(where, args)
-                        .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, newName)
-                        .build()
-        );
-
-        //change selection for number
-        where = String.format(
-                "%s = '%s' AND %s = ?",
-                DATA_COLS[0],//mimetype
-                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
-                DATA_COLS[1]/*number*/);
-
-        //change args for number
-        args[0] = number;
-
-        operations.add(
-                ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                        .withSelection(where, args)
-                        .withValue(DATA_COLS[1]/*number*/, newNumber)
-                        .build()
-        );
-
-        try {
-
-            ContentProviderResult[] results = context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
-
-            for (ContentProviderResult result : results) {
-             //   Log.e("Upadte Contect", result.toString());
-            }
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    public static String getContactId(Context context, String number) {
-
-        if (context == null) return null;
-
-        Cursor cursor = context.getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                new String[]{ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER},
-                ContactsContract.CommonDataKinds.Phone.NUMBER + "=?",
-                new String[]{number},
-                null
-        );
-
-        if (cursor == null || cursor.getCount() == 0) return null;
-
-        cursor.moveToFirst();
-
-        String id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
-
-        cursor.close();
-        return id;
-    }
-/*
-    private void filter1(String text) {
-        // creating a new array list to filter our data.
-        ArrayList<ContectListData.Contact> filteredlist = new ArrayList<>();
-
-        // running a for loop to compare elements.
-        for (ContectListData.Contact item : contectListData) {
-            // checking if the entered string matched with any item of our recycler view.
-            if (item.getFirstname().toLowerCase().contains(text.toLowerCase())) {
-                filteredlist.add(item);
-            }
-        }
-        if (filteredlist.isEmpty()) {
-
-        } else {
-            paginationAdapter.filterList(filteredlist);
-        }
-    }
-*/
 
     private void splitdata(ArrayList<Contact> response) {
         data = new StringBuilder();
@@ -815,6 +746,25 @@ public class ContectFragment extends Fragment {
         CreateCSV(data);
 
     }
+/*
+    private void filter1(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<ContectListData.Contact> filteredlist = new ArrayList<>();
+
+        // running a for loop to compare elements.
+        for (ContectListData.Contact item : contectListData) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getFirstname().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+
+        } else {
+            paginationAdapter.filterList(filteredlist);
+        }
+    }
+*/
 
     private void CreateCSV(StringBuilder data) {
         Calendar calendar = Calendar.getInstance();
@@ -857,7 +807,7 @@ public class ContectFragment extends Fragment {
         }
     }
 
-    private void UploadS3 () {
+    private void UploadS3() {
         s3uploaderObj.setOns3UploadDone(new S3Uploader_csv.S3UploadInterface() {
             @Override
             public void onUploadSuccess(String response) {
@@ -869,7 +819,7 @@ public class ContectFragment extends Fragment {
             @Override
             public void onUploadError(String response) {
                 loadingDialog.cancelLoading();
-                Log.e("Error is",new Gson().toJson(response));
+                Log.e("Error is", new Gson().toJson(response));
             }
 
         });
@@ -910,6 +860,7 @@ public class ContectFragment extends Fragment {
                             SessionManager.setUserdata(getActivity(), user_data);
 
                             loadingDialog.cancelLoading();
+                            SessionManager.setnewContect(getActivity(),new ArrayList<>());
                             try {
                                 ContectEvent1(main_store);
                             } catch (JSONException e) {
@@ -927,13 +878,14 @@ public class ContectFragment extends Fragment {
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
                         tv_upload.setEnabled(true);
+                        SessionManager.setnewContect(getActivity(),new ArrayList<>());
+
                     }
 
                 });
 
 
     }
-
 
     public void EnableRuntimePermission() {
 
@@ -947,19 +899,17 @@ public class ContectFragment extends Fragment {
                     e.printStackTrace();
                 }
 
+                if (!SessionManager.getnewContect(getActivity()).equals(null)) {
                     try {
                         splitdata((ArrayList<Contact>) SessionManager.getnewContect(getActivity()));
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
 
                 listContacts = new ContactFetcher(getActivity()).fetchAll();
                 SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
                 String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
-
-
                 if (listContacts.size() == 0) {
                     try {
                         ContectEvent();
@@ -975,9 +925,7 @@ public class ContectFragment extends Fragment {
                             limit = listContacts.size();
                             try {
                                 splitdata(listContacts);
-                            }
-                            catch (Exception e)
-                            {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -990,8 +938,7 @@ public class ContectFragment extends Fragment {
                             myAsyncTasks = new MyAsyncTasks();
                             myAsyncTasks.execute();
                         }
-                    }
-                    else {
+                    } else {
                         //   splitdata(listContacts);
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
@@ -1123,7 +1070,6 @@ public class ContectFragment extends Fragment {
         paginationAdapter.notifyDataSetChanged();
     }
 
-
     void filter(String text, View view, FragmentActivity activity) {
         if (!text.equals("")) {
             List<ContectListData.Contact> temp = new ArrayList();
@@ -1168,7 +1114,7 @@ public class ContectFragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                Log.e("Filtter Is",Filter);
+                Log.e("Filtter Is", Filter);
                 showBottomSheetDialog_Filtter();
             }
         });
@@ -1180,7 +1126,7 @@ public class ContectFragment extends Fragment {
                 iv_filter_icon.setVisibility(View.VISIBLE);
                 try {
                     loadingDialog.showLoadingDialog();
-                    fillter_text="";
+                    fillter_text = "";
                     ContectEvent();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1191,12 +1137,10 @@ public class ContectFragment extends Fragment {
         });
     }
 
-
     public void update(String strtext1, View view, FragmentActivity activity) {
         filter(strtext1, view, activity);
 
     }
-
 
     private void ContectEvent() throws JSONException {
 
@@ -1222,7 +1166,7 @@ public class ContectFragment extends Fragment {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                SessionManager.setnewContect(getActivity(),new ArrayList<>());
+                SessionManager.setnewContect(getActivity(), new ArrayList<>());
 
 
                 if (response.body().getHttp_status() == 200) {
@@ -1245,7 +1189,7 @@ public class ContectFragment extends Fragment {
                             }.getType();
                             ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                             contectListData.addAll(contectListData1.getContacts());
-                           // paginationAdapter.addAll(contectListData);
+                            // paginationAdapter.addAll(contectListData);
                             //paginationAdapter.notifyDataSetChanged();
                             List<ContectListData> contectListData_store = new ArrayList<>();
                             contectListData_store.add(contectListData1);
@@ -1256,22 +1200,21 @@ public class ContectFragment extends Fragment {
                             onScrolledToBottom();
 
 
-                        } else{
-                            if (!Filter.equals("BLOCK"))
-                            {
-                            contectListData.clear();
-                            paginationAdapter.removeloist();
-                            sessionManager.setContectList(getActivity(), new ArrayList<>());
-                            Gson gson = new Gson();
-                            String headerString = gson.toJson(response.body().getData());
-                            Type listType = new TypeToken<ContectListData>() {
-                            }.getType();
-                            ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
-                            contectListData.addAll(contectListData1.getContacts());
-                            List<ContectListData> contectListData_store = new ArrayList<>();
-                            contectListData_store.add(contectListData1);
-                            sessionManager.setContectList(getActivity(), contectListData_store);
-                            //contectListData.addAll(contectListData_store.get(0).getContacts());
+                        } else {
+                            if (!Filter.equals("BLOCK")) {
+                                contectListData.clear();
+                                paginationAdapter.removeloist();
+                                sessionManager.setContectList(getActivity(), new ArrayList<>());
+                                Gson gson = new Gson();
+                                String headerString = gson.toJson(response.body().getData());
+                                Type listType = new TypeToken<ContectListData>() {
+                                }.getType();
+                                ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
+                                contectListData.addAll(contectListData1.getContacts());
+                                List<ContectListData> contectListData_store = new ArrayList<>();
+                                contectListData_store.add(contectListData1);
+                                sessionManager.setContectList(getActivity(), contectListData_store);
+                                //contectListData.addAll(contectListData_store.get(0).getContacts());
                                 rvinviteuserdetails.setItemViewCacheSize(50000);
                                 paginationAdapter = new ContectListAdapter(getActivity());
                                 rvinviteuserdetails.setAdapter(paginationAdapter);
@@ -1282,12 +1225,11 @@ public class ContectFragment extends Fragment {
                             }
 
                         }
-                    } catch(Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                }
-                else {
+                } else {
                     num_count.setText("0 Contacts");
 
                     txt_nolist.setText(mCtx.getResources().getString(R.string.no_contact));
@@ -1386,38 +1328,17 @@ public class ContectFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        myAsyncTasks1 = new MyAsyncTasks1();
+        myAsyncTasks1.execute();
 
-        if (!SessionManager.getnewContect(getActivity()).equals(null))
-        {
-            try {
-                Duplicate_remove();
-                Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
-                ArrayList<Contact> listContacts1=new ArrayList<>();
-                listContacts1.addAll(SessionManager.getnewContect(getActivity()));
-                splitdata(listContacts1);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
 
-        if (SessionManager.getupdateContect(getActivity()).equals(null))
-        {
-           /* try {
-                AddContect_Update();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
-        }
-        Log.e("Update Contect List ",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
 
     }
 
-
     public void AddContect_Update() throws JSONException {
-
-        List<Contact> list_Data=SessionManager.getupdateContect(getActivity());
+        String phone = "";
+        String phone_type = "";
+        List<Contact> list_Data = SessionManager.getupdateContect(getActivity());
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         JSONObject obj = new JSONObject();
 
@@ -1426,22 +1347,79 @@ public class ContectFragment extends Fragment {
         param_data.put("team_id", 1);
         param_data.put("user_id", user_data.getUser().getId());
         JSONArray jsonArray_contect = new JSONArray();
-        for (int count=0;count<list_Data.size();count++) {
+        for (int count = 0; count < list_Data.size(); count++) {
 
-            JSONObject paramObject = new JSONObject();
-            //Other Company Add
+            List<ContectListData.Contact> Sesion_contect = SessionManager.getContectList(getActivity()).get(0).getContacts();
+            for (int i = 0; i < Sesion_contect.size(); i++) {
+                if (Sesion_contect.get(i).getId().toString().equals(list_Data.get(count).getId().toString())) {
 
-            paramObject.put("id", list_Data.get(count).getId());
-            paramObject.put("company_url", "");
+                    JSONObject paramObject = new JSONObject();
+                    paramObject.put("company_name", ""+Sesion_contect.get(i).getCompanyName().toString().trim());
+                    paramObject.put("company_id", "");
+
+                    paramObject.put("id", ""+Sesion_contect.get(i).getId());
+                    paramObject.put("address", ""+Sesion_contect.get(i).getAddress().trim());
+                    paramObject.put("breakout_link", ""+Sesion_contect.get(i).getBreakout_link().toString().trim());
+                    paramObject.put("city", ""+Sesion_contect.get(i).getCity());
 
 
-            paramObject.put("firstname", list_Data.get(count).getName().trim());
-            paramObject.put("lastname", list_Data.get(count).getLast_name().trim());
+                    paramObject.put("company_url", ""+Sesion_contect.get(i).getCompany_url());
 
-            paramObject.put("organization_id", 1);
-            paramObject.put("team_id", 1);
-            // addcontectModel.getTime()
-            paramObject.put("user_id", user_data.getUser().getId());
+
+                    paramObject.put("dob", ""+Sesion_contect.get(i).getDob());
+
+
+                    paramObject.put("dynamic_fields_value", "");
+                    paramObject.put("facebook_link", ""+Sesion_contect.get(i).getFacebook_link().trim());
+                    paramObject.put("firstname", ""+list_Data.get(count).getName().trim());
+                    paramObject.put("lastname", ""+list_Data.get(count).getLast_name().trim());
+                    paramObject.put("job_title", ""+Sesion_contect.get(i).getJobTitle().toString().trim());
+                    paramObject.put("linkedin_link", ""+Sesion_contect.get(i).getLinkedin_link().toString().trim());
+                    paramObject.put("organization_id", 1);
+                    paramObject.put("state", ""+Sesion_contect.get(i).getState().toString().trim());
+                    paramObject.put("team_id", 1);
+                    // addcontectModel.getTime()
+                    paramObject.put("timezone_id", Sesion_contect.get(i).getTimezoneId());
+                    paramObject.put("twitter_link", ""+Sesion_contect.get(i).getTwitter_link().toString().trim());
+                    paramObject.put("user_id", ""+user_data.getUser().getId());
+                    paramObject.put("zipcode", ""+Sesion_contect.get(i).getZipcode().toString().trim());
+                    paramObject.put("zoom_id", ""+Sesion_contect.get(i).getZoomId().toString().trim());
+
+                    paramObject.put("contact_image", ""+Sesion_contect.get(i).getContactImage().toString().trim());
+                    paramObject.put("notes", "");
+                    JSONArray jsonArray = new JSONArray();
+
+                /*    for (int p = 0; p < Sesion_contect.get(i).getContactDetails().size(); p++) {
+                        JSONObject paramObject1 = new JSONObject();
+                        if (Sesion_contect.get(i).getContactDetails().get(p).getEmailNumber().equals("")) {
+
+                        } else {
+                            if (Sesion_contect.get(i).getContactDetails().get(p).getType().equals("NUMBER")) {
+                                phone = Sesion_contect.get(i).getContactDetails().get(p).getEmailNumber();
+                            }
+                            phone_type = Sesion_contect.get(i).getContactDetails().get(p).getLabel();
+                            paramObject1.put("email_number", Sesion_contect.get(i).getContactDetails().get(p).getEmailNumber());
+
+                            if (Sesion_contect.get(i).getContactDetails().get(p).getContactId() != 0) {
+                                paramObject1.put("id", Sesion_contect.get(i).getContactDetails().get(p).getId());
+                            }
+                            paramObject1.put("is_default", Sesion_contect.get(i).getContactDetails().get(p).getIsDefault());
+                            paramObject1.put("label", Sesion_contect.get(i).getContactDetails().get(p).getLabel());
+                            paramObject1.put("type", Sesion_contect.get(i).getContactDetails().get(p).getType());
+                            paramObject1.put("contact_id", Sesion_contect.get(i).getContactDetails().get(p).getContactId());
+                            param_data.put("team_id", 1);
+                        }
+                        jsonArray.put(paramObject1);
+                    }
+                    paramObject.put("contact_details", jsonArray);
+                   */
+                    jsonArray_contect.put(paramObject);
+                    Log.e("Object is",new Gson().toJson(jsonArray_contect));
+
+
+                }
+            }
+
 
         }
         param_data.put("contact_update", jsonArray_contect);
@@ -1457,8 +1435,108 @@ public class ContectFragment extends Fragment {
 
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
+                    SessionManager.setupdateContect(getActivity(), new ArrayList<>());
+                } else {
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+    }
+
+    public void AddContect_Api(ContectListData.Contact contact_data) throws JSONException {
+
+        loadingDialog.showLoadingDialog();
+
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+
+        //Other Company Add
+
+        paramObject.put("company_name", "");
+        paramObject.put("company_id", "");
+
+        paramObject.put("address", "");
+        paramObject.put("breakout_link", "");
+        paramObject.put("city", "");
+        paramObject.put("oldImage", "");
+
+        paramObject.put("company_url", "");
+        paramObject.put("dob", "");
+        paramObject.put("dynamic_fields_value", "");
+        paramObject.put("facebook_link", "");
+        paramObject.put("firstname", contact_data.getFirstname());
+        paramObject.put("lastname", contact_data.getLastname());
+        paramObject.put("job_title", "");
+        paramObject.put("lastname", contact_data.getLastname());
+        paramObject.put("linkedin_link", "");
+        paramObject.put("organization_id", 1);
+        paramObject.put("state", "");
+        paramObject.put("team_id", 1);
+        // addcontectModel.getTime()
+        paramObject.put("timezone_id", "");
+        paramObject.put("twitter_link", "");
+        paramObject.put("user_id", user_data.getUser().getId());
+        paramObject.put("zipcode", "");
+        paramObject.put("zoom_id", "");
+        paramObject.put("contact_image", "");
+        paramObject.put("image_extension", "");
+        paramObject.put("contact_image_name", "");
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < contact_data.getContactDetails().size(); i++) {
+            JSONObject paramObject1 = new JSONObject();
+            if (contact_data.getContactDetails().get(i).getEmailNumber().equals("")) {
+            } else {
+
+                paramObject1.put("email_number", contact_data.getContactDetails().get(i).getEmailNumber());
+                paramObject1.put("id", contact_data.getContactDetails().get(i).getId());
+                paramObject1.put("is_default", contact_data.getContactDetails().get(i).getIsDefault());
+                paramObject1.put("label", contact_data.getContactDetails().get(i).getLabel());
+                paramObject1.put("type", contact_data.getContactDetails().get(i).getType());
+            }
+            jsonArray.put(paramObject1);
+        }
+
+        paramObject.put("imei", Global.imei);
+        paramObject.put("contact_detail", jsonArray);
+
+
+        obj.put("data", paramObject);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
 
                 } else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
+                    try {
+                        if (uservalidateModel.getFirstname().size() != 0) {
+                            Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getFirstname().get(0).toString(), false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
 
                 }
             }
@@ -1752,107 +1830,324 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 */
 
+    private void broadcast_manu(ContectListData.Contact contact_item) {
 
-    public void AddContect_Api(ContectListData.Contact contact_data) throws JSONException {
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        TextView selected_block = bottomSheetDialog.findViewById(R.id.selected_block);
+        View line_block = bottomSheetDialog.findViewById(R.id.line_block);
+        View line_unblock = bottomSheetDialog.findViewById(R.id.line_unblock);
+        TextView selected_un_block = bottomSheetDialog.findViewById(R.id.selected_unblock);
+        TextView selected_delete = bottomSheetDialog.findViewById(R.id.selected_delete);
+        selected_block.setText(getString(R.string.add_blacklist));
+        selected_un_block.setText(getString(R.string.remove_blacklist));
+        selected_delete.setText(getString(R.string.delete_contact));
 
-        loadingDialog.showLoadingDialog();
-
-
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-
-        JSONObject obj = new JSONObject();
-        JSONObject paramObject = new JSONObject();
-
-        //Other Company Add
-
-        paramObject.put("company_name", "");
-        paramObject.put("company_id", "");
-
-        paramObject.put("address", "");
-        paramObject.put("breakout_link", "");
-        paramObject.put("city", "");
-        paramObject.put("oldImage", "");
-
-        paramObject.put("company_url", "");
-        paramObject.put("dob", "");
-        paramObject.put("dynamic_fields_value", "");
-        paramObject.put("facebook_link", "");
-        paramObject.put("firstname", contact_data.getFirstname());
-        paramObject.put("lastname", contact_data.getLastname());
-        paramObject.put("job_title", "");
-        paramObject.put("lastname", contact_data.getLastname());
-        paramObject.put("linkedin_link", "");
-        paramObject.put("organization_id", 1);
-        paramObject.put("state", "");
-        paramObject.put("team_id", 1);
-        // addcontectModel.getTime()
-        paramObject.put("timezone_id", "");
-        paramObject.put("twitter_link", "");
-        paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("zipcode", "");
-        paramObject.put("zoom_id", "");
-        paramObject.put("contact_image", "");
-        paramObject.put("image_extension", "");
-        paramObject.put("contact_image_name", "");
-
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < contact_data.getContactDetails().size(); i++) {
-            JSONObject paramObject1 = new JSONObject();
-            if (contact_data.getContactDetails().get(i).getEmailNumber().equals("")) {
-            } else {
-
-                paramObject1.put("email_number", contact_data.getContactDetails().get(i).getEmailNumber());
-                paramObject1.put("id", contact_data.getContactDetails().get(i).getId());
-                paramObject1.put("is_default", contact_data.getContactDetails().get(i).getIsDefault());
-                paramObject1.put("label", contact_data.getContactDetails().get(i).getLabel());
-                paramObject1.put("type", contact_data.getContactDetails().get(i).getType());
-            }
-            jsonArray.put(paramObject1);
+        if (contact_item.getIs_blocked().equals(1)) {
+            selected_block.setVisibility(View.GONE);
+            line_block.setVisibility(View.GONE);
+            selected_un_block.setVisibility(View.VISIBLE);
+            line_unblock.setVisibility(View.VISIBLE);
+        } else {
+            line_block.setVisibility(View.VISIBLE);
+            selected_block.setVisibility(View.VISIBLE);
+            selected_un_block.setVisibility(View.GONE);
+            line_unblock.setVisibility(View.GONE);
         }
 
-        paramObject.put("imei", Global.imei);
-        paramObject.put("contact_detail", jsonArray);
+
+        selected_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                Filter = "ALL";
+                iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                try {
+                    Contect_BLock(contact_item, "1", bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
+            }
+        });
+        selected_un_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                Filter = "ALL";
+                iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                try {
+                    Contect_BLock(contact_item, "0", bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        selected_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Block Contect
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                try {
+                    Filter = "ALL";
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Contect_Remove(contact_item, "0", bottomSheetDialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
+    public void Contect_BLock(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
+        paramObject.put("is_block", block);
+        JSONArray block_array = new JSONArray();
+        block_array.put(contact_data.getId());
+        paramObject.put("blockContactIds", block_array);
         obj.put("data", paramObject);
-
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Block_contact(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void success(Response<ApiResponse> response) {
 
-                loadingDialog.cancelLoading();
+
                 if (response.body().getHttp_status() == 200) {
 
-                } else {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<UservalidateModel>() {
-                    }.getType();
-                    UservalidateModel uservalidateModel = new Gson().fromJson(headerString, listType);
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
                     try {
-                        if (uservalidateModel.getFirstname().size() != 0) {
-                            Global.Messageshow(getActivity(), mMainLayout, uservalidateModel.getFirstname().get(0).toString(), false);
-                        }
-                    } catch (Exception e) {
+                        fillter_text = "";
+
+                        ContectEvent();
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
+                    bottomSheetDialog.cancel();
+                } else {
+                    loadingDialog.cancelLoading();
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
                 }
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
             }
         });
 
     }
 
+    public void Contect_Remove(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
+        paramObject.put("id", contact_data.getId());
+        paramObject.put("status", "D");
+
+        obj.put("data", paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+
+                if (response.body().getHttp_status() == 200) {
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    try {
+                        fillter_text = "";
+                        // loadingDialog.showLoadingDialog();
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    bottomSheetDialog.cancel();
+                } else {
+                    loadingDialog.cancelLoading();
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    bottomSheetDialog.cancel();
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+    }
+
+    void showBottomSheetDialog_Filtter() {
+
+          /*
+        Change By :- Paras
+        Chnage Date:- 4-2-22
+        */
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.fillter_contact_block_unblock, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+
+
+        CheckBox ch_block = bottomSheetDialog.findViewById(R.id.ch_block);
+        CheckBox ch_all = bottomSheetDialog.findViewById(R.id.ch_all);
+
+        switch (Filter) {
+            case "BLOCK":
+                ch_block.setChecked(true);
+                ch_all.setChecked(false);
+                break;
+            case "ALL":
+                ch_all.setChecked(true);
+                ch_block.setChecked(false);
+                break;
+
+        }
+        ch_block.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
+                    bottomSheetDialog.dismiss();
+                    List<ContectListData.Contact> block_data = SessionManager.getContectList(getActivity()).get(0).getContacts();
+                    List<ContectListData.Contact> block__list_data = new ArrayList<>();
+                    for (int i = 0; i < block_data.size(); i++) {
+                        if (block_data.get(i).getIs_blocked().equals(1)) {
+                            block__list_data.add(block_data.get(i));
+                        }
+                    }
+                    contectListData.clear();
+                    paginationAdapter.removeloist();
+                    contectListData.addAll(block__list_data);
+                    paginationAdapter.addAll(contectListData);
+                    num_count.setText(contectListData.size() + " Contacts");
+                    Filter = "BLOCK";
+
+                    if (block__list_data.size() == 0) {
+                        txt_nolist.setText(mCtx.getResources().getString(R.string.no_block_contact));
+                        lay_no_list.setVisibility(View.VISIBLE);
+                        layout_list_data.setVisibility(View.GONE);
+                        //         demo_layout.setVisibility(View.VISIBLE);
+                    } else {
+                        layout_list_data.setVisibility(View.VISIBLE);
+                        lay_no_list.setVisibility(View.GONE);
+                        //     demo_layout.setVisibility(View.GONE);
+                    }
+                    ch_all.setChecked(false);
+                    ch_block.setChecked(true);
+
+                } else {
+                    ch_block.setChecked(false);
+                    ch_all.setChecked(true);
+                    Filter = "ALL";
+                    contectListData.clear();
+                    contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    paginationAdapter.removeloist();
+                    onScrolledToBottom();
+                    bottomSheetDialog.dismiss();
+                }
+
+            }
+        });
+
+        ch_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    bottomSheetDialog.dismiss();
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    contectListData.clear();
+                    paginationAdapter.removeloist();
+                    contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
+                    paginationAdapter.addAll(contectListData);
+                    num_count.setText(contectListData.size() + " Contacts");
+                    Filter = "ALL";
+                    layout_list_data.setVisibility(View.VISIBLE);
+                    lay_no_list.setVisibility(View.GONE);
+                    ch_block.setChecked(false);
+                    ch_all.setChecked(true);
+                } else {
+                    ch_all.setChecked(false);
+                    bottomSheetDialog.dismiss();
+
+                }
+
+            }
+        });
+
+
+        bottomSheetDialog.show();
+    }
+
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                getTasks();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+    }
 
     public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -1919,10 +2214,9 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 */
                         String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
-                        if (!first_latter.equals(second_latter))
-                        {
+                        if (!first_latter.equals(second_latter)) {
                             holder1.first_latter.setText(first_latter);
-                            second_latter=first_latter;
+                            second_latter = first_latter;
                             holder1.first_latter.setVisibility(View.VISIBLE);
                             holder1.top_layout.setVisibility(View.VISIBLE);
 
@@ -1952,7 +2246,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                         }*/
 
-                     //   Log.e("Contect Image is",Contact_data.getContactImage());
+                        //   Log.e("Contect Image is",Contact_data.getContactImage());
 
                         if (Contact_data.getContactImage() == null || Contact_data.getContactImage().equals("")) {
                             String name = Contact_data.getFirstname();
@@ -2123,302 +2417,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-
-    private void broadcast_manu(ContectListData.Contact contact_item) {
-
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
-        bottomSheetDialog.setContentView(mView);
-        TextView selected_block = bottomSheetDialog.findViewById(R.id.selected_block);
-        View line_block = bottomSheetDialog.findViewById(R.id.line_block);
-        View line_unblock = bottomSheetDialog.findViewById(R.id.line_unblock);
-        TextView selected_un_block = bottomSheetDialog.findViewById(R.id.selected_unblock);
-        TextView selected_delete = bottomSheetDialog.findViewById(R.id.selected_delete);
-        selected_block.setText(getString(R.string.add_blacklist));
-        selected_un_block.setText(getString(R.string.remove_blacklist));
-        selected_delete.setText(getString(R.string.delete_contact));
-
-        if (contact_item.getIs_blocked().equals(1)) {
-            selected_block.setVisibility(View.GONE);
-            line_block.setVisibility(View.GONE);
-            selected_un_block.setVisibility(View.VISIBLE);
-            line_unblock.setVisibility(View.VISIBLE);
-        } else {
-            line_block.setVisibility(View.VISIBLE);
-            selected_block.setVisibility(View.VISIBLE);
-            selected_un_block.setVisibility(View.GONE);
-            line_unblock.setVisibility(View.GONE);
-        }
-
-
-        selected_block.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Block Contect
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                Filter = "ALL";
-                iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                try {
-                    Contect_BLock(contact_item, "1", bottomSheetDialog);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-        selected_un_block.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Block Contect
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                Filter = "ALL";
-                iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                try {
-                   Contect_BLock(contact_item, "0", bottomSheetDialog);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-        selected_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Block Contect
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
-                try {
-                    Filter = "ALL";
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    Contect_Remove(contact_item, "0", bottomSheetDialog);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-        bottomSheetDialog.show();
-
-    }
-
-
-    public void Contect_BLock(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        JSONObject obj = new JSONObject();
-        JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", 1);
-        paramObject.put("team_id", 1);
-        paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("is_block", block);
-        JSONArray block_array = new JSONArray();
-        block_array.put(contact_data.getId());
-        paramObject.put("blockContactIds", block_array);
-        obj.put("data", paramObject);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        retrofitCalls.Block_contact(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-
-                if (response.body().getHttp_status() == 200) {
-
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
-                    try {
-                        fillter_text="";
-
-                        ContectEvent();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    bottomSheetDialog.cancel();
-                } else {
-                    loadingDialog.cancelLoading();
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                bottomSheetDialog.cancel();
-            }
-        });
-
-    }
-
-
-    public void Contect_Remove(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
-        loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        JSONObject obj = new JSONObject();
-        JSONObject paramObject = new JSONObject();
-        paramObject.put("organization_id", 1);
-        paramObject.put("team_id", 1);
-        paramObject.put("user_id", user_data.getUser().getId());
-        paramObject.put("id", contact_data.getId());
-        paramObject.put("status", "D");
-
-        obj.put("data", paramObject);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void success(Response<ApiResponse> response) {
-
-
-                if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    try {
-                        fillter_text="";
-                       // loadingDialog.showLoadingDialog();
-                        ContectEvent();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    bottomSheetDialog.cancel();
-                } else {
-                    loadingDialog.cancelLoading();
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                bottomSheetDialog.cancel();
-            }
-        });
-
-    }
-
-
-    void showBottomSheetDialog_Filtter() {
-
-          /*
-        Change By :- Paras
-        Chnage Date:- 4-2-22
-        */
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.fillter_contact_block_unblock, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
-        bottomSheetDialog.setContentView(mView);
-
-
-        CheckBox ch_block = bottomSheetDialog.findViewById(R.id.ch_block);
-        CheckBox ch_all = bottomSheetDialog.findViewById(R.id.ch_all);
-
-        switch (Filter) {
-            case "BLOCK":
-                ch_block.setChecked(true);
-                ch_all.setChecked(false);
-                break;
-            case "ALL":
-                ch_all.setChecked(true);
-                ch_block.setChecked(false);
-                break;
-
-        }
-        ch_block.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
-                    bottomSheetDialog.dismiss();
-                    List<ContectListData.Contact> block_data = SessionManager.getContectList(getActivity()).get(0).getContacts();
-                    List<ContectListData.Contact> block__list_data = new ArrayList<>();
-                    for (int i = 0; i < block_data.size(); i++) {
-                        if (block_data.get(i).getIs_blocked().equals(1)) {
-                            block__list_data.add(block_data.get(i));
-                        }
-                    }
-                    contectListData.clear();
-                    paginationAdapter.removeloist();
-                    contectListData.addAll(block__list_data);
-                    paginationAdapter.addAll(contectListData);
-                    num_count.setText(contectListData.size() + " Contacts");
-                    Filter = "BLOCK";
-
-                    if(block__list_data.size()==0){
-                        txt_nolist.setText(mCtx.getResources().getString(R.string.no_block_contact));
-                        lay_no_list.setVisibility(View.VISIBLE);
-                        layout_list_data.setVisibility(View.GONE);
-               //         demo_layout.setVisibility(View.VISIBLE);
-                    }else {
-                        layout_list_data.setVisibility(View.VISIBLE);
-                        lay_no_list.setVisibility(View.GONE);
-                   //     demo_layout.setVisibility(View.GONE);
-                    }
-                    ch_all.setChecked(false);
-                    ch_block.setChecked(true);
-
-                }
-                else {
-                    ch_block.setChecked(false);
-                    ch_all.setChecked(true);
-                    Filter = "ALL";
-                    contectListData.clear();
-                    contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    paginationAdapter.removeloist();
-                    onScrolledToBottom();
-                    bottomSheetDialog.dismiss();
-                }
-
-            }
-        });
-
-        ch_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    bottomSheetDialog.dismiss();
-                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    contectListData.clear();
-                    paginationAdapter.removeloist();
-                    contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
-                    paginationAdapter.addAll(contectListData);
-                    num_count.setText(contectListData.size() + " Contacts");
-                    Filter = "ALL";
-                    layout_list_data.setVisibility(View.VISIBLE);
-                    lay_no_list.setVisibility(View.GONE);
-                    ch_block.setChecked(false);
-                    ch_all.setChecked(true);
-                }
-                else {
-                    ch_all.setChecked(false);
-                    bottomSheetDialog.dismiss();
-
-                }
-
-            }
-        });
-
-
-        bottomSheetDialog.show();
-    }
-
-
-
     public class SpeedyLinearLayoutManager extends LinearLayoutManager {
 
         private static final float MILLISECONDS_PER_INCH = 5f; //default is 25f (bigger = slower)
@@ -2455,5 +2453,60 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             startSmoothScroll(linearSmoothScroller);
         }
     }
+
+
+    public class MyAsyncTasks1 extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                if (!SessionManager.getnewContect(getActivity()).equals(null) && SessionManager.getnewContect(getActivity()).size()!=0)
+                {
+                    try {
+                        Duplicate_remove();
+                        //Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
+                        ArrayList<Contact> listContacts1=new ArrayList<>();
+                        listContacts1.addAll(SessionManager.getnewContect(getActivity()));
+                        splitdata(listContacts1);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (!SessionManager.getupdateContect(getActivity()).equals(null) && SessionManager.getupdateContect(getActivity()).size()!=0) {
+                    try {
+                        AddContect_Update();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+    }
+
 }
+
 

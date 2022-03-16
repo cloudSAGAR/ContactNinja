@@ -1042,7 +1042,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         boolean found = contect_list.stream().anyMatch(p -> p.getEmailNumber().equals(num));
                         boolean found1 = contect_list.stream().anyMatch(p -> p.getFirst_name().equals(f_name));
                         if (found == true && found1 == false) {
-                            check_list_for_Update(listContacts.get(i).name, "", listContacts.get(i).numbers.get(0).number,listContacts,i);
+                            check_list_for_Update(listContacts.get(i).name, listContacts.get(i).last_name, listContacts.get(i).numbers.get(0).number,listContacts,i);
                         }
                     }
                 } else {
