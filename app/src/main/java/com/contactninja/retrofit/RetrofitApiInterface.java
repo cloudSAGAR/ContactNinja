@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import com.contactninja.Model.SignModel;
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -17,8 +19,6 @@ import retrofit2.http.Part;
 
 @SuppressLint("UnknownNullness")
 public interface RetrofitApiInterface {
-    @POST("login")
-    Call<ApiResponse> loginUser(@Body SignModel signModel);
 
 /*    @Headers("Content-Type: application/json")
     @POST("register")
@@ -127,6 +127,28 @@ public interface RetrofitApiInterface {
                                 @Body JsonObject jsonObject,
                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
+   @POST("user/zoomIntegrationExists")
+    Call<ApiResponse> zoomIntegrationExists(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("user/zoomAuthApp")
+    Call<ApiResponse> zoomAuthApp(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("user/helpZoomOauth")
+    Call<ApiResponse> helpZoomOauth(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+   @POST("user/deauthoriseToken")
+    Call<ApiResponse> ZoomDisconnect(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+   @POST("zoom/create")
+    Call<ApiResponse> ZoomCreate(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
     @POST("user/listphonenumber")
     Call<ApiResponse> Contect_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
@@ -174,10 +196,22 @@ public interface RetrofitApiInterface {
                                      @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
 
+    @POST("dashboard")
+    Call<ApiResponse> Dashboard(@Header("Accept") String api, @Header("Authorization") String auth,
+                                   @Body JsonObject jsonObject,
+                                   @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
     @POST("timezone/list")
     Call<ApiResponse> Timezone(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("billing/add_trial_subscription")
+    Call<ApiResponse> Add_Subscription(@Header("Accept") String api, @Header("Authorization") String auth,
+                                       @Body JsonObject jsonObject,
+                                       @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("billing/active_subscription")
+    Call<ApiResponse> Active_Subscription(@Header("Accept") String api, @Header("Authorization") String auth,
+                                       @Body JsonObject jsonObject,
+                                       @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("working_hour/add/default")
     Call<ApiResponse> Working_hour(@Header("Accept") String api, @Header("Authorization") String auth,
@@ -214,6 +248,17 @@ public interface RetrofitApiInterface {
 
     @POST("manual_task/store")
     Call<ApiResponse> manual_task_store(@Header("Accept") String api, @Header("Authorization") String auth,
+                                        @Body JsonObject jsonObject,
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+ @POST("active_task/update")
+    Call<ApiResponse> active_task_update(@Header("Accept") String api, @Header("Authorization") String auth,
+                                        @Body JsonObject jsonObject,
+                                        @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+
+    @POST("sequence/contacttask_update")
+    Call<ApiResponse> manual_task_store_snooze(@Header("Accept") String api, @Header("Authorization") String auth,
                                         @Body JsonObject jsonObject,
                                         @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
@@ -290,5 +335,34 @@ public interface RetrofitApiInterface {
     Call<ApiResponse> Broadcast_Activiy_list(@Header("Accept") String api, @Header("Authorization") String auth,
                                         @Body JsonObject jsonObject,
                                         @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+    @POST("broadcast/store")
+    Call<ApiResponse>  Broadcast_store(@Header("Accept") String api, @Header("Authorization") String auth,
+                                             @Body JsonObject jsonObject,
+                                             @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+    @POST("bizcard/list")
+    Call<ApiResponse> BZcard_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("bizcard/addUpdate")
+    Call<ApiResponse> BZcard_Add_Update(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("bizcard/user/list")
+    Call<ApiResponse> BZcard_User_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("affiliate/list")
+    Call<ApiResponse> affiliate_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
+
+
+    @POST("S3bucket/import")
+    Call<ApiResponse> S3bucket_import(@Header("Accept") String api, @Header("Authorization") String auth,
+                                   @Body JsonObject jsonObject,
+                                   @Header("appVersion") String appVersion, @Header("deviceType") String deviceType);
 
 }

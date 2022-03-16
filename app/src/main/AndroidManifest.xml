@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.contactninja"
-    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife">
+    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,IntentFilterExportedReceiver,UnprotectedSMSBroadcastReceiver,BatteryLife" >
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -46,7 +46,64 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactNinja"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
+        <activity
+            android:name=".Bzcard.CreateBzcard.Title_bzcardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name=".Bzcard.Media.PDF.PDF_List_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.PDF.Add_pdf_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Image.Image_List_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Image.Add_image_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Video.Video_List_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Video.Add_Video_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Video.Video_LinkAdd_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Media.Select_Media_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.CreateBzcard.Add_New_Bzcard_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bzcard.Select_Bzcard_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Main_Broadcast.Broadcaste_viewContect"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.ZoomActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Main_Broadcast.List_And_show.Broadcaste_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Main_Broadcast.Recuring_email_broadcast_activity"
             android:exported="false"
@@ -117,10 +174,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_text.List_And_show.unused_List_Manual_Activty"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Notification.Notification_task_acceptActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -153,7 +206,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Setting.Email_verification"
+            android:name=".Setting.Verification_web"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
@@ -218,38 +271,9 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Broadcast.Broadcast_Schedule.Repeat_Month_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Repeat_weekly_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Broadcast_Final_Activity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Broadcast_time_select"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Broadcast_date_select"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcast_Schedule.Broadcast_to_repeat"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Main_Broadcast.Brodcsast_Tankyou"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Broadcast.Broadcst_Activty"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Group.SendBroadcast"
             android:exported="false"
@@ -263,7 +287,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddContect.Addnewcontect_Activity"
+            android:name=".AddContect.Add_Newcontect_Activity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
@@ -317,7 +341,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-
         <activity
             android:name=".Main_Broadcast.Broadcast_Name_Activity"
             android:exported="true"
@@ -329,16 +352,30 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name=".Contect_Demo"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity
             android:name=".Auth.AppIntroActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
             android:name=".Auth.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"
-            tools:ignore="LockedOrientationActivity">
+            tools:ignore="LockedOrientationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -351,7 +388,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         -->
-        <receiver android:name=".Utils.OTP_Receiver">
+        <receiver android:name=".Utils.OTP_Receiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -359,7 +396,7 @@
         <receiver
             android:name=".Utils.ConnectivityReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action
                     android:name="android.net.conn.CONNECTIVITY_CHANGE"
@@ -376,11 +413,18 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.contactninja"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />
         </provider>
+        <service
+            android:name=".retrofit.FCMService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

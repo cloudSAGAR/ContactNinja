@@ -1,125 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:id="@+id/mMainLayout"
-    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Fragment.AddContect_Fragment.GroupFragment">
+    tools:context=".Fragment.AddContect_Fragment.GroupFragment"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
-    <include
-        layout="@layout/toolbar"/>
-    <include
-        layout="@layout/common_dialog"/>
+    <include layout="@layout/toolbar" />
+
+    <include layout="@layout/common_dialog" />
 
     <LinearLayout
         android:id="@+id/mMainLayout1"
 
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/shape_25_white_eee_line">
+
             <ImageView
                 android:id="@+id/search_icon"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_gravity="center|left"
-                android:src="@drawable/ic_search"
                 android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp">
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/ic_search">
 
             </ImageView>
+
             <EditText
-                style="@style/tv_Medium_14"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_gravity="center|left"
-                android:gravity="center|left"
                 android:id="@+id/ev_search"
-                android:singleLine="true"
-                android:textColor="@color/text_reg"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@color/add_contect_transpernt"
+                android:gravity="center|left"
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
-                android:background="@color/add_contect_transpernt"
-                />
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/add_campaign_layout"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:singleLine="true"
+                android:textColor="@color/text_reg"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
             <ImageView
-                android:id="@+id/add_new_contect_icon"
-                android:src="@drawable/ic_plus_blue"
+                android:id="@+id/iv_cancle_search_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:padding="@dimen/_10sdp"
-                android:background="@drawable/shape_oval_border_10_blue"
+                android:src="@drawable/ic_clear"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/add_campaign_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_add_new_contect_icon"
                 android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"/>
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/shape_oval_border_10_blue"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_plus_blue" />
 
             <TextView
-                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center|left"
+                android:padding="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text="@string/campaign_add"
-                android:textColor="@color/text_reg"
-               />
+                android:textColor="@color/text_reg" />
+
             <TextView
-                android:padding="@dimen/_5sdp"
                 android:id="@+id/num_count"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center|end"
+                android:padding="@dimen/_5sdp"
                 android:singleLine="true"
                 android:textColor="@color/purple_500" />
 
         </LinearLayout>
+
         <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/home_list_back_line"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@color/home_list_back_line" />
 
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/group_name"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
-                android:src="@drawable/ic_plus_blue"
-                android:padding="@dimen/_10sdp"
-                android:background="@drawable/shape_primary_back"
                 android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"/>
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/shape_primary_back"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_plus_blue" />
 
             <TextView
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -127,29 +140,66 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/add_new_group_name"
-                android:textColor="@color/text_reg"
-                 />
+                android:textColor="@color/text_reg" />
 
 
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/campaign_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/campaign_list"
-                    android:layout_weight="1"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_campaign_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <LinearLayout
+                        android:id="@+id/lay_no_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/lay_bouttom"
+                        android:layout_below="@+id/line"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-2dp"
+                        android:layout_marginBottom="3dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_small_logo" />
+
+                        <TextView
+                            style="@style/tv_Medium_12"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/no_campaing"
+                            android:textColor="@color/text_reg" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
         </LinearLayout>
 

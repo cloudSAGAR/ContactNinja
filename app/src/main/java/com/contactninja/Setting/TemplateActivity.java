@@ -56,8 +56,8 @@ import retrofit2.Response;
 public class TemplateActivity extends AppCompatActivity implements View.OnClickListener,
         ConnectivityReceiver.ConnectivityReceiverListener,TemplateClick, SwipeRefreshLayout.OnRefreshListener {
     ImageView iv_back;
-    LinearLayout demo_layout, add_new_Template;
-    LinearLayout mMainLayout1;
+    LinearLayout demo_layout;
+    LinearLayout mMainLayout1,add_new_Template;
     TextView tv_create;
     private BroadcastReceiver mNetworkReceiver;
     LinearLayout mMainLayout;

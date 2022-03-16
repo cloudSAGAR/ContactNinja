@@ -336,7 +336,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                 Global.getVersionname(Campaign_Name_Activity.this), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
-                        loadingDialog.cancelLoading();
+
 
                         if (response.body().getHttp_status() == 200) {
 
@@ -346,6 +346,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                                 intent.putExtra("sequence_id", sequence_id);
                                 *//*intent.putExtra("seq_task_id",seq_task_id);*//*
                                 startActivity(intent);*/
+                                loadingDialog.cancelLoading();
                                 finish();
                             } else {
                                 SessionManager.setCampign_flag("read_name");
@@ -367,6 +368,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
                     }
                 });
     }
+
 
     private void Time_list() throws JSONException {
 

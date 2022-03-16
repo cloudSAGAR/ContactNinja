@@ -7,13 +7,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Group.GroupActivity;
@@ -41,20 +49,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Broadcast_Group_Fragment extends Fragment implements View.OnClickListener {
-    String  group_flag="false";
-    LinearLayout main_layout, add_new_contect_layout, group_name;
+    String group_flag = "false";
+    LinearLayout add_new_contect_layout, group_name,lay_no_list;
     SessionManager sessionManager;
-    RecyclerView group_recyclerView;
-    LinearLayoutManager layoutManager,layoutManager1;
+    RecyclerView rv_group_list;
+    LinearLayoutManager layoutManager, layoutManager1;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     TextView num_count;
@@ -68,27 +72,28 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     // private GroupAdapter groupAdapter;
     RecyclerView add_contect_list;
     public static TopUserListDataAdapter topUserListDataAdapter;
-    TextView tv_create;
-    LinearLayout mMainLayout;
-    ImageView add_new_contect_icon1,add_new_contect_icon;
+    LinearLayout mMainLayout,layout_select_list;
+    ImageView add_new_contect_icon1,
+            add_new_contect_icon,search_icon,iv_cancle_search_icon;
     TextView add_new_contect;
-    private long mLastClickTime=0;
+    private long mLastClickTime = 0;
+    EditText ev_search;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view=inflater.inflate(R.layout.fragment_broadcast__group_, container, false);
+        View view = inflater.inflate(R.layout.fragment_broadcast__group_, container, false);
         IntentUI(view);
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
 
-        select_contectListData=new ArrayList<>();
-        grouplists=new ArrayList<>();
-        SessionManager.setGroupList(getActivity(), new ArrayList<>());
+        select_contectListData = new ArrayList<>();
+        grouplists = new ArrayList<>();
         try {
-            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                 GroupEvent();
             }
         } catch (JSONException e) {
@@ -96,24 +101,20 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         }
 
 
-        topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
+        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
         paginationAdapter = new PaginationAdapter(getActivity());
-        group_recyclerView.setAdapter(paginationAdapter);
-        group_recyclerView.setHasFixedSize(true);
-        group_recyclerView.setItemViewCacheSize(500);
+        rv_group_list.setAdapter(paginationAdapter);
+        rv_group_list.setHasFixedSize(true);
+        rv_group_list.setItemViewCacheSize(50000);
         add_contect_list.setHasFixedSize(true);
-        add_contect_list.setItemViewCacheSize(500);
-
-        SessionManager.setGroupList(getActivity(), new ArrayList<>());
-
+        add_contect_list.setItemViewCacheSize(50000);
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
-        main_layout.setOnClickListener(this);
 
 
-        group_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rv_group_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -129,8 +130,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 if (!isLoading && !isLastPage) {
                     if ((visibleItem + firstVisibleItemPosition) >= totalItem && firstVisibleItemPosition >= 0 && totalItem >= currentPage) {
                         try {
-                            currentPage=currentPage + 1;
-                            if(Global.isNetworkAvailable(getActivity(),mMainLayout)) {
+                            currentPage = currentPage + 1;
+                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                                 GroupEvent1();
                             }
                         } catch (JSONException e) {
@@ -141,10 +142,35 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             }
         });
         call_updatedata();
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+
+                    try {
+                        grouplists.clear();
+                        paginationAdapter.Remove_list();
+                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            GroupEvent();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
     public void call_updatedata() {
 
         if (SessionManager.getgroup_broadcste(getActivity()).size() != 0) {
@@ -158,53 +184,81 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     }
 
     private void IntentUI(View view) {
-
+        iv_cancle_search_icon=view.findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
+        layout_select_list=view.findViewById(R.id.layout_select_list);
+        ev_search=view.findViewById(R.id.ev_search);
         mMainLayout = view.findViewById(R.id.mMainLayout);
-        main_layout = view.findViewById(R.id.demo_layout);
+        search_icon=view.findViewById(R.id.search_icon);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
-        group_recyclerView = view.findViewById(R.id.group_list);
+        rv_group_list = view.findViewById(R.id.rv_group_list);
+        lay_no_list = view.findViewById(R.id.lay_no_list);
         layoutManager = new LinearLayoutManager(getActivity());
-        group_recyclerView.setLayoutManager(layoutManager);
+        rv_group_list.setLayoutManager(layoutManager);
         group_name = view.findViewById(R.id.group_name);
         num_count = view.findViewById(R.id.num_count);
         grouplists = new ArrayList<>();
-        add_contect_list=view.findViewById(R.id.add_contect_list);
-        layoutManager1=new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
+        add_contect_list = view.findViewById(R.id.add_contect_list);
+        layoutManager1 = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         add_contect_list.setLayoutManager(layoutManager1);
-        tv_create=view.findViewById(R.id.tv_create);
-        add_new_contect_icon1=view.findViewById(R.id.add_new_contect_icon1);
-        add_new_contect_icon=view.findViewById(R.id.add_new_contect_icon);
-        add_new_contect=view.findViewById(R.id.add_new_contect);
+        add_new_contect_icon1 = view.findViewById(R.id.add_new_contect_icon1);
+        add_new_contect_icon = view.findViewById(R.id.add_new_contect_icon);
+        add_new_contect = view.findViewById(R.id.add_new_contect);
+        search_icon.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.search_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                ev_search.requestFocus();
+                break;
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                try {
+                    grouplists.clear();
+                    paginationAdapter.Remove_list();
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        GroupEvent();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
             case R.id.add_new_contect_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (add_new_contect_icon1.getVisibility()==View.GONE)
-                {
+                if (add_new_contect_icon1.getVisibility() == View.GONE) {
                     add_new_contect_icon1.setVisibility(View.VISIBLE);
                     add_new_contect_icon.setVisibility(View.GONE);
                     paginationAdapter.addAll_item(grouplists);
                     add_new_contect.setText(getString(R.string.remove_new_group_all));
 
 
-                }
-                else {
+                } else {
                     add_new_contect_icon1.setVisibility(View.GONE);
                     add_new_contect_icon.setVisibility(View.VISIBLE);
                     select_contectListData.clear();
                     topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
                     add_contect_list.setAdapter(topUserListDataAdapter);
                     topUserListDataAdapter.notifyDataSetChanged();
-                    group_flag="false";
+                    group_flag = "false";
                     paginationAdapter.notifyDataSetChanged();
                     add_new_contect.setText(getString(R.string.add_new_group_all));
+                    if (select_contectListData.size() != 0) {
+                        layout_select_list.setVisibility(View.VISIBLE);
+                    } else {
+                        layout_select_list.setVisibility(View.GONE);
+                    }
                 }
 
                 break;
@@ -215,16 +269,6 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
-            case R.id.main_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setGroupData(getActivity(),new Grouplist.Group());
-                startActivity(new Intent(getActivity(), GroupActivity.class));
-                /*getActivity().finish();*/
-                break;
-
 
         }
 
@@ -242,12 +286,12 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", page);
         paramObject.put("perPage", limit);
-        paramObject.put("q", "");
+        paramObject.put("q", ev_search.getText().toString());
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token,Global.getVersionname(getActivity()),Global.Device, new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -269,29 +313,38 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
 
                     }
 
-                    num_count.setText("" + group_model.getTotal() + " Group");
+                    /*
+                     * set select contact count */
+                    select_Contact(0);
 
                     totale_group = group_model.getTotal();
-                    main_layout.setVisibility(View.GONE);
+                    rv_group_list.setVisibility(View.VISIBLE);
+                    lay_no_list.setVisibility(View.GONE);
 
 
                 } else {
-                    tv_create.setText(getString(R.string.error_opps));
-                    main_layout.setVisibility(View.VISIBLE);
+                    rv_group_list.setVisibility(View.GONE);
+                    lay_no_list.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                tv_create.setText(getString(R.string.error_opps));
-                main_layout.setVisibility(View.VISIBLE);
+
             }
         });
 
 
     }
 
+    private void select_Contact(int size) {
+        if (size != 0) {
+            num_count.setText(size + " " + getResources().getString(R.string.selected));
+        } else {
+            num_count.setText(grouplists.size() + " " + getResources().getString(R.string.groups));
+        }
+    }
 
     private void GroupEvent1() throws JSONException {
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
@@ -312,7 +365,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         //Log.e("Obbject data", new Gson().toJson(gsonObject));
-        retrofitCalls.Group_List(sessionManager,gsonObject, loadingDialog, token, Global.getVersionname(getActivity()),Global.Device,new RetrofitCallback() {
+        retrofitCalls.Group_List(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -336,8 +389,9 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                         isLoading = false;
                     }
 
-                    num_count.setText("" + group_model.getTotal() + " Group");
-
+                    /*
+                     * set select contact count */
+                    select_Contact(0);
                 } else {
 
                 }
@@ -398,47 +452,38 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
 
                     Group_data.setFlag(group_flag);
-                    if (Group_data.getFlag().equals("false"))
-                    {
+                    if (Group_data.getFlag().equals("false")) {
                         movieViewHolder.remove_contect_icon.setVisibility(View.GONE);
                         movieViewHolder.add_new_contect_icon.setVisibility(View.VISIBLE);
-                    }
-                    else {
+                    } else {
                         movieViewHolder.remove_contect_icon.setVisibility(View.VISIBLE);
                         movieViewHolder.add_new_contect_icon.setVisibility(View.GONE);
                     }
 
 
                     movieViewHolder.group_name.setText(Group_data.getGroupName());
-                    if (Group_data.getGroupImage()==null)
-                    {
-                        String name =Group_data.getGroupName();
-                        String add_text="";
-                        String[] split_data=name.split(" ");
+                    if (Group_data.getGroupImage() == null) {
+                        String name = Group_data.getGroupName();
+                        String add_text = "";
+                        String[] split_data = name.split(" ");
                         try {
-                            for (int i=0;i<split_data.length;i++)
-                            {
-                                if (i==0)
-                                {
-                                    add_text=split_data[i].substring(0,1);
-                                }
-                                else {
-                                    add_text=add_text+split_data[i].substring(0,1);
+                            for (int i = 0; i < split_data.length; i++) {
+                                if (i == 0) {
+                                    add_text = split_data[i].substring(0, 1);
+                                } else {
+                                    add_text = add_text + split_data[i].substring(0, 1);
                                     break;
                                 }
                             }
-                        }
-                        catch (Exception e)
-                        {
-                               e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 
 
                         movieViewHolder.no_image.setText(add_text);
                         movieViewHolder.no_image.setVisibility(View.VISIBLE);
                         movieViewHolder.group_image.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         Glide.with(context).
                                 load(Group_data.getGroupImage()).
                                 placeholder(R.drawable.shape_primary_back).
@@ -449,48 +494,58 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     }
 
 
-
-
                     movieViewHolder.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                          //  Log.e("Data is",new Gson().toJson(Group_data));
+                            //  Log.e("Data is",new Gson().toJson(Group_data));
                             //userDetailsfull.get(position).setId(position);
                             movieViewHolder.remove_contect_icon.setVisibility(View.VISIBLE);
                             movieViewHolder.add_new_contect_icon.setVisibility(View.GONE);
                             movieList.get(position).setFlag("false");
                             select_contectListData.add(Group_data);
                             //userDetailsfull.get(position).setId(position);
-                          //  topUserListDataAdapter.notifyDataSetChanged();
-                            topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
+                            //  topUserListDataAdapter.notifyDataSetChanged();
+                            topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
                             add_contect_list.setAdapter(topUserListDataAdapter);
-                            num_count.setText(select_contectListData.size()+" Group Selcted");
-                            sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
-                            sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
-
+                            /*
+                             * set select contact count */
+                            select_Contact(select_contectListData.size());
+                            sessionManager.setgroup_broadcste(getActivity(), new ArrayList<>());
+                            sessionManager.setgroup_broadcste(getActivity(), select_contectListData);
+                            if (select_contectListData.size() != 0) {
+                                layout_select_list.setVisibility(View.VISIBLE);
+                            } else {
+                                layout_select_list.setVisibility(View.GONE);
+                            }
                         }
                     });
                     movieViewHolder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                          //  Log.e("On Click Remove ","Remove");
+                            //  Log.e("On Click Remove ","Remove");
                             // Log.e("Data is",new Gson().toJson(contacts.get(position)));
                             //userDetailsfull.get(position).setId(0);
                             movieViewHolder.remove_contect_icon.setVisibility(View.GONE);
                             movieViewHolder.add_new_contect_icon.setVisibility(View.VISIBLE);
                             movieList.get(position).setFlag("true");
-                            topUserListDataAdapter.remove_item(position,movieList.get(position).getId());
-                            topUserListDataAdapter=new TopUserListDataAdapter(getActivity(),getActivity(),select_contectListData);
+                            topUserListDataAdapter.remove_item(position, movieList.get(position).getId());
+                            topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
                             add_contect_list.setAdapter(topUserListDataAdapter);
-                           // Log.e("Postionis ",String.valueOf(position));
+                            // Log.e("Postionis ",String.valueOf(position));
 
                             topUserListDataAdapter.notifyDataSetChanged();
-                          //  Log.e("Size is",new Gson().toJson(select_contectListData));
-                            num_count.setText(select_contectListData.size()+" Group Selcted");
-                            sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
-                            sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
-
+                            //  Log.e("Size is",new Gson().toJson(select_contectListData));
+                            /*
+                             * set select contact count */
+                            select_Contact(select_contectListData.size());
+                            sessionManager.setgroup_broadcste(getActivity(), new ArrayList<>());
+                            sessionManager.setgroup_broadcste(getActivity(), select_contectListData);
+                            if (select_contectListData.size() != 0) {
+                                layout_select_list.setVisibility(View.VISIBLE);
+                            } else {
+                                layout_select_list.setVisibility(View.GONE);
+                            }
                         }
                     });
 
@@ -512,7 +567,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     break;
 
                 case LOADING:
-                   LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
+                    LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
                     loadingViewHolder.progressBar.setVisibility(View.VISIBLE);
                     break;
             }
@@ -555,29 +610,32 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 add(result);
             }
         }
-        public void addAll_item(List<Grouplist.Group> movieList1)
-        {
+
+        public void addAll_item(List<Grouplist.Group> movieList1) {
             select_contectListData.clear();
             movieList.clear();
-            for (int i=0;i<movieList1.size();i++)
-            {
+            for (int i = 0; i < movieList1.size(); i++) {
 
                 paginationAdapter = new PaginationAdapter(getContext());
-                group_recyclerView.setAdapter(paginationAdapter);
+                rv_group_list.setAdapter(paginationAdapter);
                 //group_flag="false";
                 //movieList1.get(i).set
-                group_flag="true";
+                group_flag = "false";
                 movieList1.get(i).setFlag("true");
                 paginationAdapter.addAll(movieList1);
                 paginationAdapter.notifyItemChanged(i);
-                group_recyclerView.setItemViewCacheSize(500);
+                rv_group_list.setItemViewCacheSize(50000);
                 select_contectListData.add(movieList1.get(i));
                 topUserListDataAdapter.notifyDataSetChanged();
 
             }
-            sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
-            sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
-
+            sessionManager.setgroup_broadcste(getActivity(), new ArrayList<>());
+            sessionManager.setgroup_broadcste(getActivity(), select_contectListData);
+            if (select_contectListData.size() != 0) {
+                layout_select_list.setVisibility(View.VISIBLE);
+            } else {
+                layout_select_list.setVisibility(View.GONE);
+            }
         }
 
         public Grouplist.Group getItem(int position) {
@@ -585,11 +643,17 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
         }
 
 
+        public void Remove_list()
+        {
+
+            movieList.clear();
+            notifyDataSetChanged();
+        }
         public class MovieViewHolder extends RecyclerView.ViewHolder {
-            private final TextView group_name,no_image;
+            private final TextView group_name, no_image;
             private final CircleImageView group_image;
             LinearLayout group_layout;
-            ImageView add_new_contect_icon,remove_contect_icon;
+            ImageView add_new_contect_icon, remove_contect_icon;
 
             public MovieViewHolder(View itemView) {
                 super(itemView);
@@ -597,8 +661,8 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 group_name = itemView.findViewById(R.id.group_name);
                 group_layout = itemView.findViewById(R.id.group_layout);
                 group_image = itemView.findViewById(R.id.group_image);
-                add_new_contect_icon=itemView.findViewById(R.id.add_new_contect_icon);
-                remove_contect_icon=itemView.findViewById(R.id.remove_contect_icon);
+                add_new_contect_icon = itemView.findViewById(R.id.add_new_contect_icon);
+                remove_contect_icon = itemView.findViewById(R.id.remove_contect_icon);
                 add_new_contect_icon.setVisibility(View.VISIBLE);
             }
         }
@@ -617,9 +681,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
     }
 
 
-
-   public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass>
-    {
+    public class TopUserListDataAdapter extends RecyclerView.Adapter<TopUserListDataAdapter.InviteListDataclass> {
 
         private final Context mcntx;
         public Activity mCtx;
@@ -652,7 +714,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
             holder.userName.setText(select_contectListData.get(position).getGroupName());
             holder.top_layout.setVisibility(View.VISIBLE);
 
-            String first_latter =select_contectListData.get(position).getGroupName().substring(0, 1).toUpperCase();
+            String first_latter = select_contectListData.get(position).getGroupName().substring(0, 1).toUpperCase();
 
             if (second_latter.equals("")) {
                 current_latter = first_latter;
@@ -665,7 +727,6 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 current_latter = first_latter;
                 second_latter = first_latter;
             }
-
 
 
             String file = "" + select_contectListData.get(position).getGroupImage();
@@ -686,7 +747,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                         }
                     }
                 } catch (Exception e) {
-e.printStackTrace();
+                    e.printStackTrace();
                 }
 
 
@@ -697,10 +758,10 @@ e.printStackTrace();
 
                 image_url = select_contectListData.get(position).getGroupImage();
                 Glide.with(mCtx).
-                            load(select_contectListData.get(position).getGroupImage())
-                            .placeholder(R.drawable.shape_primary_circle)
-                            .error(R.drawable.shape_primary_circle)
-                            .into(holder.profile_image);
+                        load(select_contectListData.get(position).getGroupImage())
+                        .placeholder(R.drawable.shape_primary_circle)
+                        .error(R.drawable.shape_primary_circle)
+                        .into(holder.profile_image);
 
             }
 
@@ -711,19 +772,17 @@ e.printStackTrace();
                         return;
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
-                    for (int i=0;i<grouplists.size();i++)
-                    {
-                        if (grouplists.get(i).getId().equals(select_contectListData.get(position).getId()))
-                        {
+                    for (int i = 0; i < grouplists.size(); i++) {
+                        if (grouplists.get(i).getId().equals(select_contectListData.get(position).getId())) {
                             paginationAdapter.notifyItemChanged(i);
-                            group_flag="false";
+                            group_flag = "false";
                             grouplists.get(i).setFlag("false");
                         }
                     }
                     userDetails.remove(position);
                     topUserListDataAdapter.notifyDataSetChanged();
-                    sessionManager.setgroup_broadcste(getActivity(),new ArrayList<>());
-                    sessionManager.setgroup_broadcste(getActivity(),select_contectListData);
+                    sessionManager.setgroup_broadcste(getActivity(), new ArrayList<>());
+                    sessionManager.setgroup_broadcste(getActivity(), select_contectListData);
 
 
                 }
@@ -739,10 +798,8 @@ e.printStackTrace();
 
         public void remove_item(int item, Integer id) {
 
-            for (int i=0;i<userDetails.size();i++)
-            {
-                if (userDetails.get(i).getId().toString().equals(String.valueOf(id)))
-                {
+            for (int i = 0; i < userDetails.size(); i++) {
+                if (userDetails.get(i).getId().toString().equals(String.valueOf(id))) {
                     userDetails.remove(i);
                     notifyItemRemoved(i);
                 }

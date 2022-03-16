@@ -9,7 +9,6 @@ import java.util.List;
 
 public class BroadcastActivityListModel
 {
-
         @SerializedName("total")
         @Expose
         private Integer total;
@@ -60,9 +59,6 @@ public class BroadcastActivityListModel
         @SerializedName("recurring_type")
         @Expose
         private String recurringType;
-        @SerializedName("recurring_detail")
-        @Expose
-        private List<RecurringDetail> recurringDetail = null;
         @SerializedName("first_activated")
         @Expose
         private Object firstActivated;
@@ -72,6 +68,18 @@ public class BroadcastActivityListModel
         @SerializedName("last_run_time")
         @Expose
         private Object lastRunTime;
+        @SerializedName("type")
+        @Expose
+        private String type;
+        @SerializedName("manage_by")
+        @Expose
+        private String manageBy;
+        @SerializedName("content_header")
+        @Expose
+        private Object contentHeader;
+        @SerializedName("content_body")
+        @Expose
+        private String contentBody;
         @SerializedName("created_by")
         @Expose
         private Integer createdBy;
@@ -143,13 +151,7 @@ public class BroadcastActivityListModel
             this.recurringType = recurringType;
         }
 
-        public List<RecurringDetail> getRecurringDetail() {
-            return recurringDetail;
-        }
 
-        public void setRecurringDetail(List<RecurringDetail> recurringDetail) {
-            this.recurringDetail = recurringDetail;
-        }
 
         public Object getFirstActivated() {
             return firstActivated;
@@ -175,6 +177,38 @@ public class BroadcastActivityListModel
             this.lastRunTime = lastRunTime;
         }
 
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getManageBy() {
+            return manageBy;
+        }
+
+        public void setManageBy(String manageBy) {
+            this.manageBy = manageBy;
+        }
+
+        public Object getContentHeader() {
+            return contentHeader;
+        }
+
+        public void setContentHeader(Object contentHeader) {
+            this.contentHeader = contentHeader;
+        }
+
+        public String getContentBody() {
+            return contentBody;
+        }
+
+        public void setContentBody(String contentBody) {
+            this.contentBody = contentBody;
+        }
+
         public Integer getCreatedBy() {
             return createdBy;
         }
@@ -191,33 +225,17 @@ public class BroadcastActivityListModel
             this.createdAt = createdAt;
         }
 
-    }
 
-    public class RecurringDetail {
-
-        @SerializedName("repeat_every")
-        @Expose
-        private Integer repeatEvery;
-        @SerializedName("occurs_on")
-        @Expose
-        private List<Integer> occursOn = null;
-
-        public Integer getRepeatEvery() {
-            return repeatEvery;
         }
 
-        public void setRepeatEvery(Integer repeatEvery) {
-            this.repeatEvery = repeatEvery;
-        }
-
-        public List<Integer> getOccursOn() {
-            return occursOn;
-        }
-
-        public void setOccursOn(List<Integer> occursOn) {
-            this.occursOn = occursOn;
-        }
 
     }
 
-}
+
+
+
+
+
+
+
+

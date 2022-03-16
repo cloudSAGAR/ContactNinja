@@ -1,13 +1,7 @@
 package com.contactninja.Main_Broadcast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,27 +15,47 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.contactninja.Manual_email_text.Manual_Auto_Selection_Email_Fragment;
-import com.contactninja.Manual_email_text.Manual_Auto_Selection_Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.Manual_Auto_Task_Name_Activity;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.CampaignTask;
-import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Response;
+
+@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -56,11 +70,13 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
             R.drawable.ic_message_tab,
             R.drawable.ic_email,
     };
-    LinearLayout mMainLayout;
+    RelativeLayout mMainLayout;
     private BroadcastReceiver mNetworkReceiver;
     SampleFragmentPagerAdapter pagerAdapter;
     TabLayout.Tab tab;
     private long mLastClickTime=0;
+    String Activty_Back="";
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +86,10 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
         sessionManager=new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         IntentUI();
+
+
+
+
 
         pagerAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -95,13 +115,41 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
             tab = tabLayout.getTabAt(i);
             tab.setCustomView(pagerAdapter.getTabView(i));
         }
-        Intent intent=getIntent();
+      try {
+          Intent intent=getIntent();
         Bundle bundle=intent.getExtras();
+          String type=bundle.getString("type");
+          Activty_Back = bundle.getString("Activty");
+        if(Activty_Back.equals("Auto_Manual")){
+            if (type.equals("SMS"))
+            {
+                viewPager.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        viewPager.setCurrentItem(0);
+                    }
+                }, 10);
+
+            }
+            else {
+                viewPager.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        viewPager.setCurrentItem(1);
+                    }
+                }, 10);
+
+            }
+        }
+
+
         String flag=bundle.getString("flag");
         if (flag.equals("edit"))
         {
             //  add_new_contect.setText(getString(R.string.campaign_step_one)+"#" + bundle.getInt("step"));
-            String type=bundle.getString("type");
+            type=bundle.getString("type");
             if (type.equals("SMS"))
             {
                 viewPager.postDelayed(new Runnable() {
@@ -146,6 +194,7 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
                 });
             }
         }
+
         else {
             if (SessionManager.getTask(getApplicationContext()).size() == 0) {
                 String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
@@ -159,6 +208,9 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
 
             }
         }
+      }catch (Exception e){
+          e.printStackTrace();
+      }
 
 
 
@@ -185,32 +237,45 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.iv_back:
-                finish();
+              onBackPressed();
                 break;
             case R.id.save_button:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+                Intent intent;
                 if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                 else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
-                    SessionManager.setGroupList(this,new ArrayList<>());
-                    SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
-                    SessionManager.setBroadcast_flag("add");
-                    SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
-                    startActivity(new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class));
-                    finish();
+
+                    try {
+                        if(Global.isNetworkAvailable(Text_And_Email_Auto_Manual_Broadcast.this, MainActivity.mMainLayout)) {
+                            Mail_list();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+
+
                 }
                 else {
                     SessionManager.setGroupList(this,new ArrayList<>());
                     SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
                     SessionManager.setBroadcast_flag("add");
                     SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
-                    startActivity(new Intent(getApplicationContext(),Broadcast_Contact_Selction_Actvity.class));
-                    finish();
+                    SessionManager.setContect_flag("add");
+
+                    intent=new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
+                    intent.putExtra("Activty","Auto_Manual");
+                    intent.putExtra("type","SMS");
+                    startActivity(intent);
+
                 }
 
                 //
@@ -220,6 +285,82 @@ public class Text_And_Email_Auto_Manual_Broadcast extends AppCompatActivity  imp
 
 
     }
+    void Mail_list() throws JSONException {
+
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Text_And_Email_Auto_Manual_Broadcast.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp",1);
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Text_And_Email_Auto_Manual_Broadcast.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual_Broadcast.this,new ArrayList<>());
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
+
+                    List<UserLinkedList.UserLinkedGmail>  List=userLinkedGmail.getUserLinkedGmail();
+                    SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual_Broadcast.this,List);
+                    if (List.size() == 0) {
+                        Global.Messageshow(Text_And_Email_Auto_Manual_Broadcast.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
+                    }else {
+                        if(List.size()==1){
+                            if(List.get(0).getIsDefault()==1){
+                                NextScreen(List);
+
+                            }else {
+                                Global.Messageshow(Text_And_Email_Auto_Manual_Broadcast.this,mMainLayout,getResources().getString(R.string.setting_mail_defoult),false);
+                            }
+                        }else {
+                            NextScreen(List);
+
+                        }
+
+
+                    }
+                }else {
+                    Global.Messageshow(Text_And_Email_Auto_Manual_Broadcast.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
+    private void NextScreen(List<UserLinkedList.UserLinkedGmail>  List) {
+
+        SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual_Broadcast.this,List);
+
+        SessionManager.setGroupList(Text_And_Email_Auto_Manual_Broadcast.this,new ArrayList<>());
+        SessionManager.setgroup_broadcste(getApplicationContext(),new ArrayList<>());
+        SessionManager.setBroadcast_flag("add");
+        SessionManager.setBroadcate_save_data(getApplicationContext(),new Broadcate_save_data());
+        Intent intent=new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
+        intent.putExtra("Activty","Auto_Manual");
+        intent.putExtra("type","EMAIL");
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    finish();
+    }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Text_And_Email_Auto_Manual_Broadcast.this, mMainLayout);

@@ -3,59 +3,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="@dimen/_10sdp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:orientation="vertical">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
-        android:gravity="center"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <TextView
-            android:padding="@dimen/_5sdp"
-            android:text="Thursday 21"
+            style="@style/tv_Medium_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_reg"
-            style="@style/tv_Medium_16"/>
+            android:padding="@dimen/_5sdp"
+            android:text="Thursday 21"
+            android:textColor="@color/text_reg" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:background="@color/line_camp"/>
+            android:background="@color/line_camp" />
     </LinearLayout>
+
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <ImageView
-            android:padding="@dimen/_10sdp"
             android:id="@+id/iv_message_icon"
-            android:src="@drawable/ic_email_mini"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_email_mini" />
+
         <TextView
+            style="@style/tv_regular_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/_5sdp"
-            android:textColor="@color/text_reg"
             android:text="A prospect named Jaynish is waiting for your manual task on #2 in campaign name : New Campaign"
+            android:textColor="@color/text_reg" />
+
+        <TextView
+            style="@style/tv_regular_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/tv_regular_13"/>
-        <TextView
             android:layout_gravity="center"
             android:padding="@dimen/_5sdp"
-            android:text="35min"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/tv_regular_13"/>
+            android:text="35min" />
 
     </LinearLayout>
 
     <View
-        android:layout_marginTop="@dimen/_5sdp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        android:background="@color/line_camp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/line_camp" />
 </LinearLayout>

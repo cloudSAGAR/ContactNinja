@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/tv_error"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -38,7 +38,7 @@
 
             <TextView
                 android:id="@+id/selected_broadcast"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:gravity="center"

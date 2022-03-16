@@ -25,13 +25,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Auth.Thankyou_Screen;
 import com.contactninja.Model.Plandetail;
+import com.contactninja.Model.Subscription;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Plan_Detail_Screen extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
@@ -40,7 +52,8 @@ public class Plan_Detail_Screen extends AppCompatActivity implements Connectivit
     RecyclerView.LayoutManager layoutManager;
     List<Plandetail> plandetailslist;
     int flag = 0;
-    Plandetail plandetail;
+    String plan_product_id="";
+    Plandetail plandetail_model;
     List<Plandetail.Plansublist> plansublists;
     ImageView tv_back;
     SessionManager sessionManager;
@@ -48,24 +61,46 @@ public class Plan_Detail_Screen extends AppCompatActivity implements Connectivit
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
 
+    LoadingDialog loadingDialog;
+    RetrofitCalls retrofitCalls;
+    Integer user_id = 0;
+    String token_api = "", organization_id = "", team_id = "";
+    SignResponseModel user_data;
     @Override
     public void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_detail_screen);
         mNetworkReceiver = new ConnectivityReceiver();
+        loadingDialog = new LoadingDialog(this);
+        retrofitCalls = new RetrofitCalls(getApplicationContext());
         IntentUI();
         sessionManager = new SessionManager(getApplicationContext());
         plan_condition.setLayoutManager(layoutManager);
         Intent pre_data = getIntent();
         Bundle pre_bundle = pre_data.getExtras();
         flag = pre_bundle.getInt("flag");
+        plan_product_id = pre_bundle.getString("plan_product_id");
         mainflagdata(flag);
+
+
+        user_data = SessionManager.getGetUserdata(getApplicationContext());
+        user_id = user_data.getUser().getId();
+        organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sessionManager.login();
-                startActivity(new Intent(getApplicationContext(), Thankyou_Screen.class));
-                finish();
+
+                try {
+                    if (Global.isNetworkAvailable(Plan_Detail_Screen.this,mMainLayout)) {
+                        Add_trial_subscription(plan_product_id);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         tv_back.setOnClickListener(new View.OnClickListener() {
@@ -77,9 +112,44 @@ public class Plan_Detail_Screen extends AppCompatActivity implements Connectivit
 
     }
 
+    private void Add_trial_subscription(String plan_product_id) {
+        loadingDialog.showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("plan_product_id", plan_product_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Add_Subscription(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                Gson gson = new Gson();
+                String headerString = gson.toJson(response.body().getData());
+                Type listType = new TypeToken<Subscription>() {
+                }.getType();
+                Subscription subscription = new Gson().fromJson(headerString, listType);
+                if(subscription.getHttpStatus().equals(200)){
+                    sessionManager.login();
+                    startActivity(new Intent(getApplicationContext(), Thankyou_Screen.class));
+                    finish();
+                }else {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,subscription.getMessage(),false);
+                }
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+    }
+
     @SuppressLint("SetTextI18n")
     private void mainflagdata(int flag) {
-        plandetail = new Plandetail();
+        plandetail_model = new Plandetail();
         // plansublist=new Plandetail.Plansublist();
         Plandetail plandetail1 = new Plandetail();
 

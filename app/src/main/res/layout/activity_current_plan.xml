@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/mMainLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Setting.CurrentPlanActivity">
+    android:orientation="vertical"
+    tools:context=".Setting.CurrentPlanActivity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
     <TextView
-        android:layout_centerHorizontal="true"
         android:id="@+id/add_Template"
-        style="@style/tv_Medium_14"
+        style="@style/tv_Medium_12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/_12sdp"
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/Select_plan_type"
-        android:textColor="@color/text_reg"
-         />
+        android:textColor="@color/text_reg" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@+id/tv_save"
         android:layout_below="@+id/add_Template"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
+
         <androidx.viewpager2.widget.ViewPager2
-            android:layout_weight="1"
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_weight="1"
             android:paddingStart="@dimen/_40sdp"
             android:paddingEnd="@dimen/_40sdp"
             tools:ignore="RtlSymmetry" />
@@ -48,22 +49,21 @@
             android:id="@+id/dots_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_15sdp"
             app:dotsColor="@color/gray_C4C4C4"
             app:dotsCornerRadius="8dp"
             app:dotsSize="10dp"
-            android:layout_gravity="center"
             app:dotsSpacing="5dp"
             app:dotsWidthFactor="0"
-            app:selectedDotColor="@color/otp_background"
             app:progressMode="false"
-            android:layout_marginBottom="@dimen/_15sdp"
-            />
+            app:selectedDotColor="@color/otp_background" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_save"
-        style="@style/tv_regular_13"
+        style="@style/tv_regular_12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

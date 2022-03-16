@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mMainLayout"
-    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".AddContect.EmailSend_Activity">
+    tools:context=".AddContect.EmailSend_Activity"
+    tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         tools:ignore="MissingConstraints">
-        <include
-            layout="@layout/toolbar"/>
+
+        <include layout="@layout/toolbar" />
+
         <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
             <TextView
+                style="@style/tv_Medium_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
-                style="@style/tv_Medium_14"
                 android:text="Task title:"
                 android:textColor="@color/text_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                tools:ignore="HardcodedText,TextContrastCheck">
 
             </TextView>
 
             <EditText
                 android:id="@+id/ev_titale"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -40,199 +44,208 @@
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 
         </LinearLayout>
+
         <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_separator"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_height="1dp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/line_separator">
 
         </View>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:weightSum="1"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:weightSum="1">
+
             <TextView
-                android:padding="@dimen/_5sdp"
+                style="@style/tv_Medium_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/tv_Medium_14"
+                android:padding="@dimen/_5sdp"
                 android:text="@string/from"
-                android:textColor="@color/purple_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:textColor="@color/purple_200">
 
             </TextView>
 
             <EditText
-                android:enabled="false"
-                android:layout_weight="1"
                 android:id="@+id/ev_from"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:background="@color/add_contect_transpernt"
+                android:enabled="false"
                 android:focusable="true"
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-            <ImageView
-                android:padding="@dimen/_10sdp"
-                android:id="@+id/iv_more"
-                android:src="@drawable/ic_down"
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"/>
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
+            <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_down" />
 
 
         </LinearLayout>
+
         <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/line_separator"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_height="1dp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/line_separator">
 
         </View>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
             <TextView
-                android:padding="@dimen/_5sdp"
-                style="@style/tv_Medium_14"
-                android:text="@string/to"
-                android:textColor="@color/purple_200"
+                style="@style/tv_Medium_12"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/to"
+                android:textColor="@color/purple_200">
 
             </TextView>
 
             <EditText
-                android:enabled="false"
                 android:id="@+id/ev_to"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
+                android:enabled="false"
                 android:focusable="true"
                 android:gravity="left|center"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
-
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 
         </LinearLayout>
+
         <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_separator"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_height="1dp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/line_separator">
 
         </View>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
             <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
-                style="@style/tv_regular_13"
                 android:text="@string/to_subject"
                 android:textColor="@color/text_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                tools:ignore="TextContrastCheck">
 
             </TextView>
 
             <EditText
                 android:id="@+id/ev_subject"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
                 android:gravity="left|center"
-                android:imeOptions="actionDone"
                 android:hint="@string/ComposeEmail"
+                android:imeOptions="actionDone"
                 android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,TextContrastCheck,DuplicateSpeakableTextCheck" />
         </LinearLayout>
+
         <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_separator"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_height="1dp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/line_separator">
 
         </View>
+
         <EditText
             android:id="@+id/edit_compose"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:autoLink="web|email"
             android:background="@color/add_contect_transpernt"
             android:focusable="true"
             android:gravity="left"
-            android:imeOptions="actionDone"
-            android:padding="15dp"
             android:hint="@string/ComposeEmail"
+            android:imeOptions="actionDone"
+            android:linksClickable="true"
+            android:padding="15dp"
             android:textColor="@color/text_reg"
-            tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+            tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TextContrastCheck" />
 
     </LinearLayout>
 
     <LinearLayout
 
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/_15sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:orientation="horizontal">
 
 
         <TextView
             android:id="@+id/tv_use_tamplet"
-            android:text="@string/temp_txt"
-            android:textColor="@color/white"
             style="@style/tv_regular_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
+            android:background="@drawable/shape_5_blue"
+            android:gravity="center"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_8sdp"
-            android:background="@drawable/shape_5_blue"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="wrap_content"/>
+            android:text="@string/temp_txt"
+            android:textColor="@color/white" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_direct_list"

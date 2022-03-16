@@ -40,17 +40,26 @@ public class Main_contact_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contect_main_, container, false);
         IntentUI(view);
-
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.addTab(tabLayout.newTab().setText("Company"));
-
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new ContectFragment(getView(), getActivity());
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment, "Fragment");
         fragmentTransaction.commitAllowingStateLoss();
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        TabSet();
+        super.onResume();
+    }
+
+    private void TabSet() {
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -85,54 +94,13 @@ public class Main_contact_Fragment extends Fragment {
 
             }
         });
-      /*  adapter = new ViewpaggerAdapter(getActivity(), getChildFragmentManager(),
-                tabLayout.getTabCount(), strtext);
 
-        viewPager.setAdapter(adapter);*/
-
-       // viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-      /*  tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
-
-        //viewPager.addOnPageChangeListener(this);
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 contect_search.requestFocus();
             }
         });
-        contect_search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                strtext = s.toString().trim();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        return view;
     }
 
     private void IntentUI(View view) {

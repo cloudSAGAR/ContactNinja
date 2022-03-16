@@ -4,13 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -29,6 +35,7 @@ import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -63,7 +70,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "LoginActivity";
     public String fcmToken = "";
-    TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP;
+    TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP,tv_terms;
     boolean is_PhoneShow = true;
     LinearLayout layout_email, layout_phonenumber,email_password;
     CountryCodePicker ccp_id;
@@ -234,6 +241,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         iv_password_invalid=findViewById(R.id.iv_password_invalid);
         forgot_password=findViewById(R.id.forgot_password);
         email_password=findViewById(R.id.email_password);
+        tv_terms=findViewById(R.id.tv_terms);
 
         iv_showPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,6 +262,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+
+        String text = "I have read and agree to Contact Ninja’s Terms & Conditions";
+        SpannableString spannableString = new SpannableString(text);
+        ClickableSpan clickableSpan1 = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                intent.putExtra("WebUrl", Global.conditions);
+                startActivity(intent);
+            }
+        };
+        spannableString.setSpan(clickableSpan1, 41,59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv_terms.setText(spannableString);
+        try {
+            tv_terms.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -390,6 +419,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
         paramObject.addProperty("email", edit_email.getText().toString());
         paramObject.addProperty("login_type", Login_type);
         paramObject.addProperty("password", password);
@@ -418,12 +448,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", Login_type);
                             startActivity(intent);
-                            finish();
                         }
                         else {
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
                         }
+                        finish();
                     }
                     catch (Exception e)
                     {

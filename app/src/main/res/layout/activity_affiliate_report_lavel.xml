@@ -22,7 +22,7 @@
 
 
         <TextView
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -88,16 +88,21 @@
             android:src="@drawable/ic_search" />
 
         <EditText
-            android:id="@+id/contect_search"
-            style="@style/tv_Medium_14"
+            android:id="@+id/ev_search"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center|left"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_weight="1"
             android:background="@color/add_contect_transpernt"
             android:gravity="center|left"
             android:hint="@string/search_hint"
-            android:textColor="@color/text_reg" />
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textColor="@color/text_reg"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.SigleGroupModel;
@@ -48,6 +50,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -79,6 +83,7 @@ public class MembersFragment extends Fragment {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     EditText ev_search;
+    ImageView iv_cancle_search_icon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,7 +125,7 @@ public class MembersFragment extends Fragment {
                 (position) -> {
                     // ItemModel item = data.get(position);
                     FastScrollItemIndicator fastScrollItemIndicator= new FastScrollItemIndicator.Text(
-                            contectListData.get(position).getFirstname().substring(0, 1)
+                            selected_contectListData.get(position).getFirstname().substring(0, 1)
                                     .substring(0, 1)
                                     .toUpperCase()// Grab the first letter and capitalize it
                     );
@@ -128,9 +133,18 @@ public class MembersFragment extends Fragment {
                 }
         );
 
+        iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                userListDataAdapter.updateList(selected_contectListData);
+            }
+        });
         ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                iv_cancle_search_icon.setVisibility(View.VISIBLE);
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     List<ContectListData.Contact> temp = new ArrayList();
                     for (ContectListData.Contact d : selected_contectListData) {
@@ -151,6 +165,7 @@ public class MembersFragment extends Fragment {
         fastscroller=view.findViewById(R.id.fastscroller);
         fastscroller_thumb=view.findViewById(R.id.fastscroller_thumb);
         ev_search = view.findViewById(R.id.ev_search);
+        iv_cancle_search_icon=view.findViewById(R.id.iv_cancle_search_icon);
 
     }
 
@@ -222,7 +237,7 @@ public class MembersFragment extends Fragment {
                 holder.top_layout.setVisibility(View.VISIBLE);
                 String first_latter=inviteUserDetails.getFirstname().substring(0,1).toUpperCase();
                 holder.first_latter.setText(first_latter);
-                if (second_latter.equals(""))
+          /*      if (second_latter.equals(""))
                 {
                     current_latter=first_latter;
                     second_latter=first_latter;
@@ -245,7 +260,18 @@ public class MembersFragment extends Fragment {
                     holder.top_layout.setVisibility(View.VISIBLE);
 
 
-                }
+                }*/
+
+            holder.first_latter.setVisibility(View.GONE);
+            holder.top_layout.setVisibility(View.GONE);
+            if (!first_latter.equals(second_latter))
+            {
+                holder.first_latter.setText(first_latter);
+                second_latter=first_latter;
+                holder.first_latter.setVisibility(View.VISIBLE);
+                holder.top_layout.setVisibility(View.VISIBLE);
+
+            }
 
 
             String name =inviteUserDetails.getFirstname();
@@ -377,6 +403,16 @@ public class MembersFragment extends Fragment {
                     }
                     sessionManager.setGroupList(getActivity(),selected_contectListData);
                     inviteListData.addAll(groups .get(0).getContactIds());
+
+
+                    Collections.sort(selected_contectListData, new Comparator<ContectListData.Contact>() {
+                        @Override
+                        public int compare(ContectListData.Contact s1, ContectListData.Contact s2) {
+                            return s1.getFirstname().compareToIgnoreCase(s2.getFirstname());
+                        }
+                    });
+                  //  Log.e("Data Is ",new Gson().toJson(selected_contectListData));
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
                     userListDataAdapter = new UserListDataAdapter(getActivity(), getActivity(), selected_contectListData);
                     rvinviteuserdetails.setAdapter(userListDataAdapter);
                     userListDataAdapter.notifyDataSetChanged();

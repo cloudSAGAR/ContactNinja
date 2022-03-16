@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Utils.SessionManager;
@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 import java.util.LinkedList;
 import java.util.List;
 
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import de.hdodenhof.circleimageview.CircleImageView;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
 public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -158,7 +157,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                           SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
                           Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                           SessionManager.setOneCotect_deatil(context, Contact_data);
-                          Intent addnewcontect = new Intent(context, Addnewcontect_Activity.class);
+                          Intent addnewcontect = new Intent(context, Add_Newcontect_Activity.class);
                           SessionManager.setContect_flag("read");
                           context.startActivity(addnewcontect);
                       }

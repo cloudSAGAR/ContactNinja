@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/mMainLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    tools:context=".AddContect.Add_Company_Activity">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        tools:context=".AddContect.Add_Company_Activity">
 
 
         <LinearLayout
@@ -45,7 +44,7 @@
 
                 <TextView
                     android:id="@+id/no_image"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_gravity="center"
@@ -63,7 +62,7 @@
                     android:layout_gravity="center|bottom"
                     android:layout_marginStart="-15dp"
                     android:src="@drawable/ic_block"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +80,7 @@
 
                         <EditText
                             android:id="@+id/add_name"
-                            style="@style/tv_Medium_14"
+                            style="@style/tv_Medium_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center|left"
@@ -95,14 +94,17 @@
                             android:inputType="textCapSentences"
                             android:padding="@dimen/_5sdp"
                             android:singleLine="true"
-                            android:textColor="@color/text_reg" />
+                            android:textColor="@color/text_reg"
+                            tools:ignore="TouchTargetSizeCheck" />
 
                         <ImageView
+                            android:id="@+id/iv_edit"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_15sdp"
-                            android:src="@drawable/ic_edit_profile"/>
+                            android:src="@drawable/ic_edit_profile"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -119,7 +121,7 @@
 
             <EditText
                 android:id="@+id/add_detail"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_70sdp"
                 android:layout_gravity="center|left"
@@ -165,15 +167,14 @@
             </TextView>
 
             <TextView
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:text="@string/add_informaton"
-                android:textColor="@color/text_reg"
-                android:textStyle="bold"/>
+                android:textColor="@color/text_reg" />
 
             <View
                 android:layout_width="match_parent"
@@ -191,7 +192,7 @@
                 android:background="@color/home_list_tab_bg" />
 
             <TextView
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -199,7 +200,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:text="@string/add_phone"
                 android:textColor="@color/text_reg"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/layout_phonenumber"
@@ -229,7 +230,7 @@
                         app:ccp_autoDetectCountry="true"
                         app:ccp_contentColor="@color/otp_header_text_color"
                         app:ccp_showNameCode="false"
-                        app:ccp_textSize="@dimen/_13sdp" />
+                        app:ccp_textSize="@dimen/_12sdp" />
 
                     <View
                         android:layout_width="1dp"
@@ -238,7 +239,7 @@
 
                     <EditText
                         android:id="@+id/edit_Mobile"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -250,7 +251,7 @@
                         android:inputType="phone|number"
                         android:padding="10dp"
                         android:textColor="@color/purple_200"
-                        tools:ignore="Autofill,RtlHardcoded" />
+                        tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,TextContrastCheck" />
 
                 </LinearLayout>
 
@@ -262,7 +263,7 @@
 
                 <TextView
                     android:id="@+id/iv_invalid"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center"
@@ -276,7 +277,7 @@
             </LinearLayout>
 
             <TextView
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_17sdp"
@@ -284,7 +285,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:text="@string/add_email"
                 android:textColor="@color/text_reg"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/layout_email"
@@ -298,7 +299,7 @@
 
                 <EditText
                     android:id="@+id/edit_email"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -309,7 +310,7 @@
                     android:inputType="textEmailAddress"
                     android:padding="10dp"
                     android:textColor="@color/purple_200"
-                    tools:ignore="Autofill,RtlHardcoded" />
+                    tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,TextContrastCheck" />
 
                 <View
                     android:layout_width="match_parent"
@@ -318,7 +319,7 @@
 
                 <TextView
                     android:id="@+id/iv_invalid1"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center"
@@ -332,7 +333,7 @@
             </LinearLayout>
 
             <TextView
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_17sdp"
@@ -340,11 +341,11 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:text="@string/add_company_url"
                 android:textColor="@color/text_reg"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edit_company_url"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -356,7 +357,7 @@
                 android:imeOptions="actionDone"
                 android:padding="10dp"
                 android:textColor="@color/purple_200"
-                tools:ignore="Autofill,RtlHardcoded" />
+                tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,TextContrastCheck" />
 
             <View
                 android:layout_width="match_parent"
@@ -366,7 +367,7 @@
                 android:background="@color/line_separator" />
 
             <TextView
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_17sdp"
@@ -374,11 +375,11 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:text="@string/add_company_address"
                 android:textColor="@color/text_reg"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edit_address"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -390,7 +391,7 @@
                 android:imeOptions="actionDone"
                 android:padding="10dp"
                 android:textColor="@color/purple_200"
-                tools:ignore="Autofill,RtlHardcoded" />
+                tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,TextContrastCheck" />
 
             <View
                 android:layout_width="match_parent"
@@ -400,5 +401,5 @@
                 android:background="@color/line_separator" />
 
         </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -23,11 +23,10 @@ import androidx.fragment.app.Fragment;
 public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements View.OnClickListener, YourFragmentInterface {
 
     LinearLayout auto_layout, manual_layout;
-    ImageView select_manual, select_automated, iv_back_image;
+    ImageView select_manual, select_automated;
     int click = 0;
     SessionManager sessionManager;
     String c_name = "", c_type = "";
-    EditText edit_day, edit_minutes, edit_day_manual, edit_minutes_manual;
     private long mLastClickTime = 0;
 
     @Override
@@ -52,73 +51,7 @@ public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements
         auto_layout.setOnClickListener(this);
         manual_layout.setOnClickListener(this);
 
-        edit_day.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                SessionManager.setCampaign_Day(edit_day.getText().toString());
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        edit_minutes.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                SessionManager.setCampaign_minute(edit_minutes.getText().toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        edit_day_manual.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                SessionManager.setCampaign_Day(edit_day_manual.getText().toString());
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        edit_minutes_manual.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                SessionManager.setCampaign_minute(edit_minutes_manual.getText().toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
 
         return view;
@@ -129,53 +62,31 @@ public class Broadcast_Auto_Selection_Email_Fragment extends Fragment implements
         manual_layout = view.findViewById(R.id.manual_layout);
         select_manual = view.findViewById(R.id.select_manual);
         select_automated = view.findViewById(R.id.select_automated);
-        edit_day = view.findViewById(R.id.edit_day);
-        edit_minutes = view.findViewById(R.id.edit_minutes);
-        edit_day_manual = view.findViewById(R.id.edit_day_manual);
-        edit_minutes_manual = view.findViewById(R.id.edit_minutes_manual);
-        iv_back_image = view.findViewById(R.id.iv_back_image);
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.auto_layout:
-
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
-                //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
-                //Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
-                SessionManager.setCampaign_type("EMAIL");
-                SessionManager.setCampaign_type_name("AUTO");
                 select_automated.setVisibility(View.VISIBLE);
                 select_manual.setVisibility(View.GONE);
-                edit_day_manual.setText("1");
-                edit_minutes_manual.setText("00");
 
+                //Log.e("sessionManager",sessionManager.getCampaign_type_name(getActivity()));
 
-                if (SessionManager.getTask(getActivity()) != null) {
-                    iv_back_image.setVisibility(View.VISIBLE);
-                }
+                // startActivity(new Intent(getActivity(), Automated_Email_Activity.class));
+                //Log.e("sessionManager",sessionManager.getCampaign_type(getActivity()));
+                SessionManager.setCampaign_type("EMAIL");
+                SessionManager.setCampaign_type_name("AUTO");
+
 
                 break;
             case R.id.manual_layout:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
+                select_manual.setVisibility(View.VISIBLE);
+                select_automated.setVisibility(View.GONE);
                 SessionManager.setCampaign_type("EMAIL");
                 SessionManager.setCampaign_type_name("MANUAL");
-                select_automated.setVisibility(View.GONE);
-                select_manual.setVisibility(View.VISIBLE);
-                edit_day.setText("1");
-                edit_minutes.setText("00");
-                if (SessionManager.getTask(getActivity()) != null) {
-                    iv_back_image.setVisibility(View.VISIBLE);
-                }
+
 
                 break;
         }

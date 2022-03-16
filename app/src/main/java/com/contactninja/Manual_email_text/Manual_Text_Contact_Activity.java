@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,16 +14,26 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -53,12 +62,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,9 +81,9 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
     Cursor cursor;
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
-    EditText contect_search;
+    EditText ev_search;
     TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon;
+    ImageView add_new_contect_icon,iv_cancle_search_icon;
     LinearLayout add_new_contect_layout;
     LoadingDialog loadingDialog;
     String userName, user_phone_number, user_image, user_des, strtext = "", old_latter = "", contect_type = "", contect_email,
@@ -157,36 +160,68 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                 }
         );
 
-
-        contect_search.addTextChangedListener(new TextWatcher() {
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                List<ContectListData.Contact> temp = new ArrayList();
-                for (ContectListData.Contact d : contectListData) {
-                    if (d.getFirstname().toLowerCase().contains(s.toString().toLowerCase())) {
-                        temp.add(d);
-                        // Log.e("Same Data ",d.getUserName());
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                    Global.hideKeyboard(Manual_Text_Contact_Activity.this);
+                    List<ContectListData.Contact> temp = new ArrayList();
+                    for (ContectListData.Contact d : contectListData) {
+                        if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                            temp.add(d);
+                        }
                     }
+                    groupContectAdapter.updateList(temp);
+                    return true;
                 }
-                groupContectAdapter.updateList(temp);
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                return false;
             }
         });
+
+
+        ContectList();
+
+
+
+        call_updatedata();
+      /*  contect_list_unselect.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1))
+                    onScrolledToBottom();
+
+            }
+        });*/
+    }
+
+    private void onScrolledToBottom() {
+
+        if (groupContectAdapter.getItemCount() < contectListData.size()) {
+            int x, y;
+            if ((contectListData.size() - groupContectAdapter.getItemCount()) >= contectListData.size()) {
+                x = groupContectAdapter.getItemCount();
+                y = x + contectListData.size();
+            } else {
+                x = groupContectAdapter.getItemCount();
+                y = x + contectListData.size() - groupContectAdapter.getItemCount();
+            }
+            for (int i = x; i < y; i++) {
+                contectListData.get(i).setFlag("true");
+                groupContectAdapter.add(contectListData.get(i));
+            }
+            // group_flag = "true";
+            //   groupContectAdapter.addAll(contectListData.subList(x, y));
+            //groupContectAdapter.notifyDataSetChanged();
+        }
+
+    }
+    private void ContectList() {
         if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
+            contectListData.clear();
             List<ContectListData.Contact> list_data = SessionManager.getContectList(getApplicationContext()).get(0).getContacts();
-            Log.e("List Data is", new Gson().toJson(list_data));
+         //   Log.e("List Data is", new Gson().toJson(list_data));
             for (int i = 0; i < list_data.size(); i++) {
 
                 List<ContectListData.Contact.ContactDetail> contect_detail = list_data.get(i).getContactDetails();
@@ -200,13 +235,20 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                 }
             }
             // contectListData.addAll(SessionManager.getContectList(getApplicationContext()).get(0).getContacts());
-            groupContectAdapter.addAll(contectListData);
-            groupContectAdapter.notifyDataSetChanged();
+         //   groupContectAdapter.addAll(contectListData);
+           // groupContectAdapter.notifyDataSetChanged();
+            onScrolledToBottom();
             num_count.setText(contectListData.size() + " Contacts");
         }
-
-
-        call_updatedata();
+        else {
+            try {
+                if (Global.isNetworkAvailable(Manual_Text_Contact_Activity.this, mMainLayout)) {
+                    ContectEvent();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -216,8 +258,6 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
             pre_seleact.clear();
             pre_seleact.addAll(SessionManager.getGroupList(getApplicationContext()));
             select_contectListData.addAll(pre_seleact);
-
-
         }
 
     }
@@ -239,7 +279,9 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
         contect_list_unselect.setLayoutManager(layoutManager1);
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
-        contect_search = findViewById(R.id.contect_search);
+        ev_search = findViewById(R.id.ev_search);
+        iv_cancle_search_icon = findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
         add_new_contect = findViewById(R.id.add_new_contect);
         num_count = findViewById(R.id.num_count);
         add_new_contect_icon = findViewById(R.id.add_new_contect_icon);
@@ -285,8 +327,16 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.save_button:
-
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                List<ContectListData.Contact> temp = new ArrayList();
+                for (ContectListData.Contact d : contectListData) {
+                    if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                        temp.add(d);
+                    }
+                }
+                groupContectAdapter.updateList(temp);
                 break;
 
         }
@@ -330,7 +380,12 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     }.getType();
                     ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                     contectListData.addAll(contectListData1.getContacts());
-                    groupContectAdapter.addAll(contectListData);
+                   // groupContectAdapter.addAll(contectListData);
+                    contectListData.addAll(contectListData1.getContacts());
+                    List<ContectListData> contectListData_store = new ArrayList<>();
+                    contectListData_store.add(contectListData1);
+                    SessionManager.setContectList(getApplicationContext(), contectListData_store);
+                    ContectList();
                     if (contectListData1.getContacts().size() == limit) {
                         if (currentPage <= TOTAL_PAGES) {
                             groupContectAdapter.addLoadingFooter();
@@ -350,7 +405,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("Error is", throwable.getMessage());
+               // Log.e("Error is", throwable.getMessage());
                 loadingDialog.cancelLoading();
 
             }
@@ -506,7 +561,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                         holder1.first_latter.setVisibility(View.VISIBLE);
                         holder1.top_layout.setVisibility(View.VISIBLE);
                     }
-                    if (Contact_data.getContactImage() == null) {
+                    if (Contact_data.getContactImage() == null || Contact_data.getContactImage().equals("")) {
                         String name = Contact_data.getFirstname() + " " + Contact_data.getLastname();
                         String add_text = "";
                         String[] split_data = name.split(" ");
@@ -770,12 +825,10 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
             tv_done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.e("Main List Is",new Gson().toJson(contacts));
-                    Log.e("Postion is",String.valueOf(s_position));
-                    Log.e("Contect Size ",String.valueOf(contacts.get(s_position).getContactDetails().size()));
-                    Log.e("User SELCT List",new Gson().toJson(userLinkedGmailList));
-
-
+                  //  Log.e("Main List Is",new Gson().toJson(contacts));
+                   // Log.e("Postion is",String.valueOf(s_position));
+                   // Log.e("Contect Size ",String.valueOf(contacts.get(s_position).getContactDetails().size()));
+                    //Log.e("User SELCT List",new Gson().toJson(userLinkedGmailList));
                     holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                     holder1.add_new_contect_icon.setVisibility(View.GONE);
 
@@ -786,7 +839,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                     contacts.get(s_position).setContactDetails(contactDetails);
                     select_contectListData.add(contacts.get(s_position));
                     //userDetailsfull.get(position).setId(position);
-                    Log.e("OHH DATA",new Gson().toJson(select_contectListData));
+                    //Log.e("OHH DATA",new Gson().toJson(select_contectListData));
                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                     SessionManager.setGroupList(getApplicationContext(), select_contectListData);
                     num_count.setText(select_contectListData.size() + " Contact Selcted");

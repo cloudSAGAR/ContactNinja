@@ -17,6 +17,7 @@
             android:orientation="vertical">
 
             <include layout="@layout/toolbar" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -26,19 +27,18 @@
 
 
                 <ImageView
-                    android:visibility="gone"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_30sdp"
-                    android:src="@drawable/ic_message_tab">
+                    android:src="@drawable/ic_message_tab"
+                    android:visibility="gone">
 
                 </ImageView>
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/tv_step"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -47,7 +47,8 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="@string/campaign_step_one_one"
-                    android:textColor="@color/text_reg" />
+                    android:textColor="@color/text_reg"
+                    android:visibility="gone" />
 
                 <LinearLayout
 
@@ -59,7 +60,7 @@
                     android:weightSum="1">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -71,7 +72,7 @@
 
                     <EditText
                         android:id="@+id/ev_from"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -81,16 +82,14 @@
                         android:focusable="true"
                         android:gravity="left|center"
                         android:imeOptions="actionDone"
-                        android:paddingStart="@dimen/_15sdp"
                         android:textColor="@color/text_reg"
-                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                     <ImageView
                         android:id="@+id/iv_down"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_10sdp"
                         android:src="@drawable/ic_down" />
 
@@ -110,20 +109,22 @@
                 <EditText
 
                     android:id="@+id/edit_template"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_150sdp"
                     android:layout_below="@+id/line_view"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_25sdp"
+                    android:autoLink="web|email"
                     android:background="@drawable/shape_10_white_gray_line"
                     android:focusable="true"
                     android:gravity="left"
                     android:hint="@string/Typehere"
                     android:imeOptions="actionDone"
+                    android:linksClickable="true"
                     android:padding="15dp"
                     android:textColor="@color/text_reg"
-                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TextContrastCheck" />
 
 
             </LinearLayout>
@@ -131,6 +132,7 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
     <LinearLayout
 
         android:layout_width="match_parent"
@@ -143,7 +145,7 @@
 
         <TextView
             android:id="@+id/tv_use_tamplet"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

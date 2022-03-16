@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -52,9 +55,9 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Campaign_Group_Fragment extends Fragment implements View.OnClickListener {
     String  group_flag="false";
-    LinearLayout main_layout, add_new_contect_layout, group_name;
+    LinearLayout  add_new_contect_layout, group_name,lay_no_list;
     SessionManager sessionManager;
-    RecyclerView group_recyclerView;
+    RecyclerView rv_group_list;
     LinearLayoutManager layoutManager,layoutManager1;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -69,17 +72,19 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
     // private GroupAdapter groupAdapter;
     RecyclerView add_contect_list;
     public static TopUserListDataAdapter topUserListDataAdapter;
-    TextView tv_create;
     LinearLayout mMainLayout,layout_select_list;
-    ImageView add_new_contect_icon1,add_new_contect_icon;
+    ImageView add_new_contect_icon1,
+            add_new_contect_icon,
+            search_icon,iv_cancle_search_icon;
     TextView add_new_contect;
     private long mLastClickTime=0;
+    EditText ev_search;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view=inflater.inflate(R.layout.fragment_broadcast__group_, container, false);
+        View view=inflater.inflate(R.layout.fragment_campaign_group, container, false);
         IntentUI(view);
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
@@ -101,20 +106,19 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         add_contect_list.setAdapter(topUserListDataAdapter);
         topUserListDataAdapter.notifyDataSetChanged();
         paginationAdapter = new PaginationAdapter(getActivity());
-        group_recyclerView.setAdapter(paginationAdapter);
-        group_recyclerView.setHasFixedSize(true);
-        group_recyclerView.setItemViewCacheSize(500);
+        rv_group_list.setAdapter(paginationAdapter);
+        rv_group_list.setHasFixedSize(true);
+        rv_group_list.setItemViewCacheSize(50000);
         add_contect_list.setHasFixedSize(true);
-        add_contect_list.setItemViewCacheSize(500);
+        add_contect_list.setItemViewCacheSize(50000);
 
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
 
         add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
-        main_layout.setOnClickListener(this);
 
 
-        group_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rv_group_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -142,6 +146,25 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             }
         });
 
+        ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                    try {
+                        grouplists.clear();
+                        paginationAdapter.Remove_list();
+                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            GroupEvent();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }
@@ -154,30 +177,55 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         }
     }
     private void IntentUI(View view) {
-
+        iv_cancle_search_icon=view.findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
+        ev_search=view.findViewById(R.id.ev_search);
+        search_icon=view.findViewById(R.id.search_icon);
+        search_icon.setOnClickListener(this);
         mMainLayout = view.findViewById(R.id.mMainLayout);
         layout_select_list = view.findViewById(R.id.layout_select_list);
-        main_layout = view.findViewById(R.id.demo_layout);
         add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
-        group_recyclerView = view.findViewById(R.id.group_list);
+        rv_group_list = view.findViewById(R.id.rv_group_list);
         layoutManager = new LinearLayoutManager(getActivity());
-        group_recyclerView.setLayoutManager(layoutManager);
+        rv_group_list.setLayoutManager(layoutManager);
         group_name = view.findViewById(R.id.group_name);
         num_count = view.findViewById(R.id.num_count);
         grouplists = new ArrayList<>();
         add_contect_list=view.findViewById(R.id.add_contect_list);
         layoutManager1=new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
         add_contect_list.setLayoutManager(layoutManager1);
-        tv_create=view.findViewById(R.id.tv_create);
         add_new_contect_icon1=view.findViewById(R.id.add_new_contect_icon1);
         add_new_contect_icon=view.findViewById(R.id.add_new_contect_icon);
         add_new_contect=view.findViewById(R.id.add_new_contect);
+        lay_no_list=view.findViewById(R.id.lay_no_list);
     }
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.search_icon:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                ev_search.requestFocus();
+                break;
+
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                try {
+                    grouplists.clear();
+                    paginationAdapter.Remove_list();
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        GroupEvent();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
             case R.id.add_new_contect_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -250,7 +298,7 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("page", page);
         paramObject.put("perPage", limit);
-        paramObject.put("q", "");
+        paramObject.put("q", ev_search.getText().toString());
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -282,20 +330,20 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
 
 
                     totale_group = group_model.getTotal();
-                    main_layout.setVisibility(View.GONE);
 
-
+                    lay_no_list.setVisibility(View.GONE);
+                    rv_group_list.setVisibility(View.VISIBLE);
                 } else {
-                    tv_create.setText(getString(R.string.error_opps));
-                    main_layout.setVisibility(View.VISIBLE);
+
+                    lay_no_list.setVisibility(View.VISIBLE);
+                    rv_group_list.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                tv_create.setText(getString(R.string.error_opps));
-                main_layout.setVisibility(View.VISIBLE);
             }
         });
 
@@ -549,7 +597,12 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
         public int getItemViewType(int position) {
             return (position == movieList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
         }
+        public void Remove_list()
+        {
 
+            movieList.clear();
+            notifyDataSetChanged();
+        }
         public void addLoadingFooter() {
             isLoadingAdded = true;
             add(new Grouplist.Group());
@@ -585,14 +638,14 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
             {
 
                 paginationAdapter = new PaginationAdapter(getContext());
-                group_recyclerView.setAdapter(paginationAdapter);
+                rv_group_list.setAdapter(paginationAdapter);
                 //group_flag="false";
                 //movieList1.get(i).set
                 group_flag="true";
                 movieList1.get(i).setFlag("true");
                 paginationAdapter.addAll(movieList1);
                 paginationAdapter.notifyItemChanged(i);
-                group_recyclerView.setItemViewCacheSize(500);
+                rv_group_list.setItemViewCacheSize(50000);
                 select_contectListData.add(movieList1.get(i));
                 topUserListDataAdapter.notifyDataSetChanged();
 

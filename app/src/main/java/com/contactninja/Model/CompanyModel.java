@@ -131,6 +131,12 @@ public class CompanyModel {
         @Expose
         private String updatedAt = "";
 
+
+
+        @SerializedName("company_url")
+        @Expose
+        private String company_url = "";
+
         public Integer getIs_blocked() {
             return is_blocked;
         }
@@ -153,6 +159,14 @@ public class CompanyModel {
 
         public void setOrganizationId(Integer organizationId) {
             this.organizationId = organizationId;
+        }
+
+        public String getCompany_url() {
+            return company_url;
+        }
+
+        public void setCompany_url(String company_url) {
+            this.company_url = company_url;
         }
 
         public Integer getTeamId() {

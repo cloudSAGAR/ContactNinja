@@ -1,125 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#00000000"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    android:layout_height="match_parent">
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
     <LinearLayout
-        android:background="@drawable/shape_white_top_left_right_20"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_white_top_left_right_20"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_10sdp"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:weightSum="2">
+
             <TextView
+                android:id="@+id/tv_item"
+                style="@style/tv_Medium_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="center|left"
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_12sdp"
-                android:id="@+id/tv_item"
-                style="@style/tv_Medium_14"
                 android:text="Filters"
-                android:layout_gravity="center"
-                android:gravity="center|left"
-                android:textColor="@color/text_reg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:textColor="@color/text_reg">
 
             </TextView>
+
             <TextView
+                android:id="@+id/tv_clear"
+                style="@style/tv_Medium_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="center|end"
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_12sdp"
-                android:id="@+id/tv_clear"
-                style="@style/tv_Medium_14"
                 android:text="Clear Filters"
-                android:layout_gravity="center"
-                android:gravity="center|end"
-                android:textColor="@color/purple_200"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:textColor="@color/purple_200">
 
             </TextView>
 
 
         </LinearLayout>
+
         <View
-            android:background="@color/line_separator"
             android:layout_width="match_parent"
-            android:layout_height="1dp">
+            android:layout_height="1dp"
+            android:background="@color/line_separator">
 
         </View>
+
         <LinearLayout
-            android:weightSum="3"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
             <LinearLayout
-                android:layout_weight="2"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/home_type_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
+
             <View
-                android:background="@color/line_separator"
                 android:layout_width="@dimen/_1sdp"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_height="match_parent">
+                android:background="@color/line_separator">
 
             </View>
 
             <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/home_type_list_general"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/home_type_list_sort"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
 
         </LinearLayout>
+
         <TextView
-            android:layout_marginBottom="@dimen/_10sdp"
             android:id="@+id/tv_done"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center|end"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/shape_10_blue"
-            android:textSize="@dimen/_13sdp"
-            android:text="Apply"
-            android:layout_gravity="center|end"
             android:gravity="center"
+            android:text="Apply"
             android:textColor="@color/white"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_30sdp">
+            android:textSize="@dimen/_13sdp">
 
         </TextView>
 

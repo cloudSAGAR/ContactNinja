@@ -24,18 +24,33 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.contactninja.MainActivity;
+import com.contactninja.Main_Broadcast.Add_Broad_Email_Activity;
+import com.contactninja.Main_Broadcast.Broadcast_Contact_Selction_Actvity;
 import com.contactninja.Model.CampaignTask;
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UserLinkedList;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.Utils.YourFragmentInterface;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
 
 public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
     SessionManager sessionManager;
@@ -193,14 +208,17 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
                 }
                 else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
-                    SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+                    try {
+                        if(Global.isNetworkAvailable(Text_And_Email_Auto_Manual.this, MainActivity.mMainLayout)) {
+                            Mail_list();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                    startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
-                    finish();
                 }
                 else {
                     SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
-
                     startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
                     finish();
                     }
@@ -211,6 +229,63 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
 
 
     }
+    void Mail_list() throws JSONException {
+
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Text_And_Email_Auto_Manual.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("include_smtp",1);
+        obj.add("data", paramObject);
+        retrofitCalls.Mail_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(Text_And_Email_Auto_Manual.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual.this,new ArrayList<>());
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<UserLinkedList>() {
+                    }.getType();
+                    UserLinkedList userLinkedGmail=new Gson().fromJson(headerString, listType);
+
+                    List<UserLinkedList.UserLinkedGmail>  List=userLinkedGmail.getUserLinkedGmail();
+                    SessionManager.setUserLinkedGmail(Text_And_Email_Auto_Manual.this,List);
+                    if (List.size() == 0) {
+                        Global.Messageshow(Text_And_Email_Auto_Manual.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
+                    }else {
+                        if(List.size()==1){
+                            if(List.get(0).getIsDefault()==1){
+                                SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+                                startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
+                                finish();
+                            }else {
+                                Global.Messageshow(Text_And_Email_Auto_Manual.this,mMainLayout,getResources().getString(R.string.setting_mail_defoult),false);
+                            }
+                        }else {
+                            SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+                            startActivity(new Intent(getApplicationContext(),Manual_Auto_Task_Name_Activity.class));
+                            finish();
+                        }
+
+                    }
+                }else {
+                    Global.Messageshow(Text_And_Email_Auto_Manual.this,mMainLayout,getResources().getString(R.string.setting_mail),false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Text_And_Email_Auto_Manual.this, mMainLayout);

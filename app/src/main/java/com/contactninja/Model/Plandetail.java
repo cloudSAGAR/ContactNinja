@@ -11,6 +11,10 @@ import java.util.List;
 
 public class Plandetail {
 
+    @SerializedName("plan_product_id")
+    @Expose
+    private String plan_product_id="";
+
     @SerializedName("plan_name")
     @Expose
     private String plan_name="";
@@ -26,6 +30,14 @@ public class Plandetail {
     @SerializedName("subCategories")
     @Expose
     private List<Plansublist> plansublist = new ArrayList<>();
+
+    public String getPlan_product_id() {
+        return plan_product_id;
+    }
+
+    public void setPlan_product_id(String plan_product_id) {
+        this.plan_product_id = plan_product_id;
+    }
 
     public List<Plansublist> getPlansublist() {
         return plansublist;

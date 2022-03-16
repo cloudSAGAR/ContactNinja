@@ -19,7 +19,7 @@ import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class    PlanType_Screen extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener  {
+public class PlanType_Screen extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener  {
 
     LinearLayout layout_free_card, layout_bz_card, layout_master, layout_contect;
     int flag = 0;
@@ -55,22 +55,34 @@ public class    PlanType_Screen extends AppCompatActivity implements View.OnClic
         Intent intent = new Intent(getApplicationContext(), Plan_Detail_Screen.class);
         switch (v.getId()) {
             case R.id.layout_free_card:
+                /**
+                 * This is free card */
                 intent.putExtra("flag", 1);
+                intent.putExtra("plan_product_id", "0");
                 startActivity(intent);
                 finish();
                 break;
             case R.id.layout_bz_card:
+                /**
+                 * This is 9.95 card */
                 intent.putExtra("flag", 2);
+                intent.putExtra("plan_product_id", getResources().getString(R.string.plan_9));
                 startActivity(intent);
                 finish();
                 break;
             case R.id.layout_master:
+                /**
+                 * This is 39.95 card */
                 intent.putExtra("flag", 3);
+                intent.putExtra("plan_product_id", getResources().getString(R.string.plan_39));
                 startActivity(intent);
                 finish();
                 break;
             case R.id.layout_contect:
+                /**
+                 * This is 69.95 card */
                 intent.putExtra("flag", 4);
+                intent.putExtra("plan_product_id", getResources().getString(R.string.plan_69));
                 startActivity(intent);
                 finish();
                 break;

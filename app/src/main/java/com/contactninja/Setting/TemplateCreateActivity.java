@@ -232,11 +232,11 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.layout_title:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+             /*   if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                showAlertDialogButtonClicked();
+                showAlertDialogButtonClicked();*/
                 break;
         }
     }
@@ -382,9 +382,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SessionManager sessionManager = new SessionManager(getApplicationContext());
-                sessionManager.logoutUser();
-                finish();
+
             }
         });
         dialog.show();

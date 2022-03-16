@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -77,16 +78,15 @@ public class Company_Fragment extends Fragment {
     FastScrollerView fastscroller;
     FastScrollerThumbView fastscroller_thumb;
     SearchView contect_search;
-    TextView add_new_contect, num_count;
-    ImageView add_new_contect_icon, iv_filter_icon;
+    TextView add_new_contect, num_count,txt_nolist;
+    ImageView  iv_filter_icon,iv_cancle_search_icon,iv_add_new_contect_icon;
     View view1;
     FragmentActivity fragmentActivity;
-    LinearLayout add_new_contect_layout;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     int currentPage = 1;
-    int perPage = 20;
+    int perPage =10;
     boolean isLoading = false;
     boolean isLastPage = false;
     LinearLayoutManager layoutManager;
@@ -104,6 +104,21 @@ public class Company_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         View content_view = inflater.inflate(R.layout.fragment_company_, container, false);
         IntentUI(content_view);
+        on_dataset();
+        Filter="ALL";
+
+      /*  if (companyAdapter.getItemCount() == 0) {
+            linearLayout3.setVisibility(View.GONE);
+            demo_layout.setVisibility(View.VISIBLE);
+            layout_common.setVisibility(View.VISIBLE);
+
+        }*/
+
+        return content_view;
+    }
+
+    public void on_dataset()
+    {
         mCtx = getContext();
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
@@ -112,9 +127,9 @@ public class Company_Fragment extends Fragment {
         companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
 
         rvinviteuserdetails.setLayoutManager(layoutManager);
-
         rvinviteuserdetails.setHasFixedSize(true);
         rvinviteuserdetails.setAdapter(companyAdapter);
+        rvinviteuserdetails.setItemViewCacheSize(5000);
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
 
@@ -136,11 +151,19 @@ public class Company_Fragment extends Fragment {
             public void onRefresh() {
                 if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    iv_cancle_search_icon.setVisibility(View.GONE);
+                    iv_filter_icon.setVisibility(View.VISIBLE);
                     ev_search.setText("");
                     currentPage = PAGE_START;
                     isLastPage = false;
                     companyList.clear();
                     companyAdapter.clear();
+                    companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
+                    Filter="ALL";
+                    rvinviteuserdetails.setLayoutManager(layoutManager);
+                    rvinviteuserdetails.setHasFixedSize(true);
+                    rvinviteuserdetails.setAdapter(companyAdapter);
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
                     try {
                         CompanyList();
                     } catch (JSONException e) {
@@ -201,21 +224,7 @@ public class Company_Fragment extends Fragment {
                 startActivity(intent);
             }
         });
-        add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
-                SessionManager.setCampaign_data(new CampaignTask_overview());
-                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
-                intent.putExtra("flag", "add");
-                startActivity(intent);
-            }
-        });
-        add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
+        iv_add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -234,6 +243,16 @@ public class Company_Fragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Global.hideKeyboard(getActivity());
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                    iv_filter_icon.setVisibility(View.GONE);
+
+                    companyAdapter.clear();
+                    companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
+                    rvinviteuserdetails.setLayoutManager(layoutManager);
+                    rvinviteuserdetails.setHasFixedSize(true);
+                    rvinviteuserdetails.setAdapter(companyAdapter);
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
                     onResume();
                     return true;
                 }
@@ -258,19 +277,11 @@ public class Company_Fragment extends Fragment {
 
                 }
         );
-
-      /*  if (companyAdapter.getItemCount() == 0) {
-            linearLayout3.setVisibility(View.GONE);
-            demo_layout.setVisibility(View.VISIBLE);
-            layout_common.setVisibility(View.VISIBLE);
-
-        }*/
-
-        return content_view;
     }
 
-
     private void IntentUI(View content_view) {
+        iv_cancle_search_icon = content_view.findViewById(R.id.iv_cancle_search_icon);
+        txt_nolist = content_view.findViewById(R.id.txt_nolist);
         layout_list = content_view.findViewById(R.id.layout_list);
         lay_no_list = content_view.findViewById(R.id.lay_no_list);
         linearLayout3 = content_view.findViewById(R.id.linearLayout3);
@@ -285,8 +296,7 @@ public class Company_Fragment extends Fragment {
         contect_search = content_view.findViewById(R.id.contect_search);
         add_new_contect = content_view.findViewById(R.id.add_new_contect);
         num_count = content_view.findViewById(R.id.num_count);
-        add_new_contect_icon = content_view.findViewById(R.id.add_new_contect_icon);
-        add_new_contect_layout = content_view.findViewById(R.id.add_new_contect_layout);
+        iv_add_new_contect_icon = content_view.findViewById(R.id.iv_add_new_contect_icon);
         swipeToRefresh = content_view.findViewById(R.id.swipeToRefresh);
         ev_search = content_view.findViewById(R.id.ev_search);
         iv_filter_icon.setOnClickListener(new View.OnClickListener() {
@@ -300,6 +310,16 @@ public class Company_Fragment extends Fragment {
                 showBottomSheetDialog_Filtter();
             }
         });
+        iv_cancle_search_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                iv_filter_icon.setVisibility(View.VISIBLE);
+                onResume();
+            }
+        });
+
     }
 
 
@@ -308,7 +328,7 @@ public class Company_Fragment extends Fragment {
         Change By :- Paras
         Chnage Date:- 4-2-22
         */
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.fillter_contact_block_unblock, null);
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.fillter_company_block_unblock, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
 
@@ -318,9 +338,11 @@ public class Company_Fragment extends Fragment {
         switch (Filter) {
             case "BLOCK":
                 ch_block.setChecked(true);
+                ch_all.setChecked(false);
                 break;
             case "ALL":
                 ch_all.setChecked(true);
+                ch_block.setChecked(false);
                 break;
 
         }
@@ -331,8 +353,27 @@ public class Company_Fragment extends Fragment {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter_on);
                     bottomSheetDialog.dismiss();
                     Filter = "BLOCK";
+                    companyAdapter.clear();
+                    companyList.clear();
+                    companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
+
+                    rvinviteuserdetails.setLayoutManager(layoutManager);
+                    rvinviteuserdetails.setHasFixedSize(true);
+                    rvinviteuserdetails.setAdapter(companyAdapter);
+                    rvinviteuserdetails.setItemViewCacheSize(5000);
                     RefreshList();
+                    ch_all.setChecked(false);
+                    ch_block.setChecked(true);
 //
+                }
+                else {
+
+                    bottomSheetDialog.dismiss();
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Filter = "ALL";
+                    RefreshList();
+                    ch_all.setChecked(true);
+                    ch_block.setChecked(false);
                 }
 
             }
@@ -344,9 +385,15 @@ public class Company_Fragment extends Fragment {
                 if (isChecked) {
                     bottomSheetDialog.dismiss();
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    Filter = "All";
+                    Filter = "ALL";
                     RefreshList();
+                    ch_block.setChecked(false);
+                    ch_all.setChecked(true);
 
+                }
+                else {
+                    ch_all.setChecked(false);
+                    bottomSheetDialog.dismiss();
                 }
 
             }
@@ -369,6 +416,8 @@ public class Company_Fragment extends Fragment {
         paramObject.addProperty("q", ev_search.getText().toString());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
+        paramObject.addProperty("orderBy", "name");
+        paramObject.addProperty("order", "ASC");
         if (Filter.equals("BLOCK")) {
             paramObject.addProperty("is_blocked", 1);
         }
@@ -405,7 +454,8 @@ public class Company_Fragment extends Fragment {
                     });
                     if (currentPage != PAGE_START)
                         companyAdapter.removeLoading();
-                    companyAdapter.addItems(companyList);
+                        companyAdapter.addItems(companyList);
+
                     // check weather is last page or not
                     if (data.getTotal() > companyAdapter.getItemCount()) {
                         companyAdapter.addLoading();
@@ -417,7 +467,8 @@ public class Company_Fragment extends Fragment {
                     linearLayout3.setVisibility(View.VISIBLE);
                     demo_layout.setVisibility(View.GONE);
 
-                } else {
+                }
+                else {
                     if (Filter.equals("") && ev_search.getText().toString().equals("")) {
                         linearLayout3.setVisibility(View.GONE);
                         demo_layout.setVisibility(View.VISIBLE);
@@ -425,6 +476,7 @@ public class Company_Fragment extends Fragment {
 
                     if (Filter.equals("BLOCK")) {
                         if (companyList.size() == 0) {
+                            txt_nolist.setText(getResources().getString(R.string.no_block_company));
                             lay_no_list.setVisibility(View.VISIBLE);
                             layout_list.setVisibility(View.GONE);
                         } else {
@@ -432,8 +484,14 @@ public class Company_Fragment extends Fragment {
                             layout_list.setVisibility(View.VISIBLE);
                         }
                     }else {
-                        lay_no_list.setVisibility(View.GONE);
-                        layout_list.setVisibility(View.VISIBLE);
+                        if (companyList.size() == 0) {
+                            txt_nolist.setText(getResources().getString(R.string.no_company));
+                            lay_no_list.setVisibility(View.VISIBLE);
+                            layout_list.setVisibility(View.GONE);
+                        }else {
+                            lay_no_list.setVisibility(View.GONE);
+                            layout_list.setVisibility(View.VISIBLE);
+                        }
                     }
                     num_count.setText(String.valueOf(0 + " Company"));
                 }
@@ -450,7 +508,6 @@ public class Company_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Filter = "";
         iv_filter_icon.setImageResource(R.drawable.ic_filter);
         RefreshList();
     }
@@ -481,7 +538,7 @@ public class Company_Fragment extends Fragment {
         TextView selected_delete = bottomSheetDialog.findViewById(R.id.selected_delete);
         selected_block.setText(getString(R.string.add_blacklist));
         selected_un_block.setText(getString(R.string.remove_blacklist));
-        selected_delete.setText(getString(R.string.delete_contact));
+        selected_delete.setText(getString(R.string.delete_company));
 
         if (Company.getIs_blocked().equals(1)) {
             selected_block.setVisibility(View.GONE);
@@ -507,6 +564,8 @@ public class Company_Fragment extends Fragment {
                 //Block Contect
 
                 try {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Filter = "ALL";
                     Contect_BLock(Company, "1", bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -526,6 +585,8 @@ public class Company_Fragment extends Fragment {
                 //Block Contect
 
                 try {
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
+                    Filter = "ALL";
                     Contect_BLock(Company, "0", bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -545,6 +606,8 @@ public class Company_Fragment extends Fragment {
                 //Block Contect
 
                 try {
+                    Filter = "ALL";
+                    iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Company_Remove(Company, "0", bottomSheetDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -647,8 +710,7 @@ public class Company_Fragment extends Fragment {
         });
 
     }
-
-    public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.viewData> {
+    public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         public Context mCtx;
@@ -665,22 +727,143 @@ public class Company_Fragment extends Fragment {
 
         @NonNull
         @Override
-        public CompanyAdapter.viewData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            RecyclerView.ViewHolder viewHolder = null;
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
-                    return new CompanyAdapter.viewData(
-                            LayoutInflater.from(parent.getContext()).inflate(R.layout.comany_item_layout, parent, false));
+                    View viewItem = inflater.inflate(R.layout.comany_item_layout, parent, false);
+                    viewHolder = new CompanyAdapter.MovieViewHolder(viewItem);
+                    break;
                 case VIEW_TYPE_LOADING:
-                    return new CompanyAdapter.ProgressHolder(
-                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
-                default:
-                    return null;
+                    View viewLoading = inflater.inflate(R.layout.item_loading, parent, false);
+                    viewHolder = new CompanyAdapter.LoadingViewHolder(viewLoading);
+                    break;
             }
-
+            return viewHolder;
         }
 
         @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            CompanyModel.Company WorkData = companyList.get(position);
+            switch (getItemViewType(position)) {
+                case VIEW_TYPE_NORMAL:
+                   MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
+
+                    if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
+                        try {
+                            if (WorkData.getIs_blocked().equals(1)) {
+                                movieViewHolder.iv_block.setVisibility(View.VISIBLE);
+                                movieViewHolder.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
+                            } else {
+                                movieViewHolder.iv_block.setVisibility(View.GONE);
+                                movieViewHolder.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                        if (Global.IsNotNull(WorkData.getName())) {
+                            movieViewHolder.userName.setText(WorkData.getName());
+                            movieViewHolder.userNumber.setVisibility(View.GONE);
+                        }
+
+
+                        movieViewHolder.first_latter.setVisibility(View.VISIBLE);
+                        movieViewHolder.top_layout.setVisibility(View.VISIBLE);
+
+
+                        String first_latter = WorkData.getName().substring(0, 1).toUpperCase();
+                        movieViewHolder.first_latter.setText(first_latter);
+
+                        if (first_latter != second_latter)
+                            {
+                                second_latter=first_latter;
+                                movieViewHolder.first_latter.setVisibility(View.VISIBLE);
+                                movieViewHolder.top_layout.setVisibility(View.VISIBLE);
+
+                            }
+
+
+                     /*   if (second_latter.equals("")) {
+                            current_latter = first_latter;
+                            second_latter = first_latter;
+                            movieViewHolder.first_latter.setVisibility(View.VISIBLE);
+                            movieViewHolder.top_layout.setVisibility(View.VISIBLE);
+
+                        } else if (second_latter.equals(first_latter)) {
+                            current_latter = second_latter;
+                            // inviteUserDetails.setF_latter("");
+                            movieViewHolder.first_latter.setVisibility(View.GONE);
+                            movieViewHolder.top_layout.setVisibility(View.GONE);
+
+                        } else {
+
+                            current_latter = first_latter;
+                            second_latter = first_latter;
+                            movieViewHolder.first_latter.setVisibility(View.VISIBLE);
+                            movieViewHolder.top_layout.setVisibility(View.VISIBLE);
+
+                        }*/
+
+
+                        String name = WorkData.getName();
+                        String add_text = "";
+                        String[] split_data = name.split(" ");
+                        try {
+                            for (int i = 0; i < split_data.length; i++) {
+                                if (i == 0) {
+                                    add_text = split_data[i].substring(0, 1);
+                                } else {
+                                    add_text = add_text + split_data[i].charAt(0);
+                                    break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                        movieViewHolder.no_image.setText(add_text);
+                        movieViewHolder.no_image.setVisibility(View.VISIBLE);
+                        movieViewHolder.profile_image.setVisibility(View.GONE);
+
+
+                        movieViewHolder.main_layout.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+
+                                broadcast_manu(WorkData);
+                                return false;
+                            }
+                        });
+                        movieViewHolder.main_layout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+
+                                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                                intent.putExtra("flag", "read");
+                                intent.putExtra("id", WorkData.getId());
+                                startActivity(intent);
+                            }
+                        });
+
+                    break;
+                case VIEW_TYPE_LOADING:
+                    CompanyAdapter.LoadingViewHolder loadingViewHolder =(CompanyAdapter.LoadingViewHolder) holder;
+                    loadingViewHolder.progressBar.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+        }
+        @Override
         public int getItemViewType(int position) {
+       //     return (position == companyList.size() - 1 && isLoaderVisible) ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
             if (isLoaderVisible) {
                 return position == companyList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
             } else {
@@ -719,113 +902,18 @@ public class Company_Fragment extends Fragment {
             return companyList.get(position);
         }
 
-        @Override
-        public void onBindViewHolder(@NonNull CompanyAdapter.viewData holder, int position) {
-            CompanyModel.Company WorkData = companyList.get(position);
-            if (Global.IsNotNull(WorkData) && !WorkData.getName().equals("")) {
-                try {
-                    if (WorkData.getIs_blocked().equals(1)) {
-                        holder.iv_block.setVisibility(View.VISIBLE);
-                        holder.userName.setTextColor(mCtx.getResources().getColor(R.color.block_item));
-                    } else {
-                        holder.iv_block.setVisibility(View.GONE);
-                        holder.userName.setTextColor(mCtx.getResources().getColor(R.color.unblock_item));
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                holder.userName.setText(WorkData.getName());
-                holder.userNumber.setVisibility(View.GONE);
+        public class LoadingViewHolder extends RecyclerView.ViewHolder {
 
-                holder.first_latter.setVisibility(View.VISIBLE);
-                holder.top_layout.setVisibility(View.VISIBLE);
+            private final ProgressBar progressBar;
 
-
-                String first_latter = WorkData.getName().substring(0, 1).toUpperCase();
-                holder.first_latter.setText(first_latter);
-                if (second_latter.equals("")) {
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
-
-                } else if (second_latter.equals(first_latter)) {
-                    current_latter = second_latter;
-                    // inviteUserDetails.setF_latter("");
-                    holder.first_latter.setVisibility(View.GONE);
-                    holder.top_layout.setVisibility(View.GONE);
-
-                } else {
-
-                    current_latter = first_latter;
-                    second_latter = first_latter;
-                    holder.first_latter.setVisibility(View.VISIBLE);
-                    holder.top_layout.setVisibility(View.VISIBLE);
-
-
-                }
-
-
-                String name = WorkData.getName();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                holder.no_image.setText(add_text);
-                holder.no_image.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
-
-
-                holder.main_layout.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-
-                        broadcast_manu(WorkData);
-                        return false;
-                    }
-                });
-                holder.main_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-
-                        Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
-                        intent.putExtra("flag", "read");
-                        intent.putExtra("id", WorkData.getId());
-                        startActivity(intent);
-                    }
-                });
+            public LoadingViewHolder(View itemView) {
+                super(itemView);
+                progressBar = itemView.findViewById(R.id.progressBar);
 
             }
-
         }
 
-        @Override
-        public int getItemCount() {
-            return companyList.size();
-        }
-
-        public void removeitem() {
-            companyList.clear();
-            notifyDataSetChanged();
-        }
-
-        public class viewData extends RecyclerView.ViewHolder {
+        public class MovieViewHolder extends RecyclerView.ViewHolder {
             TextView no_image;
             TextView userName, userNumber, first_latter;
             CircleImageView profile_image;
@@ -833,8 +921,7 @@ public class Company_Fragment extends Fragment {
             RelativeLayout main_layout;
             ImageView iv_block;
 
-
-            public viewData(@NonNull View itemView) {
+            public MovieViewHolder(View itemView) {
                 super(itemView);
                 first_latter = itemView.findViewById(R.id.first_latter);
                 userName = itemView.findViewById(R.id.username);
@@ -847,13 +934,18 @@ public class Company_Fragment extends Fragment {
             }
         }
 
-        public class ProgressHolder extends CompanyAdapter.viewData {
-            ProgressHolder(View itemView) {
-                super(itemView);
-            }
-
+        @Override
+        public int getItemCount() {
+            return companyList.size();
         }
-    }
 
+        public void removeitem() {
+            companyList.clear();
+            notifyDataSetChanged();
+        }
+
+
+
+    }
 
 }
