@@ -376,12 +376,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                            }catch (Exception e){
                                 e.printStackTrace();
                            }*/
+                            loadingDialog.cancelLoading();
                           myAsyncTasks = new MyAsyncTasks();
                           myAsyncTasks.execute();
                        }
                     }
                     else {
                    //   splitdata(listContacts);
+                        loadingDialog.cancelLoading();
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
                     }
@@ -620,13 +622,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onUploadSuccess(String response) {
                 Log.e("Reppnse is", new Gson().toJson(response));
-
+                loadingDialog.cancelLoading();
 
             }
 
             @Override
             public void onUploadError(String response) {
-
+                loadingDialog.cancelLoading();
                 Log.e("Error is",new Gson().toJson(response));
             }
 
@@ -1437,7 +1439,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public class MyAsyncTasks extends AsyncTask<String, String, String> {
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -1448,6 +1449,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         protected String doInBackground(String... params) {
 
             // implement API in background and store the response in current variable
+
             String current = "";
             try {
                getTasks();
