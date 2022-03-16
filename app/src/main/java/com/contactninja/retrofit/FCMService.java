@@ -27,7 +27,7 @@ public class FCMService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getNotification() != null) {
-            MainActivity.upload(remoteMessage);
+       /*     MainActivity.upload(remoteMessage);*/
 
 
         }

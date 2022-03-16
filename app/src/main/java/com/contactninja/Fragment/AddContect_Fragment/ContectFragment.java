@@ -35,6 +35,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -47,9 +48,11 @@ import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Contect.Contact;
 import com.contactninja.Contect.ContactFetcher;
+import com.contactninja.Contect.ContactPhone;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.BuketModel;
+import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
 import com.contactninja.Model.Csv_InviteListData;
@@ -110,6 +113,7 @@ public class ContectFragment extends Fragment {
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
+    List<Contact> update_listContacts=new ArrayList<>();
     static  String csv_file="";
     S3Uploader_csv s3uploaderObj;
     ArrayList<Contact> listContacts;
@@ -536,6 +540,15 @@ public class ContectFragment extends Fragment {
 
                 } else {
                     loadingDialog.cancelLoading();
+                    update_listContacts=SessionManager.getnewContect(getActivity());
+                    csv_inviteListData.get(i).setId(taskList.get(0).getContect_id());
+                    Contact update_contact=new Contact(taskList.get(0).getContect_id(),userName,last_name);
+                    ContactPhone contactPhone=new ContactPhone(userPhoneNumber,csv_inviteListData.get(i).numbers.get(0).type);
+                    ArrayList<ContactPhone> contactPhoneslist=new ArrayList<>();
+                    contactPhoneslist.add(contactPhone);
+                    update_contact.setNumbers(contactPhoneslist);
+                    update_listContacts.add(update_contact);
+                    SessionManager.setupdateContect(getActivity(),update_listContacts);
                     //Update Contect Api Call
                    /* try {
                         if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
@@ -751,11 +764,11 @@ public class ContectFragment extends Fragment {
                 }
             }
         }
-        Calendar calendar = Calendar.getInstance();
+       /* Calendar calendar = Calendar.getInstance();
         long time = calendar.getTimeInMillis();
         csv_file=SessionManager.getGetUserdata(getActivity()).getUser().getId()+"_CSV_Data_" + time ;
-
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+*/
+       /* SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
@@ -798,7 +811,8 @@ public class ContectFragment extends Fragment {
                 loadingDialog.cancelLoading();
 
             }
-        });
+        });*/
+        CreateCSV(data);
 
     }
 
@@ -807,7 +821,7 @@ public class ContectFragment extends Fragment {
         long time = calendar.getTimeInMillis();
         try {
             //
-            FileOutputStream out = getActivity().openFileOutput(csv_file+ ".csv", Context.MODE_PRIVATE);
+            FileOutputStream out = getActivity().openFileOutput("CSV_Data_" + time + ".csv", Context.MODE_PRIVATE);
 
             //store the data in CSV file by passing String Builder data
             out.write(data.toString().getBytes());
@@ -817,12 +831,11 @@ public class ContectFragment extends Fragment {
             if (!newFile.exists()) {
                 newFile.mkdir();
             }
-            File file = new File(context.getFilesDir(), csv_file+ ".csv");
+            File file = new File(context.getFilesDir(), "CSV_Data_" + time + ".csv");
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
-/*
-            Intent intent = ShareCompat.IntentBuilder.from(this)
+        /*    Intent intent = ShareCompat.IntentBuilder.from(getActivity())
                     .setType("application/pdf")
                     .setStream(path)
                     .setChooserTitle("Choose bar")
@@ -832,12 +845,12 @@ public class ContectFragment extends Fragment {
             startActivity(intent);*/
 
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-
-                s3uploaderObj = new S3Uploader_csv(getActivity());
+                Uploadcsv(file);
+             /*   s3uploaderObj = new S3Uploader_csv(getActivity());
 
                 String Bzcard_image = s3uploaderObj.Csv_Upload(file.getPath(),
                         "CSV_UPLOAD");
-                UploadS3();
+                UploadS3();*/
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -933,8 +946,7 @@ public class ContectFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (!SessionManager.getnewContect(getActivity()).equals(null))
-                {
+
                     try {
                         splitdata((ArrayList<Contact>) SessionManager.getnewContect(getActivity()));
                     }
@@ -942,7 +954,7 @@ public class ContectFragment extends Fragment {
                     {
                         e.printStackTrace();
                     }
-                }
+
                 listContacts = new ContactFetcher(getActivity()).fetchAll();
                 SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
                 String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
@@ -991,6 +1003,11 @@ public class ContectFragment extends Fragment {
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
                 //  EnableRuntimePermission();
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
         };
@@ -1370,7 +1387,7 @@ public class ContectFragment extends Fragment {
             e.printStackTrace();
         }
 
-      /*  if (!SessionManager.getnewContect(getActivity()).equals(null))
+        if (!SessionManager.getnewContect(getActivity()).equals(null))
         {
             try {
                 Duplicate_remove();
@@ -1383,9 +1400,77 @@ public class ContectFragment extends Fragment {
             {
                 e.printStackTrace();
             }
-        }*/
+        }
+
+        if (SessionManager.getupdateContect(getActivity()).equals(null))
+        {
+           /* try {
+                AddContect_Update();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }*/
+        }
+        Log.e("Update Contect List ",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
 
     }
+
+
+    public void AddContect_Update() throws JSONException {
+
+        List<Contact> list_Data=SessionManager.getupdateContect(getActivity());
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        JSONObject obj = new JSONObject();
+
+        JSONObject param_data = new JSONObject();
+        param_data.put("organization_id", 1);
+        param_data.put("team_id", 1);
+        param_data.put("user_id", user_data.getUser().getId());
+        JSONArray jsonArray_contect = new JSONArray();
+        for (int count=0;count<list_Data.size();count++) {
+
+            JSONObject paramObject = new JSONObject();
+            //Other Company Add
+
+            paramObject.put("id", list_Data.get(count).getId());
+            paramObject.put("company_url", "");
+
+
+            paramObject.put("firstname", list_Data.get(count).getName().trim());
+            paramObject.put("lastname", list_Data.get(count).getLast_name().trim());
+
+            paramObject.put("organization_id", 1);
+            paramObject.put("team_id", 1);
+            // addcontectModel.getTime()
+            paramObject.put("user_id", user_data.getUser().getId());
+
+        }
+        param_data.put("contact_update", jsonArray_contect);
+
+        obj.put("data", param_data);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+
+        Log.e("Final Data is", new Gson().toJson(gsonObject));
+        retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+    }
+
 
 /*
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")

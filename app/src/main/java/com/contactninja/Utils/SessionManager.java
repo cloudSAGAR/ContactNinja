@@ -48,6 +48,7 @@ public class SessionManager {
     public static final String Contect_Type = "contect_type";
     public static final String Add_Contect_Detail = "contect_detail";
     public static final String Fcm_Token = "fcm_token";
+    public static final String Csv_Token = "csv_token";
     public static final String GroupListData = "grouplistdata";
     public static final String UserLinkedGmailList = "userLinkedGmailList";
     public static final String Group_Model = "group_model";
@@ -744,6 +745,20 @@ public class SessionManager {
         editor.putString(Fcm_Token, fcm_token);
         editor.commit();
     }
+
+    public static String getCsv_Token(Context context) {
+
+        String type = pref.getString(Csv_Token, "");
+        return type;
+
+    }
+
+    public static void setCsv_Token(String fcm_token) {
+        editor.putString(Csv_Token, fcm_token);
+        editor.commit();
+    }
+
+
 
     public void checkLogin() {
         // Check login status
