@@ -200,10 +200,18 @@ public interface RetrofitApiInterface {
     Call<ApiResponse> Dashboard(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
- @POST("timezone/list")
+    @POST("timezone/list")
     Call<ApiResponse> Timezone(@Header("Accept") String api, @Header("Authorization") String auth,
                                    @Body JsonObject jsonObject,
                                    @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("billing/add_trial_subscription")
+    Call<ApiResponse> Add_Subscription(@Header("Accept") String api, @Header("Authorization") String auth,
+                                       @Body JsonObject jsonObject,
+                                       @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+    @POST("billing/active_subscription")
+    Call<ApiResponse> Active_Subscription(@Header("Accept") String api, @Header("Authorization") String auth,
+                                       @Body JsonObject jsonObject,
+                                       @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
     @POST("working_hour/add/default")
     Call<ApiResponse> Working_hour(@Header("Accept") String api, @Header("Authorization") String auth,

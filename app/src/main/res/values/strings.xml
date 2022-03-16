@@ -665,4 +665,7 @@ Number</string>
     <string name="setting_mail">"You havent linked your mailbox. Add from settings > Mailbox."</string>
     <string name="setting_mail_defoult">"You havent set your mail. Select from settings > Mailbox."</string>
     <string name="task_title_email">Task title:</string>
+    <string name="plan_9">prod_LAUKubaHBxEsPP</string>
+    <string name="plan_39">prod_LAUQKpnUmGVfBN</string>
+    <string name="plan_69">prod_LAUJLCbnF7yEZQ</string>
 </resources>
