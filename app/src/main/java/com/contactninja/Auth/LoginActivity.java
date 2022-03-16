@@ -280,7 +280,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         catch (Exception e)
         {
-
+            e.printStackTrace();
         }
 
     }
@@ -448,12 +448,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", Login_type);
                             startActivity(intent);
-                            finish();
                         }
                         else {
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
                         }
+                        finish();
                     }
                     catch (Exception e)
                     {

@@ -331,7 +331,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_id);
-        paramObject.put("month_year", Selectdate);
+        paramObject.put("date_time", Global.getCurrentTimeandDate());
 
 
         JSONArray array = new JSONArray();

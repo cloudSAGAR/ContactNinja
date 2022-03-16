@@ -19,8 +19,6 @@ import retrofit2.http.Part;
 
 @SuppressLint("UnknownNullness")
 public interface RetrofitApiInterface {
-    @POST("login")
-    Call<ApiResponse> loginUser(@Body SignModel signModel);
 
 /*    @Headers("Content-Type: application/json")
     @POST("register")

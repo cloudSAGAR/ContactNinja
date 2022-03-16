@@ -100,7 +100,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/_15sdp"
                     android:orientation="vertical">
 
                     <TextView
@@ -110,7 +109,7 @@
                         android:layout_gravity="center"
                         android:gravity="center|left"
                         android:text="Total Affiliates"
-                        android:textColor="@color/tv_regular"/>
+                        android:textColor="@color/tv_regular" />
 
 
                     <TextView
@@ -122,7 +121,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
                         android:text="0"
-                        android:textColor="@color/plan_price_text_color"/>
+                        android:textColor="@color/plan_price_text_color" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -133,6 +132,7 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/iv_all_up"
                             android:layout_width="@dimen/_17sdp"
                             android:layout_height="@dimen/_17sdp"
                             android:src="@drawable/ic_home_grow_up"
@@ -141,6 +141,7 @@
                         </ImageView>
 
                         <TextView
+                            android:id="@+id/tv_rat_total"
                             style="@style/tv_regular_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -149,13 +150,14 @@
                             android:gravity="center"
                             android:text="+0%"
                             android:textColor="@color/home_per_text"
-                            tools:ignore="TextContrastCheck"/>
+                            tools:ignore="TextContrastCheck" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -194,7 +196,7 @@
                         android:layout_gravity="center|left"
                         android:gravity="center|left"
                         android:text="Level 1:"
-                        android:textColor="@color/tv_regular"/>
+                        android:textColor="@color/tv_regular" />
 
 
                     <TextView
@@ -206,7 +208,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
                         android:text="0"
-                        android:textColor="@color/plan_price_text_color"/>
+                        android:textColor="@color/plan_price_text_color" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -217,15 +219,15 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/iv_1_up"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/ic_home_grow_up"
-                            tools:ignore="ImageContrastCheck">
-
-                        </ImageView>
+                            tools:ignore="ImageContrastCheck" />
 
 
                         <TextView
+                            android:id="@+id/tv_rat_1"
                             style="@style/tv_regular_10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -254,7 +256,7 @@
                         android:layout_gravity="center|left"
                         android:gravity="center|left"
                         android:text="Level 2:"
-                        android:textColor="@color/tv_regular"/>
+                        android:textColor="@color/tv_regular" />
 
 
                     <TextView
@@ -266,7 +268,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
                         android:text="0"
-                        android:textColor="@color/plan_price_text_color"/>
+                        android:textColor="@color/plan_price_text_color" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -277,16 +279,15 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/iv_2_up"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/ic_home_grow_up"
-                            tools:ignore="ImageContrastCheck">
-
-                        </ImageView>
-
+                            tools:ignore="ImageContrastCheck" />
 
 
                         <TextView
+                            android:id="@+id/tv_rat_2"
                             style="@style/tv_regular_10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -315,7 +316,7 @@
                         android:layout_gravity="center|left"
                         android:gravity="center|left"
                         android:text="Level 3:"
-                        android:textColor="@color/tv_regular"/>
+                        android:textColor="@color/tv_regular" />
 
 
                     <TextView
@@ -327,7 +328,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
                         android:text="0"
-                        android:textColor="@color/plan_price_text_color"/>
+                        android:textColor="@color/plan_price_text_color" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -338,16 +339,15 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/iv_3_up"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/ic_home_grow_up"
-                            tools:ignore="ImageContrastCheck">
-
-                        </ImageView>
-
+                            tools:ignore="ImageContrastCheck" />
 
 
                         <TextView
+                            android:id="@+id/tv_rat_3"
                             style="@style/tv_regular_10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -376,7 +376,7 @@
                         android:layout_gravity="center|left"
                         android:gravity="center|left"
                         android:text="Level 4:"
-                        android:textColor="@color/tv_regular"/>
+                        android:textColor="@color/tv_regular" />
 
 
                     <TextView
@@ -388,7 +388,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
                         android:text="0"
-                        android:textColor="@color/plan_price_text_color"/>
+                        android:textColor="@color/plan_price_text_color" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -399,15 +399,15 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/iv_4_up"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/ic_home_grow_up"
-                            tools:ignore="ImageContrastCheck">
-
-                        </ImageView>
+                            tools:ignore="ImageContrastCheck" />
 
 
                         <TextView
+                            android:id="@+id/tv_rat_4"
                             style="@style/tv_regular_10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -416,7 +416,7 @@
                             android:gravity="center|left"
                             android:text="+0%"
                             android:textColor="@color/home_per_text"
-                            tools:ignore="TextContrastCheck"/>
+                            tools:ignore="TextContrastCheck" />
 
                     </LinearLayout>
 
@@ -436,7 +436,7 @@
                         android:layout_gravity="center|left"
                         android:gravity="center|left"
                         android:text="Level 5:"
-                        android:textColor="@color/tv_regular"/>
+                        android:textColor="@color/tv_regular" />
 
 
                     <TextView
@@ -448,7 +448,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:gravity="center"
                         android:text="0"
-                        android:textColor="@color/plan_price_text_color"/>
+                        android:textColor="@color/plan_price_text_color" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -459,15 +459,15 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/iv_5_up"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/ic_home_grow_up"
-                            tools:ignore="ImageContrastCheck">
-
-                        </ImageView>
+                            tools:ignore="ImageContrastCheck" />
 
 
                         <TextView
+                            android:id="@+id/tv_rat_5"
                             style="@style/tv_regular_10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -476,7 +476,7 @@
                             android:gravity="center|left"
                             android:text="+0%"
                             android:textColor="@color/home_per_text"
-                            tools:ignore="TextContrastCheck"/>
+                            tools:ignore="TextContrastCheck" />
 
                     </LinearLayout>
 

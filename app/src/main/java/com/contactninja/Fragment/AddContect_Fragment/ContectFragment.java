@@ -213,7 +213,7 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
-                    //    rvinviteuserdetails.smoothScrollToPosition(itemPosition);
+                     //    rvinviteuserdetails.smoothScrollToPosition(itemPosition);
                      // rvinviteuserdetails.scrollToPosition(itemPosition);
                     }
                 }
@@ -1370,7 +1370,7 @@ public class ContectFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if (!SessionManager.getnewContect(getActivity()).equals(null))
+      /*  if (!SessionManager.getnewContect(getActivity()).equals(null))
         {
             try {
                 Duplicate_remove();
@@ -1383,7 +1383,7 @@ public class ContectFragment extends Fragment {
             {
                 e.printStackTrace();
             }
-        }
+        }*/
 
     }
 

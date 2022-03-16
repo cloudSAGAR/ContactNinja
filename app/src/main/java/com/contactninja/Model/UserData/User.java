@@ -27,6 +27,9 @@ public class User {
     @SerializedName("email")
     @Expose
     private String email="";
+    @SerializedName("firebase_fcm_token")
+    @Expose
+    private String firebase_fcm_token="";
     @SerializedName("created_at")
     @Expose
     private String createdAt="";
@@ -68,6 +71,14 @@ public class User {
 
     public void setUserTimezone(List<UserTimezone> userTimezone) {
         this.userTimezone = userTimezone;
+    }
+
+    public String getFirebase_fcm_token() {
+        return firebase_fcm_token;
+    }
+
+    public void setFirebase_fcm_token(String firebase_fcm_token) {
+        this.firebase_fcm_token = firebase_fcm_token;
     }
 
     public Integer getId() {
