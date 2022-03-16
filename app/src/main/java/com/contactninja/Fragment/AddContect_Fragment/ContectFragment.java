@@ -931,13 +931,13 @@ public class ContectFragment extends Fragment {
                             }
 
                         } else {
-                         /*   try{
+                            try{
                               splitdata(listContacts);
                             }catch (Exception e){
                                 e.printStackTrace();
-                            }*/
-                            myAsyncTasks = new MyAsyncTasks();
-                            myAsyncTasks.execute();
+                            }
+                         /*   myAsyncTasks = new MyAsyncTasks();
+                            myAsyncTasks.execute();*/
                         }
                     } else {
                         //   splitdata(listContacts);
