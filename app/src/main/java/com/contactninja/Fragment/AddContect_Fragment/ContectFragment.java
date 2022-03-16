@@ -1365,8 +1365,13 @@ public class ContectFragment extends Fragment {
 
                     paramObject.put("company_url", ""+Sesion_contect.get(i).getCompany_url());
 
-
-                    paramObject.put("dob", ""+Sesion_contect.get(i).getDob());
+                    if (Sesion_contect.get(i).getDob().equals("0000-00-00"))
+                    {
+                        paramObject.put("dob","");
+                    }
+                    else {
+                        paramObject.put("dob",Sesion_contect.get(i).getDob());
+                    }
 
 
                     paramObject.put("dynamic_fields_value", "");
