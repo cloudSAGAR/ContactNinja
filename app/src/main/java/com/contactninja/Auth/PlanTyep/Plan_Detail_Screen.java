@@ -83,6 +83,7 @@ public class Plan_Detail_Screen extends AppCompatActivity implements Connectivit
         mainflagdata(flag);
 
 
+        token_api = Global.getToken(sessionManager);
         user_data = SessionManager.getGetUserdata(getApplicationContext());
         user_id = user_data.getUser().getId();
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -126,7 +127,7 @@ public class Plan_Detail_Screen extends AppCompatActivity implements Connectivit
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 Gson gson = new Gson();
-                String headerString = gson.toJson(response.body().getData());
+                String headerString = gson.toJson(response.body());
                 Type listType = new TypeToken<Subscription>() {
                 }.getType();
                 Subscription subscription = new Gson().fromJson(headerString, listType);

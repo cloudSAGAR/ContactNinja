@@ -11,10 +11,10 @@ import java.util.List;
 public class Subscription {
     @SerializedName("http_status")
     @Expose
-    private Integer httpStatus=0;
+    private Integer httpStatus;
     @SerializedName("success")
     @Expose
-    private Boolean success=false;
+    private Boolean success;
     @SerializedName("data")
     @Expose
     private List<Plan> data = new ArrayList<>();

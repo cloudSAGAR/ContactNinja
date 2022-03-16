@@ -76,6 +76,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
         retrofitCalls = new RetrofitCalls(getApplicationContext());
         sessionManager = new SessionManager(getApplicationContext());
 
+        token_api = Global.getToken(sessionManager);
         user_data = SessionManager.getGetUserdata(getApplicationContext());
         user_id = user_data.getUser().getId();
         organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -105,13 +106,14 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 Gson gson = new Gson();
-                String headerString = gson.toJson(response.body().getData());
+                String headerString = gson.toJson(response.body());
                 Type listType = new TypeToken<Subscription>() {
                 }.getType();
                 Subscription subscription = new Gson().fromJson(headerString, listType);
+                List<Subscription.Plan> plans=subscription.getData();
                 if(subscription.getHttpStatus().equals(200)){
-                    if(Global.IsNotNull(subscription.getData().get(0).getPurchasedPlanid())){
-                        CurentPlan=subscription.getData().get(0).getPurchasedPlanid();
+                    if(Global.IsNotNull(plans.get(0).getPurchasedPlanid())){
+                        CurentPlan=plans.get(0).getPurchasedPlanid();
                     }
                     ListShow();
                 }else {
@@ -296,7 +298,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
 
                     } else if (i == 4) {
                         Plandetail.Plansublist plansublist = new Plandetail.Plansublist();
-                        plansublist.setCheck_flag("true");
+                        plansublist.setCheck_flag("false");
                         plansublist.setCheck_id("4");
                         plansublist.setCheck_text("Automated Campaigns");
                         plansublists123.add(i, plansublist);
