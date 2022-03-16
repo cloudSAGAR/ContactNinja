@@ -47,6 +47,7 @@ import com.contactninja.Fragment.Main_userProfile_Fragment;
 import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.Broadcast_Data;
+import com.contactninja.Model.BuketModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.Contect_Db;
 import com.contactninja.Model.Csv_InviteListData;
@@ -60,6 +61,7 @@ import com.contactninja.Utils.DatabaseClient;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.aws.csv_aws.S3Uploader_csv;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitApiClient;
 import com.contactninja.retrofit.RetrofitApiInterface;
@@ -114,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static int navItemIndex = 0;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     public static RelativeLayout mMainLayout;
-    public static MainActivity activity;
     private static int RC_APP_UPDATE = 0;
     private final List<ContectListData.Contact> contectListData = new ArrayList<>();
     InstallStateUpdatedListener installStateUpdatedListener;
@@ -145,6 +146,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SignResponseModel user_data;
 
 
+    //Csv S3 Bukket
+
+    S3Uploader_csv s3uploaderObj;
+    static  String csv_file="";
+    public static MainActivity activity;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -216,6 +222,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 Global.Messageshow(activity,mMainLayout,"Hello testing chek ",true);
+                SessionManager.setCsv_Token("0");
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
@@ -489,7 +502,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         Log.e("Data Is", String.valueOf(data));
-        CreateCSV(data);
+   //     CreateCSV(data);   //Api Pass Csv
+
+
+        // Buket Upload Csv
+        Calendar calendar = Calendar.getInstance();
+        long time = calendar.getTimeInMillis();
+        csv_file=SessionManager.getGetUserdata(getApplicationContext()).getUser().getId()+"_CSV_Data_" + time ;
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(activity);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("csv_name",csv_file+".csv");
+        obj.add("data", paramObject);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
+        Call<ApiResponse> call = registerinfo.S3bucket_import(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(activity),
+                Global.Device);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+
+                if (response.body().getHttp_status() == 200) {
+
+                    SessionManager.setContectList(activity, new ArrayList<>());
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<BuketModel>() {
+                    }.getType();
+                    BuketModel Data = new Gson().fromJson(headerString, listType);
+                    csv_file=csv_file+"_"+Data.getId();
+                    CreateCSV(data);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable throwable) {
+                loadingDialog.cancelLoading();
+
+            }
+        });
+
     }
 
     private void CreateCSV(StringBuilder data) {
@@ -497,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long time = calendar.getTimeInMillis();
         try {
             //
-            FileOutputStream out = openFileOutput("CSV_Data_" + time + ".csv", Context.MODE_PRIVATE);
+            FileOutputStream out = openFileOutput(csv_file+ ".csv", Context.MODE_PRIVATE);//Api Pass Value  "CSV_Data_" + time + ".csv"
 
             //store the data in CSV file by passing String Builder data
             out.write(data.toString().getBytes());
@@ -507,7 +572,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!newFile.exists()) {
                 newFile.mkdir();
             }
-            File file = new File(context.getFilesDir(), "CSV_Data_" + time + ".csv");
+            File file = new File(context.getFilesDir(), csv_file+ ".csv");//Api Time Pass "CSV_Data_" + time + ".csv"
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
@@ -520,13 +585,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             startActivity(intent);*/
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
-                Uploadcsv(file);
+               // Uploadcsv(file);  //Api Time Call
+                s3uploaderObj = new S3Uploader_csv(MainActivity.this);
+
+                String Bzcard_image = s3uploaderObj.Csv_Upload(file.getPath(),
+                        "CSV_UPLOAD");
+                UploadS3();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void UploadS3 () {
+        s3uploaderObj.setOns3UploadDone(new S3Uploader_csv.S3UploadInterface() {
+            @Override
+            public void onUploadSuccess(String response) {
+                Log.e("Reppnse is", new Gson().toJson(response));
+                loadingDialog.cancelLoading();
+                SessionManager.setCsv_Token("1");
+
+            }
+
+            @Override
+            public void onUploadError(String response) {
+                loadingDialog.cancelLoading();
+                Log.e("Error is",new Gson().toJson(response));
+            }
+
+        });
+    }
     private void Uploadcsv(File path) throws JSONException {
 
 
@@ -595,13 +683,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void ContectEvent() throws JSONException {
+    private static void ContectEvent() throws JSONException {
 
-        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+        SignResponseModel user_data = SessionManager.getGetUserdata(activity);
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(sessionManager);
+        String token = Global.getToken(activity.sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
@@ -618,26 +706,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(MainActivity.this),
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(activity),
                 Global.Device);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
+                activity.loadingDialog.cancelLoading();
 
                 if (response.body().getHttp_status() == 200) {
 
-                    SessionManager.setContectList(getApplicationContext(), new ArrayList<>());
+                    SessionManager.setContectList(activity, new ArrayList<>());
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<ContectListData>() {
                     }.getType();
                     ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
-                    contectListData.addAll(contectListData1.getContacts());
+                    activity.contectListData.addAll(contectListData1.getContacts());
                     List<ContectListData> contectListData_store = new ArrayList<>();
                     contectListData_store.add(contectListData1);
-                    SessionManager.setContectList(getApplicationContext(), contectListData_store);
-                    delete(contectListData);
+                    SessionManager.setContectList(activity, contectListData_store);
+                    activity.delete(activity.contectListData);
 
                     /*Duplicate_remove();*/
                 }
@@ -646,7 +734,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                loadingDialog.cancelLoading();
+                activity.loadingDialog.cancelLoading();
 
             }
         });
