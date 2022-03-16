@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -30,7 +29,7 @@ import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.aws.AmazonUtil;
+import com.contactninja.aws.image_aws.AmazonUtil;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;

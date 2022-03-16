@@ -733,7 +733,7 @@ public class SessionManager {
         editor.apply();
     }*/
 
-    public String getFcm_Token(Context context) {
+    public static String getFcm_Token(Context context) {
 
         String type = pref.getString(Fcm_Token, "");
         return type;

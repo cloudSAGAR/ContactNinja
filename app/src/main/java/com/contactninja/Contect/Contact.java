@@ -18,6 +18,46 @@ public class Contact {
         this.numbers = new ArrayList<ContactPhone>();
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public ArrayList<ContactEmail> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(ArrayList<ContactEmail> emails) {
+        this.emails = emails;
+    }
+
+    public ArrayList<ContactPhone> getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(ArrayList<ContactPhone> numbers) {
+        this.numbers = numbers;
+    }
+
     @Override
     public String toString() {
         String result = name;
